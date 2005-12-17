@@ -1,16 +1,19 @@
 /*
- * Copyright (C) 2004 by Netcetera AG.
- * All rights reserved.
- *
- * The copyright to the computer program(s) herein is the property of
- * Netcetera AG, Switzerland. The program(s) may be used and/or copied
- * only with the written permission of Netcetera AG or in accordance
- * with the terms and conditions stipulated in the agreement/contract
- * under which the program(s) have been supplied.
- *
- * @(#) $Id: ExtendedBufferedReaderTest.java,v 1.2 2004/10/20 11:14:11 rgrunder Exp $
+ * Copyright 2005 The Apache Software Foundation.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package ch.netcetera.wake.core.format.csv;
+package org.apache.commons.csv;
 
 import java.io.StringReader;
 import java.util.Arrays;
