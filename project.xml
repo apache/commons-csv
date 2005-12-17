@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 <project>
-<!--   <extend>../commons-build/sandbox-project.xml</extend> -->
+  <extend>../commons-build/sandbox-project.xml</extend>
   <name>Commons Csv</name>
   <id>commons-csv</id>
   <logo>/images/csv-logo-white.png</logo>
@@ -34,10 +34,6 @@
       <name>Henri Yandell</name>
       <id>bayard</id>
       <email>bayard@apache.org</email>
-      <organization></organization>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
     </developer>
   </developers>
     
@@ -49,9 +45,11 @@
   </dependencies>
 
   <build>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
     <unitTest>
       <includes>
-        <include>**/*Test*</include>
+        <include>**/*Test</include>
       </includes>
     </unitTest>
   </build>
