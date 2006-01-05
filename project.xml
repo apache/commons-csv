@@ -15,14 +15,13 @@
    limitations under the License.
 -->
 <project>
-  <extend>../commons-build/sandbox-project.xml</extend>
-  <name>Commons Csv</name>
+  <name>Commons CSV</name>
   <id>commons-csv</id>
   <logo>/images/csv-logo-white.png</logo>
   <inceptionYear>2005</inceptionYear>
-  <shortDescription>Commons Csv</shortDescription>
+  <shortDescription>Commons CSV</shortDescription>
   <description>
-    Commons Csv is a component that parses comma separated value files. 
+    Commons CSV is a component that parses comma separated value files. 
   </description>
   <currentVersion>0.1-dev</currentVersion>
   <issueTrackingUrl>http://issues.apache.org/bugzilla/</issueTrackingUrl>
@@ -49,7 +48,7 @@
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
     <unitTest>
       <includes>
-        <include>**/*Test</include>
+        <include>**/*Test*</include>
       </includes>
     </unitTest>
   </build>
