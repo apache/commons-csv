@@ -34,6 +34,11 @@
       <id>bayard</id>
       <email>bayard@apache.org</email>
     </developer>
+    <developer>
+      <name>Martin van den Bemt</name>
+      <id>mvdb</id>
+      <email>mvdb@apache.org</email>
+    </developer>
   </developers>
     
   <dependencies>
