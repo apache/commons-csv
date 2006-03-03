@@ -1,0 +1,17 @@
+ -----
+ Jakarta Commons CSV
+ -----
+ Henri Yandell
+ -----
+ 2 March 2006
+ -----
+ 
+Jakarta Commons CSV
+ 
+  Commons CSV was started to unify a common and simple interface for reading
+  and writing CSV files.
+  
+* History
+
+  The library was donated by Netcetera in Switzerland. 
+ 
