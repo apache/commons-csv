@@ -19,11 +19,11 @@
 <title>org.apache.commons.csv package</title>
 </head>
 <body>
-<h3>WAKE CSV Format Support</h3>
+<h3>Jakarta-Commons CSV Format Support</h3>
 
 <p>CSV (or its dialects) are widely used as interfaces to legacy systems or
    manual data-imports. Basically CSV stands for "Comma Separated Values" but
-   this simple leads to more confusion than definitions.</p>
+   this simple abbreviation leads to more confusion than definitions.</p>
    
 <p>Common to all file dialects is its basic structure: The CSV data-format
    is record oriented, whereas each record starts on a new textual line. A
@@ -36,29 +36,35 @@
 
 <p>The following list contains the csv aspects the WAKE CSV parser supports:</p>
 <dl>
- <dt>Separators</dt>
- <dd>The record separators are hardcoded and cannot be changed. The must be '\n' or '\r\n'.
-     The separator (or delimiters) for values is freely configurable (default ',').</dd>
+  <dt>Separators (for lines)</dt>
+  <dd>The record separators are hardcoded and cannot be changed. The must be '\n' or '\r\n'.</dd>
 
- <dt>Comments</dt>
- <dd>Some CSV-dialects support a simple comment syntax. A comment is a record
-     which must start with a designated character (the commentStarter). A record
-     of this kind is treated as comment and gets removed from the input (default '(char)0')</dd>
+  <dt>Delimiter (for values)</dt>
+  <dd>The delimiter for values is freely configurable (default ',').</dd>
+
+  <dt>Comments</dt>
+  <dd>Some CSV-dialects support a simple comment syntax. A comment is a record
+      which must start with a designated character (the commentStarter). A record
+      of this kind is treated as comment and gets removed from the input (default '(char)0')</dd>
  
- <dt>Simple values</dt>
- <dd>A simple value consist of all characters (except the separator) until 
-     (but not including) the next separator or a record-terminator. Optionally
-     all leading whitespaces of a simple value can be ignored (default: true).</dd>
+  <dt>Encapsulator</dt>
+  <dd>Two encapsulator characters (default '"') are used to enclose -&gt; complex values.</dd>
+      
+  <dt>Simple values</dt>
+  <dd>A simple value consist of all characters (except the separator) until 
+      (but not including) the next separator or a record-terminator. Optionally
+      all leading whitespaces of a simple value can be ignored (default: true).</dd>
      
   <dt>Complex values</dt>
-  <dd>Complex values are encapsulated within the defined encapsulator character (default '"').
+  <dd>Complex values are encapsulated within the defined encapsulator character.
       The encapsulator itself must be escaped by '\' or doubled when used inside complex values.
-      Complex values preserve all kind of formatting (including newlines -> multiline-values)</dd>
-      
+      Complex values preserve all kind of formatting (including newlines -&gt; multiline-values)</dd>
+
   <dt>Unicode escapes</dt>
   <dd>Some non-unicode CSVs use unicode escaping sequences for certain unicode characters. The standard
       unicode-escaping is '\uXXXX' whereas XXXX is the unicode-character-code in hex-format. The parser
       can optionally resolve unicode escapes (default: disabled).</dd>
+
   <dt>Empty line skipping</dt>
   <dd>Optionally empty lines in CSV files might be skiped. Not skiping empty lines will return
       an empty record on '\nEOF' combinations.</dd>
@@ -68,11 +74,11 @@
    can be set directly.</p>  
 
 <p>Example usage:</p>
-<pre><blockquote> 
+<blockquote><pre>
 String[] parsedLine = CSVParser.parseLine("a,b,c");
 for (int i = 0; i &lt; parsedLine.length; ++i) {
   System.out.println("value " + i + "=" + parsedLine[i]);
 }
-</blockquote></pre>
+</pre></blockquote>
 </body>
 </html>
