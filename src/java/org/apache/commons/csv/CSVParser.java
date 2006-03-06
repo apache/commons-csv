@@ -34,7 +34,13 @@ import java.util.Vector;
  * <p>Parsing of a csv-string having ';' as separator:</p>
  * <pre>
  *  String[][] data = 
- *         (new CSVParser(new StringReader("a;b\nc;d"),';')).getAllValues();
+ *      (new CSVParser(new StringReader("a;b\nc;d"),';')).getAllValues();
+ * </pre>
+ * 
+ * <p>The API allows chained method calls, if you like this coding style:</p>
+ * <pre>
+ *  String[][] data = (new CSVParser(new StringReader("a;b\nc;d"),';'))
+ *      .setExcelStrategy().setIgnoreEmptyLines(true).getAllValues();
  * </pre>
  * 
  * <p>
@@ -45,14 +51,18 @@ import java.util.Vector;
  * for more details</p>
  */
 public class CSVParser {
-  
+
   /** length of the initial token (content-)buffer */
   private static final int INITIAL_TOKEN_LENGTH = 50;
   
   // the token types
+  /** Token has no valid content, i.e. is in its initilized state. */
   protected static final int TT_INVALID = -1;
+  /** Token with content, at beginning or in the middle of a line. */
   protected static final int TT_TOKEN = 0;
+  /** Token (which can have content) when end of file is reached. */
   protected static final int TT_EOF = 1;
+  /** Token with content when end of a line is reached. */
   protected static final int TT_EORECORD = 2;
    
   // the csv definition
@@ -72,12 +82,13 @@ public class CSVParser {
    * It is used as contract between the lexer and the parser. 
    */
   class Token {
-    // token type see TT_xxx constants
+    /** Token type, see TT_xxx constants. */
     int type;
-    // the content buffer
+    /** The content buffer. */
     StringBuffer content;
-    // token ready flag: indicates a valid token (ready for the parser)
+    /** Token ready flag: indicates a valid token with content (ready for the parser). */
     boolean isReady;
+    /** Initializes an empty token. */
     Token() {
       content = new StringBuffer(INITIAL_TOKEN_LENGTH);
       type = TT_INVALID;
@@ -92,6 +103,7 @@ public class CSVParser {
   /**
    * Parses the given String according to the default CSV strategy.
    * 
+   * @param s CSV String to be parsed.
    * @return parsed String matrix (which is never null)
    * @throws IOException in case of error
    * @see #setCSVStrategy()
@@ -100,7 +112,13 @@ public class CSVParser {
     if (s == null) {
       throw new IllegalArgumentException("Null argument not allowed.");
     }
-    return (new CSVParser(new StringReader(s))).getAllValues();
+    String[][] result = (new CSVParser(new StringReader(s))).getAllValues();
+    if (result == null) {
+      // since CSVStrategy ignores empty lines an empty array is returned
+      // (i.e. not "result = new String[][] {{""}};")
+      result = new String[0][0];
+    }
+    return result;
   }
   
   /**
@@ -109,6 +127,7 @@ public class CSVParser {
    * Parsing empty string will be handled as valid records containing zero
    * elements, so the following property holds: parseLine("").length == 0.
    * 
+   * @param s CSV String to be parsed.
    * @return parsed String vector (which is never null)
    * @throws IOException in case of error
    * @see #setCSVStrategy()
@@ -166,8 +185,8 @@ public class CSVParser {
    * Customized csv parser.
    * 
    * The parser parses according to the given CSV dialect settings.
-   * Leading whitespaces are truncated whereas unicode escapes are
-   * not interpreted.
+   * Leading whitespaces are truncated, unicode escapes are
+   * not interpreted and empty lines are ignored.
    * 
    * @param input a Reader based on "csv-formatted" input
    * @param delimiter a Char used for value separation
@@ -201,6 +220,7 @@ public class CSVParser {
    * the stream.
    * 
    * @return matrix of records x values ('null' when end of file)
+   * @throws IOException on parse error or input read-failure
    */
   public String[][] getAllValues() throws IOException {
     Vector records = new Vector();
@@ -221,7 +241,7 @@ public class CSVParser {
    * and returns the next csv-value as string.
    * 
    * @return next value in the input stream ('null' when end of file)
-   * @throws IOException
+   * @throws IOException on parse error or input read-failure
    */
   public String nextValue() throws IOException {
     Token tkn = nextToken();
@@ -266,7 +286,11 @@ public class CSVParser {
         record.add(tkn.content.toString());
         break;
       case TT_EOF:
-        ret = null;
+        if (tkn.isReady) {
+          record.add(tkn.content.toString());
+        } else {
+          ret = null;
+        }
         break;
       case TT_INVALID:
       default:
@@ -290,9 +314,8 @@ public class CSVParser {
    *            number does not correspond to the record-number
    * 
    * @return  current line number
-   * @throws IOException
    */
-  public int getLineNumber() throws IOException {
+  public int getLineNumber() {
     return in.getLineNumber();  
   }
   
@@ -301,15 +324,17 @@ public class CSVParser {
   // ======================================================
  
  /**
-  * Returns the next token 
-  * 
-  * a token coresponds to a term, a record change
-  * or and end-of-file indicator
-  */
+   * Returns the next token.
+   * 
+   * A token corresponds to a term, a record change or an
+   * end-of-file indicator.
+   * 
+   * @return the next token found
+   * @throws IOException on stream access error
+   */
   protected Token nextToken() throws IOException {
     Token tkn = new Token();
     StringBuffer wsBuf = new StringBuffer();
-    // boolean skipEmptyLines = false;
     
     // get the last read char (required for empty line detection)
     int lastChar = in.readAgain();
@@ -342,7 +367,7 @@ public class CSVParser {
     }
 
     // did we reached eof during the last iteration already ? TT_EOF
-    if (isEndOfFile(lastChar)) {
+    if (isEndOfFile(lastChar) || (lastChar != delimiter && isEndOfFile(c))) {
       tkn.type = TT_EOF;
       return tkn;
     } 
@@ -375,8 +400,7 @@ public class CSVParser {
       } else if (isEndOfFile(c)) {
         // end of file return TT_EOF()
         tkn.content.append("");
-        tkn.type = TT_EORECORD;
-        // tkn.type = TT_EOF;
+        tkn.type = TT_EOF;
         tkn.isReady = true;
       } else {
         // next token must be a simple token
@@ -417,23 +441,15 @@ public class CSVParser {
         tkn.isReady = true;
       } else if (isEndOfFile(c)) {
         // end of file
-        // tkn.type = TT_EOF;
-        tkn.type = TT_EORECORD;
+        tkn.type = TT_EOF;
         tkn.isReady = true;
       } else if (c == delimiter) {
         // end of token
         tkn.type = TT_TOKEN;
         tkn.isReady = true;
-      } else if (c == '\\') {
-        // handle escaped delimiters (remove escaping)
-        if (in.lookAhead() == this.delimiter) {
-          tkn.content.append((char) in.read());
-        } else if (interpretUnicodeEscapes && in.lookAhead() == 'u') {
-          // interpret unicode escaped chars (like \u0070 -> p)
-          tkn.content.append((char) unicodeEscapeLexer(c));
-        } else {
-          tkn.content.append((char) c);
-        }
+      } else if (c == '\\' && interpretUnicodeEscapes && in.lookAhead() == 'u') {
+        // interpret unicode escaped chars (like \u0070 -> p)
+        tkn.content.append((char) unicodeEscapeLexer(c));
       } else if (isWhitespace(c)) {
         // gather whitespaces 
         // (as long as they are not at the beginning of a token)
@@ -484,7 +500,9 @@ public class CSVParser {
           c = in.read();
           tkn.content.append((char) c);
         } else if (c == '\\' && in.lookAhead() == '\\') {
-          // doubled escape character -> add single escape char to stream
+          // doubled escape char, it does not escape itself, only encapsulator 
+          // -> add both escape chars to stream
+          tkn.content.append((char) c);
           c = in.read();
           tkn.content.append((char) c);
         } else if (
@@ -493,16 +511,18 @@ public class CSVParser {
           && in.lookAhead() == 'u') {
           // interpret unicode escaped chars (like \u0070 -> p)
           tkn.content.append((char) unicodeEscapeLexer(c));
+        } else if (c == '\\') {
+          // use a single escape character -> add it to stream
+          tkn.content.append((char) c);
         } else {
-          // token finish mark reached: ignore ws till delimiter
+          // token finish mark (encapsulator) reached: ignore whitespace till delimiter
           while (!tkn.isReady) {
             int n = in.lookAhead();
             if (n == delimiter) {
               tkn.type = TT_TOKEN;
               tkn.isReady = true;
             } else if (isEndOfFile(n)) {
-              // tkn.type = TT_EOF;
-              tkn.type = TT_EORECORD;
+              tkn.type = TT_EOF;
               tkn.isReady = true;
             } else if (isEndOfLine(n)) {
               // ok eo token reached
@@ -538,11 +558,11 @@ public class CSVParser {
   
   
   /**
-   * Decodes Unicode escapes 
+   * Decodes Unicode escapes.
    * 
    * Interpretation of "\\uXXXX" escape sequences
-   * where XXXX is a hex-number
-   * @param c
+   * where XXXX is a hex-number.
+   * @param c current char which is discarded because it's the "\\" of "\\uXXXX"
    * @return the decoded character
    * @throws IOException on wrong unicode escape sequence or read error
    */
@@ -576,29 +596,40 @@ public class CSVParser {
    * Sets the "Default CSV" settings.
    * 
    * The default csv settings are relatively restrictive but implement
-   * something like the "least-common-basis" of CSV.
-   * 
-   * Values are separated by ',' (as the C in "CSV"). Complex values must
-   * be surrounded by '"'. Comments are not supported. Leading whitespaces
-   * are ignored, unicode escapes are not interpreted and empty lines
-   * are skiped.
+   * something like the "least-common-basis" of CSV:
+   * <ul>
+   * <li> Delimiter of values is comma ',' (as the C in "CSV") </li>
+   * <li> Complex values encapsulated by '"' </li>
+   * <li> Comments are not supported </li>
+   * <li> Leading whitespaces are ignored </li>
+   * <li> Unicode escapes are not interpreted </li>
+   * <li> empty lines are skiped </li>
+   * </ul>
+   * @return current instance of CSVParser to allow chained method calls
    */
-  public void setCSVStrategy() {
+  public CSVParser setCSVStrategy() {
     setStrategy(',', '"', (char) 0, true, false, true);
+    return this;
   }
   
   /**
-   * Sets the "Excel CSV" settings.
-   * 
-   * There are companies out there which interpret "C" as an abbreviation for
-   * "Semicolon". For these companies the following settings might be
-   * appropriate: 
-   * <p>
-   * Delimiter Semicolon ';', Complex-values surrounded by '"', leading 
-   * whitespaces are not ignored and unicode escapes are not interpreted.
+   * Sets the "Excel CSV" settings. There are companies out there which
+   * interpret "C" as an abbreviation for "Semicolon". For these companies the
+   * following settings might be appropriate:
+   * <ul>
+   * <li> Delimiter of values is semicolon ';' </li>
+   * <li> Complex values encapsulated by '"' </li>
+   * <li> Comments are not supported </li>
+   * <li> Leading whitespaces are not ignored </li>
+   * <li> Unicode escapes are not interpreted </li>
+   * <li> empty lines are not skiped </li>
+   * </ul>
+   *
+   * @return current instance of CSVParser to allow chained method calls
    */
-  public void setExcelStrategy() {
+  public CSVParser setExcelStrategy() {
     setStrategy(';', '"', (char) 0, false, false, false);
+    return this;
   }
   
   /**
@@ -612,8 +643,9 @@ public class CSVParser {
    * @param interpretUnicodeEscapes TRUE when unicode escapes should be 
    *                                interpreted
    * @param ignoreEmptyLines TRUE when the parser should skip emtpy lines
+   * @return current instance of CSVParser to allow chained method calls
    */
-  public void setStrategy(
+  public CSVParser setStrategy(
     char delimiter, 
     char encapsulator, 
     char commentStart, 
@@ -626,15 +658,18 @@ public class CSVParser {
     this.setIgnoreLeadingWhitespaces(ignoreLeadingWhitespace);
     this.setUnicodeEscapeInterpretation(interpretUnicodeEscapes);
     this.setIgnoreEmptyLines(ignoreEmptyLines);
+    return this;
   }
   
   /**
-   * Set the desired delimiter
+   * Set the desired delimiter.
    *
    * @param c a Char used for value separation
+   * @return current instance of CSVParser to allow chained method calls
    */
-  public void setDelimiter(char c) {
+  public CSVParser setDelimiter(char c) {
     this.delimiter = c;
+    return this;
   }
   
   /**
@@ -647,12 +682,14 @@ public class CSVParser {
   }
   
   /**
-   * Set the desired encapsulator
+   * Set the desired encapsulator.
    * 
    * @param c a Char used as value encapsulation marker
+   * @return current instance of CSVParser to allow chained method calls
    */
-  public void setEncapsulator(char c) {
+  public CSVParser setEncapsulator(char c) {
     this.encapsulator = c;
+    return this;
   }
   
   /**
@@ -665,16 +702,18 @@ public class CSVParser {
   }
   
   /**
-   * Set the desired comment start character
+   * Set the desired comment start character.
    * 
    * @param c a Char used for comment identification
+   * @return current instance of CSVParser to allow chained method calls
    */
-  public void setCommentStart(char c) {
+  public CSVParser setCommentStart(char c) {
     this.commentStart = c;
+    return this;
   }
   
   /**
-   * Gets the comment identifier
+   * Gets the comment identifier.
    * 
    * @return the comment identifier character
    */
@@ -683,16 +722,18 @@ public class CSVParser {
   }
   
   /**
-   * Enables unicode escape interpretation
+   * Enables unicode escape interpretation.
    * 
    * @param b TRUE when interpretation should be enabled
+   * @return current instance of CSVParser to allow chained method calls
    */
-  public void setUnicodeEscapeInterpretation(boolean b) {
+  public CSVParser setUnicodeEscapeInterpretation(boolean b) {
     this.interpretUnicodeEscapes = b;
+    return this;
   }
   
   /**
-   * Shows wether unicode interpretation is enabled
+   * Shows wether unicode interpretation is enabled.
    * 
    * @return TRUE when unicode interpretation is enabled
    */
@@ -704,16 +745,18 @@ public class CSVParser {
    * Sets the ignore-leading-whitespaces behaviour.
    * 
    * Should the lexer ignore leading whitespaces when parsing non 
-   * encapsulated tokens
+   * encapsulated tokens.
    * 
    * @param b TRUE when leading whitespaces should be ignored
+   * @return current instance of CSVParser to allow chained method calls
    */
-  public void setIgnoreLeadingWhitespaces(boolean b) {
+  public CSVParser setIgnoreLeadingWhitespaces(boolean b) {
     this.ignoreLeadingWhitespaces = b;
+    return this;
   }
   
   /**
-   * Shows wether unicode interpretation is enabled
+   * Shows whether unicode interpretation is enabled.
    * 
    * @return TRUE when unicode interpretation is enabled
    */
@@ -726,10 +769,21 @@ public class CSVParser {
    * 
    * When set to 'true' empty lines in the input will be ignored.
    * 
-   * @param b
+   * @param b TRUE when empty lines in the input should be ignored
+   * @return current instance of CSVParser to allow chained method calls
    */
-  public void setIgnoreEmptyLines(boolean b) {
+  public CSVParser setIgnoreEmptyLines(boolean b) {
     this.ignoreEmptyLines = b;  
+    return this;
+  }
+  
+  /**
+   * Shows whether empty lines in the input are ignored.
+   * 
+   * @return TRUE when empty lines in the input are ignored
+   */
+  public boolean getIgnoreEmptyLines() {
+    return this.ignoreEmptyLines;
   }
   
   // ======================================================
