@@ -78,67 +78,6 @@ public class CSVParserTest extends TestCase {
 
 
   // ======================================================
-  //   getters / setters
-  // ======================================================
-  public void testGetSetCommentStart() {
-    CSVParser parser = new CSVParser(new StringReader("hello world"));
-    parser.setCommentStart('#');
-    assertEquals(parser.getCommentStart(), '#');
-    parser.setCommentStart('!');
-    assertEquals(parser.getCommentStart(), '!');
-  }
-
-  public void testGetSetEncapsulator() {
-    CSVParser parser = new CSVParser(new StringReader("hello world"));
-    parser.setEncapsulator('"');
-    assertEquals(parser.getEncapsulator(), '"');
-    parser.setEncapsulator('\'');
-    assertEquals(parser.getEncapsulator(), '\'');
-  }
-
-  public void testGetSetDelimiter() {
-    CSVParser parser = new CSVParser(new StringReader("hello world"));
-    parser.setDelimiter(';');
-    assertEquals(parser.getDelimiter(), ';');
-    parser.setDelimiter(',');
-    assertEquals(parser.getDelimiter(), ',');
-    parser.setDelimiter('\t');
-    assertEquals(parser.getDelimiter(), '\t');
-  }
-
-  public void testSetCSVStrategy() {
-    CSVParser parser = new CSVParser(new StringReader("hello world"));
-    // default settings
-    assertEquals(parser.getDelimiter(), ',');
-    assertEquals(parser.getEncapsulator(), '"');
-    assertEquals(parser.getCommentStart(), '\0');
-    assertEquals(true,  parser.getIgnoreLeadingWhitespaces());
-    assertEquals(false, parser.getUnicodeEscapeInterpretation());
-    assertEquals(true,  parser.getIgnoreEmptyLines());
-    // explicit csv settings
-    parser.setCSVStrategy();
-    assertEquals(parser.getDelimiter(), ',');
-    assertEquals(parser.getEncapsulator(), '"');
-    assertEquals(parser.getCommentStart(), '\0');
-    assertEquals(true,  parser.getIgnoreLeadingWhitespaces());
-    assertEquals(false, parser.getUnicodeEscapeInterpretation());
-    assertEquals(true,  parser.getIgnoreEmptyLines());
-  }
-  
-  public void testSetExcelStrategy() {
-    CSVParser parser = new CSVParser(new StringReader("hello world"));
-    // explicit Excel settings
-    parser.setExcelStrategy();
-    assertEquals(parser.getDelimiter(), ';');
-    assertEquals(parser.getEncapsulator(), '"');
-    assertEquals(parser.getCommentStart(), '\0');
-    assertEquals(false,  parser.getIgnoreLeadingWhitespaces());
-    assertEquals(false, parser.getUnicodeEscapeInterpretation());
-    assertEquals(false, parser.getIgnoreEmptyLines());
-  }
-  
-  
-  // ======================================================
   //   lexer tests
   // ======================================================
   
@@ -146,7 +85,7 @@ public class CSVParserTest extends TestCase {
   public void testNextToken1() throws IOException {
     String code = "abc,def, hijk,  lmnop,   qrst,uv ,wxy   ,z , ,";
     TestCSVParser parser = new TestCSVParser(new StringReader(code));
-    parser.setCSVStrategy();
+    parser.setStrategy(CSVStrategy.DEFAULT_STRATEGY);
     System.out.println("---------\n" + code + "\n-------------");
     assertEquals(CSVParser.TT_TOKEN + ";abc;", parser.testNextToken());
     assertEquals(CSVParser.TT_TOKEN + ";def;", parser.testNextToken());
@@ -171,9 +110,9 @@ public class CSVParserTest extends TestCase {
      */
     String code = "1,2,3,\na,b x,c\n#foo\n\nd,e,\n\n";
     TestCSVParser parser = new TestCSVParser(new StringReader(code));
-    parser.setIgnoreEmptyLines(false);
-    parser.setCSVStrategy();
-    parser.setCommentStart('#');
+    parser.getStrategy().setIgnoreEmptyLines(false);
+    parser.setStrategy(CSVStrategy.DEFAULT_STRATEGY);
+    parser.getStrategy().setCommentStart('#');
     System.out.println("---------\n" + code + "\n-------------");
     assertEquals(CSVParser.TT_TOKEN + ";1;", parser.testNextToken());
     assertEquals(CSVParser.TT_TOKEN + ";2;", parser.testNextToken());
@@ -198,8 +137,8 @@ public class CSVParserTest extends TestCase {
      */
     String code = "a,\\,,b\n\\,,";
     TestCSVParser parser = new TestCSVParser(new StringReader(code));
-    parser.setCSVStrategy();
-    parser.setCommentStart('#');
+    parser.setStrategy(CSVStrategy.DEFAULT_STRATEGY);
+    parser.getStrategy().setCommentStart('#');
     System.out.println("---------\n" + code + "\n-------------");
     assertEquals(CSVParser.TT_TOKEN + ";a;", parser.testNextToken());
     // an unquoted single backslash is not an escape char
@@ -222,7 +161,7 @@ public class CSVParserTest extends TestCase {
      String code = 
       "a,\"foo\",b\na,   \" foo\",b\na,\"foo \"  ,b\na,  \" foo \"  ,b";
      TestCSVParser parser = new TestCSVParser(new StringReader(code));
-     parser.setCSVStrategy();
+     parser.setStrategy(CSVStrategy.DEFAULT_STRATEGY);
      System.out.println("---------\n" + code + "\n-------------");
      assertEquals(CSVParser.TT_TOKEN + ";a;", parser.testNextToken());
      assertEquals(CSVParser.TT_TOKEN + ";foo;", parser.testNextToken());
@@ -246,7 +185,7 @@ public class CSVParserTest extends TestCase {
       + ",\"\\,\"" 
       + ",\"\"\"\"";
     TestCSVParser parser = new TestCSVParser(new StringReader(code));
-    parser.setCSVStrategy();
+    parser.setStrategy(CSVStrategy.DEFAULT_STRATEGY);
     System.out.println("---------\n" + code + "\n-------------");
     assertEquals(CSVParser.TT_TOKEN + ";a;", parser.testNextToken());
     assertEquals(CSVParser.TT_TOKEN + ";foo\n;", parser.testNextToken());
@@ -269,9 +208,7 @@ public class CSVParserTest extends TestCase {
      */
     String code = "a;'b and \\' more\n'\n!comment;;;;\n;;";
     TestCSVParser parser = new TestCSVParser(new StringReader(code));
-    parser.setDelimiter(';');
-    parser.setEncapsulator('\'');
-    parser.setCommentStart('!');
+    parser.setStrategy( new CSVStrategy(';', '\'', '!') );
     System.out.println("---------\n" + code + "\n-------------");
     assertEquals(CSVParser.TT_TOKEN + ";a;", parser.testNextToken());
     assertEquals(
@@ -344,7 +281,7 @@ public class CSVParserTest extends TestCase {
       {"\"hello\"", "  \"world\"", "abc\ndef", ""}
     };
     CSVParser parser = new CSVParser(new StringReader(code));
-    parser.setExcelStrategy();
+    parser.setStrategy(CSVStrategy.EXCEL_STRATEGY);
     System.out.println("---------\n" + code + "\n-------------");
     String[][] tmp = parser.getAllValues();
     assertEquals(res.length, tmp.length);
@@ -364,7 +301,7 @@ public class CSVParserTest extends TestCase {
       {"world", ""}
     };
     CSVParser parser = new CSVParser(new StringReader(code));
-    parser.setExcelStrategy();
+    parser.setStrategy(CSVStrategy.EXCEL_STRATEGY);
     System.out.println("---------\n" + code + "\n-------------");
     String[][] tmp = parser.getAllValues();
     assertEquals(res.length, tmp.length);
@@ -397,7 +334,7 @@ public class CSVParserTest extends TestCase {
     for (int codeIndex = 0; codeIndex < codes.length; codeIndex++) {
       code = codes[codeIndex];
       CSVParser parser = new CSVParser(new StringReader(code));
-      parser.setExcelStrategy();
+      parser.setStrategy(CSVStrategy.EXCEL_STRATEGY);
       System.out.println("---------\n" + code + "\n-------------");
       String[][] tmp = parser.getAllValues();
       assertEquals(res.length, tmp.length);
@@ -430,7 +367,7 @@ public class CSVParserTest extends TestCase {
     for (int codeIndex = 0; codeIndex < codes.length; codeIndex++) {
       code = codes[codeIndex];
       CSVParser parser = new CSVParser(new StringReader(code));
-      parser.setCSVStrategy();
+      parser.setStrategy(CSVStrategy.DEFAULT_STRATEGY);
       System.out.println("---------\n" + code + "\n-------------");
       String[][] tmp = parser.getAllValues();
       assertEquals(res.length, tmp.length);
@@ -460,7 +397,7 @@ public class CSVParserTest extends TestCase {
     for (int codeIndex = 0; codeIndex < codes.length; codeIndex++) {
       code = codes[codeIndex];
       CSVParser parser = new CSVParser(new StringReader(code));
-      parser.setExcelStrategy();
+      parser.setStrategy(CSVStrategy.EXCEL_STRATEGY);
       System.out.println("---------\n" + code + "\n-------------");
       String[][] tmp = parser.getAllValues();
       assertEquals(res.length, tmp.length);
@@ -488,7 +425,7 @@ public class CSVParserTest extends TestCase {
     for (int codeIndex = 0; codeIndex < codes.length; codeIndex++) {
       code = codes[codeIndex];
       CSVParser parser = new CSVParser(new StringReader(code));
-      parser.setCSVStrategy();
+      parser.setStrategy(CSVStrategy.DEFAULT_STRATEGY);
       System.out.println("---------\n" + code + "\n-------------");
       String[][] tmp = parser.getAllValues();
       assertEquals(res.length, tmp.length);
@@ -663,7 +600,7 @@ public class CSVParserTest extends TestCase {
       String code = "abc,\\u0070\\u0075\\u0062\\u006C\\u0069\\u0063";
       CSVParser parser = new CSVParser(new StringReader(code));
       System.out.println("---------\n" + code + "\n-------------");
-      parser.setUnicodeEscapeInterpretation(true);
+      parser.getStrategy().setUnicodeEscapeInterpretation(true);
       String[] data = parser.getLine();
       assertEquals(2, data.length);
       assertEquals("abc", data[0]);

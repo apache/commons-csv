@@ -1,0 +1,117 @@
+/*
+ * Copyright 2005 The Apache Software Foundation.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.csv;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.Arrays;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+/**
+ * CSVStrategyTest
+ *
+ * The test are organized in three different sections:
+ * The 'setter/getter' section, the lexer section and finally the strategy 
+ * section. In case a test fails, you should follow a top-down approach for 
+ * fixing a potential bug (its likely that the strategy itself fails if the lexer
+ * has problems...).
+ */
+public class CSVStrategyTest extends TestCase {
+  
+  /**
+   * Constructor for JUnit.
+   * @param name Name to be used in JUnit Test Environment
+   */
+  public CSVStrategyTest(String name) {
+    super(name);
+  }
+
+  /**
+   * Returns a Test suite for JUnit.
+   * @return Test suite for JUnit
+   */
+  public static Test suite() {
+    return new TestSuite(CSVStrategyTest.class);
+  }
+
+
+  // ======================================================
+  //   getters / setters
+  // ======================================================
+  public void testGetSetCommentStart() {
+    CSVParser parser = new CSVParser(new StringReader("hello world"));
+    CSVStrategy strategy = parser.getStrategy();
+    strategy.setCommentStart('#');
+    assertEquals(strategy.getCommentStart(), '#');
+    strategy.setCommentStart('!');
+    assertEquals(strategy.getCommentStart(), '!');
+  }
+
+  public void testGetSetEncapsulator() {
+    CSVParser parser = new CSVParser(new StringReader("hello world"));
+    CSVStrategy strategy = parser.getStrategy();
+    strategy.setEncapsulator('"');
+    assertEquals(strategy.getEncapsulator(), '"');
+    strategy.setEncapsulator('\'');
+    assertEquals(strategy.getEncapsulator(), '\'');
+  }
+
+  public void testGetSetDelimiter() {
+    CSVParser parser = new CSVParser(new StringReader("hello world"));
+    CSVStrategy strategy = parser.getStrategy();
+    strategy.setDelimiter(';');
+    assertEquals(strategy.getDelimiter(), ';');
+    strategy.setDelimiter(',');
+    assertEquals(strategy.getDelimiter(), ',');
+    strategy.setDelimiter('\t');
+    assertEquals(strategy.getDelimiter(), '\t');
+  }
+
+  public void testSetCSVStrategy() {
+    CSVParser parser = new CSVParser(new StringReader("hello world"));
+    CSVStrategy strategy = parser.getStrategy();
+    // default settings
+    assertEquals(strategy.getDelimiter(), ',');
+    assertEquals(strategy.getEncapsulator(), '"');
+    assertEquals(strategy.getCommentStart(), '\0');
+    assertEquals(true,  strategy.getIgnoreLeadingWhitespaces());
+    assertEquals(false, strategy.getUnicodeEscapeInterpretation());
+    assertEquals(true,  strategy.getIgnoreEmptyLines());
+    // explicit csv settings
+    parser.setStrategy(CSVStrategy.DEFAULT_STRATEGY);
+    assertEquals(strategy.getDelimiter(), ',');
+    assertEquals(strategy.getEncapsulator(), '"');
+    assertEquals(strategy.getCommentStart(), '\0');
+    assertEquals(true,  strategy.getIgnoreLeadingWhitespaces());
+    assertEquals(false, strategy.getUnicodeEscapeInterpretation());
+    assertEquals(true,  strategy.getIgnoreEmptyLines());
+  }
+  
+  public void testSetExcelStrategy() {
+    CSVStrategy strategy = CSVStrategy.EXCEL_STRATEGY;
+    assertEquals(strategy.getDelimiter(), ';');
+    assertEquals(strategy.getEncapsulator(), '"');
+    assertEquals(strategy.getCommentStart(), '\0');
+    assertEquals(false,  strategy.getIgnoreLeadingWhitespaces());
+    assertEquals(false, strategy.getUnicodeEscapeInterpretation());
+    assertEquals(false, strategy.getIgnoreEmptyLines());
+  }
+  
+} 
