@@ -24,10 +24,16 @@
     Commons CSV is a component that parses comma separated value files. 
   </description>
   <currentVersion>0.1-dev</currentVersion>
-  <issueTrackingUrl>http://issues.apache.org/bugzilla/</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.apache.org/jira/browse/SANDBOX</issueTrackingUrl>
   <siteAddress>cvs.apache.org</siteAddress>
   <logo></logo>
+
+  <repository>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/sandbox/csv/trunk</connection>
+    <url>http://svn.apache.org/viewcvs/jakarta/commons/sandbox/csv/trunk</url>
+  </repository>
   
+
   <developers>
     <developer>
       <name>Henri Yandell</name>
