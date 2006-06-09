@@ -444,7 +444,8 @@ public class CSVParser {
       } else {
         // prepend whitespaces (if we have)
         if (wsBuf.length() > 0) {
-          tkn.content.append(wsBuf);
+          // for J2SDK 1.3 compatibility we use toString()
+          tkn.content.append(wsBuf.toString());
           wsBuf.delete(0, wsBuf.length());
         }
         tkn.content.append((char) c);
