@@ -29,8 +29,11 @@ public class CSVStrategy {
     private boolean interpretUnicodeEscapes;
     private boolean ignoreEmptyLines;
 
-    public static CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', (char) 0, true,  false, true);
-    public static CSVStrategy EXCEL_STRATEGY   = new CSVStrategy(';', '"', (char) 0, false, false, false);
+    public static char COMMENTS_DISABLED       = (char) 0;
+
+    public static CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, true,  false, true);
+    public static CSVStrategy EXCEL_STRATEGY   = new CSVStrategy(';', '"', COMMENTS_DISABLED, false, false, false);
+    public static CSVStrategy TDF_STRATEGY     = new CSVStrategy('	', '"', COMMENTS_DISABLED, true,  false, true);
 
 
     public CSVStrategy(char delimiter, char encapsulator, char commentStart) {
@@ -74,6 +77,7 @@ public class CSVStrategy {
 
     public void setCommentStart(char commentStart) { this.commentStart = commentStart; }
     public char getCommentStart() { return this.commentStart; }
+    public boolean isCommentingDisabled() { return this.commentStart == COMMENTS_DISABLED; }
 
     public void setIgnoreLeadingWhitespaces(boolean ignoreLeadingWhitespaces) { this.ignoreLeadingWhitespaces = ignoreLeadingWhitespaces; }
     public boolean getIgnoreLeadingWhitespaces() { return this.ignoreLeadingWhitespaces; }

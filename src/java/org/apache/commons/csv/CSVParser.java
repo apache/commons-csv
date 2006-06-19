@@ -91,53 +91,6 @@ public class CSVParser {
   }
   
   // ======================================================
-  //  static parsers
-  // ======================================================
-  
-  /**
-   * Parses the given String according to the default CSV strategy.
-   * 
-   * @param s CSV String to be parsed.
-   * @return parsed String matrix (which is never null)
-   * @throws IOException in case of error
-   * @see #setStrategy()
-   */
-  public static String[][] parse(String s) throws IOException {
-    if (s == null) {
-      throw new IllegalArgumentException("Null argument not allowed.");
-    }
-    String[][] result = (new CSVParser(new StringReader(s))).getAllValues();
-    if (result == null) {
-      // since CSVStrategy ignores empty lines an empty array is returned
-      // (i.e. not "result = new String[][] {{""}};")
-      result = new String[0][0];
-    }
-    return result;
-  }
-  
-  /**
-   * Parses the first line only according to the default CSV strategy.
-   * 
-   * Parsing empty string will be handled as valid records containing zero
-   * elements, so the following property holds: parseLine("").length == 0.
-   * 
-   * @param s CSV String to be parsed.
-   * @return parsed String vector (which is never null)
-   * @throws IOException in case of error
-   * @see #setStrategy()
-   */
-  public static String[] parseLine(String s) throws IOException {
-    if (s == null) {
-      throw new IllegalArgumentException("Null argument not allowed.");
-    }
-    // uh,jh: make sure that parseLine("").length == 0
-    if (s.length() == 0) {
-      return new String[0];
-    }
-    return (new CSVParser(new StringReader(s))).getLine();
-  }
-  
-  // ======================================================
   //  the constructor
   // ======================================================
   
@@ -366,7 +319,7 @@ public class CSVParser {
         eol = isEndOfLine(c);
       }
       // ok, start of token reached: comment, encapsulated, or token
-      if (c == strategy.getCommentStart()) {
+      if (!strategy.isCommentingDisabled() && c == strategy.getCommentStart()) {
         // ignore everything till end of line and continue (incr linecount)
         in.readLine();
         tkn = nextToken();
@@ -602,7 +555,7 @@ public class CSVParser {
   // ======================================================
   
   /**
-   * @return true if the given char is a whitespache character
+   * @return true if the given char is a whitespace character
    */
   private boolean isWhitespace(int c) {
     return Character.isWhitespace((char) c);

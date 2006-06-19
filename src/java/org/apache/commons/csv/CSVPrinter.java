@@ -31,11 +31,7 @@ public class CSVPrinter {
   /** True if we just began a new line. */
   protected boolean newLine = true;
 
-  /** Character used to start comments. (Default is '#') */
-  protected char commentStart = '#';
-  
-  /** Character used to separate entities. (Default is ',') */
-  protected char separatorChar = ',';
+  private CSVStrategy strategy = CSVStrategy.DEFAULT_STRATEGY;
 
   /**
    * Create a printer that will print values to the given
@@ -66,67 +62,33 @@ public class CSVPrinter {
   }
 
 
+  // ======================================================
+  //  strategies
+  // ======================================================
+  
   /**
-   * Create a printer that will print values to the given
-   * stream. Character to byte conversion is done using
-   * the default character encoding.
+   * Sets the specified CSV Strategy
    *
-   * @param out stream to which to print.
-   * @param commentStart Character used to start comments.
+   * @return current instance of CSVParser to allow chained method calls
    */
-  public CSVPrinter(OutputStream out, char commentStart) {
-    this(out);
-    this.commentStart = commentStart;
-  }
-
-
-  /**
-   * Create a printer that will print values to the given
-   * stream.
-   *
-   * @param out stream to which to print.
-   * @param commentStart Character used to start comments.
-   */
-  public CSVPrinter(Writer out, char commentStart) {
-    this(out);
-    this.commentStart = commentStart;
-  }
-
-  /**
-   * Gets the comment start character.
-   * 
-   * @return the commentStart character
-   */
-  public char getCommentStart() {
-    return commentStart;
+  public CSVPrinter setStrategy(CSVStrategy strategy) {
+    this.strategy = strategy;
+    return this;
   }
   
   /**
-   * Sets the comment start character.
+   * Obtain the specified CSV Strategy
    * 
-   * @param commentStart commentStart character to set.
+   * @return strategy currently being used
    */
-  public void setCommentStart(char commentStart) {
-    this.commentStart = commentStart;
+  public CSVStrategy getStrategy() {
+    return this.strategy;
   }
   
-  /**
-   * Gets the separator character.
-   * 
-   * @return Returns the separatorChar.
-   */
-  public char getSeparatorChar() {
-    return separatorChar;
-  }
-  /**
-   * Sets the separator character.
-   * 
-   * @param separatorChar The separatorChar to set.
-   */
-  public void setSeparatorChar(char separatorChar) {
-    this.separatorChar = separatorChar;
-  }
-  
+  // ======================================================
+  //  printing implementation
+  // ======================================================
+
   /**
    * Print the string as the last value on the line. The value
    * will be quoted if needed.
@@ -197,10 +159,13 @@ public class CSVPrinter {
    * @param comment the comment to output
    */
   public void printlnComment(String comment) {
+    if(this.strategy.isCommentingDisabled()) {
+        return;
+    }
     if (!newLine) {
       out.println();
     }
-    out.print(commentStart);
+    out.print(this.strategy.getCommentStart());
     out.print(' ');
     for (int i = 0; i < comment.length(); i++) {
       char c = comment.charAt(i);
@@ -212,7 +177,7 @@ public class CSVPrinter {
           // break intentionally excluded.
         case '\n' :
           out.println();
-          out.print(commentStart);
+          out.print(this.strategy.getCommentStart());
           out.print(' ');
           break;
         default :
@@ -248,7 +213,7 @@ public class CSVPrinter {
       }
       for (int i = 0; i < value.length(); i++) {
         c = value.charAt(i);
-        if (c == '"' || c == separatorChar || c == '\n' || c == '\r') {
+        if (c == '"' || c == this.strategy.getDelimiter() || c == '\n' || c == '\r') {
           quote = true;
         }
       }
@@ -265,7 +230,7 @@ public class CSVPrinter {
     if (newLine) {
       newLine = false;
     } else {
-      out.print(separatorChar);
+      out.print(this.strategy.getDelimiter());
     }
     if (quote) {
       out.print(escapeAndQuote(value));
@@ -273,40 +238,6 @@ public class CSVPrinter {
       out.print(value);
     }
     out.flush();
-  }
-
-
-  /**
-   * Converts an array of string values into a single CSV line. All
-   * <code>null</code> values are converted to the string <code>"null"</code>,
-   * all strings equal to <code>"null"</code> will additionally get quotes
-   * around.
-   *
-   * @param values the value array
-   * @return the CSV string, will be an empty string if the length of the
-   * value array is 0
-   */
-  public static String printLine(String[] values) {
-
-    // set up a CSVPrinter
-    StringWriter csvWriter = new StringWriter();
-    CSVPrinter csvPrinter = new CSVPrinter(csvWriter);
-
-    // check for null values an "null" as strings and convert them
-    // into the strings "null" and "\"null\""
-    for (int i = 0; i < values.length; i++) {
-      if (values[i] == null) {
-        values[i] = "null";
-      } else if (values[i].equals("null")) {
-        values[i] = "\"null\"";
-      }
-    }
-
-    // convert to CSV
-    csvPrinter.println(values);
-
-    // as the resulting string has \r\n at the end, we will trim that away
-    return csvWriter.toString().trim();
   }
 
 
