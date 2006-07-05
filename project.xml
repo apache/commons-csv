@@ -26,7 +26,11 @@
   <currentVersion>0.1-dev</currentVersion>
   <issueTrackingUrl>http://issues.apache.org/jira/browse/SANDBOX</issueTrackingUrl>
   <siteAddress>cvs.apache.org</siteAddress>
-  <logo></logo>
+    <organization>
+        <name>The Apache Software Foundation</name>
+        <url>http://jakarta.apache.org</url>
+        <logo>http://jakarta.apache.org/images/original-jakarta-logo.gif</logo>
+    </organization>
 
   <repository>
     <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/sandbox/csv/trunk</connection>
