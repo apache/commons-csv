@@ -22,10 +22,24 @@ limitations under the License.
 <body>
 <!-- ================================================== -->
 <section name="Commons CSV">
-
-  <p>Commons CSV was started to unify a common and simple interface for reading and writing CSV files under an ASL license. It has been bootstrapped by a code donation from Netcetera in Switzerland. </p>
-
+  <p>Commons CSV was started to unify a common and simple interface for reading and writing CSV files under an ASL license. It has been bootstrapped by a code donation from Netcetera in Switzerland. There are three pre-existing BSD compatible CSV parsers which this component will hopefully make redundant (authors willing): </p>
+  <ul>
+    <li><a href="http://kasparov.skife.org/csv/">Skife CSV</a></li>
+    <li><a href="http://opencsv.sourceforge.net/">Open CSV</a></li>
+    <li><a href="http://www.osjava.org/genjava/multiproject/gj-csv/">Genjava CSV</a></li>
+  </ul>
+  <p>In addition to the code from Netcetera (org.apache.commons.csv), Martin van den Bemt has added an additional writer API (org.apache.commons.csv.writer). </p>
 </section>
+
+<section name="Getting the code?">
+  <p>There are currently no official downloads, and will not be until CSV moves out of the Sandbox, but a nightly build is available from <a href="http://cvs.apache.org/builds/jakarta-commons/nightly/commons-csv/">http://cvs.apache.org/builds/jakarta-commons/nightly/commons-csv/</a>. </p>
+  <p>The latest code may be checked out from the following url - <a href="http://svn.apache.org/repos/asf/jakarta/commons/sandbox/csv/trunk/">http://svn.apache.org/repos/asf/jakarta/commons/sandbox/csv/trunk/</a>. </p>
+</section>
+
+<section name="Bugs?">
+  <p>Please report any bugs or issues in the Commons Sandbox Jira project at <a href="http://issues.apache.org/jira/browse/SANDBOX">http://issues.apache.org/jira/browse/SANDBOX</a>. Please ask any questions or suggest any ideas for improvement on the commons-dev and commons-user <a href="mail-lists.html">mailing lists</a>. </p>
+</section>
+
 <!-- ================================================== -->
 </body>
 </document>
