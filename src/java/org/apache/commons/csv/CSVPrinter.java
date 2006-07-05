@@ -17,7 +17,6 @@ package org.apache.commons.csv;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.Writer;
 
 /**
