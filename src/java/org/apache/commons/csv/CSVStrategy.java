@@ -51,7 +51,6 @@ public class CSVStrategy {
      * @param interpretUnicodeEscapes TRUE when unicode escapes should be 
      *                                interpreted
      * @param ignoreEmptyLines TRUE when the parser should skip emtpy lines
-     * @return current instance of CSVParser to allow chained method calls
      */
     public CSVStrategy(
         char delimiter, 
