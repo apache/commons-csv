@@ -16,15 +16,18 @@
 -->
 <project>
   <name>Commons CSV</name>
-  <id>commons-csv</id>
+  <groupId>org.apache.commons</groupId>
+  <artifactId>commons-csv</artifactId>
   <logo>/images/csv-logo-white.png</logo>
   <inceptionYear>2005</inceptionYear>
   <shortDescription>Commons CSV</shortDescription>
   <description>
     Commons CSV is a component that parses comma separated value files. 
   </description>
-  <currentVersion>0.1-dev</currentVersion>
-  <issueTrackingUrl>http://issues.apache.org/jira/browse/SANDBOX</issueTrackingUrl>
+  <currentVersion>0.1-SNAPSHOT</currentVersion>
+  <url>http://jakarta.apache.org/commons/${pom.artifactId.substring(8)}/</url>
+  <package>org.apache.commons.${pom.artifactId.substring(8)}</package>
+  <issueTrackingUrl>http://issues.apache.org/jira/</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
     <organization>
         <name>The Apache Software Foundation</name>
@@ -42,13 +45,14 @@
             <name>Commons Dev List</name>
             <subscribe>commons-dev-subscribe@jakarta.apache.org</subscribe>
             <unsubscribe>commons-dev-unsubscribe@jakarta.apache.org</unsubscribe>
-            <archive>http://mail-archives.apache.org/eyebrowse/SummarizeList?listName=commons-dev@jakarta.apache.org</archive>
+            <archive>http://mail-archives.apache.org/mod_mbox/jakarta-commons-dev/</archive>
         </mailingList>
+
         <mailingList>
             <name>Commons User List</name>
             <subscribe>commons-user-subscribe@jakarta.apache.org</subscribe>
             <unsubscribe>commons-user-unsubscribe@jakarta.apache.org</unsubscribe>
-            <archive>http://mail-archives.apache.org/eyebrowse/SummarizeList?listName=commons-user@jakarta.apache.org</archive>
+            <archive>http://mail-archives.apache.org/mod_mbox/jakarta-commons-user/</archive>
         </mailingList>
     </mailingLists>
 
@@ -69,6 +73,27 @@
     <dependency>
       <id>junit</id>
       <version>3.8.1</version>
+      <url>http://www.junit.org/</url>
+      <properties>
+          <scope>test</scope>
+          <comment>
+              &lt;strong&gt;Test&lt;/strong&gt; - required
+              only to run the unit tests.
+          </comment>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-xdoc-plugin</artifactId>
+      <version>1.9.2</version>
+      <url>http://maven.apache.org/reference/plugins/xdoc/</url>
+      <type>plugin</type>
+      <properties>
+          <comment>
+              &lt;strong&gt;Site&lt;/strong&gt; - required
+              only to generate the Site/Documentation.
+          </comment>
+      </properties>
     </dependency>
   </dependencies>
 
@@ -77,9 +102,18 @@
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
     <unitTest>
       <includes>
-        <include>**/*Test*</include>
+        <include>**/*Test.java</include>
       </includes>
     </unitTest>
+    <resources>
+      <resource>
+        <directory>${basedir}</directory>
+        <targetPath>META-INF</targetPath>
+        <includes>
+          <include>NOTICE.txt</include>
+        </includes>
+      </resource>
+    </resources>
   </build>
 
 </project>
