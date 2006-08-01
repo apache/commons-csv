@@ -526,4 +526,18 @@ public class CSVParserTest extends TestCase {
         }
       }
     }
+
+    // From SANDBOX-153
+     public void testDelimiterIsWhitespace() throws IOException {
+         String code = "one\ttwo\t\tfour \t five\t six";
+         TestCSVParser parser = new TestCSVParser(new StringReader(code));
+         parser.setStrategy(CSVStrategy.TDF_STRATEGY);
+         System.out.println("---------\n" + code + "\n-------------");
+         assertEquals(CSVParser.TT_TOKEN + ";one;", parser.testNextToken());
+         assertEquals(CSVParser.TT_TOKEN + ";two;", parser.testNextToken());
+         assertEquals(CSVParser.TT_TOKEN + ";;", parser.testNextToken());
+         assertEquals(CSVParser.TT_TOKEN + ";four;", parser.testNextToken());
+         assertEquals(CSVParser.TT_TOKEN + ";five;", parser.testNextToken());
+         assertEquals(CSVParser.TT_EOF + ";six;", parser.testNextToken());
+     }
 }

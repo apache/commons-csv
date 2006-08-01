@@ -557,7 +557,7 @@ public class CSVParser {
    * @return true if the given char is a whitespace character
    */
   private boolean isWhitespace(int c) {
-    return Character.isWhitespace((char) c);
+    return Character.isWhitespace((char) c) && (c != strategy.getDelimiter());
   }
   
   /**
