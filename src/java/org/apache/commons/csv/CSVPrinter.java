@@ -214,6 +214,8 @@ public class CSVPrinter {
         c = value.charAt(i);
         if (c == '"' || c == this.strategy.getDelimiter() || c == '\n' || c == '\r') {
           quote = true;
+          c = value.charAt( value.length() - 1 );
+          break;
         }
       }
       if (c == ' ' || c == '\f' || c == '\t') {
