@@ -43,7 +43,7 @@
     <site>
       <id>website</id>
       <name>Apache Website</name>
-      <url>scp://minotaur.apache.org/www/jakarta.apache.org/commons/sandbox/csv/</url>
+      <url>scp://people.apache.org/www/jakarta.apache.org/commons/sandbox/csv/</url>
     </site>
   </distributionManagement>
 
