@@ -24,6 +24,9 @@ import java.io.IOException;
  */
 public class CSVUtils {
 
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+    private static final String[][] EMPTY_DOUBLE_STRING_ARRAY = new String[0][0];
+
     /**
      * <p><code>CSVUtils</code> instances should NOT be constructed in
      * standard programming. 
@@ -86,7 +89,7 @@ public class CSVUtils {
     if (result == null) {
       // since CSVStrategy ignores empty lines an empty array is returned
       // (i.e. not "result = new String[][] {{""}};")
-      result = new String[0][0];
+      result = EMPTY_DOUBLE_STRING_ARRAY;
     }
     return result;
   }
@@ -108,7 +111,7 @@ public class CSVUtils {
     }
     // uh,jh: make sure that parseLine("").length == 0
     if (s.length() == 0) {
-      return new String[0];
+      return EMPTY_STRING_ARRAY;
     }
     return (new CSVParser(new StringReader(s))).getLine();
   }
