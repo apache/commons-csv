@@ -37,7 +37,7 @@
 
   <repository>
     <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/sandbox/csv/trunk</connection>
-    <url>http://svn.apache.org/viewcvs/jakarta/commons/sandbox/csv/trunk</url>
+    <url>http://svn.apache.org/viewvc/jakarta/commons/sandbox/csv/trunk</url>
   </repository>
   
     <mailingLists>
