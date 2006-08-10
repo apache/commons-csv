@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 /**
@@ -63,11 +63,22 @@ public class CSVParser {
   protected static final int TT_EOF = 1;
   /** Token with content when end of a line is reached. */
   protected static final int TT_EORECORD = 2;
+
+  /** Immutable empty String array. */
+  private static final String[] EMPTY_STRING_ARRAY = new String[0];
    
   // the input stream
   private ExtendedBufferedReader in;
 
   private CSVStrategy strategy;
+  
+  // the following objects are shared to reduce garbage 
+  /** A record buffer for getLine(). Grows as necessary and is reused. */
+  private ArrayList record = new ArrayList();
+  private Token reusableToken = new Token();
+  private CharBuffer wsBuf = new CharBuffer();
+  private CharBuffer code = new CharBuffer(4);
+
   
   /**
    * Token is an internal token representation.
@@ -76,16 +87,17 @@ public class CSVParser {
    */
   class Token {
     /** Token type, see TT_xxx constants. */
-    int type;
+    int type = TT_INVALID;
     /** The content buffer. */
-    StringBuffer content;
+    CharBuffer content = new CharBuffer(INITIAL_TOKEN_LENGTH);
     /** Token ready flag: indicates a valid token with content (ready for the parser). */
     boolean isReady;
-    /** Initializes an empty token. */
-    Token() {
-      content = new StringBuffer(INITIAL_TOKEN_LENGTH);
-      type = TT_INVALID;
-      isReady = false;
+    
+    Token reset() {
+        content.clear();
+        type = TT_INVALID;
+        isReady = false;
+        return this;
     }
   }
   
@@ -160,7 +172,7 @@ public class CSVParser {
    * @throws IOException on parse error or input read-failure
    */
   public String[][] getAllValues() throws IOException {
-    Vector records = new Vector();
+    ArrayList records = new ArrayList();
     String[] values;
     String[][] ret = null;
     while ((values = getLine()) != null)  {
@@ -211,35 +223,35 @@ public class CSVParser {
    * @throws IOException on parse error or input read-failure
    */
   public String[] getLine() throws IOException {
-    Vector record = new Vector();
-    String[] ret = new String[0];
-    Token tkn;
-    while ((tkn = nextToken()).type == TT_TOKEN) {
-      record.add(tkn.content.toString());  
-    }
-    // did we reached eorecord or eof ?
-    switch (tkn.type) {
-      case TT_EORECORD:
-        record.add(tkn.content.toString());
-        break;
-      case TT_EOF:
-        if (tkn.isReady) {
-          record.add(tkn.content.toString());
-        } else {
-          ret = null;
+    String[] ret = EMPTY_STRING_ARRAY;
+    record.clear();
+    while (true) {
+        reusableToken.reset();
+        nextToken(reusableToken);
+        switch (reusableToken.type) {
+            case TT_TOKEN:
+                record.add(reusableToken.content.toString());
+                break;
+            case TT_EORECORD:
+                record.add(reusableToken.content.toString());
+                break;
+            case TT_EOF:
+                if (reusableToken.isReady) {
+                    record.add(reusableToken.content.toString());
+                } else {
+                    ret = null;
+                }
+                break;
+            case TT_INVALID:
+            default:
+                // error: throw IOException
+                throw new IOException("(line " + getLineNumber() + ") invalid parse sequence");
+            // unreachable: break;
         }
-        break;
-      case TT_INVALID:
-      default:
-        // error: throw IOException
-        throw new IOException(
-          "(line " + getLineNumber() 
-          + ") invalid parse sequence");
-        // unreachable: break;
+        if (reusableToken.type != TT_TOKEN) break;
     }
-    if (record.size() > 0) {
-      ret = new String[record.size()];
-      record.toArray(ret);
+    if (!record.isEmpty()) {
+      ret = (String[]) record.toArray(new String[record.size()]);
     }
     return ret;
   }
@@ -260,18 +272,26 @@ public class CSVParser {
   //  the lexer(s)
   // ======================================================
  
+  /**
+   * Convenience method for <code>nextToken(null)</code>.
+   */
+  protected Token nextToken() throws IOException {
+      return nextToken(new Token());
+  }
+  
  /**
    * Returns the next token.
    * 
    * A token corresponds to a term, a record change or an
    * end-of-file indicator.
    * 
+   * @param tkn an existing Token object to reuse. The caller is responsible to initialize the
+   * Token.
    * @return the next token found
    * @throws IOException on stream access error
    */
-  protected Token nextToken() throws IOException {
-    Token tkn = new Token();
-    StringBuffer wsBuf = new StringBuffer();
+  protected Token nextToken(Token tkn) throws IOException {
+    wsBuf.clear(); // resuse
     
     // get the last read char (required for empty line detection)
     int lastChar = in.readAgain();
@@ -321,14 +341,14 @@ public class CSVParser {
       if (!strategy.isCommentingDisabled() && c == strategy.getCommentStart()) {
         // ignore everything till end of line and continue (incr linecount)
         in.readLine();
-        tkn = nextToken();
+        tkn = nextToken(tkn.reset());
       } else if (c == strategy.getDelimiter()) {
         // empty token return TT_TOKEN("")
         tkn.type = TT_TOKEN;
         tkn.isReady = true;
       } else if (eol) {
         // empty token return TT_EORECORD("")
-        tkn.content.append("");
+        //noop: tkn.content.append("");
         tkn.type = TT_EORECORD;
         tkn.isReady = true;
       } else if (c == strategy.getEncapsulator()) {
@@ -336,14 +356,14 @@ public class CSVParser {
         encapsulatedTokenLexer(tkn, c);
       } else if (isEndOfFile(c)) {
         // end of file return TT_EOF()
-        tkn.content.append("");
+        //noop: tkn.content.append("");
         tkn.type = TT_EOF;
         tkn.isReady = true;
       } else {
         // next token must be a simple token
         // add removed blanks when not ignoring whitespace chars...
         if (!strategy.getIgnoreLeadingWhitespaces()) {
-          tkn.content.append(wsBuf.toString());
+          tkn.content.append(wsBuf);
         }
         simpleTokenLexer(tkn, c);
       }
@@ -370,7 +390,7 @@ public class CSVParser {
    * @throws IOException on stream access error
    */
   private Token simpleTokenLexer(Token tkn, int c) throws IOException {
-    StringBuffer wsBuf = new StringBuffer();
+    wsBuf.clear();
     while (!tkn.isReady) {
       if (isEndOfLine(c)) {
         // end of record
@@ -396,9 +416,8 @@ public class CSVParser {
       } else {
         // prepend whitespaces (if we have)
         if (wsBuf.length() > 0) {
-          // for J2SDK 1.3 compatibility we use toString()
-          tkn.content.append(wsBuf.toString());
-          wsBuf.delete(0, wsBuf.length());
+          tkn.content.append(wsBuf);
+          wsBuf.clear();
         }
         tkn.content.append((char) c);
       }
@@ -508,7 +527,7 @@ public class CSVParser {
     int ret = 0;
     // ignore 'u' (assume c==\ now) and read 4 hex digits
     c = in.read();
-    StringBuffer code = new StringBuffer(4);
+    code.clear();
     try {
       for (int i = 0; i < 4; i++) {
         c  = in.read();

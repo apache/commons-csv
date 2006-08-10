@@ -47,6 +47,8 @@ public class ExtendedBufferedReader extends BufferedReader  {
   private int lastChar = UNDEFINED;
   /** the line counter */
   private int lineCounter = 0;
+  private CharBuffer line = new CharBuffer();
+  
   /**
    * Created extended buffered reader using default buffer-size
    *
@@ -154,16 +156,16 @@ public class ExtendedBufferedReader extends BufferedReader  {
    if (lookaheadChar == UNDEFINED) {
      lookaheadChar = super.read();
    }
-   StringBuffer ret = new StringBuffer("");
+   line.clear(); // reuse
    while (lookaheadChar != c && lookaheadChar != END_OF_STREAM) {
-     ret.append((char) lookaheadChar);
+     line.append((char) lookaheadChar);
      if (lookaheadChar == '\n') {
        lineCounter++;
      } 
      lastChar = lookaheadChar;
      lookaheadChar = super.read();
    }
-   return ret.toString();    
+   return line.toString();    
  }
  
  /**
@@ -177,7 +179,7 @@ public class ExtendedBufferedReader extends BufferedReader  {
       lookaheadChar = super.read(); 
     }
     
-    StringBuffer ret = new StringBuffer("");
+    line.clear(); //reuse
     
     // return null if end of stream has been reached
     if (lookaheadChar == END_OF_STREAM) {
@@ -194,19 +196,19 @@ public class ExtendedBufferedReader extends BufferedReader  {
         lookaheadChar = super.read();
       }
       lineCounter++;
-      return ret.toString();
+      return line.toString();
     }
     
     // create the rest-of-line return and update the lookahead
-    ret.append(String.valueOf(laChar));
-    String restOfLine = super.readLine();
+    line.append(laChar);
+    String restOfLine = super.readLine(); // TODO involves copying
     lastChar = lookaheadChar;
     lookaheadChar = super.read();
     if (restOfLine != null) {
-      ret.append(restOfLine);
+      line.append(restOfLine);
     }
     lineCounter++;
-    return ret.toString();
+    return line.toString();
   }
   
   /**
