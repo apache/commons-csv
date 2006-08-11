@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="Commons CSV">
   <body>
-    <links>
-      <item name="Apache"      href="http://www.apache.org"/>
-      <item name="Jakarta"     href="http://jakarta.apache.org"/>
-      <item name="Commons"     href="http://jakarta.apache.org/commons/"/>
-    </links>
 
     <menu name="CSV">
       <item name="Overview"    href="/index.html"/>
