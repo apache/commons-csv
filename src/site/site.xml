@@ -5,13 +5,11 @@
     <menu name="CSV">
       <item name="Overview"    href="/index.html"/>
       <item name="Download"    href="/downloads.html"/>
-      <item name="Javadoc"     href="/apidocs/index.html"/>
       <item name="Wiki"        href="http://wiki.apache.org/jakarta-commons/CSV"/>
     </menu>
     
     <menu name="Development">
       <item name="History"                 href="/changes-report.html"/>
-      <!-- item name="Building"                href="/building.html"/ -->
       <item name="Mailing Lists"           href="/mail-lists.html"/>
       <item name="Issue Tracking"          href="/issue-tracking.html"/>
       <item name="Team"                    href="/team-list.html"/>
