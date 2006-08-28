@@ -2,6 +2,15 @@
 <project name="Commons CSV">
   <body>
 
+  <!--
+  <skin>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-skin</artifactId>
+    <version>0.1</version>
+  </skin>
+  -->
+
+
     <menu name="CSV">
       <item name="Overview"    href="/index.html"/>
       <item name="Download"    href="/downloads.html"/>
