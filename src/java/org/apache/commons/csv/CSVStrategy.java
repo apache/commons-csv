@@ -16,12 +16,14 @@
  */
 package org.apache.commons.csv;
 
+import java.io.Serializable;
+
 /**
  * CSVStrategy
  * 
  * Represents the strategy for a CSV.
  */
-public class CSVStrategy {
+public class CSVStrategy implements Cloneable, Serializable {
 
     private char delimiter;
     private char encapsulator;
@@ -88,4 +90,11 @@ public class CSVStrategy {
     public void setIgnoreEmptyLines(boolean ignoreEmptyLines) { this.ignoreEmptyLines = ignoreEmptyLines; }
     public boolean getIgnoreEmptyLines() { return this.ignoreEmptyLines; }
 
+    public Object clone() {
+      try {
+        return super.clone();
+      } catch (CloneNotSupportedException e) {
+        throw new RuntimeException(e);  // impossible
+      }
+    }
 }
