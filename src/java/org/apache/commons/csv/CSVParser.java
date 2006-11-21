@@ -153,8 +153,20 @@ public class CSVParser {
    * @param commentStart a Char used for comment identification
    */
   public CSVParser(Reader input, char delimiter, char encapsulator, char commentStart) {
+    this(input, new CSVStrategy(delimiter, encapsulator, commentStart));
+  }
+
+  /**
+   * Customized csv parser.
+   *
+   * The parser parses according to the given CSV strategy.
+   *
+   * @param input a Reader based on "csv-formatted" input
+   * @param strategy the CSVStrategy used for CSV parsing
+   */
+  public CSVParser(Reader input, CSVStrategy strategy) {
     this.in = new ExtendedBufferedReader(input);
-    this.strategy = new CSVStrategy(delimiter, encapsulator, commentStart);
+    this.strategy = strategy;
   }
   
   // ======================================================
