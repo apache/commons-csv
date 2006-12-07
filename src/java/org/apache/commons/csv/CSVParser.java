@@ -111,6 +111,7 @@ public class CSVParser {
    * 
    * @param input an InputStream containing "csv-formatted" stream
    * @see #setStrategy()
+   * @deprecated
    */
   public CSVParser(InputStream input) {
     this(new InputStreamReader(input));
@@ -135,6 +136,7 @@ public class CSVParser {
    * 
    * @param input a Reader based on "csv-formatted" input
    * @param delimiter a Char used for value separation
+   * @deprecated
    */
   public CSVParser(Reader input, char delimiter) {
     this(input, delimiter, '"', (char) 0);
@@ -151,6 +153,7 @@ public class CSVParser {
    * @param delimiter a Char used for value separation
    * @param encapsulator a Char used as value encapsulation marker
    * @param commentStart a Char used for comment identification
+   * @deprecated
    */
   public CSVParser(Reader input, char delimiter, char encapsulator, char commentStart) {
     this(input, new CSVStrategy(delimiter, encapsulator, commentStart));
