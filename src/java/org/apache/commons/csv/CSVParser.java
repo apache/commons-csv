@@ -108,7 +108,7 @@ public class CSVParser {
    * 
    * @param input an InputStream containing "csv-formatted" stream
    * @see #setStrategy()
-   * @deprecated
+   * @deprecated use {@link #CSVParser(Reader)}.
    */
   public CSVParser(InputStream input) {
     this(new InputStreamReader(input));
@@ -133,7 +133,7 @@ public class CSVParser {
    * 
    * @param input a Reader based on "csv-formatted" input
    * @param delimiter a Char used for value separation
-   * @deprecated
+   * @deprecated use {@link #CSVParser(Reader,CSVStrategy)}.
    */
   public CSVParser(Reader input, char delimiter) {
     this(input, delimiter, '"', (char) 0);
@@ -150,7 +150,7 @@ public class CSVParser {
    * @param delimiter a Char used for value separation
    * @param encapsulator a Char used as value encapsulation marker
    * @param commentStart a Char used for comment identification
-   * @deprecated
+   * @deprecated use {@link #CSVParser(Reader,CSVStrategy)}.
    */
   public CSVParser(Reader input, char delimiter, char encapsulator, char commentStart) {
     this(input, new CSVStrategy(delimiter, encapsulator, commentStart));
@@ -564,7 +564,7 @@ public class CSVParser {
    * Sets the specified CSV Strategy
    *
    * @return current instance of CSVParser to allow chained method calls
-   * @deprecated
+   * @deprecated the strategy should be set in the constructor {@link #CSVParser(Reader,CSVStrategy)}.
    */
   public CSVParser setStrategy(CSVStrategy strategy) {
     this.strategy = strategy;
