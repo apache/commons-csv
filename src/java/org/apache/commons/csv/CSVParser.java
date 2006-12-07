@@ -69,16 +69,17 @@ public class CSVParser {
   private static final String[] EMPTY_STRING_ARRAY = new String[0];
    
   // the input stream
-  private ExtendedBufferedReader in;
+  private final ExtendedBufferedReader in;
 
+  // TODO: this can be made final if setStrategy is removed
   private CSVStrategy strategy;
   
   // the following objects are shared to reduce garbage 
   /** A record buffer for getLine(). Grows as necessary and is reused. */
-  private ArrayList record = new ArrayList();
-  private Token reusableToken = new Token();
-  private CharBuffer wsBuf = new CharBuffer();
-  private CharBuffer code = new CharBuffer(4);
+  private final ArrayList record = new ArrayList();
+  private final Token reusableToken = new Token();
+  private final CharBuffer wsBuf = new CharBuffer();
+  private final CharBuffer code = new CharBuffer(4);
 
   
   /**
@@ -567,6 +568,7 @@ public class CSVParser {
    * Sets the specified CSV Strategy
    *
    * @return current instance of CSVParser to allow chained method calls
+   * @deprecated
    */
   public CSVParser setStrategy(CSVStrategy strategy) {
     this.strategy = strategy;
