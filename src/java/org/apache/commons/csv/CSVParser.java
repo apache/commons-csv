@@ -83,7 +83,7 @@ public class CSVParser {
    * 
    * It is used as contract between the lexer and the parser. 
    */
-  class Token {
+  static class Token {
     /** Token type, see TT_xxx constants. */
     int type = TT_INVALID;
     /** The content buffer. */
