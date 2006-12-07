@@ -16,31 +16,27 @@
  */
 package org.apache.commons.csv;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.ArrayList;
 
 
 /**
- * Parses cvs files according to the specified configuration.
+ * Parses CSV files according to the specified configuration.
  *
- * Because CSV appears in many different dialects the parser supports many
- * configuration settings. One of the most popular CSV format as supported
- * by the M$ corporation (excel-spreadsheets) are supported out-of-the-box
- * by the corresponding strategy setter (see {@link #setExcelStrategy()}).
+ * Because CSV appears in many different dialects, the parser supports many
+ * configuration settings by allowing the specification of a {@link CSVStrategy}.
  * 
- * <p>Parsing of a csv-string having ';' as separator:</p>
+ * <p>Parsing of a csv-string having tabs as separators,
+ * '"' as an optional value encapsulator, and comments starting with '#':</p>
  * <pre>
  *  String[][] data = 
- *      (new CSVParser(new StringReader("a;b\nc;d"),';')).getAllValues();
+ *   (new CSVParser(new StringReader("a\tb\nc\td"), new CSVStrategy('\t','"','#'))).getAllValues();
  * </pre>
  * 
- * <p>The API allows chained method calls, if you like this coding style:</p>
+ * <p>Parsing of a csv-string in Excel CSV format</p>
  * <pre>
- *  String[][] data = (new CSVParser(new StringReader("a;b\nc;d"),';'))
- *      .setExcelStrategy().setIgnoreEmptyLines(true).getAllValues();
+ *  String[][] data =
+ *   (new CSVParser(new StringReader("a;b\nc;d"), CSVStrategy.EXCEL_STRATEGY)).getAllValues();
  * </pre>
  * 
  * <p>
