@@ -118,9 +118,9 @@ public class CSVParser {
   }
   
   /**
-   * Default strategy for the parser follows the default CSV Strategy.
+   * CSV parser using the default {@link CSVStrategy}.
    * 
-   * @param input a Reader based on "csv-formatted" input
+   * @param input a Reader containing "csv-formatted" input
    * @see #setStrategy()
    */
   public CSVParser(Reader input) {
@@ -160,11 +160,9 @@ public class CSVParser {
   }
 
   /**
-   * Customized csv parser.
+   * Customized CSV parser using the given {@link CSVStrategy}
    *
-   * The parser parses according to the given CSV strategy.
-   *
-   * @param input a Reader based on "csv-formatted" input
+   * @param input a Reader containing "csv-formatted" input
    * @param strategy the CSVStrategy used for CSV parsing
    */
   public CSVParser(Reader input, CSVStrategy strategy) {
