@@ -107,7 +107,7 @@ public class CSVStrategyTest extends TestCase {
   
   public void testSetExcelStrategy() {
     CSVStrategy strategy = CSVStrategy.EXCEL_STRATEGY;
-    assertEquals(strategy.getDelimiter(), ';');
+    assertEquals(strategy.getDelimiter(), ',');
     assertEquals(strategy.getEncapsulator(), '"');
     assertEquals(strategy.getCommentStart(), '\0');
     assertEquals(false,  strategy.getIgnoreLeadingWhitespaces());

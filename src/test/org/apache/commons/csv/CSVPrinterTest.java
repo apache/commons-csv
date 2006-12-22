@@ -70,16 +70,16 @@ public class CSVPrinterTest extends TestCase {
     printer.setStrategy(CSVStrategy.EXCEL_STRATEGY);
     String[] line1 = {"a", "b"};
     printer.println(line1);
-    assertEquals("a;b" + lineSeparator, sw.toString());
+    assertEquals("a,b" + lineSeparator, sw.toString());
   }
 
   public void testExcelPrinter2() {
     StringWriter sw = new StringWriter();
     CSVPrinter printer = new CSVPrinter(sw);
     printer.setStrategy(CSVStrategy.EXCEL_STRATEGY);
-    String[] line1 = {"a;b", "b"};
+    String[] line1 = {"a,b", "b"};
     printer.println(line1);
-    assertEquals("\"a;b\";b" + lineSeparator, sw.toString());
+    assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
   }
 
 }

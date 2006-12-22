@@ -272,8 +272,8 @@ public class CSVParserTest extends TestCase {
   
   public void testExcelStrategy1() throws IOException {
     String code = 
-      "value1;value2;value3;value4\r\na;b;c;d\r\n  x;;;"
-      + "\r\n\r\n\"\"\"hello\"\"\";\"  \"\"world\"\"\";\"abc\ndef\";\r\n";
+      "value1,value2,value3,value4\r\na,b,c,d\r\n  x,,,"
+      + "\r\n\r\n\"\"\"hello\"\"\",\"  \"\"world\"\"\",\"abc\ndef\",\r\n";
     String[][] res = {
       {"value1", "value2", "value3", "value4"},
       {"a", "b", "c", "d"},
@@ -281,8 +281,7 @@ public class CSVParserTest extends TestCase {
       {""},
       {"\"hello\"", "  \"world\"", "abc\ndef", ""}
     };
-    CSVParser parser = new CSVParser(new StringReader(code));
-    parser.setStrategy(CSVStrategy.EXCEL_STRATEGY);
+    CSVParser parser = new CSVParser(new StringReader(code), CSVStrategy.EXCEL_STRATEGY);
     System.out.println("---------\n" + code + "\n-------------");
     String[][] tmp = parser.getAllValues();
     assertEquals(res.length, tmp.length);
@@ -293,7 +292,7 @@ public class CSVParserTest extends TestCase {
   }
   
   public void testExcelStrategy2() throws Exception {
-    String code = "foo;baar\r\n\r\nhello;\r\n\r\nworld;\r\n";
+    String code = "foo,baar\r\n\r\nhello,\r\n\r\nworld,\r\n";
     String[][] res = {
       {"foo", "baar"},
       {""},
@@ -317,14 +316,14 @@ public class CSVParserTest extends TestCase {
   
   public void testEndOfFileBehaviourExcel() throws Exception {
     String[] codes = {
-        "hello;\r\n\r\nworld;\r\n",
-        "hello;\r\n\r\nworld;",
-        "hello;\r\n\r\nworld;\"\"\r\n",
-        "hello;\r\n\r\nworld;\"\"",
-        "hello;\r\n\r\nworld;\n",
-        "hello;\r\n\r\nworld;",
-        "hello;\r\n\r\nworld;\"\"\n",
-        "hello;\r\n\r\nworld;\"\""
+        "hello,\r\n\r\nworld,\r\n",
+        "hello,\r\n\r\nworld,",
+        "hello,\r\n\r\nworld,\"\"\r\n",
+        "hello,\r\n\r\nworld,\"\"",
+        "hello,\r\n\r\nworld,\n",
+        "hello,\r\n\r\nworld,",
+        "hello,\r\n\r\nworld,\"\"\n",
+        "hello,\r\n\r\nworld,\"\""
         };
     String[][] res = {
       {"hello", ""},
@@ -384,10 +383,10 @@ public class CSVParserTest extends TestCase {
   
   public void testEmptyLineBehaviourExcel() throws Exception {
     String[] codes = {
-        "hello;\r\n\r\n\r\n",
-        "hello;\n\n\n",
-        "hello;\"\"\r\n\r\n\r\n",
-        "hello;\"\"\n\n\n"
+        "hello,\r\n\r\n\r\n",
+        "hello,\n\n\n",
+        "hello,\"\"\r\n\r\n\r\n",
+        "hello,\"\"\n\n\n"
         };
     String[][] res = {
       {"hello", ""},
