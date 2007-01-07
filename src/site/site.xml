@@ -2,16 +2,7 @@
 <project name="Commons CSV">
   <body>
 
-  <!--
-  <skin>
-    <groupId>org.apache.commons</groupId>
-    <artifactId>commons-skin</artifactId>
-    <version>0.1</version>
-  </skin>
-  -->
-
-
-    <menu name="CSV">
+    <menu name="Commons CSV">
       <item name="Overview"    href="/index.html"/>
       <item name="Download"    href="/downloads.html"/>
       <item name="Wiki"        href="http://wiki.apache.org/jakarta-commons/CSV"/>
@@ -26,6 +17,5 @@
       <item name="Javadoc (latest)"        href="http://jakarta.apache.org/commons/sandbox/csv/apidocs/"/>
     </menu>
 
-    ${reports}
   </body>
 </project>
