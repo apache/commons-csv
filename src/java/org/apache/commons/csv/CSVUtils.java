@@ -75,12 +75,11 @@ public class CSVUtils {
   // ======================================================
   
   /**
-   * Parses the given String according to the default CSV strategy.
+   * Parses the given String according to the default {@link CSVStrategy}.
    * 
    * @param s CSV String to be parsed.
    * @return parsed String matrix (which is never null)
    * @throws IOException in case of error
-   * @see #setStrategy()
    */
   public static String[][] parse(String s) throws IOException {
     if (s == null) {
@@ -96,7 +95,7 @@ public class CSVUtils {
   }
   
   /**
-   * Parses the first line only according to the default CSV strategy.
+   * Parses the first line only according to the default {@link CSVStrategy}.
    * 
    * Parsing empty string will be handled as valid records containing zero
    * elements, so the following property holds: parseLine("").length == 0.
@@ -104,7 +103,6 @@ public class CSVUtils {
    * @param s CSV String to be parsed.
    * @return parsed String vector (which is never null)
    * @throws IOException in case of error
-   * @see #setStrategy()
    */
   public static String[] parseLine(String s) throws IOException {
     if (s == null) {

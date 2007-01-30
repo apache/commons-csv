@@ -104,10 +104,9 @@ public class CSVParser {
   // ======================================================
   
   /**
-   * Default strategy for the parser follows the default CSV Strategy.
+   * Default strategy for the parser follows the default {@link CSVStrategy}.
    * 
    * @param input an InputStream containing "csv-formatted" stream
-   * @see #setStrategy()
    * @deprecated use {@link #CSVParser(Reader)}.
    */
   public CSVParser(InputStream input) {
@@ -118,7 +117,6 @@ public class CSVParser {
    * CSV parser using the default {@link CSVStrategy}.
    * 
    * @param input a Reader containing "csv-formatted" input
-   * @see #setStrategy()
    */
   public CSVParser(Reader input) {
     // note: must match default-CSV-strategy !!
@@ -128,8 +126,8 @@ public class CSVParser {
   /**
    * Customized value delimiter parser.
    * 
-   * The parser follows the default CSV strategy as defined in 
-   * {@link #setStrategy()} except for the delimiter setting.
+   * The parser follows the default {@link CSVStrategy}
+   * except for the delimiter setting.
    * 
    * @param input a Reader based on "csv-formatted" input
    * @param delimiter a Char used for value separation
