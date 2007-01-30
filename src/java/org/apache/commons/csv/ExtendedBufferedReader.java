@@ -81,7 +81,11 @@ public class ExtendedBufferedReader extends BufferedReader  {
       lookaheadChar = super.read();
     }
     lastChar = lookaheadChar;
-    lookaheadChar = super.read();
+    if (super.ready()) {
+      lookaheadChar = super.read();
+    } else {
+      lookaheadChar = UNDEFINED;
+    }
     if (lastChar == '\n') {
       lineCounter++;
     } 
