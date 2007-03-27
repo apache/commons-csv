@@ -183,7 +183,7 @@ public class CharBuffer {
      */
     public void provideCapacity(final int capacity) {
         if (c.length >= capacity) return;
-        int newcapacity = capacity;
+        int newcapacity = ((capacity*3)>>1) + 1;
         char[] newc = new char[newcapacity];
         System.arraycopy(c, 0, newc, 0, length);
         c = newc;
