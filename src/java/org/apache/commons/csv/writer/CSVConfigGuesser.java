@@ -80,7 +80,7 @@ public class CSVConfigGuesser {
             String[] lines = new String[10];
             String line = null;
             int counter = 0;
-            while ( (line = bIn.readLine()) != null || counter > 10) {
+            while ( (line = bIn.readLine()) != null && counter <= 10) {
                 lines[counter] = line;
                 counter++;
             }
