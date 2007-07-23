@@ -459,6 +459,7 @@ public class CSVParser {
     // assert c == delimiter;
     c = in.read();
     while (!tkn.isReady) {
+      boolean skipRead = false;
       if (c == strategy.getEncapsulator() || c == '\\') {
         // check lookahead
         if (in.lookAhead() == strategy.getEncapsulator()) {
@@ -483,26 +484,26 @@ public class CSVParser {
         } else {
           // token finish mark (encapsulator) reached: ignore whitespace till delimiter
           while (!tkn.isReady) {
-            int n = in.lookAhead();
-            if (n == strategy.getDelimiter()) {
+            c = in.read();
+            if (c == strategy.getDelimiter()) {
               tkn.type = TT_TOKEN;
               tkn.isReady = true;
-            } else if (isEndOfFile(n)) {
+            } else if (isEndOfFile(c)) {
               tkn.type = TT_EOF;
               tkn.isReady = true;
-            } else if (isEndOfLine(n)) {
+            } else if (isEndOfLine(c)) {
               // ok eo token reached
               tkn.type = TT_EORECORD;
               tkn.isReady = true;
-            } else if (!isWhitespace(n)) {
-              // error invalid char between token and next delimiter
-              throw new IOException(
-                "(line " + getLineNumber() 
-                + ") invalid char between encapsualted token end delimiter"
-              );
-            }
-            c = in.read();
+            } else if (!isWhitespace(c)) {
+                // error invalid char between token and next delimiter
+                throw new IOException(
+                  "(line " + getLineNumber() 
+                  + ") invalid char between encapsulated token end delimiter"
+                );
+              }
           }
+          skipRead = true;
         }
       } else if (isEndOfFile(c)) {
         // error condition (end of file before end of token)
@@ -515,8 +516,8 @@ public class CSVParser {
         tkn.content.append((char) c);
       }
       // get the next char
-      if (!tkn.isReady) {
-        c = in.read();  
+      if (!tkn.isReady && !skipRead) {
+        c = in.read();
       }
     }
     return tkn;
