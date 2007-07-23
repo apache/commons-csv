@@ -26,7 +26,7 @@ import java.io.Reader;
  * A special reader decorater which supports more
  * sophisticated access to the underlying reader object.
  * 
- * In especialy the reader supports a look-ahead option,
+ * In particular the reader supports a look-ahead option,
  * which allows you to see the next char returned by
  * next().
  * Furthermore the skip-method supports skipping until
