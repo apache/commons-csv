@@ -250,7 +250,7 @@ public class CSVPrinter {
    * @param value needs to be escaped and quoted
    * @return the value, escaped and quoted
    */
-  private static String escapeAndQuote(String value) {
+  private String escapeAndQuote(String value) {
     // the initial count is for the preceding and trailing quotes
     int count = 2;
     for (int i = 0; i < value.length(); i++) {
@@ -266,13 +266,15 @@ public class CSVPrinter {
       }
     }
     StringBuffer sb = new StringBuffer(value.length() + count);
-    sb.append('"');
+    sb.append(strategy.getEncapsulator());
     for (int i = 0; i < value.length(); i++) {
       char c = value.charAt(i);
+
+      if (c == strategy.getEncapsulator()) {
+        sb.append('\\').append(c);
+        continue;
+      }
       switch (c) {
-        case '\"' :
-          sb.append("\\\"");
-          break;
         case '\n' :
           sb.append("\\n");
           break;
@@ -286,7 +288,7 @@ public class CSVPrinter {
           sb.append(c);
       }
     }
-    sb.append('"');
+    sb.append(strategy.getEncapsulator());
     return sb.toString();
   }
 
