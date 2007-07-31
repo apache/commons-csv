@@ -27,20 +27,20 @@
 <!-- ================================================== -->
 <section name="Source repository">
 <p>
-  Jakarta Commons CSV is hosted on the Apache
+  Apache Commons CSV is hosted on the Apache
   <a href="http://subversion.tigris.org/">subversion</a> repository.
 </p>
 <p>
   The project URL is:<br />
-  <code>http://svn.apache.org/repos/asf/jakarta/commons/sandbox/csv/trunk</code>
+  <code>http://svn.apache.org/repos/asf/commons/sandbox/csv/trunk</code>
 </p>
 <p>
   The best way to view the repository is via the
-  <a href="http://svn.apache.org/viewvc/jakarta/commons/sandbox/csv/trunk/">subversion viewer</a>.
+  <a href="http://svn.apache.org/viewvc/commons/sandbox/csv/trunk/">subversion viewer</a>.
 </p>
 <p>
   The alternative is to use the
-  <a href="http://svn.apache.org/repos/asf/jakarta/commons/sandbox/csv/trunk/">native subversion</a> display.
+  <a href="http://svn.apache.org/repos/asf/commons/sandbox/csv/trunk/">native subversion</a> display.
 </p>
 <p>
   For more information on subversion and creating patches see the

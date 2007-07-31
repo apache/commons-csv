@@ -26,7 +26,7 @@
     Commons CSV is a component that parses comma separated value files. 
   </description>
   <currentVersion>0.1-SNAPSHOT</currentVersion>
-  <url>http://jakarta.apache.org/commons/${pom.artifactId.substring(8)}/</url>
+  <url>http://commons.apache.org/${pom.artifactId.substring(8)}/</url>
   <package>org.apache.commons.${pom.artifactId.substring(8)}</package>
   <issueTrackingUrl>http://issues.apache.org/jira/</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
@@ -37,8 +37,8 @@
     </organization>
 
   <repository>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/sandbox/csv/trunk</connection>
-    <url>http://svn.apache.org/viewvc/jakarta/commons/sandbox/csv/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/sandbox/csv/trunk</connection>
+    <url>http://svn.apache.org/viewvc/commons/sandbox/csv/trunk</url>
   </repository>
   
     <mailingLists>
