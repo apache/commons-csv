@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.commons</groupId>
-    <artifactId>commons-sandbox</artifactId>
-    <version>1-SNAPSHOT</version>
+    <artifactId>commons-sandbox-parent</artifactId>
+    <version>2-SNAPSHOT</version>
   </parent>
 
   <artifactId>commons-csv</artifactId>
@@ -41,9 +41,9 @@
 
   <distributionManagement>
     <site>
-      <id>website</id>
+      <id>apache.website</id>
       <name>Apache Website</name>
-      <url>scp://people.apache.org/www/commons.apache.org/sandbox/csv/</url>
+      <url>${commons.deployment.protocol}://people.apache.org/www/commons.apache.org/sandbox/csv/</url>
     </site>
   </distributionManagement>
 
@@ -57,6 +57,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
+        <version>2.0-beta-2</version>
         <configuration>
           <issueLinkTemplate>%URL%/%ISSUE%</issueLinkTemplate>
         </configuration>
