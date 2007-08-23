@@ -9,7 +9,7 @@
 
   <artifactId>commons-csv</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>CSV (Sandbox)</name>
+  <name>Commons CSV (Sandbox)</name>
   <url>http://commons.apache.org/sandbox/csv/</url>
   
   <dependencies>
