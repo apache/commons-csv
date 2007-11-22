@@ -30,6 +30,10 @@ limitations under the License.
     <li><a href="http://www.osjava.org/genjava/multiproject/gj-csv/">Genjava CSV</a></li>
   </ul>
   <p>In addition to the code from Netcetera (org.apache.commons.csv), Martin van den Bemt has added an additional writer API (org.apache.commons.csv.writer). </p>
+  <p>Other CSV implementations: </p>
+  <ul>
+    <li><a href="http://supercsv.sourceforge.net/">Super CSV</a></li>
+  </ul>
 </section>
 
 <section name="Getting the code?">
