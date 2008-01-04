@@ -25,9 +25,14 @@
     <developer>
       <id>bayard</id>
       <name>Henri Yandell</name>
-      <email>bayard AT apache DOT org</email>
+      <email>bayard@apache.org</email>
       <organization>Apache</organization>
-      <timezone>-5</timezone>
+    </developer>
+    <developer>
+      <name>Martin van den Bemt</name>
+      <id>mvdb</id>
+      <email>mvdb@apache.org</email>
+      <organization>Apache</organization>
     </developer>
   </developers>
   <contributors>
