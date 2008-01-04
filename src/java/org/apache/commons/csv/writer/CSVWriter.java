@@ -50,9 +50,12 @@ public class CSVWriter {
         try {
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < fields.length; i++) {
-                String value = (String) map.get(fields[i].getName());
-                value = writeValue(fields[i], value);
-                sb.append(value);
+                Object o = map.get(fields[i].getName());
+                if (o != null) {
+                    String value = o.toString();
+                    value = writeValue(fields[i], value);
+                    sb.append(value);
+                }
                 if (!config.isDelimiterIgnored() && fields.length != (i+1)) {
                     sb.append(config.getDelimiter());
                 }
