@@ -134,7 +134,7 @@ public class CSVParser {
    * @deprecated use {@link #CSVParser(Reader,CSVStrategy)}.
    */
   public CSVParser(Reader input, char delimiter) {
-    this(input, delimiter, '"', (char) 0);
+    this(input, delimiter, '"', CSVStrategy.COMMENTS_DISABLED);
   }
   
   /**
@@ -347,7 +347,7 @@ public class CSVParser {
         eol = isEndOfLine(c);
       }
       // ok, start of token reached: comment, encapsulated, or token
-      if (!strategy.isCommentingDisabled() && c == strategy.getCommentStart()) {
+      if (c == strategy.getCommentStart()) {
         // ignore everything till end of line and continue (incr linecount)
         in.readLine();
         tkn = nextToken(tkn.reset());
@@ -400,19 +400,22 @@ public class CSVParser {
    */
   private Token simpleTokenLexer(Token tkn, int c) throws IOException {
     wsBuf.clear();
-    while (!tkn.isReady) {
+    for (;;) {
       if (isEndOfLine(c)) {
         // end of record
         tkn.type = TT_EORECORD;
         tkn.isReady = true;
+        return tkn;
       } else if (isEndOfFile(c)) {
         // end of file
         tkn.type = TT_EOF;
         tkn.isReady = true;
+        return tkn;
       } else if (c == strategy.getDelimiter()) {
         // end of token
         tkn.type = TT_TOKEN;
         tkn.isReady = true;
+        return tkn;
       } else if (c == '\\' && strategy.getUnicodeEscapeInterpretation() && in.lookAhead() == 'u') {
         // interpret unicode escaped chars (like \u0070 -> p)
         tkn.content.append((char) unicodeEscapeLexer(c));
@@ -422,6 +425,8 @@ public class CSVParser {
         if (tkn.content.length() > 0) {
           wsBuf.append((char) c);
         }
+      } else if (c == strategy.getEscape()) {
+        tkn.content.append((char)readEscape(c));
       } else {
         // prepend whitespaces (if we have)
         if (wsBuf.length() > 0) {
@@ -435,7 +440,6 @@ public class CSVParser {
         c = in.read();
       }
     }
-    return tkn;
   }
   
   
@@ -457,70 +461,55 @@ public class CSVParser {
     int startLineNumber = getLineNumber();
     // ignore the given delimiter
     // assert c == delimiter;
-    c = in.read();
-    while (!tkn.isReady) {
-      boolean skipRead = false;
-      if (c == strategy.getEncapsulator() || c == '\\') {
-        // check lookahead
+    for (;;) {
+      c = in.read();
+
+      if (c == '\\' && strategy.getUnicodeEscapeInterpretation() && in.lookAhead()=='u') {
+        tkn.content.append((char) unicodeEscapeLexer(c));
+      } else if (c == strategy.getEscape()) {
+        tkn.content.append((char)readEscape(c));
+      } else if (c == strategy.getEncapsulator()) {
         if (in.lookAhead() == strategy.getEncapsulator()) {
           // double or escaped encapsulator -> add single encapsulator to token
           c = in.read();
           tkn.content.append((char) c);
-        } else if (c == '\\' && in.lookAhead() == '\\') {
-          // doubled escape char, it does not escape itself, only encapsulator 
-          // -> add both escape chars to stream
-          tkn.content.append((char) c);
-          c = in.read();
-          tkn.content.append((char) c);
-        } else if (
-          strategy.getUnicodeEscapeInterpretation()
-          && c == '\\' 
-          && in.lookAhead() == 'u') {
-          // interpret unicode escaped chars (like \u0070 -> p)
-          tkn.content.append((char) unicodeEscapeLexer(c));
-        } else if (c == '\\') {
-          // use a single escape character -> add it to stream
-          tkn.content.append((char) c);
         } else {
           // token finish mark (encapsulator) reached: ignore whitespace till delimiter
-          while (!tkn.isReady) {
+          for (;;) {
             c = in.read();
             if (c == strategy.getDelimiter()) {
               tkn.type = TT_TOKEN;
               tkn.isReady = true;
+              return tkn;
             } else if (isEndOfFile(c)) {
               tkn.type = TT_EOF;
               tkn.isReady = true;
+              return tkn;
             } else if (isEndOfLine(c)) {
               // ok eo token reached
               tkn.type = TT_EORECORD;
               tkn.isReady = true;
+              return tkn;
             } else if (!isWhitespace(c)) {
-                // error invalid char between token and next delimiter
-                throw new IOException(
-                  "(line " + getLineNumber() 
-                  + ") invalid char between encapsulated token end delimiter"
-                );
-              }
+              // error invalid char between token and next delimiter
+              throw new IOException(
+                      "(line " + getLineNumber()
+                              + ") invalid char between encapsulated token end delimiter"
+              );
+            }
           }
-          skipRead = true;
         }
       } else if (isEndOfFile(c)) {
         // error condition (end of file before end of token)
         throw new IOException(
-          "(startline " + startLineNumber + ")"
-          + "eof reached before encapsulated token finished"
-          );
+                "(startline " + startLineNumber + ")"
+                        + "eof reached before encapsulated token finished"
+        );
       } else {
         // consume character
         tkn.content.append((char) c);
       }
-      // get the next char
-      if (!tkn.isReady && !skipRead) {
-        c = in.read();
-      }
     }
-    return tkn;
   }
   
   
@@ -553,6 +542,21 @@ public class CSVParser {
         + code.toString() + "'" + e.toString());
     }
     return ret;
+  }
+
+  private int readEscape(int c) throws IOException {
+    // assume c is the escape char (normally a backslash)
+    c = in.read();
+    int out;
+    switch (c) {
+      case 'r': out='\r'; break;
+      case 'n': out='\n'; break;
+      case 't': out='\t'; break;
+      case 'b': out='\b'; break;
+      case 'f': out='\f'; break;
+      default : out=c;
+    }
+    return out;
   }
   
   // ======================================================

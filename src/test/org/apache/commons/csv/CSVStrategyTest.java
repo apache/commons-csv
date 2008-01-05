@@ -91,7 +91,7 @@ public class CSVStrategyTest extends TestCase {
     // default settings
     assertEquals(strategy.getDelimiter(), ',');
     assertEquals(strategy.getEncapsulator(), '"');
-    assertEquals(strategy.getCommentStart(), '\0');
+    assertEquals(strategy.getCommentStart(), CSVStrategy.COMMENTS_DISABLED);
     assertEquals(true,  strategy.getIgnoreLeadingWhitespaces());
     assertEquals(false, strategy.getUnicodeEscapeInterpretation());
     assertEquals(true,  strategy.getIgnoreEmptyLines());
@@ -99,7 +99,7 @@ public class CSVStrategyTest extends TestCase {
     parser.setStrategy(CSVStrategy.DEFAULT_STRATEGY);
     assertEquals(strategy.getDelimiter(), ',');
     assertEquals(strategy.getEncapsulator(), '"');
-    assertEquals(strategy.getCommentStart(), '\0');
+    assertEquals(strategy.getCommentStart(), CSVStrategy.COMMENTS_DISABLED);
     assertEquals(true,  strategy.getIgnoreLeadingWhitespaces());
     assertEquals(false, strategy.getUnicodeEscapeInterpretation());
     assertEquals(true,  strategy.getIgnoreEmptyLines());
@@ -109,7 +109,7 @@ public class CSVStrategyTest extends TestCase {
     CSVStrategy strategy = CSVStrategy.EXCEL_STRATEGY;
     assertEquals(strategy.getDelimiter(), ',');
     assertEquals(strategy.getEncapsulator(), '"');
-    assertEquals(strategy.getCommentStart(), '\0');
+    assertEquals(strategy.getCommentStart(), CSVStrategy.COMMENTS_DISABLED);
     assertEquals(false,  strategy.getIgnoreLeadingWhitespaces());
     assertEquals(false, strategy.getUnicodeEscapeInterpretation());
     assertEquals(false, strategy.getIgnoreEmptyLines());

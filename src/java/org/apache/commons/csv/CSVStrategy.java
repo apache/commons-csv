@@ -28,15 +28,21 @@ public class CSVStrategy implements Cloneable, Serializable {
     private char delimiter;
     private char encapsulator;
     private char commentStart;
+    private char escape;
     private boolean ignoreLeadingWhitespaces;
     private boolean interpretUnicodeEscapes;
     private boolean ignoreEmptyLines;
 
-    public static char COMMENTS_DISABLED       = (char) 0;
+    // -2 is used to signal disabled, because it won't be confused with
+    // an EOF signal (-1), and because \ufffe in UTF-16 would be
+    // encoded as two chars (using surrogates) and thus there should never
+    // be a collision with a real text char.
+    public static char COMMENTS_DISABLED       = (char)-2;
+    public static char ESCAPE_DISABLED         = (char)-2;
 
-    public static CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, true,  false, true);
-    public static CSVStrategy EXCEL_STRATEGY   = new CSVStrategy(',', '"', COMMENTS_DISABLED, false, false, false);
-    public static CSVStrategy TDF_STRATEGY     = new CSVStrategy('	', '"', COMMENTS_DISABLED, true,  false, true);
+    public static CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true,  false, true);
+    public static CSVStrategy EXCEL_STRATEGY   = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false, false, false);
+    public static CSVStrategy TDF_STRATEGY     = new CSVStrategy('	', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true,  false, true);
 
 
     public CSVStrategy(char delimiter, char encapsulator, char commentStart) {
@@ -58,7 +64,8 @@ public class CSVStrategy implements Cloneable, Serializable {
     public CSVStrategy(
         char delimiter, 
         char encapsulator, 
-        char commentStart, 
+        char commentStart,
+        char escape,
         boolean ignoreLeadingWhitespace, 
         boolean interpretUnicodeEscapes,
         boolean ignoreEmptyLines) 
@@ -66,10 +73,24 @@ public class CSVStrategy implements Cloneable, Serializable {
         setDelimiter(delimiter);
         setEncapsulator(encapsulator);
         setCommentStart(commentStart);
+        setEscape(escape);
         setIgnoreLeadingWhitespaces(ignoreLeadingWhitespace);
         setUnicodeEscapeInterpretation(interpretUnicodeEscapes);
         setIgnoreEmptyLines(ignoreEmptyLines);
     }
+
+    /** @deprecated */
+    public CSVStrategy(
+        char delimiter,
+        char encapsulator,
+        char commentStart,
+        boolean ignoreLeadingWhitespace,
+        boolean interpretUnicodeEscapes,
+        boolean ignoreEmptyLines)
+    {
+        this(delimiter,encapsulator,commentStart,CSVStrategy.ESCAPE_DISABLED,ignoreLeadingWhitespace,interpretUnicodeEscapes,ignoreEmptyLines);
+    }
+
 
     public void setDelimiter(char delimiter) { this.delimiter = delimiter; }
     public char getDelimiter() { return this.delimiter; }
@@ -80,6 +101,9 @@ public class CSVStrategy implements Cloneable, Serializable {
     public void setCommentStart(char commentStart) { this.commentStart = commentStart; }
     public char getCommentStart() { return this.commentStart; }
     public boolean isCommentingDisabled() { return this.commentStart == COMMENTS_DISABLED; }
+
+    public void setEscape(char escape) { this.escape = escape; }
+    public char getEscape() { return this.escape; }
 
     public void setIgnoreLeadingWhitespaces(boolean ignoreLeadingWhitespaces) { this.ignoreLeadingWhitespaces = ignoreLeadingWhitespaces; }
     public boolean getIgnoreLeadingWhitespaces() { return this.ignoreLeadingWhitespaces; }

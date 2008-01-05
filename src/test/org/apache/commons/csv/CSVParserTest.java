@@ -182,9 +182,7 @@ public class CSVParserTest extends TestCase {
   // encapsulator tokenizer (multi line, delimiter in string)
   public void testNextToken5() throws IOException {   
     String code = 
-      "a,\"foo\n\",b\n\"foo\n  baar ,,,\"\n\"\n\t \n\",\"\\\"\""
-      + ",\"\\,\"" 
-      + ",\"\"\"\"";
+      "a,\"foo\n\",b\n\"foo\n  baar ,,,\"\n\"\n\t \n\"";
     TestCSVParser parser = new TestCSVParser(new StringReader(code));
     parser.setStrategy(CSVStrategy.DEFAULT_STRATEGY);
     System.out.println("---------\n" + code + "\n-------------");
@@ -193,11 +191,8 @@ public class CSVParserTest extends TestCase {
     assertEquals(CSVParser.TT_EORECORD + ";b;", parser.testNextToken());
     assertEquals(CSVParser.TT_EORECORD + ";foo\n  baar ,,,;",
         parser.testNextToken());
-    assertEquals(CSVParser.TT_TOKEN + ";\n\t \n;", parser.testNextToken());
-    assertEquals(CSVParser.TT_TOKEN + ";\";", parser.testNextToken());
-    // escape char in quoted input only escapes delimiter
-    assertEquals(CSVParser.TT_TOKEN + ";\\,;", parser.testNextToken());
-    assertEquals(CSVParser.TT_EOF + ";\";", parser.testNextToken());
+    assertEquals(CSVParser.TT_EOF + ";\n\t \n;", parser.testNextToken());
+
   }
   
   // change delimiters, comment, encapsulater
@@ -207,7 +202,7 @@ public class CSVParserTest extends TestCase {
      *       !comment;;;;
      *       ;;
      */
-    String code = "a;'b and \\' more\n'\n!comment;;;;\n;;";
+    String code = "a;'b and '' more\n'\n!comment;;;;\n;;";
     TestCSVParser parser = new TestCSVParser(new StringReader(code));
     parser.setStrategy( new CSVStrategy(';', '\'', '!') );
     System.out.println("---------\n" + code + "\n-------------");
@@ -226,8 +221,9 @@ public class CSVParserTest extends TestCase {
     "a,b,c,d\n"
     + " a , b , 1 2 \n"
     + "\"foo baar\", b,\n"
-    + "   \"foo\n,,\n\"\",,\n\\\"\",d,e\n";
-  String[][] res = { 
+   // + "   \"foo\n,,\n\"\",,\n\\\"\",d,e\n";
+      + "   \"foo\n,,\n\"\",,\n\"\"\",d,e\n";   // changed to use standard CSV escaping
+  String[][] res = {
     {"a", "b", "c", "d"},
     {"a", "b", "1 2"}, 
     {"foo baar", "b", ""}, 
@@ -439,7 +435,7 @@ public class CSVParserTest extends TestCase {
     }
   }
   
-  public void testBackslashEscaping() throws IOException {
+  public void OLDtestBackslashEscaping() throws IOException {
     String code =
       "one,two,three\n"
       + "on\\\"e,two\n"
@@ -474,6 +470,49 @@ public class CSVParserTest extends TestCase {
     }
   }
   
+  public void testBackslashEscaping() throws IOException {
+
+    // To avoid confusion over the need for escaping chars in java code,
+    // We will test with a forward slash as the escape char, and a single
+    // quote as the encapsulator.
+
+    String code =
+      "one,two,three\n" // 0
+      + "'',''\n"       // 1) empty encapsulators
+      + "/',/'\n"       // 2) single encapsulators
+      + "'/'','/''\n"   // 3) single encapsulators encapsulated via escape
+      + "'''',''''\n"   // 4) single encapsulators encapsulated via doubling
+      + "/,,/,\n"       // 5) separator escaped
+      + "//,//\n"       // 6) escape escaped
+      + "'//','//'\n"   // 7) escape escaped in encapsulation
+      + "";
+    String[][] res = {
+        { "one", "two", "three" }, // 0
+        { "", "" },                // 1
+        { "'", "'" },              // 2
+        { "'", "'" },              // 3
+        { "'", "'" },              // 4
+        { ",", "," },              // 5
+        { "/", "/" },              // 6
+        { "/", "/" },              // 7
+      };
+
+
+    CSVStrategy strategy = new CSVStrategy(',','\'',CSVStrategy.COMMENTS_DISABLED,'/',true,true,true);
+
+    CSVParser parser = new CSVParser(new StringReader(code), strategy);
+    System.out.println("---------\n" + code + "\n-------------");
+    String[][] tmp = parser.getAllValues();
+    assertTrue(tmp.length > 0);
+    for (int i = 0; i < res.length; i++) {
+      for (int j = 0; j < tmp[i].length; j++) {
+        System.out.println("'" + tmp[i][j] + "'  should be '" + res[i][j] + "'");
+      }
+      assertTrue(Arrays.equals(res[i], tmp[i]));
+    }
+  }
+
+
     public void testUnicodeEscape() throws IOException {
       String code = "abc,\\u0070\\u0075\\u0062\\u006C\\u0069\\u0063";
       CSVParser parser = new CSVParser(new StringReader(code));
