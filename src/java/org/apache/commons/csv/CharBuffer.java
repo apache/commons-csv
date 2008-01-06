@@ -24,7 +24,7 @@ package org.apache.commons.csv;
  * grows as necessary.
  * This class is not thread safe.
  * 
- * @author Ortwin Glück
+ * @author Ortwin Glï¿½ck
  */
 public class CharBuffer {
     private char[] c;
@@ -65,7 +65,7 @@ public class CharBuffer {
     public int length() {
         return length;
     }
-    
+
     /**
      * Returns the current capacity of the buffer.
      * @return the maximum number of characters that can be stored in this buffer without
@@ -74,6 +74,7 @@ public class CharBuffer {
     public int capacity() {
         return c.length;
     }
+
     
     /**
      * Appends the contents of <code>cb</code> to the end of this CharBuffer.
@@ -142,6 +143,15 @@ public class CharBuffer {
         c = newc;
     }
 
+   /**
+    * Removes trailing whitespace.
+    */
+    public void trimTrailingWhitespace() {
+      while (length>0 && Character.isWhitespace(c[length-1])) {
+        length--;
+      }
+    }
+
     /**
      * Returns the contents of the buffer as a char[]. The returned array may
      * be the internal array of the buffer, so the caller must take care when
@@ -156,7 +166,14 @@ public class CharBuffer {
         System.arraycopy(c, 0, chars, 0, length);
         return chars;
     }
-    
+
+   /**
+    * Returns the character at the specified position.
+    */
+    public char charAt(int pos) {
+      return c[pos];
+   }
+
     /**
      * Converts the contents of the buffer into a StringBuffer.
      * This method involves copying the new data once!

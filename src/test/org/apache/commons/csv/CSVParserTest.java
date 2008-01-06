@@ -485,6 +485,8 @@ public class CSVParserTest extends TestCase {
       + "/,,/,\n"       // 5) separator escaped
       + "//,//\n"       // 6) escape escaped
       + "'//','//'\n"   // 7) escape escaped in encapsulation
+      + "   8   ,   \"quoted \"\" /\" // string\"   \n"     // don't eat spaces
+      + "9,   /\n   \n"  // escaped newline
       + "";
     String[][] res = {
         { "one", "two", "three" }, // 0
@@ -495,10 +497,12 @@ public class CSVParserTest extends TestCase {
         { ",", "," },              // 5
         { "/", "/" },              // 6
         { "/", "/" },              // 7
+        { "   8   ", "   \"quoted \"\" \" / string\"   " },
+        { "9", "   \n   " },
       };
 
 
-    CSVStrategy strategy = new CSVStrategy(',','\'',CSVStrategy.COMMENTS_DISABLED,'/',true,true,true);
+    CSVStrategy strategy = new CSVStrategy(',','\'',CSVStrategy.COMMENTS_DISABLED,'/',false,false,true,true);
 
     CSVParser parser = new CSVParser(new StringReader(code), strategy);
     System.out.println("---------\n" + code + "\n-------------");
@@ -511,6 +515,7 @@ public class CSVParserTest extends TestCase {
       assertTrue(Arrays.equals(res[i], tmp[i]));
     }
   }
+
 
 
     public void testUnicodeEscape() throws IOException {

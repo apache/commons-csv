@@ -30,6 +30,7 @@ public class CSVStrategy implements Cloneable, Serializable {
     private char commentStart;
     private char escape;
     private boolean ignoreLeadingWhitespaces;
+    private boolean ignoreTrailingWhitespaces;
     private boolean interpretUnicodeEscapes;
     private boolean ignoreEmptyLines;
 
@@ -40,9 +41,9 @@ public class CSVStrategy implements Cloneable, Serializable {
     public static char COMMENTS_DISABLED       = (char)-2;
     public static char ESCAPE_DISABLED         = (char)-2;
 
-    public static CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true,  false, true);
-    public static CSVStrategy EXCEL_STRATEGY   = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false, false, false);
-    public static CSVStrategy TDF_STRATEGY     = new CSVStrategy('	', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true,  false, true);
+    public static CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true,  false, true);
+    public static CSVStrategy EXCEL_STRATEGY   = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false, false, false, false);
+    public static CSVStrategy TDF_STRATEGY     = new CSVStrategy('	', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true,  false, true);
 
 
     public CSVStrategy(char delimiter, char encapsulator, char commentStart) {
@@ -67,6 +68,7 @@ public class CSVStrategy implements Cloneable, Serializable {
         char commentStart,
         char escape,
         boolean ignoreLeadingWhitespace, 
+        boolean ignoreTrailingWhitespace, 
         boolean interpretUnicodeEscapes,
         boolean ignoreEmptyLines) 
     {
@@ -75,6 +77,7 @@ public class CSVStrategy implements Cloneable, Serializable {
         setCommentStart(commentStart);
         setEscape(escape);
         setIgnoreLeadingWhitespaces(ignoreLeadingWhitespace);
+        setIgnoreTrailingWhitespaces(ignoreTrailingWhitespace);
         setUnicodeEscapeInterpretation(interpretUnicodeEscapes);
         setIgnoreEmptyLines(ignoreEmptyLines);
     }
@@ -88,7 +91,7 @@ public class CSVStrategy implements Cloneable, Serializable {
         boolean interpretUnicodeEscapes,
         boolean ignoreEmptyLines)
     {
-        this(delimiter,encapsulator,commentStart,CSVStrategy.ESCAPE_DISABLED,ignoreLeadingWhitespace,interpretUnicodeEscapes,ignoreEmptyLines);
+        this(delimiter,encapsulator,commentStart,CSVStrategy.ESCAPE_DISABLED,ignoreLeadingWhitespace,true,interpretUnicodeEscapes,ignoreEmptyLines);
     }
 
 
@@ -107,6 +110,9 @@ public class CSVStrategy implements Cloneable, Serializable {
 
     public void setIgnoreLeadingWhitespaces(boolean ignoreLeadingWhitespaces) { this.ignoreLeadingWhitespaces = ignoreLeadingWhitespaces; }
     public boolean getIgnoreLeadingWhitespaces() { return this.ignoreLeadingWhitespaces; }
+
+    public void setIgnoreTrailingWhitespaces(boolean ignoreTrailingWhitespaces) { this.ignoreTrailingWhitespaces = ignoreTrailingWhitespaces; }
+    public boolean getIgnoreTrailingWhitespaces() { return this.ignoreTrailingWhitespaces; }
 
     public void setUnicodeEscapeInterpretation(boolean interpretUnicodeEscapes) { this.interpretUnicodeEscapes = interpretUnicodeEscapes; }
     public boolean getUnicodeEscapeInterpretation() { return this.interpretUnicodeEscapes; }

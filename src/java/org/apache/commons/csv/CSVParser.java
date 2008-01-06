@@ -399,47 +399,39 @@ public class CSVParser {
    * @throws IOException on stream access error
    */
   private Token simpleTokenLexer(Token tkn, int c) throws IOException {
-    wsBuf.clear();
     for (;;) {
       if (isEndOfLine(c)) {
         // end of record
         tkn.type = TT_EORECORD;
         tkn.isReady = true;
-        return tkn;
+        break;
       } else if (isEndOfFile(c)) {
         // end of file
         tkn.type = TT_EOF;
         tkn.isReady = true;
-        return tkn;
+        break;
       } else if (c == strategy.getDelimiter()) {
         // end of token
         tkn.type = TT_TOKEN;
         tkn.isReady = true;
-        return tkn;
+        break;
       } else if (c == '\\' && strategy.getUnicodeEscapeInterpretation() && in.lookAhead() == 'u') {
         // interpret unicode escaped chars (like \u0070 -> p)
         tkn.content.append((char) unicodeEscapeLexer(c));
-      } else if (isWhitespace(c)) {
-        // gather whitespaces 
-        // (as long as they are not at the beginning of a token)
-        if (tkn.content.length() > 0) {
-          wsBuf.append((char) c);
-        }
       } else if (c == strategy.getEscape()) {
         tkn.content.append((char)readEscape(c));
       } else {
-        // prepend whitespaces (if we have)
-        if (wsBuf.length() > 0) {
-          tkn.content.append(wsBuf);
-          wsBuf.clear();
-        }
         tkn.content.append((char) c);
       }
-      // get the next char
-      if (!tkn.isReady) {
-        c = in.read();
-      }
+      
+      c = in.read();
     }
+
+    if (strategy.getIgnoreTrailingWhitespaces()) {
+      tkn.content.trimTrailingWhitespace();
+    }
+
+    return tkn;
   }
   
   
