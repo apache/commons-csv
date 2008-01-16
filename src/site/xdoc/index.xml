@@ -37,8 +37,8 @@ limitations under the License.
 </section>
 
 <section name="Getting the code?">
-  <p>There are currently no official downloads, and will not be until CSV moves out of the Sandbox, but a nightly build is available from <a href="http://people.apache.org/builds/jakarta-commons/nightly/commons-csv/">http://people.apache.org/builds/jakarta-commons/nightly/commons-csv/</a>. </p>
-  <p>The latest code may be checked out from the following url - <a href="http://svn.apache.org/repos/asf/jakarta/commons/sandbox/csv/trunk/">http://svn.apache.org/repos/asf/jakarta/commons/sandbox/csv/trunk/</a>. </p>
+  <p>There are currently no official downloads, and will not be until CSV moves out of the Sandbox, but a nightly build is available from <a href="http://people.apache.org/builds/commons/nightly/commons-csv/">http://people.apache.org/builds/commons/nightly/commons-csv/</a>. </p>
+  <p>The latest code may be checked out from the following url - <a href="http://svn.apache.org/repos/asf/commons/sandbox/csv/trunk/">http://svn.apache.org/repos/asf/commons/sandbox/csv/trunk/</a>. </p>
 </section>
 
 <section name="Bugs?">

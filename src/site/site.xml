@@ -5,7 +5,7 @@
     <menu name="Commons CSV">
       <item name="Overview"    href="/index.html"/>
       <item name="Download"    href="/downloads.html"/>
-      <item name="Wiki"        href="http://wiki.apache.org/jakarta-commons/CSV"/>
+      <item name="Wiki"        href="http://wiki.apache.org/commons/CSV"/>
     </menu>
     
     <menu name="Development">
