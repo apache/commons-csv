@@ -16,7 +16,10 @@
  */
 package org.apache.commons.csv;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 
@@ -257,7 +260,9 @@ public class CSVParser {
                 throw new IOException("(line " + getLineNumber() + ") invalid parse sequence");
             // unreachable: break;
         }
-        if (reusableToken.type != TT_TOKEN) break;
+        if (reusableToken.type != TT_TOKEN) {
+            break;
+        }
     }
     if (!record.isEmpty()) {
       ret = (String[]) record.toArray(new String[record.size()]);

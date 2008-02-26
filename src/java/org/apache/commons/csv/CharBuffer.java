@@ -27,7 +27,9 @@ package org.apache.commons.csv;
  * @author Ortwin Gl�ck
  */
 public class CharBuffer {
+
     private char[] c;
+
     /**
      * Actually used number of characters in the array. 
      * It is also the index at which
@@ -47,7 +49,9 @@ public class CharBuffer {
      * of <code>length</code> characters.
      */
     public CharBuffer(final int length) {
-        if (length == 0) throw new IllegalArgumentException("Can't create an empty CharBuffer");
+        if (length == 0) {
+            throw new IllegalArgumentException("Can't create an empty CharBuffer");
+        }
         this.c = new char[length];
     }
     
@@ -81,7 +85,9 @@ public class CharBuffer {
      * @param cb the CharBuffer to append or null
      */
     public void append(final CharBuffer cb) {
-        if (cb == null) return;
+        if (cb == null) {
+            return;
+        }
         provideCapacity(length + cb.length);
         System.arraycopy(cb.c, 0, c, length, cb.length);
         length += cb.length;
@@ -93,7 +99,9 @@ public class CharBuffer {
      * @param s the String to append or null
      */
     public void append(final String s) {
-        if (s == null) return;
+        if (s == null) {
+            return;
+        }
         append(s.toCharArray());
     }
     
@@ -103,7 +111,9 @@ public class CharBuffer {
      * @param sb the StringBuffer to append or null
      */
     public void append(final StringBuffer sb) {
-        if (sb == null) return;
+        if (sb == null) {
+            return;
+        }
         provideCapacity(length + sb.length());
         sb.getChars(0, sb.length(), c, length);
         length += sb.length();
@@ -115,7 +125,9 @@ public class CharBuffer {
      * @param data the char[] to append or null
      */
     public void append(final char[] data) {
-        if (data == null) return;
+        if (data == null) {
+            return;
+        }
         provideCapacity(length + data.length);
         System.arraycopy(data, 0, c, length, data.length);
         length += data.length;
@@ -137,7 +149,9 @@ public class CharBuffer {
      * This method involves copying the data once!
      */
     public void shrink() {
-        if (c.length == length) return;
+        if (c.length == length) {
+            return;
+        }
         char[] newc = new char[length];
         System.arraycopy(c, 0, newc, 0, length);
         c = newc;
@@ -161,7 +175,9 @@ public class CharBuffer {
      * @return
      */
     public char[] getCharacters() {
-        if (c.length == length) return c;
+        if (c.length == length) {
+            return c;
+        }
         char[] chars = new char[length];
         System.arraycopy(c, 0, chars, 0, length);
         return chars;
@@ -199,7 +215,9 @@ public class CharBuffer {
      * @param capacity
      */
     public void provideCapacity(final int capacity) {
-        if (c.length >= capacity) return;
+        if (c.length >= capacity) {
+            return;
+        }
         int newcapacity = ((capacity*3)>>1) + 1;
         char[] newc = new char[newcapacity];
         System.arraycopy(c, 0, newc, 0, length);

@@ -45,7 +45,7 @@ public class CSVStrategy implements Cloneable, Serializable {
                                                                  true, false, true);
     public static CSVStrategy EXCEL_STRATEGY   = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false, 
                                                                  false, false, false);
-    public static CSVStrategy TDF_STRATEGY     = new CSVStrategy('	', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, 
+    public static CSVStrategy TDF_STRATEGY     = new CSVStrategy('\t', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, 
                                                                  true, false, true);
 
 
