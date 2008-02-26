@@ -17,13 +17,8 @@
 package org.apache.commons.csv;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.Arrays;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * CSVUtilsTest

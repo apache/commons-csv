@@ -29,7 +29,6 @@ import junit.framework.TestSuite;
  */
 public class ExtendedBufferedReaderTest extends TestCase {
 
-  private StringBuffer buf = null;
   private ExtendedBufferedReader br = null;
   
   /**
