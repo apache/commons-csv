@@ -41,9 +41,12 @@ public class CSVStrategy implements Cloneable, Serializable {
     public static char COMMENTS_DISABLED       = (char)-2;
     public static char ESCAPE_DISABLED         = (char)-2;
 
-    public static CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true,  false, true);
-    public static CSVStrategy EXCEL_STRATEGY   = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false, false, false, false);
-    public static CSVStrategy TDF_STRATEGY     = new CSVStrategy('	', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true,  false, true);
+    public static CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, 
+                                                                 true, false, true);
+    public static CSVStrategy EXCEL_STRATEGY   = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false, 
+                                                                 false, false, false);
+    public static CSVStrategy TDF_STRATEGY     = new CSVStrategy('	', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, 
+                                                                 true, false, true);
 
 
     public CSVStrategy(char delimiter, char encapsulator, char commentStart) {
@@ -91,7 +94,8 @@ public class CSVStrategy implements Cloneable, Serializable {
         boolean interpretUnicodeEscapes,
         boolean ignoreEmptyLines)
     {
-        this(delimiter,encapsulator,commentStart,CSVStrategy.ESCAPE_DISABLED,ignoreLeadingWhitespace,true,interpretUnicodeEscapes,ignoreEmptyLines);
+        this(delimiter, encapsulator, commentStart, CSVStrategy.ESCAPE_DISABLED, ignoreLeadingWhitespace, 
+             true, interpretUnicodeEscapes, ignoreEmptyLines);
     }
 
 
@@ -108,13 +112,19 @@ public class CSVStrategy implements Cloneable, Serializable {
     public void setEscape(char escape) { this.escape = escape; }
     public char getEscape() { return this.escape; }
 
-    public void setIgnoreLeadingWhitespaces(boolean ignoreLeadingWhitespaces) { this.ignoreLeadingWhitespaces = ignoreLeadingWhitespaces; }
+    public void setIgnoreLeadingWhitespaces(boolean ignoreLeadingWhitespaces) { 
+        this.ignoreLeadingWhitespaces = ignoreLeadingWhitespaces; 
+    }
     public boolean getIgnoreLeadingWhitespaces() { return this.ignoreLeadingWhitespaces; }
 
-    public void setIgnoreTrailingWhitespaces(boolean ignoreTrailingWhitespaces) { this.ignoreTrailingWhitespaces = ignoreTrailingWhitespaces; }
+    public void setIgnoreTrailingWhitespaces(boolean ignoreTrailingWhitespaces) { 
+        this.ignoreTrailingWhitespaces = ignoreTrailingWhitespaces; 
+    }
     public boolean getIgnoreTrailingWhitespaces() { return this.ignoreTrailingWhitespaces; }
 
-    public void setUnicodeEscapeInterpretation(boolean interpretUnicodeEscapes) { this.interpretUnicodeEscapes = interpretUnicodeEscapes; }
+    public void setUnicodeEscapeInterpretation(boolean interpretUnicodeEscapes) { 
+        this.interpretUnicodeEscapes = interpretUnicodeEscapes; 
+    }
     public boolean getUnicodeEscapeInterpretation() { return this.interpretUnicodeEscapes; }
 
     public void setIgnoreEmptyLines(boolean ignoreEmptyLines) { this.ignoreEmptyLines = ignoreEmptyLines; }
