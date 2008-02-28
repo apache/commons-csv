@@ -34,7 +34,7 @@ import java.io.Reader;
  * is supported by the reader as well.
  * 
  */
-public class ExtendedBufferedReader extends BufferedReader  {
+class ExtendedBufferedReader extends BufferedReader  {
 
   
   /** the end of stream symbol */
