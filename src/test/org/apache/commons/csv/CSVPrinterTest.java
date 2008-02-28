@@ -26,19 +26,7 @@ import junit.framework.TestSuite;
  */
 public class CSVPrinterTest extends TestCase {
   
-  String lineSeparator = null;
-  
-  /**
-   * Constructor for CSVPrinterTest.
-   */
-  public CSVPrinterTest(String name) {
-    super(name);
-    this.lineSeparator = System.getProperty("line.separator");
-  }
-
-  public static Test suite() {
-    return new TestSuite(CSVPrinterTest.class);
-  }
+  String lineSeparator = System.getProperty("line.separator");
 
   public void testPrinter1() {
     StringWriter sw = new StringWriter();

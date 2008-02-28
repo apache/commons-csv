@@ -59,23 +59,6 @@ public class CSVParserTest extends TestCase {
     }
   }
   
-  /**
-   * Constructor for JUnit.
-   * @param name Name to be used in JUnit Test Environment
-   */
-  public CSVParserTest(String name) {
-    super(name);
-  }
-
-  /**
-   * Returns a Test suite for JUnit.
-   * @return Test suite for JUnit
-   */
-  public static Test suite() {
-    return new TestSuite(CSVParserTest.class);
-  }
-
-
   // ======================================================
   //   lexer tests
   // ======================================================

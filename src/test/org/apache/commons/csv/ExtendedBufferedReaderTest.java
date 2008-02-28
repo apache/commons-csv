@@ -29,33 +29,19 @@ import junit.framework.TestSuite;
  */
 public class ExtendedBufferedReaderTest extends TestCase {
 
-  private ExtendedBufferedReader br = null;
-  
-  /**
-   * Constructor for ExtendedBufferedReaderTest.
-   * @param arg0
-   */
-  public ExtendedBufferedReaderTest(String arg0) {
-    super(arg0);
-  }
-
-  public static Test suite() {
-    return new TestSuite(ExtendedBufferedReaderTest.class);
-  }
-  
   // ======================================================
   //   the test cases
   // ======================================================
  
   public void testConstructors() {
-    br = new ExtendedBufferedReader(new StringReader(""));
+    ExtendedBufferedReader br = new ExtendedBufferedReader(new StringReader(""));
     br = new ExtendedBufferedReader(new StringReader(""), 10); 
   }
   
   public void testReadLookahead1() throws Exception {
    
     assertEquals(ExtendedBufferedReader.END_OF_STREAM, getEBR("").read());
-    br = getEBR("1\n2\r3\n");
+    ExtendedBufferedReader br = getEBR("1\n2\r3\n");
     assertEquals('1', br.lookAhead());
     assertEquals(ExtendedBufferedReader.UNDEFINED, br.readAgain());
     assertEquals('1', br.read());
@@ -109,7 +95,7 @@ public class ExtendedBufferedReaderTest extends TestCase {
     char[] ref = new char[5];
     char[] res = new char[5];  
     
-    br = getEBR("");
+    ExtendedBufferedReader br = getEBR("");
     assertEquals(0, br.read(res, 0, 0));
     assertTrue(Arrays.equals(res, ref)); 
     
@@ -134,7 +120,7 @@ public class ExtendedBufferedReaderTest extends TestCase {
   }
   
   public void testReadLine() throws Exception {
-    br = getEBR("");
+    ExtendedBufferedReader br = getEBR("");
     assertTrue(br.readLine() == null);
     
     br = getEBR("\n");
@@ -177,7 +163,7 @@ public class ExtendedBufferedReaderTest extends TestCase {
   
   public void testSkip0() throws Exception {
     
-    br = getEBR("");
+    ExtendedBufferedReader br = getEBR("");
     assertEquals(0, br.skip(0));
     assertEquals(0, br.skip(1));
     
@@ -203,7 +189,7 @@ public class ExtendedBufferedReaderTest extends TestCase {
   }
   
   public void testSkipUntil() throws Exception {   
-    br = getEBR("");
+    ExtendedBufferedReader br = getEBR("");
     assertEquals(0, br.skipUntil(';'));
     br = getEBR("ABCDEF,GHL,,MN");
     assertEquals(6, br.skipUntil(','));
@@ -217,7 +203,7 @@ public class ExtendedBufferedReaderTest extends TestCase {
   }
   
   public void testReadUntil() throws Exception {
-    br = getEBR("");
+    ExtendedBufferedReader br = getEBR("");
     assertTrue(br.readUntil(';').equals(""));
     br = getEBR("ABCDEF;GHL;;MN");
     assertTrue(br.readUntil(';').equals("ABCDEF"));

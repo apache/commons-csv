@@ -32,23 +32,6 @@ import junit.framework.TestSuite;
  * has problems...).
  */
 public class CSVStrategyTest extends TestCase {
-  
-  /**
-   * Constructor for JUnit.
-   * @param name Name to be used in JUnit Test Environment
-   */
-  public CSVStrategyTest(String name) {
-    super(name);
-  }
-
-  /**
-   * Returns a Test suite for JUnit.
-   * @return Test suite for JUnit
-   */
-  public static Test suite() {
-    return new TestSuite(CSVStrategyTest.class);
-  }
-
 
   // ======================================================
   //   getters / setters
