@@ -18,9 +18,7 @@ package org.apache.commons.csv;
 
 import java.io.StringReader;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * CSVStrategyTest
