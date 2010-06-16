@@ -70,8 +70,7 @@ public class CSVParser {
   // the input stream
   private final ExtendedBufferedReader in;
 
-  // TODO: this can be made final if setStrategy is removed
-  private CSVStrategy strategy;
+  private final CSVStrategy strategy;
   
   // the following objects are shared to reduce garbage 
   /** A record buffer for getLine(). Grows as necessary and is reused. */
@@ -346,7 +345,7 @@ public class CSVParser {
     //  important: make sure a new char gets consumed in each iteration
     while (!tkn.isReady) {
       // ignore whitespaces at beginning of a token
-      while (isWhitespace(c) && !eol) {
+      while (strategy.getIgnoreLeadingWhitespaces() && isWhitespace(c) && !eol) {
         wsBuf.append((char) c);
         c = in.read();
         eol = isEndOfLine(c);
@@ -561,18 +560,7 @@ public class CSVParser {
   // ======================================================
   
   /**
-   * Sets the specified CSV Strategy
-   *
-   * @return current instance of CSVParser to allow chained method calls
-   * @deprecated the strategy should be set in the constructor {@link #CSVParser(Reader,CSVStrategy)}.
-   */
-  public CSVParser setStrategy(CSVStrategy strategy) {
-    this.strategy = strategy;
-    return this;
-  }
-  
-  /**
-   * Obtain the specified CSV Strategy
+   * Obtain the specified CSV Strategy.  This should not be modified.
    * 
    * @return strategy currently being used
    */

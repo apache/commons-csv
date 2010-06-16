@@ -35,8 +35,7 @@ public class CSVStrategyTest extends TestCase {
   //   getters / setters
   // ======================================================
   public void testGetSetCommentStart() {
-    CSVParser parser = new CSVParser(new StringReader("hello world"));
-    CSVStrategy strategy = parser.getStrategy();
+    CSVStrategy strategy = (CSVStrategy)CSVStrategy.DEFAULT_STRATEGY.clone();
     strategy.setCommentStart('#');
     assertEquals(strategy.getCommentStart(), '#');
     strategy.setCommentStart('!');
@@ -44,8 +43,7 @@ public class CSVStrategyTest extends TestCase {
   }
 
   public void testGetSetEncapsulator() {
-    CSVParser parser = new CSVParser(new StringReader("hello world"));
-    CSVStrategy strategy = parser.getStrategy();
+    CSVStrategy strategy = (CSVStrategy)CSVStrategy.DEFAULT_STRATEGY.clone();
     strategy.setEncapsulator('"');
     assertEquals(strategy.getEncapsulator(), '"');
     strategy.setEncapsulator('\'');
@@ -53,8 +51,7 @@ public class CSVStrategyTest extends TestCase {
   }
 
   public void testGetSetDelimiter() {
-    CSVParser parser = new CSVParser(new StringReader("hello world"));
-    CSVStrategy strategy = parser.getStrategy();
+    CSVStrategy strategy = (CSVStrategy)CSVStrategy.DEFAULT_STRATEGY.clone();
     strategy.setDelimiter(';');
     assertEquals(strategy.getDelimiter(), ';');
     strategy.setDelimiter(',');
@@ -64,8 +61,7 @@ public class CSVStrategyTest extends TestCase {
   }
 
   public void testSetCSVStrategy() {
-    CSVParser parser = new CSVParser(new StringReader("hello world"));
-    CSVStrategy strategy = parser.getStrategy();
+    CSVStrategy strategy = CSVStrategy.DEFAULT_STRATEGY;
     // default settings
     assertEquals(strategy.getDelimiter(), ',');
     assertEquals(strategy.getEncapsulator(), '"');
@@ -74,7 +70,6 @@ public class CSVStrategyTest extends TestCase {
     assertEquals(false, strategy.getUnicodeEscapeInterpretation());
     assertEquals(true,  strategy.getIgnoreEmptyLines());
     // explicit csv settings
-    parser.setStrategy(CSVStrategy.DEFAULT_STRATEGY);
     assertEquals(strategy.getDelimiter(), ',');
     assertEquals(strategy.getEncapsulator(), '"');
     assertEquals(strategy.getCommentStart(), CSVStrategy.COMMENTS_DISABLED);

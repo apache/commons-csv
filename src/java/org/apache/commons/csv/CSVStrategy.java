@@ -34,12 +34,16 @@ public class CSVStrategy implements Cloneable, Serializable {
     private boolean interpretUnicodeEscapes;
     private boolean ignoreEmptyLines;
 
+    // controls for output
+    private String printerNewline = "\n";
+
     // -2 is used to signal disabled, because it won't be confused with
     // an EOF signal (-1), and because \ufffe in UTF-16 would be
     // encoded as two chars (using surrogates) and thus there should never
     // be a collision with a real text char.
     public static char COMMENTS_DISABLED       = (char)-2;
     public static char ESCAPE_DISABLED         = (char)-2;
+    public static char ENCAPSULATOR_DISABLED   = (char)-2;
 
     public static CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, 
                                                                  true, false, true);
@@ -98,7 +102,6 @@ public class CSVStrategy implements Cloneable, Serializable {
              true, interpretUnicodeEscapes, ignoreEmptyLines);
     }
 
-
     public void setDelimiter(char delimiter) { this.delimiter = delimiter; }
     public char getDelimiter() { return this.delimiter; }
 
@@ -129,6 +132,13 @@ public class CSVStrategy implements Cloneable, Serializable {
 
     public void setIgnoreEmptyLines(boolean ignoreEmptyLines) { this.ignoreEmptyLines = ignoreEmptyLines; }
     public boolean getIgnoreEmptyLines() { return this.ignoreEmptyLines; }
+
+    public void setPrinterNewline(String newline) {
+      this.printerNewline = newline;
+    }
+    public String getPrinterNewline() {
+      return this.printerNewline;
+    }
 
     public Object clone() {
       try {

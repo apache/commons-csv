@@ -48,10 +48,10 @@ public class CSVUtils {
      * @return the CSV string, will be an empty string if the length of the
      * value array is 0
      */
-    public static String printLine(String[] values) {
+    public static String printLine(String[] values, CSVStrategy strategy) {
         // set up a CSVUtils
         StringWriter stringWriter = new StringWriter();
-        CSVPrinter csvPrinter = new CSVPrinter(stringWriter);
+        CSVPrinter csvPrinter = new CSVPrinter(stringWriter, strategy);
   
         // check for null values an "null" as strings and convert them
         // into the strings "null" and "\"null\""
@@ -64,8 +64,11 @@ public class CSVUtils {
         }
   
         // convert to CSV
-        csvPrinter.println(values);
-  
+        try {
+          csvPrinter.println(values);
+        } catch (IOException e) {
+          // should not happen with StringWriter
+        }
         // as the resulting string has \r\n at the end, we will trim that away
         return stringWriter.toString().trim();
     }

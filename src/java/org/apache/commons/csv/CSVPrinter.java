@@ -16,6 +16,7 @@
  */
 package org.apache.commons.csv;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -26,63 +27,27 @@ import java.io.Writer;
 public class CSVPrinter {
 
   /** The place that the values get written. */
-  protected PrintWriter out;
+  protected final Writer out;
+  protected final CSVStrategy strategy;
 
   /** True if we just began a new line. */
   protected boolean newLine = true;
 
-  private CSVStrategy strategy = CSVStrategy.DEFAULT_STRATEGY;
+  protected char[] buf = new char[0];  // temporary buffer
 
   /**
    * Create a printer that will print values to the given
-   * stream. Character to byte conversion is done using
-   * the default character encoding. Comments will be
-   * written using the default comment character '#'.
+   * stream following the CSVStrategy.
+   *
+   * Currently, only a pure encapsulation strategy or a pure escaping strategy
+   * is supported.  Hybrid strategies (encapsulation and escaping with a different character) are not supported.
    *
    * @param out stream to which to print.
+   * @param strategy describes the CSV variation.
    */
-  public CSVPrinter(OutputStream out) {
-    this.out = new PrintWriter(out);
-  }
-
-
-  /**
-   * Create a printer that will print values to the given
-   * stream. Comments will be
-   * written using the default comment character '#'.
-   *
-   * @param out stream to which to print.
-   */
-  public CSVPrinter(Writer out) {
-    if (out instanceof PrintWriter) {
-      this.out = (PrintWriter) out;
-    } else {
-      this.out = new PrintWriter(out);
-    }
-  }
-
-
-  // ======================================================
-  //  strategies
-  // ======================================================
-  
-  /**
-   * Sets the specified CSV Strategy
-   *
-   * @return current instance of CSVParser to allow chained method calls
-   */
-  public CSVPrinter setStrategy(CSVStrategy strategy) {
-    this.strategy = strategy;
-    return this;
-  }
-  
-  /**
-   * Obtain the specified CSV Strategy
-   * 
-   * @return strategy currently being used
-   */
-  public CSVStrategy getStrategy() {
-    return this.strategy;
+  public CSVPrinter(Writer out, CSVStrategy strategy) {
+    this.out = out;
+    this.strategy = strategy==null ? CSVStrategy.DEFAULT_STRATEGY : strategy;
   }
   
   // ======================================================
@@ -90,26 +55,15 @@ public class CSVPrinter {
   // ======================================================
 
   /**
-   * Print the string as the last value on the line. The value
-   * will be quoted if needed.
-   *
-   * @param value value to be outputted.
+   * Output a blank line
    */
-  public void println(String value) {
-    print(value);
-    out.println();
-    out.flush();
+  public void println() throws IOException {
+    out.write(strategy.getPrinterNewline());
     newLine = true;
   }
 
-
-  /**
-   * Output a blank line
-   */
-  public void println() {
-    out.println();
+  public void flush() throws IOException {
     out.flush();
-    newLine = true;
   }
 
 
@@ -120,32 +74,11 @@ public class CSVPrinter {
    *
    * @param values values to be outputted.
    */
-  public void println(String[] values) {
+  public void println(String[] values) throws IOException {
     for (int i = 0; i < values.length; i++) {
       print(values[i]);
     }
-    out.println();
-    out.flush();
-    newLine = true;
-  }
-
-
-  /**
-   * Print several lines of comma separated values.
-   * The values will be quoted if needed.  Quotes and
-   * newLine characters will be escaped.
-   *
-   * @param values values to be outputted.
-   */
-  public void println(String[][] values) {
-    for (int i = 0; i < values.length; i++) {
-      println(values[i]);
-    }
-    if (values.length == 0) {
-      out.println();
-    }
-    out.flush();
-    newLine = true;
+    println();
   }
 
 
@@ -158,15 +91,15 @@ public class CSVPrinter {
    *
    * @param comment the comment to output
    */
-  public void printlnComment(String comment) {
+  public void printlnComment(String comment) throws IOException {
     if(this.strategy.isCommentingDisabled()) {
         return;
     }
     if (!newLine) {
-      out.println();
+      println();
     }
-    out.print(this.strategy.getCommentStart());
-    out.print(' ');
+    out.write(this.strategy.getCommentStart());
+    out.write(' ');
     for (int i = 0; i < comment.length(); i++) {
       char c = comment.charAt(i);
       switch (c) {
@@ -176,120 +109,201 @@ public class CSVPrinter {
           }
           // break intentionally excluded.
         case '\n' :
-          out.println();
-          out.print(this.strategy.getCommentStart());
-          out.print(' ');
+          println();
+          out.write(this.strategy.getCommentStart());
+          out.write(' ');
           break;
         default :
-          out.print(c);
+          out.write(c);
           break;
       }
     }
-    out.println();
-    out.flush();
-    newLine = true;
+    println();
   }
 
 
-  /**
-   * Print the string as the next value on the line. The value
-   * will be quoted if needed.
-   *
-   * @param value value to be outputted.
-   */
-  public void print(String value) {
-    boolean quote = false;
-    if (value.length() > 0) {
-      char c = value.charAt(0);
-      if (newLine
-        && (c < '0'
-          || (c > '9' && c < 'A')
-          || (c > 'Z' && c < 'a')
-          || (c > 'z'))) {
-        quote = true;
+  public void print(char[] value, int offset, int len, boolean checkForEscape) throws IOException {
+    if (!checkForEscape) {
+      if (newLine) {
+        newLine = false;
+      } else {
+        out.write(this.strategy.getDelimiter());
       }
-      if (c == ' ' || c == '\f' || c == '\t') {
-        quote = true;
-      }
-      for (int i = 0; i < value.length(); i++) {
-        c = value.charAt(i);
-        if (c == '"' || c == this.strategy.getDelimiter() || c == '\n' || c == '\r') {
-          quote = true;
-          c = value.charAt( value.length() - 1 );
-          break;
+      out.write(value, offset, len);
+      return;
+    }
+
+    if (strategy.getEncapsulator() != (char)-2) {
+      printAndEncapsulate(value, offset, len);
+    } else if (strategy.getEscape() != (char)-2) {
+      printAndEscape(value, offset, len);
+    } else {
+      out.write(value, offset, len);
+    }
+  }
+
+  void printSep() throws IOException {
+    if (newLine) {
+      newLine = false;
+    } else {
+      out.write(this.strategy.getDelimiter());
+    }
+  }
+
+  void printAndEscape(char[] value, int offset, int len) throws IOException {
+    int start = offset;
+    int pos = offset;
+    int end = offset + len;
+
+    char delim = this.strategy.getDelimiter();
+    char escape = this.strategy.getEscape();
+
+    printSep();
+
+    while (pos < end) {
+      char c = value[pos];
+      if (c == '\r' || c=='\n' || c==delim || c==escape) {
+        // write out segment up until this char
+        int l = pos-start;
+        if (l>0) {
+          out.write(value, start, l);
         }
+        if (c=='\n') c='n';
+        else if (c=='\r') c='r';
+
+        out.write(escape);
+        out.write(c);
+
+        start = pos+1; // start on the current char after this one
       }
-      if (c == ' ' || c == '\f' || c == '\t') {
-        quote = true;
-      }
-    } else if (newLine) {
+
+      pos++;
+    }
+
+    // write last segment
+    int l = pos-start;
+    if (l>0) {
+      out.write(value, start, l);      
+    }
+  }
+
+  void printAndEncapsulate(char[] value, int offset, int len) throws IOException {
+    boolean first = newLine;  // is this the first value on this line?
+    boolean quote = false;
+    int start = offset;
+    int pos = offset;
+    int end = offset + len;
+
+    char delim = this.strategy.getDelimiter();
+    char encapsulator = this.strategy.getEncapsulator();
+
+    printSep();
+
+    if (len <= 0) {
       // always quote an empty token that is the first
       // on the line, as it may be the only thing on the
       // line. If it were not quoted in that case,
       // an empty line has no tokens.
-      quote = true;
-    }
-    if (newLine) {
-      newLine = false;
+      if (first) {
+        quote = true;
+      }
     } else {
-      out.print(this.strategy.getDelimiter());
-    }
-    if (quote) {
-      out.print(escapeAndQuote(value));
-    } else {
-      out.print(value);
-    }
-    out.flush();
-  }
+      char c = value[pos];
 
+      // Hmmm, where did this rule come from?
+      if (first
+          && (c < '0'
+          || (c > '9' && c < 'A')
+          || (c > 'Z' && c < 'a')
+          || (c > 'z'))) {
+        quote = true;
+      // } else if (c == ' ' || c == '\f' || c == '\t') {
+      } else if (c <= '#') {
+        // Some other chars at the start of a value caused the parser to fail, so for now
+        // encapsulate if we start in anything less than '#'.  We are being conservative
+        // by including the default comment char too.
+        quote = true;
+      } else {
+        while (pos < end) {
+          c = value[pos];
+          if (c=='\n' || c=='\r' || c==encapsulator || c==delim) {
+            quote = true;
+            break;
+          }
+          pos++;
+        }
+
+        if (!quote) {
+          pos = end-1;
+          c = value[pos];
+          // if (c == ' ' || c == '\f' || c == '\t') {
+          // Some other chars at the end caused the parser to fail, so for now
+          // encapsulate if we end in anything less than ' '
+          if (c <= ' ') {
+            quote = true;
+          }
+        }
+      }
+    }
+
+    if (!quote) {
+      // no encapsulation needed - write out the original value
+      out.write(value, offset, len);
+      return;
+    }
+
+    // we hit something that needed encapsulation
+    out.write(encapsulator);
+
+    // Pick up where we left off: pos should be positioned on the first character that caused
+    // the need for encapsulation.
+    while (pos<end) {
+      char c = value[pos];
+      if (c==encapsulator) {
+        // write out the chunk up until this point
+
+        // add 1 to the length to write out the encapsulator also
+        out.write(value, start, pos-start+1);
+        // put the next starting position on the encapsulator so we will
+        // write it out again with the next string (effectively doubling it)
+        start = pos;
+      }
+      pos++;
+    }
+
+    // write the last segment
+    out.write(value, start, pos-start);
+    out.write(encapsulator);    
+  }
 
   /**
-   * Enclose the value in quotes and escape the quote
-   * and comma characters that are inside.
+   * Print the string as the next value on the line. The value
+   * will be escaped or encapsulated as needed if checkForEscape==true
    *
-   * @param value needs to be escaped and quoted
-   * @return the value, escaped and quoted
+   * @param value value to be outputted.
    */
-  private String escapeAndQuote(String value) {
-    // the initial count is for the preceding and trailing quotes
-    int count = 2;
-    for (int i = 0; i < value.length(); i++) {
-      switch (value.charAt(i)) {
-        case '\"' :
-        case '\n' :
-        case '\r' :
-        case '\\' :
-          count++;
-          break;
-        default:
-          break;
-      }
+  public void print(String value, boolean checkForEscape) throws IOException {
+    if (!checkForEscape) {
+      // write directly from string
+      out.write(value);
+      return;
     }
-    StringBuffer sb = new StringBuffer(value.length() + count);
-    sb.append(strategy.getEncapsulator());
-    for (int i = 0; i < value.length(); i++) {
-      char c = value.charAt(i);
 
-      if (c == strategy.getEncapsulator()) {
-        sb.append('\\').append(c);
-        continue;
-      }
-      switch (c) {
-        case '\n' :
-          sb.append("\\n");
-          break;
-        case '\r' :
-          sb.append("\\r");
-          break;
-        case '\\' :
-          sb.append("\\\\");
-          break;
-        default :
-          sb.append(c);
-      }
+    if (buf.length < value.length()) {
+      buf = new char[value.length()];
     }
-    sb.append(strategy.getEncapsulator());
-    return sb.toString();
+
+    value.getChars(0, value.length(), buf, 0);
+    print(buf, 0, value.length(), checkForEscape);
   }
 
+  /**
+   * Print the string as the next value on the line. The value
+   * will be escaped or encapsulated as needed.
+   *
+   * @param value value to be outputted.
+   */
+  public void print(String value) throws IOException {
+    print(value, true);   
+  }
 }
