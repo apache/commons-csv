@@ -343,7 +343,7 @@ public class CSVParser {
     } 
     
     //  important: make sure a new char gets consumed in each iteration
-    while (!tkn.isReady) {
+    while (!tkn.isReady && tkn.type != TT_EOF) {
       // ignore whitespaces at beginning of a token
       while (strategy.getIgnoreLeadingWhitespaces() && isWhitespace(c) && !eol) {
         wsBuf.append((char) c);

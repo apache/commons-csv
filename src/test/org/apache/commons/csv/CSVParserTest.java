@@ -497,7 +497,7 @@ public class CSVParserTest extends TestCase {
     String[][] res = {
         { "a", "b" },
         { "\n", " " },
-        { "", "#" },    // WARNING: TODO: this causes a hang if comments are enabled
+        { "", "#" },
     };
 
     CSVStrategy strategy = CSVStrategy.DEFAULT_STRATEGY;
@@ -508,6 +508,20 @@ public class CSVParserTest extends TestCase {
     assertTrue(tmp.length > 0);
 
     if (!CSVPrinterTest.equals(res, tmp)) {
+      assertTrue(false);
+    }
+
+    String[][] res_comments = {
+        { "a", "b" },
+        { "\n", " " },
+        { ""},
+    };
+
+    strategy = new CSVStrategy(',','"','#');
+    parser = new CSVParser(new StringReader(code), strategy);
+    tmp = parser.getAllValues();
+
+    if (!CSVPrinterTest.equals(res_comments, tmp)) {
       assertTrue(false);
     }
   }

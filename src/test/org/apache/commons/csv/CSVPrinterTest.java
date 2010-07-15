@@ -133,9 +133,15 @@ public class CSVPrinterTest extends TestCase {
   }
 
   public static boolean equals(String[][] a, String[][] b) {
+    if (a.length != b.length) {
+      return false;
+    }
     for (int i=0; i<a.length; i++) {
       String[] linea = a[i];
       String[] lineb = b[i];
+      if (linea.length != lineb.length) {
+        return false;
+      }
       for (int j=0; j<linea.length; j++) {
         String aval = linea[j];
         String bval = lineb[j];
