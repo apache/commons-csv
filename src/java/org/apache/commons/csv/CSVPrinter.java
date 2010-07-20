@@ -124,20 +124,17 @@ public class CSVPrinter {
 
   public void print(char[] value, int offset, int len, boolean checkForEscape) throws IOException {
     if (!checkForEscape) {
-      if (newLine) {
-        newLine = false;
-      } else {
-        out.write(this.strategy.getDelimiter());
-      }
+      printSep();
       out.write(value, offset, len);
       return;
     }
 
-    if (strategy.getEncapsulator() != (char)-2) {
+    if (strategy.getEncapsulator() != CSVStrategy.ENCAPSULATOR_DISABLED) {
       printAndEncapsulate(value, offset, len);
-    } else if (strategy.getEscape() != (char)-2) {
+    } else if (strategy.getEscape() != CSVStrategy.ESCAPE_DISABLED) {
       printAndEscape(value, offset, len);
     } else {
+      printSep();
       out.write(value, offset, len);
     }
   }
@@ -155,10 +152,10 @@ public class CSVPrinter {
     int pos = offset;
     int end = offset + len;
 
+    printSep();
+
     char delim = this.strategy.getDelimiter();
     char escape = this.strategy.getEscape();
-
-    printSep();
 
     while (pos < end) {
       char c = value[pos];
@@ -194,10 +191,10 @@ public class CSVPrinter {
     int pos = offset;
     int end = offset + len;
 
+    printSep();    
+
     char delim = this.strategy.getDelimiter();
     char encapsulator = this.strategy.getEncapsulator();
-
-    printSep();
 
     if (len <= 0) {
       // always quote an empty token that is the first
@@ -285,6 +282,7 @@ public class CSVPrinter {
   public void print(String value, boolean checkForEscape) throws IOException {
     if (!checkForEscape) {
       // write directly from string
+      printSep();
       out.write(value);
       return;
     }
