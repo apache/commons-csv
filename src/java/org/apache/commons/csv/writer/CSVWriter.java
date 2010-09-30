@@ -70,7 +70,7 @@ public class CSVWriter {
                     }
                 }
             }
-            sb.append("\n");
+            sb.append(config.getRowDelimiter());
             String line = sb.toString();
             writer.write(line);
         } catch(Exception e) {

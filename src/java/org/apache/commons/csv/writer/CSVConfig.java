@@ -50,6 +50,8 @@ public class CSVConfig {
     private char fillChar = ' ';
     /** The seperator character. Defaults to , */
     private char delimiter = ',';
+    /** The row separator. Defaults to \n */
+    private String rowDelimiter = "\n";
     /** Should we ignore the delimiter. Defaults to false */
     private boolean ignoreDelimiter = false;
     /** the value delimiter. Defaults to " */
@@ -182,6 +184,21 @@ public class CSVConfig {
      */
     public void setDelimiter(char delimiter) {
         this.delimiter = delimiter;
+    }
+
+    /**
+     * @return the rowDelimiter used.
+     */
+    public String getRowDelimiter() {
+        return rowDelimiter;
+    }
+
+    /**
+     * Set the rowDelimiter to use
+     * @param rowDelimiter the row delimiter character.
+     */
+    public void setRowDelimiter(String rowDelimiter) {
+        this.rowDelimiter = rowDelimiter;
     }
 
     /**
