@@ -103,13 +103,14 @@ public class CSVWriter {
                 // value to big..
                 value = value.substring(0, field.getSize());
             }
-            if (!config.isValueDelimiterIgnored()) {
-                // add the value delimiter..
-                value = config.getValueDelimiter()+value+config.getValueDelimiter();
-            }
+        }
+        if (!config.isValueDelimiterIgnored()) {
+            // add the value delimiter..
+            value = config.getValueDelimiter()+value+config.getValueDelimiter();
         }
         return value;
     }
+    
     /**
      * @return the CVSConfig or null if not present
      */

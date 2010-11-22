@@ -32,6 +32,16 @@ import junit.framework.TestCase;
  */
 public class CSVWriterTest extends TestCase {
 
+    private Map map;
+    
+    protected void setUp() throws Exception {
+        super.setUp();
+        
+        map = new HashMap();
+        map.put("field1", "12345");
+        map.put("field2", "1234");
+    }
+
     public void testCSVConfig() {
         CSVWriter writer = new CSVWriter();
         assertEquals(null, writer.getConfig());
@@ -41,19 +51,115 @@ public class CSVWriterTest extends TestCase {
         writer = new CSVWriter(config);
         assertEquals(config, writer.getConfig());
     }
-    
-    public void testWriter() {
+
+    public void testWriterDefaults() throws Exception {
         CSVWriter writer = new CSVWriter();
-        CSVConfig config = new CSVConfig();
-        config.addField(new CSVField("field1", 5));
-        config.addField(new CSVField("field2", 4));
+        CSVConfig config = getConfig();
         writer.setConfig(config);
         StringWriter sw = new StringWriter();
         writer.setWriter(sw);
-        Map map = new HashMap();
-        map.put("field1", "12345");
-        map.put("field2", "1234");
         writer.writeRecord(map);
-        assertEquals("12345,1234\n",sw.toString());
+        assertEquals("12345,1234\n", sw.toString());
+    }
+
+    public void testWriterWithExplicitDelimiter() throws Exception {
+        CSVWriter writer = new CSVWriter();
+        CSVConfig config = getConfig();
+        config.setDelimiter(';');
+        config.setIgnoreDelimiter(false);
+        writer.setConfig(config);
+        StringWriter sw = new StringWriter();
+        writer.setWriter(sw);
+        writer.writeRecord(map);
+        assertEquals("12345;1234\n", sw.toString());
+    }
+
+    public void testWriterIgnoringDelimiter() throws Exception {
+        CSVWriter writer = new CSVWriter();
+        CSVConfig config = getConfig();
+        config.setDelimiter(';');
+        config.setIgnoreDelimiter(true);
+        writer.setConfig(config);
+        StringWriter sw = new StringWriter();
+        writer.setWriter(sw);
+        writer.writeRecord(map);
+        assertEquals("123451234\n", sw.toString());
+    }
+
+    public void testWriterWithExplicitValueDelimiter() throws Exception {
+        CSVWriter writer = new CSVWriter();
+        CSVConfig config = getConfig();
+        config.setValueDelimiter('"');
+        config.setIgnoreValueDelimiter(false);
+        writer.setConfig(config);
+        StringWriter sw = new StringWriter();
+        writer.setWriter(sw);
+        writer.writeRecord(map);
+        assertEquals("\"12345\",\"1234\"\n", sw.toString());
+    }
+
+    public void testWriterIgnoringValueDelimiter() throws Exception {
+        CSVWriter writer = new CSVWriter();
+        CSVConfig config = getConfig();
+        config.setValueDelimiter('"');
+        config.setIgnoreValueDelimiter(true);
+        writer.setConfig(config);
+        StringWriter sw = new StringWriter();
+        writer.setWriter(sw);
+        writer.writeRecord(map);
+        assertEquals("12345,1234\n", sw.toString());
+    }
+
+    public void testWriterWithoutHeader() throws Exception {
+        CSVWriter writer = new CSVWriter();
+        CSVConfig config = getConfig();
+        config.setFieldHeader(false);
+        writer.setConfig(config);
+        StringWriter sw = new StringWriter();
+        writer.setWriter(sw);
+        writer.writeRecord(map);
+        assertEquals("12345,1234\n", sw.toString());
+    }
+
+    // TODO: SANDBOX-324
+    public void todoTestWriterWithHeader() throws Exception {
+        CSVWriter writer = new CSVWriter();
+        CSVConfig config = getConfig();
+        config.setFieldHeader(true);
+        writer.setConfig(config);
+        StringWriter sw = new StringWriter();
+        writer.setWriter(sw);
+        writer.writeRecord(map);
+        assertEquals("field1,field2\n12345,1234\n", sw.toString());
+    }
+
+    public void testWriterWithExplicitRowDelimiterLF() throws Exception {
+        CSVWriter writer = new CSVWriter();
+        CSVConfig config = getConfig();
+        config.setRowDelimiter("\n");
+        writer.setConfig(config);
+        StringWriter sw = new StringWriter();
+        writer.setWriter(sw);
+        writer.writeRecord(map);
+        assertEquals("12345,1234\n", sw.toString());
+    }
+
+    public void testWriterWithExplicitRowDelimiterCRLF() throws Exception {
+        CSVWriter writer = new CSVWriter();
+        CSVConfig config = getConfig();
+        config.setRowDelimiter("\r\n");
+        writer.setConfig(config);
+        StringWriter sw = new StringWriter();
+        writer.setWriter(sw);
+        writer.writeRecord(map);
+        assertEquals("12345,1234\r\n", sw.toString());
+    }
+
+    private CSVConfig getConfig() {
+        CSVConfig config = new CSVConfig();
+        config.addField(new CSVField("field1", 5));
+        config.addField(new CSVField("field2", 4));
+
+        return config;
     }
 }
