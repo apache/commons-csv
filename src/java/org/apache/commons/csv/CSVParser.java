@@ -322,6 +322,7 @@ public class CSVParser {
     //  empty line detection: eol AND (last char was EOL or beginning)
     while (strategy.getIgnoreEmptyLines() && eol 
       && (lastChar == '\n' 
+      || lastChar == '\r' 
       || lastChar == ExtendedBufferedReader.UNDEFINED) 
       && !isEndOfFile(lastChar)) {
       // go on char ahead ...
@@ -580,7 +581,7 @@ public class CSVParser {
   }
   
   /**
-   * Greedy - accepts \n and \r\n 
+   * Greedy - accepts \n, \r and \r\n 
    * This checker consumes silently the second control-character...
    * 
    * @return true if the given character is a line-terminator
@@ -593,7 +594,7 @@ public class CSVParser {
         c = in.read();
       }
     }
-    return (c == '\n');
+    return (c == '\n' || c == '\r');
   }
   
   /**
