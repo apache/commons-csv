@@ -55,7 +55,7 @@ public class CSVParser {
   private static final int INITIAL_TOKEN_LENGTH = 50;
   
   // the token types
-  /** Token has no valid content, i.e. is in its initilized state. */
+  /** Token has no valid content, i.e. is in its initialized state. */
   protected static final int TT_INVALID = -1;
   /** Token with content, at beginning or in the middle of a line. */
   protected static final int TT_TOKEN = 0;
@@ -303,13 +303,13 @@ public class CSVParser {
    * @throws IOException on stream access error
    */
   protected Token nextToken(Token tkn) throws IOException {
-    wsBuf.clear(); // resuse
+    wsBuf.clear(); // reuse
     
     // get the last read char (required for empty line detection)
     int lastChar = in.readAgain();
     
     //  read the next char and set eol
-    /* note: unfourtunately isEndOfLine may consumes a character silently.
+    /* note: unfortunately isEndOfLine may consumes a character silently.
      *       this has no effect outside of the method. so a simple workaround
      *       is to call 'readAgain' on the stream...
      *       uh: might using objects instead of base-types (jdk1.5 autoboxing!)
@@ -336,7 +336,7 @@ public class CSVParser {
       }
     }
 
-    // did we reached eof during the last iteration already ? TT_EOF
+    // did we reach eof during the last iteration already ? TT_EOF
     if (isEndOfFile(lastChar) || (lastChar != strategy.getDelimiter() && isEndOfFile(c))) {
       tkn.type = TT_EOF;
       return tkn;
