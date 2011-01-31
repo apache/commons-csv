@@ -57,6 +57,38 @@ public class CSVPrinterTest extends TestCase {
     assertEquals("\"a, b\",\"b \"" + lineSeparator, sw.toString());
   }
 
+  public void testPrinter4() throws IOException {
+    StringWriter sw = new StringWriter();
+    CSVPrinter printer = new CSVPrinter(sw, CSVStrategy.DEFAULT_STRATEGY);
+    String[] line1 = {"a", "b\"c"};
+    printer.println(line1);
+    assertEquals("a,\"b\"\"c\"" + lineSeparator, sw.toString());
+  }
+
+  public void testPrinter5() throws IOException {
+    StringWriter sw = new StringWriter();
+    CSVPrinter printer = new CSVPrinter(sw, CSVStrategy.DEFAULT_STRATEGY);
+    String[] line1 = {"a", "b\nc"};
+    printer.println(line1);
+    assertEquals("a,\"b\nc\"" + lineSeparator, sw.toString());
+  }
+
+  public void testPrinter6() throws IOException {
+    StringWriter sw = new StringWriter();
+    CSVPrinter printer = new CSVPrinter(sw, CSVStrategy.DEFAULT_STRATEGY);
+    String[] line1 = {"a", "b\r\nc"};
+    printer.println(line1);
+    assertEquals("a,\"b\r\nc\"" + lineSeparator, sw.toString());
+  }
+
+  public void testPrinter7() throws IOException {
+    StringWriter sw = new StringWriter();
+    CSVPrinter printer = new CSVPrinter(sw, CSVStrategy.DEFAULT_STRATEGY);
+    String[] line1 = {"a", "b\\c"};
+    printer.println(line1);
+    assertEquals("a,b\\c" + lineSeparator, sw.toString());
+  }
+
   public void testExcelPrinter1() throws IOException {
     StringWriter sw = new StringWriter();
     CSVPrinter printer = new CSVPrinter(sw, CSVStrategy.EXCEL_STRATEGY);
