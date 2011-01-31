@@ -121,8 +121,7 @@ public class CSVParser {
    * @param input a Reader containing "csv-formatted" input
    */
   public CSVParser(Reader input) {
-    // note: must match default-CSV-strategy !!
-    this(input, ',');
+    this(input, (CSVStrategy)CSVStrategy.DEFAULT_STRATEGY.clone());
   }
   
   /**
