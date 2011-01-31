@@ -543,7 +543,21 @@ public class CSVParserTest extends TestCase {
      String[][] data = parser.getAllValues();
      assertEquals(4, data.length);
     }
-    
+
+    public void testCarriageReturnEndings() throws IOException {
+     String code = "foo\rbaar,\rhello,world\r,kanu";
+     CSVParser parser = new CSVParser(new StringReader(code));
+     String[][] data = parser.getAllValues();
+     assertEquals(4, data.length);
+    }
+
+    public void testLineFeedEndings() throws IOException {
+     String code = "foo\nbaar,\nhello,world\n,kanu";
+     CSVParser parser = new CSVParser(new StringReader(code));
+     String[][] data = parser.getAllValues();
+     assertEquals(4, data.length);
+    }
+
     public void testIgnoreEmptyLines() throws IOException {
       String code = "\nfoo,baar\n\r\n,\n\n,world\r\n\n";
       //String code = "world\r\n\n";
