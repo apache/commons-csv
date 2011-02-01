@@ -20,7 +20,6 @@ package org.apache.commons.csv.writer;
 
 
 /**
- * 
  * @author Martin van den Bemt
  * @version $Id: $
  */
@@ -32,7 +31,7 @@ public class CSVField {
     private boolean overrideFill;
 
     /**
-     * 
+     *
      */
     public CSVField() {
     }
@@ -59,9 +58,10 @@ public class CSVField {
     public String getName() {
         return name;
     }
-    
+
     /**
      * Set the name of the field
+     *
      * @param name the name
      */
     public void setName(String name) {
@@ -69,7 +69,6 @@ public class CSVField {
     }
 
     /**
-     * 
      * @return the size of the field
      */
     public int getSize() {
@@ -79,6 +78,7 @@ public class CSVField {
     /**
      * Set the size of the field.
      * The size will be ignored when fixedwidth is set to false in the CSVConfig
+     *
      * @param size the size of the field.
      */
     public void setSize(int size) {
@@ -94,16 +94,17 @@ public class CSVField {
 
     /**
      * Sets overrideFill to true.
+     *
      * @param fill the file pattern
      */
     public void setFill(int fill) {
         overrideFill = true;
         this.fill = fill;
     }
-    
+
     /**
      * Does this field override fill ?
-     * 
+     *
      * @return
      */
     public boolean overrideFill() {

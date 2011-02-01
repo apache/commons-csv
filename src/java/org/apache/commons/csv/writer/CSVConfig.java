@@ -32,69 +32,100 @@ import java.util.List;
  */
 public class CSVConfig {
 
-    /** specifies if it is a fixed width csv file **/
+    /**
+     * specifies if it is a fixed width csv file *
+     */
     private boolean fixedWidth;
-    /** list of fields **/
+    /**
+     * list of fields *
+     */
     private List fields;
 
-    /** Do no do any filling **/
-    public static final int FILLNONE = 0;
-    /** Fill content the the left. Mainly usable together with fixedWidth **/
-    public static final int FILLLEFT = 1;
-    /** Fill content to the right. Mainly usable together with fixedWidth **/
-    public static final int FILLRIGHT = 2;
-    
-    /** The fill pattern */
-    private int fill;
-    /** The fill char. Defaults to a space */
-    private char fillChar = ' ';
-    /** The seperator character. Defaults to , */
-    private char delimiter = ',';
-    /** The row separator. Defaults to \n */
-    private String rowDelimiter = "\n";
-    /** Should we ignore the delimiter. Defaults to false */
-    private boolean ignoreDelimiter = false;
-    /** the value delimiter. Defaults to " */
-    private char valueDelimiter = '"';
-    /** Should we ignore the value delimiter. Defaults to true */
-    private boolean ignoreValueDelimiter = true;
-    /** Specifies if we want to use a field header */
-    private boolean fieldHeader = false;
-    /** Specifies if the end of the line needs to be trimmed */
-    private boolean endTrimmed = false;
     /**
-     * 
+     * Do no do any filling *
+     */
+    public static final int FILLNONE = 0;
+    /**
+     * Fill content the the left. Mainly usable together with fixedWidth *
+     */
+    public static final int FILLLEFT = 1;
+    /**
+     * Fill content to the right. Mainly usable together with fixedWidth *
+     */
+    public static final int FILLRIGHT = 2;
+
+    /**
+     * The fill pattern
+     */
+    private int fill;
+    /**
+     * The fill char. Defaults to a space
+     */
+    private char fillChar = ' ';
+    /**
+     * The seperator character. Defaults to ,
+     */
+    private char delimiter = ',';
+    /**
+     * The row separator. Defaults to \n
+     */
+    private String rowDelimiter = "\n";
+    /**
+     * Should we ignore the delimiter. Defaults to false
+     */
+    private boolean ignoreDelimiter = false;
+    /**
+     * the value delimiter. Defaults to "
+     */
+    private char valueDelimiter = '"';
+    /**
+     * Should we ignore the value delimiter. Defaults to true
+     */
+    private boolean ignoreValueDelimiter = true;
+    /**
+     * Specifies if we want to use a field header
+     */
+    private boolean fieldHeader = false;
+    /**
+     * Specifies if the end of the line needs to be trimmed
+     */
+    private boolean endTrimmed = false;
+
+    /**
+     *
      */
     public CSVConfig() {
         super();
     }
-    
+
     /**
      * @return if the CSV file is fixedWidth
      */
     public boolean isFixedWidth() {
         return fixedWidth;
     }
-    
+
     /**
      * Specify if the CSV file is fixed width.
      * Defaults to false
+     *
      * @param fixedWidth the fixedwidth
      */
     public void setFixedWidth(boolean fixedWidth) {
         this.fixedWidth = fixedWidth;
     }
-    
+
     public void addField(CSVField field) {
         if (fields == null) {
             fields = new ArrayList();
         }
         fields.add(field);
     }
-    
+
     /**
      * Set the fields that should be used by the writer.
      * This will overwrite currently added fields completely!
+     *
      * @param csvFields the csvfields array. If null it will do nothing
      */
     public void setFields(CSVField[] csvFields) {
@@ -103,9 +134,10 @@ public class CSVConfig {
         }
         fields = new ArrayList(Arrays.asList(csvFields));
     }
-    
+
     /**
      * Set the fields that should be used by the writer
+     *
      * @param csvField a collection with fields. If null it will do nothing
      */
     public void setFields(Collection csvField) {
@@ -125,12 +157,12 @@ public class CSVConfig {
         }
         return csvFields;
     }
-    
+
     public CSVField getField(String name) {
         if (fields == null || name == null) {
             return null;
         }
-        for(int i = 0; i < fields.size(); i++) {
+        for (int i = 0; i < fields.size(); i++) {
             CSVField field = (CSVField) fields.get(i);
             if (name.equals(field.getName())) {
                 return field;
@@ -149,6 +181,7 @@ public class CSVConfig {
     /**
      * Set the fill pattern. Defaults to {@link #FILLNONE}
      * <br/>Other options are : {@link #FILLLEFT} and {@link #FILLRIGHT}
+     *
      * @param fill the fill pattern.
      */
     public void setFill(int fill) {
@@ -156,7 +189,6 @@ public class CSVConfig {
     }
 
     /**
-     * 
      * @return the fillchar. Defaults to a space.
      */
     public char getFillChar() {
@@ -165,6 +197,7 @@ public class CSVConfig {
 
     /**
      * Set the fill char
+     *
      * @param fillChar the fill char
      */
     public void setFillChar(char fillChar) {
@@ -180,6 +213,7 @@ public class CSVConfig {
 
     /**
      * Set the delimiter to use
+     *
      * @param delimiter the delimiter character.
      */
     public void setDelimiter(char delimiter) {
@@ -195,6 +229,7 @@ public class CSVConfig {
 
     /**
      * Set the rowDelimiter to use
+     *
      * @param rowDelimiter the row delimiter character.
      */
     public void setRowDelimiter(String rowDelimiter) {
@@ -209,7 +244,8 @@ public class CSVConfig {
     }
 
     /**
-     * Specify if the writer should ignore the delimiter. 
+     * Specify if the writer should ignore the delimiter.
+     *
      * @param ignoreDelimiter defaults to false.
      */
     public void setIgnoreDelimiter(boolean ignoreDelimiter) {
@@ -225,6 +261,7 @@ public class CSVConfig {
 
     /**
      * Set the value delimiter to use
+     *
      * @param valueDelimiter the value delimiter character.
      */
     public void setValueDelimiter(char valueDelimiter) {
@@ -240,7 +277,8 @@ public class CSVConfig {
     }
 
     /**
-     * Specify if the writer should ignore the value delimiter. 
+     * Specify if the writer should ignore the value delimiter.
+     *
      * @param ignoreValueDelimiter defaults to false.
      */
     public void setIgnoreValueDelimiter(boolean ignoreValueDelimiter) {
@@ -253,16 +291,19 @@ public class CSVConfig {
     public boolean isFieldHeader() {
         return fieldHeader;
     }
+
     /**
      * Specify if you want to use a field header.
+     *
      * @param fieldHeader true or false.
      */
     public void setFieldHeader(boolean fieldHeader) {
         this.fieldHeader = fieldHeader;
     }
-    
+
     /**
      * TODO..
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object obj) {
@@ -278,8 +319,9 @@ public class CSVConfig {
     /**
      * Creates a config based on a stream. It tries to guess<br/>
      * NOTE : The stream will be closed.
-     * @param inputStream the inputstream. 
-     * @return the guessed config. 
+     *
+     * @param inputStream the inputstream.
+     * @return the guessed config.
      */
     public static CSVConfig guessConfig(InputStream inputStream) {
         return null;
@@ -294,11 +336,12 @@ public class CSVConfig {
 
     /**
      * Specify if the end of the line needs to be trimmed. Defaults to false.
+     *
      * @param endTrimmed
      */
     public void setEndTrimmed(boolean endTrimmed) {
         this.endTrimmed = endTrimmed;
     }
 
-    
+
 }

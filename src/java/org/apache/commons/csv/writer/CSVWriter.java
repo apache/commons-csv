@@ -31,16 +31,21 @@ import java.util.Map;
  */
 public class CSVWriter {
 
-    /** The CSV config **/
-    private CSVConfig config;
-    /** The writer **/
-    private Writer writer;
     /**
-     * 
+     * The CSV config *
+     */
+    private CSVConfig config;
+    /**
+     * The writer *
+     */
+    private Writer writer;
+
+    /**
+     *
      */
     public CSVWriter() {
     }
-    
+
     public CSVWriter(CSVConfig config) {
         setConfig(config);
     }
@@ -56,12 +61,12 @@ public class CSVWriter {
                     value = writeValue(fields[i], value);
                     sb.append(value);
                 }
-                if (!config.isDelimiterIgnored() && fields.length != (i+1)) {
+                if (!config.isDelimiterIgnored() && fields.length != (i + 1)) {
                     sb.append(config.getDelimiter());
                 }
             }
             if (config.isEndTrimmed()) {
-                for (int i = sb.length()-1; i >= 0; i--) {
+                for (int i = sb.length() - 1; i >= 0; i--) {
                     System.out.println("i : " + i);
                     if (Character.isWhitespace(sb.charAt(i))) {
                         sb.deleteCharAt(i);
@@ -73,11 +78,11 @@ public class CSVWriter {
             sb.append(config.getRowDelimiter());
             String line = sb.toString();
             writer.write(line);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     protected String writeValue(CSVField field, String value) throws Exception {
         if (config.isFixedWidth()) {
             if (value.length() < field.getSize()) {
@@ -106,11 +111,11 @@ public class CSVWriter {
         }
         if (!config.isValueDelimiterIgnored()) {
             // add the value delimiter..
-            value = config.getValueDelimiter()+value+config.getValueDelimiter();
+            value = config.getValueDelimiter() + value + config.getValueDelimiter();
         }
         return value;
     }
-    
+
     /**
      * @return the CVSConfig or null if not present
      */
@@ -120,14 +125,16 @@ public class CSVWriter {
 
     /**
      * Set the CSVConfig
+     *
      * @param config the CVSConfig
      */
     public void setConfig(CSVConfig config) {
         this.config = config;
     }
-    
+
     /**
      * Set the writer to write the CSV file to.
+     *
      * @param writer the writer.
      */
     public void setWriter(Writer writer) {

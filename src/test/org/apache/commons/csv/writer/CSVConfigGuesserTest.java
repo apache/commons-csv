@@ -41,10 +41,10 @@ public class CSVConfigGuesserTest extends TestCase {
         guesser.setHasFieldHeader(true);
         assertEquals(true, guesser.hasFieldHeader());
     }
+
     /**
      * Test a format like
-     *  1234 ; abcd ; 1234 ;
-     *
+     * 1234 ; abcd ; 1234 ;
      */
     public void testConfigGuess1() {
         CSVConfig expected = new CSVConfig();
@@ -67,11 +67,11 @@ public class CSVConfigGuesserTest extends TestCase {
         assertEquals(expected.getFields().length, guessed.getFields().length);
         assertEquals(expected.getFields()[0].getSize(), guessed.getFields()[0].getSize());
     }
+
     /**
      * Test a format like
-     *  1234,123123,12312312,213123
-     *  1,2,3,4
-     *
+     * 1234,123123,12312312,213123
+     * 1,2,3,4
      */
     public void testConfigGuess2() {
         CSVConfig expected = new CSVConfig();

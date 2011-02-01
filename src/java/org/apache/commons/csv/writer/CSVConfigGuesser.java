@@ -30,23 +30,27 @@ import java.io.InputStreamReader;
  */
 public class CSVConfigGuesser {
 
-    /** The stream to read */
+    /**
+     * The stream to read
+     */
     private InputStream in;
-    /** 
+    /**
      * if the file has a field header (need this info, to be able to guess better)
      * Defaults to false
      */
     private boolean hasFieldHeader = false;
-    /** The found config */
-    protected CSVConfig config;
-    
     /**
-     * 
+     * The found config
+     */
+    protected CSVConfig config;
+
+    /**
+     *
      */
     public CSVConfigGuesser() {
         this.config = new CSVConfig();
     }
-    
+
     /**
      * @param in the inputstream to guess from
      */
@@ -54,23 +58,24 @@ public class CSVConfigGuesser {
         this();
         setInputStream(in);
     }
-    
+
     public void setInputStream(InputStream in) {
         this.in = in;
     }
-    
+
     /**
      * Allow override.
+     *
      * @return the inputstream that was set.
      */
     protected InputStream getInputStream() {
         return in;
     }
-    
+
     /**
-     * Guess the config based on the first 10 (or less when less available) 
+     * Guess the config based on the first 10 (or less when less available)
      * records of a CSV file.
-     * 
+     *
      * @return the guessed config.
      */
     public CSVConfig guess() {
@@ -80,7 +85,7 @@ public class CSVConfigGuesser {
             String[] lines = new String[10];
             String line = null;
             int counter = 0;
-            while ( (line = bIn.readLine()) != null && counter <= 10) {
+            while ((line = bIn.readLine()) != null && counter <= 10) {
                 lines[counter] = line;
                 counter++;
             }
@@ -91,13 +96,13 @@ public class CSVConfigGuesser {
                 lines = newLines;
             }
             analyseLines(lines);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (in != null) {
                 try {
                     in.close();
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // ignore exception.
                 }
             }
@@ -107,15 +112,16 @@ public class CSVConfigGuesser {
         config = null;
         return conf;
     }
-    
+
     protected void analyseLines(String[] lines) {
         guessFixedWidth(lines);
         guessFieldSeperator(lines);
     }
-    
+
     /**
      * Guess if this file is fixedwidth.
      * Just basing the fact on all lines being of the same length
+     *
      * @param lines
      */
     protected void guessFixedWidth(String[] lines) {
@@ -132,7 +138,7 @@ public class CSVConfigGuesser {
             }
         }
     }
-        
+
 
     protected void guessFieldSeperator(String[] lines) {
         if (config.isFixedWidth()) {
@@ -142,7 +148,7 @@ public class CSVConfigGuesser {
         for (int i = 0; i < lines.length; i++) {
         }
     }
-    
+
     protected void guessFixedWidthSeperator(String[] lines) {
         // keep track of the fieldlength
         int previousMatch = -1;
@@ -156,21 +162,21 @@ public class CSVConfigGuesser {
                 if (last != lines[j].charAt(i)) {
                     charMatches = false;
                     break;
-                } 
+                }
             }
             if (charMatches) {
                 if (previousMatch == -1) {
                     previousMatch = 0;
                 }
                 CSVField field = new CSVField();
-                field.setName("field"+config.getFields().length+1);
-                field.setSize((i-previousMatch));
+                field.setName("field" + config.getFields().length + 1);
+                field.setSize((i - previousMatch));
                 config.addField(field);
             }
         }
     }
+
     /**
-     * 
      * @return if the field uses a field header. Defaults to false.
      */
     public boolean hasFieldHeader() {
@@ -179,11 +185,12 @@ public class CSVConfigGuesser {
 
     /**
      * Specify if the CSV file has a field header
+     *
      * @param hasFieldHeader true or false
      */
     public void setHasFieldHeader(boolean hasFieldHeader) {
         this.hasFieldHeader = hasFieldHeader;
     }
-    
- 
+
+
 }

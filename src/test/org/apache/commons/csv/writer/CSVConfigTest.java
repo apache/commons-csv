@@ -29,7 +29,7 @@ import junit.framework.TestCase;
  * @version $Id: $
  */
 public class CSVConfigTest extends TestCase {
-    
+
 
     public void testFixedWith() {
         CSVConfig config = new CSVConfig();
@@ -37,13 +37,13 @@ public class CSVConfigTest extends TestCase {
         config.setFixedWidth(true);
         assertEquals(true, config.isFixedWidth());
     }
-    
+
     public void testFields() {
         CSVConfig config = new CSVConfig();
         assertEquals(0, config.getFields().length);
-        config.setFields((CSVField[])null);
+        config.setFields((CSVField[]) null);
         assertEquals(0, config.getFields().length);
-        config.setFields((Collection)null);
+        config.setFields((Collection) null);
         assertEquals(0, config.getFields().length);
         CSVField field = new CSVField();
         field.setName("field1");
@@ -53,7 +53,7 @@ public class CSVConfigTest extends TestCase {
         assertEquals(null, config.getField("field11"));
         assertEquals(field, config.getField("field1"));
     }
-    
+
     public void testFill() {
         CSVConfig config = new CSVConfig();
         assertEquals(CSVConfig.FILLNONE, config.getFill());
@@ -65,7 +65,7 @@ public class CSVConfigTest extends TestCase {
         config.setFillChar('m');
         assertEquals('m', config.getFillChar());
     }
-    
+
     public void testDelimiter() {
         CSVConfig config = new CSVConfig();
         assertEquals(',', config.getDelimiter());
@@ -75,7 +75,7 @@ public class CSVConfigTest extends TestCase {
         config.setIgnoreDelimiter(true);
         assertEquals(true, config.isDelimiterIgnored());
     }
-    
+
     public void testValueDelimiter() {
         CSVConfig config = new CSVConfig();
         assertEquals('"', config.getValueDelimiter());
@@ -85,14 +85,14 @@ public class CSVConfigTest extends TestCase {
         config.setIgnoreValueDelimiter(false);
         assertEquals(false, config.isValueDelimiterIgnored());
     }
-    
+
     public void testFieldHeader() {
         CSVConfig config = new CSVConfig();
         assertEquals(false, config.isFieldHeader());
         config.setFieldHeader(true);
         assertEquals(true, config.isFieldHeader());
     }
-    
+
     public void testTrimEnd() {
         CSVConfig config = new CSVConfig();
         assertEquals(false, config.isEndTrimmed());

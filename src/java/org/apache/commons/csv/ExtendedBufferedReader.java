@@ -23,214 +23,223 @@ import java.io.Reader;
 /**
  * ExtendedBufferedReader
  *
- * A special reader decorater which supports more
+ * A special reader decorator which supports more
  * sophisticated access to the underlying reader object.
- * 
+ *
  * In particular the reader supports a look-ahead option,
  * which allows you to see the next char returned by
  * next().
- * 
  */
-class ExtendedBufferedReader extends BufferedReader  {
+class ExtendedBufferedReader extends BufferedReader {
 
-  
-  /** the end of stream symbol */
-  public static final int END_OF_STREAM = -1;
-  /** undefined state for the lookahead char */
-  public static final int UNDEFINED = -2;
-  
-  /** the lookahead chars */
-  private int lookaheadChar = UNDEFINED;
-  /** the last char returned */
-  private int lastChar = UNDEFINED;
-  /** the line counter */
-  private int lineCounter = 0;
-  private CharBuffer line = new CharBuffer();
-  
-  /**
-   * Created extended buffered reader using default buffer-size
-   *
-   */
-  public ExtendedBufferedReader(Reader r) {
-    super(r);
-    /* note uh: do not fetch the first char here,
-     *          because this might block the method!
+
+    /**
+     * the end of stream symbol
      */
-  }
-    
-  /**
-   * Create extended buffered reader using the given buffer-size
-   */
-  public ExtendedBufferedReader(Reader r, int bufSize) {
-    super(r, bufSize);
-    /* note uh: do not fetch the first char here,
-     *          because this might block the method!
+    public static final int END_OF_STREAM = -1;
+    /**
+     * undefined state for the lookahead char
      */
-  }
-  
-  /**
-   * Reads the next char from the input stream.
-   * @return the next char or END_OF_STREAM if end of stream has been reached.
-   */
-  public int read() throws IOException {
-    // initalize the lookahead
-    if (lookaheadChar == UNDEFINED) {
-      lookaheadChar = super.read();
+    public static final int UNDEFINED = -2;
+
+    /**
+     * the lookahead chars
+     */
+    private int lookaheadChar = UNDEFINED;
+    /**
+     * the last char returned
+     */
+    private int lastChar = UNDEFINED;
+    /**
+     * the line counter
+     */
+    private int lineCounter = 0;
+    private CharBuffer line = new CharBuffer();
+
+    /**
+     * Created extended buffered reader using default buffer-size
+     */
+    public ExtendedBufferedReader(Reader r) {
+        super(r);
+        /* note uh: do not fetch the first char here,
+        *          because this might block the method!
+        */
     }
-    lastChar = lookaheadChar;
-    if (super.ready()) {
-      lookaheadChar = super.read();
-    } else {
-      lookaheadChar = UNDEFINED;
+
+    /**
+     * Create extended buffered reader using the given buffer-size
+     */
+    public ExtendedBufferedReader(Reader r, int bufSize) {
+        super(r, bufSize);
+        /* note uh: do not fetch the first char here,
+        *          because this might block the method!
+        */
     }
-    if (lastChar == '\n') {
-      lineCounter++;
-    } 
-    return lastChar;
-  }
-  
-  /**
-   * Returns the last read character again.
-   * 
-   * @return the last read char or UNDEFINED
-   */
-  public int readAgain() {
-    return lastChar;  
-  }
-  
-  /**
-   * Non-blocking reading of len chars into buffer buf starting
-   * at bufferposition off.
-   * 
-   * performs an iteratative read on the underlying stream
-   * as long as the following conditions hold:
-   *   - less than len chars have been read
-   *   - end of stream has not been reached
-   *   - next read is not blocking
-   * 
-   * @return nof chars actually read or END_OF_STREAM
-   */
-  public int read(char[] buf, int off, int len) throws IOException {
-    // do not claim if len == 0
-    if (len == 0) {
-      return 0;
-    } 
-    
-    // init lookahead, but do not block !!
-    if (lookaheadChar == UNDEFINED) {
-        if (ready()) {
-         lookaheadChar = super.read();
+
+    /**
+     * Reads the next char from the input stream.
+     *
+     * @return the next char or END_OF_STREAM if end of stream has been reached.
+     */
+    public int read() throws IOException {
+        // initialize the lookahead
+        if (lookaheadChar == UNDEFINED) {
+            lookaheadChar = super.read();
+        }
+        lastChar = lookaheadChar;
+        if (super.ready()) {
+            lookaheadChar = super.read();
         } else {
-          return -1;
+            lookaheadChar = UNDEFINED;
+        }
+        if (lastChar == '\n') {
+            lineCounter++;
+        }
+        return lastChar;
+    }
+
+    /**
+     * Returns the last read character again.
+     *
+     * @return the last read char or UNDEFINED
+     */
+    public int readAgain() {
+        return lastChar;
+    }
+
+    /**
+     * Non-blocking reading of len chars into buffer buf starting
+     * at bufferposition off.
+     * <p/>
+     * performs an iterative read on the underlying stream
+     * as long as the following conditions hold:
+     * - less than len chars have been read
+     * - end of stream has not been reached
+     * - next read is not blocking
+     *
+     * @return nof chars actually read or END_OF_STREAM
+     */
+    public int read(char[] buf, int off, int len) throws IOException {
+        // do not claim if len == 0
+        if (len == 0) {
+            return 0;
+        }
+
+        // init lookahead, but do not block !!
+        if (lookaheadChar == UNDEFINED) {
+            if (ready()) {
+                lookaheadChar = super.read();
+            } else {
+                return -1;
+            }
+        }
+        // 'first read of underlying stream'
+        if (lookaheadChar == -1) {
+            return -1;
+        }
+        // continue until the lookaheadChar would block
+        int cOff = off;
+        while (len > 0 && ready()) {
+            if (lookaheadChar == -1) {
+                // eof stream reached, do not continue
+                return cOff - off;
+            } else {
+                buf[cOff++] = (char) lookaheadChar;
+                if (lookaheadChar == '\n') {
+                    lineCounter++;
+                }
+                lastChar = lookaheadChar;
+                lookaheadChar = super.read();
+                len--;
+            }
+        }
+        return cOff - off;
+    }
+
+    /**
+     * @return A String containing the contents of the line, not
+     *         including any line-termination characters, or null
+     *         if the end of the stream has been reached
+     */
+    public String readLine() throws IOException {
+
+        if (lookaheadChar == UNDEFINED) {
+            lookaheadChar = super.read();
+        }
+
+        line.clear(); //reuse
+
+        // return null if end of stream has been reached
+        if (lookaheadChar == END_OF_STREAM) {
+            return null;
+        }
+        // do we have a line termination already
+        char laChar = (char) lookaheadChar;
+        if (laChar == '\n' || laChar == '\r') {
+            lastChar = lookaheadChar;
+            lookaheadChar = super.read();
+            // ignore '\r\n' as well
+            if ((char) lookaheadChar == '\n') {
+                lastChar = lookaheadChar;
+                lookaheadChar = super.read();
+            }
+            lineCounter++;
+            return line.toString();
+        }
+
+        // create the rest-of-line return and update the lookahead
+        line.append(laChar);
+        String restOfLine = super.readLine(); // TODO involves copying
+        lastChar = lookaheadChar;
+        lookaheadChar = super.read();
+        if (restOfLine != null) {
+            line.append(restOfLine);
+        }
+        lineCounter++;
+        return line.toString();
+    }
+
+    /**
+     * Unsupported
+     */
+    public long skip(long n) throws IllegalArgumentException, IOException {
+        throw new UnsupportedOperationException("CSV has no reason to implement this");
+    }
+
+    /**
+     * Returns the next char in the stream without consuming it.
+     *
+     * Remember the next char read by read(..) will always be
+     * identical to lookAhead().
+     *
+     * @return the next char (without consuming it) or END_OF_STREAM
+     */
+    public int lookAhead() throws IOException {
+        if (lookaheadChar == UNDEFINED) {
+            lookaheadChar = super.read();
+        }
+        return lookaheadChar;
+    }
+
+
+    /**
+     * Returns the nof line read
+     *
+     * @return the current-line-number (or -1)
+     */
+    public int getLineNumber() {
+        if (lineCounter > -1) {
+            return lineCounter;
+        } else {
+            return -1;
         }
     }
-    // 'first read of underlying stream'
-    if (lookaheadChar == -1) {
-      return -1;
-    }
-    // continue until the lookaheadChar would block
-    int cOff = off;
-    while (len > 0 && ready()) {
-      if (lookaheadChar == -1) {
-        // eof stream reached, do not continue
-        return cOff - off;
-      } else {
-        buf[cOff++] = (char) lookaheadChar;
-        if (lookaheadChar == '\n') {
-          lineCounter++;
-        } 
-        lastChar = lookaheadChar;
-        lookaheadChar = super.read();
-        len--;
-      }
-    }
-    return cOff - off;
-  }
- 
- /**
-  * @return A String containing the contents of the line, not 
-  *         including any line-termination characters, or null 
-  *         if the end of the stream has been reached
-  */
-  public String readLine() throws IOException {
-    
-    if (lookaheadChar == UNDEFINED) {
-      lookaheadChar = super.read(); 
-    }
-    
-    line.clear(); //reuse
-    
-    // return null if end of stream has been reached
-    if (lookaheadChar == END_OF_STREAM) {
-      return null;
-    }
-    // do we have a line termination already
-    char laChar = (char) lookaheadChar;
-    if (laChar == '\n' || laChar == '\r') {
-      lastChar = lookaheadChar;
-      lookaheadChar = super.read();
-      // ignore '\r\n' as well
-      if ((char) lookaheadChar == '\n') {
-        lastChar = lookaheadChar;
-        lookaheadChar = super.read();
-      }
-      lineCounter++;
-      return line.toString();
-    }
-    
-    // create the rest-of-line return and update the lookahead
-    line.append(laChar);
-    String restOfLine = super.readLine(); // TODO involves copying
-    lastChar = lookaheadChar;
-    lookaheadChar = super.read();
-    if (restOfLine != null) {
-      line.append(restOfLine);
-    }
-    lineCounter++;
-    return line.toString();
-  }
-  
-  /**
-   * Unsupported
-   */
-  public long skip(long n) throws IllegalArgumentException, IOException  {
-    throw new UnsupportedOperationException("CSV has no reason to implement this");
-  }
-  
-  /**
-   * Returns the next char in the stream without consuming it.
-   * 
-   * Remember the next char read by read(..) will always be
-   * identical to lookAhead().
-   * 
-   * @return the next char (without consuming it) or END_OF_STREAM
-   */
-  public int lookAhead() throws IOException {
-    if (lookaheadChar == UNDEFINED) {
-      lookaheadChar = super.read();
-    }
-    return lookaheadChar;
-  }
-  
-  
-  /**
-   * Returns the nof line read
-   * 
-   * @return the current-line-number (or -1)
-   */ 
-  public int getLineNumber() {
-    if (lineCounter > -1) {
-      return lineCounter;
-    } else {
-      return -1;
-    }
-  }
 
-  /**
-   * Unsupported
-   */
-  public boolean markSupported() {
-    throw new UnsupportedOperationException("CSV has no reason to implement this");
-  }
-  
+    /**
+     * Unsupported
+     */
+    public boolean markSupported() {
+        throw new UnsupportedOperationException("CSV has no reason to implement this");
+    }
+
 }

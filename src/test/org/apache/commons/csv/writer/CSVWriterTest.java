@@ -26,17 +26,17 @@ import junit.framework.TestCase;
 
 /**
  * The testcase for the csv writer.
- * 
+ *
  * @author Martin van den Bemt
  * @version $Id: $
  */
 public class CSVWriterTest extends TestCase {
 
     private Map map;
-    
+
     protected void setUp() throws Exception {
         super.setUp();
-        
+
         map = new HashMap();
         map.put("field1", "12345");
         map.put("field2", "1234");

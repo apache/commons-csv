@@ -21,7 +21,6 @@ package org.apache.commons.csv;
 import junit.framework.TestCase;
 
 /**
- * 
  * @author Ortwin Glück
  */
 public class CharBufferTest extends TestCase {
@@ -31,14 +30,14 @@ public class CharBufferTest extends TestCase {
         try {
             cb = new CharBuffer(0);
             fail("Should not be possible");
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             // expected
         }
-        
+
         cb = new CharBuffer(128);
         assertEquals(0, cb.length());
     }
-    
+
     public void testAppendChar() {
         CharBuffer cb = new CharBuffer(1);
         String expected = "";
@@ -49,59 +48,59 @@ public class CharBufferTest extends TestCase {
             assertEquals(expected.length(), cb.length());
         }
     }
-    
+
     public void testAppendCharArray() {
         CharBuffer cb = new CharBuffer(1);
         char[] abcd = "abcd".toCharArray();
         String expected = "";
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             cb.append(abcd);
             expected += "abcd";
             assertEquals(expected, cb.toString());
-            assertEquals(4*(i+1), cb.length());
+            assertEquals(4 * (i + 1), cb.length());
         }
     }
-    
+
     public void testAppendString() {
         CharBuffer cb = new CharBuffer(1);
         String abcd = "abcd";
         String expected = "";
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             cb.append(abcd);
             expected += abcd;
             assertEquals(expected, cb.toString());
-            assertEquals(4*(i+1), cb.length());
+            assertEquals(4 * (i + 1), cb.length());
         }
     }
-    
+
     public void testAppendStringBuffer() {
         CharBuffer cb = new CharBuffer(1);
         StringBuffer abcd = new StringBuffer("abcd");
         String expected = "";
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             cb.append(abcd);
             expected += "abcd";
             assertEquals(expected, cb.toString());
-            assertEquals(4*(i+1), cb.length());
+            assertEquals(4 * (i + 1), cb.length());
         }
     }
-    
+
     public void testAppendCharBuffer() {
         CharBuffer cb = new CharBuffer(1);
         CharBuffer abcd = new CharBuffer(17);
         abcd.append("abcd");
         String expected = "";
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             cb.append(abcd);
             expected += "abcd";
             assertEquals(expected, cb.toString());
-            assertEquals(4*(i+1), cb.length());
+            assertEquals(4 * (i + 1), cb.length());
         }
     }
-    
+
     public void testShrink() {
         String data = "123456789012345678901234567890";
-        
+
         CharBuffer cb = new CharBuffer(data.length() + 100);
         assertEquals(data.length() + 100, cb.capacity());
         cb.append(data);
@@ -112,24 +111,24 @@ public class CharBufferTest extends TestCase {
         assertEquals(data.length(), cb.length());
         assertEquals(data, cb.toString());
     }
-    
+
     //-- the following test cases have been adapted from the HttpComponents project
     //-- written by Oleg Kalnichevski
-    
+
     public void testSimpleAppend() throws Exception {
         CharBuffer buffer = new CharBuffer(16);
-        assertEquals(16, buffer.capacity()); 
+        assertEquals(16, buffer.capacity());
         assertEquals(0, buffer.length());
         char[] b1 = buffer.getCharacters();
         assertNotNull(b1);
         assertEquals(0, b1.length);
         assertEquals(0, buffer.length());
-        
-        char[] tmp = new char[] { '1', '2', '3', '4'};
+
+        char[] tmp = new char[]{'1', '2', '3', '4'};
         buffer.append(tmp);
-        assertEquals(16, buffer.capacity()); 
+        assertEquals(16, buffer.capacity());
         assertEquals(4, buffer.length());
-        
+
         char[] b2 = buffer.getCharacters();
         assertNotNull(b2);
         assertEquals(4, b2.length);
@@ -137,35 +136,35 @@ public class CharBufferTest extends TestCase {
             assertEquals(tmp[i], b2[i]);
         }
         assertEquals("1234", buffer.toString());
-        
+
         buffer.clear();
-        assertEquals(16, buffer.capacity()); 
+        assertEquals(16, buffer.capacity());
         assertEquals(0, buffer.length());
     }
-    
+
     public void testAppendString2() throws Exception {
         CharBuffer buffer = new CharBuffer(8);
         buffer.append("stuff");
         buffer.append(" and more stuff");
         assertEquals("stuff and more stuff", buffer.toString());
     }
-    
+
     public void testAppendNull() throws Exception {
         CharBuffer buffer = new CharBuffer(8);
-        
-        buffer.append((StringBuffer)null);
-        assertEquals("", buffer.toString());
-        
-        buffer.append((String)null);
+
+        buffer.append((StringBuffer) null);
         assertEquals("", buffer.toString());
 
-        buffer.append((CharBuffer)null);
+        buffer.append((String) null);
         assertEquals("", buffer.toString());
 
-        buffer.append((char[])null);
+        buffer.append((CharBuffer) null);
+        assertEquals("", buffer.toString());
+
+        buffer.append((char[]) null);
         assertEquals("", buffer.toString());
     }
-    
+
     public void testAppendCharArrayBuffer() throws Exception {
         CharBuffer buffer1 = new CharBuffer(8);
         buffer1.append(" and more stuff");
@@ -174,7 +173,7 @@ public class CharBufferTest extends TestCase {
         buffer2.append(buffer1);
         assertEquals("stuff and more stuff", buffer2.toString());
     }
-    
+
     public void testAppendSingleChar() throws Exception {
         CharBuffer buffer = new CharBuffer(4);
         buffer.append('1');
@@ -185,7 +184,7 @@ public class CharBufferTest extends TestCase {
         buffer.append('6');
         assertEquals("123456", buffer.toString());
     }
-    
+
     public void testProvideCapacity() throws Exception {
         CharBuffer buffer = new CharBuffer(4);
         buffer.provideCapacity(2);

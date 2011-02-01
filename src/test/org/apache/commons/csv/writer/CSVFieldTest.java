@@ -21,7 +21,6 @@ package org.apache.commons.csv.writer;
 import junit.framework.TestCase;
 
 /**
- * 
  * @author Martin van den Bemt
  * @version $Id: $
  */
@@ -41,7 +40,7 @@ public class CSVFieldTest extends TestCase {
         assertEquals("name", field.getName());
         assertEquals(10, field.getSize());
     }
-    
+
     public void testFill() {
         CSVField field = new CSVField();
         assertEquals(CSVConfig.FILLNONE, field.getFill());

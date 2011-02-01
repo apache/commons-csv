@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 /**
  * CSVStrategy
- * 
+ *
  * Represents the strategy for a CSV.
  */
 public class CSVStrategy implements Cloneable, Serializable {
@@ -41,47 +41,46 @@ public class CSVStrategy implements Cloneable, Serializable {
     // an EOF signal (-1), and because \ufffe in UTF-16 would be
     // encoded as two chars (using surrogates) and thus there should never
     // be a collision with a real text char.
-    public static char COMMENTS_DISABLED       = (char)-2;
-    public static char ESCAPE_DISABLED         = (char)-2;
-    public static char ENCAPSULATOR_DISABLED   = (char)-2;
+    public static char COMMENTS_DISABLED = (char) -2;
+    public static char ESCAPE_DISABLED = (char) -2;
+    public static char ENCAPSULATOR_DISABLED = (char) -2;
 
-    public static CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, 
-                                                                 true, false, true);
-    public static CSVStrategy EXCEL_STRATEGY   = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false, 
-                                                                 false, false, false);
-    public static CSVStrategy TDF_STRATEGY     = new CSVStrategy('\t', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, 
-                                                                 true, false, true);
+    public static CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true,
+            true, false, true);
+    public static CSVStrategy EXCEL_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false,
+            false, false, false);
+    public static CSVStrategy TDF_STRATEGY = new CSVStrategy('\t', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true,
+            true, false, true);
 
 
     public CSVStrategy(char delimiter, char encapsulator, char commentStart) {
         this(delimiter, encapsulator, commentStart, true, false, true);
     }
-  
+
     /**
      * Customized CSV strategy setter.
      *
-     * @param delimiter a Char used for value separation
-     * @param encapsulator a Char used as value encapsulation marker
-     * @param commentStart a Char used for comment identification
-     * @param escape a Char used to escape special characters in values
-     * @param ignoreLeadingWhitespace TRUE when leading whitespaces should be
-     *                                ignored
+     * @param delimiter                a Char used for value separation
+     * @param encapsulator             a Char used as value encapsulation marker
+     * @param commentStart             a Char used for comment identification
+     * @param escape                   a Char used to escape special characters in values
+     * @param ignoreLeadingWhitespace  TRUE when leading whitespaces should be
+     *                                 ignored
      * @param ignoreTrailingWhitespace TRUE when trailing whitespaces should be
-     *                                ignored
-     * @param interpretUnicodeEscapes TRUE when unicode escapes should be
-     *                                interpreted
-     * @param ignoreEmptyLines TRUE when the parser should skip emtpy lines
+     *                                 ignored
+     * @param interpretUnicodeEscapes  TRUE when unicode escapes should be
+     *                                 interpreted
+     * @param ignoreEmptyLines         TRUE when the parser should skip emtpy lines
      */
     public CSVStrategy(
-        char delimiter, 
-        char encapsulator, 
-        char commentStart,
-        char escape,
-        boolean ignoreLeadingWhitespace, 
-        boolean ignoreTrailingWhitespace, 
-        boolean interpretUnicodeEscapes,
-        boolean ignoreEmptyLines) 
-    {
+            char delimiter,
+            char encapsulator,
+            char commentStart,
+            char escape,
+            boolean ignoreLeadingWhitespace,
+            boolean ignoreTrailingWhitespace,
+            boolean interpretUnicodeEscapes,
+            boolean ignoreEmptyLines) {
         setDelimiter(delimiter);
         setEncapsulator(encapsulator);
         setCommentStart(commentStart);
@@ -92,62 +91,101 @@ public class CSVStrategy implements Cloneable, Serializable {
         setIgnoreEmptyLines(ignoreEmptyLines);
     }
 
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     public CSVStrategy(
-        char delimiter,
-        char encapsulator,
-        char commentStart,
-        boolean ignoreLeadingWhitespace,
-        boolean interpretUnicodeEscapes,
-        boolean ignoreEmptyLines)
-    {
-        this(delimiter, encapsulator, commentStart, CSVStrategy.ESCAPE_DISABLED, ignoreLeadingWhitespace, 
-             true, interpretUnicodeEscapes, ignoreEmptyLines);
+            char delimiter,
+            char encapsulator,
+            char commentStart,
+            boolean ignoreLeadingWhitespace,
+            boolean interpretUnicodeEscapes,
+            boolean ignoreEmptyLines) {
+        this(delimiter, encapsulator, commentStart, CSVStrategy.ESCAPE_DISABLED, ignoreLeadingWhitespace,
+                true, interpretUnicodeEscapes, ignoreEmptyLines);
     }
 
-    public void setDelimiter(char delimiter) { this.delimiter = delimiter; }
-    public char getDelimiter() { return this.delimiter; }
-
-    public void setEncapsulator(char encapsulator) { this.encapsulator = encapsulator; }
-    public char getEncapsulator() { return this.encapsulator; }
-
-    public void setCommentStart(char commentStart) { this.commentStart = commentStart; }
-    public char getCommentStart() { return this.commentStart; }
-    public boolean isCommentingDisabled() { return this.commentStart == COMMENTS_DISABLED; }
-
-    public void setEscape(char escape) { this.escape = escape; }
-    public char getEscape() { return this.escape; }
-
-    public void setIgnoreLeadingWhitespaces(boolean ignoreLeadingWhitespaces) { 
-        this.ignoreLeadingWhitespaces = ignoreLeadingWhitespaces; 
+    public void setDelimiter(char delimiter) {
+        this.delimiter = delimiter;
     }
-    public boolean getIgnoreLeadingWhitespaces() { return this.ignoreLeadingWhitespaces; }
 
-    public void setIgnoreTrailingWhitespaces(boolean ignoreTrailingWhitespaces) { 
-        this.ignoreTrailingWhitespaces = ignoreTrailingWhitespaces; 
+    public char getDelimiter() {
+        return this.delimiter;
     }
-    public boolean getIgnoreTrailingWhitespaces() { return this.ignoreTrailingWhitespaces; }
 
-    public void setUnicodeEscapeInterpretation(boolean interpretUnicodeEscapes) { 
-        this.interpretUnicodeEscapes = interpretUnicodeEscapes; 
+    public void setEncapsulator(char encapsulator) {
+        this.encapsulator = encapsulator;
     }
-    public boolean getUnicodeEscapeInterpretation() { return this.interpretUnicodeEscapes; }
 
-    public void setIgnoreEmptyLines(boolean ignoreEmptyLines) { this.ignoreEmptyLines = ignoreEmptyLines; }
-    public boolean getIgnoreEmptyLines() { return this.ignoreEmptyLines; }
+    public char getEncapsulator() {
+        return this.encapsulator;
+    }
+
+    public void setCommentStart(char commentStart) {
+        this.commentStart = commentStart;
+    }
+
+    public char getCommentStart() {
+        return this.commentStart;
+    }
+
+    public boolean isCommentingDisabled() {
+        return this.commentStart == COMMENTS_DISABLED;
+    }
+
+    public void setEscape(char escape) {
+        this.escape = escape;
+    }
+
+    public char getEscape() {
+        return this.escape;
+    }
+
+    public void setIgnoreLeadingWhitespaces(boolean ignoreLeadingWhitespaces) {
+        this.ignoreLeadingWhitespaces = ignoreLeadingWhitespaces;
+    }
+
+    public boolean getIgnoreLeadingWhitespaces() {
+        return this.ignoreLeadingWhitespaces;
+    }
+
+    public void setIgnoreTrailingWhitespaces(boolean ignoreTrailingWhitespaces) {
+        this.ignoreTrailingWhitespaces = ignoreTrailingWhitespaces;
+    }
+
+    public boolean getIgnoreTrailingWhitespaces() {
+        return this.ignoreTrailingWhitespaces;
+    }
+
+    public void setUnicodeEscapeInterpretation(boolean interpretUnicodeEscapes) {
+        this.interpretUnicodeEscapes = interpretUnicodeEscapes;
+    }
+
+    public boolean getUnicodeEscapeInterpretation() {
+        return this.interpretUnicodeEscapes;
+    }
+
+    public void setIgnoreEmptyLines(boolean ignoreEmptyLines) {
+        this.ignoreEmptyLines = ignoreEmptyLines;
+    }
+
+    public boolean getIgnoreEmptyLines() {
+        return this.ignoreEmptyLines;
+    }
 
     public void setPrinterNewline(String newline) {
-      this.printerNewline = newline;
+        this.printerNewline = newline;
     }
+
     public String getPrinterNewline() {
-      return this.printerNewline;
+        return this.printerNewline;
     }
 
     public Object clone() {
-      try {
-        return super.clone();
-      } catch (CloneNotSupportedException e) {
-        throw new RuntimeException(e);  // impossible
-      }
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);  // impossible
+        }
     }
 }
