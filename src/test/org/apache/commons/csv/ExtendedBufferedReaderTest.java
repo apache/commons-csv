@@ -115,10 +115,6 @@ public class ExtendedBufferedReaderTest extends TestCase {
  
   }
   
-  public void testMarkSupported() {
-    assertFalse(getEBR("foo").markSupported());
-  }
-  
   public void testReadLine() throws Exception {
     ExtendedBufferedReader br = getEBR("");
     assertTrue(br.readLine() == null);
@@ -159,61 +155,6 @@ public class ExtendedBufferedReaderTest extends TestCase {
     assertEquals('f', br.lookAhead());
     assertTrue(br.readLine().equals("foo"));
     assertTrue(br.readLine() == null);
-  }
-  
-  public void testSkip0() throws Exception {
-    
-    ExtendedBufferedReader br = getEBR("");
-    assertEquals(0, br.skip(0));
-    assertEquals(0, br.skip(1));
-    
-    br = getEBR("");
-    assertEquals(0, br.skip(1));
-    
-    br = getEBR("abcdefg");
-    assertEquals(0, br.skip(0));
-    assertEquals('a', br.lookAhead());
-    assertEquals(0, br.skip(0));
-    assertEquals('a', br.lookAhead());
-    assertEquals(1, br.skip(1));
-    assertEquals('b', br.lookAhead());
-    assertEquals('b', br.read());
-    assertEquals(3, br.skip(3));
-    assertEquals('f', br.lookAhead());
-    assertEquals(2, br.skip(5));
-    assertTrue(br.readLine() == null);
-    
-    br = getEBR("12345");
-    assertEquals(5, br.skip(5));
-    assertTrue (br.lookAhead() == ExtendedBufferedReader.END_OF_STREAM);
-  }
-  
-  public void testSkipUntil() throws Exception {   
-    ExtendedBufferedReader br = getEBR("");
-    assertEquals(0, br.skipUntil(';'));
-    br = getEBR("ABCDEF,GHL,,MN");
-    assertEquals(6, br.skipUntil(','));
-    assertEquals(0, br.skipUntil(','));
-    br.skip(1);
-    assertEquals(3, br.skipUntil(','));
-    br.skip(1);
-    assertEquals(0, br.skipUntil(','));
-    br.skip(1);
-    assertEquals(2, br.skipUntil(','));
-  }
-  
-  public void testReadUntil() throws Exception {
-    ExtendedBufferedReader br = getEBR("");
-    assertTrue(br.readUntil(';').equals(""));
-    br = getEBR("ABCDEF;GHL;;MN");
-    assertTrue(br.readUntil(';').equals("ABCDEF"));
-    assertTrue(br.readUntil(';').length() == 0);
-    br.skip(1);
-    assertTrue(br.readUntil(';').equals("GHL"));
-    br.skip(1);
-    assertTrue(br.readUntil(';').equals(""));
-    br.skip(1);
-    assertTrue(br.readUntil(',').equals("MN"));
   }
   
   private ExtendedBufferedReader getEBR(String s) {

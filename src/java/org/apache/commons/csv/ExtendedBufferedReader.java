@@ -29,9 +29,6 @@ import java.io.Reader;
  * In particular the reader supports a look-ahead option,
  * which allows you to see the next char returned by
  * next().
- * Furthermore the skip-method supports skipping until
- * (but excluding) a given char. Similar functionality
- * is supported by the reader as well.
  * 
  */
 class ExtendedBufferedReader extends BufferedReader  {
@@ -151,29 +148,6 @@ class ExtendedBufferedReader extends BufferedReader  {
   }
  
  /**
-  * Reads all characters up to (but not including) the given character.
-  * 
-  * @param c the character to read up to
-  * @return the string up to the character <code>c</code>
-  * @throws IOException
-  */
- public String readUntil(char c) throws IOException {
-   if (lookaheadChar == UNDEFINED) {
-     lookaheadChar = super.read();
-   }
-   line.clear(); // reuse
-   while (lookaheadChar != c && lookaheadChar != END_OF_STREAM) {
-     line.append((char) lookaheadChar);
-     if (lookaheadChar == '\n') {
-       lineCounter++;
-     } 
-     lastChar = lookaheadChar;
-     lookaheadChar = super.read();
-   }
-   return line.toString();    
- }
- 
- /**
   * @return A String containing the contents of the line, not 
   *         including any line-termination characters, or null 
   *         if the end of the stream has been reached
@@ -217,60 +191,10 @@ class ExtendedBufferedReader extends BufferedReader  {
   }
   
   /**
-   * Skips char in the stream
-   * 
-   * ATTENTION: invalidates the line-counter !!!!!
-   * 
-   * @return nof skiped chars
+   * Unsupported
    */
   public long skip(long n) throws IllegalArgumentException, IOException  {
-    
-    if (lookaheadChar == UNDEFINED) {
-      lookaheadChar = super.read();   
-    }
-    
-    // illegal argument
-    if (n < 0) {
-      throw new IllegalArgumentException("negative argument not supported");  
-    }
-    
-    // no skipping
-    if (n == 0 || lookaheadChar == END_OF_STREAM) {
-      return 0;
-    } 
-    
-    // skip and reread the lookahead-char
-    long skiped = 0;
-    if (n > 1) {
-      skiped = super.skip(n - 1);
-    }
-    lookaheadChar = super.read();
-    // fixme uh: we should check the skiped sequence for line-terminations...
-    lineCounter = Integer.MIN_VALUE;
-    return skiped + 1;
-  }
-  
-  /**
-   * Skips all chars in the input until (but excluding) the given char
-   * 
-   * @param c
-   * @return
-   * @throws IllegalArgumentException
-   * @throws IOException
-   */
-  public long skipUntil(char c) throws IllegalArgumentException, IOException {
-    if (lookaheadChar == UNDEFINED) {
-      lookaheadChar = super.read();   
-    }
-    long counter = 0;
-    while (lookaheadChar != c && lookaheadChar != END_OF_STREAM) {
-      if (lookaheadChar == '\n') {
-        lineCounter++;
-      } 
-      lookaheadChar = super.read();
-      counter++;
-    }
-    return counter;
+    throw new UnsupportedOperationException("CSV has no reason to implement this");
   }
   
   /**
@@ -291,7 +215,6 @@ class ExtendedBufferedReader extends BufferedReader  {
   
   /**
    * Returns the nof line read
-   * ATTENTION: the skip-method does invalidate the line-number counter
    * 
    * @return the current-line-number (or -1)
    */ 
@@ -302,11 +225,12 @@ class ExtendedBufferedReader extends BufferedReader  {
       return -1;
     }
   }
+
+  /**
+   * Unsupported
+   */
   public boolean markSupported() {
-    /* note uh: marking is not supported, cause we cannot
-     *          see into the future...
-     */
-    return false;
+    throw new UnsupportedOperationException("CSV has no reason to implement this");
   }
   
 }
