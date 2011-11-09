@@ -63,11 +63,6 @@
     <commons.jira.componentid>12311182</commons.jira.componentid>
   </properties> 
 
-  <build>
-      <sourceDirectory>src/java</sourceDirectory>
-      <testSourceDirectory>src/test</testSourceDirectory> 
-  </build>
-
   <reporting>
     <plugins>
       <plugin>
