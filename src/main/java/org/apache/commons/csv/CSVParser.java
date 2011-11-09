@@ -166,35 +166,6 @@ public class CSVParser {
     }
 
     /**
-     * Parses the CSV according to the given strategy
-     * and returns the next csv-value as string.
-     *
-     * @return next value in the input stream ('null' when end of file)
-     * @throws IOException on parse error or input read-failure
-     */
-    public String nextValue() throws IOException {
-        Token tkn = nextToken();
-        String ret = null;
-        switch (tkn.type) {
-            case TT_TOKEN:
-            case TT_EORECORD:
-                ret = tkn.content.toString();
-                break;
-            case TT_EOF:
-                ret = null;
-                break;
-            case TT_INVALID:
-            default:
-                // error no token available (or error)
-                throw new IOException(
-                        "(line " + getLineNumber()
-                                + ") invalid parse sequence");
-                // unreachable: break;
-        }
-        return ret;
-    }
-
-    /**
      * Parses from the current point in the stream til
      * the end of the current line.
      *
