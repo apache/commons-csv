@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.apache.commons.csv;
 
 /**
@@ -26,7 +27,7 @@ package org.apache.commons.csv;
  *
  * @author Ortwin Gl�ck
  */
-public class CharBuffer {
+class CharBuffer {
 
     private char[] c;
 
