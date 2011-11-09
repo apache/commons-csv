@@ -152,7 +152,7 @@ public class CSVPrinterTest extends TestCase {
         StringReader reader = new StringReader(result);
 
         CSVParser parser = new CSVParser(reader, format);
-        String[][] parseResult = parser.getAllValues();
+        String[][] parseResult = parser.getRecords();
 
         if (!equals(lines, parseResult)) {
             System.out.println("Printer output :" + printable(result));

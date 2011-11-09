@@ -33,13 +33,13 @@ import static org.apache.commons.csv.CSVParser.Token.Type.*;
  * <p>Parsing of a csv-string having tabs as separators,
  * '"' as an optional value encapsulator, and comments starting with '#':</p>
  * <pre>
- *  String[][] data =
+ *  String[][] record =
  *   (new CSVParser(new StringReader("a\tb\nc\td"), new CSVFormat('\t','"','#'))).getAllValues();
  * </pre>
  *
  * <p>Parsing of a csv-string in Excel CSV format</p>
  * <pre>
- *  String[][] data =
+ *  String[][] record =
  *   (new CSVParser(new StringReader("a;b\nc;d"), CSVFormat.EXCEL)).getAllValues();
  * </pre>
  *
@@ -150,7 +150,7 @@ public class CSVParser {
      * @return matrix of records x values ('null' when end of file)
      * @throws IOException on parse error or input read-failure
      */
-    public String[][] getAllValues() throws IOException {
+    public String[][] getRecords() throws IOException {
         List<String[]> records = new ArrayList<String[]>();
         String[] values;
         String[][] ret = null;

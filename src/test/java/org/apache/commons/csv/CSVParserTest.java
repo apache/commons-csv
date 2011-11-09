@@ -221,7 +221,7 @@ public class CSVParserTest extends TestCase {
 
     public void testGetAllValues() throws IOException {
         CSVParser parser = new CSVParser(new StringReader(code));
-        String[][] tmp = parser.getAllValues();
+        String[][] tmp = parser.getRecords();
         assertEquals(res.length, tmp.length);
         assertTrue(tmp.length > 0);
         for (int i = 0; i < res.length; i++) {
@@ -241,7 +241,7 @@ public class CSVParserTest extends TestCase {
                 {"\"hello\"", "  \"world\"", "abc\ndef", ""}
         };
         CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.EXCEL);
-        String[][] tmp = parser.getAllValues();
+        String[][] tmp = parser.getRecords();
         assertEquals(res.length, tmp.length);
         assertTrue(tmp.length > 0);
         for (int i = 0; i < res.length; i++) {
@@ -259,7 +259,7 @@ public class CSVParserTest extends TestCase {
                 {"world", ""}
         };
         CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.EXCEL);
-        String[][] tmp = parser.getAllValues();
+        String[][] tmp = parser.getRecords();
         assertEquals(res.length, tmp.length);
         assertTrue(tmp.length > 0);
         for (int i = 0; i < res.length; i++) {
@@ -286,7 +286,7 @@ public class CSVParserTest extends TestCase {
         
         for (String code : codes) {
             CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.EXCEL);
-            String[][] tmp = parser.getAllValues();
+            String[][] tmp = parser.getRecords();
             assertEquals(res.length, tmp.length);
             assertTrue(tmp.length > 0);
             for (int i = 0; i < res.length; i++) {
@@ -314,7 +314,7 @@ public class CSVParserTest extends TestCase {
         for (int codeIndex = 0; codeIndex < codes.length; codeIndex++) {
             code = codes[codeIndex];
             CSVParser parser = new CSVParser(new StringReader(code));
-            String[][] tmp = parser.getAllValues();
+            String[][] tmp = parser.getRecords();
             assertEquals(res.length, tmp.length);
             assertTrue(tmp.length > 0);
             for (int i = 0; i < res.length; i++) {
@@ -339,7 +339,7 @@ public class CSVParserTest extends TestCase {
         for (int codeIndex = 0; codeIndex < codes.length; codeIndex++) {
             code = codes[codeIndex];
             CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.EXCEL);
-            String[][] tmp = parser.getAllValues();
+            String[][] tmp = parser.getRecords();
             assertEquals(res.length, tmp.length);
             assertTrue(tmp.length > 0);
             for (int i = 0; i < res.length; i++) {
@@ -362,7 +362,7 @@ public class CSVParserTest extends TestCase {
         for (int codeIndex = 0; codeIndex < codes.length; codeIndex++) {
             code = codes[codeIndex];
             CSVParser parser = new CSVParser(new StringReader(code));
-            String[][] tmp = parser.getAllValues();
+            String[][] tmp = parser.getRecords();
             assertEquals(res.length, tmp.length);
             assertTrue(tmp.length > 0);
             for (int i = 0; i < res.length; i++) {
@@ -394,7 +394,7 @@ public class CSVParserTest extends TestCase {
                 {"a\\\\,b"}    // backslash in quotes only escapes a delimiter (",")
         };
         CSVParser parser = new CSVParser(new StringReader(code));
-        String[][] tmp = parser.getAllValues();
+        String[][] tmp = parser.getRecords();
         assertEquals(res.length, tmp.length);
         assertTrue(tmp.length > 0);
         for (int i = 0; i < res.length; i++) {
@@ -437,7 +437,7 @@ public class CSVParserTest extends TestCase {
         CSVFormat format = new CSVFormat(',', '\'', CSVFormat.COMMENTS_DISABLED, '/', false, false, true, true);
 
         CSVParser parser = new CSVParser(new StringReader(code), format);
-        String[][] tmp = parser.getAllValues();
+        String[][] tmp = parser.getRecords();
         assertTrue(tmp.length > 0);
         for (int i = 0; i < res.length; i++) {
             assertTrue(Arrays.equals(res[i], tmp[i]));
@@ -465,7 +465,7 @@ public class CSVParserTest extends TestCase {
         CSVFormat format = new CSVFormat(',', CSVFormat.ENCAPSULATOR_DISABLED, CSVFormat.COMMENTS_DISABLED, '/', false, false, true, true);
 
         CSVParser parser = new CSVParser(new StringReader(code), format);
-        String[][] tmp = parser.getAllValues();
+        String[][] tmp = parser.getRecords();
         assertTrue(tmp.length > 0);
 
         if (!CSVPrinterTest.equals(res, tmp)) {
@@ -492,7 +492,7 @@ public class CSVParserTest extends TestCase {
         assertEquals(CSVFormat.COMMENTS_DISABLED, format.getCommentStart());
 
         CSVParser parser = new CSVParser(new StringReader(code), format);
-        String[][] tmp = parser.getAllValues();
+        String[][] tmp = parser.getRecords();
         assertTrue(tmp.length > 0);
 
         if (!CSVPrinterTest.equals(res, tmp)) {
@@ -507,7 +507,7 @@ public class CSVParserTest extends TestCase {
 
         format = new CSVFormat(',', '"', '#');
         parser = new CSVParser(new StringReader(code), format);
-        tmp = parser.getAllValues();
+        tmp = parser.getRecords();
 
         if (!CSVPrinterTest.equals(res_comments, tmp)) {
             assertTrue(false);
@@ -527,21 +527,21 @@ public class CSVParserTest extends TestCase {
     public void testCarriageReturnLineFeedEndings() throws IOException {
         String code = "foo\r\nbaar,\r\nhello,world\r\n,kanu";
         CSVParser parser = new CSVParser(new StringReader(code));
-        String[][] data = parser.getAllValues();
+        String[][] data = parser.getRecords();
         assertEquals(4, data.length);
     }
 
     public void testCarriageReturnEndings() throws IOException {
         String code = "foo\rbaar,\rhello,world\r,kanu";
         CSVParser parser = new CSVParser(new StringReader(code));
-        String[][] data = parser.getAllValues();
+        String[][] data = parser.getRecords();
         assertEquals(4, data.length);
     }
 
     public void testLineFeedEndings() throws IOException {
         String code = "foo\nbaar,\nhello,world\n,kanu";
         CSVParser parser = new CSVParser(new StringReader(code));
-        String[][] data = parser.getAllValues();
+        String[][] data = parser.getRecords();
         assertEquals(4, data.length);
     }
 
@@ -550,7 +550,7 @@ public class CSVParserTest extends TestCase {
         //String code = "world\r\n\n";
         //String code = "foo;baar\r\n\r\nhello;\r\n\r\nworld;\r\n";
         CSVParser parser = new CSVParser(new StringReader(code));
-        String[][] data = parser.getAllValues();
+        String[][] data = parser.getRecords();
         assertEquals(3, data.length);
     }
 

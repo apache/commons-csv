@@ -88,7 +88,7 @@ public class CSVUtils {
         if (s == null) {
             throw new IllegalArgumentException("Null argument not allowed.");
         }
-        String[][] result = (new CSVParser(new StringReader(s))).getAllValues();
+        String[][] result = (new CSVParser(new StringReader(s))).getRecords();
         if (result == null) {
             // since CSVFormat ignores empty lines an empty array is returned
             // (i.e. not "result = new String[][] {{""}};")
