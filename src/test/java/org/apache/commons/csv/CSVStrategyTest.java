@@ -14,76 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.csv;
 
 import junit.framework.TestCase;
 
-/**
- * CSVStrategyTest
- *
- * The test are organized in three different sections:
- * The 'setter/getter' section, the lexer section and finally the strategy
- * section. In case a test fails, you should follow a top-down approach for
- * fixing a potential bug (its likely that the strategy itself fails if the lexer
- * has problems...).
- */
 public class CSVStrategyTest extends TestCase {
 
-    // ======================================================
-    //   getters / setters
-    // ======================================================
-    public void testGetSetCommentStart() {
-        CSVStrategy strategy = (CSVStrategy) CSVStrategy.DEFAULT_STRATEGY.clone();
-        strategy.setCommentStart('#');
-        assertEquals(strategy.getCommentStart(), '#');
-        strategy.setCommentStart('!');
-        assertEquals(strategy.getCommentStart(), '!');
-    }
+    public void testImmutalibity() {
+        CSVStrategy strategy1 = new CSVStrategy('!', '!', '!', '!', true, true, true, true);
+        CSVStrategy strategy2 = strategy1.withDelimiter('?')
+                                         .withEncapsulator('?')
+                                         .withCommentStart('?')
+                                         .withLineSeparator("?")
+                                         .withEscape('?')
+                                         .withLeadingSpacesIgnored(false)
+                                         .withTrailingSpacesIgnored(false)
+                                         .withEmptyLinesIgnored(false)
+                                         .withUnicodeEscapesInterpreted(false);
 
-    public void testGetSetEncapsulator() {
-        CSVStrategy strategy = (CSVStrategy) CSVStrategy.DEFAULT_STRATEGY.clone();
-        strategy.setEncapsulator('"');
-        assertEquals(strategy.getEncapsulator(), '"');
-        strategy.setEncapsulator('\'');
-        assertEquals(strategy.getEncapsulator(), '\'');
-    }
-
-    public void testGetSetDelimiter() {
-        CSVStrategy strategy = (CSVStrategy) CSVStrategy.DEFAULT_STRATEGY.clone();
-        strategy.setDelimiter(';');
-        assertEquals(strategy.getDelimiter(), ';');
-        strategy.setDelimiter(',');
-        assertEquals(strategy.getDelimiter(), ',');
-        strategy.setDelimiter('\t');
-        assertEquals(strategy.getDelimiter(), '\t');
-    }
-
-    public void testSetCSVStrategy() {
-        CSVStrategy strategy = CSVStrategy.DEFAULT_STRATEGY;
-        // default settings
-        assertEquals(strategy.getDelimiter(), ',');
-        assertEquals(strategy.getEncapsulator(), '"');
-        assertEquals(strategy.getCommentStart(), CSVStrategy.COMMENTS_DISABLED);
-        assertEquals(true, strategy.getIgnoreLeadingWhitespaces());
-        assertEquals(false, strategy.getUnicodeEscapeInterpretation());
-        assertEquals(true, strategy.getIgnoreEmptyLines());
-        // explicit csv settings
-        assertEquals(strategy.getDelimiter(), ',');
-        assertEquals(strategy.getEncapsulator(), '"');
-        assertEquals(strategy.getCommentStart(), CSVStrategy.COMMENTS_DISABLED);
-        assertEquals(true, strategy.getIgnoreLeadingWhitespaces());
-        assertEquals(false, strategy.getUnicodeEscapeInterpretation());
-        assertEquals(true, strategy.getIgnoreEmptyLines());
-    }
-
-    public void testSetExcelStrategy() {
-        CSVStrategy strategy = CSVStrategy.EXCEL_STRATEGY;
-        assertEquals(strategy.getDelimiter(), ',');
-        assertEquals(strategy.getEncapsulator(), '"');
-        assertEquals(strategy.getCommentStart(), CSVStrategy.COMMENTS_DISABLED);
-        assertEquals(false, strategy.getIgnoreLeadingWhitespaces());
-        assertEquals(false, strategy.getUnicodeEscapeInterpretation());
-        assertEquals(false, strategy.getIgnoreEmptyLines());
+        assertNotSame(strategy1.getDelimiter(), strategy2.getDelimiter());
+        assertNotSame(strategy1.getEncapsulator(), strategy2.getEncapsulator());
+        assertNotSame(strategy1.getCommentStart(), strategy2.getCommentStart());
+        assertNotSame(strategy1.getEscape(), strategy2.getEscape());
+        assertNotSame(strategy1.getLineSeparator(), strategy2.getLineSeparator());
+        
+        assertNotSame(strategy1.isTrailingSpacesIgnored(), strategy2.isTrailingSpacesIgnored());
+        assertNotSame(strategy1.isLeadingSpacesIgnored(), strategy2.isLeadingSpacesIgnored());
+        assertNotSame(strategy1.isEmptyLinesIgnored(), strategy2.isEmptyLinesIgnored());
+        assertNotSame(strategy1.isUnicodeEscapesInterpreted(), strategy2.isUnicodeEscapesInterpreted());
     }
 
 } 

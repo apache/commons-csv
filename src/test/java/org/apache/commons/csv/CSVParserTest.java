@@ -94,10 +94,8 @@ public class CSVParserTest extends TestCase {
         *
         */
         String code = "1,2,3,\na,b x,c\n#foo\n\nd,e,\n\n";
-        CSVStrategy strategy = (CSVStrategy) CSVStrategy.DEFAULT_STRATEGY.clone();
-        // strategy.setIgnoreEmptyLines(false);
-        strategy.setCommentStart('#');
-
+        CSVStrategy strategy = CSVStrategy.DEFAULT_STRATEGY.withCommentStart('#');
+        
         TestCSVParser parser = new TestCSVParser(new StringReader(code), strategy);
 
 
@@ -123,8 +121,7 @@ public class CSVParserTest extends TestCase {
         *       \,,
         */
         String code = "a,\\,,b\n\\,,";
-        CSVStrategy strategy = (CSVStrategy) CSVStrategy.DEFAULT_STRATEGY.clone();
-        strategy.setCommentStart('#');
+        CSVStrategy strategy = CSVStrategy.DEFAULT_STRATEGY.withCommentStart('#');
         TestCSVParser parser = new TestCSVParser(new StringReader(code), strategy);
 
         assertEquals(CSVParser.TT_TOKEN + ";a;", parser.testNextToken());
@@ -520,8 +517,7 @@ public class CSVParserTest extends TestCase {
 
     public void testUnicodeEscape() throws IOException {
         String code = "abc,\\u0070\\u0075\\u0062\\u006C\\u0069\\u0063";
-        CSVParser parser = new CSVParser(new StringReader(code));
-        parser.getStrategy().setUnicodeEscapeInterpretation(true);
+        CSVParser parser = new CSVParser(new StringReader(code), CSVStrategy.DEFAULT_STRATEGY.withUnicodeEscapesInterpreted(true));
         String[] data = parser.getLine();
         assertEquals(2, data.length);
         assertEquals("abc", data[0]);

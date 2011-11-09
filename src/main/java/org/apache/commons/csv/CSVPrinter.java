@@ -58,7 +58,7 @@ public class CSVPrinter {
      * Output a blank line
      */
     public void println() throws IOException {
-        out.write(strategy.getPrinterNewline());
+        out.write(strategy.getLineSeparator());
         newLine = true;
     }
 

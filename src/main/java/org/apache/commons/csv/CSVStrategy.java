@@ -26,17 +26,15 @@ import java.io.Serializable;
  */
 public class CSVStrategy implements Cloneable, Serializable {
 
-    private char delimiter;
-    private char encapsulator;
-    private char commentStart;
-    private char escape;
-    private boolean ignoreLeadingWhitespaces;
-    private boolean ignoreTrailingWhitespaces;
-    private boolean interpretUnicodeEscapes;
-    private boolean ignoreEmptyLines;
-
-    // controls for output
-    private String printerNewline = "\n";
+    private char delimiter = ',';
+    private char encapsulator = '"';
+    private char commentStart = COMMENTS_DISABLED;
+    private char escape = ESCAPE_DISABLED;
+    private boolean leadingSpacesIgnored = true;
+    private boolean trailingSpacesIgnored = true;
+    private boolean unicodeEscapesInterpreted = false;
+    private boolean emptyLinesIgnored = true;
+    private String lineSeparator = "\n";
 
     // -2 is used to signal disabled, because it won't be confused with
     // an EOF signal (-1), and because \ufffe in UTF-16 would be
@@ -46,10 +44,21 @@ public class CSVStrategy implements Cloneable, Serializable {
     public static final char ESCAPE_DISABLED = (char) -2;
     public static final char ENCAPSULATOR_DISABLED = (char) -2;
 
+    /** Standard comma separated format. */
     public static final CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true, false, true);
+    
+    /** Excel file format (using a comma as the value delimiter). */
     public static final CSVStrategy EXCEL_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false, false, false, false);
+    
+    /** Tabulation delimited format. */
     public static final CSVStrategy TDF_STRATEGY = new CSVStrategy('\t', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true, false, true);
 
+
+    /**
+     * Creates a CSVStrategy with the default parameters.
+     */
+    public CSVStrategy() {
+    }
 
     public CSVStrategy(char delimiter, char encapsulator, char commentStart) {
         this(delimiter, encapsulator, commentStart, ESCAPE_DISABLED, true, true, false, true);
@@ -62,103 +71,129 @@ public class CSVStrategy implements Cloneable, Serializable {
      * @param encapsulator              a char used as value encapsulation marker
      * @param commentStart              a char used for comment identification
      * @param escape                    a char used to escape special characters in values
-     * @param ignoreLeadingWhitespaces  TRUE when leading whitespaces should be ignored
-     * @param ignoreTrailingWhitespaces TRUE when trailing whitespaces should be ignored
-     * @param interpretUnicodeEscapes   TRUE when unicode escapes should be interpreted
-     * @param ignoreEmptyLines          TRUE when the parser should skip emtpy lines
+     * @param leadingSpacesIgnored      TRUE when leading whitespaces should be ignored
+     * @param trailingSpacesIgnored     TRUE when trailing whitespaces should be ignored
+     * @param unicodeEscapesInterpreted TRUE when unicode escapes should be interpreted
+     * @param emptyLinesIgnored         TRUE when the parser should skip emtpy lines
      */
     public CSVStrategy(
             char delimiter,
             char encapsulator,
             char commentStart,
             char escape,
-            boolean ignoreLeadingWhitespaces,
-            boolean ignoreTrailingWhitespaces,
-            boolean interpretUnicodeEscapes,
-            boolean ignoreEmptyLines) {
+            boolean leadingSpacesIgnored,
+            boolean trailingSpacesIgnored,
+            boolean unicodeEscapesInterpreted,
+            boolean emptyLinesIgnored) {
         this.delimiter = delimiter;
         this.encapsulator = encapsulator;
         this.commentStart = commentStart;
         this.escape = escape;
-        this.ignoreLeadingWhitespaces = ignoreLeadingWhitespaces;
-        this.ignoreTrailingWhitespaces = ignoreTrailingWhitespaces;
-        this.interpretUnicodeEscapes = interpretUnicodeEscapes;
-        this.ignoreEmptyLines = ignoreEmptyLines;
-    }
-
-    public void setDelimiter(char delimiter) {
-        this.delimiter = delimiter;
+        this.leadingSpacesIgnored = leadingSpacesIgnored;
+        this.trailingSpacesIgnored = trailingSpacesIgnored;
+        this.unicodeEscapesInterpreted = unicodeEscapesInterpreted;
+        this.emptyLinesIgnored = emptyLinesIgnored;
     }
 
     public char getDelimiter() {
-        return this.delimiter;
+        return delimiter;
     }
 
-    public void setEncapsulator(char encapsulator) {
-        this.encapsulator = encapsulator;
+    public CSVStrategy withDelimiter(char delimiter) {
+        CSVStrategy strategy = (CSVStrategy) clone();
+        this.delimiter = delimiter;
+        return strategy;
     }
 
     public char getEncapsulator() {
-        return this.encapsulator;
+        return encapsulator;
     }
 
-    public void setCommentStart(char commentStart) {
-        this.commentStart = commentStart;
+    public CSVStrategy withEncapsulator(char encapsulator) {
+        CSVStrategy strategy = (CSVStrategy) clone();
+        strategy.encapsulator = encapsulator;
+        return strategy;
     }
 
     public char getCommentStart() {
-        return this.commentStart;
+        return commentStart;
+    }
+
+    public CSVStrategy withCommentStart(char commentStart) {
+        CSVStrategy strategy = (CSVStrategy) clone();
+        strategy.commentStart = commentStart;
+        return strategy;
     }
 
     public boolean isCommentingDisabled() {
         return this.commentStart == COMMENTS_DISABLED;
     }
 
-    public void setEscape(char escape) {
-        this.escape = escape;
-    }
-
     public char getEscape() {
-        return this.escape;
+        return escape;
     }
 
-    public void setIgnoreLeadingWhitespaces(boolean ignoreLeadingWhitespaces) {
-        this.ignoreLeadingWhitespaces = ignoreLeadingWhitespaces;
+    public CSVStrategy withEscape(char escape) {
+        CSVStrategy strategy = (CSVStrategy) clone();
+        strategy.escape = escape;
+        return strategy;
     }
 
-    public boolean getIgnoreLeadingWhitespaces() {
-        return this.ignoreLeadingWhitespaces;
+    public boolean isLeadingSpacesIgnored() {
+        return leadingSpacesIgnored;
     }
 
-    public void setIgnoreTrailingWhitespaces(boolean ignoreTrailingWhitespaces) {
-        this.ignoreTrailingWhitespaces = ignoreTrailingWhitespaces;
+    public CSVStrategy withLeadingSpacesIgnored(boolean leadingSpacesIgnored) {
+        CSVStrategy strategy = (CSVStrategy) clone();
+        strategy.leadingSpacesIgnored = leadingSpacesIgnored;
+        return strategy;
     }
 
-    public boolean getIgnoreTrailingWhitespaces() {
-        return this.ignoreTrailingWhitespaces;
+    public boolean isTrailingSpacesIgnored() {
+        return trailingSpacesIgnored;
     }
 
-    public void setUnicodeEscapeInterpretation(boolean interpretUnicodeEscapes) {
-        this.interpretUnicodeEscapes = interpretUnicodeEscapes;
+    public CSVStrategy withTrailingSpacesIgnored(boolean trailingSpacesIgnored) {
+        CSVStrategy strategy = (CSVStrategy) clone();
+        strategy.trailingSpacesIgnored = trailingSpacesIgnored;
+        return strategy;
     }
 
-    public boolean getUnicodeEscapeInterpretation() {
-        return this.interpretUnicodeEscapes;
+    public boolean isUnicodeEscapesInterpreted() {
+        return unicodeEscapesInterpreted;
     }
 
-    public boolean getIgnoreEmptyLines() {
-        return this.ignoreEmptyLines;
+    public CSVStrategy withUnicodeEscapesInterpreted(boolean unicodeEscapesInterpreted) {
+        CSVStrategy strategy = (CSVStrategy) clone();
+        strategy.unicodeEscapesInterpreted = unicodeEscapesInterpreted;
+        return strategy;
     }
 
-    public String getPrinterNewline() {
-        return this.printerNewline;
+    public boolean isEmptyLinesIgnored() {
+        return emptyLinesIgnored;
     }
 
-    public Object clone() {
+    public CSVStrategy withEmptyLinesIgnored(boolean emptyLinesIgnored) {
+        CSVStrategy strategy = (CSVStrategy) clone();
+        strategy.emptyLinesIgnored = emptyLinesIgnored;
+        return strategy;
+    }
+
+    public String getLineSeparator() {
+        return lineSeparator;
+    }
+
+    public CSVStrategy withLineSeparator(String lineSeparator) {
+        CSVStrategy strategy = (CSVStrategy) clone();
+        strategy.lineSeparator = lineSeparator;
+        return strategy;
+    }
+
+    protected Object clone() {
         try {
             return super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);  // impossible
+            throw (Error) new InternalError().initCause(e);
         }
     }
 }

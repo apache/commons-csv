@@ -122,7 +122,7 @@ public class CSVParser {
      * @param input a Reader containing "csv-formatted" input
      */
     public CSVParser(Reader input) {
-        this(input, (CSVStrategy) CSVStrategy.DEFAULT_STRATEGY.clone());
+        this(input, CSVStrategy.DEFAULT_STRATEGY);
     }
 
     /**
@@ -260,7 +260,7 @@ public class CSVParser {
         c = in.readAgain();
 
         //  empty line detection: eol AND (last char was EOL or beginning)
-        while (strategy.getIgnoreEmptyLines() && eol
+        while (strategy.isEmptyLinesIgnored() && eol
                 && (lastChar == '\n'
                 || lastChar == '\r'
                 || lastChar == ExtendedBufferedReader.UNDEFINED)
@@ -286,7 +286,7 @@ public class CSVParser {
         //  important: make sure a new char gets consumed in each iteration
         while (!tkn.isReady && tkn.type != TT_EOF) {
             // ignore whitespaces at beginning of a token
-            while (strategy.getIgnoreLeadingWhitespaces() && isWhitespace(c) && !eol) {
+            while (strategy.isLeadingSpacesIgnored() && isWhitespace(c) && !eol) {
                 wsBuf.append((char) c);
                 c = in.read();
                 eol = isEndOfLine(c);
@@ -316,7 +316,7 @@ public class CSVParser {
             } else {
                 // next token must be a simple token
                 // add removed blanks when not ignoring whitespace chars...
-                if (!strategy.getIgnoreLeadingWhitespaces()) {
+                if (!strategy.isLeadingSpacesIgnored()) {
                     tkn.content.append(wsBuf);
                 }
                 simpleTokenLexer(tkn, c);
@@ -359,7 +359,7 @@ public class CSVParser {
                 tkn.type = TT_TOKEN;
                 tkn.isReady = true;
                 break;
-            } else if (c == '\\' && strategy.getUnicodeEscapeInterpretation() && in.lookAhead() == 'u') {
+            } else if (c == '\\' && strategy.isUnicodeEscapesInterpreted() && in.lookAhead() == 'u') {
                 // interpret unicode escaped chars (like \u0070 -> p)
                 tkn.content.append((char) unicodeEscapeLexer(c));
             } else if (c == strategy.getEscape()) {
@@ -371,7 +371,7 @@ public class CSVParser {
             c = in.read();
         }
 
-        if (strategy.getIgnoreTrailingWhitespaces()) {
+        if (strategy.isTrailingSpacesIgnored()) {
             tkn.content.trimTrailingWhitespace();
         }
 
@@ -400,7 +400,7 @@ public class CSVParser {
         for (; ;) {
             c = in.read();
 
-            if (c == '\\' && strategy.getUnicodeEscapeInterpretation() && in.lookAhead() == 'u') {
+            if (c == '\\' && strategy.isUnicodeEscapesInterpreted() && in.lookAhead() == 'u') {
                 tkn.content.append((char) unicodeEscapeLexer(c));
             } else if (c == strategy.getEscape()) {
                 tkn.content.append((char) readEscape(c));
