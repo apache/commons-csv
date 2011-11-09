@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.csv;
 
 import java.io.BufferedReader;
@@ -32,28 +33,21 @@ import java.io.Reader;
  */
 class ExtendedBufferedReader extends BufferedReader {
 
-
-    /**
-     * the end of stream symbol
-     */
+    /** The end of stream symbol */
     public static final int END_OF_STREAM = -1;
-    /**
-     * undefined state for the lookahead char
-     */
+
+    /** Undefined state for the lookahead char */
     public static final int UNDEFINED = -2;
 
-    /**
-     * the lookahead chars
-     */
+    /** The lookahead chars */
     private int lookaheadChar = UNDEFINED;
-    /**
-     * the last char returned
-     */
+
+    /** The last char returned */
     private int lastChar = UNDEFINED;
-    /**
-     * the line counter
-     */
+
+    /** The line counter */
     private int lineCounter = 0;
+
     private CharBuffer line = new CharBuffer();
 
     /**
@@ -61,16 +55,6 @@ class ExtendedBufferedReader extends BufferedReader {
      */
     public ExtendedBufferedReader(Reader r) {
         super(r);
-        /* note uh: do not fetch the first char here,
-        *          because this might block the method!
-        */
-    }
-
-    /**
-     * Create extended buffered reader using the given buffer-size
-     */
-    public ExtendedBufferedReader(Reader r, int bufSize) {
-        super(r, bufSize);
         /* note uh: do not fetch the first char here,
         *          because this might block the method!
         */

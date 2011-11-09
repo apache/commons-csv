@@ -26,15 +26,6 @@ import junit.framework.TestCase;
  */
 public class ExtendedBufferedReaderTest extends TestCase {
 
-    // ======================================================
-    //   the test cases
-    // ======================================================
-
-    public void testConstructors() {
-        ExtendedBufferedReader br = new ExtendedBufferedReader(new StringReader(""));
-        br = new ExtendedBufferedReader(new StringReader(""), 10);
-    }
-
     public void testReadLookahead1() throws Exception {
 
         assertEquals(ExtendedBufferedReader.END_OF_STREAM, getEBR("").read());
