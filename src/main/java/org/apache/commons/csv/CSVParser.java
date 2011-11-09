@@ -79,7 +79,7 @@ public class CSVParser {
     /**
      * A record buffer for getLine(). Grows as necessary and is reused.
      */
-    private final List record = new ArrayList();
+    private final List<String> record = new ArrayList<String>();
     private final Token reusableToken = new Token();
     private final CharBuffer wsBuf = new CharBuffer();
     private final CharBuffer code = new CharBuffer(4);
@@ -152,7 +152,7 @@ public class CSVParser {
      * @throws IOException on parse error or input read-failure
      */
     public String[][] getAllValues() throws IOException {
-        List records = new ArrayList();
+        List<String[]> records = new ArrayList<String[]>();
         String[] values;
         String[][] ret = null;
         while ((values = getLine()) != null) {

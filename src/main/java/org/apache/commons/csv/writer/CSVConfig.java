@@ -32,71 +32,47 @@ import java.util.List;
  */
 public class CSVConfig {
 
-    /**
-     * specifies if it is a fixed width csv file *
-     */
+    /** specifies if it is a fixed width csv file */
     private boolean fixedWidth;
-    /**
-     * list of fields *
-     */
-    private List fields;
+    
+    /** list of fields */
+    private List<CSVField> fields;
 
-    /**
-     * Do no do any filling *
-     */
+    /** Do no do any filling */
     public static final int FILLNONE = 0;
-    /**
-     * Fill content the the left. Mainly usable together with fixedWidth *
-     */
+    
+    /** Fill content the the left. Mainly usable together with fixedWidth */
     public static final int FILLLEFT = 1;
-    /**
-     * Fill content to the right. Mainly usable together with fixedWidth *
-     */
+    
+    /** Fill content to the right. Mainly usable together with fixedWidth */
     public static final int FILLRIGHT = 2;
 
-    /**
-     * The fill pattern
-     */
+    /** The fill pattern */
     private int fill;
-    /**
-     * The fill char. Defaults to a space
-     */
+    
+    /** The fill char. Defaults to a space */
     private char fillChar = ' ';
-    /**
-     * The seperator character. Defaults to ,
-     */
+    
+    /** The seperator character. Defaults to ,*/
     private char delimiter = ',';
-    /**
-     * The row separator. Defaults to \n
-     */
+    
+    /** The row separator. Defaults to \n */
     private String rowDelimiter = "\n";
-    /**
-     * Should we ignore the delimiter. Defaults to false
-     */
+    
+    /** Should we ignore the delimiter. Defaults to false */
     private boolean ignoreDelimiter = false;
-    /**
-     * the value delimiter. Defaults to "
-     */
+    
+    /** the value delimiter. Defaults to " */
     private char valueDelimiter = '"';
-    /**
-     * Should we ignore the value delimiter. Defaults to true
-     */
+    
+    /** Should we ignore the value delimiter. Defaults to true */
     private boolean ignoreValueDelimiter = true;
-    /**
-     * Specifies if we want to use a field header
-     */
+    
+    /** Specifies if we want to use a field header */
     private boolean fieldHeader = false;
-    /**
-     * Specifies if the end of the line needs to be trimmed
-     */
+    
+    /** Specifies if the end of the line needs to be trimmed */
     private boolean endTrimmed = false;
-
-    /**
-     *
-     */
-    public CSVConfig() {
-        super();
-    }
 
     /**
      * @return if the CSV file is fixedWidth
@@ -117,7 +93,7 @@ public class CSVConfig {
 
     public void addField(CSVField field) {
         if (fields == null) {
-            fields = new ArrayList();
+            fields = new ArrayList<CSVField>();
         }
         fields.add(field);
     }
