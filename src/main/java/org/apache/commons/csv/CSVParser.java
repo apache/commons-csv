@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -51,32 +52,23 @@ import java.util.ArrayList;
  */
 public class CSVParser {
 
-    /**
-     * length of the initial token (content-)buffer
-     */
+    /** length of the initial token (content-)buffer */
     private static final int INITIAL_TOKEN_LENGTH = 50;
 
     // the token types
-    /**
-     * Token has no valid content, i.e. is in its initialized state.
-     */
-    protected static final int TT_INVALID = -1;
-    /**
-     * Token with content, at beginning or in the middle of a line.
-     */
-    protected static final int TT_TOKEN = 0;
-    /**
-     * Token (which can have content) when end of file is reached.
-     */
-    protected static final int TT_EOF = 1;
-    /**
-     * Token with content when end of a line is reached.
-     */
-    protected static final int TT_EORECORD = 2;
+    /** Token has no valid content, i.e. is in its initialized state. */
+    static final int TT_INVALID = -1;
+    
+    /** Token with content, at beginning or in the middle of a line. */
+    static final int TT_TOKEN = 0;
+    
+    /** Token (which can have content) when end of file is reached. */
+    static final int TT_EOF = 1;
+    
+    /** Token with content when end of a line is reached. */
+    static final int TT_EORECORD = 2;
 
-    /**
-     * Immutable empty String array.
-     */
+    /** Immutable empty String array. */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     // the input stream
@@ -88,7 +80,7 @@ public class CSVParser {
     /**
      * A record buffer for getLine(). Grows as necessary and is reused.
      */
-    private final ArrayList record = new ArrayList();
+    private final List record = new ArrayList();
     private final Token reusableToken = new Token();
     private final CharBuffer wsBuf = new CharBuffer();
     private final CharBuffer code = new CharBuffer(4);
@@ -202,7 +194,7 @@ public class CSVParser {
      * @throws IOException on parse error or input read-failure
      */
     public String[][] getAllValues() throws IOException {
-        ArrayList records = new ArrayList();
+        List records = new ArrayList();
         String[] values;
         String[][] ret = null;
         while ((values = getLine()) != null) {
@@ -307,7 +299,7 @@ public class CSVParser {
     /**
      * Convenience method for <code>nextToken(null)</code>.
      */
-    protected Token nextToken() throws IOException {
+    Token nextToken() throws IOException {
         return nextToken(new Token());
     }
 
@@ -322,7 +314,7 @@ public class CSVParser {
      * @return the next token found
      * @throws IOException on stream access error
      */
-    protected Token nextToken(Token tkn) throws IOException {
+    Token nextToken(Token tkn) throws IOException {
         wsBuf.clear(); // reuse
 
         // get the last read char (required for empty line detection)
@@ -538,7 +530,7 @@ public class CSVParser {
      * @return the decoded character
      * @throws IOException on wrong unicode escape sequence or read error
      */
-    protected int unicodeEscapeLexer(int c) throws IOException {
+    private int unicodeEscapeLexer(int c) throws IOException {
         int ret = 0;
         // ignore 'u' (assume c==\ now) and read 4 hex digits
         c = in.read();
