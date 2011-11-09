@@ -22,6 +22,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.csv.CSVParser.Token.Type.*;
 
 /**
  * Parses CSV files according to the specified configuration.
@@ -54,19 +55,6 @@ public class CSVParser {
     /** length of the initial token (content-)buffer */
     private static final int INITIAL_TOKEN_LENGTH = 50;
 
-    // the token types
-    /** Token has no valid content, i.e. is in its initialized state. */
-    static final int TT_INVALID = -1;
-    
-    /** Token with content, at beginning or in the middle of a line. */
-    static final int TT_TOKEN = 0;
-    
-    /** Token (which can have content) when end of file is reached. */
-    static final int TT_EOF = 1;
-    
-    /** Token with content when end of a line is reached. */
-    static final int TT_EORECORD = 2;
-
     /** Immutable empty String array. */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
@@ -91,22 +79,33 @@ public class CSVParser {
      * It is used as contract between the lexer and the parser.
      */
     static class Token {
-        /**
-         * Token type, see TT_xxx constants.
-         */
-        int type = TT_INVALID;
-        /**
-         * The content buffer.
-         */
+
+        enum Type {
+            /** Token has no valid content, i.e. is in its initialized state. */
+            INVALID,
+            
+            /** Token with content, at beginning or in the middle of a line. */
+            TOKEN,
+            
+            /** Token (which can have content) when end of file is reached. */
+            EOF,
+            
+            /** Token with content when end of a line is reached. */
+            EORECORD
+        }
+        
+        /** Token type */
+        Type type = INVALID;
+        
+        /** The content buffer. */
         CharBuffer content = new CharBuffer(INITIAL_TOKEN_LENGTH);
-        /**
-         * Token ready flag: indicates a valid token with content (ready for the parser).
-         */
+        
+        /** Token ready flag: indicates a valid token with content (ready for the parser). */
         boolean isReady;
 
         Token reset() {
             content.clear();
-            type = TT_INVALID;
+            type = INVALID;
             isReady = false;
             return this;
         }
@@ -180,26 +179,26 @@ public class CSVParser {
             reusableToken.reset();
             nextToken(reusableToken);
             switch (reusableToken.type) {
-                case TT_TOKEN:
+                case TOKEN:
                     record.add(reusableToken.content.toString());
                     break;
-                case TT_EORECORD:
+                case EORECORD:
                     record.add(reusableToken.content.toString());
                     break;
-                case TT_EOF:
+                case EOF:
                     if (reusableToken.isReady) {
                         record.add(reusableToken.content.toString());
                     } else {
                         ret = null;
                     }
                     break;
-                case TT_INVALID:
+                case INVALID:
                 default:
                     // error: throw IOException
                     throw new IOException("(line " + getLineNumber() + ") invalid parse sequence");
                     // unreachable: break;
             }
-            if (reusableToken.type != TT_TOKEN) {
+            if (reusableToken.type != TOKEN) {
                 break;
             }
         }
@@ -272,19 +271,19 @@ public class CSVParser {
             c = in.readAgain();
             // reached end of file without any content (empty line at the end)
             if (isEndOfFile(c)) {
-                tkn.type = TT_EOF;
+                tkn.type = EOF;
                 return tkn;
             }
         }
 
-        // did we reach eof during the last iteration already ? TT_EOF
+        // did we reach eof during the last iteration already ? EOF
         if (isEndOfFile(lastChar) || (lastChar != format.getDelimiter() && isEndOfFile(c))) {
-            tkn.type = TT_EOF;
+            tkn.type = EOF;
             return tkn;
         }
 
         //  important: make sure a new char gets consumed in each iteration
-        while (!tkn.isReady && tkn.type != TT_EOF) {
+        while (!tkn.isReady && tkn.type != EOF) {
             // ignore whitespaces at beginning of a token
             while (format.isLeadingSpacesIgnored() && isWhitespace(c) && !eol) {
                 wsBuf.append((char) c);
@@ -297,21 +296,21 @@ public class CSVParser {
                 in.readLine();
                 tkn = nextToken(tkn.reset());
             } else if (c == format.getDelimiter()) {
-                // empty token return TT_TOKEN("")
-                tkn.type = TT_TOKEN;
+                // empty token return TOKEN("")
+                tkn.type = TOKEN;
                 tkn.isReady = true;
             } else if (eol) {
-                // empty token return TT_EORECORD("")
+                // empty token return EORECORD("")
                 //noop: tkn.content.append("");
-                tkn.type = TT_EORECORD;
+                tkn.type = EORECORD;
                 tkn.isReady = true;
             } else if (c == format.getEncapsulator()) {
                 // consume encapsulated token
                 encapsulatedTokenLexer(tkn, c);
             } else if (isEndOfFile(c)) {
-                // end of file return TT_EOF()
+                // end of file return EOF()
                 //noop: tkn.content.append("");
-                tkn.type = TT_EOF;
+                tkn.type = EOF;
                 tkn.isReady = true;
             } else {
                 // next token must be a simple token
@@ -332,9 +331,9 @@ public class CSVParser {
      * A simple token might contain escaped delimiters (as \, or \;). The
      * token is finished when one of the following conditions become true:
      * <ul>
-     * <li>end of line has been reached (TT_EORECORD)</li>
-     * <li>end of stream has been reached (TT_EOF)</li>
-     * <li>an unescaped delimiter has been reached (TT_TOKEN)</li>
+     * <li>end of line has been reached (EORECORD)</li>
+     * <li>end of stream has been reached (EOF)</li>
+     * <li>an unescaped delimiter has been reached (TOKEN)</li>
      * </ul>
      *
      * @param tkn the current token
@@ -346,17 +345,17 @@ public class CSVParser {
         for (; ;) {
             if (isEndOfLine(c)) {
                 // end of record
-                tkn.type = TT_EORECORD;
+                tkn.type = EORECORD;
                 tkn.isReady = true;
                 break;
             } else if (isEndOfFile(c)) {
                 // end of file
-                tkn.type = TT_EOF;
+                tkn.type = EOF;
                 tkn.isReady = true;
                 break;
             } else if (c == format.getDelimiter()) {
                 // end of token
-                tkn.type = TT_TOKEN;
+                tkn.type = TOKEN;
                 tkn.isReady = true;
                 break;
             } else if (c == '\\' && format.isUnicodeEscapesInterpreted() && in.lookAhead() == 'u') {
@@ -414,16 +413,16 @@ public class CSVParser {
                     for (; ;) {
                         c = in.read();
                         if (c == format.getDelimiter()) {
-                            tkn.type = TT_TOKEN;
+                            tkn.type = TOKEN;
                             tkn.isReady = true;
                             return tkn;
                         } else if (isEndOfFile(c)) {
-                            tkn.type = TT_EOF;
+                            tkn.type = EOF;
                             tkn.isReady = true;
                             return tkn;
                         } else if (isEndOfLine(c)) {
                             // ok eo token reached
-                            tkn.type = TT_EORECORD;
+                            tkn.type = EORECORD;
                             tkn.isReady = true;
                             return tkn;
                         } else if (!isWhitespace(c)) {
