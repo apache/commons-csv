@@ -19,11 +19,11 @@ package org.apache.commons.csv;
 
 import junit.framework.TestCase;
 
-public class CSVStrategyTest extends TestCase {
+public class CSVFormatTest extends TestCase {
 
     public void testImmutalibity() {
-        CSVStrategy strategy1 = new CSVStrategy('!', '!', '!', '!', true, true, true, true);
-        CSVStrategy strategy2 = strategy1.withDelimiter('?')
+        CSVFormat format1 = new CSVFormat('!', '!', '!', '!', true, true, true, true);
+        CSVFormat format2 = format1.withDelimiter('?')
                                          .withEncapsulator('?')
                                          .withCommentStart('?')
                                          .withLineSeparator("?")
@@ -33,16 +33,16 @@ public class CSVStrategyTest extends TestCase {
                                          .withEmptyLinesIgnored(false)
                                          .withUnicodeEscapesInterpreted(false);
 
-        assertNotSame(strategy1.getDelimiter(), strategy2.getDelimiter());
-        assertNotSame(strategy1.getEncapsulator(), strategy2.getEncapsulator());
-        assertNotSame(strategy1.getCommentStart(), strategy2.getCommentStart());
-        assertNotSame(strategy1.getEscape(), strategy2.getEscape());
-        assertNotSame(strategy1.getLineSeparator(), strategy2.getLineSeparator());
+        assertNotSame(format1.getDelimiter(), format2.getDelimiter());
+        assertNotSame(format1.getEncapsulator(), format2.getEncapsulator());
+        assertNotSame(format1.getCommentStart(), format2.getCommentStart());
+        assertNotSame(format1.getEscape(), format2.getEscape());
+        assertNotSame(format1.getLineSeparator(), format2.getLineSeparator());
         
-        assertNotSame(strategy1.isTrailingSpacesIgnored(), strategy2.isTrailingSpacesIgnored());
-        assertNotSame(strategy1.isLeadingSpacesIgnored(), strategy2.isLeadingSpacesIgnored());
-        assertNotSame(strategy1.isEmptyLinesIgnored(), strategy2.isEmptyLinesIgnored());
-        assertNotSame(strategy1.isUnicodeEscapesInterpreted(), strategy2.isUnicodeEscapesInterpreted());
+        assertNotSame(format1.isTrailingSpacesIgnored(), format2.isTrailingSpacesIgnored());
+        assertNotSame(format1.isLeadingSpacesIgnored(), format2.isLeadingSpacesIgnored());
+        assertNotSame(format1.isEmptyLinesIgnored(), format2.isEmptyLinesIgnored());
+        assertNotSame(format1.isUnicodeEscapesInterpreted(), format2.isUnicodeEscapesInterpreted());
     }
 
 } 

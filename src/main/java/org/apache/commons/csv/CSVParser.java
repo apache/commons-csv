@@ -27,23 +27,23 @@ import java.util.List;
  * Parses CSV files according to the specified configuration.
  *
  * Because CSV appears in many different dialects, the parser supports many
- * configuration settings by allowing the specification of a {@link CSVStrategy}.
+ * configuration settings by allowing the specification of a {@link CSVFormat}.
  *
  * <p>Parsing of a csv-string having tabs as separators,
  * '"' as an optional value encapsulator, and comments starting with '#':</p>
  * <pre>
  *  String[][] data =
- *   (new CSVParser(new StringReader("a\tb\nc\td"), new CSVStrategy('\t','"','#'))).getAllValues();
+ *   (new CSVParser(new StringReader("a\tb\nc\td"), new CSVFormat('\t','"','#'))).getAllValues();
  * </pre>
  *
  * <p>Parsing of a csv-string in Excel CSV format</p>
  * <pre>
  *  String[][] data =
- *   (new CSVParser(new StringReader("a;b\nc;d"), CSVStrategy.EXCEL_STRATEGY)).getAllValues();
+ *   (new CSVParser(new StringReader("a;b\nc;d"), CSVFormat.EXCEL)).getAllValues();
  * </pre>
  *
  * <p>
- * Internal parser state is completely covered by the strategy
+ * Internal parser state is completely covered by the format
  * and the reader-state.</p>
  *
  * <p>see <a href="package-summary.html">package documentation</a>
@@ -73,7 +73,7 @@ public class CSVParser {
     // the input stream
     private final ExtendedBufferedReader in;
 
-    private final CSVStrategy strategy;
+    private final CSVFormat format;
 
     // the following objects are shared to reduce garbage
     /**
@@ -117,23 +117,23 @@ public class CSVParser {
     // ======================================================
 
     /**
-     * CSV parser using the default {@link CSVStrategy}.
+     * CSV parser using the default {@link CSVFormat}.
      *
      * @param input a Reader containing "csv-formatted" input
      */
     public CSVParser(Reader input) {
-        this(input, CSVStrategy.DEFAULT_STRATEGY);
+        this(input, CSVFormat.DEFAULT);
     }
 
     /**
-     * Customized CSV parser using the given {@link CSVStrategy}
+     * Customized CSV parser using the given {@link CSVFormat}
      *
      * @param input    a Reader containing "csv-formatted" input
-     * @param strategy the CSVStrategy used for CSV parsing
+     * @param format the CSVFormat used for CSV parsing
      */
-    public CSVParser(Reader input, CSVStrategy strategy) {
+    public CSVParser(Reader input, CSVFormat format) {
         this.in = new ExtendedBufferedReader(input);
-        this.strategy = strategy;
+        this.format = format;
     }
 
     // ======================================================
@@ -141,7 +141,7 @@ public class CSVParser {
     // ======================================================
 
     /**
-     * Parses the CSV according to the given strategy
+     * Parses the CSV according to the given format
      * and returns the content as an array of records
      * (whereas records are arrays of single values).
      * <p/>
@@ -260,7 +260,7 @@ public class CSVParser {
         c = in.readAgain();
 
         //  empty line detection: eol AND (last char was EOL or beginning)
-        while (strategy.isEmptyLinesIgnored() && eol
+        while (format.isEmptyLinesIgnored() && eol
                 && (lastChar == '\n'
                 || lastChar == '\r'
                 || lastChar == ExtendedBufferedReader.UNDEFINED)
@@ -278,7 +278,7 @@ public class CSVParser {
         }
 
         // did we reach eof during the last iteration already ? TT_EOF
-        if (isEndOfFile(lastChar) || (lastChar != strategy.getDelimiter() && isEndOfFile(c))) {
+        if (isEndOfFile(lastChar) || (lastChar != format.getDelimiter() && isEndOfFile(c))) {
             tkn.type = TT_EOF;
             return tkn;
         }
@@ -286,17 +286,17 @@ public class CSVParser {
         //  important: make sure a new char gets consumed in each iteration
         while (!tkn.isReady && tkn.type != TT_EOF) {
             // ignore whitespaces at beginning of a token
-            while (strategy.isLeadingSpacesIgnored() && isWhitespace(c) && !eol) {
+            while (format.isLeadingSpacesIgnored() && isWhitespace(c) && !eol) {
                 wsBuf.append((char) c);
                 c = in.read();
                 eol = isEndOfLine(c);
             }
             // ok, start of token reached: comment, encapsulated, or token
-            if (c == strategy.getCommentStart()) {
+            if (c == format.getCommentStart()) {
                 // ignore everything till end of line and continue (incr linecount)
                 in.readLine();
                 tkn = nextToken(tkn.reset());
-            } else if (c == strategy.getDelimiter()) {
+            } else if (c == format.getDelimiter()) {
                 // empty token return TT_TOKEN("")
                 tkn.type = TT_TOKEN;
                 tkn.isReady = true;
@@ -305,7 +305,7 @@ public class CSVParser {
                 //noop: tkn.content.append("");
                 tkn.type = TT_EORECORD;
                 tkn.isReady = true;
-            } else if (c == strategy.getEncapsulator()) {
+            } else if (c == format.getEncapsulator()) {
                 // consume encapsulated token
                 encapsulatedTokenLexer(tkn, c);
             } else if (isEndOfFile(c)) {
@@ -316,7 +316,7 @@ public class CSVParser {
             } else {
                 // next token must be a simple token
                 // add removed blanks when not ignoring whitespace chars...
-                if (!strategy.isLeadingSpacesIgnored()) {
+                if (!format.isLeadingSpacesIgnored()) {
                     tkn.content.append(wsBuf);
                 }
                 simpleTokenLexer(tkn, c);
@@ -354,15 +354,15 @@ public class CSVParser {
                 tkn.type = TT_EOF;
                 tkn.isReady = true;
                 break;
-            } else if (c == strategy.getDelimiter()) {
+            } else if (c == format.getDelimiter()) {
                 // end of token
                 tkn.type = TT_TOKEN;
                 tkn.isReady = true;
                 break;
-            } else if (c == '\\' && strategy.isUnicodeEscapesInterpreted() && in.lookAhead() == 'u') {
+            } else if (c == '\\' && format.isUnicodeEscapesInterpreted() && in.lookAhead() == 'u') {
                 // interpret unicode escaped chars (like \u0070 -> p)
                 tkn.content.append((char) unicodeEscapeLexer(c));
-            } else if (c == strategy.getEscape()) {
+            } else if (c == format.getEscape()) {
                 tkn.content.append((char) readEscape(c));
             } else {
                 tkn.content.append((char) c);
@@ -371,7 +371,7 @@ public class CSVParser {
             c = in.read();
         }
 
-        if (strategy.isTrailingSpacesIgnored()) {
+        if (format.isTrailingSpacesIgnored()) {
             tkn.content.trimTrailingWhitespace();
         }
 
@@ -400,12 +400,12 @@ public class CSVParser {
         for (; ;) {
             c = in.read();
 
-            if (c == '\\' && strategy.isUnicodeEscapesInterpreted() && in.lookAhead() == 'u') {
+            if (c == '\\' && format.isUnicodeEscapesInterpreted() && in.lookAhead() == 'u') {
                 tkn.content.append((char) unicodeEscapeLexer(c));
-            } else if (c == strategy.getEscape()) {
+            } else if (c == format.getEscape()) {
                 tkn.content.append((char) readEscape(c));
-            } else if (c == strategy.getEncapsulator()) {
-                if (in.lookAhead() == strategy.getEncapsulator()) {
+            } else if (c == format.getEncapsulator()) {
+                if (in.lookAhead() == format.getEncapsulator()) {
                     // double or escaped encapsulator -> add single encapsulator to token
                     c = in.read();
                     tkn.content.append((char) c);
@@ -413,7 +413,7 @@ public class CSVParser {
                     // token finish mark (encapsulator) reached: ignore whitespace till delimiter
                     for (; ;) {
                         c = in.read();
-                        if (c == strategy.getDelimiter()) {
+                        if (c == format.getDelimiter()) {
                             tkn.type = TT_TOKEN;
                             tkn.isReady = true;
                             return tkn;
@@ -512,12 +512,12 @@ public class CSVParser {
     // ======================================================
 
     /**
-     * Obtain the specified CSV Strategy.  This should not be modified.
+     * Obtain the specified CSV format.
      *
-     * @return strategy currently being used
+     * @return format currently being used
      */
-    public CSVStrategy getStrategy() {
-        return this.strategy;
+    public CSVFormat getFormat() {
+        return this.format;
     }
 
     // ======================================================
@@ -528,7 +528,7 @@ public class CSVParser {
      * @return true if the given char is a whitespace character
      */
     private boolean isWhitespace(int c) {
-        return Character.isWhitespace((char) c) && (c != strategy.getDelimiter());
+        return Character.isWhitespace((char) c) && (c != format.getDelimiter());
     }
 
     /**

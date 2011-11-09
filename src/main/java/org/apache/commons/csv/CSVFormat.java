@@ -20,11 +20,11 @@ package org.apache.commons.csv;
 import java.io.Serializable;
 
 /**
- * CSVStrategy
+ * The format specification of a CSV file.
  *
- * Represents the strategy for a CSV.
+ * This class is immutable.
  */
-public class CSVStrategy implements Cloneable, Serializable {
+public class CSVFormat implements Cloneable, Serializable {
 
     private char delimiter = ',';
     private char encapsulator = '"';
@@ -45,27 +45,27 @@ public class CSVStrategy implements Cloneable, Serializable {
     public static final char ENCAPSULATOR_DISABLED = (char) -2;
 
     /** Standard comma separated format. */
-    public static final CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true, false, true);
+    public static final CSVFormat DEFAULT = new CSVFormat(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true, false, true);
     
     /** Excel file format (using a comma as the value delimiter). */
-    public static final CSVStrategy EXCEL_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false, false, false, false);
+    public static final CSVFormat EXCEL = new CSVFormat(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false, false, false, false);
     
     /** Tabulation delimited format. */
-    public static final CSVStrategy TDF_STRATEGY = new CSVStrategy('\t', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true, false, true);
+    public static final CSVFormat TDF = new CSVFormat('\t', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true, false, true);
 
 
     /**
-     * Creates a CSVStrategy with the default parameters.
+     * Creates a CSVFormat with the default parameters.
      */
-    public CSVStrategy() {
+    public CSVFormat() {
     }
 
-    public CSVStrategy(char delimiter, char encapsulator, char commentStart) {
+    public CSVFormat(char delimiter, char encapsulator, char commentStart) {
         this(delimiter, encapsulator, commentStart, ESCAPE_DISABLED, true, true, false, true);
     }
 
     /**
-     * Customized CSV strategy constructor.
+     * Customized CSV format constructor.
      *
      * @param delimiter                 a char used for value separation
      * @param encapsulator              a char used as value encapsulation marker
@@ -76,7 +76,7 @@ public class CSVStrategy implements Cloneable, Serializable {
      * @param unicodeEscapesInterpreted TRUE when unicode escapes should be interpreted
      * @param emptyLinesIgnored         TRUE when the parser should skip emtpy lines
      */
-    public CSVStrategy(
+    public CSVFormat(
             char delimiter,
             char encapsulator,
             char commentStart,
@@ -99,30 +99,30 @@ public class CSVStrategy implements Cloneable, Serializable {
         return delimiter;
     }
 
-    public CSVStrategy withDelimiter(char delimiter) {
-        CSVStrategy strategy = (CSVStrategy) clone();
+    public CSVFormat withDelimiter(char delimiter) {
+        CSVFormat format = (CSVFormat) clone();
         this.delimiter = delimiter;
-        return strategy;
+        return format;
     }
 
     public char getEncapsulator() {
         return encapsulator;
     }
 
-    public CSVStrategy withEncapsulator(char encapsulator) {
-        CSVStrategy strategy = (CSVStrategy) clone();
-        strategy.encapsulator = encapsulator;
-        return strategy;
+    public CSVFormat withEncapsulator(char encapsulator) {
+        CSVFormat format = (CSVFormat) clone();
+        format.encapsulator = encapsulator;
+        return format;
     }
 
     public char getCommentStart() {
         return commentStart;
     }
 
-    public CSVStrategy withCommentStart(char commentStart) {
-        CSVStrategy strategy = (CSVStrategy) clone();
-        strategy.commentStart = commentStart;
-        return strategy;
+    public CSVFormat withCommentStart(char commentStart) {
+        CSVFormat format = (CSVFormat) clone();
+        format.commentStart = commentStart;
+        return format;
     }
 
     public boolean isCommentingDisabled() {
@@ -133,60 +133,60 @@ public class CSVStrategy implements Cloneable, Serializable {
         return escape;
     }
 
-    public CSVStrategy withEscape(char escape) {
-        CSVStrategy strategy = (CSVStrategy) clone();
-        strategy.escape = escape;
-        return strategy;
+    public CSVFormat withEscape(char escape) {
+        CSVFormat format = (CSVFormat) clone();
+        format.escape = escape;
+        return format;
     }
 
     public boolean isLeadingSpacesIgnored() {
         return leadingSpacesIgnored;
     }
 
-    public CSVStrategy withLeadingSpacesIgnored(boolean leadingSpacesIgnored) {
-        CSVStrategy strategy = (CSVStrategy) clone();
-        strategy.leadingSpacesIgnored = leadingSpacesIgnored;
-        return strategy;
+    public CSVFormat withLeadingSpacesIgnored(boolean leadingSpacesIgnored) {
+        CSVFormat format = (CSVFormat) clone();
+        format.leadingSpacesIgnored = leadingSpacesIgnored;
+        return format;
     }
 
     public boolean isTrailingSpacesIgnored() {
         return trailingSpacesIgnored;
     }
 
-    public CSVStrategy withTrailingSpacesIgnored(boolean trailingSpacesIgnored) {
-        CSVStrategy strategy = (CSVStrategy) clone();
-        strategy.trailingSpacesIgnored = trailingSpacesIgnored;
-        return strategy;
+    public CSVFormat withTrailingSpacesIgnored(boolean trailingSpacesIgnored) {
+        CSVFormat format = (CSVFormat) clone();
+        format.trailingSpacesIgnored = trailingSpacesIgnored;
+        return format;
     }
 
     public boolean isUnicodeEscapesInterpreted() {
         return unicodeEscapesInterpreted;
     }
 
-    public CSVStrategy withUnicodeEscapesInterpreted(boolean unicodeEscapesInterpreted) {
-        CSVStrategy strategy = (CSVStrategy) clone();
-        strategy.unicodeEscapesInterpreted = unicodeEscapesInterpreted;
-        return strategy;
+    public CSVFormat withUnicodeEscapesInterpreted(boolean unicodeEscapesInterpreted) {
+        CSVFormat format = (CSVFormat) clone();
+        format.unicodeEscapesInterpreted = unicodeEscapesInterpreted;
+        return format;
     }
 
     public boolean isEmptyLinesIgnored() {
         return emptyLinesIgnored;
     }
 
-    public CSVStrategy withEmptyLinesIgnored(boolean emptyLinesIgnored) {
-        CSVStrategy strategy = (CSVStrategy) clone();
-        strategy.emptyLinesIgnored = emptyLinesIgnored;
-        return strategy;
+    public CSVFormat withEmptyLinesIgnored(boolean emptyLinesIgnored) {
+        CSVFormat format = (CSVFormat) clone();
+        format.emptyLinesIgnored = emptyLinesIgnored;
+        return format;
     }
 
     public String getLineSeparator() {
         return lineSeparator;
     }
 
-    public CSVStrategy withLineSeparator(String lineSeparator) {
-        CSVStrategy strategy = (CSVStrategy) clone();
-        strategy.lineSeparator = lineSeparator;
-        return strategy;
+    public CSVFormat withLineSeparator(String lineSeparator) {
+        CSVFormat format = (CSVFormat) clone();
+        format.lineSeparator = lineSeparator;
+        return format;
     }
 
     protected Object clone() {

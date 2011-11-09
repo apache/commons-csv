@@ -81,7 +81,7 @@ public class CSVUtilsTest extends TestCase {
 
     public void testParse6() throws IOException {
         String[][] data = CSVUtils.parse("");
-        // default strategy is CSV, which ignores empty lines
+        // default format is CSV, which ignores empty lines
         assertEquals(0, data.length);
     }
 

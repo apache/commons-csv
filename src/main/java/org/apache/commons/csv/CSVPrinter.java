@@ -27,7 +27,7 @@ public class CSVPrinter {
 
     /** The place that the values get written. */
     private final Writer out;
-    private final CSVStrategy strategy;
+    private final CSVFormat format;
 
     /** True if we just began a new line. */
     private boolean newLine = true;
@@ -36,18 +36,17 @@ public class CSVPrinter {
     private char[] buf = new char[0];  
 
     /**
-     * Create a printer that will print values to the given
-     * stream following the CSVStrategy.
+     * Create a printer that will print values to the given stream following the CSVFormat.
      * <p/>
-     * Currently, only a pure encapsulation strategy or a pure escaping strategy
-     * is supported.  Hybrid strategies (encapsulation and escaping with a different character) are not supported.
+     * Currently, only a pure encapsulation format or a pure escaping format
+     * is supported. Hybrid formats (encapsulation and escaping with a different character) are not supported.
      *
-     * @param out      stream to which to print.
-     * @param strategy describes the CSV variation.
+     * @param out    stream to which to print.
+     * @param format describes the CSV variation.
      */
-    public CSVPrinter(Writer out, CSVStrategy strategy) {
+    public CSVPrinter(Writer out, CSVFormat format) {
         this.out = out;
-        this.strategy = strategy == null ? CSVStrategy.DEFAULT_STRATEGY : strategy;
+        this.format = format == null ? CSVFormat.DEFAULT : format;
     }
 
     // ======================================================
@@ -58,7 +57,7 @@ public class CSVPrinter {
      * Output a blank line
      */
     public void println() throws IOException {
-        out.write(strategy.getLineSeparator());
+        out.write(format.getLineSeparator());
         newLine = true;
     }
 
@@ -92,13 +91,13 @@ public class CSVPrinter {
      * @param comment the comment to output
      */
     public void printlnComment(String comment) throws IOException {
-        if (this.strategy.isCommentingDisabled()) {
+        if (this.format.isCommentingDisabled()) {
             return;
         }
         if (!newLine) {
             println();
         }
-        out.write(this.strategy.getCommentStart());
+        out.write(this.format.getCommentStart());
         out.write(' ');
         for (int i = 0; i < comment.length(); i++) {
             char c = comment.charAt(i);
@@ -110,7 +109,7 @@ public class CSVPrinter {
                     // break intentionally excluded.
                 case '\n':
                     println();
-                    out.write(this.strategy.getCommentStart());
+                    out.write(this.format.getCommentStart());
                     out.write(' ');
                     break;
                 default:
@@ -129,9 +128,9 @@ public class CSVPrinter {
             return;
         }
 
-        if (strategy.getEncapsulator() != CSVStrategy.ENCAPSULATOR_DISABLED) {
+        if (format.getEncapsulator() != CSVFormat.ENCAPSULATOR_DISABLED) {
             printAndEncapsulate(value, offset, len);
-        } else if (strategy.getEscape() != CSVStrategy.ESCAPE_DISABLED) {
+        } else if (format.getEscape() != CSVFormat.ESCAPE_DISABLED) {
             printAndEscape(value, offset, len);
         } else {
             printSep();
@@ -143,7 +142,7 @@ public class CSVPrinter {
         if (newLine) {
             newLine = false;
         } else {
-            out.write(this.strategy.getDelimiter());
+            out.write(this.format.getDelimiter());
         }
     }
 
@@ -154,8 +153,8 @@ public class CSVPrinter {
 
         printSep();
 
-        char delim = this.strategy.getDelimiter();
-        char escape = this.strategy.getEscape();
+        char delim = this.format.getDelimiter();
+        char escape = this.format.getEscape();
 
         while (pos < end) {
             char c = value[pos];
@@ -196,8 +195,8 @@ public class CSVPrinter {
 
         printSep();
 
-        char delim = this.strategy.getDelimiter();
-        char encapsulator = this.strategy.getEncapsulator();
+        char delim = this.format.getDelimiter();
+        char encapsulator = this.format.getEncapsulator();
 
         if (len <= 0) {
             // always quote an empty token that is the first

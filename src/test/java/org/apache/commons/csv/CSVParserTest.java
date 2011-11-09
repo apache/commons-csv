@@ -47,8 +47,8 @@ public class CSVParserTest extends TestCase {
             super(in);
         }
 
-        TestCSVParser(Reader in, CSVStrategy strategy) {
-            super(in, strategy);
+        TestCSVParser(Reader in, CSVFormat format) {
+            super(in, format);
         }
 
         /**
@@ -94,9 +94,9 @@ public class CSVParserTest extends TestCase {
         *
         */
         String code = "1,2,3,\na,b x,c\n#foo\n\nd,e,\n\n";
-        CSVStrategy strategy = CSVStrategy.DEFAULT_STRATEGY.withCommentStart('#');
+        CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
         
-        TestCSVParser parser = new TestCSVParser(new StringReader(code), strategy);
+        TestCSVParser parser = new TestCSVParser(new StringReader(code), format);
 
 
         assertEquals(CSVParser.TT_TOKEN + ";1;", parser.testNextToken());
@@ -121,8 +121,8 @@ public class CSVParserTest extends TestCase {
         *       \,,
         */
         String code = "a,\\,,b\n\\,,";
-        CSVStrategy strategy = CSVStrategy.DEFAULT_STRATEGY.withCommentStart('#');
-        TestCSVParser parser = new TestCSVParser(new StringReader(code), strategy);
+        CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
+        TestCSVParser parser = new TestCSVParser(new StringReader(code), format);
 
         assertEquals(CSVParser.TT_TOKEN + ";a;", parser.testNextToken());
         // an unquoted single backslash is not an escape char
@@ -182,7 +182,7 @@ public class CSVParserTest extends TestCase {
         *       ;;
         */
         String code = "a;'b and '' more\n'\n!comment;;;;\n;;";
-        TestCSVParser parser = new TestCSVParser(new StringReader(code), new CSVStrategy(';', '\'', '!'));
+        TestCSVParser parser = new TestCSVParser(new StringReader(code), new CSVFormat(';', '\'', '!'));
         assertEquals(CSVParser.TT_TOKEN + ";a;", parser.testNextToken());
         assertEquals(
                 CSVParser.TT_EORECORD + ";b and ' more\n;",
@@ -228,7 +228,7 @@ public class CSVParserTest extends TestCase {
         }
     }
 
-    public void testExcelStrategy1() throws IOException {
+    public void testExcelFormat1() throws IOException {
         String code =
                 "value1,value2,value3,value4\r\na,b,c,d\r\n  x,,,"
                         + "\r\n\r\n\"\"\"hello\"\"\",\"  \"\"world\"\"\",\"abc\ndef\",\r\n";
@@ -239,7 +239,7 @@ public class CSVParserTest extends TestCase {
                 {""},
                 {"\"hello\"", "  \"world\"", "abc\ndef", ""}
         };
-        CSVParser parser = new CSVParser(new StringReader(code), CSVStrategy.EXCEL_STRATEGY);
+        CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.EXCEL);
         String[][] tmp = parser.getAllValues();
         assertEquals(res.length, tmp.length);
         assertTrue(tmp.length > 0);
@@ -248,7 +248,7 @@ public class CSVParserTest extends TestCase {
         }
     }
 
-    public void testExcelStrategy2() throws Exception {
+    public void testExcelFormat2() throws Exception {
         String code = "foo,baar\r\n\r\nhello,\r\n\r\nworld,\r\n";
         String[][] res = {
                 {"foo", "baar"},
@@ -257,7 +257,7 @@ public class CSVParserTest extends TestCase {
                 {""},
                 {"world", ""}
         };
-        CSVParser parser = new CSVParser(new StringReader(code), CSVStrategy.EXCEL_STRATEGY);
+        CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.EXCEL);
         String[][] tmp = parser.getAllValues();
         assertEquals(res.length, tmp.length);
         assertTrue(tmp.length > 0);
@@ -279,13 +279,13 @@ public class CSVParserTest extends TestCase {
         };
         String[][] res = {
                 {"hello", ""},
-                {""},  // ExcelStrategy does not ignore empty lines
+                {""},  // Excel format does not ignore empty lines
                 {"world", ""}
         };
         String code;
         for (int codeIndex = 0; codeIndex < codes.length; codeIndex++) {
             code = codes[codeIndex];
-            CSVParser parser = new CSVParser(new StringReader(code), CSVStrategy.EXCEL_STRATEGY);
+            CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.EXCEL);
             String[][] tmp = parser.getAllValues();
             assertEquals(res.length, tmp.length);
             assertTrue(tmp.length > 0);
@@ -307,7 +307,7 @@ public class CSVParserTest extends TestCase {
                 "hello,\r\n\r\nworld,\"\""
         };
         String[][] res = {
-                {"hello", ""},  // CSV Strategy ignores empty lines
+                {"hello", ""},  // CSV format ignores empty lines
                 {"world", ""}
         };
         String code;
@@ -332,13 +332,13 @@ public class CSVParserTest extends TestCase {
         };
         String[][] res = {
                 {"hello", ""},
-                {""},  // ExcelStrategy does not ignore empty lines
+                {""},  // Excel format does not ignore empty lines
                 {""}
         };
         String code;
         for (int codeIndex = 0; codeIndex < codes.length; codeIndex++) {
             code = codes[codeIndex];
-            CSVParser parser = new CSVParser(new StringReader(code), CSVStrategy.EXCEL_STRATEGY);
+            CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.EXCEL);
             String[][] tmp = parser.getAllValues();
             assertEquals(res.length, tmp.length);
             assertTrue(tmp.length > 0);
@@ -356,7 +356,7 @@ public class CSVParserTest extends TestCase {
                 "hello,\"\"\n\n\n"
         };
         String[][] res = {
-                {"hello", ""}  // CSV Strategy ignores empty lines
+                {"hello", ""}  // CSV format ignores empty lines
         };
         String code;
         for (int codeIndex = 0; codeIndex < codes.length; codeIndex++) {
@@ -434,9 +434,9 @@ public class CSVParserTest extends TestCase {
         };
 
 
-        CSVStrategy strategy = new CSVStrategy(',', '\'', CSVStrategy.COMMENTS_DISABLED, '/', false, false, true, true);
+        CSVFormat format = new CSVFormat(',', '\'', CSVFormat.COMMENTS_DISABLED, '/', false, false, true, true);
 
-        CSVParser parser = new CSVParser(new StringReader(code), strategy);
+        CSVParser parser = new CSVParser(new StringReader(code), format);
         String[][] tmp = parser.getAllValues();
         assertTrue(tmp.length > 0);
         for (int i = 0; i < res.length; i++) {
@@ -462,9 +462,9 @@ public class CSVParserTest extends TestCase {
         };
 
 
-        CSVStrategy strategy = new CSVStrategy(',', CSVStrategy.ENCAPSULATOR_DISABLED, CSVStrategy.COMMENTS_DISABLED, '/', false, false, true, true);
+        CSVFormat format = new CSVFormat(',', CSVFormat.ENCAPSULATOR_DISABLED, CSVFormat.COMMENTS_DISABLED, '/', false, false, true, true);
 
-        CSVParser parser = new CSVParser(new StringReader(code), strategy);
+        CSVParser parser = new CSVParser(new StringReader(code), format);
         String[][] tmp = parser.getAllValues();
         assertTrue(tmp.length > 0);
 
@@ -475,7 +475,7 @@ public class CSVParserTest extends TestCase {
     }
 
 
-    public void testDefaultStrategy() throws IOException {
+    public void testDefaultFormat() throws IOException {
 
         String code = ""
                 + "a,b\n"            // 1)
@@ -488,10 +488,10 @@ public class CSVParserTest extends TestCase {
                 {"", "#"},
         };
 
-        CSVStrategy strategy = CSVStrategy.DEFAULT_STRATEGY;
-        assertEquals(CSVStrategy.COMMENTS_DISABLED, strategy.getCommentStart());
+        CSVFormat format = CSVFormat.DEFAULT;
+        assertEquals(CSVFormat.COMMENTS_DISABLED, format.getCommentStart());
 
-        CSVParser parser = new CSVParser(new StringReader(code), strategy);
+        CSVParser parser = new CSVParser(new StringReader(code), format);
         String[][] tmp = parser.getAllValues();
         assertTrue(tmp.length > 0);
 
@@ -505,8 +505,8 @@ public class CSVParserTest extends TestCase {
                 {""},
         };
 
-        strategy = new CSVStrategy(',', '"', '#');
-        parser = new CSVParser(new StringReader(code), strategy);
+        format = new CSVFormat(',', '"', '#');
+        parser = new CSVParser(new StringReader(code), format);
         tmp = parser.getAllValues();
 
         if (!CSVPrinterTest.equals(res_comments, tmp)) {
@@ -517,7 +517,7 @@ public class CSVParserTest extends TestCase {
 
     public void testUnicodeEscape() throws IOException {
         String code = "abc,\\u0070\\u0075\\u0062\\u006C\\u0069\\u0063";
-        CSVParser parser = new CSVParser(new StringReader(code), CSVStrategy.DEFAULT_STRATEGY.withUnicodeEscapesInterpreted(true));
+        CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.DEFAULT.withUnicodeEscapesInterpreted(true));
         String[] data = parser.getLine();
         assertEquals(2, data.length);
         assertEquals("abc", data[0]);
@@ -557,7 +557,7 @@ public class CSVParserTest extends TestCase {
     // From SANDBOX-153
     public void testDelimiterIsWhitespace() throws IOException {
         String code = "one\ttwo\t\tfour \t five\t six";
-        TestCSVParser parser = new TestCSVParser(new StringReader(code), CSVStrategy.TDF_STRATEGY);
+        TestCSVParser parser = new TestCSVParser(new StringReader(code), CSVFormat.TDF);
         assertEquals(CSVParser.TT_TOKEN + ";one;", parser.testNextToken());
         assertEquals(CSVParser.TT_TOKEN + ";two;", parser.testNextToken());
         assertEquals(CSVParser.TT_TOKEN + ";;", parser.testNextToken());

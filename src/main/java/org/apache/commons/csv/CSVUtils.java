@@ -48,10 +48,10 @@ public class CSVUtils {
      * @return the CSV string, will be an empty string if the length of the
      *         value array is 0
      */
-    public static String printLine(String[] values, CSVStrategy strategy) {
+    public static String printLine(String[] values, CSVFormat format) {
         // set up a CSVUtils
         StringWriter stringWriter = new StringWriter();
-        CSVPrinter csvPrinter = new CSVPrinter(stringWriter, strategy);
+        CSVPrinter csvPrinter = new CSVPrinter(stringWriter, format);
 
         // check for null values an "null" as strings and convert them
         // into the strings "null" and "\"null\""
@@ -78,7 +78,7 @@ public class CSVUtils {
     // ======================================================
 
     /**
-     * Parses the given String according to the default {@link CSVStrategy}.
+     * Parses the given String according to the default {@link CSVFormat}.
      *
      * @param s CSV String to be parsed.
      * @return parsed String matrix (which is never null)
@@ -90,7 +90,7 @@ public class CSVUtils {
         }
         String[][] result = (new CSVParser(new StringReader(s))).getAllValues();
         if (result == null) {
-            // since CSVStrategy ignores empty lines an empty array is returned
+            // since CSVFormat ignores empty lines an empty array is returned
             // (i.e. not "result = new String[][] {{""}};")
             result = EMPTY_DOUBLE_STRING_ARRAY;
         }
@@ -98,7 +98,7 @@ public class CSVUtils {
     }
 
     /**
-     * Parses the first line only according to the default {@link CSVStrategy}.
+     * Parses the first line only according to the default {@link CSVFormat}.
      *
      * Parsing empty string will be handled as valid records containing zero
      * elements, so the following property holds: parseLine("").length == 0.
