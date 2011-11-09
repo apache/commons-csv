@@ -25,18 +25,15 @@ import java.io.Writer;
  */
 public class CSVPrinter {
 
-    /**
-     * The place that the values get written.
-     */
-    protected final Writer out;
-    protected final CSVStrategy strategy;
+    /** The place that the values get written. */
+    private final Writer out;
+    private final CSVStrategy strategy;
 
-    /**
-     * True if we just began a new line.
-     */
-    protected boolean newLine = true;
+    /** True if we just began a new line. */
+    private boolean newLine = true;
 
-    protected char[] buf = new char[0];  // temporary buffer
+    /** Temporary buffer */
+    private char[] buf = new char[0];  
 
     /**
      * Create a printer that will print values to the given
