@@ -41,16 +41,13 @@ public class CSVStrategy implements Cloneable, Serializable {
     // an EOF signal (-1), and because \ufffe in UTF-16 would be
     // encoded as two chars (using surrogates) and thus there should never
     // be a collision with a real text char.
-    public static char COMMENTS_DISABLED = (char) -2;
-    public static char ESCAPE_DISABLED = (char) -2;
-    public static char ENCAPSULATOR_DISABLED = (char) -2;
+    public static final char COMMENTS_DISABLED = (char) -2;
+    public static final char ESCAPE_DISABLED = (char) -2;
+    public static final char ENCAPSULATOR_DISABLED = (char) -2;
 
-    public static CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true,
-            true, false, true);
-    public static CSVStrategy EXCEL_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false,
-            false, false, false);
-    public static CSVStrategy TDF_STRATEGY = new CSVStrategy('\t', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true,
-            true, false, true);
+    public static final CSVStrategy DEFAULT_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true, false, true);
+    public static final CSVStrategy EXCEL_STRATEGY = new CSVStrategy(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false, false, false, false);
+    public static final CSVStrategy TDF_STRATEGY = new CSVStrategy('\t', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true, false, true);
 
 
     public CSVStrategy(char delimiter, char encapsulator, char commentStart) {
@@ -58,37 +55,34 @@ public class CSVStrategy implements Cloneable, Serializable {
     }
 
     /**
-     * Customized CSV strategy setter.
+     * Customized CSV strategy constructor.
      *
-     * @param delimiter                a Char used for value separation
-     * @param encapsulator             a Char used as value encapsulation marker
-     * @param commentStart             a Char used for comment identification
-     * @param escape                   a Char used to escape special characters in values
-     * @param ignoreLeadingWhitespace  TRUE when leading whitespaces should be
-     *                                 ignored
-     * @param ignoreTrailingWhitespace TRUE when trailing whitespaces should be
-     *                                 ignored
-     * @param interpretUnicodeEscapes  TRUE when unicode escapes should be
-     *                                 interpreted
-     * @param ignoreEmptyLines         TRUE when the parser should skip emtpy lines
+     * @param delimiter                 a char used for value separation
+     * @param encapsulator              a char used as value encapsulation marker
+     * @param commentStart              a char used for comment identification
+     * @param escape                    a char used to escape special characters in values
+     * @param ignoreLeadingWhitespaces  TRUE when leading whitespaces should be ignored
+     * @param ignoreTrailingWhitespaces TRUE when trailing whitespaces should be ignored
+     * @param interpretUnicodeEscapes   TRUE when unicode escapes should be interpreted
+     * @param ignoreEmptyLines          TRUE when the parser should skip emtpy lines
      */
     public CSVStrategy(
             char delimiter,
             char encapsulator,
             char commentStart,
             char escape,
-            boolean ignoreLeadingWhitespace,
-            boolean ignoreTrailingWhitespace,
+            boolean ignoreLeadingWhitespaces,
+            boolean ignoreTrailingWhitespaces,
             boolean interpretUnicodeEscapes,
             boolean ignoreEmptyLines) {
-        setDelimiter(delimiter);
-        setEncapsulator(encapsulator);
-        setCommentStart(commentStart);
-        setEscape(escape);
-        setIgnoreLeadingWhitespaces(ignoreLeadingWhitespace);
-        setIgnoreTrailingWhitespaces(ignoreTrailingWhitespace);
-        setUnicodeEscapeInterpretation(interpretUnicodeEscapes);
-        setIgnoreEmptyLines(ignoreEmptyLines);
+        this.delimiter = delimiter;
+        this.encapsulator = encapsulator;
+        this.commentStart = commentStart;
+        this.escape = escape;
+        this.ignoreLeadingWhitespaces = ignoreLeadingWhitespaces;
+        this.ignoreTrailingWhitespaces = ignoreTrailingWhitespaces;
+        this.interpretUnicodeEscapes = interpretUnicodeEscapes;
+        this.ignoreEmptyLines = ignoreEmptyLines;
     }
 
     /**
@@ -98,10 +92,10 @@ public class CSVStrategy implements Cloneable, Serializable {
             char delimiter,
             char encapsulator,
             char commentStart,
-            boolean ignoreLeadingWhitespace,
+            boolean ignoreLeadingWhitespaces,
             boolean interpretUnicodeEscapes,
             boolean ignoreEmptyLines) {
-        this(delimiter, encapsulator, commentStart, CSVStrategy.ESCAPE_DISABLED, ignoreLeadingWhitespace,
+        this(delimiter, encapsulator, commentStart, CSVStrategy.ESCAPE_DISABLED, ignoreLeadingWhitespaces,
                 true, interpretUnicodeEscapes, ignoreEmptyLines);
     }
 
@@ -165,16 +159,8 @@ public class CSVStrategy implements Cloneable, Serializable {
         return this.interpretUnicodeEscapes;
     }
 
-    public void setIgnoreEmptyLines(boolean ignoreEmptyLines) {
-        this.ignoreEmptyLines = ignoreEmptyLines;
-    }
-
     public boolean getIgnoreEmptyLines() {
         return this.ignoreEmptyLines;
-    }
-
-    public void setPrinterNewline(String newline) {
-        this.printerNewline = newline;
     }
 
     public String getPrinterNewline() {
