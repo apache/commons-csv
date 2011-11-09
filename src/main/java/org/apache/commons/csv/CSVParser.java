@@ -20,7 +20,9 @@ package org.apache.commons.csv;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.apache.commons.csv.CSVParser.Token.Type.*;
 
@@ -33,14 +35,18 @@ import static org.apache.commons.csv.CSVParser.Token.Type.*;
  * <p>Parsing of a csv-string having tabs as separators,
  * '"' as an optional value encapsulator, and comments starting with '#':</p>
  * <pre>
- *  String[][] record =
- *   (new CSVParser(new StringReader("a\tb\nc\td"), new CSVFormat('\t','"','#'))).getAllValues();
+ * CSVFormat format = new CSVFormat('\t', '"', '#');
+ * Reader in = new StringReader("a\tb\nc\td");
+ * String[][] records = new CSVParser(in, format).getRecords();
  * </pre>
  *
- * <p>Parsing of a csv-string in Excel CSV format</p>
+ * <p>Parsing of a csv-string in Excel CSV format, using a for-each loop:</p>
  * <pre>
- *  String[][] record =
- *   (new CSVParser(new StringReader("a;b\nc;d"), CSVFormat.EXCEL)).getAllValues();
+ * Reader in = new StringReader("a;b\nc;d");
+ * CSVParser parser = new CSVParser(in, CSVFormat.EXCEL);
+ * for (String[] record : parser) {
+ *     ...
+ * }
  * </pre>
  *
  * <p>
@@ -50,7 +56,7 @@ import static org.apache.commons.csv.CSVParser.Token.Type.*;
  * <p>see <a href="package-summary.html">package documentation</a>
  * for more details</p>
  */
-public class CSVParser {
+public class CSVParser implements Iterable<String[]> {
 
     /** length of the initial token (content-)buffer */
     private static final int INITIAL_TOKEN_LENGTH = 50;
@@ -172,7 +178,7 @@ public class CSVParser {
      *         ('null' when end of file has been reached)
      * @throws IOException on parse error or input read-failure
      */
-    public String[] getLine() throws IOException {
+    String[] getLine() throws IOException {
         String[] ret = EMPTY_STRING_ARRAY;
         record.clear();
         while (true) {
@@ -206,6 +212,49 @@ public class CSVParser {
             ret = (String[]) record.toArray(new String[record.size()]);
         }
         return ret;
+    }
+
+    /**
+     * Returns an iterator on the records. IOExceptions occuring
+     * during the iteration are wrapped in a RuntimeException.
+     */
+    public Iterator<String[]> iterator() {
+        return new Iterator<String[]>() {
+            String[] current;
+            
+            public boolean hasNext() {
+                if (current == null) {
+                    current = getNextLine();
+                }
+                
+                return current != null;
+            }
+
+            public String[] next() {
+                String[] next = current;
+                current = null;
+
+                if (next == null) {
+                    // hasNext() wasn't called before
+                    next = getNextLine();
+                    if (next == null) {
+                        throw new NoSuchElementException("No more CSV records available");
+                    }
+                }
+                
+                return next;
+            }
+            
+            private String[] getNextLine() {
+                try {
+                    return getLine();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            public void remove() { }
+        };
     }
 
     /**

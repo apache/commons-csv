@@ -20,7 +20,11 @@ package org.apache.commons.csv;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
 
@@ -219,7 +223,7 @@ public class CSVParserTest extends TestCase {
         assertTrue(parser.getLine() == null);
     }
 
-    public void testGetAllValues() throws IOException {
+    public void testGetRecords() throws IOException {
         CSVParser parser = new CSVParser(new StringReader(code));
         String[][] tmp = parser.getRecords();
         assertEquals(res.length, tmp.length);
@@ -518,7 +522,7 @@ public class CSVParserTest extends TestCase {
     public void testUnicodeEscape() throws IOException {
         String code = "abc,\\u0070\\u0075\\u0062\\u006C\\u0069\\u0063";
         CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.DEFAULT.withUnicodeEscapesInterpreted(true));
-        String[] data = parser.getLine();
+        String[] data = parser.iterator().next();
         assertEquals(2, data.length);
         assertEquals("abc", data[0]);
         assertEquals("public", data[1]);
@@ -564,5 +568,43 @@ public class CSVParserTest extends TestCase {
         assertEquals(TOKEN + ";four;", parser.testNextToken());
         assertEquals(TOKEN + ";five;", parser.testNextToken());
         assertEquals(EOF + ";six;", parser.testNextToken());
+    }
+
+    public void testForEach() {
+        List<String[]> records = new ArrayList<String[]>();
+        
+        String code = "a,b,c\n1,2,3\nx,y,z";
+        Reader in = new StringReader(code);
+        
+        for (String[] record : new CSVParser(in)) {
+            records.add(record);
+        }
+        
+        assertEquals(3, records.size());
+        assertTrue(Arrays.equals(new String[] {"a", "b", "c"}, records.get(0)));
+        assertTrue(Arrays.equals(new String[]{"1", "2", "3"}, records.get(1)));
+        assertTrue(Arrays.equals(new String[] {"x", "y", "z"}, records.get(2)));
+    }
+
+    public void testIterator() {
+        String code = "a,b,c\n1,2,3\nx,y,z";
+        Iterator<String[]> iterator = new CSVParser(new StringReader(code)).iterator();
+        
+        assertTrue(iterator.hasNext());
+        iterator.remove();
+        assertTrue(Arrays.equals(new String[]{"a", "b", "c"}, iterator.next()));
+        assertTrue(Arrays.equals(new String[]{"1", "2", "3"}, iterator.next()));
+        assertTrue(iterator.hasNext());
+        assertTrue(iterator.hasNext());
+        assertTrue(iterator.hasNext());
+        assertTrue(Arrays.equals(new String[]{"x", "y", "z"}, iterator.next()));
+        assertFalse(iterator.hasNext());
+        
+        try {
+            iterator.next();
+            fail("NoSuchElementException expected");
+        } catch (NoSuchElementException e) {
+            // expected
+        }
     }
 }
