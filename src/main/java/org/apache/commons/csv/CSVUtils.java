@@ -16,9 +16,9 @@
  */
 package org.apache.commons.csv;
 
-import java.io.StringWriter;
-import java.io.StringReader;
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 /**
  * Utility methods for dealing with CSV files
