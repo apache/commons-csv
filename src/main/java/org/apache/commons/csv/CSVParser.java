@@ -14,11 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.csv;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,53 +117,12 @@ public class CSVParser {
     // ======================================================
 
     /**
-     * Default strategy for the parser follows the default {@link CSVStrategy}.
-     *
-     * @param input an InputStream containing "csv-formatted" stream
-     * @deprecated use {@link #CSVParser(Reader)}.
-     */
-    public CSVParser(InputStream input) {
-        this(new InputStreamReader(input));
-    }
-
-    /**
      * CSV parser using the default {@link CSVStrategy}.
      *
      * @param input a Reader containing "csv-formatted" input
      */
     public CSVParser(Reader input) {
         this(input, (CSVStrategy) CSVStrategy.DEFAULT_STRATEGY.clone());
-    }
-
-    /**
-     * Customized value delimiter parser.
-     * <p/>
-     * The parser follows the default {@link CSVStrategy}
-     * except for the delimiter setting.
-     *
-     * @param input     a Reader based on "csv-formatted" input
-     * @param delimiter a Char used for value separation
-     * @deprecated use {@link #CSVParser(Reader, CSVStrategy)}.
-     */
-    public CSVParser(Reader input, char delimiter) {
-        this(input, delimiter, '"', CSVStrategy.COMMENTS_DISABLED);
-    }
-
-    /**
-     * Customized csv parser.
-     * <p/>
-     * The parser parses according to the given CSV dialect settings.
-     * Leading whitespaces are truncated, unicode escapes are
-     * not interpreted and empty lines are ignored.
-     *
-     * @param input        a Reader based on "csv-formatted" input
-     * @param delimiter    a Char used for value separation
-     * @param encapsulator a Char used as value encapsulation marker
-     * @param commentStart a Char used for comment identification
-     * @deprecated use {@link #CSVParser(Reader, CSVStrategy)}.
-     */
-    public CSVParser(Reader input, char delimiter, char encapsulator, char commentStart) {
-        this(input, new CSVStrategy(delimiter, encapsulator, commentStart));
     }
 
     /**

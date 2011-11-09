@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.csv;
 
 import java.io.Serializable;
@@ -51,7 +52,7 @@ public class CSVStrategy implements Cloneable, Serializable {
 
 
     public CSVStrategy(char delimiter, char encapsulator, char commentStart) {
-        this(delimiter, encapsulator, commentStart, true, false, true);
+        this(delimiter, encapsulator, commentStart, ESCAPE_DISABLED, true, true, false, true);
     }
 
     /**
@@ -83,20 +84,6 @@ public class CSVStrategy implements Cloneable, Serializable {
         this.ignoreTrailingWhitespaces = ignoreTrailingWhitespaces;
         this.interpretUnicodeEscapes = interpretUnicodeEscapes;
         this.ignoreEmptyLines = ignoreEmptyLines;
-    }
-
-    /**
-     * @deprecated
-     */
-    public CSVStrategy(
-            char delimiter,
-            char encapsulator,
-            char commentStart,
-            boolean ignoreLeadingWhitespaces,
-            boolean interpretUnicodeEscapes,
-            boolean ignoreEmptyLines) {
-        this(delimiter, encapsulator, commentStart, CSVStrategy.ESCAPE_DISABLED, ignoreLeadingWhitespaces,
-                true, interpretUnicodeEscapes, ignoreEmptyLines);
     }
 
     public void setDelimiter(char delimiter) {
