@@ -22,27 +22,42 @@ import junit.framework.TestCase;
 public class CSVFormatTest extends TestCase {
 
     public void testImmutalibity() {
-        CSVFormat format1 = new CSVFormat('!', '!', '!', '!', true, true, true, true);
-        CSVFormat format2 = format1.withDelimiter('?')
-                                         .withEncapsulator('?')
-                                         .withCommentStart('?')
-                                         .withLineSeparator("?")
-                                         .withEscape('?')
-                                         .withLeadingSpacesIgnored(false)
-                                         .withTrailingSpacesIgnored(false)
-                                         .withEmptyLinesIgnored(false)
-                                         .withUnicodeEscapesInterpreted(false);
-
-        assertNotSame(format1.getDelimiter(), format2.getDelimiter());
-        assertNotSame(format1.getEncapsulator(), format2.getEncapsulator());
-        assertNotSame(format1.getCommentStart(), format2.getCommentStart());
-        assertNotSame(format1.getEscape(), format2.getEscape());
-        assertNotSame(format1.getLineSeparator(), format2.getLineSeparator());
+        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, true, true);
         
-        assertNotSame(format1.isTrailingSpacesIgnored(), format2.isTrailingSpacesIgnored());
-        assertNotSame(format1.isLeadingSpacesIgnored(), format2.isLeadingSpacesIgnored());
-        assertNotSame(format1.isEmptyLinesIgnored(), format2.isEmptyLinesIgnored());
-        assertNotSame(format1.isUnicodeEscapesInterpreted(), format2.isUnicodeEscapesInterpreted());
+        format.withDelimiter('?');
+        format.withEncapsulator('?');
+        format.withCommentStart('?');
+        format.withLineSeparator("?");
+        format.withEscape('?');
+        format.withLeadingSpacesIgnored(false);
+        format.withTrailingSpacesIgnored(false);
+        format.withEmptyLinesIgnored(false);
+        format.withUnicodeEscapesInterpreted(false);
+        
+        assertEquals('!', format.getDelimiter());
+        assertEquals('!', format.getEncapsulator());
+        assertEquals('!', format.getCommentStart());
+        assertEquals("\n", format.getLineSeparator());
+        assertEquals('!', format.getEscape());
+        
+        assertEquals(true, format.isLeadingSpacesIgnored());
+        assertEquals(true, format.isTrailingSpacesIgnored());
+        assertEquals(true, format.isEmptyLinesIgnored());
+        assertEquals(true, format.isUnicodeEscapesInterpreted());
     }
 
+    public void testMutators() {
+        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, true, true);
+        
+        assertEquals('?', format.withDelimiter('?').getDelimiter());
+        assertEquals('?', format.withEncapsulator('?').getEncapsulator());
+        assertEquals('?', format.withCommentStart('?').getCommentStart());
+        assertEquals("?", format.withLineSeparator("?").getLineSeparator());
+        assertEquals('?', format.withEscape('?').getEscape());
+        
+        assertEquals(false, format.withLeadingSpacesIgnored(false).isLeadingSpacesIgnored());
+        assertEquals(false, format.withTrailingSpacesIgnored(false).isTrailingSpacesIgnored());
+        assertEquals(false, format.withEmptyLinesIgnored(false).isEmptyLinesIgnored());
+        assertEquals(false, format.withUnicodeEscapesInterpreted(false).isUnicodeEscapesInterpreted());
+    }
 } 

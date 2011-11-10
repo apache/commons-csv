@@ -102,7 +102,7 @@ public class CSVFormat implements Cloneable, Serializable {
 
     public CSVFormat withDelimiter(char delimiter) {
         CSVFormat format = (CSVFormat) clone();
-        this.delimiter = delimiter;
+        format.delimiter = delimiter;
         return format;
     }
 
