@@ -111,7 +111,7 @@ public class CSVPrinterTest extends TestCase {
         doRandom(iter);
 
         // Format for MySQL
-        format = new CSVFormat('\t', CSVFormat.ENCAPSULATOR_DISABLED, CSVFormat.COMMENTS_DISABLED, '\\', false, false, false, false);
+        format = new CSVFormat('\t',  CSVFormat.DISABLED,  CSVFormat.DISABLED, '\\', false, false, false, false);
         doRandom(iter);
     }
 

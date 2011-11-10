@@ -28,30 +28,31 @@ public class CSVFormat implements Cloneable, Serializable {
 
     private char delimiter = ',';
     private char encapsulator = '"';
-    private char commentStart = COMMENTS_DISABLED;
-    private char escape = ESCAPE_DISABLED;
+    private char commentStart = DISABLED;
+    private char escape = DISABLED;
     private boolean leadingSpacesIgnored = true;
     private boolean trailingSpacesIgnored = true;
     private boolean unicodeEscapesInterpreted = false;
     private boolean emptyLinesIgnored = true;
     private String lineSeparator = "\n";
 
-    // -2 is used to signal disabled, because it won't be confused with
-    // an EOF signal (-1), and because \ufffe in UTF-16 would be
-    // encoded as two chars (using surrogates) and thus there should never
-    // be a collision with a real text char.
-    public static final char COMMENTS_DISABLED = (char) -2;
-    public static final char ESCAPE_DISABLED = (char) -2;
-    public static final char ENCAPSULATOR_DISABLED = (char) -2;
+
+    /**
+     * Constant char to be used for disabling comments, escapes and encapsulation.
+     * The value -2 is used because it won't be confused with an EOF signal (-1),
+     * and because the unicode value FFFE would be encoded as two chars (using surrogates)
+     * and thus there should never be a collision with a real text char.
+     */
+    public static final char DISABLED = '\ufffe';
 
     /** Standard comma separated format. */
-    public static final CSVFormat DEFAULT = new CSVFormat(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true, false, true);
-    
+    public static final CSVFormat DEFAULT = new CSVFormat(',', '"', DISABLED, DISABLED, true, true, false, true);
+
     /** Excel file format (using a comma as the value delimiter). */
-    public static final CSVFormat EXCEL = new CSVFormat(',', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, false, false, false, false);
-    
+    public static final CSVFormat EXCEL = new CSVFormat(',', '"', DISABLED, DISABLED, false, false, false, false);
+
     /** Tabulation delimited format. */
-    public static final CSVFormat TDF = new CSVFormat('\t', '"', COMMENTS_DISABLED, ESCAPE_DISABLED, true, true, false, true);
+    public static final CSVFormat TDF = new CSVFormat('\t', '"', DISABLED, DISABLED, true, true, false, true);
 
 
     /**
@@ -61,7 +62,7 @@ public class CSVFormat implements Cloneable, Serializable {
     }
 
     public CSVFormat(char delimiter, char encapsulator, char commentStart) {
-        this(delimiter, encapsulator, commentStart, ESCAPE_DISABLED, true, true, false, true);
+        this(delimiter, encapsulator, commentStart, DISABLED, true, true, false, true);
     }
 
     /**
@@ -115,6 +116,10 @@ public class CSVFormat implements Cloneable, Serializable {
         return format;
     }
 
+    boolean isEncapsulating() {
+        return this.encapsulator != DISABLED;
+    }
+
     public char getCommentStart() {
         return commentStart;
     }
@@ -126,7 +131,7 @@ public class CSVFormat implements Cloneable, Serializable {
     }
 
     public boolean isCommentingDisabled() {
-        return this.commentStart == COMMENTS_DISABLED;
+        return this.commentStart == DISABLED;
     }
 
     public char getEscape() {
@@ -137,6 +142,10 @@ public class CSVFormat implements Cloneable, Serializable {
         CSVFormat format = (CSVFormat) clone();
         format.escape = escape;
         return format;
+    }
+
+    boolean isEscaping() {
+        return this.escape != DISABLED;
     }
 
     public boolean isLeadingSpacesIgnored() {

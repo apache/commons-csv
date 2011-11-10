@@ -438,7 +438,7 @@ public class CSVParserTest extends TestCase {
         };
 
 
-        CSVFormat format = new CSVFormat(',', '\'', CSVFormat.COMMENTS_DISABLED, '/', false, false, true, true);
+        CSVFormat format = new CSVFormat(',', '\'', CSVFormat.DISABLED, '/', false, false, true, true);
 
         CSVParser parser = new CSVParser(new StringReader(code), format);
         String[][] tmp = parser.getRecords();
@@ -466,7 +466,7 @@ public class CSVParserTest extends TestCase {
         };
 
 
-        CSVFormat format = new CSVFormat(',', CSVFormat.ENCAPSULATOR_DISABLED, CSVFormat.COMMENTS_DISABLED, '/', false, false, true, true);
+        CSVFormat format = new CSVFormat(',',  CSVFormat.DISABLED,  CSVFormat.DISABLED, '/', false, false, true, true);
 
         CSVParser parser = new CSVParser(new StringReader(code), format);
         String[][] tmp = parser.getRecords();
@@ -493,7 +493,7 @@ public class CSVParserTest extends TestCase {
         };
 
         CSVFormat format = CSVFormat.DEFAULT;
-        assertEquals(CSVFormat.COMMENTS_DISABLED, format.getCommentStart());
+        assertEquals(CSVFormat.DISABLED, format.getCommentStart());
 
         CSVParser parser = new CSVParser(new StringReader(code), format);
         String[][] tmp = parser.getRecords();

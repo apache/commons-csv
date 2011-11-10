@@ -127,10 +127,10 @@ public class CSVPrinter {
             out.write(value, offset, len);
             return;
         }
-
-        if (format.getEncapsulator() != CSVFormat.ENCAPSULATOR_DISABLED) {
+        
+        if (format.isEncapsulating()) {
             printAndEncapsulate(value, offset, len);
-        } else if (format.getEscape() != CSVFormat.ESCAPE_DISABLED) {
+        } else if (format.isEscaping()) {
             printAndEscape(value, offset, len);
         } else {
             printSep();
