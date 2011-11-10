@@ -48,7 +48,7 @@ public class CSVUtils {
      * @return the CSV string, will be an empty string if the length of the
      *         value array is 0
      */
-    public static String printLine(String[] values, CSVFormat format) {
+    public static String printLine(CSVFormat format, String... values) {
         // set up a CSVUtils
         StringWriter stringWriter = new StringWriter();
         CSVPrinter csvPrinter = new CSVPrinter(stringWriter, format);
