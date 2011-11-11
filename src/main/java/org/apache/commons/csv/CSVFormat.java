@@ -101,7 +101,7 @@ public class CSVFormat implements Cloneable, Serializable {
     }
 
     public CSVFormat withDelimiter(char delimiter) {
-        CSVFormat format = (CSVFormat) clone();
+        CSVFormat format = clone();
         format.delimiter = delimiter;
         return format;
     }
@@ -111,7 +111,7 @@ public class CSVFormat implements Cloneable, Serializable {
     }
 
     public CSVFormat withEncapsulator(char encapsulator) {
-        CSVFormat format = (CSVFormat) clone();
+        CSVFormat format = clone();
         format.encapsulator = encapsulator;
         return format;
     }
@@ -125,7 +125,7 @@ public class CSVFormat implements Cloneable, Serializable {
     }
 
     public CSVFormat withCommentStart(char commentStart) {
-        CSVFormat format = (CSVFormat) clone();
+        CSVFormat format = clone();
         format.commentStart = commentStart;
         return format;
     }
@@ -139,7 +139,7 @@ public class CSVFormat implements Cloneable, Serializable {
     }
 
     public CSVFormat withEscape(char escape) {
-        CSVFormat format = (CSVFormat) clone();
+        CSVFormat format = clone();
         format.escape = escape;
         return format;
     }
@@ -153,7 +153,7 @@ public class CSVFormat implements Cloneable, Serializable {
     }
 
     public CSVFormat withLeadingSpacesIgnored(boolean leadingSpacesIgnored) {
-        CSVFormat format = (CSVFormat) clone();
+        CSVFormat format = clone();
         format.leadingSpacesIgnored = leadingSpacesIgnored;
         return format;
     }
@@ -163,7 +163,7 @@ public class CSVFormat implements Cloneable, Serializable {
     }
 
     public CSVFormat withTrailingSpacesIgnored(boolean trailingSpacesIgnored) {
-        CSVFormat format = (CSVFormat) clone();
+        CSVFormat format = clone();
         format.trailingSpacesIgnored = trailingSpacesIgnored;
         return format;
     }
@@ -173,7 +173,7 @@ public class CSVFormat implements Cloneable, Serializable {
     }
 
     public CSVFormat withUnicodeEscapesInterpreted(boolean unicodeEscapesInterpreted) {
-        CSVFormat format = (CSVFormat) clone();
+        CSVFormat format = clone();
         format.unicodeEscapesInterpreted = unicodeEscapesInterpreted;
         return format;
     }
@@ -183,7 +183,7 @@ public class CSVFormat implements Cloneable, Serializable {
     }
 
     public CSVFormat withEmptyLinesIgnored(boolean emptyLinesIgnored) {
-        CSVFormat format = (CSVFormat) clone();
+        CSVFormat format = clone();
         format.emptyLinesIgnored = emptyLinesIgnored;
         return format;
     }
@@ -193,14 +193,14 @@ public class CSVFormat implements Cloneable, Serializable {
     }
 
     public CSVFormat withLineSeparator(String lineSeparator) {
-        CSVFormat format = (CSVFormat) clone();
+        CSVFormat format = clone();
         format.lineSeparator = lineSeparator;
         return format;
     }
 
-    protected Object clone() {
+    protected CSVFormat clone() {
         try {
-            return super.clone();
+            return (CSVFormat) super.clone();
         } catch (CloneNotSupportedException e) {
             throw (Error) new InternalError().initCause(e);
         }
