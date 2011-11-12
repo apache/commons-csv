@@ -34,7 +34,7 @@ public class CSVFormat implements Cloneable, Serializable {
     private boolean trailingSpacesIgnored = true;
     private boolean unicodeEscapesInterpreted = false;
     private boolean emptyLinesIgnored = true;
-    private String lineSeparator = "\n";
+    private String lineSeparator = "\r\n";
 
 
     /**
@@ -45,7 +45,7 @@ public class CSVFormat implements Cloneable, Serializable {
      */
     public static final char DISABLED = '\ufffe';
 
-    /** Standard comma separated format. */
+    /** Standard comma separated format as defined by RFC 4180. */
     public static final CSVFormat DEFAULT = new CSVFormat(',', '"', DISABLED, DISABLED, true, true, false, true);
 
     /** Excel file format (using a comma as the value delimiter). */

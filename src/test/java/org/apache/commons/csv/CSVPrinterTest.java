@@ -28,7 +28,7 @@ import junit.framework.TestCase;
  */
 public class CSVPrinterTest extends TestCase {
 
-    String lineSeparator = "\n";
+    String lineSeparator = "\r\n";
 
     public void testPrinter1() throws IOException {
         StringWriter sw = new StringWriter();

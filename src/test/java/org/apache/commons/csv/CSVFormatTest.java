@@ -37,8 +37,8 @@ public class CSVFormatTest extends TestCase {
         assertEquals('!', format.getDelimiter());
         assertEquals('!', format.getEncapsulator());
         assertEquals('!', format.getCommentStart());
-        assertEquals("\n", format.getLineSeparator());
         assertEquals('!', format.getEscape());
+        assertEquals("\r\n", format.getLineSeparator());
         
         assertEquals(true, format.isLeadingSpacesIgnored());
         assertEquals(true, format.isTrailingSpacesIgnored());
