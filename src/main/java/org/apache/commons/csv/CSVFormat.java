@@ -17,8 +17,10 @@
 
 package org.apache.commons.csv;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.Serializable;
+import java.io.StringWriter;
 
 /**
  * The format specification of a CSV file.
@@ -213,6 +215,22 @@ public class CSVFormat implements Cloneable, Serializable {
      */
     public Iterable<String[]> parse(Reader in) {
         return new CSVParser(in, this);
+    }
+
+    /**
+     * Format the specified values.
+     * 
+     * @param values the values to format
+     */
+    public String format(String... values) {
+        StringWriter out = new StringWriter();
+        try {
+            new CSVPrinter(out, this).println(values);
+        } catch (IOException e) {
+            // should not happen
+        }
+        
+        return out.toString().trim();
     }
 
     protected CSVFormat clone() {

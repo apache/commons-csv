@@ -60,4 +60,12 @@ public class CSVFormatTest extends TestCase {
         assertEquals(false, format.withEmptyLinesIgnored(false).isEmptyLinesIgnored());
         assertEquals(false, format.withUnicodeEscapesInterpreted(false).isUnicodeEscapesInterpreted());
     }
+
+    public void testFormat() {
+        CSVFormat format = CSVFormat.DEFAULT;
+        
+        assertEquals("", format.format());
+        assertEquals("a,b,c", format.format("a", "b", "c"));
+        assertEquals("\"x,y\",z", format.format("x,y", "z"));
+    }
 } 
