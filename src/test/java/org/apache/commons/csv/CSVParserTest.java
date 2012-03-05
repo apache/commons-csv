@@ -573,22 +573,22 @@ public class CSVParserTest extends TestCase {
     public void testForEach() {
         List<String[]> records = new ArrayList<String[]>();
         
-        String code = "a,b,c\n1,2,3\nx,y,z";
-        Reader in = new StringReader(code);
+        Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
         
-        for (String[] record : new CSVParser(in)) {
+        for (String[] record : CSVFormat.DEFAULT.parse(in)) {
             records.add(record);
         }
         
         assertEquals(3, records.size());
-        assertTrue(Arrays.equals(new String[] {"a", "b", "c"}, records.get(0)));
+        assertTrue(Arrays.equals(new String[]{"a", "b", "c"}, records.get(0)));
         assertTrue(Arrays.equals(new String[]{"1", "2", "3"}, records.get(1)));
-        assertTrue(Arrays.equals(new String[] {"x", "y", "z"}, records.get(2)));
+        assertTrue(Arrays.equals(new String[]{"x", "y", "z"}, records.get(2)));
     }
 
     public void testIterator() {
-        String code = "a,b,c\n1,2,3\nx,y,z";
-        Iterator<String[]> iterator = new CSVParser(new StringReader(code)).iterator();
+        Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
+        
+        Iterator<String[]> iterator = CSVFormat.DEFAULT.parse(in).iterator();
         
         assertTrue(iterator.hasNext());
         iterator.remove();

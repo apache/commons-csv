@@ -17,6 +17,7 @@
 
 package org.apache.commons.csv;
 
+import java.io.Reader;
 import java.io.Serializable;
 
 /**
@@ -196,6 +197,15 @@ public class CSVFormat implements Cloneable, Serializable {
         CSVFormat format = clone();
         format.lineSeparator = lineSeparator;
         return format;
+    }
+
+    /**
+     * Parses the specified content.
+     * 
+     * @param in
+     */
+    public Iterable<String[]> parse(Reader in) {
+        return new CSVParser(in, this);
     }
 
     protected CSVFormat clone() {
