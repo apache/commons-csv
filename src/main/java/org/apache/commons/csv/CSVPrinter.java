@@ -61,6 +61,11 @@ public class CSVPrinter {
         newLine = true;
     }
 
+    /**
+     * Flush the underlying stream.
+     * 
+     * @throws IOException
+     */
     public void flush() throws IOException {
         out.flush();
     }
@@ -82,22 +87,23 @@ public class CSVPrinter {
 
 
     /**
-     * Put a comment among the comma separated values.
-     * Comments will always begin on a new line and occupy a
-     * least one full line. The character specified to star
-     * comments and a space will be inserted at the beginning of
-     * each new line in the comment.
+     * Put a comment on a new line among the comma separated values. Comments
+     * will always begin on a new line and occupy a least one full line. The
+     * character specified to start comments and a space will be inserted at
+     * the beginning of each new line in the comment.
+     * <p/>
+     * If comments are disabled in the current CSV format this method does nothing.
      *
      * @param comment the comment to output
      */
-    public void printlnComment(String comment) throws IOException {
+    public void printComment(String comment) throws IOException {
         if (this.format.isCommentingDisabled()) {
             return;
         }
         if (!newLine) {
             println();
         }
-        out.write(this.format.getCommentStart());
+        out.write(format.getCommentStart());
         out.write(' ');
         for (int i = 0; i < comment.length(); i++) {
             char c = comment.charAt(i);
@@ -109,7 +115,7 @@ public class CSVPrinter {
                     // break intentionally excluded.
                 case '\n':
                     println();
-                    out.write(this.format.getCommentStart());
+                    out.write(format.getCommentStart());
                     out.write(' ');
                     break;
                 default:

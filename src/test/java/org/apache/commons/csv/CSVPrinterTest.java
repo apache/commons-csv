@@ -28,7 +28,7 @@ import junit.framework.TestCase;
  */
 public class CSVPrinterTest extends TestCase {
 
-    String lineSeparator = "\r\n";
+    String lineSeparator = CSVFormat.DEFAULT.getLineSeparator();
 
     public void testPrinter1() throws IOException {
         StringWriter sw = new StringWriter();
@@ -102,6 +102,29 @@ public class CSVPrinterTest extends TestCase {
         assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
     }
 
+    public void testDisabledComment() throws IOException {
+        StringWriter sw = new StringWriter();
+        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.printComment("This is a comment");
+        
+        assertEquals("", sw.toString());
+    }
+
+    public void testSingleLineComment() throws IOException {
+        StringWriter sw = new StringWriter();
+        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
+        printer.printComment("This is a comment");
+        
+        assertEquals("# This is a comment" + lineSeparator, sw.toString());
+    }
+
+    public void testMultiLineComment() throws IOException {
+        StringWriter sw = new StringWriter();
+        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
+        printer.printComment("This is a comment\non multiple lines");
+        
+        assertEquals("# This is a comment" + lineSeparator + "# on multiple lines" + lineSeparator, sw.toString());
+    }
 
     public void testRandom() throws Exception {
         int iter = 10000;
@@ -184,11 +207,11 @@ public class CSVPrinterTest extends TestCase {
     }
 
     public static String printable(String s) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             char ch = s.charAt(i);
             if (ch <= ' ' || ch >= 128) {
-                sb.append("(" + (int) ch + ")");
+                sb.append("(").append((int) ch).append(")");
             } else {
                 sb.append(ch);
             }
