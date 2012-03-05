@@ -19,6 +19,7 @@ package org.apache.commons.csv;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -138,6 +139,16 @@ public class CSVParser implements Iterable<String[]> {
     public CSVParser(Reader input, CSVFormat format) {
         this.in = new ExtendedBufferedReader(input);
         this.format = format;
+    }
+
+    /**
+     * Customized CSV parser using the given {@link CSVFormat}
+     *
+     * @param input    a String containing "csv-formatted" input
+     * @param format the CSVFormat used for CSV parsing
+     */
+    public CSVParser(String input, CSVFormat format) {
+        this(new StringReader(input), format);
     }
 
     // ======================================================
