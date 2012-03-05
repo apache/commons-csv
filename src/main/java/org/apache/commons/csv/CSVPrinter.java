@@ -78,7 +78,7 @@ public class CSVPrinter {
      *
      * @param values values to be outputted.
      */
-    public void println(String[] values) throws IOException {
+    public void println(String... values) throws IOException {
         for (String value : values) {
             print(value);
         }

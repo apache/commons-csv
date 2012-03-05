@@ -17,7 +17,6 @@
 package org.apache.commons.csv;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Random;
 
@@ -33,72 +32,63 @@ public class CSVPrinterTest extends TestCase {
     public void testPrinter1() throws IOException {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        String[] line1 = {"a", "b"};
-        printer.println(line1);
+        printer.println("a", "b");
         assertEquals("a,b" + lineSeparator, sw.toString());
     }
 
     public void testPrinter2() throws IOException {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        String[] line1 = {"a,b", "b"};
-        printer.println(line1);
+        printer.println("a,b", "b");
         assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
     }
 
     public void testPrinter3() throws IOException {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        String[] line1 = {"a, b", "b "};
-        printer.println(line1);
+        printer.println("a, b", "b ");
         assertEquals("\"a, b\",\"b \"" + lineSeparator, sw.toString());
     }
 
     public void testPrinter4() throws IOException {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        String[] line1 = {"a", "b\"c"};
-        printer.println(line1);
+        printer.println("a", "b\"c");
         assertEquals("a,\"b\"\"c\"" + lineSeparator, sw.toString());
     }
 
     public void testPrinter5() throws IOException {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        String[] line1 = {"a", "b\nc"};
-        printer.println(line1);
+        printer.println("a", "b\nc");
         assertEquals("a,\"b\nc\"" + lineSeparator, sw.toString());
     }
 
     public void testPrinter6() throws IOException {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        String[] line1 = {"a", "b\r\nc"};
-        printer.println(line1);
+        printer.println("a", "b\r\nc");
         assertEquals("a,\"b\r\nc\"" + lineSeparator, sw.toString());
     }
 
     public void testPrinter7() throws IOException {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        String[] line1 = {"a", "b\\c"};
-        printer.println(line1);
+        printer.println("a", "b\\c");
         assertEquals("a,b\\c" + lineSeparator, sw.toString());
     }
 
     public void testExcelPrinter1() throws IOException {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
-        String[] line1 = {"a", "b"};
-        printer.println(line1);
+        printer.println("a", "b");
         assertEquals("a,b" + lineSeparator, sw.toString());
     }
 
     public void testExcelPrinter2() throws IOException {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
-        String[] line1 = {"a,b", "b"};
-        printer.println(line1);
+        printer.println("a,b", "b");
         assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
     }
 
@@ -172,9 +162,7 @@ public class CSVPrinterTest extends TestCase {
         String result = sw.toString();
         // System.out.println("### :" + printable(result));
 
-        StringReader reader = new StringReader(result);
-
-        CSVParser parser = new CSVParser(reader, format);
+        CSVParser parser = new CSVParser(result, format);
         String[][] parseResult = parser.getRecords();
 
         if (!equals(lines, parseResult)) {
