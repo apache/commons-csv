@@ -73,18 +73,6 @@ public class CharBufferTest extends TestCase {
         }
     }
 
-    public void testAppendStringBuffer() {
-        CharBuffer cb = new CharBuffer(1);
-        StringBuffer abcd = new StringBuffer("abcd");
-        String expected = "";
-        for (int i = 0; i < 10; i++) {
-            cb.append(abcd);
-            expected += "abcd";
-            assertEquals(expected, cb.toString());
-            assertEquals(4 * (i + 1), cb.length());
-        }
-    }
-
     public void testAppendCharBuffer() {
         CharBuffer cb = new CharBuffer(1);
         CharBuffer abcd = new CharBuffer(17);
@@ -151,9 +139,6 @@ public class CharBufferTest extends TestCase {
 
     public void testAppendNull() throws Exception {
         CharBuffer buffer = new CharBuffer(8);
-
-        buffer.append((StringBuffer) null);
-        assertEquals("", buffer.toString());
 
         buffer.append((String) null);
         assertEquals("", buffer.toString());
