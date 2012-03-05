@@ -127,7 +127,7 @@ public class CSVPrinter {
     }
 
 
-    public void print(char[] value, int offset, int len, boolean checkForEscape) throws IOException {
+    private void print(char[] value, int offset, int len, boolean checkForEscape) throws IOException {
         if (!checkForEscape) {
             printSep();
             out.write(value, offset, len);
