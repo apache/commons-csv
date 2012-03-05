@@ -64,15 +64,14 @@ public class CSVParser implements Iterable<String[]> {
     /** Immutable empty String array. */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    // the input stream
+    /** The input stream */
     private final ExtendedBufferedReader in;
 
     private final CSVFormat format;
 
     // the following objects are shared to reduce garbage
-    /**
-     * A record buffer for getLine(). Grows as necessary and is reused.
-     */
+    
+    /** A record buffer for getLine(). Grows as necessary and is reused. */
     private final List<String> record = new ArrayList<String>();
     private final Token reusableToken = new Token();
     private final CharBuffer wsBuf = new CharBuffer();
@@ -146,12 +145,10 @@ public class CSVParser implements Iterable<String[]> {
     // ======================================================
 
     /**
-     * Parses the CSV according to the given format
-     * and returns the content as an array of records
-     * (whereas records are arrays of single values).
+     * Parses the CSV according to the given format and returns the content
+     * as an array of records (whereas records are arrays of single values).
      * <p/>
-     * The returned content starts at the current parse-position in
-     * the stream.
+     * The returned content starts at the current parse-position in the stream.
      *
      * @return matrix of records x values ('null' when end of file)
      * @throws IOException on parse error or input read-failure
@@ -171,11 +168,9 @@ public class CSVParser implements Iterable<String[]> {
     }
 
     /**
-     * Parses from the current point in the stream til
-     * the end of the current line.
+     * Parses from the current point in the stream til * the end of the current line.
      *
-     * @return array of values til end of line
-     *         ('null' when end of file has been reached)
+     * @return array of values til end of line ('null' when end of file has been reached)
      * @throws IOException on parse error or input read-failure
      */
     String[] getLine() throws IOException {
@@ -209,7 +204,7 @@ public class CSVParser implements Iterable<String[]> {
             }
         }
         if (!record.isEmpty()) {
-            ret = (String[]) record.toArray(new String[record.size()]);
+            ret = record.toArray(new String[record.size()]);
         }
         return ret;
     }
@@ -283,11 +278,9 @@ public class CSVParser implements Iterable<String[]> {
     /**
      * Returns the next token.
      * <p/>
-     * A token corresponds to a term, a record change or an
-     * end-of-file indicator.
+     * A token corresponds to a term, a record change or an end-of-file indicator.
      *
-     * @param tkn an existing Token object to reuse. The caller is responsible to initialize the
-     *            Token.
+     * @param tkn an existing Token object to reuse. The caller is responsible to initialize the Token.
      * @return the next token found
      * @throws IOException on stream access error
      */
@@ -380,9 +373,9 @@ public class CSVParser implements Iterable<String[]> {
      * A simple token might contain escaped delimiters (as \, or \;). The
      * token is finished when one of the following conditions become true:
      * <ul>
-     * <li>end of line has been reached (EORECORD)</li>
-     * <li>end of stream has been reached (EOF)</li>
-     * <li>an unescaped delimiter has been reached (TOKEN)</li>
+     *   <li>end of line has been reached (EORECORD)</li>
+     *   <li>end of stream has been reached (EOF)</li>
+     *   <li>an unescaped delimiter has been reached (TOKEN)</li>
      * </ul>
      *
      * @param tkn the current token
@@ -476,19 +469,13 @@ public class CSVParser implements Iterable<String[]> {
                             return tkn;
                         } else if (!isWhitespace(c)) {
                             // error invalid char between token and next delimiter
-                            throw new IOException(
-                                    "(line " + getLineNumber()
-                                            + ") invalid char between encapsulated token end delimiter"
-                            );
+                            throw new IOException("(line " + getLineNumber() + ") invalid char between encapsulated token and delimiter");
                         }
                     }
                 }
             } else if (isEndOfFile(c)) {
                 // error condition (end of file before end of token)
-                throw new IOException(
-                        "(startline " + startLineNumber + ")"
-                                + "eof reached before encapsulated token finished"
-                );
+                throw new IOException("(startline " + startLineNumber + ") EOF reached before encapsulated token finished");
             } else {
                 // consume character
                 tkn.content.append((char) c);
@@ -500,8 +487,7 @@ public class CSVParser implements Iterable<String[]> {
     /**
      * Decodes Unicode escapes.
      * <p/>
-     * Interpretation of "\\uXXXX" escape sequences
-     * where XXXX is a hex-number.
+     * Interpretation of "\\uXXXX" escape sequences where XXXX is a hex-number.
      *
      * @param c current char which is discarded because it's the "\\" of "\\uXXXX"
      * @return the decoded character
@@ -554,10 +540,6 @@ public class CSVParser implements Iterable<String[]> {
         }
         return out;
     }
-
-    // ======================================================
-    //  strategies
-    // ======================================================
 
     /**
      * Obtain the specified CSV format.

@@ -35,7 +35,7 @@
       record := values*
 </pre>
 
-<p>The following list contains the csv aspects the WAKE CSV parser supports:</p>
+<p>The following list contains the csv aspects the Commons CSV parser supports:</p>
 <dl>
   <dt>Separators (for lines)</dt>
   <dd>The record separators are hardcoded and cannot be changed. The must be '\n' or '\r\n'.</dd>
@@ -76,9 +76,11 @@
 
 <p>Example usage:</p>
 <blockquote><pre>
-String[] parsedLine = CSVParser.parseLine("a,b,c");
-for (int i = 0; i &lt; parsedLine.length; ++i) {
-  System.out.println("value " + i + "=" + parsedLine[i]);
+Reader in = new StringReader("a,b,c");
+for (String[] line : CSVFormat.DEFAULT.parse(in)) {
+    for (int i = 0; i &lt; line.length; i++) {
+        System.out.println("value " + i + "=" + line[i]);
+    }
 }
 </pre></blockquote>
 </body>

@@ -46,7 +46,7 @@ public class CSVFormat implements Cloneable, Serializable {
      */
     public static final char DISABLED = '\ufffe';
 
-    /** Standard comma separated format as defined by RFC 4180. */
+    /** Standard comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>. */
     public static final CSVFormat DEFAULT = new CSVFormat(',', '"', DISABLED, DISABLED, true, true, false, true);
 
     /** Excel file format (using a comma as the value delimiter). */
@@ -57,26 +57,33 @@ public class CSVFormat implements Cloneable, Serializable {
 
 
     /**
-     * Creates a CSVFormat with the default parameters.
+     * Creates a CSV format with the default parameters.
      */
     public CSVFormat() {
     }
 
+    /**
+     * Creates a customized CSV format.
+     * 
+     * @param delimiter                 the char used for value separation
+     * @param encapsulator              the char used as value encapsulation marker
+     * @param commentStart              the char used for comment identification
+     */
     public CSVFormat(char delimiter, char encapsulator, char commentStart) {
         this(delimiter, encapsulator, commentStart, DISABLED, true, true, false, true);
     }
 
     /**
-     * Customized CSV format constructor.
+     * Creates a customized CSV format.
      *
-     * @param delimiter                 a char used for value separation
-     * @param encapsulator              a char used as value encapsulation marker
-     * @param commentStart              a char used for comment identification
-     * @param escape                    a char used to escape special characters in values
-     * @param leadingSpacesIgnored      TRUE when leading whitespaces should be ignored
-     * @param trailingSpacesIgnored     TRUE when trailing whitespaces should be ignored
-     * @param unicodeEscapesInterpreted TRUE when unicode escapes should be interpreted
-     * @param emptyLinesIgnored         TRUE when the parser should skip emtpy lines
+     * @param delimiter                 the char used for value separation
+     * @param encapsulator              the char used as value encapsulation marker
+     * @param commentStart              the char used for comment identification
+     * @param escape                    the char used to escape special characters in values
+     * @param leadingSpacesIgnored      <tt>true</tt> when leading whitespaces should be ignored
+     * @param trailingSpacesIgnored     <tt>true</tt> when trailing whitespaces should be ignored
+     * @param unicodeEscapesInterpreted <tt>true</tt> when unicode escapes should be interpreted
+     * @param emptyLinesIgnored         <tt>true</tt> when the parser should skip emtpy lines
      */
     public CSVFormat(
             char delimiter,
