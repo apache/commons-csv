@@ -34,10 +34,10 @@ import java.io.Reader;
 class ExtendedBufferedReader extends BufferedReader {
 
     /** The end of stream symbol */
-    public static final int END_OF_STREAM = -1;
+    static final int END_OF_STREAM = -1;
 
     /** Undefined state for the lookahead char */
-    public static final int UNDEFINED = -2;
+    static final int UNDEFINED = -2;
 
     /** The lookahead chars */
     private int lookaheadChar = UNDEFINED;
@@ -53,7 +53,7 @@ class ExtendedBufferedReader extends BufferedReader {
     /**
      * Created extended buffered reader using default buffer-size
      */
-    public ExtendedBufferedReader(Reader r) {
+    ExtendedBufferedReader(Reader r) {
         super(r);
         /* note uh: do not fetch the first char here,
         *          because this might block the method!
@@ -87,7 +87,7 @@ class ExtendedBufferedReader extends BufferedReader {
      *
      * @return the last read char or UNDEFINED
      */
-    public int readAgain() {
+    int readAgain() {
         return lastChar;
     }
 
@@ -198,7 +198,7 @@ class ExtendedBufferedReader extends BufferedReader {
      *
      * @return the next char (without consuming it) or END_OF_STREAM
      */
-    public int lookAhead() throws IOException {
+    int lookAhead() throws IOException {
         if (lookaheadChar == UNDEFINED) {
             lookaheadChar = super.read();
         }
@@ -211,12 +211,8 @@ class ExtendedBufferedReader extends BufferedReader {
      *
      * @return the current-line-number (or -1)
      */
-    public int getLineNumber() {
-        if (lineCounter > -1) {
-            return lineCounter;
-        } else {
-            return -1;
-        }
+    int getLineNumber() {
+        return lineCounter > -1 ? lineCounter : -1;
     }
 
     /**

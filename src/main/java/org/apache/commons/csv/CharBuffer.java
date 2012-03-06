@@ -38,7 +38,7 @@ class CharBuffer {
     /**
      * Creates a new CharBuffer with an initial capacity of 32 characters.
      */
-    public CharBuffer() {
+    CharBuffer() {
         this(32);
     }
 
@@ -46,7 +46,7 @@ class CharBuffer {
      * Creates a new CharBuffer with an initial capacity
      * of <code>length</code> characters.
      */
-    public CharBuffer(final int length) {
+    CharBuffer(final int length) {
         if (length == 0) {
             throw new IllegalArgumentException("Can't create an empty CharBuffer");
         }
@@ -56,7 +56,7 @@ class CharBuffer {
     /**
      * Empties the buffer. The capacity still remains the same, so no memory is freed.
      */
-    public void clear() {
+    void clear() {
         length = 0;
     }
 
@@ -65,7 +65,7 @@ class CharBuffer {
      *
      * @return the number of characters
      */
-    public int length() {
+    int length() {
         return length;
     }
 
@@ -74,7 +74,7 @@ class CharBuffer {
      *
      * @return the maximum number of characters that can be stored in this buffer without resizing it.
      */
-    public int capacity() {
+    int capacity() {
         return c.length;
     }
 
@@ -84,7 +84,7 @@ class CharBuffer {
      *
      * @param cb the CharBuffer to append or null
      */
-    public void append(final CharBuffer cb) {
+    void append(final CharBuffer cb) {
         if (cb == null) {
             return;
         }
@@ -99,7 +99,7 @@ class CharBuffer {
      *
      * @param s the String to append or null
      */
-    public void append(final String s) {
+    void append(final String s) {
         if (s == null) {
             return;
         }
@@ -112,7 +112,7 @@ class CharBuffer {
      *
      * @param data the char[] to append or null
      */
-    public void append(final char[] data) {
+    void append(final char[] data) {
         if (data == null) {
             return;
         }
@@ -127,7 +127,7 @@ class CharBuffer {
      *
      * @param data the char to append
      */
-    public void append(final char data) {
+    void append(final char data) {
         provideCapacity(length + 1);
         c[length] = data;
         length++;
@@ -137,7 +137,7 @@ class CharBuffer {
      * Shrinks the capacity of the buffer to the current length if necessary.
      * This method involves copying the data once!
      */
-    public void shrink() {
+    void shrink() {
         if (c.length == length) {
             return;
         }
@@ -149,7 +149,7 @@ class CharBuffer {
     /**
      * Removes trailing whitespace.
      */
-    public void trimTrailingWhitespace() {
+    void trimTrailingWhitespace() {
         while (length > 0 && Character.isWhitespace(c[length - 1])) {
             length--;
         }
@@ -164,7 +164,7 @@ class CharBuffer {
      *
      * @return
      */
-    public char[] getCharacters() {
+    char[] getCharacters() {
         if (c.length == length) {
             return c;
         }
@@ -176,7 +176,7 @@ class CharBuffer {
     /**
      * Returns the character at the specified position.
      */
-    public char charAt(int pos) {
+    char charAt(int pos) {
         return c[pos];
     }
 
@@ -195,7 +195,7 @@ class CharBuffer {
      *
      * @param capacity
      */
-    public void provideCapacity(final int capacity) {
+    void provideCapacity(final int capacity) {
         if (c.length >= capacity) {
             return;
         }
