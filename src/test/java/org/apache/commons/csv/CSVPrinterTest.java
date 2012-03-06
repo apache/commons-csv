@@ -92,6 +92,13 @@ public class CSVPrinterTest extends TestCase {
         assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
     }
 
+    public void testPrintNullValues() throws IOException {
+        StringWriter sw = new StringWriter();
+        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.println("a", null, "b");
+        assertEquals("a,,b" + lineSeparator, sw.toString());
+    }
+
     public void testDisabledComment() throws IOException {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);

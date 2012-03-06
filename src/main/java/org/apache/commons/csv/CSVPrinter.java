@@ -97,7 +97,7 @@ public class CSVPrinter {
      * @param comment the comment to output
      */
     public void printComment(String comment) throws IOException {
-        if (this.format.isCommentingDisabled()) {
+        if (format.isCommentingDisabled()) {
             return;
         }
         if (!newLine) {
@@ -127,13 +127,7 @@ public class CSVPrinter {
     }
 
 
-    private void print(char[] value, int offset, int len, boolean checkForEscape) throws IOException {
-        if (!checkForEscape) {
-            printSep();
-            out.write(value, offset, len);
-            return;
-        }
-        
+    private void print(char[] value, int offset, int len) throws IOException {        
         if (format.isEncapsulating()) {
             printAndEncapsulate(value, offset, len);
         } else if (format.isEscaping()) {
@@ -148,7 +142,7 @@ public class CSVPrinter {
         if (newLine) {
             newLine = false;
         } else {
-            out.write(this.format.getDelimiter());
+            out.write(format.getDelimiter());
         }
     }
 
@@ -159,8 +153,8 @@ public class CSVPrinter {
 
         printSep();
 
-        char delim = this.format.getDelimiter();
-        char escape = this.format.getEscape();
+        char delim = format.getDelimiter();
+        char escape = format.getEscape();
 
         while (pos < end) {
             char c = value[pos];
@@ -201,8 +195,8 @@ public class CSVPrinter {
 
         printSep();
 
-        char delim = this.format.getDelimiter();
-        char encapsulator = this.format.getEncapsulator();
+        char delim = format.getDelimiter();
+        char encapsulator = format.getEncapsulator();
 
         if (len <= 0) {
             // always quote an empty token that is the first
@@ -288,6 +282,11 @@ public class CSVPrinter {
      * @param value value to be outputted.
      */
     public void print(String value, boolean checkForEscape) throws IOException {
+        if (value == null) {
+            // null values are considered empty
+            value = "";
+        }
+        
         if (!checkForEscape) {
             // write directly from string
             printSep();
@@ -300,7 +299,7 @@ public class CSVPrinter {
         }
 
         value.getChars(0, value.length(), buf, 0);
-        print(buf, 0, value.length(), checkForEscape);
+        print(buf, 0, value.length());
     }
 
     /**
