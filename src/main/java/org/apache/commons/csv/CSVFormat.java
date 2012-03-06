@@ -51,7 +51,17 @@ public class CSVFormat implements Cloneable, Serializable {
     /** Standard comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>. */
     public static final CSVFormat DEFAULT = new CSVFormat(',', '"', DISABLED, DISABLED, true, true, false, true);
 
-    /** Excel file format (using a comma as the value delimiter). */
+    /**
+     * Excel file format (using a comma as the value delimiter).
+     * Note that the actual value delimiter used by Excel is locale dependent,
+     * it might be necessary to customize this format to accomodate to your
+     * regional settings.
+     * <p/>
+     * For example for parsing or generating a CSV file on a French system
+     * the following format will be used:
+     * 
+     * <pre>CSVFormat fmt = CSVFormat.EXCEL.withDelimiter(';');</pre>
+     */
     public static final CSVFormat EXCEL = new CSVFormat(',', '"', DISABLED, DISABLED, false, false, false, false);
 
     /** Tabulation delimited format. */
