@@ -17,8 +17,8 @@
 
 package org.apache.commons.csv;
 
+import java.io.Flushable;
 import java.io.IOException;
-import java.io.Writer;
 
 /**
  * Print values as a comma separated list.
@@ -26,14 +26,11 @@ import java.io.Writer;
 public class CSVPrinter {
 
     /** The place that the values get written. */
-    private final Writer out;
+    private final Appendable out;
     private final CSVFormat format;
 
     /** True if we just began a new line. */
     private boolean newLine = true;
-
-    /** Temporary buffer */
-    private char[] buf = new char[0];  
 
     /**
      * Create a printer that will print values to the given stream following the CSVFormat.
@@ -44,7 +41,7 @@ public class CSVPrinter {
      * @param out    stream to which to print.
      * @param format describes the CSV variation.
      */
-    public CSVPrinter(Writer out, CSVFormat format) {
+    public CSVPrinter(Appendable out, CSVFormat format) {
         this.out = out;
         this.format = format == null ? CSVFormat.DEFAULT : format;
     }
@@ -57,7 +54,7 @@ public class CSVPrinter {
      * Output a blank line
      */
     public void println() throws IOException {
-        out.write(format.getLineSeparator());
+        out.append(format.getLineSeparator());
         newLine = true;
     }
 
@@ -67,9 +64,10 @@ public class CSVPrinter {
      * @throws IOException
      */
     public void flush() throws IOException {
-        out.flush();
+        if (out instanceof Flushable) {
+            ((Flushable) out).flush();
+        }
     }
-
 
     /**
      * Print a single line of comma separated values.
@@ -103,8 +101,8 @@ public class CSVPrinter {
         if (!newLine) {
             println();
         }
-        out.write(format.getCommentStart());
-        out.write(' ');
+        out.append(format.getCommentStart());
+        out.append(' ');
         for (int i = 0; i < comment.length(); i++) {
             char c = comment.charAt(i);
             switch (c) {
@@ -115,11 +113,11 @@ public class CSVPrinter {
                     // break intentionally excluded.
                 case '\n':
                     println();
-                    out.write(format.getCommentStart());
-                    out.write(' ');
+                    out.append(format.getCommentStart());
+                    out.append(' ');
                     break;
                 default:
-                    out.write(c);
+                    out.append(c);
                     break;
             }
         }
@@ -127,14 +125,14 @@ public class CSVPrinter {
     }
 
 
-    private void print(char[] value, int offset, int len) throws IOException {        
+    private void print(CharSequence value, int offset, int len) throws IOException {        
         if (format.isEncapsulating()) {
             printAndEncapsulate(value, offset, len);
         } else if (format.isEscaping()) {
             printAndEscape(value, offset, len);
         } else {
             printSep();
-            out.write(value, offset, len);
+            out.append(value, offset, offset + len);
         }
     }
 
@@ -142,11 +140,11 @@ public class CSVPrinter {
         if (newLine) {
             newLine = false;
         } else {
-            out.write(format.getDelimiter());
+            out.append(format.getDelimiter());
         }
     }
 
-    void printAndEscape(char[] value, int offset, int len) throws IOException {
+    void printAndEscape(CharSequence value, int offset, int len) throws IOException {
         int start = offset;
         int pos = offset;
         int end = offset + len;
@@ -157,12 +155,11 @@ public class CSVPrinter {
         char escape = format.getEscape();
 
         while (pos < end) {
-            char c = value[pos];
+            char c = value.charAt(pos);
             if (c == '\r' || c == '\n' || c == delim || c == escape) {
                 // write out segment up until this char
-                int l = pos - start;
-                if (l > 0) {
-                    out.write(value, start, l);
+                if (pos > start) {
+                    out.append(value, start, pos);
                 }
                 if (c == '\n') {
                     c = 'n';
@@ -170,8 +167,8 @@ public class CSVPrinter {
                     c = 'r';
                 }
 
-                out.write(escape);
-                out.write(c);
+                out.append(escape);
+                out.append(c);
 
                 start = pos + 1; // start on the current char after this one
             }
@@ -180,13 +177,12 @@ public class CSVPrinter {
         }
 
         // write last segment
-        int l = pos - start;
-        if (l > 0) {
-            out.write(value, start, l);
+        if (pos > start) {
+            out.append(value, start, pos);
         }
     }
 
-    void printAndEncapsulate(char[] value, int offset, int len) throws IOException {
+    void printAndEncapsulate(CharSequence value, int offset, int len) throws IOException {
         boolean first = newLine;  // is this the first value on this line?
         boolean quote = false;
         int start = offset;
@@ -207,7 +203,7 @@ public class CSVPrinter {
                 quote = true;
             }
         } else {
-            char c = value[pos];
+            char c = value.charAt(pos);
 
             // Hmmm, where did this rule come from?
             if (first
@@ -224,7 +220,7 @@ public class CSVPrinter {
                 quote = true;
             } else {
                 while (pos < end) {
-                    c = value[pos];
+                    c = value.charAt(pos);
                     if (c == '\n' || c == '\r' || c == encapsulator || c == delim) {
                         quote = true;
                         break;
@@ -234,7 +230,7 @@ public class CSVPrinter {
 
                 if (!quote) {
                     pos = end - 1;
-                    c = value[pos];
+                    c = value.charAt(pos);
                     // if (c == ' ' || c == '\f' || c == '\t') {
                     // Some other chars at the end caused the parser to fail, so for now
                     // encapsulate if we end in anything less than ' '
@@ -247,22 +243,22 @@ public class CSVPrinter {
 
         if (!quote) {
             // no encapsulation needed - write out the original value
-            out.write(value, offset, len);
+            out.append(value, start, end);
             return;
         }
 
         // we hit something that needed encapsulation
-        out.write(encapsulator);
+        out.append(encapsulator);
 
         // Pick up where we left off: pos should be positioned on the first character that caused
         // the need for encapsulation.
         while (pos < end) {
-            char c = value[pos];
+            char c = value.charAt(pos);
             if (c == encapsulator) {
                 // write out the chunk up until this point
 
                 // add 1 to the length to write out the encapsulator also
-                out.write(value, start, pos - start + 1);
+                out.append(value, start, pos + 1);
                 // put the next starting position on the encapsulator so we will
                 // write it out again with the next string (effectively doubling it)
                 start = pos;
@@ -271,8 +267,8 @@ public class CSVPrinter {
         }
 
         // write the last segment
-        out.write(value, start, pos - start);
-        out.write(encapsulator);
+        out.append(value, start, pos);
+        out.append(encapsulator);
     }
 
     /**
@@ -290,16 +286,10 @@ public class CSVPrinter {
         if (!checkForEscape) {
             // write directly from string
             printSep();
-            out.write(value);
-            return;
+            out.append(value);
+        } else {
+            print(value, 0, value.length());
         }
-
-        if (buf.length < value.length()) {
-            buf = new char[value.length()];
-        }
-
-        value.getChars(0, value.length(), buf, 0);
-        print(buf, 0, value.length());
     }
 
     /**
