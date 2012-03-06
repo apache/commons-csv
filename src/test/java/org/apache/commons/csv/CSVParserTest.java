@@ -63,10 +63,10 @@ public class CSVParserTest extends TestCase {
          * type and content.
          *
          * @return String representation of token type and content
-         * @throws IOException like {@link CSVParser#nextToken()}
+         * @throws IOException like {@link CSVParser#nextToken(Token)}
          */
         public String testNextToken() throws IOException {
-            Token t = super.nextToken();
+            Token t = super.nextToken(new Token());
             return t.type.name() + ";" + t.content + ";";
         }
     }

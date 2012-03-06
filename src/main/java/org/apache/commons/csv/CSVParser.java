@@ -179,7 +179,7 @@ public class CSVParser implements Iterable<String[]> {
     }
 
     /**
-     * Parses from the current point in the stream til * the end of the current line.
+     * Parses from the current point in the stream til the end of the current line.
      *
      * @return array of values til end of line ('null' when end of file has been reached)
      * @throws IOException on parse error or input read-failure
@@ -278,13 +278,6 @@ public class CSVParser implements Iterable<String[]> {
     // ======================================================
     //  the lexer(s)
     // ======================================================
-
-    /**
-     * Convenience method for <code>nextToken(null)</code>.
-     */
-    Token nextToken() throws IOException {
-        return nextToken(new Token());
-    }
 
     /**
      * Returns the next token.
@@ -580,11 +573,9 @@ public class CSVParser implements Iterable<String[]> {
      */
     private boolean isEndOfLine(int c) throws IOException {
         // check if we have \r\n...
-        if (c == '\r') {
-            if (in.lookAhead() == '\n') {
-                // note: does not change c outside of this method !!
-                c = in.read();
-            }
+        if (c == '\r' && in.lookAhead() == '\n') {
+            // note: does not change c outside of this method !!
+            c = in.read();
         }
         return (c == '\n' || c == '\r');
     }
