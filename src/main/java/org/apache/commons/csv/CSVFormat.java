@@ -46,7 +46,7 @@ public class CSVFormat implements Cloneable, Serializable {
      * and because the unicode value FFFE would be encoded as two chars (using surrogates)
      * and thus there should never be a collision with a real text char.
      */
-    public static final char DISABLED = '\ufffe';
+    static final char DISABLED = '\ufffe';
 
     /** Standard comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>. */
     public static final CSVFormat DEFAULT = new CSVFormat(',', '"', DISABLED, DISABLED, true, true, false, true);
@@ -71,7 +71,7 @@ public class CSVFormat implements Cloneable, Serializable {
     /**
      * Creates a CSV format with the default parameters.
      */
-    public CSVFormat() {
+    CSVFormat() {
     }
 
     /**
@@ -81,7 +81,7 @@ public class CSVFormat implements Cloneable, Serializable {
      * @param encapsulator              the char used as value encapsulation marker
      * @param commentStart              the char used for comment identification
      */
-    public CSVFormat(char delimiter, char encapsulator, char commentStart) {
+    CSVFormat(char delimiter, char encapsulator, char commentStart) {
         this(delimiter, encapsulator, commentStart, DISABLED, true, true, false, true);
     }
 
@@ -97,7 +97,7 @@ public class CSVFormat implements Cloneable, Serializable {
      * @param unicodeEscapesInterpreted <tt>true</tt> when unicode escapes should be interpreted
      * @param emptyLinesIgnored         <tt>true</tt> when the parser should skip emtpy lines
      */
-    public CSVFormat(
+    CSVFormat(
             char delimiter,
             char encapsulator,
             char commentStart,
