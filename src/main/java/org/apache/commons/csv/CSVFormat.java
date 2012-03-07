@@ -126,20 +126,42 @@ public class CSVFormat implements Cloneable, Serializable {
         this.emptyLinesIgnored = emptyLinesIgnored;
     }
 
+    /**
+     * Returns the character delimiting the values (typically ';', ',' or '\t').
+     * 
+     * @return the delimiter character
+     */
     public char getDelimiter() {
         return delimiter;
     }
 
+    /**
+     * Returns a copy of this format using the specified delimiter character.
+     * 
+     * @param delimiter the delimiter character
+     * @return A copy of this format using the specified delimiter character
+     */
     public CSVFormat withDelimiter(char delimiter) {
         CSVFormat format = clone();
         format.delimiter = delimiter;
         return format;
     }
 
+    /**
+     * Returns the character used to encapsulate values containing special characters.
+     * 
+     * @return the encapsulator character
+     */
     public char getEncapsulator() {
         return encapsulator;
     }
 
+    /**
+     * Returns a copy of this format using the specified encapsulator character.
+     * 
+     * @param encapsulator the encapsulator character
+     * @return A copy of this format using the specified encapsulator character
+     */
     public CSVFormat withEncapsulator(char encapsulator) {
         CSVFormat format = clone();
         format.encapsulator = encapsulator;
@@ -150,24 +172,51 @@ public class CSVFormat implements Cloneable, Serializable {
         return this.encapsulator != DISABLED;
     }
 
+    /**
+     * Returns the character marking the start of a line comment.
+     * 
+     * @return the comment start marker.
+     */
     public char getCommentStart() {
         return commentStart;
     }
 
+    /**
+     * Returns a copy of this format using the specified character as the comment start marker.
+     * 
+     * @param commentStart the comment start marker
+     * @return A copy of this format using the specified character as the comment start marker
+     */
     public CSVFormat withCommentStart(char commentStart) {
         CSVFormat format = clone();
         format.commentStart = commentStart;
         return format;
     }
 
+    /**
+     * Tells if comments are supported by this format.
+     * 
+     * @return <tt>true</tt> is comments are supported, <tt>false</tt> otherwise
+     */
     public boolean isCommentingDisabled() {
         return this.commentStart == DISABLED;
     }
 
+    /**
+     * Returns the escape character.
+     * 
+     * @return the escape character
+     */
     public char getEscape() {
         return escape;
     }
 
+    /**
+     * Returns a copy of this format using the specified escape character.
+     * 
+     * @param escape the escape character
+     * @return A copy of this format using the specified escape character
+     */
     public CSVFormat withEscape(char escape) {
         CSVFormat format = clone();
         format.escape = escape;
@@ -178,57 +227,123 @@ public class CSVFormat implements Cloneable, Serializable {
         return this.escape != DISABLED;
     }
 
+    /**
+     * Tells if the spaces characters at the beginning of the values are ignored when parsing a file.
+     * 
+     * @return <tt>true</tt> if leading spaces are removed, <tt>false</tt> if they are preserved.
+     */
     public boolean isLeadingSpacesIgnored() {
         return leadingSpacesIgnored;
     }
 
+    /**
+     * Returns a copy of this format with the specified left trimming behavior.
+     *
+     * @param leadingSpacesIgnored the left trimming behavior, <tt>true</tt> to remove the leading spaces,
+     *                             <tt>false</tt> to leave the spaces as is.
+     * @return A copy of this format with the specified left trimming behavior.
+     */
     public CSVFormat withLeadingSpacesIgnored(boolean leadingSpacesIgnored) {
         CSVFormat format = clone();
         format.leadingSpacesIgnored = leadingSpacesIgnored;
         return format;
     }
 
+    /**
+     * Tells if the spaces characters at the end of the values are ignored when parsing a file.
+     * 
+     * @return <tt>true</tt> if trailing spaces are removed, <tt>false</tt> if they are preserved.
+     */
     public boolean isTrailingSpacesIgnored() {
         return trailingSpacesIgnored;
     }
 
+    /**
+     * Returns a copy of this format with the specified right trimming behavior.
+     *
+     * @param trailingSpacesIgnored the right trimming behavior, <tt>true</tt> to remove the trailing spaces,
+     *                              <tt>false</tt> to leave the spaces as is.
+     * @return A copy of this format with the specified right trimming behavior.
+     */
     public CSVFormat withTrailingSpacesIgnored(boolean trailingSpacesIgnored) {
         CSVFormat format = clone();
         format.trailingSpacesIgnored = trailingSpacesIgnored;
         return format;
     }
 
+    /**
+     * Returns a copy of this format with the specified trimming behavior.
+     *
+     * @param surroundingSpacesIgnored the trimming behavior, <tt>true</tt> to remove the surrounding spaces,
+     *                                 <tt>false</tt> to leave the spaces as is.
+     * @return A copy of this format with the specified trimming behavior.
+     */
     public CSVFormat withSurroundingSpacesIgnored(boolean surroundingSpacesIgnored) {
         CSVFormat format = clone();
         format.leadingSpacesIgnored = surroundingSpacesIgnored;
         format.trailingSpacesIgnored = surroundingSpacesIgnored;
         return format;
     }
-    
+
+    /**
+     * Tells if unicode escape sequences (i.e <span>\</span>u1234) are turned into their corresponding character.
+     * 
+     * @return <tt>true</tt> if unicode escape sequences are interpreted, <tt>false</tt> if they are left as is.
+     */
     public boolean isUnicodeEscapesInterpreted() {
         return unicodeEscapesInterpreted;
     }
 
+    /**
+     * Returns a copy of this format with the specified unicode escaping behavior.
+     *
+     * @param unicodeEscapesInterpreted the escaping behavior, <tt>true</tt> to interpret unicode escape sequences,
+     *                                  <tt>false</tt> to leave the escape sequences as is.
+     * @return A copy of this format with the specified unicode escaping behavior.
+     */
     public CSVFormat withUnicodeEscapesInterpreted(boolean unicodeEscapesInterpreted) {
         CSVFormat format = clone();
         format.unicodeEscapesInterpreted = unicodeEscapesInterpreted;
         return format;
     }
 
+    /**
+     * Tells if the empty lines between the records are ignored.
+     * 
+     * @return <tt>true</tt> if empty lines between records are ignore, <tt>false</tt> if they are turned into empty records.
+     */
     public boolean isEmptyLinesIgnored() {
         return emptyLinesIgnored;
     }
 
+    /**
+     * Returns a copy of this format with the specified empty line skipping behavior.
+     *
+     * @param emptyLinesIgnored the empty line skipping behavior, <tt>true</tt> to ignore the empty lines
+     *                          between the records, <tt>false</tt> to translate empty lines to empty records.
+     * @return A copy of this format  with the specified empty line skipping behavior.
+     */
     public CSVFormat withEmptyLinesIgnored(boolean emptyLinesIgnored) {
         CSVFormat format = clone();
         format.emptyLinesIgnored = emptyLinesIgnored;
         return format;
     }
 
+    /**
+     * Returns the line separator delimiting the records.
+     * 
+     * @return the line separator
+     */
     public String getLineSeparator() {
         return lineSeparator;
     }
 
+    /**
+     * Returns a copy of this format using the specified line separator.
+     * 
+     * @param lineSeparator the line separator
+     * @return A copy of this format using the specified line separator
+     */
     public CSVFormat withLineSeparator(String lineSeparator) {
         CSVFormat format = clone();
         format.lineSeparator = lineSeparator;
@@ -238,7 +353,7 @@ public class CSVFormat implements Cloneable, Serializable {
     /**
      * Parses the specified content.
      * 
-     * @param in
+     * @param in the input stream
      */
     public Iterable<String[]> parse(Reader in) {
         return new CSVParser(in, this);
