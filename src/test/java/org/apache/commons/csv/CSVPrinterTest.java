@@ -125,26 +125,20 @@ public class CSVPrinterTest extends TestCase {
 
     public void testRandom() throws Exception {
         int iter = 10000;
-        format = CSVFormat.DEFAULT;
-        doRandom(iter);
-        format = CSVFormat.EXCEL;
-        doRandom(iter);
-
-        // Format for MySQL
-        format = new CSVFormat('\t',  CSVFormat.DISABLED,  CSVFormat.DISABLED, '\\', false, false, false, false);
-        doRandom(iter);
+        doRandom(CSVFormat.DEFAULT, iter);
+        doRandom(CSVFormat.EXCEL, iter);
+        doRandom(CSVFormat.MYSQL, iter);
     }
 
-    Random r = new Random();
-    CSVFormat format;
-
-    public void doRandom(int iter) throws Exception {
+    public void doRandom(CSVFormat format, int iter) throws Exception {
         for (int i = 0; i < iter; i++) {
-            doOneRandom();
+            doOneRandom(format);
         }
     }
 
-    public void doOneRandom() throws Exception {
+    public void doOneRandom(CSVFormat format) throws Exception {
+        Random r = new Random();
+        
         int nLines = r.nextInt(4) + 1;
         int nCol = r.nextInt(3) + 1;
         // nLines=1;nCol=2;
@@ -215,6 +209,8 @@ public class CSVPrinterTest extends TestCase {
     }
 
     public String randStr() {
+        Random r = new Random();
+        
         int sz = r.nextInt(20);
         // sz = r.nextInt(3);
         char[] buf = new char[sz];

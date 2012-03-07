@@ -66,6 +66,16 @@ public class CSVFormat implements Cloneable, Serializable {
 
     /** Tabulation delimited format. */
     public static final CSVFormat TDF = new CSVFormat('\t', '"', DISABLED, DISABLED, true, true, false, true);
+    
+    /**
+     * Default MySQL format used by the <tt>SELECT INTO OUTFILE</tt> and
+     * <tt>LOAD DATA INFILE</tt> operations. This is a tabulation delimited
+     * format with a LF character as the line separator. Values are not quoted
+     * and special characters are escaped with '\'.
+     * 
+     * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html">http://dev.mysql.com/doc/refman/5.1/en/load-data.html</a>
+     */
+    public static final CSVFormat MYSQL = new CSVFormat('\t', DISABLED, DISABLED, '\\', false, false, false, false).withLineSeparator("\n");
 
 
     /**
