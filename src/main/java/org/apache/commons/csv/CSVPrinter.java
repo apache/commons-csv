@@ -110,8 +110,8 @@ public class CSVPrinter {
                     if (i + 1 < comment.length() && comment.charAt(i + 1) == '\n') {
                         i++;
                     }
-                    // break intentionally excluded.
-                case '\n':
+                //$FALL-THROUGH$ break intentionally excluded.
+            case '\n':
                     println();
                     out.append(format.getCommentStart());
                     out.append(' ');
