@@ -28,8 +28,6 @@ import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
 
-import static org.apache.commons.csv.CSVParser.Token.Type.*;
-
 /**
  * CSVParserTest
  *
@@ -41,168 +39,7 @@ import static org.apache.commons.csv.CSVParser.Token.Type.*;
  */
 public class CSVParserTest extends TestCase {
 
-    /**
-     * TestCSVParser.
-     */
-    class TestCSVParser extends CSVParser {
-        /**
-         * Test parser to investigate the type of the internal Token.
-         *
-         * @param in a Reader
-         */
-        TestCSVParser(Reader in) {
-            super(in);
-        }
-
-        TestCSVParser(Reader in, CSVFormat format) {
-            super(in, format);
-        }
-
-        /**
-         * Calls super.nextToken() and prints out a String representation of token
-         * type and content.
-         *
-         * @return String representation of token type and content
-         * @throws IOException like {@link CSVParser#nextToken(Token)}
-         */
-        public String testNextToken() throws IOException {
-            Token t = super.nextToken(new Token());
-            return t.type.name() + ";" + t.content + ";";
-        }
-    }
-
-    // ======================================================
-    //   lexer tests
-    // ======================================================
-
-    // Single line (without comment)
-    public void testNextToken1() throws IOException {
-        String code = "abc,def, hijk,  lmnop,   qrst,uv ,wxy   ,z , ,";
-        TestCSVParser parser = new TestCSVParser(new StringReader(code));
-        assertEquals(TOKEN + ";abc;", parser.testNextToken());
-        assertEquals(TOKEN + ";def;", parser.testNextToken());
-        assertEquals(TOKEN + ";hijk;", parser.testNextToken());
-        assertEquals(TOKEN + ";lmnop;", parser.testNextToken());
-        assertEquals(TOKEN + ";qrst;", parser.testNextToken());
-        assertEquals(TOKEN + ";uv;", parser.testNextToken());
-        assertEquals(TOKEN + ";wxy;", parser.testNextToken());
-        assertEquals(TOKEN + ";z;", parser.testNextToken());
-        assertEquals(TOKEN + ";;", parser.testNextToken());
-        assertEquals(EOF + ";;", parser.testNextToken());
-    }
-
-    // multiline including comments (and empty lines)
-    public void testNextToken2() throws IOException {
-        /*   file:   1,2,3,
-        *           a,b x,c
-        *
-        *           # this is a comment
-        *           d,e,
-        *
-        */
-        String code = "1,2,3,\na,b x,c\n#foo\n\nd,e,\n\n";
-        CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
-        
-        TestCSVParser parser = new TestCSVParser(new StringReader(code), format);
-
-
-        assertEquals(TOKEN + ";1;", parser.testNextToken());
-        assertEquals(TOKEN + ";2;", parser.testNextToken());
-        assertEquals(TOKEN + ";3;", parser.testNextToken());
-        assertEquals(EORECORD + ";;", parser.testNextToken());
-        assertEquals(TOKEN + ";a;", parser.testNextToken());
-        assertEquals(TOKEN + ";b x;", parser.testNextToken());
-        assertEquals(EORECORD + ";c;", parser.testNextToken());
-        assertEquals(EORECORD + ";;", parser.testNextToken());
-        assertEquals(TOKEN + ";d;", parser.testNextToken());
-        assertEquals(TOKEN + ";e;", parser.testNextToken());
-        assertEquals(EORECORD + ";;", parser.testNextToken());
-        assertEquals(EOF + ";;", parser.testNextToken());
-        assertEquals(EOF + ";;", parser.testNextToken());
-
-    }
-
-    // simple token with escaping
-    public void testNextToken3() throws IOException {
-        /* file: a,\,,b
-        *       \,,
-        */
-        String code = "a,\\,,b\n\\,,";
-        CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
-        TestCSVParser parser = new TestCSVParser(new StringReader(code), format);
-
-        assertEquals(TOKEN + ";a;", parser.testNextToken());
-        // an unquoted single backslash is not an escape char
-        assertEquals(TOKEN + ";\\;", parser.testNextToken());
-        assertEquals(TOKEN + ";;", parser.testNextToken());
-        assertEquals(EORECORD + ";b;", parser.testNextToken());
-        // an unquoted single backslash is not an escape char
-        assertEquals(TOKEN + ";\\;", parser.testNextToken());
-        assertEquals(TOKEN + ";;", parser.testNextToken());
-        assertEquals(EOF + ";;", parser.testNextToken());
-    }
-
-    // encapsulator tokenizer (sinle line)
-    public void testNextToken4() throws IOException {
-        /* file:  a,"foo",b
-        *        a,   " foo",b
-        *        a,"foo "   ,b     // whitespace after closing encapsulator
-        *        a,  " foo " ,b
-        */
-        String code =
-                "a,\"foo\",b\na,   \" foo\",b\na,\"foo \"  ,b\na,  \" foo \"  ,b";
-        TestCSVParser parser = new TestCSVParser(new StringReader(code));
-        assertEquals(TOKEN + ";a;", parser.testNextToken());
-        assertEquals(TOKEN + ";foo;", parser.testNextToken());
-        assertEquals(EORECORD + ";b;", parser.testNextToken());
-        assertEquals(TOKEN + ";a;", parser.testNextToken());
-        assertEquals(TOKEN + "; foo;", parser.testNextToken());
-        assertEquals(EORECORD + ";b;", parser.testNextToken());
-        assertEquals(TOKEN + ";a;", parser.testNextToken());
-        assertEquals(TOKEN + ";foo ;", parser.testNextToken());
-        assertEquals(EORECORD + ";b;", parser.testNextToken());
-        assertEquals(TOKEN + ";a;", parser.testNextToken());
-        assertEquals(TOKEN + "; foo ;", parser.testNextToken());
-//     assertEquals(EORECORD + ";b;", parser.testNextToken());
-        assertEquals(EOF + ";b;", parser.testNextToken());
-    }
-
-    // encapsulator tokenizer (multi line, delimiter in string)
-    public void testNextToken5() throws IOException {
-        String code =
-                "a,\"foo\n\",b\n\"foo\n  baar ,,,\"\n\"\n\t \n\"";
-        TestCSVParser parser = new TestCSVParser(new StringReader(code));
-        assertEquals(TOKEN + ";a;", parser.testNextToken());
-        assertEquals(TOKEN + ";foo\n;", parser.testNextToken());
-        assertEquals(EORECORD + ";b;", parser.testNextToken());
-        assertEquals(EORECORD + ";foo\n  baar ,,,;",
-                parser.testNextToken());
-        assertEquals(EOF + ";\n\t \n;", parser.testNextToken());
-
-    }
-
-    // change delimiters, comment, encapsulater
-    public void testNextToken6() throws IOException {
-        /* file: a;'b and \' more
-        *       '
-        *       !comment;;;;
-        *       ;;
-        */
-        String code = "a;'b and '' more\n'\n!comment;;;;\n;;";
-        TestCSVParser parser = new TestCSVParser(new StringReader(code), new CSVFormat(';', '\'', '!'));
-        assertEquals(TOKEN + ";a;", parser.testNextToken());
-        assertEquals(
-                EORECORD + ";b and ' more\n;",
-                parser.testNextToken());
-    }
-
-
-    // ======================================================
-    //   parser tests
-    // ======================================================
-
-    String code =
-            "a,b,c,d\n"
+    String code = "a,b,c,d\n"
                     + " a , b , 1 2 \n"
                     + "\"foo baar\", b,\n"
                     // + "   \"foo\n,,\n\"\",,\n\\\"\",d,e\n";
@@ -455,8 +292,8 @@ public class CSVParserTest extends TestCase {
                 + "";
         String[][] res = {
                 {" ", " ", " "},         // 1
-                {" \t ", "  ", " "},         // 2
-                {" / ", " , ", " ,"},         //3
+                {" \t ", "  ", " "},     // 2
+                {" / ", " , ", " ,"},    // 3
         };
 
 
@@ -550,18 +387,6 @@ public class CSVParserTest extends TestCase {
         CSVParser parser = new CSVParser(new StringReader(code));
         String[][] data = parser.getRecords();
         assertEquals(3, data.length);
-    }
-
-    // From SANDBOX-153
-    public void testDelimiterIsWhitespace() throws IOException {
-        String code = "one\ttwo\t\tfour \t five\t six";
-        TestCSVParser parser = new TestCSVParser(new StringReader(code), CSVFormat.TDF);
-        assertEquals(TOKEN + ";one;", parser.testNextToken());
-        assertEquals(TOKEN + ";two;", parser.testNextToken());
-        assertEquals(TOKEN + ";;", parser.testNextToken());
-        assertEquals(TOKEN + ";four;", parser.testNextToken());
-        assertEquals(TOKEN + ";five;", parser.testNextToken());
-        assertEquals(EOF + ";six;", parser.testNextToken());
     }
 
     public void testForEach() {

@@ -25,7 +25,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.apache.commons.csv.CSVParser.Token.Type.*;
+import org.apache.commons.csv.CSVLexer.Token;
+
+import static org.apache.commons.csv.CSVLexer.Token.Type.*;
 
 /**
  * Parses CSV files according to the specified configuration.
@@ -59,65 +61,16 @@ import static org.apache.commons.csv.CSVParser.Token.Type.*;
  */
 public class CSVParser implements Iterable<String[]> {
 
-    /** length of the initial token (content-)buffer */
-    private static final int INITIAL_TOKEN_LENGTH = 50;
-
     /** Immutable empty String array. */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    /** The input stream */
-    private final ExtendedBufferedReader in;
-
-    private final CSVFormat format;
-
+    private CSVLexer lexer;
+    
     // the following objects are shared to reduce garbage
     
     /** A record buffer for getLine(). Grows as necessary and is reused. */
     private final List<String> record = new ArrayList<String>();
     private final Token reusableToken = new Token();
-    private final CharBuffer wsBuf = new CharBuffer();
-
-    /**
-     * Token is an internal token representation.
-     * <p/>
-     * It is used as contract between the lexer and the parser.
-     */
-    static class Token {
-
-        enum Type {
-            /** Token has no valid content, i.e. is in its initialized state. */
-            INVALID,
-            
-            /** Token with content, at beginning or in the middle of a line. */
-            TOKEN,
-            
-            /** Token (which can have content) when end of file is reached. */
-            EOF,
-            
-            /** Token with content when end of a line is reached. */
-            EORECORD
-        }
-        
-        /** Token type */
-        Type type = INVALID;
-        
-        /** The content buffer. */
-        CharBuffer content = new CharBuffer(INITIAL_TOKEN_LENGTH);
-        
-        /** Token ready flag: indicates a valid token with content (ready for the parser). */
-        boolean isReady;
-
-        Token reset() {
-            content.clear();
-            type = INVALID;
-            isReady = false;
-            return this;
-        }
-    }
-
-    // ======================================================
-    //  the constructor
-    // ======================================================
 
     /**
      * CSV parser using the default {@link CSVFormat}.
@@ -139,8 +92,7 @@ public class CSVParser implements Iterable<String[]> {
             input = new UnicodeUnescapeReader(input);
         }
         
-        this.in = new ExtendedBufferedReader(input);
-        this.format = format;
+        this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));
     }
 
     /**
@@ -153,9 +105,6 @@ public class CSVParser implements Iterable<String[]> {
         this(new StringReader(input), format);
     }
 
-    // ======================================================
-    //  the parser
-    // ======================================================
 
     /**
      * Parses the CSV according to the given format and returns the content
@@ -191,7 +140,7 @@ public class CSVParser implements Iterable<String[]> {
         record.clear();
         while (true) {
             reusableToken.reset();
-            nextToken(reusableToken);
+            lexer.nextToken(reusableToken);
             switch (reusableToken.type) {
                 case TOKEN:
                     record.add(reusableToken.content.toString());
@@ -274,12 +223,69 @@ public class CSVParser implements Iterable<String[]> {
      * @return current line number
      */
     public int getLineNumber() {
-        return in.getLineNumber();
+        return lexer.getLineNumber();
+    }
+}
+
+
+class CSVLexer {
+
+    /** length of the initial token (content-)buffer */
+    private static final int INITIAL_TOKEN_LENGTH = 50;
+    
+    private final CharBuffer wsBuf = new CharBuffer();
+    
+    private CSVFormat format;
+    
+    /** The input stream */
+    private ExtendedBufferedReader in;
+
+    /**
+     * Token is an internal token representation.
+     * <p/>
+     * It is used as contract between the lexer and the parser.
+     */
+    static class Token {
+
+        enum Type {
+            /** Token has no valid content, i.e. is in its initialized state. */
+            INVALID,
+            
+            /** Token with content, at beginning or in the middle of a line. */
+            TOKEN,
+            
+            /** Token (which can have content) when end of file is reached. */
+            EOF,
+            
+            /** Token with content when end of a line is reached. */
+            EORECORD
+        }
+        
+        /** Token type */
+        Type type = INVALID;
+        
+        /** The content buffer. */
+        CharBuffer content = new CharBuffer(INITIAL_TOKEN_LENGTH);
+        
+        /** Token ready flag: indicates a valid token with content (ready for the parser). */
+        boolean isReady;
+
+        Token reset() {
+            content.clear();
+            type = INVALID;
+            isReady = false;
+            return this;
+        }
     }
 
-    // ======================================================
-    //  the lexer(s)
-    // ======================================================
+    CSVLexer(CSVFormat format, ExtendedBufferedReader in) {
+        this.format = format;
+        this.in = in;
+    }
+
+    public int getLineNumber() {
+        return in.getLineNumber();
+    }
 
     /**
      * Returns the next token.
@@ -502,19 +508,6 @@ public class CSVParser implements Iterable<String[]> {
                 return c;
         }
     }
-
-    /**
-     * Obtain the specified CSV format.
-     *
-     * @return format currently being used
-     */
-    public CSVFormat getFormat() {
-        return this.format;
-    }
-
-    // ======================================================
-    //  Character class checker
-    // ======================================================
 
     /**
      * @return true if the given char is a whitespace character
