@@ -64,7 +64,7 @@ public class CSVParser implements Iterable<String[]> {
     /** Immutable empty String array. */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    private CSVLexer lexer;
+    private final CSVLexer lexer;
     
     // the following objects are shared to reduce garbage
     
@@ -235,10 +235,10 @@ class CSVLexer {
     
     private final CharBuffer wsBuf = new CharBuffer();
     
-    private CSVFormat format;
+    private final CSVFormat format;
     
     /** The input stream */
-    private ExtendedBufferedReader in;
+    private final ExtendedBufferedReader in;
 
     /**
      * Token is an internal token representation.
