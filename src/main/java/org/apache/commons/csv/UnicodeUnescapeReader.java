@@ -29,7 +29,7 @@ import java.io.Reader;
  * @version $Revision$, $Date$
  */
 class UnicodeUnescapeReader extends Reader {
-    private PushbackReader reader;
+    private final PushbackReader reader;
 
     /** The buffer used to read unicode escape sequences. */
     private final char[] sequence = new char[5];
