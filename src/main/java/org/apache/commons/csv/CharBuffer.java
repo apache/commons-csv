@@ -184,8 +184,9 @@ class CharBuffer {
      * Converts the contents of the buffer into a StringBuffer.
      * This method involves copying the new data once!
      *
-     * @return
+     * @return the contents of the character buffer as a String
      */
+    @Override
     public String toString() {
         return new String(c, 0, length);
     }

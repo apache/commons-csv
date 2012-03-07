@@ -65,6 +65,7 @@ class ExtendedBufferedReader extends BufferedReader {
      *
      * @return the next char or END_OF_STREAM if end of stream has been reached.
      */
+    @Override
     public int read() throws IOException {
         // initialize the lookahead
         if (lookaheadChar == UNDEFINED) {
@@ -103,6 +104,7 @@ class ExtendedBufferedReader extends BufferedReader {
      *
      * @return nof chars actually read or END_OF_STREAM
      */
+    @Override
     public int read(char[] buf, int off, int len) throws IOException {
         // do not claim if len == 0
         if (len == 0) {
@@ -145,6 +147,7 @@ class ExtendedBufferedReader extends BufferedReader {
      *         including any line-termination characters, or null
      *         if the end of the stream has been reached
      */
+    @Override
     public String readLine() throws IOException {
 
         if (lookaheadChar == UNDEFINED) {
@@ -186,6 +189,7 @@ class ExtendedBufferedReader extends BufferedReader {
     /**
      * Unsupported
      */
+    @Override
     public long skip(long n) throws IllegalArgumentException, IOException {
         throw new UnsupportedOperationException("CSV has no reason to implement this");
     }
@@ -216,8 +220,10 @@ class ExtendedBufferedReader extends BufferedReader {
     }
 
     /**
-     * Unsupported
+     * Unsupported.
+     * @throws UnsupportedOperationException if invoked
      */
+    @Override
     public boolean markSupported() {
         throw new UnsupportedOperationException("CSV has no reason to implement this");
     }

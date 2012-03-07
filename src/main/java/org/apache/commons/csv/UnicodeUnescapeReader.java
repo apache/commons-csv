@@ -38,6 +38,7 @@ class UnicodeUnescapeReader extends Reader {
         this.reader = new PushbackReader(reader, sequence.length);
     }
 
+    @Override
     public int read(char[] cbuf, int off, int len) throws IOException {
         int count = 0;
         for (int i = 0; i < len; i++) {
@@ -75,6 +76,7 @@ class UnicodeUnescapeReader extends Reader {
         return ('0' <= c && c <= '9') || ('a' <= c && c <= 'f') || ('A' <= c && c <= 'F');
     }
 
+    @Override
     public void close() throws IOException {
         if (reader != null) {
             reader.close();
