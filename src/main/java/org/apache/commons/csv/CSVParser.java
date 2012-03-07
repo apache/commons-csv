@@ -76,8 +76,6 @@ public class CSVParser implements Iterable<String[]> {
     private final List<String> record = new ArrayList<String>();
     private final Token reusableToken = new Token();
     private final CharBuffer wsBuf = new CharBuffer();
-    private final CharBuffer code = new CharBuffer(4);
-
 
     /**
      * Token is an internal token representation.
@@ -137,6 +135,10 @@ public class CSVParser implements Iterable<String[]> {
      * @param format the CSVFormat used for CSV parsing
      */
     public CSVParser(Reader input, CSVFormat format) {
+        if (format.isUnicodeEscapesInterpreted()) {
+            input = new UnicodeUnescapeReader(input);
+        }
+        
         this.in = new ExtendedBufferedReader(input);
         this.format = format;
     }
@@ -404,9 +406,6 @@ public class CSVParser implements Iterable<String[]> {
                 tkn.type = TOKEN;
                 tkn.isReady = true;
                 break;
-            } else if (c == '\\' && format.isUnicodeEscapesInterpreted() && in.lookAhead() == 'u') {
-                // interpret unicode escaped chars (like \u0070 -> p)
-                tkn.content.append((char) unicodeEscapeLexer(c));
             } else if (c == format.getEscape()) {
                 tkn.content.append((char) readEscape(c));
             } else {
@@ -444,10 +443,8 @@ public class CSVParser implements Iterable<String[]> {
         // assert c == delimiter;
         for (; ;) {
             c = in.read();
-
-            if (c == '\\' && format.isUnicodeEscapesInterpreted() && in.lookAhead() == 'u') {
-                tkn.content.append((char) unicodeEscapeLexer(c));
-            } else if (c == format.getEscape()) {
+            
+            if (c == format.getEscape()) {
                 tkn.content.append((char) readEscape(c));
             } else if (c == format.getEncapsulator()) {
                 if (in.lookAhead() == format.getEncapsulator()) {
@@ -487,62 +484,23 @@ public class CSVParser implements Iterable<String[]> {
         }
     }
 
-
-    /**
-     * Decodes Unicode escapes.
-     * <p/>
-     * Interpretation of "\\uXXXX" escape sequences where XXXX is a hex-number.
-     *
-     * @param c current char which is discarded because it's the "\\" of "\\uXXXX"
-     * @return the decoded character
-     * @throws IOException on wrong unicode escape sequence or read error
-     */
-    private int unicodeEscapeLexer(int c) throws IOException {
-        int ret = 0;
-        // ignore 'u' (assume c==\ now) and read 4 hex digits
-        c = in.read();
-        code.clear();
-        try {
-            for (int i = 0; i < 4; i++) {
-                c = in.read();
-                if (isEndOfFile(c) || isEndOfLine(c)) {
-                    throw new NumberFormatException("number too short");
-                }
-                code.append((char) c);
-            }
-            ret = Integer.parseInt(code.toString(), 16);
-        } catch (NumberFormatException e) {
-            throw new IOException(
-                    "(line " + getLineNumber() + ") Wrong unicode escape sequence found '"
-                            + code.toString() + "'" + e.toString());
-        }
-        return ret;
-    }
-
     private int readEscape(int c) throws IOException {
         // assume c is the escape char (normally a backslash)
         c = in.read();
-        int out;
         switch (c) {
             case 'r':
-                out = '\r';
-                break;
+                return '\r';
             case 'n':
-                out = '\n';
-                break;
+                return '\n';
             case 't':
-                out = '\t';
-                break;
+                return '\t';
             case 'b':
-                out = '\b';
-                break;
+                return '\b';
             case 'f':
-                out = '\f';
-                break;
+                return '\f';
             default:
-                out = c;
+                return c;
         }
-        return out;
     }
 
     /**
