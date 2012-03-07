@@ -350,7 +350,7 @@ public class CSVParserTest extends TestCase {
     }
 
 
-    public void testUnicodeEscape() throws IOException {
+    public void testUnicodeEscape() throws Exception {
         String code = "abc,\\u0070\\u0075\\u0062\\u006C\\u0069\\u0063";
         CSVParser parser = new CSVParser(code, CSVFormat.DEFAULT.withUnicodeEscapesInterpreted(true));
         String[] data = parser.iterator().next();
