@@ -198,6 +198,13 @@ public class CSVFormat implements Cloneable, Serializable {
         return format;
     }
 
+    public CSVFormat withSurroundingSpacesIgnored(boolean surroundingSpacesIgnored) {
+        CSVFormat format = clone();
+        format.leadingSpacesIgnored = surroundingSpacesIgnored;
+        format.trailingSpacesIgnored = surroundingSpacesIgnored;
+        return format;
+    }
+    
     public boolean isUnicodeEscapesInterpreted() {
         return unicodeEscapesInterpreted;
     }

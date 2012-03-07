@@ -57,6 +57,8 @@ public class CSVFormatTest extends TestCase {
         
         assertEquals(false, format.withLeadingSpacesIgnored(false).isLeadingSpacesIgnored());
         assertEquals(false, format.withTrailingSpacesIgnored(false).isTrailingSpacesIgnored());
+        assertEquals(false, format.withSurroundingSpacesIgnored(false).isLeadingSpacesIgnored());
+        assertEquals(false, format.withSurroundingSpacesIgnored(false).isTrailingSpacesIgnored());
         assertEquals(false, format.withEmptyLinesIgnored(false).isEmptyLinesIgnored());
         assertEquals(false, format.withUnicodeEscapesInterpreted(false).isUnicodeEscapesInterpreted());
     }
