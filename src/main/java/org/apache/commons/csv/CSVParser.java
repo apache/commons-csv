@@ -76,6 +76,7 @@ public class CSVParser implements Iterable<String[]> {
      * CSV parser using the default {@link CSVFormat}.
      *
      * @param input a Reader containing "csv-formatted" input
+     * @throws IllegalArgumentException thrown if the parameters of the format are inconsistent
      */
     public CSVParser(Reader input) {
         this(input, CSVFormat.DEFAULT);
@@ -86,8 +87,11 @@ public class CSVParser implements Iterable<String[]> {
      *
      * @param input    a Reader containing "csv-formatted" input
      * @param format the CSVFormat used for CSV parsing
+     * @throws IllegalArgumentException thrown if the parameters of the format are inconsistent
      */
     public CSVParser(Reader input, CSVFormat format) {
+        format.validate();
+        
         if (format.isUnicodeEscapesInterpreted()) {
             input = new UnicodeUnescapeReader(input);
         }
@@ -100,6 +104,7 @@ public class CSVParser implements Iterable<String[]> {
      *
      * @param input    a String containing "csv-formatted" input
      * @param format the CSVFormat used for CSV parsing
+     * @throws IllegalArgumentException thrown if the parameters of the format are inconsistent
      */
     public CSVParser(String input, CSVFormat format) {
         this(new StringReader(input), format);

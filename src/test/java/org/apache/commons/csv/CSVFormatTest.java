@@ -70,4 +70,78 @@ public class CSVFormatTest extends TestCase {
         assertEquals("a,b,c", format.format("a", "b", "c"));
         assertEquals("\"x,y\",z", format.format("x,y", "z"));
     }
+    
+    public void testValidation() {
+        CSVFormat format = CSVFormat.DEFAULT;
+        
+        try {
+            format.withDelimiter('\n');
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        
+        try {
+            format.withEscape('\r');
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        
+        try {
+            format.withEncapsulator('\n');
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        
+        try {
+            format.withCommentStart('\r');
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        
+        try {
+            format.withDelimiter('!').withEscape('!').validate();
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        
+        try {
+            format.withDelimiter('!').withCommentStart('!').validate();
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        
+        try {
+            format.withEncapsulator('!').withCommentStart('!').validate();
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        
+        format.withEncapsulator(CSVFormat.DISABLED).withCommentStart(CSVFormat.DISABLED).validate();
+        
+        try {
+            format.withEscape('!').withCommentStart('!').validate();
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        
+        format.withEscape(CSVFormat.DISABLED).withCommentStart(CSVFormat.DISABLED).validate();
+        
+        
+        try {
+            format.withEncapsulator('!').withDelimiter('!').validate();
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        
+        
+    }
 } 

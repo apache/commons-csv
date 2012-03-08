@@ -127,6 +127,42 @@ public class CSVFormat implements Cloneable, Serializable {
     }
 
     /**
+     * Returns true if the given character is a line break character.
+     * 
+     * @param c the character to check
+     * 
+     * @return true if <code>c</code> is a line break character
+     */
+    private static boolean isLineBreak(char c) {
+        return c == '\n' || c == '\r';
+    }
+
+    /**
+     * Verifies the consistency of the parameters and throws an IllegalArgumentException if necessary.
+     */
+    void validate() throws IllegalArgumentException {
+        if (delimiter == encapsulator) {
+            throw new IllegalArgumentException("The encapsulator character and the delimiter cannot be the same (\"" + encapsulator + "\")");
+        }
+        
+        if (delimiter == escape) {
+            throw new IllegalArgumentException("The escape character and the delimiter cannot be the same (\"" + escape + "\")");
+        }
+        
+        if (delimiter == commentStart) {
+            throw new IllegalArgumentException("The comment start character and the delimiter cannot be the same (\"" + commentStart + "\")");
+        }
+        
+        if (encapsulator != DISABLED && encapsulator == commentStart) {
+            throw new IllegalArgumentException("The comment start character and the encapsulator cannot be the same (\"" + commentStart + "\")");
+        }
+        
+        if (escape != DISABLED && escape == commentStart) {
+            throw new IllegalArgumentException("The comment start and the escape character cannot be the same (\"" + commentStart + "\")");
+        }
+    }
+
+    /**
      * Returns the character delimiting the values (typically ';', ',' or '\t').
      * 
      * @return the delimiter character
@@ -140,8 +176,13 @@ public class CSVFormat implements Cloneable, Serializable {
      * 
      * @param delimiter the delimiter character
      * @return A copy of this format using the specified delimiter character
+     * @throws IllegalArgumentException thrown if the specified character is a line break
      */
     public CSVFormat withDelimiter(char delimiter) {
+        if (isLineBreak(delimiter)) {
+            throw new IllegalArgumentException("The delimiter cannot be a line break");
+        }
+        
         CSVFormat format = clone();
         format.delimiter = delimiter;
         return format;
@@ -161,8 +202,13 @@ public class CSVFormat implements Cloneable, Serializable {
      * 
      * @param encapsulator the encapsulator character
      * @return A copy of this format using the specified encapsulator character
+     * @throws IllegalArgumentException thrown if the specified character is a line break
      */
     public CSVFormat withEncapsulator(char encapsulator) {
+        if (isLineBreak(encapsulator)) {
+            throw new IllegalArgumentException("The encapsulator cannot be a line break");
+        }
+        
         CSVFormat format = clone();
         format.encapsulator = encapsulator;
         return format;
@@ -186,8 +232,13 @@ public class CSVFormat implements Cloneable, Serializable {
      * 
      * @param commentStart the comment start marker
      * @return A copy of this format using the specified character as the comment start marker
+     * @throws IllegalArgumentException thrown if the specified character is a line break
      */
     public CSVFormat withCommentStart(char commentStart) {
+        if (isLineBreak(commentStart)) {
+            throw new IllegalArgumentException("The comment start character cannot be a line break");
+        }
+        
         CSVFormat format = clone();
         format.commentStart = commentStart;
         return format;
@@ -216,8 +267,13 @@ public class CSVFormat implements Cloneable, Serializable {
      * 
      * @param escape the escape character
      * @return A copy of this format using the specified escape character
+     * @throws IllegalArgumentException thrown if the specified character is a line break
      */
     public CSVFormat withEscape(char escape) {
+        if (isLineBreak(escape)) {
+            throw new IllegalArgumentException("The escape character cannot be a line break");
+        }
+        
         CSVFormat format = clone();
         format.escape = escape;
         return format;

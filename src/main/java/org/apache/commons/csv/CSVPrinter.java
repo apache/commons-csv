@@ -39,11 +39,14 @@ public class CSVPrinter {
      * is supported. Hybrid formats (encapsulation and escaping with a different character) are not supported.
      *
      * @param out    stream to which to print.
-     * @param format describes the CSV variation.
+     * @param format the CSV format. If null the default format is used ({@link CSVFormat#DEFAULT})
+     * @throws IllegalArgumentException thrown if the parameters of the format are inconsistent
      */
     public CSVPrinter(Appendable out, CSVFormat format) {
         this.out = out;
         this.format = format == null ? CSVFormat.DEFAULT : format;
+        
+        this.format.validate();
     }
 
     // ======================================================
