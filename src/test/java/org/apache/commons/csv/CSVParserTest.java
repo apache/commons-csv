@@ -54,10 +54,10 @@ public class CSVParserTest extends TestCase {
     public void testGetLine() throws IOException {
         CSVParser parser = new CSVParser(new StringReader(code));
         for (String[] re : res) {
-            assertTrue(Arrays.equals(re, parser.getLine()));
+            assertTrue(Arrays.equals(re, parser.getRecord()));
         }
         
-        assertTrue(parser.getLine() == null);
+        assertTrue(parser.getRecord() == null);
     }
 
     public void testGetRecords() throws IOException {

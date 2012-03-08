@@ -68,7 +68,7 @@ public class CSVParser implements Iterable<String[]> {
     
     // the following objects are shared to reduce garbage
     
-    /** A record buffer for getLine(). Grows as necessary and is reused. */
+    /** A record buffer for getRecord(). Grows as necessary and is reused. */
     private final List<String> record = new ArrayList<String>();
     private final Token reusableToken = new Token();
 
@@ -112,7 +112,7 @@ public class CSVParser implements Iterable<String[]> {
 
 
     /**
-     * Parses the CSV according to the given format and returns the content
+     * Parses the CSV input according to the given format and returns the content
      * as an array of records (whereas records are arrays of single values).
      * <p/>
      * The returned content starts at the current parse-position in the stream.
@@ -122,26 +122,26 @@ public class CSVParser implements Iterable<String[]> {
      */
     public String[][] getRecords() throws IOException {
         List<String[]> records = new ArrayList<String[]>();
-        String[] values;
-        String[][] ret = null;
-        while ((values = getLine()) != null) {
-            records.add(values);
+        String[] record;
+        while ((record = getRecord()) != null) {
+            records.add(record);
         }
-        if (records.size() > 0) {
-            ret = new String[records.size()][];
-            records.toArray(ret);
+        
+        if (!records.isEmpty()) {
+            return records.toArray(new String[records.size()][]);
+        } else {
+            return null;
         }
-        return ret;
     }
 
     /**
-     * Parses from the current point in the stream til the end of the current line.
+     * Parses the next record from the current point in the stream.
      *
-     * @return array of values til end of line ('null' when end of file has been reached)
+     * @return the record as an array of values, or <tt>null</tt> if the end of the stream has been reached
      * @throws IOException on parse error or input read-failure
      */
-    String[] getLine() throws IOException {
-        String[] ret = EMPTY_STRING_ARRAY;
+    String[] getRecord() throws IOException {
+        String[] result = EMPTY_STRING_ARRAY;
         record.clear();
         while (true) {
             reusableToken.reset();
@@ -157,11 +157,10 @@ public class CSVParser implements Iterable<String[]> {
                     if (reusableToken.isReady) {
                         record.add(reusableToken.content.toString());
                     } else {
-                        ret = null;
+                        result = null;
                     }
                     break;
                 case INVALID:
-                default:
                     // error: throw IOException
                     throw new IOException("(line " + getLineNumber() + ") invalid parse sequence");
                     // unreachable: break;
@@ -171,9 +170,9 @@ public class CSVParser implements Iterable<String[]> {
             }
         }
         if (!record.isEmpty()) {
-            ret = record.toArray(new String[record.size()]);
+            result = record.toArray(new String[record.size()]);
         }
-        return ret;
+        return result;
     }
 
     /**
@@ -209,7 +208,7 @@ public class CSVParser implements Iterable<String[]> {
             
             private String[] getNextLine() {
                 try {
-                    return getLine();
+                    return getRecord();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
