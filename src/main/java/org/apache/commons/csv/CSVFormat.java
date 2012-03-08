@@ -431,6 +431,7 @@ public class CSVFormat implements Cloneable, Serializable {
         return out.toString().trim();
     }
 
+    @Override
     protected CSVFormat clone() {
         try {
             return (CSVFormat) super.clone();
