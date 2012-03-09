@@ -29,15 +29,15 @@ import java.io.StringWriter;
  */
 public class CSVFormat implements Cloneable, Serializable {
 
-    private char delimiter = ',';
-    private char encapsulator = '"';
-    private char commentStart = DISABLED;
-    private char escape = DISABLED;
-    private boolean leadingSpacesIgnored = true;
-    private boolean trailingSpacesIgnored = true;
-    private boolean unicodeEscapesInterpreted = false;
-    private boolean emptyLinesIgnored = true;
-    private String lineSeparator = "\r\n";
+    private volatile char delimiter = ',';
+    private volatile char encapsulator = '"';
+    private volatile char commentStart = DISABLED;
+    private volatile char escape = DISABLED;
+    private volatile boolean leadingSpacesIgnored = true;
+    private volatile boolean trailingSpacesIgnored = true;
+    private volatile boolean unicodeEscapesInterpreted = false;
+    private volatile boolean emptyLinesIgnored = true;
+    private volatile String lineSeparator = "\r\n";
 
 
     /**
