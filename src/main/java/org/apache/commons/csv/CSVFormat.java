@@ -25,7 +25,7 @@ import java.io.StringWriter;
 /**
  * The format specification of a CSV file.
  *
- * This class is immutable.
+ * This class is thread-safe.
  */
 public class CSVFormat implements Cloneable, Serializable {
 
