@@ -60,8 +60,7 @@
 
   <properties>
     <commons.componentid>csv</commons.componentid>
-    <!-- TODO fix this: -->
-    <commons.jira.componentid>12311182</commons.jira.componentid>
+    <commons.jira.componentid>12313222</commons.jira.componentid>
     <maven.compile.source>1.5</maven.compile.source>
     <maven.compile.target>1.5</maven.compile.target>
   </properties> 
