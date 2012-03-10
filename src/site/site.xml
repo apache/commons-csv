@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="Commons CSV">
+
+  <bannerRight>
+    <name>Apache Commons CSV</name>
+    <src>/images/csv-logo.png</src>
+    <href>/index.html</href>
+    <alt>Commons CSV&amp;trade; logo</alt>
+  </bannerRight>
+
   <body>
 
     <menu name="Commons CSV">
