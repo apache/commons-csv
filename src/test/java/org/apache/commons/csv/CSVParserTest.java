@@ -269,7 +269,7 @@ public class CSVParserTest extends TestCase {
         };
 
 
-        CSVFormat format = new CSVFormat(',', '\'', CSVFormat.DISABLED, '/', false, false, true, true);
+        CSVFormat format = new CSVFormat(',', '\'', CSVFormat.DISABLED, '/', false, false, true, true, "\r\n");
 
         CSVParser parser = new CSVParser(code, format);
         String[][] tmp = parser.getRecords();
@@ -297,7 +297,7 @@ public class CSVParserTest extends TestCase {
         };
 
 
-        CSVFormat format = new CSVFormat(',',  CSVFormat.DISABLED,  CSVFormat.DISABLED, '/', false, false, true, true);
+        CSVFormat format = new CSVFormat(',',  CSVFormat.DISABLED,  CSVFormat.DISABLED, '/', false, false, true, true, "\r\n");
 
         CSVParser parser = new CSVParser(code, format);
         String[][] tmp = parser.getRecords();
@@ -340,7 +340,7 @@ public class CSVParserTest extends TestCase {
                 {""},
         };
 
-        format = new CSVFormat(',', '"', '#');
+        format = CSVFormat.DEFAULT.withCommentStart('#');
         parser = new CSVParser(code, format);
         tmp = parser.getRecords();
 

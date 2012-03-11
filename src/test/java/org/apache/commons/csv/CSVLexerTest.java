@@ -147,13 +147,13 @@ public class CSVLexerTest extends TestCase {
         *       ;;
         */
         String code = "a;'b and '' more\n'\n!comment;;;;\n;;";
-        CSVFormat format = new CSVFormat(';', '\'', '!');
+        CSVFormat format = CSVFormat.DEFAULT.withDelimiter(';').withEncapsulator('\'').withCommentStart('!');
         CSVLexer parser = getLexer(code, format);
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "b and ' more\n", parser.nextToken(new Token()));
     }
 
-    // From SANDBOX-153
+    // From CSV-1
     public void testDelimiterIsWhitespace() throws IOException {
         String code = "one\ttwo\t\tfour \t five\t six";
         CSVLexer parser = getLexer(code, CSVFormat.TDF);

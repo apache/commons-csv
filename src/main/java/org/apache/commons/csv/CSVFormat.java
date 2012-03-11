@@ -25,19 +25,19 @@ import java.io.StringWriter;
 /**
  * The format specification of a CSV file.
  *
- * This class is thread-safe.
+ * This class is immutable.
  */
-public class CSVFormat implements Cloneable, Serializable {
+public class CSVFormat implements Serializable {
 
-    private volatile char delimiter = ',';
-    private volatile char encapsulator = '"';
-    private volatile char commentStart = DISABLED;
-    private volatile char escape = DISABLED;
-    private volatile boolean leadingSpacesIgnored = true;
-    private volatile boolean trailingSpacesIgnored = true;
-    private volatile boolean unicodeEscapesInterpreted = false;
-    private volatile boolean emptyLinesIgnored = true;
-    private volatile String lineSeparator = "\r\n";
+    private final char delimiter;
+    private final char encapsulator;
+    private final char commentStart;
+    private final char escape;
+    private final boolean leadingSpacesIgnored;
+    private final boolean trailingSpacesIgnored;
+    private final boolean unicodeEscapesInterpreted;
+    private final boolean emptyLinesIgnored;
+    private final String lineSeparator;
 
 
     /**
@@ -49,7 +49,7 @@ public class CSVFormat implements Cloneable, Serializable {
     static final char DISABLED = '\ufffe';
 
     /** Standard comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>. */
-    public static final CSVFormat DEFAULT = new CSVFormat(',', '"', DISABLED, DISABLED, true, true, false, true);
+    public static final CSVFormat DEFAULT = new CSVFormat(',', '"', DISABLED, DISABLED, true, true, false, true, "\r\n");
 
     /**
      * Excel file format (using a comma as the value delimiter).
@@ -62,11 +62,11 @@ public class CSVFormat implements Cloneable, Serializable {
      * 
      * <pre>CSVFormat fmt = CSVFormat.EXCEL.withDelimiter(';');</pre>
      */
-    public static final CSVFormat EXCEL = new CSVFormat(',', '"', DISABLED, DISABLED, false, false, false, false);
+    public static final CSVFormat EXCEL = new CSVFormat(',', '"', DISABLED, DISABLED, false, false, false, false, "\r\n");
 
     /** Tabulation delimited format. */
-    public static final CSVFormat TDF = new CSVFormat('\t', '"', DISABLED, DISABLED, true, true, false, true);
-    
+    public static final CSVFormat TDF = new CSVFormat('\t', '"', DISABLED, DISABLED, true, true, false, true, "\r\n");
+
     /**
      * Default MySQL format used by the <tt>SELECT INTO OUTFILE</tt> and
      * <tt>LOAD DATA INFILE</tt> operations. This is a tabulation delimited
@@ -75,25 +75,8 @@ public class CSVFormat implements Cloneable, Serializable {
      * 
      * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html">http://dev.mysql.com/doc/refman/5.1/en/load-data.html</a>
      */
-    public static final CSVFormat MYSQL = new CSVFormat('\t', DISABLED, DISABLED, '\\', false, false, false, false).withLineSeparator("\n");
+    public static final CSVFormat MYSQL = new CSVFormat('\t', DISABLED, DISABLED, '\\', false, false, false, false, "\n");
 
-
-    /**
-     * Creates a CSV format with the default parameters.
-     */
-    CSVFormat() {
-    }
-
-    /**
-     * Creates a customized CSV format.
-     * 
-     * @param delimiter                 the char used for value separation
-     * @param encapsulator              the char used as value encapsulation marker
-     * @param commentStart              the char used for comment identification
-     */
-    CSVFormat(char delimiter, char encapsulator, char commentStart) {
-        this(delimiter, encapsulator, commentStart, DISABLED, true, true, false, true);
-    }
 
     /**
      * Creates a customized CSV format.
@@ -115,7 +98,8 @@ public class CSVFormat implements Cloneable, Serializable {
             boolean leadingSpacesIgnored,
             boolean trailingSpacesIgnored,
             boolean unicodeEscapesInterpreted,
-            boolean emptyLinesIgnored) {
+            boolean emptyLinesIgnored,
+            String lineSeparator) {
         this.delimiter = delimiter;
         this.encapsulator = encapsulator;
         this.commentStart = commentStart;
@@ -124,6 +108,7 @@ public class CSVFormat implements Cloneable, Serializable {
         this.trailingSpacesIgnored = trailingSpacesIgnored;
         this.unicodeEscapesInterpreted = unicodeEscapesInterpreted;
         this.emptyLinesIgnored = emptyLinesIgnored;
+        this.lineSeparator = lineSeparator;
     }
 
     /**
@@ -182,10 +167,8 @@ public class CSVFormat implements Cloneable, Serializable {
         if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
-        
-        CSVFormat format = clone();
-        format.delimiter = delimiter;
-        return format;
+
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator);
     }
 
     /**
@@ -209,9 +192,7 @@ public class CSVFormat implements Cloneable, Serializable {
             throw new IllegalArgumentException("The encapsulator cannot be a line break");
         }
         
-        CSVFormat format = clone();
-        format.encapsulator = encapsulator;
-        return format;
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator);
     }
 
     boolean isEncapsulating() {
@@ -239,9 +220,7 @@ public class CSVFormat implements Cloneable, Serializable {
             throw new IllegalArgumentException("The comment start character cannot be a line break");
         }
         
-        CSVFormat format = clone();
-        format.commentStart = commentStart;
-        return format;
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator);
     }
 
     /**
@@ -274,9 +253,7 @@ public class CSVFormat implements Cloneable, Serializable {
             throw new IllegalArgumentException("The escape character cannot be a line break");
         }
         
-        CSVFormat format = clone();
-        format.escape = escape;
-        return format;
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator);
     }
 
     boolean isEscaping() {
@@ -300,9 +277,7 @@ public class CSVFormat implements Cloneable, Serializable {
      * @return A copy of this format with the specified left trimming behavior.
      */
     public CSVFormat withLeadingSpacesIgnored(boolean leadingSpacesIgnored) {
-        CSVFormat format = clone();
-        format.leadingSpacesIgnored = leadingSpacesIgnored;
-        return format;
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator);
     }
 
     /**
@@ -322,9 +297,7 @@ public class CSVFormat implements Cloneable, Serializable {
      * @return A copy of this format with the specified right trimming behavior.
      */
     public CSVFormat withTrailingSpacesIgnored(boolean trailingSpacesIgnored) {
-        CSVFormat format = clone();
-        format.trailingSpacesIgnored = trailingSpacesIgnored;
-        return format;
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator);
     }
 
     /**
@@ -335,10 +308,7 @@ public class CSVFormat implements Cloneable, Serializable {
      * @return A copy of this format with the specified trimming behavior.
      */
     public CSVFormat withSurroundingSpacesIgnored(boolean surroundingSpacesIgnored) {
-        CSVFormat format = clone();
-        format.leadingSpacesIgnored = surroundingSpacesIgnored;
-        format.trailingSpacesIgnored = surroundingSpacesIgnored;
-        return format;
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, surroundingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator);
     }
 
     /**
@@ -358,9 +328,7 @@ public class CSVFormat implements Cloneable, Serializable {
      * @return A copy of this format with the specified unicode escaping behavior.
      */
     public CSVFormat withUnicodeEscapesInterpreted(boolean unicodeEscapesInterpreted) {
-        CSVFormat format = clone();
-        format.unicodeEscapesInterpreted = unicodeEscapesInterpreted;
-        return format;
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator);
     }
 
     /**
@@ -380,9 +348,7 @@ public class CSVFormat implements Cloneable, Serializable {
      * @return A copy of this format  with the specified empty line skipping behavior.
      */
     public CSVFormat withEmptyLinesIgnored(boolean emptyLinesIgnored) {
-        CSVFormat format = clone();
-        format.emptyLinesIgnored = emptyLinesIgnored;
-        return format;
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator);
     }
 
     /**
@@ -401,9 +367,7 @@ public class CSVFormat implements Cloneable, Serializable {
      * @return A copy of this format using the specified line separator
      */
     public CSVFormat withLineSeparator(String lineSeparator) {
-        CSVFormat format = clone();
-        format.lineSeparator = lineSeparator;
-        return format;
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator);
     }
 
     /**
@@ -429,14 +393,5 @@ public class CSVFormat implements Cloneable, Serializable {
         }
         
         return out.toString().trim();
-    }
-
-    @Override
-    protected CSVFormat clone() {
-        try {
-            return (CSVFormat) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw (Error) new InternalError().initCause(e);
-        }
     }
 }

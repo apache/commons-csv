@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 public class CSVFormatTest extends TestCase {
 
     public void testImmutalibity() {
-        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, true, true);
+        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, true, true, "\r\n");
         
         format.withDelimiter('?');
         format.withEncapsulator('?');
@@ -47,7 +47,7 @@ public class CSVFormatTest extends TestCase {
     }
 
     public void testMutators() {
-        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, true, true);
+        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, true, true, "\r\n");
         
         assertEquals('?', format.withDelimiter('?').getDelimiter());
         assertEquals('?', format.withEncapsulator('?').getEncapsulator());
