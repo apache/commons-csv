@@ -317,20 +317,20 @@ class CSVLexer {
         c = in.readAgain();
 
         //  empty line detection: eol AND (last char was EOL or beginning)
-        while (format.isEmptyLinesIgnored() && eol
-                && (lastChar == '\n'
-                || lastChar == '\r'
-                || lastChar == ExtendedBufferedReader.UNDEFINED)
-                && !isEndOfFile(lastChar)) {
-            // go on char ahead ...
-            lastChar = c;
-            c = in.read();
-            eol = isEndOfLine(c);
-            c = in.readAgain();
-            // reached end of file without any content (empty line at the end)
-            if (isEndOfFile(c)) {
-                tkn.type = EOF;
-                return tkn;
+        if (format.isEmptyLinesIgnored()) {
+            while (eol
+                    && (lastChar == '\n' || lastChar == '\r' || lastChar == ExtendedBufferedReader.UNDEFINED)
+                    && !isEndOfFile(lastChar)) {
+                // go on char ahead ...
+                lastChar = c;
+                c = in.read();
+                eol = isEndOfLine(c);
+                c = in.readAgain();
+                // reached end of file without any content (empty line at the end)
+                if (isEndOfFile(c)) {
+                    tkn.type = EOF;
+                    return tkn;
+                }
             }
         }
 
@@ -343,11 +343,14 @@ class CSVLexer {
         //  important: make sure a new char gets consumed in each iteration
         while (!tkn.isReady && tkn.type != EOF) {
             // ignore whitespaces at beginning of a token
-            while (format.isLeadingSpacesIgnored() && isWhitespace(c) && !eol) {
-                wsBuf.append((char) c);
-                c = in.read();
-                eol = isEndOfLine(c);
+            if (format.isLeadingSpacesIgnored()) {
+                while (isWhitespace(c) && !eol) {
+                    wsBuf.append((char) c);
+                    c = in.read();
+                    eol = isEndOfLine(c);
+                }
             }
+            
             // ok, start of token reached: comment, encapsulated, or token
             if (c == format.getCommentStart()) {
                 // ignore everything till end of line and continue (incr linecount)
