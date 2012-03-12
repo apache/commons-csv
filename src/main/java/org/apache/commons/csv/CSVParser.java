@@ -143,7 +143,7 @@ public class CSVParser implements Iterable<String[]> {
     String[] getRecord() throws IOException {
         String[] result = EMPTY_STRING_ARRAY;
         record.clear();
-        while (true) {
+        do {
             reusableToken.reset();
             lexer.nextToken(reusableToken);
             switch (reusableToken.type) {
@@ -165,10 +165,8 @@ public class CSVParser implements Iterable<String[]> {
                     throw new IOException("(line " + getLineNumber() + ") invalid parse sequence");
                     // unreachable: break;
             }
-            if (reusableToken.type != TOKEN) {
-                break;
-            }
-        }
+        } while (reusableToken.type == TOKEN);
+        
         if (!record.isEmpty()) {
             result = record.toArray(new String[record.size()]);
         }
@@ -403,7 +401,7 @@ class CSVLexer {
      * @throws IOException on stream access error
      */
     private Token simpleTokenLexer(Token tkn, int c) throws IOException {
-        for (; ;) {
+        while (true) {
             if (isEndOfLine(c)) {
                 // end of record
                 tkn.type = EORECORD;
@@ -454,7 +452,7 @@ class CSVLexer {
         int startLineNumber = getLineNumber();
         // ignore the given delimiter
         // assert c == delimiter;
-        for (; ;) {
+        while (true) {
             c = in.read();
             
             if (c == format.getEscape()) {
@@ -466,7 +464,7 @@ class CSVLexer {
                     tkn.content.append((char) c);
                 } else {
                     // token finish mark (encapsulator) reached: ignore whitespace till delimiter
-                    for (; ;) {
+                    while (true) {
                         c = in.read();
                         if (c == format.getDelimiter()) {
                             tkn.type = TOKEN;
