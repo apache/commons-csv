@@ -17,6 +17,11 @@
 
 package org.apache.commons.csv;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import junit.framework.TestCase;
 
 public class CSVFormatTest extends TestCase {
@@ -141,7 +146,28 @@ public class CSVFormatTest extends TestCase {
         } catch (IllegalArgumentException e) {
             // expected
         }
+    }
+
+    public void testSerialization() throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         
+        ObjectOutputStream oos = new ObjectOutputStream(out);
+        oos.writeObject(CSVFormat.DEFAULT);
+        oos.flush();
+        oos.close();
         
+        ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(out.toByteArray()));
+        CSVFormat format = (CSVFormat) in.readObject();
+        
+        assertNotNull(format);
+        assertEquals("delimiter", CSVFormat.DEFAULT.getDelimiter(), format.getDelimiter());
+        assertEquals("encapsulator", CSVFormat.DEFAULT.getEncapsulator(), format.getEncapsulator());
+        assertEquals("comment start", CSVFormat.DEFAULT.getCommentStart(), format.getCommentStart());
+        assertEquals("line separator", CSVFormat.DEFAULT.getLineSeparator(), format.getLineSeparator());
+        assertEquals("escape", CSVFormat.DEFAULT.getEscape(), format.getEscape());
+        assertEquals("unicode escape", CSVFormat.DEFAULT.isUnicodeEscapesInterpreted(), format.isUnicodeEscapesInterpreted());
+        assertEquals("trim left", CSVFormat.DEFAULT.isLeadingSpacesIgnored(), format.isLeadingSpacesIgnored());
+        assertEquals("trim right", CSVFormat.DEFAULT.isTrailingSpacesIgnored(), format.isTrailingSpacesIgnored());
+        assertEquals("empty lines", CSVFormat.DEFAULT.isEmptyLinesIgnored(), format.isEmptyLinesIgnored());
     }
 } 
