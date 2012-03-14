@@ -225,7 +225,7 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Tells if comments are supported by this format.
+     * Specifies whether comments are supported by this format.
      * 
      * @return <tt>true</tt> is comments are supported, <tt>false</tt> otherwise
      */
@@ -313,7 +313,8 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Tells if unicode escape sequences (i.e <span>\</span>u1234) are turned into their corresponding character.
+     * Tells if unicode escape sequences (e.g. <span>\</span>u1234) are turned into their corresponding character
+     * when parsing input.
      * 
      * @return <tt>true</tt> if unicode escape sequences are interpreted, <tt>false</tt> if they are left as is.
      */
@@ -333,9 +334,9 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Tells if the empty lines between the records are ignored.
+     * Specifies whether empty lines between records are ignored when parsing input.
      * 
-     * @return <tt>true</tt> if empty lines between records are ignore, <tt>false</tt> if they are turned into empty records.
+     * @return <tt>true</tt> if empty lines between records are ignored, <tt>false</tt> if they are turned into empty records.
      */
     public boolean isEmptyLinesIgnored() {
         return emptyLinesIgnored;
