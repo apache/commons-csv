@@ -315,7 +315,7 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Tells if unicode escape sequences (e.g. <span>\</span>u1234) are turned into their corresponding character
+     * Tells if unicode escape sequences (e.g. {@literal \u1234}) are turned into their corresponding character
      * when parsing input.
      * 
      * @return <tt>true</tt> if unicode escape sequences are interpreted, <tt>false</tt> if they are left as is.
