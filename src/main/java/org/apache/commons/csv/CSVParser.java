@@ -183,7 +183,7 @@ public class CSVParser implements Iterable<String[]> {
             
             public boolean hasNext() {
                 if (current == null) {
-                    current = getNextLine();
+                    current = getNextRecord();
                 }
                 
                 return current != null;
@@ -195,7 +195,7 @@ public class CSVParser implements Iterable<String[]> {
 
                 if (next == null) {
                     // hasNext() wasn't called before
-                    next = getNextLine();
+                    next = getNextRecord();
                     if (next == null) {
                         throw new NoSuchElementException("No more CSV records available");
                     }
@@ -204,7 +204,7 @@ public class CSVParser implements Iterable<String[]> {
                 return next;
             }
             
-            private String[] getNextLine() {
+            private String[] getNextRecord() {
                 try {
                     return getRecord();
                 } catch (IOException e) {
