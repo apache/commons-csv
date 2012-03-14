@@ -179,7 +179,7 @@ public class CSVParser implements Iterable<String[]> {
      */
     public Iterator<String[]> iterator() {
         return new Iterator<String[]>() {
-            String[] current;
+            private String[] current;
             
             public boolean hasNext() {
                 if (current == null) {
