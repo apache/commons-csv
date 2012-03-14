@@ -518,7 +518,7 @@ class CSVLexer {
      * @return true if the given char is a whitespace character
      */
     private boolean isWhitespace(int c) {
-        return Character.isWhitespace((char) c) && (c != format.getDelimiter());
+        return (c != format.getDelimiter()) && Character.isWhitespace((char) c);
     }
 
     /**
