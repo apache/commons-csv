@@ -46,7 +46,7 @@ class CharBuffer {
      * Creates a new CharBuffer with an initial capacity
      * of <code>length</code> characters.
      */
-    CharBuffer(final int length) {
+    CharBuffer(int length) {
         if (length == 0) {
             throw new IllegalArgumentException("Can't create an empty CharBuffer");
         }
@@ -84,13 +84,12 @@ class CharBuffer {
      *
      * @param cb the CharBuffer to append or null
      */
-    void append(final CharBuffer cb) {
-        if (cb == null) {
-            return;
+    void append(CharBuffer cb) {
+        if (cb != null) {
+            ensureCapacity(length + cb.length);
+            System.arraycopy(cb.c, 0, c, length, cb.length);
+            length += cb.length;
         }
-        provideCapacity(length + cb.length);
-        System.arraycopy(cb.c, 0, c, length, cb.length);
-        length += cb.length;
     }
 
     /**
@@ -99,11 +98,10 @@ class CharBuffer {
      *
      * @param s the String to append or null
      */
-    void append(final String s) {
-        if (s == null) {
-            return;
+    void append(String s) {
+        if (s != null) {
+            append(s.toCharArray());
         }
-        append(s.toCharArray());
     }
 
     /**
@@ -112,13 +110,12 @@ class CharBuffer {
      *
      * @param data the char[] to append or null
      */
-    void append(final char[] data) {
-        if (data == null) {
-            return;
+    void append(char[] data) {
+        if (data != null) {
+            ensureCapacity(length + data.length);
+            System.arraycopy(data, 0, c, length, data.length);
+            length += data.length;
         }
-        provideCapacity(length + data.length);
-        System.arraycopy(data, 0, c, length, data.length);
-        length += data.length;
     }
 
     /**
@@ -127,23 +124,10 @@ class CharBuffer {
      *
      * @param data the char to append
      */
-    void append(final char data) {
-        provideCapacity(length + 1);
+    void append(char data) {
+        ensureCapacity(length + 1);
         c[length] = data;
         length++;
-    }
-
-    /**
-     * Shrinks the capacity of the buffer to the current length if necessary.
-     * This method involves copying the data once!
-     */
-    void shrink() {
-        if (c.length == length) {
-            return;
-        }
-        char[] newc = new char[length];
-        System.arraycopy(c, 0, newc, 0, length);
-        c = newc;
     }
 
     /**
@@ -153,31 +137,6 @@ class CharBuffer {
         while (length > 0 && Character.isWhitespace(c[length - 1])) {
             length--;
         }
-    }
-
-    /**
-     * Returns the contents of the buffer as a char[]. The returned array may
-     * be the internal array of the buffer, so the caller must take care when
-     * modifying it.
-     * This method allows to avoid copying if the caller knows the exact capacity
-     * before.
-     *
-     * @return
-     */
-    char[] getCharacters() {
-        if (c.length == length) {
-            return c;
-        }
-        char[] chars = new char[length];
-        System.arraycopy(c, 0, chars, 0, length);
-        return chars;
-    }
-
-    /**
-     * Returns the character at the specified position.
-     */
-    char charAt(int pos) {
-        return c[pos];
     }
 
     /**
@@ -196,13 +155,12 @@ class CharBuffer {
      *
      * @param capacity
      */
-    void provideCapacity(final int capacity) {
-        if (c.length >= capacity) {
-            return;
+    void ensureCapacity(int capacity) {
+        if (c.length < capacity) {
+            int newcapacity = ((capacity * 3) >> 1) + 1;
+            char[] newc = new char[newcapacity];
+            System.arraycopy(c, 0, newc, 0, length);
+            c = newc;
         }
-        int newcapacity = ((capacity * 3) >> 1) + 1;
-        char[] newc = new char[newcapacity];
-        System.arraycopy(c, 0, newc, 0, length);
-        c = newc;
     }
 }

@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.apache.commons.csv;
 
 import junit.framework.TestCase;
@@ -86,20 +87,6 @@ public class CharBufferTest extends TestCase {
         }
     }
 
-    public void testShrink() {
-        String data = "123456789012345678901234567890";
-
-        CharBuffer cb = new CharBuffer(data.length() + 100);
-        assertEquals(data.length() + 100, cb.capacity());
-        cb.append(data);
-        assertEquals(data.length() + 100, cb.capacity());
-        assertEquals(data.length(), cb.length());
-        cb.shrink();
-        assertEquals(data.length(), cb.capacity());
-        assertEquals(data.length(), cb.length());
-        assertEquals(data, cb.toString());
-    }
-
     //-- the following test cases have been adapted from the HttpComponents project
     //-- written by Oleg Kalnichevski
 
@@ -107,7 +94,7 @@ public class CharBufferTest extends TestCase {
         CharBuffer buffer = new CharBuffer(16);
         assertEquals(16, buffer.capacity());
         assertEquals(0, buffer.length());
-        char[] b1 = buffer.getCharacters();
+        char[] b1 = buffer.toString().toCharArray();
         assertNotNull(b1);
         assertEquals(0, b1.length);
         assertEquals(0, buffer.length());
@@ -117,7 +104,7 @@ public class CharBufferTest extends TestCase {
         assertEquals(16, buffer.capacity());
         assertEquals(4, buffer.length());
 
-        char[] b2 = buffer.getCharacters();
+        char[] b2 = buffer.toString().toCharArray();
         assertNotNull(b2);
         assertEquals(4, b2.length);
         for (int i = 0; i < tmp.length; i++) {
@@ -172,9 +159,9 @@ public class CharBufferTest extends TestCase {
 
     public void testProvideCapacity() throws Exception {
         CharBuffer buffer = new CharBuffer(4);
-        buffer.provideCapacity(2);
+        buffer.ensureCapacity(2);
         assertEquals(4, buffer.capacity());
-        buffer.provideCapacity(8);
+        buffer.ensureCapacity(8);
         assertTrue(buffer.capacity() >= 8);
     }
 }
