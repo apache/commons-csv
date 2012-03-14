@@ -235,7 +235,7 @@ class CSVLexer {
     /** length of the initial token (content-)buffer */
     private static final int INITIAL_TOKEN_LENGTH = 50;
     
-    private final CharBuffer wsBuf = new CharBuffer();
+    private final StringBuilder wsBuf = new StringBuilder();
     
     private final CSVFormat format;
     
@@ -267,13 +267,13 @@ class CSVLexer {
         Type type = INVALID;
         
         /** The content buffer. */
-        CharBuffer content = new CharBuffer(INITIAL_TOKEN_LENGTH);
+        StringBuilder content = new StringBuilder(INITIAL_TOKEN_LENGTH);
         
         /** Token ready flag: indicates a valid token with content (ready for the parser). */
         boolean isReady;
 
         Token reset() {
-            content.clear();
+            content.setLength(0);
             type = INVALID;
             isReady = false;
             return this;
@@ -299,7 +299,7 @@ class CSVLexer {
      * @throws IOException on stream access error
      */
     Token nextToken(Token tkn) throws IOException {
-        wsBuf.clear(); // reuse
+        wsBuf.setLength(0); // reuse
 
         // get the last read char (required for empty line detection)
         int lastChar = in.readAgain();
@@ -308,7 +308,6 @@ class CSVLexer {
         /* note: unfortunately isEndOfLine may consumes a character silently.
         *       this has no effect outside of the method. so a simple workaround
         *       is to call 'readAgain' on the stream...
-        *       uh: might using objects instead of base-types (jdk1.5 autoboxing!)
         */
         int c = in.read();
         boolean eol = isEndOfLine(c);
@@ -427,12 +426,17 @@ class CSVLexer {
         }
 
         if (format.isTrailingSpacesIgnored()) {
-            tkn.content.trimTrailingWhitespace();
+            trimTrailingSpaces(tkn.content);
         }
 
         return tkn;
     }
 
+    private void trimTrailingSpaces(StringBuilder buffer) {
+        while (buffer.length() > 0 && Character.isWhitespace(buffer.charAt(buffer.length() - 1))) {
+            buffer.setLength(buffer.length() - 1);
+        }
+    }
 
     /**
      * An encapsulated token lexer
