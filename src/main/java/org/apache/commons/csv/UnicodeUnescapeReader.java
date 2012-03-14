@@ -39,9 +39,9 @@ class UnicodeUnescapeReader extends Reader {
     }
 
     @Override
-    public int read(char[] cbuf, int off, int len) throws IOException {
+    public int read(char[] cbuf, int offset, int length) throws IOException {
         int count = 0;
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < length; i++) {
             int c = reader.read();
             
             if (c == -1) {
@@ -49,18 +49,18 @@ class UnicodeUnescapeReader extends Reader {
             }
             
             if (c == '\\') {
-                int l = reader.read(sequence);
-                if (l == sequence.length && isUnicodeSequence(sequence)) {
+                int len = reader.read(sequence);
+                if (len == sequence.length && isUnicodeSequence(sequence)) {
                     // unicode escape found
                     c = Integer.parseInt(new String(sequence, 1, 4), 16);
                     
-                } else if (l > 0) {
+                } else if (len > 0) {
                     // put the characters back in the stream
-                    reader.unread(sequence, 0, l);
+                    reader.unread(sequence, 0, len);
                 }
             }
 
-            cbuf[off + i] = (char) c;
+            cbuf[offset + i] = (char) c;
             count++;
         }
         

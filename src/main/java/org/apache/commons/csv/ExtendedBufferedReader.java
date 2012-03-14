@@ -77,27 +77,27 @@ class ExtendedBufferedReader extends BufferedReader {
     }
 
     @Override
-    public int read(char[] buf, int off, int len) throws IOException {
-        if (len == 0) {
+    public int read(char[] buf, int offset, int length) throws IOException {
+        if (length == 0) {
             return 0;
         }
         
-        int l = super.read(buf, off, len);
+        int len = super.read(buf, offset, length);
         
-        if (l > 0) {
-            lastChar = buf[off + l - 1];
+        if (len > 0) {
+            lastChar = buf[offset + len - 1];
             
-            for (int i = off; i < off + l; i++) {
+            for (int i = offset; i < offset + len; i++) {
                 if (buf[i] == '\n') {
                     lineCounter++;
                 }
             }
             
-        } else if (l == -1) {
+        } else if (len == -1) {
             lastChar = END_OF_STREAM;
         }
         
-        return l;
+        return len;
     }
 
     @Override
