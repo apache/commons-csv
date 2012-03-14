@@ -50,12 +50,7 @@ class UnicodeUnescapeReader extends Reader {
             
             if (c == '\\') {
                 int l = reader.read(sequence);
-                if (l == sequence.length 
-                        && 'u' == sequence[0]
-                        && isHexadecimal(sequence[1])
-                        && isHexadecimal(sequence[2])
-                        && isHexadecimal(sequence[3])
-                        && isHexadecimal(sequence[4])) {
+                if (l == sequence.length && isUnicodeSequence(sequence)) {
                     // unicode escape found
                     c = Integer.parseInt(new String(sequence, 1, 4), 16);
                     
@@ -71,7 +66,15 @@ class UnicodeUnescapeReader extends Reader {
         
         return count;
     }
-    
+
+    private boolean isUnicodeSequence(char[] sequence) {
+        return 'u' == sequence[0]
+                && isHexadecimal(sequence[1])
+                && isHexadecimal(sequence[2])
+                && isHexadecimal(sequence[3])
+                && isHexadecimal(sequence[4]);
+    }
+
     private boolean isHexadecimal(char c) {
         return ('0' <= c && c <= '9') || ('a' <= c && c <= 'f') || ('A' <= c && c <= 'F');
     }

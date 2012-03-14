@@ -164,4 +164,16 @@ public class CharBufferTest extends TestCase {
         buffer.ensureCapacity(8);
         assertTrue(buffer.capacity() >= 8);
     }
+
+    public void testTrim() throws Exception {
+        CharBuffer buffer = new CharBuffer();
+        buffer.append("          ");
+        buffer.trimTrailingWhitespace();
+        assertEquals(0, buffer.length());
+
+        buffer = new CharBuffer();
+        buffer.append("Hello World!    ");
+        buffer.trimTrailingWhitespace();
+        assertEquals("Hello World!", buffer.toString());
+    }
 }
