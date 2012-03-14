@@ -353,10 +353,12 @@ public class CSVParserTest extends TestCase {
     public void testUnicodeEscape() throws Exception {
         String code = "abc,\\u0070\\u0075\\u0062\\u006C\\u0069\\u0063";
         CSVParser parser = new CSVParser(code, CSVFormat.DEFAULT.withUnicodeEscapesInterpreted(true));
-        String[] data = parser.iterator().next();
+        final Iterator<String[]> iterator = parser.iterator();
+        String[] data = iterator.next();
         assertEquals(2, data.length);
         assertEquals("abc", data[0]);
         assertEquals("public", data[1]);
+        assertFalse("Should not have any more records", iterator.hasNext());
     }
 
     public void testCarriageReturnLineFeedEndings() throws IOException {
