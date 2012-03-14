@@ -423,7 +423,11 @@ public class CSVParserTest extends TestCase {
         Iterator<String[]> iterator = CSVFormat.DEFAULT.parse(in).iterator();
         
         assertTrue(iterator.hasNext());
-        iterator.remove();
+        try {
+            iterator.remove();
+            fail("expected UnsupportedOperationException");
+        } catch (UnsupportedOperationException expected) {
+        }
         assertTrue(Arrays.equals(new String[]{"a", "b", "c"}, iterator.next()));
         assertTrue(Arrays.equals(new String[]{"1", "2", "3"}, iterator.next()));
         assertTrue(iterator.hasNext());
