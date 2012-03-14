@@ -435,8 +435,12 @@ class CSVLexer {
     }
 
     private void trimTrailingSpaces(StringBuilder buffer) {
-        while (buffer.length() > 0 && Character.isWhitespace(buffer.charAt(buffer.length() - 1))) {
-            buffer.setLength(buffer.length() - 1);
+        int length = buffer.length();
+        while (length > 0 && Character.isWhitespace(buffer.charAt(length - 1))) {
+            length = length - 1;
+        }
+        if (length != buffer.length()) {
+            buffer.setLength(length);
         }
     }
 
