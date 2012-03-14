@@ -64,12 +64,12 @@ public class CSVFormat implements Serializable {
      */
     public static final CSVFormat EXCEL = new CSVFormat(',', '"', DISABLED, DISABLED, false, false, false, false, "\r\n");
 
-    /** Tabulation delimited format. */
+    /** Tab-delimited format, with quote; leading and trailing spaces ignored. */
     public static final CSVFormat TDF = new CSVFormat('\t', '"', DISABLED, DISABLED, true, true, false, true, "\r\n");
 
     /**
      * Default MySQL format used by the <tt>SELECT INTO OUTFILE</tt> and
-     * <tt>LOAD DATA INFILE</tt> operations. This is a tabulation delimited
+     * <tt>LOAD DATA INFILE</tt> operations. This is a tab-delimited
      * format with a LF character as the line separator. Values are not quoted
      * and special characters are escaped with '\'.
      * 
@@ -89,6 +89,7 @@ public class CSVFormat implements Serializable {
      * @param trailingSpacesIgnored     <tt>true</tt> when trailing whitespaces should be ignored
      * @param unicodeEscapesInterpreted <tt>true</tt> when unicode escapes should be interpreted
      * @param emptyLinesIgnored         <tt>true</tt> when the parser should skip emtpy lines
+     * @param lineSeparator             the line separator to use.
      */
     CSVFormat(
             char delimiter,
@@ -352,7 +353,7 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns the line separator delimiting the records.
+     * Returns the line separator delimiting output records.
      * 
      * @return the line separator
      */
@@ -361,10 +362,11 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a copy of this format using the specified line separator.
+     * Returns a copy of this format using the specified output line separator.
      * 
-     * @param lineSeparator the line separator
-     * @return A copy of this format using the specified line separator
+     * @param lineSeparator the line separator to be used for output.
+     * 
+     * @return A copy of this format using the specified output line separator
      */
     public CSVFormat withLineSeparator(String lineSeparator) {
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator);
