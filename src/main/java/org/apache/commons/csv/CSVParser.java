@@ -212,7 +212,9 @@ public class CSVParser implements Iterable<String[]> {
                 }
             }
 
-            public void remove() { }
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         };
     }
 
