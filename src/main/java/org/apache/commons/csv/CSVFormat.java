@@ -29,6 +29,8 @@ import java.io.StringWriter;
  */
 public class CSVFormat implements Serializable {
 
+    /** According to RFC 4180, line breaks are delimited by CRLF */
+    private static final String CRLF = "\r\n";
     private final char delimiter;
     private final char encapsulator;
     private final char commentStart;
@@ -49,7 +51,7 @@ public class CSVFormat implements Serializable {
     static final char DISABLED = '\ufffe';
 
     /** Standard comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>. */
-    public static final CSVFormat DEFAULT = new CSVFormat(',', '"', DISABLED, DISABLED, true, true, false, true, "\r\n");
+    public static final CSVFormat DEFAULT = new CSVFormat(',', '"', DISABLED, DISABLED, true, true, false, true, CRLF);
 
     /**
      * Excel file format (using a comma as the value delimiter).
@@ -62,10 +64,10 @@ public class CSVFormat implements Serializable {
      * 
      * <pre>CSVFormat fmt = CSVFormat.EXCEL.withDelimiter(';');</pre>
      */
-    public static final CSVFormat EXCEL = new CSVFormat(',', '"', DISABLED, DISABLED, false, false, false, false, "\r\n");
+    public static final CSVFormat EXCEL = new CSVFormat(',', '"', DISABLED, DISABLED, false, false, false, false, CRLF);
 
     /** Tab-delimited format, with quote; leading and trailing spaces ignored. */
-    public static final CSVFormat TDF = new CSVFormat('\t', '"', DISABLED, DISABLED, true, true, false, true, "\r\n");
+    public static final CSVFormat TDF = new CSVFormat('\t', '"', DISABLED, DISABLED, true, true, false, true, CRLF);
 
     /**
      * Default MySQL format used by the <tt>SELECT INTO OUTFILE</tt> and
