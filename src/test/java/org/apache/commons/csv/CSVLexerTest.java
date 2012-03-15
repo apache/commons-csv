@@ -17,26 +17,30 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.CSVLexer.Token.Type.EOF;
+import static org.apache.commons.csv.CSVLexer.Token.Type.EORECORD;
+import static org.apache.commons.csv.CSVLexer.Token.Type.TOKEN;
+
 import java.io.IOException;
 import java.io.StringReader;
 
-import junit.framework.TestCase;
 import org.apache.commons.csv.CSVLexer.Token;
+import org.junit.Assert;
+import org.junit.Test;
 
-import static org.apache.commons.csv.CSVLexer.Token.Type.*;
-
-public class CSVLexerTest extends TestCase {
+public class CSVLexerTest {
     
     private CSVLexer getLexer(String input, CSVFormat format) {
         return new CSVLexer(format, new ExtendedBufferedReader(new StringReader(input)));
     }
 
     private void assertTokenEquals(Token.Type expectedType, String expectedContent, Token token) {
-        assertEquals("Token type", expectedType, token.type);
-        assertEquals("Token content", expectedContent, token.content.toString());
+        Assert.assertEquals("Token type", expectedType, token.type);
+        Assert.assertEquals("Token content", expectedContent, token.content.toString());
     }
     
     // Single line (without comment)
+    @Test
     public void testNextToken1() throws IOException {
         String code = "abc,def, hijk,  lmnop,   qrst,uv ,wxy   ,z , ,";
         CSVLexer parser = getLexer(code, CSVFormat.DEFAULT);
@@ -53,6 +57,7 @@ public class CSVLexerTest extends TestCase {
     }
 
     // multiline including comments (and empty lines)
+    @Test
     public void testNextToken2() throws IOException {
         /*   file:   1,2,3,
         *           a,b x,c
@@ -84,6 +89,7 @@ public class CSVLexerTest extends TestCase {
     }
 
     // simple token with escaping
+    @Test
     public void testNextToken3() throws IOException {
         /* file: a,\,,b
         *       \,,
@@ -104,6 +110,7 @@ public class CSVLexerTest extends TestCase {
     }
 
     // encapsulator tokenizer (sinle line)
+    @Test
     public void testNextToken4() throws IOException {
         /* file:  a,"foo",b
         *        a,   " foo",b
@@ -128,6 +135,7 @@ public class CSVLexerTest extends TestCase {
     }
 
     // encapsulator tokenizer (multi line, delimiter in string)
+    @Test
     public void testNextToken5() throws IOException {
         String code = "a,\"foo\n\",b\n\"foo\n  baar ,,,\"\n\"\n\t \n\"";
         CSVLexer parser = getLexer(code, CSVFormat.DEFAULT);
@@ -140,6 +148,7 @@ public class CSVLexerTest extends TestCase {
     }
 
     // change delimiters, comment, encapsulater
+    @Test
     public void testNextToken6() throws IOException {
         /* file: a;'b and \' more
         *       '
@@ -154,6 +163,7 @@ public class CSVLexerTest extends TestCase {
     }
 
     // From CSV-1
+    @Test
     public void testDelimiterIsWhitespace() throws IOException {
         String code = "one\ttwo\t\tfour \t five\t six";
         CSVLexer parser = getLexer(code, CSVFormat.TDF);
