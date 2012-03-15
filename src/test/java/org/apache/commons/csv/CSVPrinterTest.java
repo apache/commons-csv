@@ -14,18 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.csv;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Random;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * CSVPrinterTest
- */
+import static org.junit.Assert.*;
+
 public class CSVPrinterTest {
 
     String lineSeparator = CSVFormat.DEFAULT.getLineSeparator();
@@ -35,7 +34,7 @@ public class CSVPrinterTest {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a", "b");
-        Assert.assertEquals("a,b" + lineSeparator, sw.toString());
+        assertEquals("a,b" + lineSeparator, sw.toString());
     }
 
     @Test
@@ -43,7 +42,7 @@ public class CSVPrinterTest {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a,b", "b");
-        Assert.assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
+        assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
     }
 
     @Test
@@ -51,7 +50,7 @@ public class CSVPrinterTest {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a, b", "b ");
-        Assert.assertEquals("\"a, b\",\"b \"" + lineSeparator, sw.toString());
+        assertEquals("\"a, b\",\"b \"" + lineSeparator, sw.toString());
     }
 
     @Test
@@ -59,7 +58,7 @@ public class CSVPrinterTest {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a", "b\"c");
-        Assert.assertEquals("a,\"b\"\"c\"" + lineSeparator, sw.toString());
+        assertEquals("a,\"b\"\"c\"" + lineSeparator, sw.toString());
     }
 
     @Test
@@ -67,7 +66,7 @@ public class CSVPrinterTest {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a", "b\nc");
-        Assert.assertEquals("a,\"b\nc\"" + lineSeparator, sw.toString());
+        assertEquals("a,\"b\nc\"" + lineSeparator, sw.toString());
     }
 
     @Test
@@ -75,7 +74,7 @@ public class CSVPrinterTest {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a", "b\r\nc");
-        Assert.assertEquals("a,\"b\r\nc\"" + lineSeparator, sw.toString());
+        assertEquals("a,\"b\r\nc\"" + lineSeparator, sw.toString());
     }
 
     @Test
@@ -83,7 +82,7 @@ public class CSVPrinterTest {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a", "b\\c");
-        Assert.assertEquals("a,b\\c" + lineSeparator, sw.toString());
+        assertEquals("a,b\\c" + lineSeparator, sw.toString());
     }
 
     @Test
@@ -91,7 +90,7 @@ public class CSVPrinterTest {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
         printer.println("a", "b");
-        Assert.assertEquals("a,b" + lineSeparator, sw.toString());
+        assertEquals("a,b" + lineSeparator, sw.toString());
     }
 
     @Test
@@ -99,7 +98,7 @@ public class CSVPrinterTest {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
         printer.println("a,b", "b");
-        Assert.assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
+        assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
     }
 
     @Test
@@ -107,7 +106,7 @@ public class CSVPrinterTest {
         StringWriter sw = new StringWriter();
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a", null, "b");
-        Assert.assertEquals("a,,b" + lineSeparator, sw.toString());
+        assertEquals("a,,b" + lineSeparator, sw.toString());
     }
 
     @Test
@@ -116,7 +115,7 @@ public class CSVPrinterTest {
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printComment("This is a comment");
         
-        Assert.assertEquals("", sw.toString());
+        assertEquals("", sw.toString());
     }
 
     @Test
@@ -125,7 +124,7 @@ public class CSVPrinterTest {
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
         printer.printComment("This is a comment");
         
-        Assert.assertEquals("# This is a comment" + lineSeparator, sw.toString());
+        assertEquals("# This is a comment" + lineSeparator, sw.toString());
     }
 
     @Test
@@ -134,7 +133,7 @@ public class CSVPrinterTest {
         CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
         printer.printComment("This is a comment\non multiple lines");
         
-        Assert.assertEquals("# This is a comment" + lineSeparator + "# on multiple lines" + lineSeparator, sw.toString());
+        assertEquals("# This is a comment" + lineSeparator + "# on multiple lines" + lineSeparator, sw.toString());
     }
 
     @Test
@@ -183,7 +182,7 @@ public class CSVPrinterTest {
 
         if (!equals(lines, parseResult)) {
             System.out.println("Printer output :" + printable(result));
-            Assert.assertTrue(false);
+            assertTrue(false);
         }
     }
 

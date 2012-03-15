@@ -17,16 +17,14 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.CSVLexer.Token.Type.EOF;
-import static org.apache.commons.csv.CSVLexer.Token.Type.EORECORD;
-import static org.apache.commons.csv.CSVLexer.Token.Type.TOKEN;
-
 import java.io.IOException;
 import java.io.StringReader;
 
 import org.apache.commons.csv.CSVLexer.Token;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.apache.commons.csv.CSVLexer.Token.Type.*;
+import static org.junit.Assert.*;
 
 public class CSVLexerTest {
     
@@ -35,8 +33,8 @@ public class CSVLexerTest {
     }
 
     private void assertTokenEquals(Token.Type expectedType, String expectedContent, Token token) {
-        Assert.assertEquals("Token type", expectedType, token.type);
-        Assert.assertEquals("Token content", expectedContent, token.content.toString());
+        assertEquals("Token type", expectedType, token.type);
+        assertEquals("Token content", expectedContent, token.content.toString());
     }
     
     // Single line (without comment)

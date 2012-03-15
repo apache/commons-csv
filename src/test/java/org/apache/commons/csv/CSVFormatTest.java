@@ -22,8 +22,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class CSVFormatTest {
 
@@ -41,43 +42,43 @@ public class CSVFormatTest {
         format.withEmptyLinesIgnored(false);
         format.withUnicodeEscapesInterpreted(false);
         
-        Assert.assertEquals('!', format.getDelimiter());
-        Assert.assertEquals('!', format.getEncapsulator());
-        Assert.assertEquals('!', format.getCommentStart());
-        Assert.assertEquals('!', format.getEscape());
-        Assert.assertEquals("\r\n", format.getLineSeparator());
+        assertEquals('!', format.getDelimiter());
+        assertEquals('!', format.getEncapsulator());
+        assertEquals('!', format.getCommentStart());
+        assertEquals('!', format.getEscape());
+        assertEquals("\r\n", format.getLineSeparator());
         
-        Assert.assertEquals(true, format.isLeadingSpacesIgnored());
-        Assert.assertEquals(true, format.isTrailingSpacesIgnored());
-        Assert.assertEquals(true, format.isEmptyLinesIgnored());
-        Assert.assertEquals(true, format.isUnicodeEscapesInterpreted());
+        assertEquals(true, format.isLeadingSpacesIgnored());
+        assertEquals(true, format.isTrailingSpacesIgnored());
+        assertEquals(true, format.isEmptyLinesIgnored());
+        assertEquals(true, format.isUnicodeEscapesInterpreted());
     }
 
     @Test
     public void testMutators() {
         CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, true, true, "\r\n");
         
-        Assert.assertEquals('?', format.withDelimiter('?').getDelimiter());
-        Assert.assertEquals('?', format.withEncapsulator('?').getEncapsulator());
-        Assert.assertEquals('?', format.withCommentStart('?').getCommentStart());
-        Assert.assertEquals("?", format.withLineSeparator("?").getLineSeparator());
-        Assert.assertEquals('?', format.withEscape('?').getEscape());
+        assertEquals('?', format.withDelimiter('?').getDelimiter());
+        assertEquals('?', format.withEncapsulator('?').getEncapsulator());
+        assertEquals('?', format.withCommentStart('?').getCommentStart());
+        assertEquals("?", format.withLineSeparator("?").getLineSeparator());
+        assertEquals('?', format.withEscape('?').getEscape());
         
-        Assert.assertEquals(false, format.withLeadingSpacesIgnored(false).isLeadingSpacesIgnored());
-        Assert.assertEquals(false, format.withTrailingSpacesIgnored(false).isTrailingSpacesIgnored());
-        Assert.assertEquals(false, format.withSurroundingSpacesIgnored(false).isLeadingSpacesIgnored());
-        Assert.assertEquals(false, format.withSurroundingSpacesIgnored(false).isTrailingSpacesIgnored());
-        Assert.assertEquals(false, format.withEmptyLinesIgnored(false).isEmptyLinesIgnored());
-        Assert.assertEquals(false, format.withUnicodeEscapesInterpreted(false).isUnicodeEscapesInterpreted());
+        assertEquals(false, format.withLeadingSpacesIgnored(false).isLeadingSpacesIgnored());
+        assertEquals(false, format.withTrailingSpacesIgnored(false).isTrailingSpacesIgnored());
+        assertEquals(false, format.withSurroundingSpacesIgnored(false).isLeadingSpacesIgnored());
+        assertEquals(false, format.withSurroundingSpacesIgnored(false).isTrailingSpacesIgnored());
+        assertEquals(false, format.withEmptyLinesIgnored(false).isEmptyLinesIgnored());
+        assertEquals(false, format.withUnicodeEscapesInterpreted(false).isUnicodeEscapesInterpreted());
     }
 
     @Test
     public void testFormat() {
         CSVFormat format = CSVFormat.DEFAULT;
         
-        Assert.assertEquals("", format.format());
-        Assert.assertEquals("a,b,c", format.format("a", "b", "c"));
-        Assert.assertEquals("\"x,y\",z", format.format("x,y", "z"));
+        assertEquals("", format.format());
+        assertEquals("a,b,c", format.format("a", "b", "c"));
+        assertEquals("\"x,y\",z", format.format("x,y", "z"));
     }
     
     @Test
@@ -86,49 +87,49 @@ public class CSVFormatTest {
         
         try {
             format.withDelimiter('\n');
-            Assert.fail();
+            fail();
         } catch (IllegalArgumentException e) {
             // expected
         }
         
         try {
             format.withEscape('\r');
-            Assert.fail();
+            fail();
         } catch (IllegalArgumentException e) {
             // expected
         }
         
         try {
             format.withEncapsulator('\n');
-            Assert.fail();
+            fail();
         } catch (IllegalArgumentException e) {
             // expected
         }
         
         try {
             format.withCommentStart('\r');
-            Assert.fail();
+            fail();
         } catch (IllegalArgumentException e) {
             // expected
         }
         
         try {
             format.withDelimiter('!').withEscape('!').validate();
-            Assert.fail();
+            fail();
         } catch (IllegalArgumentException e) {
             // expected
         }
         
         try {
             format.withDelimiter('!').withCommentStart('!').validate();
-            Assert.fail();
+            fail();
         } catch (IllegalArgumentException e) {
             // expected
         }
         
         try {
             format.withEncapsulator('!').withCommentStart('!').validate();
-            Assert.fail();
+            fail();
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -137,7 +138,7 @@ public class CSVFormatTest {
         
         try {
             format.withEscape('!').withCommentStart('!').validate();
-            Assert.fail();
+            fail();
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -147,7 +148,7 @@ public class CSVFormatTest {
         
         try {
             format.withEncapsulator('!').withDelimiter('!').validate();
-            Assert.fail();
+            fail();
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -165,15 +166,15 @@ public class CSVFormatTest {
         ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(out.toByteArray()));
         CSVFormat format = (CSVFormat) in.readObject();
         
-        Assert.assertNotNull(format);
-        Assert.assertEquals("delimiter", CSVFormat.DEFAULT.getDelimiter(), format.getDelimiter());
-        Assert.assertEquals("encapsulator", CSVFormat.DEFAULT.getEncapsulator(), format.getEncapsulator());
-        Assert.assertEquals("comment start", CSVFormat.DEFAULT.getCommentStart(), format.getCommentStart());
-        Assert.assertEquals("line separator", CSVFormat.DEFAULT.getLineSeparator(), format.getLineSeparator());
-        Assert.assertEquals("escape", CSVFormat.DEFAULT.getEscape(), format.getEscape());
-        Assert.assertEquals("unicode escape", CSVFormat.DEFAULT.isUnicodeEscapesInterpreted(), format.isUnicodeEscapesInterpreted());
-        Assert.assertEquals("trim left", CSVFormat.DEFAULT.isLeadingSpacesIgnored(), format.isLeadingSpacesIgnored());
-        Assert.assertEquals("trim right", CSVFormat.DEFAULT.isTrailingSpacesIgnored(), format.isTrailingSpacesIgnored());
-        Assert.assertEquals("empty lines", CSVFormat.DEFAULT.isEmptyLinesIgnored(), format.isEmptyLinesIgnored());
+        assertNotNull(format);
+        assertEquals("delimiter", CSVFormat.DEFAULT.getDelimiter(), format.getDelimiter());
+        assertEquals("encapsulator", CSVFormat.DEFAULT.getEncapsulator(), format.getEncapsulator());
+        assertEquals("comment start", CSVFormat.DEFAULT.getCommentStart(), format.getCommentStart());
+        assertEquals("line separator", CSVFormat.DEFAULT.getLineSeparator(), format.getLineSeparator());
+        assertEquals("escape", CSVFormat.DEFAULT.getEscape(), format.getEscape());
+        assertEquals("unicode escape", CSVFormat.DEFAULT.isUnicodeEscapesInterpreted(), format.isUnicodeEscapesInterpreted());
+        assertEquals("trim left", CSVFormat.DEFAULT.isLeadingSpacesIgnored(), format.isLeadingSpacesIgnored());
+        assertEquals("trim right", CSVFormat.DEFAULT.isTrailingSpacesIgnored(), format.isTrailingSpacesIgnored());
+        assertEquals("empty lines", CSVFormat.DEFAULT.isEmptyLinesIgnored(), format.isEmptyLinesIgnored());
     }
 } 
