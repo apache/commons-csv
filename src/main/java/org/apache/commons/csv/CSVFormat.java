@@ -39,7 +39,7 @@ public class CSVFormat implements Serializable {
     private final boolean trailingSpacesIgnored;
     private final boolean unicodeEscapesInterpreted;
     private final boolean emptyLinesIgnored;
-    private final String lineSeparator;
+    private final String lineSeparator; // for output
 
 
     /**
@@ -91,7 +91,7 @@ public class CSVFormat implements Serializable {
      * @param trailingSpacesIgnored     <tt>true</tt> when trailing whitespaces should be ignored
      * @param unicodeEscapesInterpreted <tt>true</tt> when unicode escapes should be interpreted
      * @param emptyLinesIgnored         <tt>true</tt> when the parser should skip emtpy lines
-     * @param lineSeparator             the line separator to use.
+     * @param lineSeparator             the line separator to use for output
      */
     CSVFormat(
             char delimiter,
@@ -399,4 +399,5 @@ public class CSVFormat implements Serializable {
         
         return out.toString().trim();
     }
+    
 }
