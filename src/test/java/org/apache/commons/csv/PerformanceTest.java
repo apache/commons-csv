@@ -57,14 +57,37 @@ public class PerformanceTest {
     private static final CSVFormat format = CSVFormat.DEFAULT.withSurroundingSpacesIgnored(false);
 
     public static void main(String [] args) throws Exception {
+        final int argc = args.length;
+        String tests[];
+        if (argc > 0) {
+            max=Integer.parseInt(args[0]);
+        }
+        if (argc > 1) {
+            tests = new String[argc-1];
+            for (int i = 1; i < argc; i++) {
+                tests[i-1]=args[i];
+            }
+        } else {
+            tests=new String[]{"file", "split", "extb", "exts", "csv"};
+        }
         for(String p : PROPS) {
             System.out.println(p+"="+System.getProperty(p));            
         }
         System.out.println("Max count: "+max+"\n");
 
-        testReadBigFile(false);
-        testReadBigFile(true);
-        testParseCommonsCSV();
+        for(String test : tests) {
+            if ("file".equals(test)) {
+                testReadBigFile(false);                
+            } else if ("split".equals(test)) {
+                testReadBigFile(true);                
+            } else if ("csv".equals(test)) {
+                testParseCommonsCSV();                
+            } else if ("extb".equals(test)) {
+                testExtendedBuffer(false);                
+            } else if ("exts".equals(test)) {
+                testExtendedBuffer(true);                
+            }
+        }
     }
 
     private static BufferedReader getReader() throws IOException {
@@ -120,6 +143,41 @@ public class PerformanceTest {
            fields+= split ? record.split(",").length : 1;
        }
        return new Stats(count, fields);
+   }
+
+   private static void testExtendedBuffer(boolean makeString) throws Exception {
+       for (int i = 0; i < max; i++) {
+           ExtendedBufferedReader in = new ExtendedBufferedReader(getReader());
+           long t0 = System.currentTimeMillis();
+           int read;
+           int fields = 0;
+           int lines = 0;
+           if (makeString) {
+               StringBuilder sb = new StringBuilder();
+               while((read=in.read()) != -1) {
+                   sb.append((char)read);
+                   if (read == ',') { // count delimiters
+                       fields++;
+                   } else if (read == '\n') {
+                       lines++;
+                       sb.toString();
+                       sb = new StringBuilder();
+                   }
+               }
+           } else {
+               while((read=in.read()) != -1) {
+                   if (read == ',') { // count delimiters
+                       fields++;
+                   } else if (read == '\n') {
+                       lines++;
+                   }
+               }               
+           }
+           fields += lines; // EOL is a delimiter too
+           in.close();
+           show("Extended"+(makeString?" toString":""), new Stats(lines, fields), t0);
+       }
+       show();
    }
 
    private static void testParseCommonsCSV() throws Exception {
