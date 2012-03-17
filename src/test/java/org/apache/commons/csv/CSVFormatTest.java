@@ -48,10 +48,10 @@ public class CSVFormatTest {
         assertEquals('!', format.getEscape());
         assertEquals("\r\n", format.getLineSeparator());
         
-        assertEquals(true, format.isLeadingSpacesIgnored());
-        assertEquals(true, format.isTrailingSpacesIgnored());
-        assertEquals(true, format.isEmptyLinesIgnored());
-        assertEquals(true, format.isUnicodeEscapesInterpreted());
+        assertTrue(format.isLeadingSpacesIgnored());
+        assertTrue(format.isTrailingSpacesIgnored());
+        assertTrue(format.isEmptyLinesIgnored());
+        assertTrue(format.isUnicodeEscapesInterpreted());
     }
 
     @Test
@@ -64,12 +64,12 @@ public class CSVFormatTest {
         assertEquals("?", format.withLineSeparator("?").getLineSeparator());
         assertEquals('?', format.withEscape('?').getEscape());
         
-        assertEquals(false, format.withLeadingSpacesIgnored(false).isLeadingSpacesIgnored());
-        assertEquals(false, format.withTrailingSpacesIgnored(false).isTrailingSpacesIgnored());
-        assertEquals(false, format.withSurroundingSpacesIgnored(false).isLeadingSpacesIgnored());
-        assertEquals(false, format.withSurroundingSpacesIgnored(false).isTrailingSpacesIgnored());
-        assertEquals(false, format.withEmptyLinesIgnored(false).isEmptyLinesIgnored());
-        assertEquals(false, format.withUnicodeEscapesInterpreted(false).isUnicodeEscapesInterpreted());
+        assertFalse(format.withLeadingSpacesIgnored(false).isLeadingSpacesIgnored());
+        assertFalse(format.withTrailingSpacesIgnored(false).isTrailingSpacesIgnored());
+        assertFalse(format.withSurroundingSpacesIgnored(false).isLeadingSpacesIgnored());
+        assertFalse(format.withSurroundingSpacesIgnored(false).isTrailingSpacesIgnored());
+        assertFalse(format.withEmptyLinesIgnored(false).isEmptyLinesIgnored());
+        assertFalse(format.withUnicodeEscapesInterpreted(false).isUnicodeEscapesInterpreted());
     }
 
     @Test
