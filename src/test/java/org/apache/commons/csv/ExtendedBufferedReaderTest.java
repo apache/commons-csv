@@ -110,11 +110,11 @@ public class ExtendedBufferedReaderTest {
     @Test
     public void testReadLine() throws Exception {
         ExtendedBufferedReader br = getBufferedReader("");
-        assertTrue(br.readLine() == null);
+        assertNull(br.readLine());
 
         br = getBufferedReader("\n");
         assertEquals("",br.readLine());
-        assertTrue(br.readLine() == null);
+        assertNull(br.readLine());
 
         br = getBufferedReader("foo\n\nhello");
         assertEquals(0, br.getLineNumber());
@@ -124,7 +124,7 @@ public class ExtendedBufferedReaderTest {
         assertEquals(2, br.getLineNumber());
         assertEquals("hello",br.readLine());
         assertEquals(3, br.getLineNumber());
-        assertTrue(br.readLine() == null);
+        assertNull(br.readLine());
         assertEquals(3, br.getLineNumber());
 
         br = getBufferedReader("foo\n\nhello");
@@ -137,7 +137,7 @@ public class ExtendedBufferedReaderTest {
         assertEquals(2, br.getLineNumber());
         assertEquals('h', br.lookAhead());
         assertEquals("hello",br.readLine());
-        assertTrue(br.readLine() == null);
+        assertNull(br.readLine());
         assertEquals(3, br.getLineNumber());
 
 
@@ -147,7 +147,7 @@ public class ExtendedBufferedReaderTest {
         assertEquals("baar",br.readLine());
         assertEquals('f', br.lookAhead());
         assertEquals("foo",br.readLine());
-        assertTrue(br.readLine() == null);
+        assertNull(br.readLine());
     }
 
     /*
