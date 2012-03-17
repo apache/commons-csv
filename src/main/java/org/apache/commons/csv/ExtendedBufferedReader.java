@@ -100,6 +100,18 @@ class ExtendedBufferedReader extends BufferedReader {
         return len;
     }
 
+    /**
+     * Calls {@link BufferedReader#readLine()} which drops the line terminator(s).
+     * This method should only be called when processing a comment, otherwise
+     * information can be lost.
+     * <p>
+     * Increments  {@link #lineCounter}
+     * <p>
+     * Sets {@link #lastChar} to {@link #END_OF_STREAM} at EOF, 
+     * otherwise to last character on the line (won't be CR or LF) 
+     * 
+     * @return the line that was read, or null if reached EOF.
+     */
     @Override
     public String readLine() throws IOException {
         String line = super.readLine();
