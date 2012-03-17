@@ -71,12 +71,12 @@ public class ExtendedBufferedReaderTest {
         assertEquals('3', br.readAgain());
 
         assertEquals('\n', br.lookAhead());
-        assertEquals(1, br.getLineNumber());
+        assertEquals(1, br.getLineNumber()); // will need fixing for CSV-75
         assertEquals('3', br.readAgain());
         assertEquals('\n', br.read());
-        assertEquals(2, br.getLineNumber());
+        assertEquals(2, br.getLineNumber()); // will need fixing for CSV-75
         assertEquals('\n', br.readAgain());
-        assertEquals(2, br.getLineNumber());
+        assertEquals(2, br.getLineNumber()); // will need fixing for CSV-75
 
         assertEquals(ExtendedBufferedReader.END_OF_STREAM, br.lookAhead());
         assertEquals('\n', br.readAgain());
@@ -148,6 +148,39 @@ public class ExtendedBufferedReaderTest {
         assertEquals('f', br.lookAhead());
         assertEquals("foo",br.readLine());
         assertTrue(br.readLine() == null);
+    }
+
+    /*
+     * Test to illustrate  https://issues.apache.org/jira/browse/CSV-75
+     * 
+     * TODO fix checks when code is fixed
+     */
+    @Test
+    public void testReadChar() throws Exception {
+        String LF="\n"; String CR="\r"; String CRLF=CR+LF; String LFCR=LF+CR;// easier to read the string below
+        String test="a" + LF + "b" + CR + "c" + LF + LF + "d" + CR + CR + "e" + LFCR + "f "+ CRLF;
+        //                EOL        eol        EOL  EOL        eol  eol        EOL+CR        EOL
+        // EOL = current EOL behaviour with read() methods
+        // eol = additional behaviour with readLine()
+        final int EOLct=5;
+        final int EOLeolct=9;
+        ExtendedBufferedReader br;
+        
+        br = getBufferedReader(test);
+        assertEquals(0, br.getLineNumber());
+        while(br.readLine()!=null) {}
+        assertEquals(EOLeolct, br.getLineNumber());
+
+        br = getBufferedReader(test);
+        assertEquals(0, br.getLineNumber());
+        while(br.read()!=-1) {}
+        assertEquals(EOLct, br.getLineNumber()); // will need fixing for CSV-75
+
+        br = getBufferedReader(test);
+        assertEquals(0, br.getLineNumber());
+        char[] buff = new char[10];
+        while(br.read(buff ,0, 3)!=-1) {}
+        assertEquals(EOLct, br.getLineNumber()); // will need fixing for CSV-75
     }
 
     private ExtendedBufferedReader getBufferedReader(String s) {
