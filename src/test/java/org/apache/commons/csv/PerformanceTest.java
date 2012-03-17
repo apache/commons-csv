@@ -1,0 +1,147 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.apache.commons.csv;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+/**
+ * Basic test harness.
+ * 
+ * Requires test file to be downloaded separately.
+ * 
+ */
+@SuppressWarnings("boxing")
+public class PerformanceTest {
+
+    private static final String[] PROPS = {
+        "java.version",                  // Java Runtime Environment version 
+        "java.vendor",                   // Java Runtime Environment vendor 
+//        "java.vm.specification.version", // Java Virtual Machine specification version 
+//        "java.vm.specification.vendor",  // Java Virtual Machine specification vendor 
+//        "java.vm.specification.name",    // Java Virtual Machine specification name 
+        "java.vm.version",               // Java Virtual Machine implementation version 
+//        "java.vm.vendor",                // Java Virtual Machine implementation vendor 
+        "java.vm.name",                  // Java Virtual Machine implementation name 
+//        "java.specification.version",    // Java Runtime Environment specification version 
+//        "java.specification.vendor",     // Java Runtime Environment specification vendor 
+//        "java.specification.name",       // Java Runtime Environment specification name 
+
+        "os.name",                       // Operating system name 
+        "os.arch",                       // Operating system architecture 
+        "os.version",                    // Operating system version 
+ 
+    };
+    
+    private static int max = 10;
+
+    private static int num = 0; // number of elapsed times recorded
+    private static long[] elapsedTimes = new long[max];
+    
+    private static final CSVFormat format = CSVFormat.DEFAULT.withSurroundingSpacesIgnored(false);
+
+    public static void main(String [] args) throws Exception {
+        for(String p : PROPS) {
+            System.out.println(p+"="+System.getProperty(p));            
+        }
+        System.out.println("Max count: "+max+"\n");
+
+        testReadBigFile(false);
+        testReadBigFile(true);
+        testParseCommonsCSV();
+    }
+
+    private static BufferedReader getReader() throws IOException {
+        return new BufferedReader(new FileReader("worldcitiespop.txt"));
+    }
+
+    // Container for basic statistics
+    private static class Stats {
+        final int count;
+        final int fields;
+        Stats(int c, int f) {
+            count=c;
+            fields=f;
+        }
+    }
+
+    // Display end stats; store elapsed for average
+    private static void show(String msg, Stats s, long start) {
+        final long elapsed = System.currentTimeMillis() - start;
+        System.out.printf("%-20s: %5dms " + s.count + " lines "+ s.fields + " fields%n",msg,elapsed);
+        elapsedTimes[num++]=elapsed;
+    }
+
+    // calculate and show average
+    private static void show(){
+        long tot = 0;
+        if (num > 1) {
+            for(int i=1; i < num; i++) { // skip first test
+                tot += elapsedTimes[i];
+            }
+            System.out.printf("%-20s: %5dms%n%n", "Average(not first)", (tot/(num-1)));
+        }
+        num=0; // ready for next set
+    }
+
+    private static void testReadBigFile(boolean split) throws Exception {
+       for (int i = 0; i < max; i++) {
+           BufferedReader in = getReader();
+           long t0 = System.currentTimeMillis();
+           Stats s = readAll(in, split);
+           in.close();
+           show(split?"file+split":"file", s, t0);
+       }
+       show();
+   }
+
+   private static Stats readAll(BufferedReader in, boolean split) throws IOException {
+       int count = 0;
+       int fields = 0;
+       String record;
+       while ((record=in.readLine()) != null) {
+           count++;
+           fields+= split ? record.split(",").length : 1;
+       }
+       return new Stats(count, fields);
+   }
+
+   private static void testParseCommonsCSV() throws Exception {
+       for (int i = 0; i < max; i++) {
+           final BufferedReader reader = getReader();
+           CSVParser parser = new CSVParser(reader, format);
+           long t0 = System.currentTimeMillis();
+           Stats s = iterate(parser);
+           reader.close();
+           show("CSV", s, t0);
+       }
+       show();
+   }
+
+   private static Stats iterate(Iterable<CSVRecord> it) {
+       int count = 0;
+       int fields = 0;
+       for (CSVRecord record : it) {
+           count++;
+           fields+=record.size();
+       }
+       return new Stats(count, fields);
+   }
+
+}
