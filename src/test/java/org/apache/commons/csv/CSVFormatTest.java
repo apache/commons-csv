@@ -30,7 +30,7 @@ public class CSVFormatTest {
 
     @Test
     public void testImmutalibity() {
-        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, true, true, "\r\n", null);
+        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, true, "\r\n", null);
         
         format.withDelimiter('?');
         format.withEncapsulator('?');
@@ -40,7 +40,6 @@ public class CSVFormatTest {
         format.withLeadingSpacesIgnored(false);
         format.withTrailingSpacesIgnored(false);
         format.withEmptyLinesIgnored(false);
-        format.withUnicodeEscapesInterpreted(false);
         
         assertEquals('!', format.getDelimiter());
         assertEquals('!', format.getEncapsulator());
@@ -51,12 +50,11 @@ public class CSVFormatTest {
         assertTrue(format.isLeadingSpacesIgnored());
         assertTrue(format.isTrailingSpacesIgnored());
         assertTrue(format.isEmptyLinesIgnored());
-        assertTrue(format.isUnicodeEscapesInterpreted());
     }
 
     @Test
     public void testMutators() {
-        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, true, true, "\r\n", null);
+        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, true, "\r\n", null);
         
         assertEquals('?', format.withDelimiter('?').getDelimiter());
         assertEquals('?', format.withEncapsulator('?').getEncapsulator());
@@ -69,7 +67,6 @@ public class CSVFormatTest {
         assertFalse(format.withSurroundingSpacesIgnored(false).isLeadingSpacesIgnored());
         assertFalse(format.withSurroundingSpacesIgnored(false).isTrailingSpacesIgnored());
         assertFalse(format.withEmptyLinesIgnored(false).isEmptyLinesIgnored());
-        assertFalse(format.withUnicodeEscapesInterpreted(false).isUnicodeEscapesInterpreted());
     }
 
     @Test
@@ -172,7 +169,6 @@ public class CSVFormatTest {
         assertEquals("comment start", CSVFormat.DEFAULT.getCommentStart(), format.getCommentStart());
         assertEquals("line separator", CSVFormat.DEFAULT.getLineSeparator(), format.getLineSeparator());
         assertEquals("escape", CSVFormat.DEFAULT.getEscape(), format.getEscape());
-        assertEquals("unicode escape", CSVFormat.DEFAULT.isUnicodeEscapesInterpreted(), format.isUnicodeEscapesInterpreted());
         assertEquals("trim left", CSVFormat.DEFAULT.isLeadingSpacesIgnored(), format.isLeadingSpacesIgnored());
         assertEquals("trim right", CSVFormat.DEFAULT.isTrailingSpacesIgnored(), format.isTrailingSpacesIgnored());
         assertEquals("empty lines", CSVFormat.DEFAULT.isEmptyLinesIgnored(), format.isEmptyLinesIgnored());

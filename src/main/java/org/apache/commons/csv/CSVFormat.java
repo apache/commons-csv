@@ -38,7 +38,6 @@ public class CSVFormat implements Serializable {
     private final char escape;
     private final boolean leadingSpacesIgnored;
     private final boolean trailingSpacesIgnored;
-    private final boolean unicodeEscapesInterpreted;
     private final boolean emptyLinesIgnored;
     private final String lineSeparator; // for outputs
     private final String[] header;
@@ -53,7 +52,7 @@ public class CSVFormat implements Serializable {
     static final char DISABLED = '\ufffe';
 
     /** Standard comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>. */
-    public static final CSVFormat DEFAULT = new CSVFormat(',', '"', DISABLED, DISABLED, true, true, false, true, CRLF, null);
+    public static final CSVFormat DEFAULT = new CSVFormat(',', '"', DISABLED, DISABLED, true, true, true, CRLF, null);
 
     /**
      * Excel file format (using a comma as the value delimiter).
@@ -66,10 +65,10 @@ public class CSVFormat implements Serializable {
      * 
      * <pre>CSVFormat fmt = CSVFormat.EXCEL.withDelimiter(';');</pre>
      */
-    public static final CSVFormat EXCEL = new CSVFormat(',', '"', DISABLED, DISABLED, false, false, false, false, CRLF, null);
+    public static final CSVFormat EXCEL = new CSVFormat(',', '"', DISABLED, DISABLED, false, false, false, CRLF, null);
 
     /** Tab-delimited format, with quote; leading and trailing spaces ignored. */
-    public static final CSVFormat TDF = new CSVFormat('\t', '"', DISABLED, DISABLED, true, true, false, true, CRLF, null);
+    public static final CSVFormat TDF = new CSVFormat('\t', '"', DISABLED, DISABLED, true, true, true, CRLF, null);
 
     /**
      * Default MySQL format used by the <tt>SELECT INTO OUTFILE</tt> and
@@ -79,7 +78,7 @@ public class CSVFormat implements Serializable {
      * 
      * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html">http://dev.mysql.com/doc/refman/5.1/en/load-data.html</a>
      */
-    public static final CSVFormat MYSQL = new CSVFormat('\t', DISABLED, DISABLED, '\\', false, false, false, false, "\n", null);
+    public static final CSVFormat MYSQL = new CSVFormat('\t', DISABLED, DISABLED, '\\', false, false, false, "\n", null);
 
 
     /**
@@ -91,7 +90,6 @@ public class CSVFormat implements Serializable {
      * @param escape                    the char used to escape special characters in values
      * @param leadingSpacesIgnored      <tt>true</tt> when leading whitespaces should be ignored
      * @param trailingSpacesIgnored     <tt>true</tt> when trailing whitespaces should be ignored
-     * @param unicodeEscapesInterpreted <tt>true</tt> when unicode escapes should be interpreted
      * @param emptyLinesIgnored         <tt>true</tt> when the parser should skip emtpy lines
      * @param lineSeparator             the line separator to use for output
      * @param header                    the header
@@ -103,7 +101,6 @@ public class CSVFormat implements Serializable {
             char escape,
             boolean leadingSpacesIgnored,
             boolean trailingSpacesIgnored,
-            boolean unicodeEscapesInterpreted,
             boolean emptyLinesIgnored,
             String lineSeparator,
             String[] header) {
@@ -113,7 +110,6 @@ public class CSVFormat implements Serializable {
         this.escape = escape;
         this.leadingSpacesIgnored = leadingSpacesIgnored;
         this.trailingSpacesIgnored = trailingSpacesIgnored;
-        this.unicodeEscapesInterpreted = unicodeEscapesInterpreted;
         this.emptyLinesIgnored = emptyLinesIgnored;
         this.lineSeparator = lineSeparator;
         this.header = header;
@@ -176,7 +172,7 @@ public class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
 
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**
@@ -200,7 +196,7 @@ public class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The encapsulator cannot be a line break");
         }
         
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     boolean isEncapsulating() {
@@ -228,7 +224,7 @@ public class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The comment start character cannot be a line break");
         }
         
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**
@@ -261,7 +257,7 @@ public class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The escape character cannot be a line break");
         }
         
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     boolean isEscaping() {
@@ -285,7 +281,7 @@ public class CSVFormat implements Serializable {
      * @return A copy of this format with the specified left trimming behavior.
      */
     public CSVFormat withLeadingSpacesIgnored(boolean leadingSpacesIgnored) {
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**
@@ -305,7 +301,7 @@ public class CSVFormat implements Serializable {
      * @return A copy of this format with the specified right trimming behavior.
      */
     public CSVFormat withTrailingSpacesIgnored(boolean trailingSpacesIgnored) {
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**
@@ -316,28 +312,7 @@ public class CSVFormat implements Serializable {
      * @return A copy of this format with the specified trimming behavior.
      */
     public CSVFormat withSurroundingSpacesIgnored(boolean surroundingSpacesIgnored) {
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, surroundingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator, header);
-    }
-
-    /**
-     * Tells if unicode escape sequences (e.g. {@literal \u1234}) are turned into their corresponding character
-     * when parsing input.
-     * 
-     * @return <tt>true</tt> if unicode escape sequences are interpreted, <tt>false</tt> if they are left as is.
-     */
-    public boolean isUnicodeEscapesInterpreted() {
-        return unicodeEscapesInterpreted;
-    }
-
-    /**
-     * Returns a copy of this format with the specified unicode escaping behavior.
-     *
-     * @param unicodeEscapesInterpreted the escaping behavior, <tt>true</tt> to interpret unicode escape sequences,
-     *                                  <tt>false</tt> to leave the escape sequences as is.
-     * @return A copy of this format with the specified unicode escaping behavior.
-     */
-    public CSVFormat withUnicodeEscapesInterpreted(boolean unicodeEscapesInterpreted) {
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**
@@ -357,7 +332,7 @@ public class CSVFormat implements Serializable {
      * @return A copy of this format  with the specified empty line skipping behavior.
      */
     public CSVFormat withEmptyLinesIgnored(boolean emptyLinesIgnored) {
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**
@@ -377,7 +352,7 @@ public class CSVFormat implements Serializable {
      * @return A copy of this format using the specified output line separator
      */
     public CSVFormat withLineSeparator(String lineSeparator) {
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     String[] getHeader() {
@@ -399,7 +374,7 @@ public class CSVFormat implements Serializable {
      * @return A copy of this format using the specified header
      */
     public CSVFormat withHeader(String... header) {
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, unicodeEscapesInterpreted, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**

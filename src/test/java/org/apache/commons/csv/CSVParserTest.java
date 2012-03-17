@@ -283,7 +283,7 @@ public class CSVParserTest {
         };
 
 
-        CSVFormat format = new CSVFormat(',', '\'', CSVFormat.DISABLED, '/', false, false, true, true, "\r\n", null);
+        CSVFormat format = new CSVFormat(',', '\'', CSVFormat.DISABLED, '/', false, false, true, "\r\n", null);
 
         CSVParser parser = new CSVParser(code, format);
         List<CSVRecord> records = parser.getRecords();
@@ -312,7 +312,7 @@ public class CSVParserTest {
         };
 
 
-        CSVFormat format = new CSVFormat(',',  CSVFormat.DISABLED,  CSVFormat.DISABLED, '/', false, false, true, true, "\r\n", null);
+        CSVFormat format = new CSVFormat(',',  CSVFormat.DISABLED,  CSVFormat.DISABLED, '/', false, false, true, "\r\n", null);
 
         CSVParser parser = new CSVParser(code, format);
         List<CSVRecord> records = parser.getRecords();
@@ -354,30 +354,6 @@ public class CSVParserTest {
         records = parser.getRecords();
         
         assertTrue(CSVPrinterTest.equals(res_comments, records));
-    }
-
-    @Test
-    public void testUnicodeEscape() throws Exception {
-        String code = "abc,\\u0070\\u0075\\u0062\\u006C\\u0069\\u0063";
-        CSVParser parser = new CSVParser(code, CSVFormat.DEFAULT.withUnicodeEscapesInterpreted(true));
-        final Iterator<CSVRecord> iterator = parser.iterator();
-        CSVRecord record = iterator.next();
-        assertEquals(2, record.size());
-        assertEquals("abc", record.get(0));
-        assertEquals("public", record.get(1));
-        assertFalse("Should not have any more records", iterator.hasNext());
-    }
-
-    @Test
-    public void testUnicodeEscapeMySQL() throws Exception {
-        String code = "abc\t\\u0070\\u0075\\u0062\\u006C\\u0069\\u0063";
-        CSVParser parser = new CSVParser(code, CSVFormat.MYSQL.withUnicodeEscapesInterpreted(true));
-        final Iterator<CSVRecord> iterator = parser.iterator();
-        CSVRecord record = iterator.next();
-        assertEquals(2, record.size());
-        assertEquals("abc", record.get(0));
-        assertEquals("public", record.get(1));
-        assertFalse("Should not have any more records", iterator.hasNext());
     }
 
     @Test

@@ -92,10 +92,6 @@ public class CSVParser implements Iterable<CSVRecord> {
     public CSVParser(Reader input, CSVFormat format) throws IOException {
         format.validate();
         
-        if (format.isUnicodeEscapesInterpreted()) {
-            input = new UnicodeUnescapeReader(input);
-        }
-        
         this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));
         
         initializeHeader(format);
