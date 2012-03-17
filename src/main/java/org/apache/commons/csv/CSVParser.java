@@ -194,7 +194,7 @@ public class CSVParser implements Iterable<CSVRecord> {
             // build the name to index mappings
             if (header != null) {
                 for (int i = 0; i < header.length; i++) {
-                    headerMapping.put(header[i], i);
+                    headerMapping.put(header[i], Integer.valueOf(i));
                 }
             }
         }
