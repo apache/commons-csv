@@ -21,8 +21,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.apache.commons.csv.CSVLexer.Token;
@@ -40,14 +42,14 @@ import static org.apache.commons.csv.CSVLexer.Token.Type.*;
  * <pre>
  * CSVFormat format = new CSVFormat('\t', '"', '#');
  * Reader in = new StringReader("a\tb\nc\td");
- * String[][] records = new CSVParser(in, format).getRecords();
+ * List&lt;CSVRecord> records = new CSVParser(in, format).getRecords();
  * </pre>
  *
  * <p>Parsing of a csv-string in Excel CSV format, using a for-each loop:</p>
  * <pre>
  * Reader in = new StringReader("a;b\nc;d");
  * CSVParser parser = new CSVParser(in, CSVFormat.EXCEL);
- * for (String[] record : parser) {
+ * for (CSVRecord record : parser) {
  *     ...
  * }
  * </pre>
@@ -59,13 +61,11 @@ import static org.apache.commons.csv.CSVLexer.Token.Type.*;
  * <p>see <a href="package-summary.html">package documentation</a>
  * for more details</p>
  */
-public class CSVParser implements Iterable<String[]> {
-
-    /** Immutable empty String array. */
-    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+public class CSVParser implements Iterable<CSVRecord> {
 
     private final CSVLexer lexer;
-    
+    private Map<String, Integer> headerMapping;
+
     // the following objects are shared to reduce garbage
     
     /** A record buffer for getRecord(). Grows as necessary and is reused. */
@@ -78,7 +78,7 @@ public class CSVParser implements Iterable<String[]> {
      * @param input a Reader containing "csv-formatted" input
      * @throws IllegalArgumentException thrown if the parameters of the format are inconsistent
      */
-    public CSVParser(Reader input) {
+    public CSVParser(Reader input) throws IOException {
         this(input, CSVFormat.DEFAULT);
     }
 
@@ -89,7 +89,7 @@ public class CSVParser implements Iterable<String[]> {
      * @param format the CSVFormat used for CSV parsing
      * @throws IllegalArgumentException thrown if the parameters of the format are inconsistent
      */
-    public CSVParser(Reader input, CSVFormat format) {
+    public CSVParser(Reader input, CSVFormat format) throws IOException {
         format.validate();
         
         if (format.isUnicodeEscapesInterpreted()) {
@@ -97,6 +97,8 @@ public class CSVParser implements Iterable<String[]> {
         }
         
         this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));
+        
+        initializeHeader(format);
     }
 
     /**
@@ -106,7 +108,7 @@ public class CSVParser implements Iterable<String[]> {
      * @param format the CSVFormat used for CSV parsing
      * @throws IllegalArgumentException thrown if the parameters of the format are inconsistent
      */
-    public CSVParser(String input, CSVFormat format) {
+    public CSVParser(String input, CSVFormat format) throws IOException{
         this(new StringReader(input), format);
     }
 
@@ -120,15 +122,15 @@ public class CSVParser implements Iterable<String[]> {
      * @return matrix of records x values ('null' when end of file)
      * @throws IOException on parse error or input read-failure
      */
-    public String[][] getRecords() throws IOException {
-        List<String[]> records = new ArrayList<String[]>();
-        String[] record;
+    public List<CSVRecord> getRecords() throws IOException {
+        List<CSVRecord> records = new ArrayList<CSVRecord>();
+        CSVRecord record;
         while ((record = getRecord()) != null) {
             records.add(record);
         }
         
         if (!records.isEmpty()) {
-            return records.toArray(new String[records.size()][]);
+            return records;
         } else {
             return null;
         }
@@ -140,8 +142,8 @@ public class CSVParser implements Iterable<String[]> {
      * @return the record as an array of values, or <tt>null</tt> if the end of the stream has been reached
      * @throws IOException on parse error or input read-failure
      */
-    String[] getRecord() throws IOException {
-        String[] result = EMPTY_STRING_ARRAY;
+    CSVRecord getRecord() throws IOException {
+        CSVRecord result = new CSVRecord(null, headerMapping);
         record.clear();
         do {
             reusableToken.reset();
@@ -161,25 +163,50 @@ public class CSVParser implements Iterable<String[]> {
                     }
                     break;
                 case INVALID:
-                    // error: throw IOException
                     throw new IOException("(line " + getLineNumber() + ") invalid parse sequence");
-                    // unreachable: break;
             }
         } while (reusableToken.type == TOKEN);
         
         if (!record.isEmpty()) {
-            result = record.toArray(new String[record.size()]);
+            result = new CSVRecord(record.toArray(new String[record.size()]), headerMapping);
         }
         return result;
+    }
+
+    /**
+     * Initializes the name to index mapping if the format defines a header.
+     */
+    private void initializeHeader(CSVFormat format) throws IOException {
+        if (format.getHeader() != null) {
+            headerMapping = new HashMap<String, Integer>();
+
+            String[] header = null;
+            if (format.getHeader().length == 0) {
+                // read the header from the first line of the file
+                CSVRecord record = getRecord();
+                if (record != null) {
+                    header = record.values();
+                }
+            } else {
+                header = format.getHeader();
+            }
+
+            // build the name to index mappings
+            if (header != null) {
+                for (int i = 0; i < header.length; i++) {
+                    headerMapping.put(header[i], i);
+                }
+            }
+        }
     }
 
     /**
      * Returns an iterator on the records. IOExceptions occuring
      * during the iteration are wrapped in a RuntimeException.
      */
-    public Iterator<String[]> iterator() {
-        return new Iterator<String[]>() {
-            private String[] current;
+    public Iterator<CSVRecord> iterator() {
+        return new Iterator<CSVRecord>() {
+            private CSVRecord current;
             
             public boolean hasNext() {
                 if (current == null) {
@@ -189,8 +216,8 @@ public class CSVParser implements Iterable<String[]> {
                 return current != null;
             }
 
-            public String[] next() {
-                String[] next = current;
+            public CSVRecord next() {
+                CSVRecord next = current;
                 current = null;
 
                 if (next == null) {
@@ -204,7 +231,7 @@ public class CSVParser implements Iterable<String[]> {
                 return next;
             }
             
-            private String[] getNextRecord() {
+            private CSVRecord getNextRecord() {
                 try {
                     return getRecord();
                 } catch (IOException e) {

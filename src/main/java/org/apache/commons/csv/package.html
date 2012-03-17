@@ -77,9 +77,9 @@
 <p>Example usage:</p>
 <blockquote><pre>
 Reader in = new StringReader("a,b,c");
-for (String[] line : CSVFormat.DEFAULT.parse(in)) {
-    for (int i = 0; i &lt; line.length; i++) {
-        System.out.println("value " + i + "=" + line[i]);
+for (CSVRecord record : CSVFormat.DEFAULT.parse(in)) {
+    for (int i = 0; i &lt; record.length; i++) {
+        System.out.println("value " + i + "=" + record.get(i));
     }
 }
 </pre></blockquote>

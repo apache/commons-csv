@@ -19,6 +19,7 @@ package org.apache.commons.csv;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
@@ -178,7 +179,7 @@ public class CSVPrinterTest {
         // System.out.println("### :" + printable(result));
 
         CSVParser parser = new CSVParser(result, format);
-        String[][] parseResult = parser.getRecords();
+        List<CSVRecord> parseResult = parser.getRecords();
 
         if (!equals(lines, parseResult)) {
             System.out.println("Printer output :" + printable(result));
@@ -186,13 +187,13 @@ public class CSVPrinterTest {
         }
     }
 
-    public static boolean equals(String[][] a, String[][] b) {
-        if (a.length != b.length) {
+    public static boolean equals(String[][] a, List<CSVRecord> b) {
+        if (a.length != b.size()) {
             return false;
         }
         for (int i = 0; i < a.length; i++) {
             String[] linea = a[i];
-            String[] lineb = b[i];
+            String[] lineb = b.get(i).values();
             if (linea.length != lineb.length) {
                 return false;
             }
