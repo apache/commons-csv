@@ -63,7 +63,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
 
         Integer index = mapping.get(name);
 
-        return index != null ? values[index] : null;
+        return index != null ? values[index.intValue()] : null;
     }
 
     public Iterator<String> iterator() {
@@ -81,6 +81,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
         return values.length;
     }
 
+    @Override
     public String toString() {
         return Arrays.toString(values);
     }
