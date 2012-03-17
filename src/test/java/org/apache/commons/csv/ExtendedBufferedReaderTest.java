@@ -113,16 +113,16 @@ public class ExtendedBufferedReaderTest {
         assertTrue(br.readLine() == null);
 
         br = getBufferedReader("\n");
-        assertTrue(br.readLine().equals(""));
+        assertEquals("",br.readLine());
         assertTrue(br.readLine() == null);
 
         br = getBufferedReader("foo\n\nhello");
         assertEquals(0, br.getLineNumber());
-        assertTrue(br.readLine().equals("foo"));
+        assertEquals("foo",br.readLine());
         assertEquals(1, br.getLineNumber());
-        assertTrue(br.readLine().equals(""));
+        assertEquals("",br.readLine());
         assertEquals(2, br.getLineNumber());
-        assertTrue(br.readLine().equals("hello"));
+        assertEquals("hello",br.readLine());
         assertEquals(3, br.getLineNumber());
         assertTrue(br.readLine() == null);
         assertEquals(3, br.getLineNumber());
@@ -130,23 +130,23 @@ public class ExtendedBufferedReaderTest {
         br = getBufferedReader("foo\n\nhello");
         assertEquals('f', br.read());
         assertEquals('o', br.lookAhead());
-        assertTrue(br.readLine().equals("oo"));
+        assertEquals("oo",br.readLine());
         assertEquals(1, br.getLineNumber());
         assertEquals('\n', br.lookAhead());
-        assertTrue(br.readLine().equals(""));
+        assertEquals("",br.readLine());
         assertEquals(2, br.getLineNumber());
         assertEquals('h', br.lookAhead());
-        assertTrue(br.readLine().equals("hello"));
+        assertEquals("hello",br.readLine());
         assertTrue(br.readLine() == null);
         assertEquals(3, br.getLineNumber());
 
 
         br = getBufferedReader("foo\rbaar\r\nfoo");
-        assertTrue(br.readLine().equals("foo"));
+        assertEquals("foo",br.readLine());
         assertEquals('b', br.lookAhead());
-        assertTrue(br.readLine().equals("baar"));
+        assertEquals("baar",br.readLine());
         assertEquals('f', br.lookAhead());
-        assertTrue(br.readLine().equals("foo"));
+        assertEquals("foo",br.readLine());
         assertTrue(br.readLine() == null);
     }
 
