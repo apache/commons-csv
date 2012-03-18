@@ -157,11 +157,13 @@ public class PerformanceTest {
                while((read=in.read()) != -1) {
                    sb.append((char)read);
                    if (read == ',') { // count delimiters
-                       fields++;
-                   } else if (read == '\n') {
-                       lines++;
                        sb.toString();
                        sb = new StringBuilder();
+                       fields++;
+                   } else if (read == '\n') {
+                       sb.toString();
+                       sb = new StringBuilder();
+                       lines++;
                    }
                }
            } else {
