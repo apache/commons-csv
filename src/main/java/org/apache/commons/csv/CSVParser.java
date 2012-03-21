@@ -64,7 +64,7 @@ import static org.apache.commons.csv.CSVLexer.Token.Type.*;
 public class CSVParser implements Iterable<CSVRecord> {
 
     private final CSVLexer lexer;
-    private Map<String, Integer> headerMapping;
+    private final Map<String, Integer> headerMapping;
 
     // the following objects are shared to reduce garbage
     
@@ -94,7 +94,7 @@ public class CSVParser implements Iterable<CSVRecord> {
         
         this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));
         
-        initializeHeader(format);
+        this.headerMapping = initializeHeader(format);
     }
 
     /**
@@ -172,9 +172,10 @@ public class CSVParser implements Iterable<CSVRecord> {
     /**
      * Initializes the name to index mapping if the format defines a header.
      */
-    private void initializeHeader(CSVFormat format) throws IOException {
+    private Map<String, Integer> initializeHeader(CSVFormat format) throws IOException {
+        Map<String, Integer> hdrMap = null;
         if (format.getHeader() != null) {
-            headerMapping = new HashMap<String, Integer>();
+            hdrMap = new HashMap<String, Integer>();
 
             String[] header = null;
             if (format.getHeader().length == 0) {
@@ -190,10 +191,11 @@ public class CSVParser implements Iterable<CSVRecord> {
             // build the name to index mappings
             if (header != null) {
                 for (int i = 0; i < header.length; i++) {
-                    headerMapping.put(header[i], Integer.valueOf(i));
+                    hdrMap.put(header[i], Integer.valueOf(i));
                 }
             }
         }
+        return hdrMap;
     }
 
     /**
