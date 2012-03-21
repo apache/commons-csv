@@ -27,9 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.csv.CSVLexer.Token;
 
-import static org.apache.commons.csv.CSVLexer.Token.Type.*;
+import static org.apache.commons.csv.Token.Type.*;
 
 /**
  * Parses CSV files according to the specified configuration.

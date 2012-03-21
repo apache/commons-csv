@@ -19,57 +19,16 @@ package org.apache.commons.csv;
 
 import java.io.IOException;
 
-import static org.apache.commons.csv.CSVLexer.Token.Type.*;
+import static org.apache.commons.csv.Token.Type.*;
 
 class CSVLexer {
 
-    /** length of the initial token (content-)buffer */
-    private static final int INITIAL_TOKEN_LENGTH = 50;
-    
     private final StringBuilder wsBuf = new StringBuilder();
     
     private final CSVFormat format;
     
     /** The input stream */
     private final ExtendedBufferedReader in;
-
-    /**
-     * Token is an internal token representation.
-     * <p/>
-     * It is used as contract between the lexer and the parser.
-     */
-    static class Token {
-
-        enum Type {
-            /** Token has no valid content, i.e. is in its initialized state. */
-            INVALID,
-            
-            /** Token with content, at beginning or in the middle of a line. */
-            TOKEN,
-            
-            /** Token (which can have content) when end of file is reached. */
-            EOF,
-            
-            /** Token with content when end of a line is reached. */
-            EORECORD
-        }
-        
-        /** Token type */
-        Type type = INVALID;
-        
-        /** The content buffer. */
-        StringBuilder content = new StringBuilder(INITIAL_TOKEN_LENGTH);
-        
-        /** Token ready flag: indicates a valid token with content (ready for the parser). */
-        boolean isReady;
-
-        Token reset() {
-            content.setLength(0);
-            type = INVALID;
-            isReady = false;
-            return this;
-        }
-    }
 
     CSVLexer(CSVFormat format, ExtendedBufferedReader in) {
         this.format = format;
