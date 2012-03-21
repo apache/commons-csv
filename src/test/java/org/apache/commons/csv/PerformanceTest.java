@@ -54,7 +54,7 @@ public class PerformanceTest {
     private static int num = 0; // number of elapsed times recorded
     private static long[] elapsedTimes = new long[max];
     
-    private static final CSVFormat format = CSVFormat.DEFAULT.withSurroundingSpacesIgnored(false);
+    private static final CSVFormat format = CSVFormat.EXCEL;
 
     public static void main(String [] args) throws Exception {
         final int argc = args.length;
