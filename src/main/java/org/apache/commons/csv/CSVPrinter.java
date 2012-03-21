@@ -98,7 +98,7 @@ public class CSVPrinter {
      * @param comment the comment to output
      */
     public void printComment(String comment) throws IOException {
-        if (format.isCommentingDisabled()) {
+        if (!format.isCommentingEnabled()) {
             return;
         }
         if (!newLine) {

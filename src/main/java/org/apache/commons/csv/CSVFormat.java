@@ -232,8 +232,8 @@ public class CSVFormat implements Serializable {
      * 
      * @return <tt>true</tt> is comments are supported, <tt>false</tt> otherwise
      */
-    public boolean isCommentingDisabled() {
-        return this.commentStart == DISABLED;
+    public boolean isCommentingEnabled() {
+        return this.commentStart != DISABLED;
     }
 
     /**
