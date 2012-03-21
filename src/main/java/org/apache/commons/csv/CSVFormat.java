@@ -51,8 +51,23 @@ public class CSVFormat implements Serializable {
      */
     static final char DISABLED = '\ufffe';
 
+    /**
+     * Starting format with no settings defined; used for creating other formats from scratch.
+     */
+    private static CSVFormat PRISTINE = 
+            new CSVFormat(DISABLED, DISABLED, DISABLED, DISABLED, false, false, false, null, null);
+
     /** Standard comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>. */
-    public static final CSVFormat DEFAULT = new CSVFormat(',', '"', DISABLED, DISABLED, true, true, true, CRLF, null);
+    public static final CSVFormat DEFAULT =
+            PRISTINE.
+            withDelimiter(',')
+            .withEncapsulator('"')
+            .withLeadingSpacesIgnored(true)
+            .withTrailingSpacesIgnored(true)
+            .withEmptyLinesIgnored(true)
+            .withLineSeparator(CRLF)
+            ;
+
 
     /**
      * Excel file format (using a comma as the value delimiter).
@@ -65,10 +80,23 @@ public class CSVFormat implements Serializable {
      * 
      * <pre>CSVFormat fmt = CSVFormat.EXCEL.withDelimiter(';');</pre>
      */
-    public static final CSVFormat EXCEL = new CSVFormat(',', '"', DISABLED, DISABLED, false, false, false, CRLF, null);
+    public static final CSVFormat EXCEL =
+            PRISTINE
+            .withDelimiter(',')
+            .withEncapsulator('"')
+            .withLineSeparator(CRLF)
+            ;
 
     /** Tab-delimited format, with quote; leading and trailing spaces ignored. */
-    public static final CSVFormat TDF = new CSVFormat('\t', '"', DISABLED, DISABLED, true, true, true, CRLF, null);
+    public static final CSVFormat TDF =
+            PRISTINE
+            .withDelimiter('\t')
+            .withEncapsulator('"')
+            .withLeadingSpacesIgnored(true)
+            .withTrailingSpacesIgnored(true)
+            .withEmptyLinesIgnored(true)
+            .withLineSeparator(CRLF)
+            ;
 
     /**
      * Default MySQL format used by the <tt>SELECT INTO OUTFILE</tt> and
@@ -78,7 +106,12 @@ public class CSVFormat implements Serializable {
      * 
      * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html">http://dev.mysql.com/doc/refman/5.1/en/load-data.html</a>
      */
-    public static final CSVFormat MYSQL = new CSVFormat('\t', DISABLED, DISABLED, '\\', false, false, false, "\n", null);
+    public static final CSVFormat MYSQL =
+            PRISTINE
+            .withDelimiter('\t')
+            .withEscape('\\')
+            .withLineSeparator("\n")
+            ;
 
 
     /**
