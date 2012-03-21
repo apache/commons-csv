@@ -62,7 +62,7 @@ import static org.apache.commons.csv.Token.Type.*;
  */
 public class CSVParser implements Iterable<CSVRecord> {
 
-    private final CSVLexer lexer;
+    private final Lexer lexer;
     private final Map<String, Integer> headerMapping;
 
     // the following objects are shared to reduce garbage

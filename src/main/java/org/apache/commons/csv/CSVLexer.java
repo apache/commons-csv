@@ -21,24 +21,14 @@ import java.io.IOException;
 
 import static org.apache.commons.csv.Token.Type.*;
 
-class CSVLexer {
+class CSVLexer extends Lexer {
 
     private final StringBuilder wsBuf = new StringBuilder();
     
-    private final CSVFormat format;
-    
-    /** The input stream */
-    private final ExtendedBufferedReader in;
-
     CSVLexer(CSVFormat format, ExtendedBufferedReader in) {
-        this.format = format;
-        this.in = in;
+        super(format, in);
     }
-
-    public int getLineNumber() {
-        return in.getLineNumber();
-    }
-
+    
     /**
      * Returns the next token.
      * <p/>
@@ -48,6 +38,7 @@ class CSVLexer {
      * @return the next token found
      * @throws java.io.IOException on stream access error
      */
+    @Override
     Token nextToken(Token tkn) throws IOException {
         wsBuf.setLength(0); // reuse
 
@@ -182,16 +173,6 @@ class CSVLexer {
         return tkn;
     }
 
-    private void trimTrailingSpaces(StringBuilder buffer) {
-        int length = buffer.length();
-        while (length > 0 && Character.isWhitespace(buffer.charAt(length - 1))) {
-            length = length - 1;
-        }
-        if (length != buffer.length()) {
-            buffer.setLength(length);
-        }
-    }
-
     /**
      * An encapsulated token lexer
      * <p/>
@@ -253,51 +234,4 @@ class CSVLexer {
         }
     }
 
-    private int readEscape(int c) throws IOException {
-        // assume c is the escape char (normally a backslash)
-        c = in.read();
-        switch (c) {
-            case 'r':
-                return '\r';
-            case 'n':
-                return '\n';
-            case 't':
-                return '\t';
-            case 'b':
-                return '\b';
-            case 'f':
-                return '\f';
-            default:
-                return c;
-        }
-    }
-
-    /**
-     * @return true if the given char is a whitespace character
-     */
-    private boolean isWhitespace(int c) {
-        return (c != format.getDelimiter()) && Character.isWhitespace((char) c);
-    }
-
-    /**
-     * Greedy - accepts \n, \r and \r\n
-     * This checker consumes silently the second control-character...
-     *
-     * @return true if the given character is a line-terminator
-     */
-    private boolean isEndOfLine(int c) throws IOException {
-        // check if we have \r\n...
-        if (c == '\r' && in.lookAhead() == '\n') {
-            // note: does not change c outside of this method !!
-            c = in.read();
-        }
-        return (c == '\n' || c == '\r');
-    }
-
-    /**
-     * @return true if the given character indicates end of file
-     */
-    private boolean isEndOfFile(int c) {
-        return c == ExtendedBufferedReader.END_OF_STREAM;
-    }
 }
