@@ -151,6 +151,7 @@ public class CSVFormatTest {
         }
     }
 
+    @SuppressWarnings("boxing") // no need to worry about boxing here
     @Test
     public void testSerialization() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
