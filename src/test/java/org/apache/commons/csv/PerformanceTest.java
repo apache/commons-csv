@@ -20,6 +20,8 @@ package org.apache.commons.csv;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Basic test harness.
@@ -86,10 +88,14 @@ public class PerformanceTest {
                 testCSVLexer(false, test);
             } else if ("lexnew".equals(test)) {
                 testCSVLexer(true, test);
+            } else if (test.startsWith("CSVLexer")) {
+                testCSVLexer(false, test);
             } else if ("extb".equals(test)) {
                 testExtendedBuffer(false);
             } else if ("exts".equals(test)) {
                 testExtendedBuffer(true);
+            } else {
+                System.out.println("Invalid test name: "+test);
             }
         }
     }
@@ -198,11 +204,26 @@ public class PerformanceTest {
        show();
    }
 
+
+   private static Constructor<Lexer> getLexerCtor(String clazz) throws Exception {
+       @SuppressWarnings("unchecked")
+       Class<Lexer> lexer = (Class<Lexer>) Class.forName("org.apache.commons.csv."+clazz);
+       Constructor<Lexer> ctor = lexer.getConstructor(new Class<?>[]{CSVFormat.class, ExtendedBufferedReader.class});
+       return ctor;
+   }
+
    private static void testCSVLexer(final boolean newToken, String test) throws Exception {
        Token token = new Token();
+       String dynamic = "";
        for (int i = 0; i < max; i++) {
-           final BufferedReader reader = getReader();
-           Lexer lexer = new CSVLexer(format, new ExtendedBufferedReader(reader));
+           final ExtendedBufferedReader input = new ExtendedBufferedReader(getReader());
+           Lexer lexer = null;
+           if (test.startsWith("CSVLexer")) {
+               dynamic="!";
+               lexer = getLexerCtor(test).newInstance(new Object[]{format, input});
+           } else {
+               lexer = new CSVLexer(format, input);
+           }
            int count = 0;
            int fields = 0;
            long t0 = System.currentTimeMillis();
@@ -229,8 +250,8 @@ public class PerformanceTest {
 
            } while (!token.type.equals(Token.Type.EOF));
            Stats s = new Stats(count, fields);
-           reader.close();
-           show(test, s, t0);
+           input.close();
+           show(lexer.getClass().getSimpleName()+dynamic+" "+(newToken ? "new" : "reset"), s, t0);
        }
        show();
    }
