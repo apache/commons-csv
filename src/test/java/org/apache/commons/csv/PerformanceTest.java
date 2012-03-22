@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,37 +23,37 @@ import java.io.IOException;
 
 /**
  * Basic test harness.
- * 
+ *
  * Requires test file to be downloaded separately.
- * 
+ *
  */
 @SuppressWarnings("boxing")
 public class PerformanceTest {
 
     private static final String[] PROPS = {
-        "java.version",                  // Java Runtime Environment version 
-        "java.vendor",                   // Java Runtime Environment vendor 
-//        "java.vm.specification.version", // Java Virtual Machine specification version 
-//        "java.vm.specification.vendor",  // Java Virtual Machine specification vendor 
-//        "java.vm.specification.name",    // Java Virtual Machine specification name 
-        "java.vm.version",               // Java Virtual Machine implementation version 
-//        "java.vm.vendor",                // Java Virtual Machine implementation vendor 
-        "java.vm.name",                  // Java Virtual Machine implementation name 
-//        "java.specification.version",    // Java Runtime Environment specification version 
-//        "java.specification.vendor",     // Java Runtime Environment specification vendor 
-//        "java.specification.name",       // Java Runtime Environment specification name 
+        "java.version",                  // Java Runtime Environment version
+        "java.vendor",                   // Java Runtime Environment vendor
+//        "java.vm.specification.version", // Java Virtual Machine specification version
+//        "java.vm.specification.vendor",  // Java Virtual Machine specification vendor
+//        "java.vm.specification.name",    // Java Virtual Machine specification name
+        "java.vm.version",               // Java Virtual Machine implementation version
+//        "java.vm.vendor",                // Java Virtual Machine implementation vendor
+        "java.vm.name",                  // Java Virtual Machine implementation name
+//        "java.specification.version",    // Java Runtime Environment specification version
+//        "java.specification.vendor",     // Java Runtime Environment specification vendor
+//        "java.specification.name",       // Java Runtime Environment specification name
 
-        "os.name",                       // Operating system name 
-        "os.arch",                       // Operating system architecture 
-        "os.version",                    // Operating system version 
- 
+        "os.name",                       // Operating system name
+        "os.arch",                       // Operating system architecture
+        "os.version",                    // Operating system version
+
     };
-    
+
     private static int max = 10;
 
     private static int num = 0; // number of elapsed times recorded
     private static long[] elapsedTimes = new long[max];
-    
+
     private static final CSVFormat format = CSVFormat.EXCEL;
 
     public static void main(String [] args) throws Exception {
@@ -68,24 +68,28 @@ public class PerformanceTest {
                 tests[i-1]=args[i];
             }
         } else {
-            tests=new String[]{"file", "split", "extb", "exts", "csv"};
+            tests=new String[]{"file", "split", "extb", "exts", "csv", "lexreset", "lexnew"};
         }
         for(String p : PROPS) {
-            System.out.println(p+"="+System.getProperty(p));            
+            System.out.println(p+"="+System.getProperty(p));
         }
         System.out.println("Max count: "+max+"\n");
 
         for(String test : tests) {
             if ("file".equals(test)) {
-                testReadBigFile(false);                
+                testReadBigFile(false);
             } else if ("split".equals(test)) {
-                testReadBigFile(true);                
+                testReadBigFile(true);
             } else if ("csv".equals(test)) {
-                testParseCommonsCSV();                
+                testParseCommonsCSV();
+            } else if ("lexreset".equals(test)) {
+                testCSVLexer(false, test);
+            } else if ("lexnew".equals(test)) {
+                testCSVLexer(true, test);
             } else if ("extb".equals(test)) {
-                testExtendedBuffer(false);                
+                testExtendedBuffer(false);
             } else if ("exts".equals(test)) {
-                testExtendedBuffer(true);                
+                testExtendedBuffer(true);
             }
         }
     }
@@ -173,7 +177,7 @@ public class PerformanceTest {
                    } else if (read == '\n') {
                        lines++;
                    }
-               }               
+               }
            }
            fields += lines; // EOL is a delimiter too
            in.close();
@@ -190,6 +194,43 @@ public class PerformanceTest {
            Stats s = iterate(parser);
            reader.close();
            show("CSV", s, t0);
+       }
+       show();
+   }
+
+   private static void testCSVLexer(final boolean newToken, String test) throws Exception {
+       Token token = new Token();
+       for (int i = 0; i < max; i++) {
+           final BufferedReader reader = getReader();
+           Lexer lexer = new CSVLexer(format, new ExtendedBufferedReader(reader));
+           int count = 0;
+           int fields = 0;
+           long t0 = System.currentTimeMillis();
+           do {
+               if (newToken) {
+                   token = new Token();
+               } else {
+                   token.reset();
+               }
+               lexer.nextToken(token);
+               switch(token.type) {
+               case EOF:
+                   break;
+               case EORECORD:
+                   fields++;
+                   count++;
+                   break;
+               case INVALID:
+                   throw new IOException("invalid parse sequence");
+               case TOKEN:
+                   fields++;
+                   break;
+              }
+
+           } while (!token.type.equals(Token.Type.EOF));
+           Stats s = new Stats(count, fields);
+           reader.close();
+           show(test, s, t0);
        }
        show();
    }
