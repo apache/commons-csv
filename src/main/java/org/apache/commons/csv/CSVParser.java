@@ -119,16 +119,15 @@ public class CSVParser implements Iterable<CSVRecord> {
      */
     public List<CSVRecord> getRecords() throws IOException {
         List<CSVRecord> records = new ArrayList<CSVRecord>();
-        CSVRecord record;
-        while ((record = getRecord()) != null) {
-            records.add(record);
+        CSVRecord rec;
+        while ((rec = getRecord()) != null) {
+            records.add(rec);
         }
         
         if (!records.isEmpty()) {
             return records;
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
@@ -179,9 +178,9 @@ public class CSVParser implements Iterable<CSVRecord> {
             String[] header = null;
             if (format.getHeader().length == 0) {
                 // read the header from the first line of the file
-                CSVRecord record = getRecord();
-                if (record != null) {
-                    header = record.values();
+                CSVRecord rec = getRecord();
+                if (rec != null) {
+                    header = rec.values();
                 }
             } else {
                 header = format.getHeader();
