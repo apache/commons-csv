@@ -61,7 +61,7 @@ public class CSVParserTest {
             assertTrue(Arrays.equals(re, parser.getRecord().values()));
         }
         
-        assertTrue(parser.getRecord() == null);
+        assertNull(parser.getRecord());
     }
 
     @Test
