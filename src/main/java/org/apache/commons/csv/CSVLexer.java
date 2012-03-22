@@ -65,6 +65,7 @@ class CSVLexer extends Lexer {
                 // reached end of file without any content (empty line at the end)
                 if (isEndOfFile(c)) {
                     tkn.type = EOF;
+                    // don't set tkn.isReady here because no content
                     return tkn;
                 }
             }
@@ -73,11 +74,12 @@ class CSVLexer extends Lexer {
         // did we reach eof during the last iteration already ? EOF
         if (isEndOfFile(lastChar) || (!isDelimiter(lastChar) && isEndOfFile(c))) {
             tkn.type = EOF;
+            // don't set tkn.isReady here because no content
             return tkn;
         }
 
         //  important: make sure a new char gets consumed in each iteration
-        while (!tkn.isReady && tkn.type != EOF) {
+        while (tkn.type == INVALID) {
             // ignore whitespaces at beginning of a token
             if (leadingSpacesIgnored) {
                 while (isWhitespace(c) && !eol) {
@@ -94,12 +96,10 @@ class CSVLexer extends Lexer {
             } else if (isDelimiter(c)) {
                 // empty token return TOKEN("")
                 tkn.type = TOKEN;
-                tkn.isReady = true;
             } else if (eol) {
                 // empty token return EORECORD("")
                 //noop: tkn.content.append("");
                 tkn.type = EORECORD;
-                tkn.isReady = true;
             } else if (isEncapsulator(c)) {
                 // consume encapsulated token
                 encapsulatedTokenLexer(tkn, c);
@@ -107,7 +107,7 @@ class CSVLexer extends Lexer {
                 // end of file return EOF()
                 //noop: tkn.content.append("");
                 tkn.type = EOF;
-                tkn.isReady = true;
+                tkn.isReady = true; // there is data at EOF
             } else {
                 // next token must be a simple token
                 // add removed blanks when not ignoring whitespace chars...
@@ -139,17 +139,15 @@ class CSVLexer extends Lexer {
             if (isEndOfLine(c)) {
                 // end of record
                 tkn.type = EORECORD;
-                tkn.isReady = true;
                 break;
             } else if (isEndOfFile(c)) {
                 // end of file
                 tkn.type = EOF;
-                tkn.isReady = true;
+                tkn.isReady = true; // There is data at EOF
                 break;
             } else if (isDelimiter(c)) {
                 // end of token
                 tkn.type = TOKEN;
-                tkn.isReady = true;
                 break;
             } else if (isEscape(c)) {
                 tkn.content.append((char) readEscape(c));
@@ -201,16 +199,14 @@ class CSVLexer extends Lexer {
                         c = in.read();
                         if (isDelimiter(c)) {
                             tkn.type = TOKEN;
-                            tkn.isReady = true;
                             return tkn;
                         } else if (isEndOfFile(c)) {
                             tkn.type = EOF;
-                            tkn.isReady = true;
+                            tkn.isReady = true; // There is data at EOF
                             return tkn;
                         } else if (isEndOfLine(c)) {
                             // ok eo token reached
                             tkn.type = EORECORD;
-                            tkn.isReady = true;
                             return tkn;
                         } else if (!isWhitespace(c)) {
                             // error invalid char between token and next delimiter
