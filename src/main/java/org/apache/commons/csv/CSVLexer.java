@@ -91,11 +91,11 @@ class CSVLexer extends Lexer {
             }
             
             // ok, start of token reached: comment, encapsulated, or token
-            if (c == format.getCommentStart()) {
+            if (isCommentStart(c)) {
                 // ignore everything till end of line and continue (incr linecount)
                 in.readLine();
                 tkn = nextToken(tkn.reset());
-            } else if (c == format.getDelimiter()) {
+            } else if (isDelimiter(c)) {
                 // empty token return TOKEN("")
                 tkn.type = TOKEN;
                 tkn.isReady = true;
@@ -104,7 +104,7 @@ class CSVLexer extends Lexer {
                 //noop: tkn.content.append("");
                 tkn.type = EORECORD;
                 tkn.isReady = true;
-            } else if (c == format.getEncapsulator()) {
+            } else if (isEncapsulator(c)) {
                 // consume encapsulated token
                 encapsulatedTokenLexer(tkn, c);
             } else if (isEndOfFile(c)) {
@@ -153,12 +153,12 @@ class CSVLexer extends Lexer {
                 tkn.type = EOF;
                 tkn.isReady = true;
                 break;
-            } else if (c == format.getDelimiter()) {
+            } else if (isDelimiter(c)) {
                 // end of token
                 tkn.type = TOKEN;
                 tkn.isReady = true;
                 break;
-            } else if (c == format.getEscape()) {
+            } else if (isEscape(c)) {
                 tkn.content.append((char) readEscape(c));
             } else {
                 tkn.content.append((char) c);
@@ -195,10 +195,10 @@ class CSVLexer extends Lexer {
         while (true) {
             c = in.read();
             
-            if (c == format.getEscape()) {
+            if (isEscape(c)) {
                 tkn.content.append((char) readEscape(c));
-            } else if (c == format.getEncapsulator()) {
-                if (in.lookAhead() == format.getEncapsulator()) {
+            } else if (isEncapsulator(c)) {
+                if (isEncapsulator(in.lookAhead())) {
                     // double or escaped encapsulator -> add single encapsulator to token
                     c = in.read();
                     tkn.content.append((char) c);
@@ -206,7 +206,7 @@ class CSVLexer extends Lexer {
                     // token finish mark (encapsulator) reached: ignore whitespace till delimiter
                     while (true) {
                         c = in.read();
-                        if (c == format.getDelimiter()) {
+                        if (isDelimiter(c)) {
                             tkn.type = TOKEN;
                             tkn.isReady = true;
                             return tkn;
