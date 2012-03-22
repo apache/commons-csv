@@ -25,7 +25,8 @@ class CSVLexer extends Lexer {
 
     private final StringBuilder wsBuf = new StringBuilder();
     
-    CSVLexer(CSVFormat format, ExtendedBufferedReader in) {
+    // ctor needs to be public so can be called dynamically by PerformanceTest class
+    public CSVLexer(CSVFormat format, ExtendedBufferedReader in) {
         super(format, in);
     }
     
