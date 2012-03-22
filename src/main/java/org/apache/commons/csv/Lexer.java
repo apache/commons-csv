@@ -25,6 +25,16 @@ import java.io.IOException;
  */
 abstract class Lexer {
 
+    private final boolean isEncapsulating;
+    private final boolean isEscaping;
+    private final boolean isCommentEnabled;
+    
+    private final char delimiter;
+    private final char escape;
+    private final char encapsulator;
+    private final char commmentStart;
+    
+    
     final CSVFormat format;
     
     /** The input stream */
@@ -33,6 +43,13 @@ abstract class Lexer {
     Lexer(CSVFormat format, ExtendedBufferedReader in) {
         this.format = format;
         this.in = in;
+        this.isEncapsulating = format.isEncapsulating();
+        this.isEscaping = format.isEscaping();
+        this.isCommentEnabled = format.isCommentingEnabled();
+        this.delimiter = format.getDelimiter();
+        this.escape = format.getEscape();
+        this.encapsulator = format.getEncapsulator();
+        this.commmentStart = format.getCommentStart();
     }
 
     int getLineNumber() {
@@ -98,4 +115,20 @@ abstract class Lexer {
     }
 
     abstract Token nextToken(Token reusableToken) throws IOException;
+    
+    boolean isDelimiter(int c) {
+        return c == delimiter;
+    }
+
+    boolean isEscape(int c) {
+        return isEscaping && c == escape;
+    }
+
+    boolean isEncapsulator(int c) {
+        return isEncapsulating && c == encapsulator;
+    }
+
+    boolean isCommentStart(int c) {
+        return isCommentEnabled && c == commmentStart;
+    }
 }
