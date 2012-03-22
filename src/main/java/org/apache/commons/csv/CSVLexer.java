@@ -23,8 +23,6 @@ import static org.apache.commons.csv.Token.Type.*;
 
 class CSVLexer extends Lexer {
 
-    private final StringBuilder wsBuf = new StringBuilder();
-    
     // ctor needs to be public so can be called dynamically by PerformanceTest class
     public CSVLexer(CSVFormat format, ExtendedBufferedReader in) {
         super(format, in);
@@ -41,7 +39,6 @@ class CSVLexer extends Lexer {
      */
     @Override
     Token nextToken(Token tkn) throws IOException {
-        wsBuf.setLength(0); // reuse
 
         // get the last read char (required for empty line detection)
         int lastChar = in.readAgain();
@@ -84,7 +81,6 @@ class CSVLexer extends Lexer {
             // ignore whitespaces at beginning of a token
             if (leadingSpacesIgnored) {
                 while (isWhitespace(c) && !eol) {
-                    wsBuf.append((char) c);
                     c = in.read();
                     eol = isEndOfLine(c);
                 }
@@ -115,9 +111,6 @@ class CSVLexer extends Lexer {
             } else {
                 // next token must be a simple token
                 // add removed blanks when not ignoring whitespace chars...
-                if (!leadingSpacesIgnored) {
-                    tkn.content.append(wsBuf);
-                }
                 simpleTokenLexer(tkn, c);
             }
         }
