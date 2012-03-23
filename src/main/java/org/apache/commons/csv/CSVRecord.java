@@ -54,7 +54,9 @@ public class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Returns a value by name.
      *
-     * @param name the name of the column retrieved
+     * @param name the name of the column to be retrieved
+     * @return the column value, or {@code null} if the column name is not found
+     * @throws IllegalStateException if no header mapping was provided
      */
     public String get(String name) {
         if (mapping == null) {
