@@ -434,5 +434,24 @@ public class CSVFormat implements Serializable {
         
         return out.toString().trim();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Delimiter=<").append(delimiter).append('>');
+        if (isEscaping()) {
+            sb.append(',');
+            sb.append("Escape=<").append(escape).append('>');
+        }
+        if (isEncapsulating()) {
+            sb.append(',');
+            sb.append("Encapsulator=<").append(encapsulator).append('>');            
+        }
+        if (isCommentingEnabled()) {
+            sb.append(',');
+            sb.append("CommentStart=<").append(commentStart).append('>');
+        }
+        return sb.toString();
+    }
     
 }
