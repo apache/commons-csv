@@ -36,8 +36,7 @@ public class CSVFormat implements Serializable {
     private final char encapsulator;
     private final char commentStart;
     private final char escape;
-    private final boolean leadingSpacesIgnored;
-    private final boolean trailingSpacesIgnored;
+    private final boolean surroundingSpacesIgnored; // Should leading/trailing spaces be ignored around values?
     private final boolean emptyLinesIgnored;
     private final String lineSeparator; // for outputs
     private final String[] header;
@@ -55,7 +54,7 @@ public class CSVFormat implements Serializable {
      * Starting format with no settings defined; used for creating other formats from scratch.
      */
     private static CSVFormat PRISTINE = 
-            new CSVFormat(DISABLED, DISABLED, DISABLED, DISABLED, false, false, false, null, null);
+            new CSVFormat(DISABLED, DISABLED, DISABLED, DISABLED, false, false, null, null);
 
     /** 
      * Standard comma separated format, as for {@link #RFC4180} but allowing blank lines. 
@@ -113,8 +112,7 @@ public class CSVFormat implements Serializable {
             PRISTINE
             .withDelimiter('\t')
             .withEncapsulator('"')
-            .withLeadingSpacesIgnored(true)
-            .withTrailingSpacesIgnored(true)
+            .withSurroundingSpacesIgnored(true)
             .withEmptyLinesIgnored(true)
             .withLineSeparator(CRLF)
             ;
@@ -142,8 +140,7 @@ public class CSVFormat implements Serializable {
      * @param encapsulator              the char used as value encapsulation marker
      * @param commentStart              the char used for comment identification
      * @param escape                    the char used to escape special characters in values
-     * @param leadingSpacesIgnored      <tt>true</tt> when leading whitespaces should be ignored
-     * @param trailingSpacesIgnored     <tt>true</tt> when trailing whitespaces should be ignored
+     * @param surroundingSpacesIgnored  <tt>true</tt> when whitespaces enclosing values should be ignored
      * @param emptyLinesIgnored         <tt>true</tt> when the parser should skip emtpy lines
      * @param lineSeparator             the line separator to use for output
      * @param header                    the header
@@ -153,8 +150,7 @@ public class CSVFormat implements Serializable {
             char encapsulator,
             char commentStart,
             char escape,
-            boolean leadingSpacesIgnored,
-            boolean trailingSpacesIgnored,
+            boolean surroundingSpacesIgnored,
             boolean emptyLinesIgnored,
             String lineSeparator,
             String[] header) {
@@ -162,8 +158,7 @@ public class CSVFormat implements Serializable {
         this.encapsulator = encapsulator;
         this.commentStart = commentStart;
         this.escape = escape;
-        this.leadingSpacesIgnored = leadingSpacesIgnored;
-        this.trailingSpacesIgnored = trailingSpacesIgnored;
+        this.surroundingSpacesIgnored = surroundingSpacesIgnored;
         this.emptyLinesIgnored = emptyLinesIgnored;
         this.lineSeparator = lineSeparator;
         this.header = header;
@@ -226,7 +221,7 @@ public class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
 
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**
@@ -250,7 +245,7 @@ public class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The encapsulator cannot be a line break");
         }
         
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     boolean isEncapsulating() {
@@ -278,7 +273,7 @@ public class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The comment start character cannot be a line break");
         }
         
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**
@@ -311,7 +306,7 @@ public class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The escape character cannot be a line break");
         }
         
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     boolean isEscaping() {
@@ -319,43 +314,12 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Tells if the spaces characters at the beginning of the values are ignored when parsing a file.
+     * Specifies whether spaces around values are ignored when parsing input.
      * 
-     * @return <tt>true</tt> if leading spaces are removed, <tt>false</tt> if they are preserved.
+     * @return <tt>true</tt> if spaces around values are ignored, <tt>false</tt> if they are treated as part of the value.
      */
-    public boolean isLeadingSpacesIgnored() {
-        return leadingSpacesIgnored;
-    }
-
-    /**
-     * Returns a copy of this format with the specified left trimming behavior.
-     *
-     * @param leadingSpacesIgnored the left trimming behavior, <tt>true</tt> to remove the leading spaces,
-     *                             <tt>false</tt> to leave the spaces as is.
-     * @return A copy of this format with the specified left trimming behavior.
-     */
-    public CSVFormat withLeadingSpacesIgnored(boolean leadingSpacesIgnored) {
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
-    }
-
-    /**
-     * Tells if the spaces characters at the end of the values are ignored when parsing a file.
-     * 
-     * @return <tt>true</tt> if trailing spaces are removed, <tt>false</tt> if they are preserved.
-     */
-    public boolean isTrailingSpacesIgnored() {
-        return trailingSpacesIgnored;
-    }
-
-    /**
-     * Returns a copy of this format with the specified right trimming behavior.
-     *
-     * @param trailingSpacesIgnored the right trimming behavior, <tt>true</tt> to remove the trailing spaces,
-     *                              <tt>false</tt> to leave the spaces as is.
-     * @return A copy of this format with the specified right trimming behavior.
-     */
-    public CSVFormat withTrailingSpacesIgnored(boolean trailingSpacesIgnored) {
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
+    public boolean isSurroundingSpacesIgnored() {
+        return surroundingSpacesIgnored;
     }
 
     /**
@@ -366,7 +330,7 @@ public class CSVFormat implements Serializable {
      * @return A copy of this format with the specified trimming behavior.
      */
     public CSVFormat withSurroundingSpacesIgnored(boolean surroundingSpacesIgnored) {
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**
@@ -386,7 +350,7 @@ public class CSVFormat implements Serializable {
      * @return A copy of this format  with the specified empty line skipping behavior.
      */
     public CSVFormat withEmptyLinesIgnored(boolean emptyLinesIgnored) {
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**
@@ -406,7 +370,7 @@ public class CSVFormat implements Serializable {
      * @return A copy of this format using the specified output line separator
      */
     public CSVFormat withLineSeparator(String lineSeparator) {
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     String[] getHeader() {
@@ -428,7 +392,7 @@ public class CSVFormat implements Serializable {
      * @return A copy of this format using the specified header
      */
     public CSVFormat withHeader(String... header) {
-        return new CSVFormat(delimiter, encapsulator, commentStart, escape, leadingSpacesIgnored, trailingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**

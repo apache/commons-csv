@@ -40,7 +40,7 @@ public class CSVLexerTest {
     @Test
     public void testNextToken1() throws IOException {
         String code = "abc,def, hijk,  lmnop,   qrst,uv ,wxy   ,z , ,";
-        CSVLexer parser = getLexer(code, CSVFormat.DEFAULT);
+        CSVLexer parser = getLexer(code, CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
         assertTokenEquals(TOKEN, "abc", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "def", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "hijk", parser.nextToken(new Token()));
@@ -115,7 +115,7 @@ public class CSVLexerTest {
         *        a,  " foo " ,b
         */
         String code = "a,\"foo\",b\na,   \" foo\",b\na,\"foo \"  ,b\na,  \" foo \"  ,b";
-        CSVLexer parser = getLexer(code, CSVFormat.DEFAULT);
+        CSVLexer parser = getLexer(code, CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "foo", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "b", parser.nextToken(new Token()));

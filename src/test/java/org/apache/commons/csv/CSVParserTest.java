@@ -56,9 +56,9 @@ public class CSVParserTest {
 
     @Test
     public void testGetLine() throws IOException {
-        CSVParser parser = new CSVParser(new StringReader(code));
+        CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
         for (String[] re : res) {
-            assertTrue(Arrays.equals(re, parser.getRecord().values()));
+            assertTrue("Failed to match: "+Arrays.toString(re), Arrays.equals(re, parser.getRecord().values()));
         }
         
         assertNull(parser.getRecord());
@@ -66,7 +66,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetRecords() throws IOException {
-        CSVParser parser = new CSVParser(new StringReader(code));
+        CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
         List<CSVRecord> records = parser.getRecords();
         assertEquals(res.length, records.size());
         assertTrue(records.size() > 0);
@@ -283,7 +283,7 @@ public class CSVParserTest {
         };
 
 
-        CSVFormat format = new CSVFormat(',', '\'', CSVFormat.DISABLED, '/', false, false, true, "\r\n", null);
+        CSVFormat format = new CSVFormat(',', '\'', CSVFormat.DISABLED, '/', false, true, "\r\n", null);
 
         CSVParser parser = new CSVParser(code, format);
         List<CSVRecord> records = parser.getRecords();
@@ -312,7 +312,7 @@ public class CSVParserTest {
         };
 
 
-        CSVFormat format = new CSVFormat(',',  CSVFormat.DISABLED,  CSVFormat.DISABLED, '/', false, false, true, "\r\n", null);
+        CSVFormat format = new CSVFormat(',',  CSVFormat.DISABLED,  CSVFormat.DISABLED, '/', false, true, "\r\n", null);
 
         CSVParser parser = new CSVParser(code, format);
         List<CSVRecord> records = parser.getRecords();

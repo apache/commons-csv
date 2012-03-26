@@ -30,15 +30,14 @@ public class CSVFormatTest {
 
     @Test
     public void testImmutalibity() {
-        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, true, "\r\n", null);
+        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, "\r\n", null);
         
         format.withDelimiter('?');
         format.withEncapsulator('?');
         format.withCommentStart('?');
         format.withLineSeparator("?");
         format.withEscape('?');
-        format.withLeadingSpacesIgnored(false);
-        format.withTrailingSpacesIgnored(false);
+        format.withSurroundingSpacesIgnored(false);
         format.withEmptyLinesIgnored(false);
         
         assertEquals('!', format.getDelimiter());
@@ -47,14 +46,13 @@ public class CSVFormatTest {
         assertEquals('!', format.getEscape());
         assertEquals("\r\n", format.getLineSeparator());
         
-        assertTrue(format.isLeadingSpacesIgnored());
-        assertTrue(format.isTrailingSpacesIgnored());
+        assertTrue(format.isSurroundingSpacesIgnored());
         assertTrue(format.isEmptyLinesIgnored());
     }
 
     @Test
     public void testMutators() {
-        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, true, "\r\n", null);
+        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, "\r\n", null);
         
         assertEquals('?', format.withDelimiter('?').getDelimiter());
         assertEquals('?', format.withEncapsulator('?').getEncapsulator());
@@ -62,10 +60,7 @@ public class CSVFormatTest {
         assertEquals("?", format.withLineSeparator("?").getLineSeparator());
         assertEquals('?', format.withEscape('?').getEscape());
         
-        assertFalse(format.withLeadingSpacesIgnored(false).isLeadingSpacesIgnored());
-        assertFalse(format.withTrailingSpacesIgnored(false).isTrailingSpacesIgnored());
-        assertFalse(format.withSurroundingSpacesIgnored(false).isLeadingSpacesIgnored());
-        assertFalse(format.withSurroundingSpacesIgnored(false).isTrailingSpacesIgnored());
+        assertFalse(format.withSurroundingSpacesIgnored(false).isSurroundingSpacesIgnored());
         assertFalse(format.withEmptyLinesIgnored(false).isEmptyLinesIgnored());
     }
 
@@ -170,8 +165,7 @@ public class CSVFormatTest {
         assertEquals("comment start", CSVFormat.DEFAULT.getCommentStart(), format.getCommentStart());
         assertEquals("line separator", CSVFormat.DEFAULT.getLineSeparator(), format.getLineSeparator());
         assertEquals("escape", CSVFormat.DEFAULT.getEscape(), format.getEscape());
-        assertEquals("trim left", CSVFormat.DEFAULT.isLeadingSpacesIgnored(), format.isLeadingSpacesIgnored());
-        assertEquals("trim right", CSVFormat.DEFAULT.isTrailingSpacesIgnored(), format.isTrailingSpacesIgnored());
+        assertEquals("trim", CSVFormat.DEFAULT.isSurroundingSpacesIgnored(), format.isSurroundingSpacesIgnored());
         assertEquals("empty lines", CSVFormat.DEFAULT.isEmptyLinesIgnored(), format.isEmptyLinesIgnored());
     }
 } 

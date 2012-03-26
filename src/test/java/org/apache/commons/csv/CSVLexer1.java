@@ -82,7 +82,7 @@ class CSVLexer1 extends Lexer {
         //  important: make sure a new char gets consumed in each iteration
         while (!tkn.isReady && tkn.type != EOF) {
             // ignore whitespaces at beginning of a token
-            if (format.isLeadingSpacesIgnored()) {
+            if (format.isSurroundingSpacesIgnored()) {
                 while (isWhitespace(c) && !eol) {
                     wsBuf.append((char) c);
                     c = in.read();
@@ -115,7 +115,7 @@ class CSVLexer1 extends Lexer {
             } else {
                 // next token must be a simple token
                 // add removed blanks when not ignoring whitespace chars...
-                if (!format.isLeadingSpacesIgnored()) {
+                if (!format.isSurroundingSpacesIgnored()) {
                     tkn.content.append(wsBuf);
                 }
                 simpleTokenLexer(tkn, c);
@@ -167,7 +167,7 @@ class CSVLexer1 extends Lexer {
             c = in.read();
         }
 
-        if (format.isTrailingSpacesIgnored()) {
+        if (format.isSurroundingSpacesIgnored()) {
             trimTrailingSpaces(tkn.content);
         }
 
