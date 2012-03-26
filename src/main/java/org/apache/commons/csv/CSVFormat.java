@@ -53,8 +53,7 @@ public class CSVFormat implements Serializable {
     /**
      * Starting format with no settings defined; used for creating other formats from scratch.
      */
-    private static CSVFormat PRISTINE = 
-            new CSVFormat(DISABLED, DISABLED, DISABLED, DISABLED, false, false, null, null);
+    private static CSVFormat PRISTINE = new CSVFormat(DISABLED, DISABLED, DISABLED, DISABLED, false, false, null, null);
 
     /** 
      * Standard comma separated format, as for {@link #RFC4180} but allowing blank lines. 
@@ -70,8 +69,7 @@ public class CSVFormat implements Serializable {
             withDelimiter(',')
             .withEncapsulator('"')
             .withEmptyLinesIgnored(true)
-            .withLineSeparator(CRLF)
-            ;
+            .withLineSeparator(CRLF);
 
     /**
      * Comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
@@ -86,8 +84,7 @@ public class CSVFormat implements Serializable {
             PRISTINE.
             withDelimiter(',')
             .withEncapsulator('"')
-            .withLineSeparator(CRLF)
-            ;
+            .withLineSeparator(CRLF);
 
     /**
      * Excel file format (using a comma as the value delimiter).
@@ -104,8 +101,7 @@ public class CSVFormat implements Serializable {
             PRISTINE
             .withDelimiter(',')
             .withEncapsulator('"')
-            .withLineSeparator(CRLF)
-            ;
+            .withLineSeparator(CRLF);
 
     /** Tab-delimited format, with quote; leading and trailing spaces ignored. */
     public static final CSVFormat TDF =
@@ -114,8 +110,7 @@ public class CSVFormat implements Serializable {
             .withEncapsulator('"')
             .withSurroundingSpacesIgnored(true)
             .withEmptyLinesIgnored(true)
-            .withLineSeparator(CRLF)
-            ;
+            .withLineSeparator(CRLF);
 
     /**
      * Default MySQL format used by the <tt>SELECT INTO OUTFILE</tt> and
@@ -129,8 +124,7 @@ public class CSVFormat implements Serializable {
             PRISTINE
             .withDelimiter('\t')
             .withEscape('\\')
-            .withLineSeparator("\n")
-            ;
+            .withLineSeparator("\n");
 
 
     /**
