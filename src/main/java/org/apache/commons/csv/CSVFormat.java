@@ -57,17 +57,38 @@ public class CSVFormat implements Serializable {
     private static CSVFormat PRISTINE = 
             new CSVFormat(DISABLED, DISABLED, DISABLED, DISABLED, false, false, false, null, null);
 
-    /** Standard comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>. */
+    /** 
+     * Standard comma separated format, as for {@link #RFC4180} but allowing blank lines. 
+     * <ul>
+     * <li>withDelimiter(',')</li>
+     * <li>withEncapsulator('"')</li>
+     * <li>withEmptyLinesIgnored(true)</li>
+     * <li>withLineSeparator(CRLF)</li>
+     * </ul> 
+     */
     public static final CSVFormat DEFAULT =
             PRISTINE.
             withDelimiter(',')
             .withEncapsulator('"')
-            .withLeadingSpacesIgnored(true)
-            .withTrailingSpacesIgnored(true)
             .withEmptyLinesIgnored(true)
             .withLineSeparator(CRLF)
             ;
 
+    /**
+     * Comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
+     * <ul>
+     * <li>withDelimiter(',')</li>
+     * <li>withEncapsulator('"')</li>
+     * <li>withLineSeparator(CRLF)</li>
+     * <li></li>
+     * </ul> 
+     */
+    public static final CSVFormat RFC4180 =
+            PRISTINE.
+            withDelimiter(',')
+            .withEncapsulator('"')
+            .withLineSeparator(CRLF)
+            ;
 
     /**
      * Excel file format (using a comma as the value delimiter).
