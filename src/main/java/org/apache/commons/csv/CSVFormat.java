@@ -419,16 +419,22 @@ public class CSVFormat implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("Delimiter=<").append(delimiter).append('>');
         if (isEscaping()) {
-            sb.append(',');
+            sb.append(' ');
             sb.append("Escape=<").append(escape).append('>');
         }
         if (isEncapsulating()) {
-            sb.append(',');
+            sb.append(' ');
             sb.append("Encapsulator=<").append(encapsulator).append('>');            
         }
         if (isCommentingEnabled()) {
-            sb.append(',');
+            sb.append(' ');
             sb.append("CommentStart=<").append(commentStart).append('>');
+        }
+        if (isEmptyLinesIgnored()) {
+            sb.append(" EmptyLines:ignored");            
+        }
+        if (isSurroundingSpacesIgnored()) {
+            sb.append(" SurroundingSpaces:ignored");            
         }
         return sb.toString();
     }
