@@ -24,8 +24,6 @@ import java.util.Map;
 
 /**
  * A CSV record
- *
- * @author Emmanuel Bourg
  */
 public class CSVRecord implements Serializable, Iterable<String> {
     
