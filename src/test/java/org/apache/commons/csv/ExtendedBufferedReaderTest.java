@@ -18,7 +18,6 @@
 package org.apache.commons.csv;
 
 import java.io.StringReader;
-import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -97,13 +96,13 @@ public class ExtendedBufferedReaderTest {
         ref[1] = 'b';
         ref[2] = 'c';
         assertEquals(3, br.read(res, 0, 3));
-        assertTrue(Arrays.equals(res, ref));
+        assertArrayEquals(ref, res);
         assertEquals('c', br.readAgain());
 
         assertEquals('d', br.lookAhead());
         ref[4] = 'd';
         assertEquals(1, br.read(res, 4, 1));
-        assertTrue(Arrays.equals(res, ref));
+        assertArrayEquals(ref, res);
         assertEquals('d', br.readAgain());
     }
 
