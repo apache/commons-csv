@@ -218,6 +218,12 @@ public class CSVParserTest {
     }
 
     @Test
+    public void testEmptyFile() throws Exception {
+        CSVParser parser = new CSVParser("", CSVFormat.DEFAULT);
+        assertNull(parser.getRecord());
+    }
+
+    @Test
     @Ignore
     public void testBackslashEscapingOld() throws IOException {
         String code =
