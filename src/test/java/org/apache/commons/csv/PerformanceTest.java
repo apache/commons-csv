@@ -241,7 +241,7 @@ public class PerformanceTest {
                    count++;
                    break;
                case INVALID:
-                   throw new IOException("invalid parse sequence");
+                   throw new IOException("invalid parse sequence <"+token.content.toString()+">");
                case TOKEN:
                    fields++;
                    break;
