@@ -56,7 +56,7 @@ public class CSVFormat implements Serializable {
     /**
      * Starting format with no settings defined; used for creating other formats from scratch.
      */
-    private static CSVFormat PRISTINE = new CSVFormat(DISABLED, DISABLED, DISABLED, DISABLED, false, false, null, null);
+    static final CSVFormat PRISTINE = new CSVFormat(DISABLED, DISABLED, DISABLED, DISABLED, false, false, null, null);
 
     /** 
      * Standard comma separated format, as for {@link #RFC4180} but allowing blank lines. 
