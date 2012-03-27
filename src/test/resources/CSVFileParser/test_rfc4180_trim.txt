@@ -1,0 +1,16 @@
+test.csv IgnoreSpaces=true
+Delimiter=<,> Encapsulator=<"> SurroundingSpaces:ignored
+4:[A, B, C, D]
+1:[# plain values]
+4:[a, b, c, d]
+1:[# spaces before and after]
+4:[e, f, g, h]
+1:[# quoted: with spaces before and after]
+4:[ i ,  j ,  k ,  l ]
+1:[# empty values]
+4:[, , , ]
+1:[# empty quoted values]
+4:[, , , ]
+1:[# empty line]
+1:[]
+1:[# EOF on next line]
