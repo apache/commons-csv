@@ -110,11 +110,11 @@ public class CSVParser implements Iterable<CSVRecord> {
 
     /**
      * Parses the CSV input according to the given format and returns the content
-     * as an array of records (whereas records are arrays of single values).
+     * as an array of {@link CSVRecord} entries.
      * <p/>
      * The returned content starts at the current parse-position in the stream.
      *
-     * @return matrix of records x values ('null' when end of file)
+     * @return list of {@link CSVRecord} entries, may be empty
      * @throws IOException on parse error or input read-failure
      */
     public List<CSVRecord> getRecords() throws IOException {
@@ -123,11 +123,7 @@ public class CSVParser implements Iterable<CSVRecord> {
         while ((rec = getRecord()) != null) {
             records.add(rec);
         }
-        
-        if (!records.isEmpty()) {
-            return records;
-        }
-        return null;
+        return records;
     }
 
     /**
