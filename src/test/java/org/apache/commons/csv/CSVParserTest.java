@@ -502,7 +502,6 @@ public class CSVParserTest {
     }
 
     @Test
-    @Ignore("Line counting doesn't work with CR alone as the line separator, see CSV-75")
     public void testGetLineNumberWithCR() throws Exception {
         CSVParser parser = new CSVParser("a\rb\rc", CSVFormat.DEFAULT.withLineSeparator("\r"));
         

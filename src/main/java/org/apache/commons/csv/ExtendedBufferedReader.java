@@ -54,11 +54,11 @@ class ExtendedBufferedReader extends BufferedReader {
 
     @Override
     public int read() throws IOException {
-        lastChar = super.read();
-
-        if (lastChar == '\n') {
+        int current = super.read();
+        if (current == '\r' || (current == '\n' && lastChar != '\r')) {
             lineCounter++;
         }
+        lastChar = current;
         return lastChar;
     }
 
@@ -85,14 +85,20 @@ class ExtendedBufferedReader extends BufferedReader {
         int len = super.read(buf, offset, length);
         
         if (len > 0) {
-            lastChar = buf[offset + len - 1];
-            
+
             for (int i = offset; i < offset + len; i++) {
-                if (buf[i] == '\n') {
+                char ch = buf[i];
+                if (ch == '\n') {
+                    if ('\r' != (i > 0 ? buf[i-1]: lastChar)) {
+                        lineCounter++;                        
+                    }
+                } else if (ch == '\r') {
                     lineCounter++;
                 }
             }
-            
+
+            lastChar = buf[offset + len - 1];
+
         } else if (len == -1) {
             lastChar = END_OF_STREAM;
         }
