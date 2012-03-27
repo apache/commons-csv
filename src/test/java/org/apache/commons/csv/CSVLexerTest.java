@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
 
 public class CSVLexerTest {
     
-    private CSVLexer getLexer(String input, CSVFormat format) {
+    private Lexer getLexer(String input, CSVFormat format) {
         return new CSVLexer(format, new ExtendedBufferedReader(new StringReader(input)));
     }
 
@@ -40,7 +40,7 @@ public class CSVLexerTest {
     @Test
     public void testNextToken1() throws IOException {
         String code = "abc,def, hijk,  lmnop,   qrst,uv ,wxy   ,z , ,";
-        CSVLexer parser = getLexer(code, CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
+        Lexer parser = getLexer(code, CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
         assertTokenEquals(TOKEN, "abc", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "def", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "hijk", parser.nextToken(new Token()));
@@ -66,7 +66,7 @@ public class CSVLexerTest {
         String code = "1,2,3,\na,b x,c\n#foo\n\nd,e,\n\n";
         CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
         
-        CSVLexer parser = getLexer(code, format);
+        Lexer parser = getLexer(code, format);
 
 
         assertTokenEquals(TOKEN, "1", parser.nextToken(new Token()));
@@ -93,7 +93,7 @@ public class CSVLexerTest {
         */
         String code = "a,\\,,b\n\\,,";
         CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
-        CSVLexer parser = getLexer(code, format);
+        Lexer parser = getLexer(code, format);
 
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         // an unquoted single backslash is not an escape char
@@ -115,7 +115,7 @@ public class CSVLexerTest {
         *        a,  " foo " ,b
         */
         String code = "a,\"foo\",b\na,   \" foo\",b\na,\"foo \"  ,b\na,  \" foo \"  ,b";
-        CSVLexer parser = getLexer(code, CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
+        Lexer parser = getLexer(code, CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "foo", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "b", parser.nextToken(new Token()));
@@ -135,7 +135,7 @@ public class CSVLexerTest {
     @Test
     public void testNextToken5() throws IOException {
         String code = "a,\"foo\n\",b\n\"foo\n  baar ,,,\"\n\"\n\t \n\"";
-        CSVLexer parser = getLexer(code, CSVFormat.DEFAULT);
+        Lexer parser = getLexer(code, CSVFormat.DEFAULT);
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "foo\n", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "b", parser.nextToken(new Token()));
@@ -154,7 +154,7 @@ public class CSVLexerTest {
         */
         String code = "a;'b and '' more\n'\n!comment;;;;\n;;";
         CSVFormat format = CSVFormat.DEFAULT.withDelimiter(';').withEncapsulator('\'').withCommentStart('!');
-        CSVLexer parser = getLexer(code, format);
+        Lexer parser = getLexer(code, format);
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "b and ' more\n", parser.nextToken(new Token()));
     }
@@ -163,7 +163,7 @@ public class CSVLexerTest {
     @Test
     public void testDelimiterIsWhitespace() throws IOException {
         String code = "one\ttwo\t\tfour \t five\t six";
-        CSVLexer parser = getLexer(code, CSVFormat.TDF);
+        Lexer parser = getLexer(code, CSVFormat.TDF);
         assertTokenEquals(TOKEN, "one", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "two", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "", parser.nextToken(new Token()));
