@@ -59,4 +59,10 @@ class Token {
         isReady = false;
         return this;
     }
+
+    // Provide toString method for IDE debugging
+    @Override
+    public String toString() {
+        return type.name();
+    }
 }
