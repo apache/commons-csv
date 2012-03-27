@@ -41,6 +41,9 @@ public class CSVFormat implements Serializable {
     private final String lineSeparator; // for outputs
     private final String[] header;
 
+    private final boolean isEscaping;
+    private final boolean isCommentingEnabled;
+    private final boolean isEncapsulating;
 
     /**
      * Constant char to be used for disabling comments, escapes and encapsulation.
@@ -156,6 +159,9 @@ public class CSVFormat implements Serializable {
         this.emptyLinesIgnored = emptyLinesIgnored;
         this.lineSeparator = lineSeparator;
         this.header = header;
+        this.isEncapsulating = encapsulator != DISABLED;
+        this.isCommentingEnabled = commentStart != DISABLED;
+        this.isEscaping = escape != DISABLED;
     }
 
     /**
@@ -243,7 +249,7 @@ public class CSVFormat implements Serializable {
     }
 
     boolean isEncapsulating() {
-        return this.encapsulator != DISABLED;
+        return isEncapsulating;
     }
 
     /**
@@ -276,7 +282,7 @@ public class CSVFormat implements Serializable {
      * @return <tt>true</tt> is comments are supported, <tt>false</tt> otherwise
      */
     public boolean isCommentingEnabled() {
-        return this.commentStart != DISABLED;
+        return isCommentingEnabled;
     }
 
     /**
@@ -304,7 +310,7 @@ public class CSVFormat implements Serializable {
     }
 
     boolean isEscaping() {
-        return this.escape != DISABLED;
+        return isEscaping;
     }
 
     /**
