@@ -472,4 +472,47 @@ public class CSVParserTest {
 
         assertFalse(records.hasNext());
     }
+
+    @Test
+    public void testGetLineNumberWithLF() throws Exception {
+        CSVParser parser = new CSVParser("a\nb\nc", CSVFormat.DEFAULT.withLineSeparator("\n"));
+        
+        assertEquals(0, parser.getLineNumber());
+        assertNotNull(parser.getRecord());
+        assertEquals(1, parser.getLineNumber());
+        assertNotNull(parser.getRecord());
+        assertEquals(2, parser.getLineNumber());
+        assertNotNull(parser.getRecord());
+        assertEquals(2, parser.getLineNumber());
+        assertNull(parser.getRecord());
+    }
+
+    @Test
+    public void testGetLineNumberWithCRLF() throws Exception {
+        CSVParser parser = new CSVParser("a\r\nb\r\nc", CSVFormat.DEFAULT.withLineSeparator("\r\n"));
+        
+        assertEquals(0, parser.getLineNumber());
+        assertNotNull(parser.getRecord());
+        assertEquals(1, parser.getLineNumber());
+        assertNotNull(parser.getRecord());
+        assertEquals(2, parser.getLineNumber());
+        assertNotNull(parser.getRecord());
+        assertEquals(2, parser.getLineNumber());
+        assertNull(parser.getRecord());
+    }
+
+    @Test
+    @Ignore("Line counting doesn't work with CR alone as the line separator, see CSV-75")
+    public void testGetLineNumberWithCR() throws Exception {
+        CSVParser parser = new CSVParser("a\rb\rc", CSVFormat.DEFAULT.withLineSeparator("\r"));
+        
+        assertEquals(0, parser.getLineNumber());
+        assertNotNull(parser.getRecord());
+        assertEquals(1, parser.getLineNumber());
+        assertNotNull(parser.getRecord());
+        assertEquals(2, parser.getLineNumber());
+        assertNotNull(parser.getRecord());
+        assertEquals(2, parser.getLineNumber());
+        assertNull(parser.getRecord());
+    }
 }
