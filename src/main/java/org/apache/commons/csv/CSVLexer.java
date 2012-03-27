@@ -89,7 +89,7 @@ class CSVLexer extends Lexer {
             }
             
             // ok, start of token reached: comment, encapsulated, or token
-            if (isCommentStart(c)) {
+            if (isCommentStart(c)) { // TODO should only match at start of line
                 // ignore everything till end of line and continue (incr linecount)
                 in.readLine();
                 tkn = nextToken(tkn.reset());
@@ -102,7 +102,7 @@ class CSVLexer extends Lexer {
                 tkn.type = EORECORD;
             } else if (isEncapsulator(c)) {
                 // consume encapsulated token
-                encapsulatedTokenLexer(tkn, c);
+                encapsulatedTokenLexer(tkn);
             } else if (isEndOfFile(c)) {
                 // end of file return EOF()
                 //noop: tkn.content.append("");
@@ -150,7 +150,7 @@ class CSVLexer extends Lexer {
                 tkn.type = TOKEN;
                 break;
             } else if (isEscape(c)) {
-                tkn.content.append((char) readEscape(c));
+                tkn.content.append((char) readEscape());
             } else {
                 tkn.content.append((char) c);
             }
@@ -174,20 +174,20 @@ class CSVLexer extends Lexer {
      * Whitespaces before and after an encapsulated token are ignored.
      *
      * @param tkn the current token
-     * @param c   the current character
      * @return a valid token object
      * @throws IOException on invalid state
      */
-    private Token encapsulatedTokenLexer(Token tkn, int c) throws IOException {
+    private Token encapsulatedTokenLexer(Token tkn) throws IOException {
         // save current line
         int startLineNumber = getLineNumber();
         // ignore the given delimiter
         // assert c == delimiter;
+        int c;
         while (true) {
             c = in.read();
             
             if (isEscape(c)) {
-                tkn.content.append((char) readEscape(c));
+                tkn.content.append((char) readEscape());
             } else if (isEncapsulator(c)) {
                 if (isEncapsulator(in.lookAhead())) {
                     // double or escaped encapsulator -> add single encapsulator to token

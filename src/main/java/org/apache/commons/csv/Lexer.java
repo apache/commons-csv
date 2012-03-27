@@ -60,9 +60,9 @@ abstract class Lexer {
         return in.getLineNumber();
     }
 
-    int readEscape(int c) throws IOException {
+    int readEscape() throws IOException {
         // assume c is the escape char (normally a backslash)
-        c = in.read();
+        int c = in.read();
         switch (c) {
             case 'r':
                 return '\r';
