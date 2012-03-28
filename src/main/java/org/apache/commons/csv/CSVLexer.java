@@ -44,10 +44,6 @@ class CSVLexer extends Lexer {
         int lastChar = in.readAgain();
 
         //  read the next char and set eol
-        /* note: unfortunately isEndOfLine may consumes a character silently.
-        *       this has no effect outside of the method. so a simple workaround
-        *       is to call 'readAgain' on the stream...
-        */
         int c = in.read();
 
         if (isStartOfLine(lastChar) && isCommentStart(c)) {
@@ -56,6 +52,10 @@ class CSVLexer extends Lexer {
             return tkn;
         }
 
+        /* note: unfortunately isEndOfLine may consumes a character silently.
+        *       this has no effect outside of the method. so a simple workaround
+        *       is to call 'readAgain' on the stream...
+        */
         boolean eol = isEndOfLine(c);
         c = in.readAgain();
 
