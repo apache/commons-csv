@@ -58,10 +58,10 @@ public class CSVLexerTest {
     public void testNextToken2() throws IOException {
         final String code = 
                 "1,2,3,\n"+
-                "a,b x,c\n"+
+                "a,b x,c#no-comment\n"+
                 "#foo\n"+
                 "\n"+
-                "d,e,\n"+
+                "d,e,#no-comment\n"+
                 "\n";
         CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
         
@@ -74,12 +74,12 @@ public class CSVLexerTest {
         assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "b x", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "c", parser.nextToken(new Token()));
+        assertTokenEquals(EORECORD, "c#no-comment", parser.nextToken(new Token()));
         assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "d", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "e", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));
+        assertTokenEquals(EORECORD, "#no-comment", parser.nextToken(new Token()));
         assertTokenEquals(EOF, "", parser.nextToken(new Token()));
         assertTokenEquals(EOF, "", parser.nextToken(new Token()));
 
