@@ -189,20 +189,24 @@ public class CSVPrinterTest {
 
     public static boolean equals(String[][] a, List<CSVRecord> b) {
         if (a.length != b.size()) {
+            System.out.println("expected length  :" + a.length);
+            System.out.println("got              :" + b.size());
             return false;
         }
         for (int i = 0; i < a.length; i++) {
             String[] linea = a[i];
             String[] lineb = b.get(i).values();
             if (linea.length != lineb.length) {
+                System.out.println("[" + i + "] expected length  :" + linea.length);
+                System.out.println("[" + i + "] got              :" + lineb.length);
                 return false;
             }
             for (int j = 0; j < linea.length; j++) {
                 String aval = linea[j];
                 String bval = lineb[j];
                 if (!aval.equals(bval)) {
-                    System.out.println("expected  :" + printable(aval));
-                    System.out.println("got       :" + printable(bval));
+                    System.out.println("[" + i + "," + j + "] expected  :" + printable(aval));
+                    System.out.println("[" + i + "," + j + "] got       :" + printable(bval));
                     return false;
                 }
             }
