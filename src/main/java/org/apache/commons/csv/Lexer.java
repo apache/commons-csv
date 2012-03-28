@@ -112,6 +112,16 @@ abstract class Lexer {
     }
 
     /**
+     * Checks if the current character represents the start of a line:
+     * a CR, LF or is at the start of the file.
+     * 
+     * @param c
+     * @return true if the character is at the start of a line.
+     */
+    boolean isStartOfLine(int c) {
+        return c == '\n' || c == '\r' || c == ExtendedBufferedReader.UNDEFINED;
+    }
+    /**
      * @return true if the given character indicates end of file
      */
     boolean isEndOfFile(int c) {
