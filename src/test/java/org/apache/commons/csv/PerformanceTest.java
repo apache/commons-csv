@@ -245,6 +245,8 @@ public class PerformanceTest {
                case TOKEN:
                    fields++;
                    break;
+                case COMMENT: // not really expecting these
+                    break;
               }
 
            } while (!token.type.equals(Token.Type.EOF));
