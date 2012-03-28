@@ -352,7 +352,6 @@ public class CSVParserTest {
         String[][] res_comments = {
                 {"a", "b"},
                 {"\n", " "},
-                {},
         };
 
         format = CSVFormat.DEFAULT.withCommentStart('#');
