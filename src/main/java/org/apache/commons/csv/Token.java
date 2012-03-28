@@ -41,7 +41,10 @@ class Token {
         EOF,
         
         /** Token with content when end of a line is reached. */
-        EORECORD
+        EORECORD,
+        
+        /** Token is a comment line */
+        COMMENT
     }
     
     /** Token type */

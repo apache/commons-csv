@@ -76,6 +76,7 @@ public class CSVLexerTest {
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "b x", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "c", parser.nextToken(new Token()));
+        assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "d", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "e", parser.nextToken(new Token()));

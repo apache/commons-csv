@@ -154,6 +154,8 @@ public class CSVParser implements Iterable<CSVRecord> {
                     break;
                 case INVALID:
                     throw new IOException("(line " + getLineNumber() + ") invalid parse sequence");
+                case COMMENT: // Ignored currently
+                    break;
             }
         } while (reusableToken.type == TOKEN);
         

@@ -92,7 +92,7 @@ class CSVLexer extends Lexer {
             if (isCommentStart(c)) { // TODO should only match at start of line
                 // ignore everything till end of line and continue (incr linecount)
                 in.readLine();
-                tkn = nextToken(tkn.reset());
+                tkn.type = COMMENT;
             } else if (isDelimiter(c)) {
                 // empty token return TOKEN("")
                 tkn.type = TOKEN;
