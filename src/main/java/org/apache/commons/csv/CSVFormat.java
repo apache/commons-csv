@@ -264,6 +264,9 @@ public class CSVFormat implements Serializable {
     /**
      * Returns a copy of this format using the specified character as the comment start marker.
      * 
+     * Note that the comment introducer character is only recognised
+     * at the start of a line.
+     * 
      * @param commentStart the comment start marker
      * @return A copy of this format using the specified character as the comment start marker
      * @throws IllegalArgumentException thrown if the specified character is a line break
@@ -278,6 +281,9 @@ public class CSVFormat implements Serializable {
 
     /**
      * Specifies whether comments are supported by this format.
+     * 
+     * Note that the comment introducer character is only recognised
+     * at the start of a line.
      * 
      * @return <tt>true</tt> is comments are supported, <tt>false</tt> otherwise
      */
