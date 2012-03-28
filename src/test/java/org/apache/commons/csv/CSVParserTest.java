@@ -41,12 +41,13 @@ import static org.junit.Assert.*;
  */
 public class CSVParserTest {
 
-    String code = "a,b,c,d\n"
+    private static final String CSVINPUT = "a,b,c,d\n"
                     + " a , b , 1 2 \n"
                     + "\"foo baar\", b,\n"
                     // + "   \"foo\n,,\n\"\",,\n\\\"\",d,e\n";
                     + "   \"foo\n,,\n\"\",,\n\"\"\",d,e\n";   // changed to use standard CSV escaping
-    String[][] res = {
+
+    private static final String[][] RESULT = {
             {"a", "b", "c", "d"},
             {"a", "b", "1 2"},
             {"foo baar", "b", ""},
@@ -55,8 +56,8 @@ public class CSVParserTest {
 
     @Test
     public void testGetLine() throws IOException {
-        CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
-        for (String[] re : res) {
+        CSVParser parser = new CSVParser(new StringReader(CSVINPUT), CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
+        for (String[] re : RESULT) {
             assertArrayEquals(re, parser.getRecord().values());
         }
         
@@ -65,12 +66,12 @@ public class CSVParserTest {
 
     @Test
     public void testGetRecords() throws IOException {
-        CSVParser parser = new CSVParser(new StringReader(code), CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
+        CSVParser parser = new CSVParser(new StringReader(CSVINPUT), CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
         List<CSVRecord> records = parser.getRecords();
-        assertEquals(res.length, records.size());
+        assertEquals(RESULT.length, records.size());
         assertTrue(records.size() > 0);
-        for (int i = 0; i < res.length; i++) {
-            assertArrayEquals(res[i], records.get(i).values());
+        for (int i = 0; i < RESULT.length; i++) {
+            assertArrayEquals(RESULT[i], records.get(i).values());
         }
     }
 
@@ -331,7 +332,7 @@ public class CSVParserTest {
         String code = ""
                 + "a,b\n"            // 1)
                 + "\"\n\",\" \"\n"   // 2)
-                + "\"\",#\n"   // 2)
+                + "\"\",#\n"         // 3)
                 ;
         String[][] res = {
                 {"a", "b"},
