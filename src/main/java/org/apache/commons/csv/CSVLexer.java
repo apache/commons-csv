@@ -49,12 +49,19 @@ class CSVLexer extends Lexer {
         *       is to call 'readAgain' on the stream...
         */
         int c = in.read();
+
+        if (isStartOfLine(lastChar) && isCommentStart(c)) {
+            in.readLine();
+            tkn.type = COMMENT;
+            return tkn;
+        }
+
         boolean eol = isEndOfLine(c);
         c = in.readAgain();
 
         //  empty line detection: eol AND (last char was EOL or beginning)
         if (emptyLinesIgnored) {
-            while (eol && (lastChar == '\n' || lastChar == '\r' || lastChar == ExtendedBufferedReader.UNDEFINED)) {
+            while (eol && isStartOfLine(lastChar)) {
                 // go on char ahead ...
                 lastChar = c;
                 c = in.read();
@@ -86,12 +93,8 @@ class CSVLexer extends Lexer {
                 }
             }
             
-            // ok, start of token reached: comment, encapsulated, or token
-            if (isCommentStart(c)) { // TODO should only match at start of line
-                // ignore everything till end of line and continue (incr linecount)
-                in.readLine();
-                tkn.type = COMMENT;
-            } else if (isDelimiter(c)) {
+            // ok, start of token reached: encapsulated, or token
+            if (isDelimiter(c)) {
                 // empty token return TOKEN("")
                 tkn.type = TOKEN;
             } else if (eol) {
