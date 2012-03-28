@@ -62,7 +62,7 @@ public class CSVLexerTest {
                 "#foo\n"+
                 "\n"+
                 "d,e,#no-comment\n"+
-                "\n";
+                "# Final comment\n";
         CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
         
         Lexer parser = getLexer(code, format);
@@ -80,6 +80,7 @@ public class CSVLexerTest {
         assertTokenEquals(TOKEN, "d", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "e", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "#no-comment", parser.nextToken(new Token()));
+        assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));
         assertTokenEquals(EOF, "", parser.nextToken(new Token()));
         assertTokenEquals(EOF, "", parser.nextToken(new Token()));
 
