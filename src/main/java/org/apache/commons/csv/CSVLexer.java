@@ -54,9 +54,7 @@ class CSVLexer extends Lexer {
 
         //  empty line detection: eol AND (last char was EOL or beginning)
         if (emptyLinesIgnored) {
-            while (eol
-                    && (lastChar == '\n' || lastChar == '\r' || lastChar == ExtendedBufferedReader.UNDEFINED)
-                    && !isEndOfFile(lastChar)) {
+            while (eol && (lastChar == '\n' || lastChar == '\r' || lastChar == ExtendedBufferedReader.UNDEFINED)) {
                 // go on char ahead ...
                 lastChar = c;
                 c = in.read();
