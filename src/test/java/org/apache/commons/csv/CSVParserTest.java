@@ -332,12 +332,12 @@ public class CSVParserTest {
         String code = ""
                 + "a,b\n"            // 1)
                 + "\"\n\",\" \"\n"   // 2)
-                + "\"\",#\n"         // 3)
+                + "#,\"\"\n"         // 3)
                 ;
         String[][] res = {
                 {"a", "b"},
                 {"\n", " "},
-                {"", "#"},
+                {"#", ""},
         };
 
         CSVFormat format = CSVFormat.DEFAULT;
@@ -352,7 +352,7 @@ public class CSVParserTest {
         String[][] res_comments = {
                 {"a", "b"},
                 {"\n", " "},
-                {""},
+                {},
         };
 
         format = CSVFormat.DEFAULT.withCommentStart('#');
