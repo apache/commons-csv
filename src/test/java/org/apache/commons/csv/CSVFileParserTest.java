@@ -96,6 +96,8 @@ public class CSVFileParserTest {
                 fmt = fmt.withEmptyLinesIgnored(Boolean.parseBoolean(option_parts[1]));
             } else if ("IgnoreSpaces".equalsIgnoreCase(option_parts[0])) {
                 fmt = fmt.withSurroundingSpacesIgnored(Boolean.parseBoolean(option_parts[1]));
+            } else if ("CommentStart".equalsIgnoreCase(option_parts[0])) {
+                fmt = fmt.withCommentStart(option_parts[1].charAt(0));
             } else {
                 fail(testName+" unexpected option: "+option);
             }
