@@ -56,14 +56,13 @@ public class CSVLexerTest {
     // multiline including comments (and empty lines)
     @Test
     public void testNextToken2() throws IOException {
-        /*   file:   1,2,3,
-        *           a,b x,c
-        *
-        *           # this is a comment
-        *           d,e,
-        *
-        */
-        String code = "1,2,3,\na,b x,c\n#foo\n\nd,e,\n\n";
+        final String code = 
+                "1,2,3,\n"+
+                "a,b x,c\n"+
+                "#foo\n"+
+                "\n"+
+                "d,e,\n"+
+                "\n";
         CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
         
         Lexer parser = getLexer(code, format);
