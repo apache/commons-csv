@@ -21,10 +21,10 @@ import java.io.IOException;
 
 import static org.apache.commons.csv.Token.Type.*;
 
-class CSVLexer130663 extends Lexer {
+class CSVLexer1306663 extends Lexer {
 
     // ctor needs to be public so can be called dynamically by PerformanceTest class
-    public CSVLexer130663(CSVFormat format, ExtendedBufferedReader in) {
+    public CSVLexer1306663(CSVFormat format, ExtendedBufferedReader in) {
         super(format, in);
     }
     
