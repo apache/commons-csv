@@ -1,0 +1,10 @@
+testCSV85.csv CommentStart=#
+Delimiter=<,> Encapsulator=<"> CommentStart=<#>
+5:[a, b, c, e, f]
+# Very Long
+# Comment 2
+5:[g, h, i, j, k]
+# Very Long
+1:[]
+# Comment 3
+5:[l, m, n, o, p]
