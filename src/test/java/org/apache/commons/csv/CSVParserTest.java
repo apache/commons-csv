@@ -330,14 +330,14 @@ public class CSVParserTest {
     @Test
     public void testDefaultFormat() throws IOException {
         String code = ""
-                + "a,b\n"            // 1)
-                + "\"\n\",\" \"\n"   // 2)
+                + "a,b#\n"           // 1)
+                + "\"\n\",\" \",#\n"   // 2)
                 + "#,\"\"\n"         // 3)
                 + "# Final comment\n"// 4)
                 ;
         String[][] res = {
-                {"a", "b"},
-                {"\n", " "},
+                {"a", "b#"},
+                {"\n", " ", "#"},
                 {"#", ""},
                 {"# Final comment"}
         };
@@ -352,8 +352,8 @@ public class CSVParserTest {
         assertTrue("Failed to parse without comments", CSVPrinterTest.equals(res, records));
 
         String[][] res_comments = {
-                {"a", "b"},
-                {"\n", " "},
+                {"a", "b#"},
+                {"\n", " ", "#"},
         };
 
         format = CSVFormat.DEFAULT.withCommentStart('#');
