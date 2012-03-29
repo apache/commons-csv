@@ -333,11 +333,13 @@ public class CSVParserTest {
                 + "a,b\n"            // 1)
                 + "\"\n\",\" \"\n"   // 2)
                 + "#,\"\"\n"         // 3)
+                + "# Final comment\n"// 4)
                 ;
         String[][] res = {
                 {"a", "b"},
                 {"\n", " "},
                 {"#", ""},
+                {"# Final comment"}
         };
 
         CSVFormat format = CSVFormat.DEFAULT;
@@ -347,7 +349,7 @@ public class CSVParserTest {
         List<CSVRecord> records = parser.getRecords();
         assertTrue(records.size() > 0);
 
-        assertTrue(CSVPrinterTest.equals(res, records));
+        assertTrue("Failed to parse without comments", CSVPrinterTest.equals(res, records));
 
         String[][] res_comments = {
                 {"a", "b"},
@@ -358,7 +360,7 @@ public class CSVParserTest {
         parser = new CSVParser(code, format);
         records = parser.getRecords();
         
-        assertTrue(CSVPrinterTest.equals(res_comments, records));
+        assertTrue("Failed to parse with comments",CSVPrinterTest.equals(res_comments, records));
     }
 
     @Test
