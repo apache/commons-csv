@@ -46,12 +46,6 @@ class CSVLexer extends Lexer {
         //  read the next char and set eol
         int c = in.read();
 
-        if (isStartOfLine(lastChar) && isCommentStart(c)) {
-            in.readLine();
-            tkn.type = COMMENT;
-            return tkn;
-        }
-
         /* note: unfortunately isEndOfLine may consumes a character silently.
         *       this has no effect outside of the method. so a simple workaround
         *       is to call 'readAgain' on the stream...
@@ -80,6 +74,12 @@ class CSVLexer extends Lexer {
         if (isEndOfFile(lastChar) || (!isDelimiter(lastChar) && isEndOfFile(c))) {
             tkn.type = EOF;
             // don't set tkn.isReady here because no content
+            return tkn;
+        }
+
+        if (isStartOfLine(lastChar) && isCommentStart(c)) {
+            in.readLine();
+            tkn.type = COMMENT;
             return tkn;
         }
 

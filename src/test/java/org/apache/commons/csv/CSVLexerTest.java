@@ -58,11 +58,19 @@ public class CSVLexerTest {
     public void testNextToken2() throws IOException {
         final String code = 
                 "1,2,3,\n"+                // 1
+                "\n"+
+                "\n"+
                 "a,b x,c#no-comment\n"+    // 2
+                "\n"+
+                "\n"+
                 "#foo\n"+                  // 3
                 "\n"+                      // 4
                 "d,e,#no-comment\n"+       // 5
+                "\n"+
+                "\n"+
                 "# penultimate comment\n"+ // 6
+                "\n"+
+                "\n"+
                 "# Final comment\n";       // 7
         CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
         assertTrue("Should ignore empty lines", format.isEmptyLinesIgnored());
