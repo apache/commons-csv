@@ -123,9 +123,7 @@ class ExtendedBufferedReader extends BufferedReader {
         String line = super.readLine();
 
         if (line != null) {
-            if (line.length() > 0) {
-                lastChar = line.charAt(line.length() - 1);
-            }
+            lastChar = '\n'; // needed for detecting start of line
             lineCounter++;
         } else {
             lastChar = END_OF_STREAM;

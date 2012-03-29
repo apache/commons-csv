@@ -57,13 +57,15 @@ public class CSVLexerTest {
     @Test
     public void testNextToken2() throws IOException {
         final String code = 
-                "1,2,3,\n"+
-                "a,b x,c#no-comment\n"+
-                "#foo\n"+
-                "\n"+
-                "d,e,#no-comment\n"+
-                "# Final comment\n";
+                "1,2,3,\n"+                // 1
+                "a,b x,c#no-comment\n"+    // 2
+                "#foo\n"+                  // 3
+                "\n"+                      // 4
+                "d,e,#no-comment\n"+       // 5
+                "# penultimate comment\n"+ // 6
+                "# Final comment\n";       // 7
         CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
+        assertTrue("Should ignore empty lines", format.isEmptyLinesIgnored());
         
         Lexer parser = getLexer(code, format);
 
@@ -71,16 +73,17 @@ public class CSVLexerTest {
         assertTokenEquals(TOKEN, "1", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "2", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "3", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));
+        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 1
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "b x", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "c#no-comment", parser.nextToken(new Token()));
-        assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));
+        assertTokenEquals(EORECORD, "c#no-comment", parser.nextToken(new Token())); // 2
+        assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));              // 3
+        // 4 empty line, ignored                                                    // 4
         assertTokenEquals(TOKEN, "d", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "e", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "#no-comment", parser.nextToken(new Token()));
-        assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));
+        assertTokenEquals(EORECORD, "#no-comment", parser.nextToken(new Token()));  // 5
+        assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));              // 6
+        assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));              // 7
         assertTokenEquals(EOF, "", parser.nextToken(new Token()));
         assertTokenEquals(EOF, "", parser.nextToken(new Token()));
 
