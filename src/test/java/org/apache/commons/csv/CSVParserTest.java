@@ -224,6 +224,14 @@ public class CSVParserTest {
     }
 
     @Test
+    public void testCSV57() throws Exception {
+        CSVParser parser = new CSVParser("", CSVFormat.DEFAULT);
+        List<CSVRecord> l = parser.getRecords();
+        assertNotNull(l);
+        assertEquals(0, l.size());
+    }
+
+    @Test
     @Ignore
     public void testBackslashEscapingOld() throws IOException {
         String code =
