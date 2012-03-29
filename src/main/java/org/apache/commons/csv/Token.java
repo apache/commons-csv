@@ -66,6 +66,6 @@ class Token {
     // Provide toString method for IDE debugging
     @Override
     public String toString() {
-        return type.name();
+        return type.name()+" ["+content.toString()+"]";
     }
 }
