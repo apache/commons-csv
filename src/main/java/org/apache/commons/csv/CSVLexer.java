@@ -136,14 +136,18 @@ class CSVLexer extends Lexer {
      * @throws IOException on stream access error
      */
     private Token simpleTokenLexer(Token tkn, int c) throws IOException {
-        while (tkn.type == INVALID) {
+        // Faster to use while(true)+break than while(tkn.type == INVALID)
+        while (true) {
             if (isEndOfLine(c)) {
                 tkn.type = EORECORD;
+                break;
             } else if (isEndOfFile(c)) {
                 tkn.type = EOF;
                 tkn.isReady = true; // There is data at EOF
+                break;
             } else if (isDelimiter(c)) {
                 tkn.type = TOKEN;
+                break;
             } else if (isEscape(c)) {
                 tkn.content.append((char) readEscape());
                 c = in.read(); // continue
