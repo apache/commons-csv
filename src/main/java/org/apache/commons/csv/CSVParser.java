@@ -133,8 +133,9 @@ public class CSVParser implements Iterable<CSVRecord> {
      * @throws IOException on parse error or input read-failure
      */
     CSVRecord getRecord() throws IOException {
-        CSVRecord result = new CSVRecord(null, headerMapping);
+        CSVRecord result = new CSVRecord(null, headerMapping, null);
         record.clear();
+        StringBuilder sb = null;
         do {
             reusableToken.reset();
             lexer.nextToken(reusableToken);
@@ -155,13 +156,20 @@ public class CSVParser implements Iterable<CSVRecord> {
                 case INVALID:
                     throw new IOException("(line " + getLineNumber() + ") invalid parse sequence");
                 case COMMENT: // Ignored currently
+                    if (sb == null) { // first comment for this record
+                        sb = new StringBuilder();
+                    } else {
+                        sb.append("\n");
+                    }
+                    sb.append(reusableToken.content);
                     reusableToken.type = TOKEN; // Read another token
                     break;
             }
         } while (reusableToken.type == TOKEN);
         
         if (!record.isEmpty()) {
-            result = new CSVRecord(record.toArray(new String[record.size()]), headerMapping);
+            result = new CSVRecord(record.toArray(new String[record.size()]), headerMapping, 
+                    sb == null ? null : sb.toString());
         }
         return result;
     }

@@ -63,7 +63,7 @@ public class CSVLexerTest {
                 "a,b x,c#no-comment\n"+    // 2
                 "\n"+
                 "\n"+
-                "#foo\n"+                  // 3
+                "# foo \n"+                // 3
                 "\n"+                      // 4
                 "d,e,#no-comment\n"+       // 5
                 "\n"+
@@ -85,13 +85,13 @@ public class CSVLexerTest {
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "b x", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "c#no-comment", parser.nextToken(new Token())); // 2
-        assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));              // 3
+        assertTokenEquals(COMMENT, "foo", parser.nextToken(new Token()));              // 3
         // 4 empty line, ignored                                                    // 4
         assertTokenEquals(TOKEN, "d", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "e", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "#no-comment", parser.nextToken(new Token()));  // 5
-        assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));              // 6
-        assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));              // 7
+        assertTokenEquals(COMMENT, "penultimate comment", parser.nextToken(new Token()));              // 6
+        assertTokenEquals(COMMENT, "Final comment", parser.nextToken(new Token()));              // 7
         assertTokenEquals(EOF, "", parser.nextToken(new Token()));
         assertTokenEquals(EOF, "", parser.nextToken(new Token()));
 
@@ -130,7 +130,7 @@ public class CSVLexerTest {
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "b x", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "c#no-comment", parser.nextToken(new Token())); // 2
-        assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));              // 3
+        assertTokenEquals(COMMENT, "foo", parser.nextToken(new Token()));           // 3
         assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 4
         assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 4b
         assertTokenEquals(TOKEN, "d", parser.nextToken(new Token()));
@@ -138,10 +138,10 @@ public class CSVLexerTest {
         assertTokenEquals(EORECORD, "#no-comment", parser.nextToken(new Token()));  // 5
         assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 5b
         assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 5c
-        assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));              // 6
+        assertTokenEquals(COMMENT, "penultimate comment", parser.nextToken(new Token()));              // 6
         assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 6b
         assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 6c
-        assertTokenEquals(COMMENT, "", parser.nextToken(new Token()));              // 7
+        assertTokenEquals(COMMENT, "Final comment", parser.nextToken(new Token()));              // 7
         assertTokenEquals(EOF, "", parser.nextToken(new Token()));
         assertTokenEquals(EOF, "", parser.nextToken(new Token()));
 

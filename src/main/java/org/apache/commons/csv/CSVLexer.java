@@ -77,7 +77,8 @@ class CSVLexer extends Lexer {
         }
 
         if (isStartOfLine(lastChar) && isCommentStart(c)) {
-            in.readLine();
+            String comment = in.readLine().trim();
+            tkn.content.append(comment);
             tkn.type = COMMENT;
             return tkn;
         }

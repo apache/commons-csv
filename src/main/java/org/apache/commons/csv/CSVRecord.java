@@ -35,9 +35,13 @@ public class CSVRecord implements Serializable, Iterable<String> {
     /** The column name to index mapping. */
     private final Map<String, Integer> mapping;
 
-    CSVRecord(String[] values, Map<String, Integer> mapping) {
+    /** The accumulated comments (if any) */
+    private final String comment;
+
+    CSVRecord(String[] values, Map<String, Integer> mapping, String comment) {
         this.values = values != null ? values : EMPTY_STRING_ARRAY;
         this.mapping = mapping;
+        this.comment = comment;
     }
 
     /**
@@ -74,6 +78,9 @@ public class CSVRecord implements Serializable, Iterable<String> {
         return values;
     }
 
+    public String getComment() {
+        return comment;
+    }
     /**
      * Returns the number of values in this record.
      */

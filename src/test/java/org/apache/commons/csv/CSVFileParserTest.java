@@ -89,6 +89,7 @@ public class CSVFileParserTest {
          // first line starts with csv data file name
         BufferedReader csvFile = new BufferedReader(new FileReader(new File(BASE, split[0])));
         CSVFormat fmt = CSVFormat.PRISTINE.withDelimiter(',').withEncapsulator('"');
+        boolean checkComments = false;
         for(int i=1; i < split.length; i++) {
             final String option = split[i];
             String[] option_parts = option.split("=",2);
@@ -98,6 +99,8 @@ public class CSVFileParserTest {
                 fmt = fmt.withSurroundingSpacesIgnored(Boolean.parseBoolean(option_parts[1]));
             } else if ("CommentStart".equalsIgnoreCase(option_parts[0])) {
                 fmt = fmt.withCommentStart(option_parts[1].charAt(0));
+            } else if ("CheckComments".equalsIgnoreCase(option_parts[0])) {
+                checkComments = true;
             } else {
                 fail(testName+" unexpected option: "+option);
             }
@@ -108,6 +111,12 @@ public class CSVFileParserTest {
         // Now parse the file and compare against the expected results
         for(CSVRecord rec : fmt.parse(csvFile)) {
             String parsed = rec.toString();
+            if (checkComments) {
+                final String comment = rec.getComment().replace("\n", "\\n");
+                if (comment != null) {
+                    parsed += "#" + comment;
+                }
+            }
             int count = rec.size();
             assertEquals(testName, readTestData(), count+":"+parsed);
         }
