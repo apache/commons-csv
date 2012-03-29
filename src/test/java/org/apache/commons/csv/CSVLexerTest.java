@@ -147,28 +147,66 @@ public class CSVLexerTest {
 
     }
 
-    // simple token with escaping
+    // simple token with escaping not enabled
     @Test
     public void testNextToken3() throws IOException {
         /* file: a,\,,b
         *       \,,
         */
-        String code = "a,\\,,b\n\\,,";
-        CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
+        String code = "a,\\,,b\\\n\\,,";
+        CSVFormat format = CSVFormat.DEFAULT;
+        assertFalse(format.isEscaping());
         Lexer parser = getLexer(code, format);
 
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         // an unquoted single backslash is not an escape char
         assertTokenEquals(TOKEN, "\\", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "b", parser.nextToken(new Token()));
+        assertTokenEquals(EORECORD, "b\\", parser.nextToken(new Token()));
         // an unquoted single backslash is not an escape char
         assertTokenEquals(TOKEN, "\\", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "", parser.nextToken(new Token()));
         assertTokenEquals(EOF, "", parser.nextToken(new Token()));
     }
 
-    // encapsulator tokenizer (sinle line)
+    // simple token with escaping enabled
+    @Test
+    public void testNextToken3Escaping() throws IOException {
+        /* file: a,\,,b
+        *       \,,
+        */
+        String code = "a,\\,,b\\\\\n\\,,\\\nc,d\\\n";
+        CSVFormat format = CSVFormat.DEFAULT.withEscape('\\');
+        assertTrue(format.isEscaping());
+        Lexer parser = getLexer(code, format);
+
+        assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
+        assertTokenEquals(TOKEN, ",", parser.nextToken(new Token()));
+        assertTokenEquals(EORECORD, "b\\", parser.nextToken(new Token()));
+        assertTokenEquals(TOKEN, ",", parser.nextToken(new Token()));
+        assertTokenEquals(TOKEN, "\nc", parser.nextToken(new Token()));
+        assertTokenEquals(EOF, "d\n", parser.nextToken(new Token()));
+        assertTokenEquals(EOF, "", parser.nextToken(new Token()));
+    }
+
+    // simple token with escaping enabled
+    @Test
+    public void testNextToken3BadEscaping() throws IOException {
+        String code = "a,b,c\\";
+        CSVFormat format = CSVFormat.DEFAULT.withEscape('\\');
+        assertTrue(format.isEscaping());
+        Lexer parser = getLexer(code, format);
+
+        assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
+        assertTokenEquals(TOKEN, "b", parser.nextToken(new Token()));
+        try {
+            Token tkn = parser.nextToken(new Token());
+            fail("Expected IOE, found "+tkn);
+        } catch (IOException e) {
+        }
+    }
+
+    // encapsulator tokenizer (single line)
     @Test
     public void testNextToken4() throws IOException {
         /* file:  a,"foo",b

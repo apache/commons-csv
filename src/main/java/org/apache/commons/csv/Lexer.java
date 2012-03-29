@@ -60,6 +60,7 @@ abstract class Lexer {
         return in.getLineNumber();
     }
 
+    // TODO escape handling needs more work
     int readEscape() throws IOException {
         // assume c is the escape char (normally a backslash)
         int c = in.read();
@@ -74,6 +75,8 @@ abstract class Lexer {
                 return '\b';
             case 'f':
                 return '\f';
+            case ExtendedBufferedReader.END_OF_STREAM:
+                throw new IOException("EOF whilst processing escape sequence");
             default:
                 return c;
         }
