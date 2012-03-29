@@ -387,11 +387,11 @@ public class CSVFormat implements Serializable {
      * Returns a copy of this format using the specified header. The header can
      * either be parsed automatically from the input file with:
      *
-     * <pre>CSVFormat format = CSVFormat.DEFAULT.withHeader();</pre>
+     * <pre>CSVFormat format = aformat.withHeader();</pre>
      *
      * or specified manually with:
      *
-     * <pre>CSVFormat format = CSVFormat.DEFAULT.withHeader("name", "email", "phone");</pre>
+     * <pre>CSVFormat format = aformat.withHeader("name", "email", "phone");</pre>
      *
      * @param header the header, <tt>null</tt> if disabled, empty if parsed automatically, user specified otherwise.
      *
