@@ -114,7 +114,7 @@ class ExtendedBufferedReader extends BufferedReader {
      * Increments  {@link #lineCounter}
      * <p>
      * Sets {@link #lastChar} to {@link #END_OF_STREAM} at EOF, 
-     * otherwise to last character on the line (won't be CR or LF) 
+     * otherwise to LF 
      * 
      * @return the line that was read, or null if reached EOF.
      */
@@ -149,7 +149,7 @@ class ExtendedBufferedReader extends BufferedReader {
     }
 
     /**
-     * Returns the nof line read
+     * Returns the number of lines read
      *
      * @return the current-line-number (or -1)
      */
