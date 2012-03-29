@@ -324,7 +324,7 @@ public class CSVParserTest {
         List<CSVRecord> records = parser.getRecords();
         assertTrue(records.size() > 0);
 
-        assertTrue(CSVPrinterTest.equals(res, records));
+        Utils.compare("", res, records);
     }
 
     @Test
@@ -349,7 +349,7 @@ public class CSVParserTest {
         List<CSVRecord> records = parser.getRecords();
         assertTrue(records.size() > 0);
 
-        assertTrue("Failed to parse without comments", CSVPrinterTest.equals(res, records));
+        Utils.compare("Failed to parse without comments", res, records);
 
         String[][] res_comments = {
                 {"a", "b#"},
@@ -360,7 +360,7 @@ public class CSVParserTest {
         parser = new CSVParser(code, format);
         records = parser.getRecords();
         
-        assertTrue("Failed to parse with comments",CSVPrinterTest.equals(res_comments, records));
+        Utils.compare("Failed to parse with comments", res_comments, records);
     }
 
     @Test
