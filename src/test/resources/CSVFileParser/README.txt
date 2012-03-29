@@ -13,6 +13,7 @@ The settings have the form (see test source file for full details):
 IgnoreEmpty=true|false
 IgnoreSpaces=true|false
 CommentStart=char
+CheckComments - whether the test should check comment fields as well
 
 The second line is the expected output from invoking CSVFormat#toString() on the parsing format
 
