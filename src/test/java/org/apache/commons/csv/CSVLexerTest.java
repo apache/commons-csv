@@ -175,8 +175,8 @@ public class CSVLexerTest {
         /* file: a,\,,b
         *       \,,
         */
-        String code = "a,\\,,b\\\\\n\\,,\\\nc,d\\\n";
-        CSVFormat format = CSVFormat.DEFAULT.withEscape('\\');
+        String code = "a,\\,,b\\\\\n\\,,\\\nc,d\\\r\ne";
+        CSVFormat format = CSVFormat.DEFAULT.withEscape('\\').withEmptyLinesIgnored(false);
         assertTrue(format.isEscaping());
         Lexer parser = getLexer(code, format);
 
@@ -185,8 +185,8 @@ public class CSVLexerTest {
         assertTokenEquals(EORECORD, "b\\", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, ",", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "\nc", parser.nextToken(new Token()));
-        assertTokenEquals(EOF, "d\n", parser.nextToken(new Token()));
-        assertTokenEquals(EOF, "", parser.nextToken(new Token()));
+        assertTokenEquals(EORECORD, "d\r", parser.nextToken(new Token()));
+        assertTokenEquals(EOF, "e", parser.nextToken(new Token()));
     }
 
     // simple token with escaping enabled
