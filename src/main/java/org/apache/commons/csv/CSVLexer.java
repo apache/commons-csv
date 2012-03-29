@@ -45,13 +45,13 @@ class CSVLexer extends Lexer {
 
         //  read the next char and set eol
         int c = in.read();
-
-        /* note: unfortunately isEndOfLine may consumes a character silently.
-        *       this has no effect outside of the method. so a simple workaround
-        *       is to call 'readAgain' on the stream...
-        */
+        /*
+         * Note:
+         * The following call will swallow LF if c == CR.
+         * But we don't need to know if the last char
+         * was CR or LF - they are equivalent here.
+         */
         boolean eol = isEndOfLine(c);
-        c = in.readAgain();
 
         //  empty line detection: eol AND (last char was EOL or beginning)
         if (emptyLinesIgnored) {
@@ -60,7 +60,6 @@ class CSVLexer extends Lexer {
                 lastChar = c;
                 c = in.read();
                 eol = isEndOfLine(c);
-                c = in.readAgain();
                 // reached end of file without any content (empty line at the end)
                 if (isEndOfFile(c)) {
                     tkn.type = EOF;
