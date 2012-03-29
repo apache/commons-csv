@@ -11,5 +11,5 @@ Delimiter=<,> Encapsulator=<"> EmptyLines:ignored
 4:[, , , ]
 1:[# empty quoted values]
 4:[, , , ]
-1:[# empty line]
+1:[# 3 empty lines]
 1:[# EOF on next line]
