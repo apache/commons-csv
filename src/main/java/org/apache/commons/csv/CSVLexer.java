@@ -171,16 +171,24 @@ class CSVLexer extends Lexer {
      * The encapsulator itself might be included in the token using a
      * doubling syntax (as "", '') or using escaping (as in \", \').
      * Whitespaces before and after an encapsulated token are ignored.
+     * The token is finished when one of the following conditions become true:
+     * <ul>
+     *   <li>an unescaped encapsulator has been reached, and is followed by optional whitespace then:</li>
+     *   <ul>
+     *       <li>delimiter (TOKEN)</li>
+     *       <li>end of line (EORECORD)</li>
+     *   </ul>
+     *   <li>end of stream has been reached (EOF)</li>
+     * </ul>
      *
      * @param tkn the current token
      * @return a valid token object
-     * @throws IOException on invalid state
+     * @throws IOException on invalid state: 
+     *  EOF before closing encapsulator or invalid character before delimiter or EOL
      */
     private Token encapsulatedTokenLexer(Token tkn) throws IOException {
-        // save current line
+        // save current line number in case needed for IOE
         int startLineNumber = getLineNumber();
-        // ignore the given delimiter
-        // assert c == delimiter;
         int c;
         while (true) {
             c = in.read();
@@ -204,7 +212,6 @@ class CSVLexer extends Lexer {
                             tkn.isReady = true; // There is data at EOF
                             return tkn;
                         } else if (isEndOfLine(c)) {
-                            // ok eo token reached
                             tkn.type = EORECORD;
                             return tkn;
                         } else if (!isWhitespace(c)) {
