@@ -30,7 +30,7 @@ import java.io.StringWriter;
 public class CSVFormat implements Serializable {
 
     /** According to RFC 4180, line breaks are delimited by CRLF */
-    private static final String CRLF = "\r\n";
+    public static final String CRLF = "\r\n";
     
     private final char delimiter;
     private final char encapsulator;
