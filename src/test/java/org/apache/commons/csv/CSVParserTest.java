@@ -297,7 +297,8 @@ public class CSVParserTest {
         };
 
 
-        CSVFormat format = new CSVFormat(',', '\'', CSVFormat.DISABLED, '/', false, true, "\r\n", null);
+        CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withEncapsulator('\'').withEscape('/')
+                               .withEmptyLinesIgnored(true).withLineSeparator("\r\n");
 
         CSVParser parser = new CSVParser(code, format);
         List<CSVRecord> records = parser.getRecords();
@@ -326,7 +327,8 @@ public class CSVParserTest {
         };
 
 
-        CSVFormat format = new CSVFormat(',',  CSVFormat.DISABLED,  CSVFormat.DISABLED, '/', false, true, "\r\n", null);
+        CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withEscape('/')
+                .withEmptyLinesIgnored(true).withLineSeparator("\r\n");
 
         CSVParser parser = new CSVParser(code, format);
         List<CSVRecord> records = parser.getRecords();
@@ -351,7 +353,7 @@ public class CSVParserTest {
         };
 
         CSVFormat format = CSVFormat.DEFAULT;
-        assertEquals(CSVFormat.DISABLED, format.getCommentStart());
+        assertFalse(format.isCommentingEnabled());
 
         CSVParser parser = new CSVParser(code, format);
         List<CSVRecord> records = parser.getRecords();
