@@ -30,7 +30,7 @@ public class CSVFormatTest {
 
     @Test
     public void testImmutalibity() {
-        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, "\r\n", null);
+        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, CSVFormat.CRLF, null);
         
         format.withDelimiter('?');
         format.withEncapsulator('?');
@@ -44,7 +44,7 @@ public class CSVFormatTest {
         assertEquals('!', format.getEncapsulator());
         assertEquals('!', format.getCommentStart());
         assertEquals('!', format.getEscape());
-        assertEquals("\r\n", format.getLineSeparator());
+        assertEquals(CSVFormat.CRLF, format.getLineSeparator());
         
         assertTrue(format.isSurroundingSpacesIgnored());
         assertTrue(format.isEmptyLinesIgnored());
@@ -52,7 +52,7 @@ public class CSVFormatTest {
 
     @Test
     public void testMutators() {
-        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, "\r\n", null);
+        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, CSVFormat.CRLF, null);
         
         assertEquals('?', format.withDelimiter('?').getDelimiter());
         assertEquals('?', format.withEncapsulator('?').getEncapsulator());
