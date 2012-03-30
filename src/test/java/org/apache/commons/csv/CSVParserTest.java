@@ -298,7 +298,7 @@ public class CSVParserTest {
 
 
         CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withEncapsulator('\'').withEscape('/')
-                               .withEmptyLinesIgnored(true).withLineSeparator("\r\n");
+                               .withEmptyLinesIgnored(true).withLineSeparator(CSVFormat.CRLF);
 
         CSVParser parser = new CSVParser(code, format);
         List<CSVRecord> records = parser.getRecords();
@@ -328,7 +328,7 @@ public class CSVParserTest {
 
 
         CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withEscape('/')
-                .withEmptyLinesIgnored(true).withLineSeparator("\r\n");
+                .withEmptyLinesIgnored(true).withLineSeparator(CSVFormat.CRLF);
 
         CSVParser parser = new CSVParser(code, format);
         List<CSVRecord> records = parser.getRecords();
@@ -518,7 +518,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetLineNumberWithCRLF() throws Exception {
-        CSVParser parser = new CSVParser("a\r\nb\r\nc", CSVFormat.DEFAULT.withLineSeparator("\r\n"));
+        CSVParser parser = new CSVParser("a\r\nb\r\nc", CSVFormat.DEFAULT.withLineSeparator(CSVFormat.CRLF));
         
         assertEquals(0, parser.getLineNumber());
         assertNotNull(parser.getRecord());
