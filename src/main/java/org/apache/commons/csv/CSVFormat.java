@@ -248,7 +248,12 @@ public class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
-    boolean isEncapsulating() {
+    /**
+     * Returns whether an encapsulator has been defined.
+     * 
+     * @return {@code true} if an encapsulator is defined
+     */
+    public boolean isEncapsulating() {
         return isEncapsulating;
     }
 
@@ -315,7 +320,12 @@ public class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
-    boolean isEscaping() {
+    /**
+     * Returns whether escape are being processed.
+     * 
+     * @return {@code true} if escapes are processed
+     */
+    public boolean isEscaping() {
         return isEscaping;
     }
 
