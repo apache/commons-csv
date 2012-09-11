@@ -62,7 +62,7 @@ public class CSVPrinter {
 
     /**
      * Flush the underlying stream.
-     * 
+     *
      * @throws IOException
      */
     public void flush() throws IOException {
@@ -127,7 +127,7 @@ public class CSVPrinter {
     }
 
 
-    private void print(CharSequence value, int offset, int len) throws IOException {        
+    private void print(CharSequence value, int offset, int len) throws IOException {
         if (format.isEncapsulating()) {
             printAndEncapsulate(value, offset, len);
         } else if (format.isEscaping()) {
@@ -284,7 +284,7 @@ public class CSVPrinter {
             // null values are considered empty
             value = "";
         }
-        
+
         if (!checkForEscape) {
             // write directly from string
             printSep();

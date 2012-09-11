@@ -26,11 +26,11 @@ import java.util.Map;
  * A CSV record
  */
 public class CSVRecord implements Serializable, Iterable<String> {
-    
+
     private static final long serialVersionUID = 1L;
 
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
-    
+
     /** The values of the record */
     private final String[] values;
 

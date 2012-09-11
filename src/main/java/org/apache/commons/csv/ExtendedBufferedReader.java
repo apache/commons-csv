@@ -71,7 +71,7 @@ class ExtendedBufferedReader extends BufferedReader {
      * character has been read then this will return {@link #UNDEFINED}. If the
      * end of the stream was reached on the last read then this will return
      * {@link #END_OF_STREAM}.
-     * 
+     *
      * @return the last character that was read
      */
     int readAgain() {
@@ -83,16 +83,16 @@ class ExtendedBufferedReader extends BufferedReader {
         if (length == 0) {
             return 0;
         }
-        
+
         int len = super.read(buf, offset, length);
-        
+
         if (len > 0) {
 
             for (int i = offset; i < offset + len; i++) {
                 char ch = buf[i];
                 if (ch == LF) {
                     if (CR != (i > 0 ? buf[i-1]: lastChar)) {
-                        lineCounter++;                        
+                        lineCounter++;
                     }
                 } else if (ch == CR) {
                     lineCounter++;
@@ -104,7 +104,7 @@ class ExtendedBufferedReader extends BufferedReader {
         } else if (len == -1) {
             lastChar = END_OF_STREAM;
         }
-        
+
         return len;
     }
 
@@ -115,9 +115,9 @@ class ExtendedBufferedReader extends BufferedReader {
      * <p>
      * Increments  {@link #lineCounter}
      * <p>
-     * Sets {@link #lastChar} to {@link #END_OF_STREAM} at EOF, 
-     * otherwise to LF 
-     * 
+     * Sets {@link #lastChar} to {@link #END_OF_STREAM} at EOF,
+     * otherwise to LF
+     *
      * @return the line that was read, or null if reached EOF.
      */
     @Override
@@ -137,9 +137,9 @@ class ExtendedBufferedReader extends BufferedReader {
     /**
      * Returns the next character in the current reader without consuming it. So
      * the next call to {@link #read()} will still return this value.
-     * 
+     *
      * @return the next character
-     * 
+     *
      * @throws IOException if there is an error in reading
      */
     int lookAhead() throws IOException {

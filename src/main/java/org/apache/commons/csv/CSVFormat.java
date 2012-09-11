@@ -33,7 +33,7 @@ public class CSVFormat implements Serializable {
 
     /** According to RFC 4180, line breaks are delimited by CRLF */
     public static final String CRLF = "\r\n";
-    
+
     private final char delimiter;
     private final char encapsulator;
     private final char commentStart;
@@ -60,14 +60,14 @@ public class CSVFormat implements Serializable {
      */
     static final CSVFormat PRISTINE = new CSVFormat(DISABLED, DISABLED, DISABLED, DISABLED, false, false, null, null);
 
-    /** 
-     * Standard comma separated format, as for {@link #RFC4180} but allowing blank lines. 
+    /**
+     * Standard comma separated format, as for {@link #RFC4180} but allowing blank lines.
      * <ul>
      * <li>withDelimiter(',')</li>
      * <li>withEncapsulator('"')</li>
      * <li>withEmptyLinesIgnored(true)</li>
      * <li>withLineSeparator(CRLF)</li>
-     * </ul> 
+     * </ul>
      */
     public static final CSVFormat DEFAULT =
             PRISTINE.
@@ -83,7 +83,7 @@ public class CSVFormat implements Serializable {
      * <li>withEncapsulator('"')</li>
      * <li>withLineSeparator(CRLF)</li>
      * <li></li>
-     * </ul> 
+     * </ul>
      */
     public static final CSVFormat RFC4180 =
             PRISTINE.
@@ -99,7 +99,7 @@ public class CSVFormat implements Serializable {
      * <p/>
      * For example for parsing or generating a CSV file on a French system
      * the following format will be used:
-     * 
+     *
      * <pre>CSVFormat fmt = CSVFormat.EXCEL.withDelimiter(';');</pre>
      */
     public static final CSVFormat EXCEL =
@@ -122,7 +122,7 @@ public class CSVFormat implements Serializable {
      * <tt>LOAD DATA INFILE</tt> operations. This is a tab-delimited
      * format with a LF character as the line separator. Values are not quoted
      * and special characters are escaped with '\'.
-     * 
+     *
      * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html">http://dev.mysql.com/doc/refman/5.1/en/load-data.html</a>
      */
     public static final CSVFormat MYSQL =
@@ -168,9 +168,9 @@ public class CSVFormat implements Serializable {
 
     /**
      * Returns true if the given character is a line break character.
-     * 
+     *
      * @param c the character to check
-     * 
+     *
      * @return true if <code>c</code> is a line break character
      */
     private static boolean isLineBreak(char c) {
@@ -184,19 +184,19 @@ public class CSVFormat implements Serializable {
         if (delimiter == encapsulator) {
             throw new IllegalArgumentException("The encapsulator character and the delimiter cannot be the same (\"" + encapsulator + "\")");
         }
-        
+
         if (delimiter == escape) {
             throw new IllegalArgumentException("The escape character and the delimiter cannot be the same (\"" + escape + "\")");
         }
-        
+
         if (delimiter == commentStart) {
             throw new IllegalArgumentException("The comment start character and the delimiter cannot be the same (\"" + commentStart + "\")");
         }
-        
+
         if (encapsulator != DISABLED && encapsulator == commentStart) {
             throw new IllegalArgumentException("The comment start character and the encapsulator cannot be the same (\"" + commentStart + "\")");
         }
-        
+
         if (escape != DISABLED && escape == commentStart) {
             throw new IllegalArgumentException("The comment start and the escape character cannot be the same (\"" + commentStart + "\")");
         }
@@ -204,7 +204,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Returns the character delimiting the values (typically ';', ',' or '\t').
-     * 
+     *
      * @return the delimiter character
      */
     public char getDelimiter() {
@@ -213,7 +213,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Returns a copy of this format using the specified delimiter character.
-     * 
+     *
      * @param delimiter the delimiter character
      * @return A copy of this format using the specified delimiter character
      * @throws IllegalArgumentException thrown if the specified character is a line break
@@ -228,7 +228,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Returns the character used to encapsulate values containing special characters.
-     * 
+     *
      * @return the encapsulator character
      */
     public char getEncapsulator() {
@@ -237,7 +237,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Returns a copy of this format using the specified encapsulator character.
-     * 
+     *
      * @param encapsulator the encapsulator character
      * @return A copy of this format using the specified encapsulator character
      * @throws IllegalArgumentException thrown if the specified character is a line break
@@ -246,13 +246,13 @@ public class CSVFormat implements Serializable {
         if (isLineBreak(encapsulator)) {
             throw new IllegalArgumentException("The encapsulator cannot be a line break");
         }
-        
+
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**
      * Returns whether an encapsulator has been defined.
-     * 
+     *
      * @return {@code true} if an encapsulator is defined
      */
     public boolean isEncapsulating() {
@@ -261,7 +261,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Returns the character marking the start of a line comment.
-     * 
+     *
      * @return the comment start marker.
      */
     public char getCommentStart() {
@@ -270,10 +270,10 @@ public class CSVFormat implements Serializable {
 
     /**
      * Returns a copy of this format using the specified character as the comment start marker.
-     * 
+     *
      * Note that the comment introducer character is only recognised
      * at the start of a line.
-     * 
+     *
      * @param commentStart the comment start marker
      * @return A copy of this format using the specified character as the comment start marker
      * @throws IllegalArgumentException thrown if the specified character is a line break
@@ -282,16 +282,16 @@ public class CSVFormat implements Serializable {
         if (isLineBreak(commentStart)) {
             throw new IllegalArgumentException("The comment start character cannot be a line break");
         }
-        
+
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**
      * Specifies whether comments are supported by this format.
-     * 
+     *
      * Note that the comment introducer character is only recognised
      * at the start of a line.
-     * 
+     *
      * @return <tt>true</tt> is comments are supported, <tt>false</tt> otherwise
      */
     public boolean isCommentingEnabled() {
@@ -300,7 +300,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Returns the escape character.
-     * 
+     *
      * @return the escape character
      */
     public char getEscape() {
@@ -309,7 +309,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Returns a copy of this format using the specified escape character.
-     * 
+     *
      * @param escape the escape character
      * @return A copy of this format using the specified escape character
      * @throws IllegalArgumentException thrown if the specified character is a line break
@@ -318,13 +318,13 @@ public class CSVFormat implements Serializable {
         if (isLineBreak(escape)) {
             throw new IllegalArgumentException("The escape character cannot be a line break");
         }
-        
+
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);
     }
 
     /**
      * Returns whether escape are being processed.
-     * 
+     *
      * @return {@code true} if escapes are processed
      */
     public boolean isEscaping() {
@@ -333,7 +333,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Specifies whether spaces around values are ignored when parsing input.
-     * 
+     *
      * @return <tt>true</tt> if spaces around values are ignored, <tt>false</tt> if they are treated as part of the value.
      */
     public boolean isSurroundingSpacesIgnored() {
@@ -353,7 +353,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Specifies whether empty lines between records are ignored when parsing input.
-     * 
+     *
      * @return <tt>true</tt> if empty lines between records are ignored, <tt>false</tt> if they are turned into empty records.
      */
     public boolean isEmptyLinesIgnored() {
@@ -373,7 +373,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Returns the line separator delimiting output records.
-     * 
+     *
      * @return the line separator
      */
     public String getLineSeparator() {
@@ -382,9 +382,9 @@ public class CSVFormat implements Serializable {
 
     /**
      * Returns a copy of this format using the specified output line separator.
-     * 
+     *
      * @param lineSeparator the line separator to be used for output.
-     * 
+     *
      * @return A copy of this format using the specified output line separator
      */
     public CSVFormat withLineSeparator(String lineSeparator) {
@@ -415,7 +415,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Parses the specified content.
-     * 
+     *
      * @param in the input stream
      */
     public Iterable<CSVRecord> parse(Reader in) throws IOException {
@@ -424,7 +424,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Format the specified values.
-     * 
+     *
      * @param values the values to format
      */
     public String format(String... values) {
@@ -435,7 +435,7 @@ public class CSVFormat implements Serializable {
         } catch (IOException e) {
             // should not happen
             throw new IllegalStateException(e);
-        }        
+        }
     }
 
     @Override
@@ -448,19 +448,19 @@ public class CSVFormat implements Serializable {
         }
         if (isEncapsulating()) {
             sb.append(' ');
-            sb.append("Encapsulator=<").append(encapsulator).append('>');            
+            sb.append("Encapsulator=<").append(encapsulator).append('>');
         }
         if (isCommentingEnabled()) {
             sb.append(' ');
             sb.append("CommentStart=<").append(commentStart).append('>');
         }
         if (isEmptyLinesIgnored()) {
-            sb.append(" EmptyLines:ignored");            
+            sb.append(" EmptyLines:ignored");
         }
         if (isSurroundingSpacesIgnored()) {
-            sb.append(" SurroundingSpaces:ignored");            
+            sb.append(" SurroundingSpaces:ignored");
         }
         return sb.toString();
     }
-    
+
 }

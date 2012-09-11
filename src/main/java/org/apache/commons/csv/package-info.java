@@ -17,11 +17,11 @@
 
 /**
  * Apache Commons CSV Format Support.
- * 
+ *
  * <p>CSV (or its dialects) are widely used as interfaces to legacy systems or
  *    manual data-imports. Basically CSV stands for "Comma Separated Values" but
  *    this simple abbreviation leads to more confusion than definitions.</p>
- *    
+ *
  * <p>Common to all file dialects is its basic structure: The CSV data-format
  *    is record oriented, whereas each record starts on a new textual line. A
  *    record is build of a list of values. Keep in mind that not all records
@@ -30,41 +30,41 @@
  *       csv    := records*
  *       record := values*
  * </pre>
- * 
+ *
  * <p>The following list contains the csv aspects the Commons CSV parser supports:</p>
  * <dl>
  *   <dt>Separators (for lines)</dt>
  *   <dd>The record separators are hardcoded and cannot be changed. The must be '\r', '\n' or '\r\n'.</dd>
- * 
+ *
  *   <dt>Delimiter (for values)</dt>
  *   <dd>The delimiter for values is freely configurable (default ',').</dd>
- * 
+ *
  *   <dt>Comments</dt>
  *   <dd>Some CSV-dialects support a simple comment syntax. A comment is a record
  *       which must start with a designated character (the commentStarter). A record
  *       of this kind is treated as comment and gets removed from the input (default none)</dd>
- * 
+ *
  *   <dt>Encapsulator</dt>
  *  <dd>Two encapsulator characters (default '"') are used to enclose -&gt; complex values.</dd>
- *       
+ *
  *   <dt>Simple values</dt>
- *   <dd>A simple value consist of all characters (except the delimiter) until 
+ *   <dd>A simple value consist of all characters (except the delimiter) until
  *       (but not including) the next delimiter or a record-terminator. Optionally
  *       all surrounding whitespaces of a simple value can be ignored (default: true).</dd>
- *      
+ *
  *   <dt>Complex values</dt>
  *   <dd>Complex values are encapsulated within a pair of the defined encapsulator characters.
  *       The encapsulator itself must be escaped or doubled when used inside complex values.
  *       Complex values preserve all kind of formatting (including newlines -&gt; multiline-values)</dd>
- * 
+ *
  *  <dt>Empty line skipping</dt>
- *   <dd>Optionally empty lines in CSV files can be skipped. 
+ *   <dd>Optionally empty lines in CSV files can be skipped.
  *       Otherwise, empty lines will return a record with a single empty value.</dd>
  * </dl>
- * 
- * <p>In addition to individually defined dialects, two predefined dialects (strict-csv, and excel-csv) 
+ *
+ * <p>In addition to individually defined dialects, two predefined dialects (strict-csv, and excel-csv)
  *    can be set directly.</p> <!-- TODO fix -->
- * 
+ *
  * <p>Example usage:</p>
  * <blockquote><pre>
  * Reader in = new StringReader("a,b,c");

@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,12 +24,12 @@ import static org.apache.commons.csv.Token.Type.*;
 class CSVLexer1 extends Lexer {
 
     private final StringBuilder wsBuf = new StringBuilder();
-    
+
     // ctor needs to be public so can be called dynamically by PerformanceTest class
     public CSVLexer1(CSVFormat format, ExtendedBufferedReader in) {
         super(format, in);
     }
-    
+
     /**
      * Returns the next token.
      * <p/>
@@ -89,7 +89,7 @@ class CSVLexer1 extends Lexer {
                     eol = isEndOfLine(c);
                 }
             }
-            
+
             // ok, start of token reached: comment, encapsulated, or token
             if (c == format.getCommentStart()) {
                 // ignore everything till end of line and continue (incr linecount)
@@ -194,7 +194,7 @@ class CSVLexer1 extends Lexer {
         // assert c == delimiter;
         while (true) {
             c = in.read();
-            
+
             if (c == format.getEscape()) {
                 tkn.content.append((char) readEscape());
             } else if (c == format.getEncapsulator()) {

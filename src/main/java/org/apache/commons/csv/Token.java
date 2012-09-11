@@ -28,30 +28,30 @@ class Token {
 
     /** length of the initial token (content-)buffer */
     private static final int INITIAL_TOKEN_LENGTH = 50;
-    
+
     enum Type {
         /** Token has no valid content, i.e. is in its initialized state. */
         INVALID,
-        
+
         /** Token with content, at beginning or in the middle of a line. */
         TOKEN,
-        
+
         /** Token (which can have content) when end of file is reached. */
         EOF,
-        
+
         /** Token with content when end of a line is reached. */
         EORECORD,
-        
+
         /** Token is a comment line */
         COMMENT
     }
-    
+
     /** Token type */
     Token.Type type = INVALID;
-    
+
     /** The content buffer. */
     StringBuilder content = new StringBuilder(INITIAL_TOKEN_LENGTH);
-    
+
     /** Token ready flag: indicates a valid token with content (ready for the parser). */
     boolean isReady;
 

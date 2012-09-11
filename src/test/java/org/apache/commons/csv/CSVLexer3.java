@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,18 +25,18 @@ import static org.apache.commons.csv.Token.Type.*;
  * Experimental Lexer using enums to keep track of state and character type.
  * Unfortunately it is twice as slow.
  * For reference purpose only.
- *  
+ *
  */
 class CSVLexer3 extends Lexer {
 
     private final char escape;
-    
+
     // ctor needs to be public so can be called dynamically by PerformanceTest class
     public CSVLexer3(CSVFormat format, ExtendedBufferedReader in) {
         super(format, in);
         this.escape = format.getEscape();
     }
-    
+
     /**
      * Classify the character types
      */
@@ -130,7 +130,7 @@ class CSVLexer3 extends Lexer {
                         case WHITESPACE:
                             if (!surroundingSpacesIgnored){
                                 tkn.content.append((char) intch);
-                                state = State.PLAIN;                                
+                                state = State.PLAIN;
                             }
                             break;
                     }
@@ -165,7 +165,7 @@ class CSVLexer3 extends Lexer {
                             break;
                         case EOFCHAR:
                             throw new IOException("(line " + getLineNumber() + ") unexpected EOF in quoted string");
-                        default:    
+                        default:
                             tkn.content.append((char) intch);
                             break;
                     }
@@ -209,7 +209,7 @@ class CSVLexer3 extends Lexer {
                             break;
                         case COMMENT_START: // TODO should comment be escaped?
                         case ENCAP: // TODO is this correct?
-                        case OTHER: // TODO may need to escape further 
+                        case OTHER: // TODO may need to escape further
                         case WHITESPACE:
                             tkn.content.append(escape);
                             tkn.content.append((char) intch);

@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,7 +26,7 @@ import static org.apache.commons.csv.Token.Type.*;
 import static org.junit.Assert.*;
 
 public class CSVLexerTest {
-    
+
     private Lexer getLexer(String input, CSVFormat format) {
         return new CSVLexer(format, new ExtendedBufferedReader(new StringReader(input)));
     }
@@ -35,7 +35,7 @@ public class CSVLexerTest {
         assertEquals("Token type", expectedType, token.type);
         assertEquals("Token content", expectedContent, token.content.toString());
     }
-    
+
     // Single line (without comment)
     @Test
     public void testNextToken1() throws IOException {
@@ -56,7 +56,7 @@ public class CSVLexerTest {
     // multiline including comments (and empty lines)
     @Test
     public void testNextToken2() throws IOException {
-        final String code = 
+        final String code =
                 "1,2,3,\n"+                // 1
                 "\n"+
                 "\n"+
@@ -74,7 +74,7 @@ public class CSVLexerTest {
                 "# Final comment\n";       // 7
         CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
         assertTrue("Should ignore empty lines", format.isEmptyLinesIgnored());
-        
+
         Lexer parser = getLexer(code, format);
 
 
@@ -100,7 +100,7 @@ public class CSVLexerTest {
     // multiline including comments (and empty lines)
     @Test
     public void testNextToken2EmptyLines() throws IOException {
-        final String code = 
+        final String code =
                 "1,2,3,\n"+                // 1
                 "\n"+                      // 1b
                 "\n"+                      // 1c
@@ -117,7 +117,7 @@ public class CSVLexerTest {
                 "# Final comment\n";       // 7
         CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#').withEmptyLinesIgnored(false);
         assertFalse("Should not ignore empty lines", format.isEmptyLinesIgnored());
-        
+
         Lexer parser = getLexer(code, format);
 
 

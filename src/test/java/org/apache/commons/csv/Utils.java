@@ -13,7 +13,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package org.apache.commons.csv;
@@ -29,10 +29,10 @@ public class Utils {
 
     private Utils() {
     }
-    
+
     /**
      * Checks if the two 2d arrays have identical contents.
-     * 
+     *
      * @param message the message to be displayed
      * @param expected the 2d array of expected results
      * @param actual the 2d array of actual results
@@ -43,10 +43,10 @@ public class Utils {
             Assert.assertArrayEquals(message+" (entry "+i+")",expected[i], actual[i]);
         }
     }
-    
+
     /**
      * Checks if the 2d array has the same contents as the list of records.
-     * 
+     *
      * @param message the message to be displayed
      * @param expected the 2d array of expected results
      * @param actual the List of {@link CSVRecord} entries, each containing an array of values

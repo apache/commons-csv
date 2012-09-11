@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,7 +45,7 @@ import org.junit.runners.Parameterized.Parameters;
 public class CSVFileParserTest {
 
     private static final File BASE = new File("src/test/resources/CSVFileParser");
-    
+
     private final BufferedReader testData;
     private final String testName;
 
@@ -67,7 +67,7 @@ public class CSVFileParserTest {
     public static Collection<Object[]> generateData()
     {
         List<Object[]> list = new ArrayList<Object[]>();
-        
+
         final FilenameFilter filenameFilter = new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 return name.startsWith("test") && name.endsWith(".txt");
@@ -79,7 +79,7 @@ public class CSVFileParserTest {
         }
         return list;
     }
-    
+
     @Test
     public void testCSVFile() throws Exception {
         String line = readTestData();
@@ -107,7 +107,7 @@ public class CSVFileParserTest {
         }
         line = readTestData(); // get string version of format
         assertEquals(testName+" Expected format ", line, fmt.toString());
-        
+
         // Now parse the file and compare against the expected results
         for(CSVRecord rec : fmt.parse(csvFile)) {
             String parsed = rec.toString();

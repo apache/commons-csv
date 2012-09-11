@@ -66,7 +66,7 @@ public class CSVParser implements Iterable<CSVRecord> {
     private final Map<String, Integer> headerMapping;
 
     // the following objects are shared to reduce garbage
-    
+
     /** A record buffer for getRecord(). Grows as necessary and is reused. */
     private final List<String> record = new ArrayList<String>();
     private final Token reusableToken = new Token();
@@ -90,9 +90,9 @@ public class CSVParser implements Iterable<CSVRecord> {
      */
     public CSVParser(Reader input, CSVFormat format) throws IOException {
         format.validate();
-        
+
         this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));
-        
+
         this.headerMapping = initializeHeader(format);
     }
 
@@ -166,9 +166,9 @@ public class CSVParser implements Iterable<CSVRecord> {
                     break;
             }
         } while (reusableToken.type == TOKEN);
-        
+
         if (!record.isEmpty()) {
-            result = new CSVRecord(record.toArray(new String[record.size()]), headerMapping, 
+            result = new CSVRecord(record.toArray(new String[record.size()]), headerMapping,
                     sb == null ? null : sb.toString());
         }
         return result;
@@ -210,12 +210,12 @@ public class CSVParser implements Iterable<CSVRecord> {
     public Iterator<CSVRecord> iterator() {
         return new Iterator<CSVRecord>() {
             private CSVRecord current;
-            
+
             public boolean hasNext() {
                 if (current == null) {
                     current = getNextRecord();
                 }
-                
+
                 return current != null;
             }
 
@@ -230,10 +230,10 @@ public class CSVParser implements Iterable<CSVRecord> {
                         throw new NoSuchElementException("No more CSV records available");
                     }
                 }
-                
+
                 return next;
             }
-            
+
             private CSVRecord getNextRecord() {
                 try {
                     return getRecord();

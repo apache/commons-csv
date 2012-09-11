@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -60,7 +60,7 @@ public class CSVParserTest {
         for (String[] re : RESULT) {
             assertArrayEquals(re, parser.getRecord().values());
         }
-        
+
         assertNull(parser.getRecord());
     }
 
@@ -132,7 +132,7 @@ public class CSVParserTest {
                 {""},  // Excel format does not ignore empty lines
                 {"world", ""}
         };
-        
+
         for (String code : codes) {
             CSVParser parser = new CSVParser(code, CSVFormat.EXCEL);
             List<CSVRecord> records = parser.getRecords();
@@ -369,7 +369,7 @@ public class CSVParserTest {
         format = CSVFormat.DEFAULT.withCommentStart('#');
         parser = new CSVParser(code, format);
         records = parser.getRecords();
-        
+
         Utils.compare("Failed to parse with comments", res_comments, records);
     }
 
@@ -410,13 +410,13 @@ public class CSVParserTest {
     @Test
     public void testForEach() throws Exception {
         List<CSVRecord> records = new ArrayList<CSVRecord>();
-        
+
         Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
-        
+
         for (CSVRecord record : CSVFormat.DEFAULT.parse(in)) {
             records.add(record);
         }
-        
+
         assertEquals(3, records.size());
         assertArrayEquals(new String[]{"a", "b", "c"}, records.get(0).values());
         assertArrayEquals(new String[]{"1", "2", "3"}, records.get(1).values());
@@ -426,9 +426,9 @@ public class CSVParserTest {
     @Test
     public void testIterator() throws Exception {
         Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
-        
+
         Iterator<CSVRecord> iterator = CSVFormat.DEFAULT.parse(in).iterator();
-        
+
         assertTrue(iterator.hasNext());
         try {
             iterator.remove();
@@ -442,7 +442,7 @@ public class CSVParserTest {
         assertTrue(iterator.hasNext());
         assertArrayEquals(new String[]{"x", "y", "z"}, iterator.next().values());
         assertFalse(iterator.hasNext());
-        
+
         try {
             iterator.next();
             fail("NoSuchElementException expected");
@@ -450,13 +450,13 @@ public class CSVParserTest {
             // expected
         }
     }
-    
+
     @Test
     public void testHeader() throws Exception {
         Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
 
         Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader().parse(in).iterator();
-        
+
         for (int i = 0; i < 2; i++) {
             assertTrue(records.hasNext());
             CSVRecord record = records.next();
@@ -464,7 +464,7 @@ public class CSVParserTest {
             assertEquals(record.get(1), record.get("b"));
             assertEquals(record.get(2), record.get("c"));
         }
-        
+
         assertFalse(records.hasNext());
     }
 
@@ -473,7 +473,7 @@ public class CSVParserTest {
         Reader in = new StringReader("# comment\na,b,c\n1,2,3\nx,y,z");
 
         Iterator<CSVRecord> records = CSVFormat.DEFAULT.withCommentStart('#').withHeader().parse(in).iterator();
-        
+
         for (int i = 0; i < 2; i++) {
             assertTrue(records.hasNext());
             CSVRecord record = records.next();
@@ -481,7 +481,7 @@ public class CSVParserTest {
             assertEquals(record.get(1), record.get("b"));
             assertEquals(record.get(2), record.get("c"));
         }
-        
+
         assertFalse(records.hasNext());
     }
 
@@ -505,7 +505,7 @@ public class CSVParserTest {
     @Test
     public void testGetLineNumberWithLF() throws Exception {
         CSVParser parser = new CSVParser("a\nb\nc", CSVFormat.DEFAULT.withLineSeparator("\n"));
-        
+
         assertEquals(0, parser.getLineNumber());
         assertNotNull(parser.getRecord());
         assertEquals(1, parser.getLineNumber());
@@ -519,7 +519,7 @@ public class CSVParserTest {
     @Test
     public void testGetLineNumberWithCRLF() throws Exception {
         CSVParser parser = new CSVParser("a\r\nb\r\nc", CSVFormat.DEFAULT.withLineSeparator(CSVFormat.CRLF));
-        
+
         assertEquals(0, parser.getLineNumber());
         assertNotNull(parser.getRecord());
         assertEquals(1, parser.getLineNumber());
@@ -533,7 +533,7 @@ public class CSVParserTest {
     @Test
     public void testGetLineNumberWithCR() throws Exception {
         CSVParser parser = new CSVParser("a\rb\rc", CSVFormat.DEFAULT.withLineSeparator("\r"));
-        
+
         assertEquals(0, parser.getLineNumber());
         assertNotNull(parser.getRecord());
         assertEquals(1, parser.getLineNumber());

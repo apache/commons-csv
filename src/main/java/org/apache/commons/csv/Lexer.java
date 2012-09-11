@@ -27,17 +27,17 @@ abstract class Lexer {
     private final boolean isEncapsulating;
     private final boolean isEscaping;
     private final boolean isCommentEnabled;
-    
+
     private final char delimiter;
     private final char escape;
     private final char encapsulator;
     private final char commmentStart;
-    
+
     final boolean surroundingSpacesIgnored;
     final boolean emptyLinesIgnored;
-    
+
     final CSVFormat format;
-    
+
     /** The input stream */
     final ExtendedBufferedReader in;
 
@@ -116,7 +116,7 @@ abstract class Lexer {
     /**
      * Checks if the current character represents the start of a line:
      * a CR, LF or is at the start of the file.
-     * 
+     *
      * @param c
      * @return true if the character is at the start of a line.
      */
@@ -131,7 +131,7 @@ abstract class Lexer {
     }
 
     abstract Token nextToken(Token reusableToken) throws IOException;
-    
+
     boolean isDelimiter(int c) {
         return c == delimiter;
     }

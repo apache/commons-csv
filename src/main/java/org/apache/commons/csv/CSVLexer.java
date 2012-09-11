@@ -27,7 +27,7 @@ class CSVLexer extends Lexer {
     public CSVLexer(CSVFormat format, ExtendedBufferedReader in) {
         super(format, in);
     }
-    
+
     /**
      * Returns the next token.
      * <p/>
@@ -92,7 +92,7 @@ class CSVLexer extends Lexer {
                     eol = isEndOfLine(c);
                 }
             }
-            
+
             // ok, start of token reached: encapsulated, or token
             if (isDelimiter(c)) {
                 // empty token return TOKEN("")
@@ -183,7 +183,7 @@ class CSVLexer extends Lexer {
      *
      * @param tkn the current token
      * @return a valid token object
-     * @throws IOException on invalid state: 
+     * @throws IOException on invalid state:
      *  EOF before closing encapsulator or invalid character before delimiter or EOL
      */
     private Token encapsulatedTokenLexer(Token tkn) throws IOException {
@@ -192,7 +192,7 @@ class CSVLexer extends Lexer {
         int c;
         while (true) {
             c = in.read();
-            
+
             if (isEscape(c)) {
                 tkn.content.append((char) readEscape());
             } else if (isEncapsulator(c)) {

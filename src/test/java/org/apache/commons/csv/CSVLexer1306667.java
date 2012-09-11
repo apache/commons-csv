@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +27,7 @@ class CSVLexer1306667 extends Lexer {
     public CSVLexer1306667(CSVFormat format, ExtendedBufferedReader in) {
         super(format, in);
     }
-    
+
     /**
      * Returns the next token.
      * <p/>
@@ -92,7 +92,7 @@ class CSVLexer1306667 extends Lexer {
                     eol = isEndOfLine(c);
                 }
             }
-            
+
             // ok, start of token reached: encapsulated, or token
             if (isDelimiter(c)) {
                 // empty token return TOKEN("")
@@ -184,7 +184,7 @@ class CSVLexer1306667 extends Lexer {
         int c;
         while (true) {
             c = in.read();
-            
+
             if (isEscape(c)) {
                 tkn.content.append((char) readEscape());
             } else if (isEncapsulator(c)) {
