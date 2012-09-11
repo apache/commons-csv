@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.commons</groupId>
@@ -15,7 +15,7 @@
 The Commons CSV library provides a simple interface for reading and writing
 CSV files of various types.
   </description>
-  
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -44,6 +44,13 @@ CSV files of various types.
       <email>yonik@apache.org</email>
       <organization>Apache</organization>
     </developer>
+    <developer>
+      <name>Gary Gregory</name>
+      <id>ggregory</id>
+      <email>ggregory@apache.org</email>
+      <url>http://www.garygregory.com</url>
+      <timezone>-5</timezone>
+    </developer>
   </developers>
   <contributors>
   </contributors>
@@ -63,23 +70,62 @@ CSV files of various types.
   </distributionManagement>
 
   <properties>
+    <commons.release.version>1.0</commons.release.version>
+    <!-- The RC version used in the staging repository URL. -->
+    <commons.rc.version>RC1</commons.rc.version>
     <commons.componentid>csv</commons.componentid>
     <commons.jira.id>CSV</commons.jira.id>
     <commons.jira.pid>12313222</commons.jira.pid>
     <maven.compile.source>1.5</maven.compile.source>
     <maven.compile.target>1.5</maven.compile.target>
-  </properties> 
+    <!-- Ensure copies work OK (can be removed later when this is in parent POM) -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <commons.encoding>UTF-8</commons.encoding>
+    <checkstyle.header.file>${basedir}/LICENSE-header.txt</checkstyle.header.file>
+  </properties>
 
   <reporting>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.1</version>
+        <version>2.9.1</version>
         <configuration>
           <configLocation>${basedir}/checkstyle.xml</configLocation>
           <enableRulesSummary>false</enableRulesSummary>
+          <headerFile>${basedir}/LICENSE-header.txt</headerFile>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.7.1</version>
+        <configuration>
+          <targetJdk>${maven.compile.target}</targetJdk>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>2.5.2</version>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <tags>
+            <tag>TODO</tag>
+            <tag>NOPMD</tag>
+            <tag>NOTE</tag>
+          </tags>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javancss-maven-plugin</artifactId>
+        <version>2.0</version>
       </plugin>
     </plugins>
   </reporting>
