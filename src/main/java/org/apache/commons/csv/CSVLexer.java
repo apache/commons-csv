@@ -33,14 +33,14 @@ class CSVLexer extends Lexer {
      * <p/>
      * A token corresponds to a term, a record change or an end-of-file indicator.
      * 
-     * @param tkn
+     * @param token
      *            an existing Token object to reuse. The caller is responsible to initialize the Token.
      * @return the next token found
      * @throws java.io.IOException
      *             on stream access error
      */
     @Override
-    Token nextToken(Token tkn) throws IOException {
+    Token nextToken(Token token) throws IOException {
 
         // get the last read char (required for empty line detection)
         int lastChar = in.readAgain();
@@ -62,29 +62,29 @@ class CSVLexer extends Lexer {
                 eol = isEndOfLine(c);
                 // reached end of file without any content (empty line at the end)
                 if (isEndOfFile(c)) {
-                    tkn.type = EOF;
+                    token.type = EOF;
                     // don't set tkn.isReady here because no content
-                    return tkn;
+                    return token;
                 }
             }
         }
 
         // did we reach eof during the last iteration already ? EOF
         if (isEndOfFile(lastChar) || (!isDelimiter(lastChar) && isEndOfFile(c))) {
-            tkn.type = EOF;
+            token.type = EOF;
             // don't set tkn.isReady here because no content
-            return tkn;
+            return token;
         }
 
         if (isStartOfLine(lastChar) && isCommentStart(c)) {
             String comment = in.readLine().trim();
-            tkn.content.append(comment);
-            tkn.type = COMMENT;
-            return tkn;
+            token.content.append(comment);
+            token.type = COMMENT;
+            return token;
         }
 
         // important: make sure a new char gets consumed in each iteration
-        while (tkn.type == INVALID) {
+        while (token.type == INVALID) {
             // ignore whitespaces at beginning of a token
             if (surroundingSpacesIgnored) {
                 while (isWhitespace(c) && !eol) {
@@ -96,26 +96,26 @@ class CSVLexer extends Lexer {
             // ok, start of token reached: encapsulated, or token
             if (isDelimiter(c)) {
                 // empty token return TOKEN("")
-                tkn.type = TOKEN;
+                token.type = TOKEN;
             } else if (eol) {
                 // empty token return EORECORD("")
                 // noop: tkn.content.append("");
-                tkn.type = EORECORD;
+                token.type = EORECORD;
             } else if (isEncapsulator(c)) {
                 // consume encapsulated token
-                encapsulatedTokenLexer(tkn);
+                encapsulatedTokenLexer(token);
             } else if (isEndOfFile(c)) {
                 // end of file return EOF()
                 // noop: tkn.content.append("");
-                tkn.type = EOF;
-                tkn.isReady = true; // there is data at EOF
+                token.type = EOF;
+                token.isReady = true; // there is data at EOF
             } else {
                 // next token must be a simple token
                 // add removed blanks when not ignoring whitespace chars...
-                simpleTokenLexer(tkn, c);
+                simpleTokenLexer(token, c);
             }
         }
-        return tkn;
+        return token;
     }
 
     /**
