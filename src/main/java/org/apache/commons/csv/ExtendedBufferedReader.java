@@ -31,6 +31,10 @@ import java.io.Reader;
  */
 class ExtendedBufferedReader extends BufferedReader {
 
+    private static final char CR = '\r';
+
+    private static final char LF = '\n';
+
     /** The end of stream symbol */
     static final int END_OF_STREAM = -1;
 
@@ -53,7 +57,7 @@ class ExtendedBufferedReader extends BufferedReader {
     @Override
     public int read() throws IOException {
         int current = super.read();
-        if (current == '\r' || (current == '\n' && lastChar != '\r')) {
+        if (current == CR || (current == LF && lastChar != CR)) {
             lineCounter++;
         }
         lastChar = current;
@@ -86,11 +90,11 @@ class ExtendedBufferedReader extends BufferedReader {
 
             for (int i = offset; i < offset + len; i++) {
                 char ch = buf[i];
-                if (ch == '\n') {
-                    if ('\r' != (i > 0 ? buf[i-1]: lastChar)) {
+                if (ch == LF) {
+                    if (CR != (i > 0 ? buf[i-1]: lastChar)) {
                         lineCounter++;                        
                     }
-                } else if (ch == '\r') {
+                } else if (ch == CR) {
                     lineCounter++;
                 }
             }
@@ -121,7 +125,7 @@ class ExtendedBufferedReader extends BufferedReader {
         String line = super.readLine();
 
         if (line != null) {
-            lastChar = '\n'; // needed for detecting start of line
+            lastChar = LF; // needed for detecting start of line
             lineCounter++;
         } else {
             lastChar = END_OF_STREAM;
