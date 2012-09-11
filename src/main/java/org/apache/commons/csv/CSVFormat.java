@@ -29,6 +29,8 @@ import java.io.StringWriter;
  */
 public class CSVFormat implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     /** According to RFC 4180, line breaks are delimited by CRLF */
     public static final String CRLF = "\r\n";
     
