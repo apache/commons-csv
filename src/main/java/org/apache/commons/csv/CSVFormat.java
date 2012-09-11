@@ -431,11 +431,11 @@ public class CSVFormat implements Serializable {
         StringWriter out = new StringWriter();
         try {
             new CSVPrinter(out, this).println(values);
+            return out.toString().trim();
         } catch (IOException e) {
             // should not happen
-        }
-        
-        return out.toString().trim();
+            throw new IllegalStateException(e);
+        }        
     }
 
     @Override
