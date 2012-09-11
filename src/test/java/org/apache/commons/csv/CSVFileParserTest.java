@@ -68,8 +68,8 @@ public class CSVFileParserTest {
     {
         List<Object[]> list = new ArrayList<Object[]>();
         
-        final FilenameFilter filenameFilter = new FilenameFilter(){
-            public boolean accept(@SuppressWarnings("unused") File dir, String name) {
+        final FilenameFilter filenameFilter = new FilenameFilter() {
+            public boolean accept(File dir, String name) {
                 return name.startsWith("test") && name.endsWith(".txt");
             }
         };
