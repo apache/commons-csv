@@ -102,6 +102,21 @@ CSV files of various types.
     <checkstyle.header.file>${basedir}/LICENSE-header.txt</checkstyle.header.file>
   </properties>
 
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+             <descriptor>src/main/assembly/bin.xml</descriptor>
+             <descriptor>src/main/assembly/src.xml</descriptor>
+          </descriptors>
+          <tarLongFileMode>gnu</tarLongFileMode>
+        </configuration>
+     </plugin>
+    </plugins>
+  </build>
+
   <reporting>
     <plugins>
       <plugin>
