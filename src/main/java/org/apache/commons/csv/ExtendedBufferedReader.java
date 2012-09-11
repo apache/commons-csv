@@ -22,14 +22,12 @@ import java.io.IOException;
 import java.io.Reader;
 
 /**
- * ExtendedBufferedReader
- *
  * A special reader decorator which supports more
  * sophisticated access to the underlying reader object.
- *
+ * <p>
  * In particular the reader supports a look-ahead option,
  * which allows you to see the next char returned by
- * next().
+ * {@link #read()}.
  */
 class ExtendedBufferedReader extends BufferedReader {
 
