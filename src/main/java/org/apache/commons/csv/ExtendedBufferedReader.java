@@ -22,11 +22,9 @@ import java.io.IOException;
 import java.io.Reader;
 
 /**
- * A special reader decorator which supports more
- * sophisticated access to the underlying reader object.
+ * A special reader decorator which supports more sophisticated access to the underlying reader object.
  * <p>
- * In particular the reader supports a look-ahead option,
- * which allows you to see the next char returned by
+ * In particular the reader supports a look-ahead option, which allows you to see the next char returned by
  * {@link #read()}.
  */
 class ExtendedBufferedReader extends BufferedReader {
@@ -65,12 +63,10 @@ class ExtendedBufferedReader extends BufferedReader {
     }
 
     /**
-     * Returns the last character that was read as an integer (0 to 65535). This
-     * will be the last character returned by any of the read methods. This will
-     * not include a character read using the {@link #peek()} method. If no
-     * character has been read then this will return {@link #UNDEFINED}. If the
-     * end of the stream was reached on the last read then this will return
-     * {@link #END_OF_STREAM}.
+     * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by
+     * any of the read methods. This will not include a character read using the {@link #peek()} method. If no
+     * character has been read then this will return {@link #UNDEFINED}. If the end of the stream was reached on the
+     * last read then this will return {@link #END_OF_STREAM}.
      *
      * @return the last character that was read
      */
@@ -91,7 +87,7 @@ class ExtendedBufferedReader extends BufferedReader {
             for (int i = offset; i < offset + len; i++) {
                 char ch = buf[i];
                 if (ch == LF) {
-                    if (CR != (i > 0 ? buf[i-1]: lastChar)) {
+                    if (CR != (i > 0 ? buf[i - 1] : lastChar)) {
                         lineCounter++;
                     }
                 } else if (ch == CR) {
@@ -109,14 +105,12 @@ class ExtendedBufferedReader extends BufferedReader {
     }
 
     /**
-     * Calls {@link BufferedReader#readLine()} which drops the line terminator(s).
-     * This method should only be called when processing a comment, otherwise
-     * information can be lost.
+     * Calls {@link BufferedReader#readLine()} which drops the line terminator(s). This method should only be called
+     * when processing a comment, otherwise information can be lost.
      * <p>
-     * Increments  {@link #lineCounter}
+     * Increments {@link #lineCounter}
      * <p>
-     * Sets {@link #lastChar} to {@link #END_OF_STREAM} at EOF,
-     * otherwise to LF
+     * Sets {@link #lastChar} to {@link #END_OF_STREAM} at EOF, otherwise to LF
      *
      * @return the line that was read, or null if reached EOF.
      */
@@ -135,12 +129,13 @@ class ExtendedBufferedReader extends BufferedReader {
     }
 
     /**
-     * Returns the next character in the current reader without consuming it. So
-     * the next call to {@link #read()} will still return this value.
+     * Returns the next character in the current reader without consuming it. So the next call to {@link #read()} will
+     * still return this value.
      *
      * @return the next character
      *
-     * @throws IOException if there is an error in reading
+     * @throws IOException
+     *             if there is an error in reading
      */
     int lookAhead() throws IOException {
         super.mark(1);

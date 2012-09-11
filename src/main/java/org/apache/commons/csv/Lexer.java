@@ -64,20 +64,20 @@ abstract class Lexer {
         // assume c is the escape char (normally a backslash)
         int c = in.read();
         switch (c) {
-            case 'r':
-                return '\r';
-            case 'n':
-                return '\n';
-            case 't':
-                return '\t';
-            case 'b':
-                return '\b';
-            case 'f':
-                return '\f';
-            case ExtendedBufferedReader.END_OF_STREAM:
-                throw new IOException("EOF whilst processing escape sequence");
-            default:
-                return c;
+        case 'r':
+            return '\r';
+        case 'n':
+            return '\n';
+        case 't':
+            return '\t';
+        case 'b':
+            return '\b';
+        case 'f':
+            return '\f';
+        case ExtendedBufferedReader.END_OF_STREAM:
+            throw new IOException("EOF whilst processing escape sequence");
+        default:
+            return c;
         }
     }
 
@@ -99,8 +99,7 @@ abstract class Lexer {
     }
 
     /**
-     * Greedy - accepts \n, \r and \r\n
-     * This checker consumes silently the second control-character...
+     * Greedy - accepts \n, \r and \r\n This checker consumes silently the second control-character...
      *
      * @return true if the given character is a line-terminator
      */
@@ -114,8 +113,7 @@ abstract class Lexer {
     }
 
     /**
-     * Checks if the current character represents the start of a line:
-     * a CR, LF or is at the start of the file.
+     * Checks if the current character represents the start of a line: a CR, LF or is at the start of the file.
      *
      * @param c
      * @return true if the character is at the start of a line.
@@ -123,6 +121,7 @@ abstract class Lexer {
     boolean isStartOfLine(int c) {
         return c == '\n' || c == '\r' || c == ExtendedBufferedReader.UNDEFINED;
     }
+
     /**
      * @return true if the given character indicates end of file
      */

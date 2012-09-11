@@ -32,7 +32,7 @@ class CSVLexer extends Lexer {
      * Returns the next token.
      * <p/>
      * A token corresponds to a term, a record change or an end-of-file indicator.
-     * 
+     *
      * @param token
      *            an existing Token object to reuse. The caller is responsible to initialize the Token.
      * @return the next token found
@@ -128,7 +128,7 @@ class CSVLexer extends Lexer {
      * <li>end of stream has been reached (EOF)</li>
      * <li>an unescaped delimiter has been reached (TOKEN)</li>
      * </ul>
-     * 
+     *
      * @param tkn
      *            the current token
      * @param c
@@ -179,7 +179,7 @@ class CSVLexer extends Lexer {
      * <li>end of line (EORECORD)</li>
      * </ul>
      * <li>end of stream has been reached (EOF)</li> </ul>
-     * 
+     *
      * @param tkn
      *            the current token
      * @return a valid token object

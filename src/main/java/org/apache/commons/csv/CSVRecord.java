@@ -49,7 +49,8 @@ public class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Returns a value by index.
      *
-     * @param i the index of the column retrieved
+     * @param i
+     *            the index of the column retrieved
      */
     public String get(int i) {
         return values[i];
@@ -58,9 +59,11 @@ public class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Returns a value by name.
      *
-     * @param name the name of the column to be retrieved
+     * @param name
+     *            the name of the column to be retrieved
      * @return the column value, or {@code null} if the column name is not found
-     * @throws IllegalStateException if no header mapping was provided
+     * @throws IllegalStateException
+     *             if no header mapping was provided
      */
     public String get(String name) {
         if (mapping == null) {
@@ -83,6 +86,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
     public String getComment() {
         return comment;
     }
+
     /**
      * Returns the number of values in this record.
      */

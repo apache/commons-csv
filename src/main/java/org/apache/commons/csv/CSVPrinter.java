@@ -35,12 +35,15 @@ public class CSVPrinter {
     /**
      * Create a printer that will print values to the given stream following the CSVFormat.
      * <p/>
-     * Currently, only a pure encapsulation format or a pure escaping format
-     * is supported. Hybrid formats (encapsulation and escaping with a different character) are not supported.
+     * Currently, only a pure encapsulation format or a pure escaping format is supported. Hybrid formats
+     * (encapsulation and escaping with a different character) are not supported.
      *
-     * @param out    stream to which to print.
-     * @param format the CSV format. If null the default format is used ({@link CSVFormat#DEFAULT})
-     * @throws IllegalArgumentException thrown if the parameters of the format are inconsistent
+     * @param out
+     *            stream to which to print.
+     * @param format
+     *            the CSV format. If null the default format is used ({@link CSVFormat#DEFAULT})
+     * @throws IllegalArgumentException
+     *             thrown if the parameters of the format are inconsistent
      */
     public CSVPrinter(Appendable out, CSVFormat format) {
         this.out = out;
@@ -49,7 +52,7 @@ public class CSVPrinter {
     }
 
     // ======================================================
-    //  printing implementation
+    // printing implementation
     // ======================================================
 
     /**
@@ -72,11 +75,11 @@ public class CSVPrinter {
     }
 
     /**
-     * Print a single line of comma separated values.
-     * The values will be quoted if needed.  Quotes and
-     * newLine characters will be escaped.
+     * Print a single line of comma separated values. The values will be quoted if needed. Quotes and newLine
+     * characters will be escaped.
      *
-     * @param values values to be outputted.
+     * @param values
+     *            values to be outputted.
      */
     public void println(String... values) throws IOException {
         for (String value : values) {
@@ -85,16 +88,15 @@ public class CSVPrinter {
         println();
     }
 
-
     /**
-     * Put a comment on a new line among the comma separated values. Comments
-     * will always begin on a new line and occupy a least one full line. The
-     * character specified to start comments and a space will be inserted at
-     * the beginning of each new line in the comment.
+     * Put a comment on a new line among the comma separated values. Comments will always begin on a new line and
+     * occupy a least one full line. The character specified to start comments and a space will be inserted at the
+     * beginning of each new line in the comment.
      * <p/>
      * If comments are disabled in the current CSV format this method does nothing.
      *
-     * @param comment the comment to output
+     * @param comment
+     *            the comment to output
      */
     public void printComment(String comment) throws IOException {
         if (!format.isCommentingEnabled()) {
@@ -108,24 +110,23 @@ public class CSVPrinter {
         for (int i = 0; i < comment.length(); i++) {
             char c = comment.charAt(i);
             switch (c) {
-                case '\r':
-                    if (i + 1 < comment.length() && comment.charAt(i + 1) == '\n') {
-                        i++;
-                    }
+            case '\r':
+                if (i + 1 < comment.length() && comment.charAt(i + 1) == '\n') {
+                    i++;
+                }
                 //$FALL-THROUGH$ break intentionally excluded.
             case '\n':
-                    println();
-                    out.append(format.getCommentStart());
-                    out.append(' ');
-                    break;
-                default:
-                    out.append(c);
-                    break;
+                println();
+                out.append(format.getCommentStart());
+                out.append(' ');
+                break;
+            default:
+                out.append(c);
+                break;
             }
         }
         println();
     }
-
 
     private void print(CharSequence value, int offset, int len) throws IOException {
         if (format.isEncapsulating()) {
@@ -185,7 +186,7 @@ public class CSVPrinter {
     }
 
     void printAndEncapsulate(CharSequence value, int offset, int len) throws IOException {
-        boolean first = newLine;  // is this the first value on this line?
+        boolean first = newLine; // is this the first value on this line?
         boolean quote = false;
         int start = offset;
         int pos = offset;
@@ -208,16 +209,12 @@ public class CSVPrinter {
             char c = value.charAt(pos);
 
             // Hmmm, where did this rule come from?
-            if (first
-                    && (c < '0'
-                    || (c > '9' && c < 'A')
-                    || (c > 'Z' && c < 'a')
-                    || (c > 'z'))) {
+            if (first && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || (c > 'z'))) {
                 quote = true;
                 // } else if (c == ' ' || c == '\f' || c == '\t') {
             } else if (c <= '#') {
                 // Some other chars at the start of a value caused the parser to fail, so for now
-                // encapsulate if we start in anything less than '#'.  We are being conservative
+                // encapsulate if we start in anything less than '#'. We are being conservative
                 // by including the default comment char too.
                 quote = true;
             } else {
@@ -274,10 +271,11 @@ public class CSVPrinter {
     }
 
     /**
-     * Print the string as the next value on the line. The value
-     * will be escaped or encapsulated as needed if checkForEscape==true
+     * Print the string as the next value on the line. The value will be escaped or encapsulated as needed if
+     * checkForEscape==true
      *
-     * @param value value to be outputted.
+     * @param value
+     *            value to be outputted.
      */
     public void print(String value, boolean checkForEscape) throws IOException {
         if (value == null) {
@@ -295,10 +293,10 @@ public class CSVPrinter {
     }
 
     /**
-     * Print the string as the next value on the line. The value
-     * will be escaped or encapsulated as needed.
+     * Print the string as the next value on the line. The value will be escaped or encapsulated as needed.
      *
-     * @param value value to be outputted.
+     * @param value
+     *            value to be outputted.
      */
     public void print(String value) throws IOException {
         print(value, true);
