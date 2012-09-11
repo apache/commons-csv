@@ -45,7 +45,6 @@ public class CSVPrinter {
     public CSVPrinter(Appendable out, CSVFormat format) {
         this.out = out;
         this.format = format == null ? CSVFormat.DEFAULT : format;
-        
         this.format.validate();
     }
 
