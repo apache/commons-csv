@@ -69,7 +69,7 @@ import static org.apache.commons.csv.Token.Type.*;
 public class CSVParser implements Iterable<CSVRecord> {
 
     private final Lexer lexer;
-    private final Map<String, Integer> headerMapping;
+    private final Map<String, Integer> headerMap;
 
     // the following objects are shared to reduce garbage
 
@@ -104,7 +104,7 @@ public class CSVParser implements Iterable<CSVRecord> {
 
         this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));
 
-        this.headerMapping = initializeHeader(format);
+        this.headerMap = initializeHeader(format);
     }
 
     /**
@@ -148,7 +148,7 @@ public class CSVParser implements Iterable<CSVRecord> {
      *             on parse error or input read-failure
      */
     CSVRecord getRecord() throws IOException {
-        CSVRecord result = new CSVRecord(null, headerMapping, null);
+        CSVRecord result = new CSVRecord(null, headerMap, null);
         record.clear();
         StringBuilder sb = null;
         do {
@@ -184,7 +184,7 @@ public class CSVParser implements Iterable<CSVRecord> {
 
         if (!record.isEmpty()) {
             final String comment = sb == null ? null : sb.toString();
-            result = new CSVRecord(record.toArray(new String[record.size()]), headerMapping, comment);
+            result = new CSVRecord(record.toArray(new String[record.size()]), headerMap, comment);
         }
         return result;
     }
