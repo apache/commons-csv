@@ -183,8 +183,8 @@ public class CSVParser implements Iterable<CSVRecord> {
         } while (reusableToken.type == TOKEN);
 
         if (!record.isEmpty()) {
-            result = new CSVRecord(record.toArray(new String[record.size()]), headerMapping, sb == null ? null
-                    : sb.toString());
+            final String comment = sb == null ? null : sb.toString();
+            result = new CSVRecord(record.toArray(new String[record.size()]), headerMapping, comment);
         }
         return result;
     }

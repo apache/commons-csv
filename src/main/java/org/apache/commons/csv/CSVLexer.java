@@ -216,15 +216,15 @@ class CSVLexer extends Lexer {
                             return tkn;
                         } else if (!isWhitespace(c)) {
                             // error invalid char between token and next delimiter
-                            throw new IOException("(line " + getLineNumber()
-                                    + ") invalid char between encapsulated token and delimiter");
+                            throw new IOException("(line " + getLineNumber() +
+                                    ") invalid char between encapsulated token and delimiter");
                         }
                     }
                 }
             } else if (isEndOfFile(c)) {
                 // error condition (end of file before end of token)
-                throw new IOException("(startline " + startLineNumber
-                        + ") EOF reached before encapsulated token finished");
+                throw new IOException("(startline " + startLineNumber +
+                        ") EOF reached before encapsulated token finished");
             } else {
                 // consume character
                 tkn.content.append((char) c);
