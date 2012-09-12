@@ -17,17 +17,18 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Token.Type.TOKEN;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
-import static org.apache.commons.csv.Token.Type.*;
 
 /**
  * Parses CSV files according to the specified configuration.
@@ -122,6 +123,18 @@ public class CSVParser implements Iterable<CSVRecord> {
     }
 
     /**
+     * Returns a copy of the header map that iterates in column order.
+     * <p>
+     * The map keys are column names.
+     * The map values are 0-based indices.
+     *
+     * @return a copy of the header map that iterates in column order.
+     */
+    public Map<String, Integer> getHeaderMap() {
+        return new LinkedHashMap<String, Integer>(headerMap);
+    }
+
+    /**
      * Returns the current line number in the input stream.
      * <p/>
      * ATTENTION: in case your csv has multiline-values the returned number does not correspond to the record-number
@@ -206,7 +219,7 @@ public class CSVParser implements Iterable<CSVRecord> {
     private Map<String, Integer> initializeHeader(CSVFormat format) throws IOException {
         Map<String, Integer> hdrMap = null;
         if (format.getHeader() != null) {
-            hdrMap = new HashMap<String, Integer>();
+            hdrMap = new LinkedHashMap<String, Integer>();
 
             String[] header = null;
             if (format.getHeader().length == 0) {

@@ -23,7 +23,10 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+
+import junit.framework.Assert;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -491,6 +494,28 @@ public class CSVParserTest {
 
         Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("A", "B", "C").parse(in).iterator();
 
+        for (int i = 0; i < 3; i++) {
+            assertTrue(records.hasNext());
+            CSVRecord record = records.next();
+            assertEquals(record.get(0), record.get("A"));
+            assertEquals(record.get(1), record.get("B"));
+            assertEquals(record.get(2), record.get("C"));
+        }
+
+        assertFalse(records.hasNext());
+    }
+
+    public void testGetHeaderMap() throws Exception {
+        final CSVParser parser = new CSVParser("a,b,c\n1,2,3\nx,y,z", CSVFormat.DEFAULT.withHeader("A", "B", "C"));
+        final Map<String, Integer> headerMap = parser.getHeaderMap();
+        final Iterator<String> columnNames = headerMap.keySet().iterator();
+        // Headers are iterated in column order.
+        Assert.assertEquals("A", columnNames.next());
+        Assert.assertEquals("B", columnNames.next());
+        Assert.assertEquals("C", columnNames.next());
+        Iterator<CSVRecord> records = parser.iterator();
+        
+        // Parse to make sure getHeaderMap did not have a side-effect.
         for (int i = 0; i < 3; i++) {
             assertTrue(records.hasNext());
             CSVRecord record = records.next();
