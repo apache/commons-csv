@@ -122,22 +122,14 @@ public class CSVParser implements Iterable<CSVRecord> {
     }
 
     /**
-     * Parses the CSV input according to the given format and returns the content as an array of {@link CSVRecord}
-     * entries.
+     * Returns the current line number in the input stream.
      * <p/>
-     * The returned content starts at the current parse-position in the stream.
+     * ATTENTION: in case your csv has multiline-values the returned number does not correspond to the record-number
      *
-     * @return list of {@link CSVRecord} entries, may be empty
-     * @throws IOException
-     *             on parse error or input read-failure
+     * @return current line number
      */
-    public List<CSVRecord> getRecords() throws IOException {
-        List<CSVRecord> records = new ArrayList<CSVRecord>();
-        CSVRecord rec;
-        while ((rec = getRecord()) != null) {
-            records.add(rec);
-        }
-        return records;
+    public int getLineNumber() {
+        return lexer.getLineNumber();
     }
 
     /**
@@ -190,6 +182,25 @@ public class CSVParser implements Iterable<CSVRecord> {
     }
 
     /**
+     * Parses the CSV input according to the given format and returns the content as an array of {@link CSVRecord}
+     * entries.
+     * <p/>
+     * The returned content starts at the current parse-position in the stream.
+     *
+     * @return list of {@link CSVRecord} entries, may be empty
+     * @throws IOException
+     *             on parse error or input read-failure
+     */
+    public List<CSVRecord> getRecords() throws IOException {
+        List<CSVRecord> records = new ArrayList<CSVRecord>();
+        CSVRecord rec;
+        while ((rec = getRecord()) != null) {
+            records.add(rec);
+        }
+        return records;
+    }
+
+    /**
      * Initializes the name to index mapping if the format defines a header.
      */
     private Map<String, Integer> initializeHeader(CSVFormat format) throws IOException {
@@ -226,6 +237,14 @@ public class CSVParser implements Iterable<CSVRecord> {
         return new Iterator<CSVRecord>() {
             private CSVRecord current;
 
+            private CSVRecord getNextRecord() {
+                try {
+                    return getRecord();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             public boolean hasNext() {
                 if (current == null) {
                     current = getNextRecord();
@@ -249,28 +268,9 @@ public class CSVParser implements Iterable<CSVRecord> {
                 return next;
             }
 
-            private CSVRecord getNextRecord() {
-                try {
-                    return getRecord();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
             public void remove() {
                 throw new UnsupportedOperationException();
             }
         };
-    }
-
-    /**
-     * Returns the current line number in the input stream.
-     * <p/>
-     * ATTENTION: in case your csv has multiline-values the returned number does not correspond to the record-number
-     *
-     * @return current line number
-     */
-    public int getLineNumber() {
-        return lexer.getLineNumber();
     }
 }
