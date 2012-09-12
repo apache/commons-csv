@@ -144,7 +144,7 @@ public class CSVFormat implements Serializable {
      * @param surroundingSpacesIgnored
      *            <tt>true</tt> when whitespaces enclosing values should be ignored
      * @param emptyLinesIgnored
-     *            <tt>true</tt> when the parser should skip emtpy lines
+     *            <tt>true</tt> when the parser should skip empty lines
      * @param lineSeparator
      *            the line separator to use for output
      * @param header
