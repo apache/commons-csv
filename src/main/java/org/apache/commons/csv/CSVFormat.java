@@ -29,6 +29,8 @@ import java.io.StringWriter;
  */
 public class CSVFormat implements Serializable {
 
+    private static final char TAB = '\t';
+
     private static final char DOUBLE_QUOTE = '"';
 
     private static final char COMMA = ',';
@@ -113,7 +115,7 @@ public class CSVFormat implements Serializable {
     /** Tab-delimited format, with quote; leading and trailing spaces ignored. */
     public static final CSVFormat TDF =
             PRISTINE
-            .withDelimiter('\t')
+            .withDelimiter(TAB)
             .withEncapsulator(DOUBLE_QUOTE)
             .withSurroundingSpacesIgnored(true)
             .withEmptyLinesIgnored(true)
@@ -129,7 +131,7 @@ public class CSVFormat implements Serializable {
      */
     public static final CSVFormat MYSQL =
             PRISTINE
-            .withDelimiter('\t')
+            .withDelimiter(TAB)
             .withEscape('\\')
             .withLineSeparator("\n");
 
