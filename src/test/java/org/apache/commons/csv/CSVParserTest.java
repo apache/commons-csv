@@ -515,6 +515,51 @@ public class CSVParserTest {
         assertFalse(records.hasNext());
     }
 
+    @Test
+    public void testMappedButNotSetAsOutlook2007ContactExport() throws Exception {
+        final Reader in = new StringReader("a,b,c\n1,2\nx,y,z");
+
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("A", "B", "C").parse(in).iterator();
+
+        // header record
+        assertTrue(records.hasNext());
+        CSVRecord record = records.next();
+        assertTrue(record.isMapped("A"));
+        assertTrue(record.isMapped("B"));
+        assertTrue(record.isMapped("C"));
+        assertTrue(record.isSet("A"));
+        assertTrue(record.isSet("B"));
+        assertTrue(record.isSet("C"));
+        assertEquals("a", record.get("A"));
+        assertEquals("b", record.get("B"));
+        assertEquals("c", record.get("C"));
+
+        // 1st record
+        record = records.next();
+        assertTrue(record.isMapped("A"));
+        assertTrue(record.isMapped("B"));
+        assertTrue(record.isMapped("C"));
+        assertTrue(record.isSet("A"));
+        assertTrue(record.isSet("B"));
+        assertFalse(record.isSet("C"));
+        assertEquals("1", record.get("A"));
+        assertEquals("2", record.get("B"));
+        
+        // 2nd record
+        record = records.next();
+        assertTrue(record.isMapped("A"));
+        assertTrue(record.isMapped("B"));
+        assertTrue(record.isMapped("C"));
+        assertTrue(record.isSet("A"));
+        assertTrue(record.isSet("B"));
+        assertTrue(record.isSet("C"));
+        assertEquals("x", record.get("A"));
+        assertEquals("y", record.get("B"));
+        assertEquals("z", record.get("C"));
+        
+        assertFalse(records.hasNext());
+    }
+
     public void testGetHeaderMap() throws Exception {
         final CSVParser parser = new CSVParser("a,b,c\n1,2,3\nx,y,z", CSVFormat.DEFAULT.withHeader("A", "B", "C"));
         final Map<String, Integer> headerMap = parser.getHeaderMap();
