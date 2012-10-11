@@ -18,31 +18,56 @@
 package org.apache.commons.csv.perf;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Reader;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.io.IOUtils;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * Tests performance.
- *
+ * 
  * Only enable for your own development.
  */
+@Ignore
 public class PerformanceTest {
 
     private final int max = 10;
 
-    private BufferedReader getBufferedReader() throws IOException {
-        return new BufferedReader(new FileReader("src/test/resources/worldcitiespop.txt"));
+    private static final File BIG_FILE = new File(System.getProperty("java.io.tmpdir"), "worldcitiespop.txt");
+
+    @BeforeClass
+    public static void setUpClass() throws FileNotFoundException, IOException {
+        if (BIG_FILE.exists()) {
+            System.out.println(String.format("Found test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
+            return;
+        }
+        System.out.println("Decompressing test fixture " + BIG_FILE + "...");
+        final InputStream input = new GZIPInputStream(new FileInputStream("src/test/resources/perf/worldcitiespop.txt.gz"));
+        final OutputStream output = new FileOutputStream(BIG_FILE);
+        IOUtils.copy(input, output);
+        System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
     }
 
-    private long parse(Reader in) throws IOException {
-        CSVFormat format = CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(false);
+    private BufferedReader getBufferedReader() throws IOException {
+        return new BufferedReader(new FileReader(BIG_FILE));
+    }
+
+    private long parse(final Reader in) throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(false);
         long count = 0;
-        for (Object record : format.parse(in)) {
+        for (final Object record : format.parse(in)) {
             count++;
         }
         return count;
@@ -52,11 +77,11 @@ public class PerformanceTest {
         System.out.println();
     }
 
-    private void println(String s) {
+    private void println(final String s) {
         System.out.println(s);
     }
 
-    private long readAll(BufferedReader in) throws IOException {
+    private long readAll(final BufferedReader in) throws IOException {
         long count = 0;
         while (in.readLine() != null) {
             count++;
@@ -64,35 +89,39 @@ public class PerformanceTest {
         return count;
     }
 
-    @Test
-    @Ignore
-    public void testParseBigFile() throws Exception {
-        long t0 = System.currentTimeMillis();
-        long count = this.parse(this.getBufferedReader());
-        this.println("File parsed in " + (System.currentTimeMillis() - t0) + "ms with Commons CSV" + " " + count
-                + " lines");
-        this.println();
+    public long testParseBigFile() throws Exception {
+        final long startMillis = System.currentTimeMillis();
+        final long count = this.parse(this.getBufferedReader());
+        final long totalMillis = System.currentTimeMillis() - startMillis;
+        this.println(String.format("File parsed in %,d milliseconds with Commons CSV: %,d lines.", totalMillis, count));
+        return totalMillis;
     }
 
     @Test
-    @Ignore
     public void testParseBigFileRepeat() throws Exception {
+        long bestTime = Long.MAX_VALUE;
         for (int i = 0; i < this.max; i++) {
-            this.testParseBigFile();
+            bestTime = Math.min(this.testParseBigFile(), bestTime);
         }
-        this.println();
+        this.println(String.format("Best time out of %,d is %,d milliseconds.", this.max, bestTime));
     }
 
     @Test
-    @Ignore
     public void testReadBigFile() throws Exception {
+        long bestTime = Long.MAX_VALUE;
         for (int i = 0; i < this.max; i++) {
-            BufferedReader in = this.getBufferedReader();
-            long t0 = System.currentTimeMillis();
-            long count = this.readAll(in);
-            in.close();
-            this.println("File read in " + (System.currentTimeMillis() - t0) + "ms" + " " + count + " lines");
+            final BufferedReader in = this.getBufferedReader();
+            final long startMillis = System.currentTimeMillis();
+            long count = 0;
+            try {
+                count = this.readAll(in);
+            } finally {
+                in.close();
+            }
+            final long totalMillis = System.currentTimeMillis() - startMillis;
+            bestTime = Math.min(totalMillis, bestTime);
+            this.println(String.format("File read in %,d milliseconds: %,d lines.", totalMillis, count));
         }
-        this.println();
+        this.println(String.format("Best time out of %,d is %,d milliseconds.", this.max, bestTime));
     }
 }
