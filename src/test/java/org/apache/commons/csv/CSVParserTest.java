@@ -503,6 +503,10 @@ public class CSVParserTest {
         for (int i = 0; i < 3; i++) {
             assertTrue(records.hasNext());
             CSVRecord record = records.next();
+            assertTrue(record.isMapped("A"));
+            assertTrue(record.isMapped("B"));
+            assertTrue(record.isMapped("C"));
+            assertFalse(record.isMapped("NOT MAPPED"));
             assertEquals(record.get(0), record.get("A"));
             assertEquals(record.get(1), record.get("B"));
             assertEquals(record.get(2), record.get("C"));

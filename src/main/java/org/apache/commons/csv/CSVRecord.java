@@ -60,14 +60,14 @@ public class CSVRecord implements Serializable, Iterable<String> {
      * Returns a value by name.
      *
      * @param name
-     *            the name of the column to be retrieved
+     *            the name of the column to be retrieved.
      * @return the column value, or {@code null} if the column name is not found
      * @throws IllegalStateException
      *             if no header mapping was provided
      */
     public String get(String name) {
         if (mapping == null) {
-            throw new IllegalStateException("No header was specified, the record values can't be accessed by name");
+            throw new IllegalStateException("No header mapping was specified, the record values can't be accessed by name");
         }
 
         Integer index = mapping.get(name);
@@ -75,6 +75,17 @@ public class CSVRecord implements Serializable, Iterable<String> {
         return index != null ? values[index.intValue()] : null;
     }
 
+    /**
+     * Checks whether a given columns is mapped.
+     * 
+     * @param name
+     *            the name of the column to be retrieved.
+     * @return whether a given columns is mapped.
+     */
+    public boolean isMapped(String name) {
+        return mapping != null ? mapping.containsKey(name) : false;
+    }
+    
     public Iterator<String> iterator() {
         return Arrays.asList(values).iterator();
     }
