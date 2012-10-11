@@ -41,8 +41,8 @@ public class CSVFormatTest {
         format.withCommentStart('?');
         format.withLineSeparator("?");
         format.withEscape('?');
-        format.withSurroundingSpacesIgnored(false);
-        format.withEmptyLinesIgnored(false);
+        format.withIgnoreSurroundingSpaces(false);
+        format.withIgnoreEmptyLines(false);
 
         assertEquals('!', format.getDelimiter());
         assertEquals('!', format.getEncapsulator());
@@ -50,8 +50,8 @@ public class CSVFormatTest {
         assertEquals('!', format.getEscape());
         assertEquals(CSVFormat.CRLF, format.getLineSeparator());
 
-        assertTrue(format.isSurroundingSpacesIgnored());
-        assertTrue(format.isEmptyLinesIgnored());
+        assertTrue(format.getIgnoreSurroundingSpaces());
+        assertTrue(format.getIgnoreEmptyLines());
     }
 
     @Test
@@ -64,8 +64,8 @@ public class CSVFormatTest {
         assertEquals("?", format.withLineSeparator("?").getLineSeparator());
         assertEquals('?', format.withEscape('?').getEscape());
 
-        assertFalse(format.withSurroundingSpacesIgnored(false).isSurroundingSpacesIgnored());
-        assertFalse(format.withEmptyLinesIgnored(false).isEmptyLinesIgnored());
+        assertFalse(format.withIgnoreSurroundingSpaces(false).getIgnoreSurroundingSpaces());
+        assertFalse(format.withIgnoreEmptyLines(false).getIgnoreEmptyLines());
     }
 
     @Test
@@ -169,7 +169,7 @@ public class CSVFormatTest {
         assertEquals("comment start", CSVFormat.DEFAULT.getCommentStart(), format.getCommentStart());
         assertEquals("line separator", CSVFormat.DEFAULT.getLineSeparator(), format.getLineSeparator());
         assertEquals("escape", CSVFormat.DEFAULT.getEscape(), format.getEscape());
-        assertEquals("trim", CSVFormat.DEFAULT.isSurroundingSpacesIgnored(), format.isSurroundingSpacesIgnored());
-        assertEquals("empty lines", CSVFormat.DEFAULT.isEmptyLinesIgnored(), format.isEmptyLinesIgnored());
+        assertEquals("trim", CSVFormat.DEFAULT.getIgnoreSurroundingSpaces(), format.getIgnoreSurroundingSpaces());
+        assertEquals("empty lines", CSVFormat.DEFAULT.getIgnoreEmptyLines(), format.getIgnoreEmptyLines());
     }
 }

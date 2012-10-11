@@ -51,8 +51,8 @@ abstract class Lexer {
         this.escape = format.getEscape();
         this.encapsulator = format.getEncapsulator();
         this.commmentStart = format.getCommentStart();
-        this.surroundingSpacesIgnored = format.isSurroundingSpacesIgnored();
-        this.emptyLinesIgnored = format.isEmptyLinesIgnored();
+        this.surroundingSpacesIgnored = format.getIgnoreSurroundingSpaces();
+        this.emptyLinesIgnored = format.getIgnoreEmptyLines();
     }
 
     int getLineNumber() {

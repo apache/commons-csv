@@ -65,7 +65,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetLine() throws IOException {
-        CSVParser parser = new CSVParser(new StringReader(CSVINPUT), CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
+        CSVParser parser = new CSVParser(new StringReader(CSVINPUT), CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
         for (String[] re : RESULT) {
             assertArrayEquals(re, parser.getRecord().values());
         }
@@ -75,7 +75,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetRecords() throws IOException {
-        CSVParser parser = new CSVParser(new StringReader(CSVINPUT), CSVFormat.DEFAULT.withSurroundingSpacesIgnored(true));
+        CSVParser parser = new CSVParser(new StringReader(CSVINPUT), CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
         List<CSVRecord> records = parser.getRecords();
         assertEquals(RESULT.length, records.size());
         assertTrue(records.size() > 0);
@@ -307,7 +307,7 @@ public class CSVParserTest {
 
 
         CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withEncapsulator('\'').withEscape('/')
-                               .withEmptyLinesIgnored(true).withLineSeparator(CSVFormat.CRLF);
+                               .withIgnoreEmptyLines(true).withLineSeparator(CSVFormat.CRLF);
 
         CSVParser parser = new CSVParser(code, format);
         List<CSVRecord> records = parser.getRecords();
@@ -337,7 +337,7 @@ public class CSVParserTest {
 
 
         CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withEscape('/')
-                .withEmptyLinesIgnored(true).withLineSeparator(CSVFormat.CRLF);
+                .withIgnoreEmptyLines(true).withLineSeparator(CSVFormat.CRLF);
 
         CSVParser parser = new CSVParser(code, format);
         List<CSVRecord> records = parser.getRecords();

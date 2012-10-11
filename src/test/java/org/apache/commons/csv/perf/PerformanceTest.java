@@ -40,7 +40,7 @@ public class PerformanceTest {
     }
 
     private long parse(Reader in) throws IOException {
-        CSVFormat format = CSVFormat.DEFAULT.withSurroundingSpacesIgnored(false);
+        CSVFormat format = CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(false);
         long count = 0;
         for (Object record : format.parse(in)) {
             count++;

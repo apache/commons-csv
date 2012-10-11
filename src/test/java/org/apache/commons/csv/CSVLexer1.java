@@ -58,7 +58,7 @@ class CSVLexer1 extends Lexer {
         c = in.readAgain();
 
         //  empty line detection: eol AND (last char was EOL or beginning)
-        if (format.isEmptyLinesIgnored()) {
+        if (format.getIgnoreEmptyLines()) {
             while (eol
                     && (lastChar == '\n' || lastChar == '\r' || lastChar == ExtendedBufferedReader.UNDEFINED)
                     && !isEndOfFile(lastChar)) {
@@ -84,7 +84,7 @@ class CSVLexer1 extends Lexer {
         //  important: make sure a new char gets consumed in each iteration
         while (!tkn.isReady && tkn.type != EOF) {
             // ignore whitespaces at beginning of a token
-            if (format.isSurroundingSpacesIgnored()) {
+            if (format.getIgnoreSurroundingSpaces()) {
                 while (isWhitespace(c) && !eol) {
                     wsBuf.append((char) c);
                     c = in.read();
@@ -117,7 +117,7 @@ class CSVLexer1 extends Lexer {
             } else {
                 // next token must be a simple token
                 // add removed blanks when not ignoring whitespace chars...
-                if (!format.isSurroundingSpacesIgnored()) {
+                if (!format.getIgnoreSurroundingSpaces()) {
                     tkn.content.append(wsBuf);
                 }
                 simpleTokenLexer(tkn, c);
@@ -169,7 +169,7 @@ class CSVLexer1 extends Lexer {
             c = in.read();
         }
 
-        if (format.isSurroundingSpacesIgnored()) {
+        if (format.getIgnoreSurroundingSpaces()) {
             trimTrailingSpaces(tkn.content);
         }
 

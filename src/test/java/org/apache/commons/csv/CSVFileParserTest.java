@@ -94,9 +94,9 @@ public class CSVFileParserTest {
             final String option = split[i];
             String[] option_parts = option.split("=",2);
             if ("IgnoreEmpty".equalsIgnoreCase(option_parts[0])){
-                fmt = fmt.withEmptyLinesIgnored(Boolean.parseBoolean(option_parts[1]));
+                fmt = fmt.withIgnoreEmptyLines(Boolean.parseBoolean(option_parts[1]));
             } else if ("IgnoreSpaces".equalsIgnoreCase(option_parts[0])) {
-                fmt = fmt.withSurroundingSpacesIgnored(Boolean.parseBoolean(option_parts[1]));
+                fmt = fmt.withIgnoreSurroundingSpaces(Boolean.parseBoolean(option_parts[1]));
             } else if ("CommentStart".equalsIgnoreCase(option_parts[0])) {
                 fmt = fmt.withCommentStart(option_parts[1].charAt(0));
             } else if ("CheckComments".equalsIgnoreCase(option_parts[0])) {
