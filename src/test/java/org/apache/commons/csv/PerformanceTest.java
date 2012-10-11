@@ -127,7 +127,7 @@ public class PerformanceTest {
             for(int i=1; i < num; i++) { // skip first test
                 tot += elapsedTimes[i];
             }
-            System.out.printf("%-20s: %5dms%n%n", "Average(not first)", (tot/(num-1)));
+            System.out.printf("%-20s: %5dms%n%n", "Average(not first)", tot/(num-1));
         }
         num=0; // ready for next set
     }

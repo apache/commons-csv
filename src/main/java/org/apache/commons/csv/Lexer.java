@@ -95,7 +95,7 @@ abstract class Lexer {
      * @return true if the given char is a whitespace character
      */
     boolean isWhitespace(int c) {
-        return (c != format.getDelimiter()) && Character.isWhitespace((char) c);
+        return c != format.getDelimiter() && Character.isWhitespace((char) c);
     }
 
     /**
@@ -109,7 +109,7 @@ abstract class Lexer {
             // note: does not change c outside of this method !!
             c = in.read();
         }
-        return (c == '\n' || c == '\r');
+        return c == '\n' || c == '\r';
     }
 
     /**
