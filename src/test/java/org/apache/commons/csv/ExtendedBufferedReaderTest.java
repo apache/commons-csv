@@ -17,11 +17,13 @@
 
 package org.apache.commons.csv;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.io.StringReader;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class ExtendedBufferedReaderTest {
 

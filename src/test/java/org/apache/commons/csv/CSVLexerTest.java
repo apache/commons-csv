@@ -17,13 +17,19 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Token.Type.COMMENT;
+import static org.apache.commons.csv.Token.Type.EOF;
+import static org.apache.commons.csv.Token.Type.EORECORD;
+import static org.apache.commons.csv.Token.Type.TOKEN;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.io.StringReader;
 
 import org.junit.Test;
-
-import static org.apache.commons.csv.Token.Type.*;
-import static org.junit.Assert.*;
 
 public class CSVLexerTest {
 

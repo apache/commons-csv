@@ -17,9 +17,13 @@
 
 package org.apache.commons.csv;
 
-import java.io.IOException;
+import static org.apache.commons.csv.Token.Type.COMMENT;
+import static org.apache.commons.csv.Token.Type.EOF;
+import static org.apache.commons.csv.Token.Type.EORECORD;
+import static org.apache.commons.csv.Token.Type.INVALID;
+import static org.apache.commons.csv.Token.Type.TOKEN;
 
-import static org.apache.commons.csv.Token.Type.*;
+import java.io.IOException;
 
 /**
  * Experimental Lexer using enums to keep track of state and character type.

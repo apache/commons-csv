@@ -17,14 +17,14 @@
 
 package org.apache.commons.csv;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class CSVPrinterTest {
 

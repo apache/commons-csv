@@ -17,7 +17,7 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.Token.Type.*;
+import static org.apache.commons.csv.Token.Type.INVALID;
 
 /**
  * Token is an internal token representation.
