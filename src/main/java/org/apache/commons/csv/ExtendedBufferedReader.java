@@ -48,13 +48,13 @@ class ExtendedBufferedReader extends BufferedReader {
     /**
      * Created extended buffered reader using default buffer-size
      */
-    ExtendedBufferedReader(Reader r) {
+    ExtendedBufferedReader(final Reader r) {
         super(r);
     }
 
     @Override
     public int read() throws IOException {
-        int current = super.read();
+        final int current = super.read();
         if (current == CR || (current == LF && lastChar != CR)) {
             lineCounter++;
         }
@@ -75,17 +75,17 @@ class ExtendedBufferedReader extends BufferedReader {
     }
 
     @Override
-    public int read(char[] buf, int offset, int length) throws IOException {
+    public int read(final char[] buf, final int offset, final int length) throws IOException {
         if (length == 0) {
             return 0;
         }
 
-        int len = super.read(buf, offset, length);
+        final int len = super.read(buf, offset, length);
 
         if (len > 0) {
 
             for (int i = offset; i < offset + len; i++) {
-                char ch = buf[i];
+                final char ch = buf[i];
                 if (ch == LF) {
                     if (CR != (i > 0 ? buf[i - 1] : lastChar)) {
                         lineCounter++;
@@ -116,7 +116,7 @@ class ExtendedBufferedReader extends BufferedReader {
      */
     @Override
     public String readLine() throws IOException {
-        String line = super.readLine();
+        final String line = super.readLine();
 
         if (line != null) {
             lastChar = LF; // needed for detecting start of line
@@ -139,7 +139,7 @@ class ExtendedBufferedReader extends BufferedReader {
      */
     int lookAhead() throws IOException {
         super.mark(1);
-        int c = super.read();
+        final int c = super.read();
         super.reset();
 
         return c;

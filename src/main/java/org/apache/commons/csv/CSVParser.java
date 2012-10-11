@@ -85,7 +85,7 @@ public class CSVParser implements Iterable<CSVRecord> {
      * @throws IllegalArgumentException
      *             thrown if the parameters of the format are inconsistent
      */
-    public CSVParser(Reader input) throws IOException {
+    public CSVParser(final Reader input) throws IOException {
         this(input, CSVFormat.DEFAULT);
     }
 
@@ -99,7 +99,7 @@ public class CSVParser implements Iterable<CSVRecord> {
      * @throws IllegalArgumentException
      *             thrown if the parameters of the format are inconsistent
      */
-    public CSVParser(Reader input, CSVFormat format) throws IOException {
+    public CSVParser(final Reader input, final CSVFormat format) throws IOException {
         format.validate();
 
         this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));
@@ -117,7 +117,7 @@ public class CSVParser implements Iterable<CSVRecord> {
      * @throws IllegalArgumentException
      *             thrown if the parameters of the format are inconsistent
      */
-    public CSVParser(String input, CSVFormat format) throws IOException {
+    public CSVParser(final String input, final CSVFormat format) throws IOException {
         this(new StringReader(input), format);
     }
 
@@ -204,7 +204,7 @@ public class CSVParser implements Iterable<CSVRecord> {
      *             on parse error or input read-failure
      */
     public List<CSVRecord> getRecords() throws IOException {
-        List<CSVRecord> records = new ArrayList<CSVRecord>();
+        final List<CSVRecord> records = new ArrayList<CSVRecord>();
         CSVRecord rec;
         while ((rec = getRecord()) != null) {
             records.add(rec);
@@ -215,7 +215,7 @@ public class CSVParser implements Iterable<CSVRecord> {
     /**
      * Initializes the name to index mapping if the format defines a header.
      */
-    private Map<String, Integer> initializeHeader(CSVFormat format) throws IOException {
+    private Map<String, Integer> initializeHeader(final CSVFormat format) throws IOException {
         Map<String, Integer> hdrMap = null;
         if (format.getHeader() != null) {
             hdrMap = new LinkedHashMap<String, Integer>();
@@ -223,7 +223,7 @@ public class CSVParser implements Iterable<CSVRecord> {
             String[] header = null;
             if (format.getHeader().length == 0) {
                 // read the header from the first line of the file
-                CSVRecord rec = getRecord();
+                final CSVRecord rec = getRecord();
                 if (rec != null) {
                     header = rec.values();
                 }
@@ -252,7 +252,7 @@ public class CSVParser implements Iterable<CSVRecord> {
             private CSVRecord getNextRecord() {
                 try {
                     return getRecord();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }

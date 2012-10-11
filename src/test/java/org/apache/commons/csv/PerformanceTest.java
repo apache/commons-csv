@@ -57,7 +57,7 @@ public class PerformanceTest {
 
     private static final CSVFormat format = CSVFormat.EXCEL;
 
-    public static void main(String [] args) throws Exception {
+    public static void main(final String [] args) throws Exception {
         final int argc = args.length;
         String tests[];
         if (argc > 0) {
@@ -71,12 +71,12 @@ public class PerformanceTest {
         } else {
             tests=new String[]{"file", "split", "extb", "exts", "csv", "lexreset", "lexnew"};
         }
-        for(String p : PROPS) {
+        for(final String p : PROPS) {
             System.out.println(p+"="+System.getProperty(p));
         }
         System.out.println("Max count: "+max+"\n");
 
-        for(String test : tests) {
+        for(final String test : tests) {
             if ("file".equals(test)) {
                 testReadBigFile(false);
             } else if ("split".equals(test)) {
@@ -107,14 +107,14 @@ public class PerformanceTest {
     private static class Stats {
         final int count;
         final int fields;
-        Stats(int c, int f) {
+        Stats(final int c, final int f) {
             count=c;
             fields=f;
         }
     }
 
     // Display end stats; store elapsed for average
-    private static void show(String msg, Stats s, long start) {
+    private static void show(final String msg, final Stats s, final long start) {
         final long elapsed = System.currentTimeMillis() - start;
         System.out.printf("%-20s: %5dms " + s.count + " lines "+ s.fields + " fields%n",msg,elapsed);
         elapsedTimes[num++]=elapsed;
@@ -132,18 +132,18 @@ public class PerformanceTest {
         num=0; // ready for next set
     }
 
-    private static void testReadBigFile(boolean split) throws Exception {
+    private static void testReadBigFile(final boolean split) throws Exception {
        for (int i = 0; i < max; i++) {
-           BufferedReader in = getReader();
-           long t0 = System.currentTimeMillis();
-           Stats s = readAll(in, split);
+           final BufferedReader in = getReader();
+           final long t0 = System.currentTimeMillis();
+           final Stats s = readAll(in, split);
            in.close();
            show(split?"file+split":"file", s, t0);
        }
        show();
    }
 
-   private static Stats readAll(BufferedReader in, boolean split) throws IOException {
+   private static Stats readAll(final BufferedReader in, final boolean split) throws IOException {
        int count = 0;
        int fields = 0;
        String record;
@@ -154,10 +154,10 @@ public class PerformanceTest {
        return new Stats(count, fields);
    }
 
-   private static void testExtendedBuffer(boolean makeString) throws Exception {
+   private static void testExtendedBuffer(final boolean makeString) throws Exception {
        for (int i = 0; i < max; i++) {
-           ExtendedBufferedReader in = new ExtendedBufferedReader(getReader());
-           long t0 = System.currentTimeMillis();
+           final ExtendedBufferedReader in = new ExtendedBufferedReader(getReader());
+           final long t0 = System.currentTimeMillis();
            int read;
            int fields = 0;
            int lines = 0;
@@ -194,9 +194,9 @@ public class PerformanceTest {
    private static void testParseCommonsCSV() throws Exception {
        for (int i = 0; i < max; i++) {
            final BufferedReader reader = getReader();
-           CSVParser parser = new CSVParser(reader, format);
-           long t0 = System.currentTimeMillis();
-           Stats s = iterate(parser);
+           final CSVParser parser = new CSVParser(reader, format);
+           final long t0 = System.currentTimeMillis();
+           final Stats s = iterate(parser);
            reader.close();
            show("CSV", s, t0);
        }
@@ -204,14 +204,15 @@ public class PerformanceTest {
    }
 
 
-   private static Constructor<Lexer> getLexerCtor(String clazz) throws Exception {
+   private static Constructor<Lexer> getLexerCtor(final String clazz) throws Exception {
        @SuppressWarnings("unchecked")
+    final
        Class<Lexer> lexer = (Class<Lexer>) Class.forName("org.apache.commons.csv."+clazz);
-       Constructor<Lexer> ctor = lexer.getConstructor(new Class<?>[]{CSVFormat.class, ExtendedBufferedReader.class});
+       final Constructor<Lexer> ctor = lexer.getConstructor(new Class<?>[]{CSVFormat.class, ExtendedBufferedReader.class});
        return ctor;
    }
 
-   private static void testCSVLexer(final boolean newToken, String test) throws Exception {
+   private static void testCSVLexer(final boolean newToken, final String test) throws Exception {
        Token token = new Token();
        String dynamic = "";
        for (int i = 0; i < max; i++) {
@@ -225,7 +226,7 @@ public class PerformanceTest {
            }
            int count = 0;
            int fields = 0;
-           long t0 = System.currentTimeMillis();
+           final long t0 = System.currentTimeMillis();
            do {
                if (newToken) {
                    token = new Token();
@@ -250,17 +251,17 @@ public class PerformanceTest {
               }
 
            } while (!token.type.equals(Token.Type.EOF));
-           Stats s = new Stats(count, fields);
+           final Stats s = new Stats(count, fields);
            input.close();
            show(lexer.getClass().getSimpleName()+dynamic+" "+(newToken ? "new" : "reset"), s, t0);
        }
        show();
    }
 
-   private static Stats iterate(Iterable<CSVRecord> it) {
+   private static Stats iterate(final Iterable<CSVRecord> it) {
        int count = 0;
        int fields = 0;
-       for (CSVRecord record : it) {
+       for (final CSVRecord record : it) {
            count++;
            fields+=record.size();
        }

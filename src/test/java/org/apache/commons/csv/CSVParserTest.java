@@ -65,8 +65,8 @@ public class CSVParserTest {
 
     @Test
     public void testGetLine() throws IOException {
-        CSVParser parser = new CSVParser(new StringReader(CSVINPUT), CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
-        for (String[] re : RESULT) {
+        final CSVParser parser = new CSVParser(new StringReader(CSVINPUT), CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
+        for (final String[] re : RESULT) {
             assertArrayEquals(re, parser.getRecord().values());
         }
 
@@ -75,8 +75,8 @@ public class CSVParserTest {
 
     @Test
     public void testGetRecords() throws IOException {
-        CSVParser parser = new CSVParser(new StringReader(CSVINPUT), CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
-        List<CSVRecord> records = parser.getRecords();
+        final CSVParser parser = new CSVParser(new StringReader(CSVINPUT), CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
+        final List<CSVRecord> records = parser.getRecords();
         assertEquals(RESULT.length, records.size());
         assertTrue(records.size() > 0);
         for (int i = 0; i < RESULT.length; i++) {
@@ -86,18 +86,18 @@ public class CSVParserTest {
 
     @Test
     public void testExcelFormat1() throws IOException {
-        String code =
+        final String code =
                 "value1,value2,value3,value4\r\na,b,c,d\r\n  x,,,"
                         + "\r\n\r\n\"\"\"hello\"\"\",\"  \"\"world\"\"\",\"abc\ndef\",\r\n";
-        String[][] res = {
+        final String[][] res = {
                 {"value1", "value2", "value3", "value4"},
                 {"a", "b", "c", "d"},
                 {"  x", "", "", ""},
                 {""},
                 {"\"hello\"", "  \"world\"", "abc\ndef", ""}
         };
-        CSVParser parser = new CSVParser(code, CSVFormat.EXCEL);
-        List<CSVRecord> records = parser.getRecords();
+        final CSVParser parser = new CSVParser(code, CSVFormat.EXCEL);
+        final List<CSVRecord> records = parser.getRecords();
         assertEquals(res.length, records.size());
         assertTrue(records.size() > 0);
         for (int i = 0; i < res.length; i++) {
@@ -107,16 +107,16 @@ public class CSVParserTest {
 
     @Test
     public void testExcelFormat2() throws Exception {
-        String code = "foo,baar\r\n\r\nhello,\r\n\r\nworld,\r\n";
-        String[][] res = {
+        final String code = "foo,baar\r\n\r\nhello,\r\n\r\nworld,\r\n";
+        final String[][] res = {
                 {"foo", "baar"},
                 {""},
                 {"hello", ""},
                 {""},
                 {"world", ""}
         };
-        CSVParser parser = new CSVParser(code, CSVFormat.EXCEL);
-        List<CSVRecord> records = parser.getRecords();
+        final CSVParser parser = new CSVParser(code, CSVFormat.EXCEL);
+        final List<CSVRecord> records = parser.getRecords();
         assertEquals(res.length, records.size());
         assertTrue(records.size() > 0);
         for (int i = 0; i < res.length; i++) {
@@ -126,7 +126,7 @@ public class CSVParserTest {
 
     @Test
     public void testEndOfFileBehaviourExcel() throws Exception {
-        String[] codes = {
+        final String[] codes = {
                 "hello,\r\n\r\nworld,\r\n",
                 "hello,\r\n\r\nworld,",
                 "hello,\r\n\r\nworld,\"\"\r\n",
@@ -136,15 +136,15 @@ public class CSVParserTest {
                 "hello,\r\n\r\nworld,\"\"\n",
                 "hello,\r\n\r\nworld,\"\""
         };
-        String[][] res = {
+        final String[][] res = {
                 {"hello", ""},
                 {""},  // Excel format does not ignore empty lines
                 {"world", ""}
         };
 
-        for (String code : codes) {
-            CSVParser parser = new CSVParser(code, CSVFormat.EXCEL);
-            List<CSVRecord> records = parser.getRecords();
+        for (final String code : codes) {
+            final CSVParser parser = new CSVParser(code, CSVFormat.EXCEL);
+            final List<CSVRecord> records = parser.getRecords();
             assertEquals(res.length, records.size());
             assertTrue(records.size() > 0);
             for (int i = 0; i < res.length; i++) {
@@ -155,7 +155,7 @@ public class CSVParserTest {
 
     @Test
     public void testEndOfFileBehaviorCSV() throws Exception {
-        String[] codes = {
+        final String[] codes = {
                 "hello,\r\n\r\nworld,\r\n",
                 "hello,\r\n\r\nworld,",
                 "hello,\r\n\r\nworld,\"\"\r\n",
@@ -165,13 +165,13 @@ public class CSVParserTest {
                 "hello,\r\n\r\nworld,\"\"\n",
                 "hello,\r\n\r\nworld,\"\""
         };
-        String[][] res = {
+        final String[][] res = {
                 {"hello", ""},  // CSV format ignores empty lines
                 {"world", ""}
         };
-        for (String code : codes) {
-            CSVParser parser = new CSVParser(new StringReader(code));
-            List<CSVRecord> records = parser.getRecords();
+        for (final String code : codes) {
+            final CSVParser parser = new CSVParser(new StringReader(code));
+            final List<CSVRecord> records = parser.getRecords();
             assertEquals(res.length, records.size());
             assertTrue(records.size() > 0);
             for (int i = 0; i < res.length; i++) {
@@ -182,20 +182,20 @@ public class CSVParserTest {
 
     @Test
     public void testEmptyLineBehaviourExcel() throws Exception {
-        String[] codes = {
+        final String[] codes = {
                 "hello,\r\n\r\n\r\n",
                 "hello,\n\n\n",
                 "hello,\"\"\r\n\r\n\r\n",
                 "hello,\"\"\n\n\n"
         };
-        String[][] res = {
+        final String[][] res = {
                 {"hello", ""},
                 {""},  // Excel format does not ignore empty lines
                 {""}
         };
-        for (String code : codes) {
-            CSVParser parser = new CSVParser(code, CSVFormat.EXCEL);
-            List<CSVRecord> records = parser.getRecords();
+        for (final String code : codes) {
+            final CSVParser parser = new CSVParser(code, CSVFormat.EXCEL);
+            final List<CSVRecord> records = parser.getRecords();
             assertEquals(res.length, records.size());
             assertTrue(records.size() > 0);
             for (int i = 0; i < res.length; i++) {
@@ -206,18 +206,18 @@ public class CSVParserTest {
 
     @Test
     public void testEmptyLineBehaviourCSV() throws Exception {
-        String[] codes = {
+        final String[] codes = {
                 "hello,\r\n\r\n\r\n",
                 "hello,\n\n\n",
                 "hello,\"\"\r\n\r\n\r\n",
                 "hello,\"\"\n\n\n"
         };
-        String[][] res = {
+        final String[][] res = {
                 {"hello", ""}  // CSV format ignores empty lines
         };
-        for (String code : codes) {
-            CSVParser parser = new CSVParser(new StringReader(code));
-            List<CSVRecord> records = parser.getRecords();
+        for (final String code : codes) {
+            final CSVParser parser = new CSVParser(new StringReader(code));
+            final List<CSVRecord> records = parser.getRecords();
             assertEquals(res.length, records.size());
             assertTrue(records.size() > 0);
             for (int i = 0; i < res.length; i++) {
@@ -228,14 +228,14 @@ public class CSVParserTest {
 
     @Test
     public void testEmptyFile() throws Exception {
-        CSVParser parser = new CSVParser("", CSVFormat.DEFAULT);
+        final CSVParser parser = new CSVParser("", CSVFormat.DEFAULT);
         assertNull(parser.getRecord());
     }
 
     @Test
     public void testCSV57() throws Exception {
-        CSVParser parser = new CSVParser("", CSVFormat.DEFAULT);
-        List<CSVRecord> l = parser.getRecords();
+        final CSVParser parser = new CSVParser("", CSVFormat.DEFAULT);
+        final List<CSVRecord> l = parser.getRecords();
         assertNotNull(l);
         assertEquals(0, l.size());
     }
@@ -243,7 +243,7 @@ public class CSVParserTest {
     @Test
     @Ignore
     public void testBackslashEscapingOld() throws IOException {
-        String code =
+        final String code =
                 "one,two,three\n"
                         + "on\\\"e,two\n"
                         + "on\"e,two\n"
@@ -253,7 +253,7 @@ public class CSVParserTest {
                         + "\"a\\\\\"\n"
                         + "a\\,b\n"
                         + "\"a\\\\,b\"";
-        String[][] res = {
+        final String[][] res = {
                 {"one", "two", "three"},
                 {"on\\\"e", "two"},
                 {"on\"e", "two"},
@@ -264,8 +264,8 @@ public class CSVParserTest {
                 {"a\\", "b"},  // a backslash must be returnd
                 {"a\\\\,b"}    // backslash in quotes only escapes a delimiter (",")
         };
-        CSVParser parser = new CSVParser(new StringReader(code));
-        List<CSVRecord> records = parser.getRecords();
+        final CSVParser parser = new CSVParser(new StringReader(code));
+        final List<CSVRecord> records = parser.getRecords();
         assertEquals(res.length, records.size());
         assertTrue(records.size() > 0);
         for (int i = 0; i < res.length; i++) {
@@ -280,7 +280,7 @@ public class CSVParserTest {
         // We will test with a forward slash as the escape char, and a single
         // quote as the encapsulator.
 
-        String code =
+        final String code =
                 "one,two,three\n" // 0
                         + "'',''\n"       // 1) empty encapsulators
                         + "/',/'\n"       // 2) single encapsulators
@@ -292,7 +292,7 @@ public class CSVParserTest {
                         + "   8   ,   \"quoted \"\" /\" // string\"   \n"     // don't eat spaces
                         + "9,   /\n   \n"  // escaped newline
                         + "";
-        String[][] res = {
+        final String[][] res = {
                 {"one", "two", "three"}, // 0
                 {"", ""},                // 1
                 {"'", "'"},              // 2
@@ -306,11 +306,11 @@ public class CSVParserTest {
         };
 
 
-        CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withEncapsulator('\'').withEscape('/')
+        final CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withEncapsulator('\'').withEscape('/')
                                .withIgnoreEmptyLines(true).withLineSeparator(CSVFormat.CRLF);
 
-        CSVParser parser = new CSVParser(code, format);
-        List<CSVRecord> records = parser.getRecords();
+        final CSVParser parser = new CSVParser(code, format);
+        final List<CSVRecord> records = parser.getRecords();
         assertTrue(records.size() > 0);
         for (int i = 0; i < res.length; i++) {
             assertArrayEquals(res[i], records.get(i).values());
@@ -324,23 +324,23 @@ public class CSVParserTest {
         // We will test with a forward slash as the escape char, and a single
         // quote as the encapsulator.
 
-        String code = ""
+        final String code = ""
                 + " , , \n"           // 1)
                 + " \t ,  , \n"       // 2)
                 + " // , /, , /,\n"   // 3)
                 + "";
-        String[][] res = {
+        final String[][] res = {
                 {" ", " ", " "},         // 1
                 {" \t ", "  ", " "},     // 2
                 {" / ", " , ", " ,"},    // 3
         };
 
 
-        CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withEscape('/')
+        final CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withEscape('/')
                 .withIgnoreEmptyLines(true).withLineSeparator(CSVFormat.CRLF);
 
-        CSVParser parser = new CSVParser(code, format);
-        List<CSVRecord> records = parser.getRecords();
+        final CSVParser parser = new CSVParser(code, format);
+        final List<CSVRecord> records = parser.getRecords();
         assertTrue(records.size() > 0);
 
         Utils.compare("", res, records);
@@ -348,13 +348,13 @@ public class CSVParserTest {
 
     @Test
     public void testDefaultFormat() throws IOException {
-        String code = ""
+        final String code = ""
                 + "a,b#\n"           // 1)
                 + "\"\n\",\" \",#\n"   // 2)
                 + "#,\"\"\n"         // 3)
                 + "# Final comment\n"// 4)
                 ;
-        String[][] res = {
+        final String[][] res = {
                 {"a", "b#"},
                 {"\n", " ", "#"},
                 {"#", ""},
@@ -370,7 +370,7 @@ public class CSVParserTest {
 
         Utils.compare("Failed to parse without comments", res, records);
 
-        String[][] res_comments = {
+        final String[][] res_comments = {
                 {"a", "b#"},
                 {"\n", " ", "#"},
         };
@@ -384,45 +384,45 @@ public class CSVParserTest {
 
     @Test
     public void testCarriageReturnLineFeedEndings() throws IOException {
-        String code = "foo\r\nbaar,\r\nhello,world\r\n,kanu";
-        CSVParser parser = new CSVParser(new StringReader(code));
-        List<CSVRecord> records = parser.getRecords();
+        final String code = "foo\r\nbaar,\r\nhello,world\r\n,kanu";
+        final CSVParser parser = new CSVParser(new StringReader(code));
+        final List<CSVRecord> records = parser.getRecords();
         assertEquals(4, records.size());
     }
 
     @Test
     public void testCarriageReturnEndings() throws IOException {
-        String code = "foo\rbaar,\rhello,world\r,kanu";
-        CSVParser parser = new CSVParser(new StringReader(code));
-        List<CSVRecord> records = parser.getRecords();
+        final String code = "foo\rbaar,\rhello,world\r,kanu";
+        final CSVParser parser = new CSVParser(new StringReader(code));
+        final List<CSVRecord> records = parser.getRecords();
         assertEquals(4, records.size());
     }
 
     @Test
     public void testLineFeedEndings() throws IOException {
-        String code = "foo\nbaar,\nhello,world\n,kanu";
-        CSVParser parser = new CSVParser(new StringReader(code));
-        List<CSVRecord> records = parser.getRecords();
+        final String code = "foo\nbaar,\nhello,world\n,kanu";
+        final CSVParser parser = new CSVParser(new StringReader(code));
+        final List<CSVRecord> records = parser.getRecords();
         assertEquals(4, records.size());
     }
 
     @Test
     public void testIgnoreEmptyLines() throws IOException {
-        String code = "\nfoo,baar\n\r\n,\n\n,world\r\n\n";
+        final String code = "\nfoo,baar\n\r\n,\n\n,world\r\n\n";
         //String code = "world\r\n\n";
         //String code = "foo;baar\r\n\r\nhello;\r\n\r\nworld;\r\n";
-        CSVParser parser = new CSVParser(new StringReader(code));
-        List<CSVRecord> records = parser.getRecords();
+        final CSVParser parser = new CSVParser(new StringReader(code));
+        final List<CSVRecord> records = parser.getRecords();
         assertEquals(3, records.size());
     }
 
     @Test
     public void testForEach() throws Exception {
-        List<CSVRecord> records = new ArrayList<CSVRecord>();
+        final List<CSVRecord> records = new ArrayList<CSVRecord>();
 
-        Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
+        final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
 
-        for (CSVRecord record : CSVFormat.DEFAULT.parse(in)) {
+        for (final CSVRecord record : CSVFormat.DEFAULT.parse(in)) {
             records.add(record);
         }
 
@@ -434,15 +434,15 @@ public class CSVParserTest {
 
     @Test
     public void testIterator() throws Exception {
-        Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
+        final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
 
-        Iterator<CSVRecord> iterator = CSVFormat.DEFAULT.parse(in).iterator();
+        final Iterator<CSVRecord> iterator = CSVFormat.DEFAULT.parse(in).iterator();
 
         assertTrue(iterator.hasNext());
         try {
             iterator.remove();
             fail("expected UnsupportedOperationException");
-        } catch (UnsupportedOperationException expected) {
+        } catch (final UnsupportedOperationException expected) {
         }
         assertArrayEquals(new String[]{"a", "b", "c"}, iterator.next().values());
         assertArrayEquals(new String[]{"1", "2", "3"}, iterator.next().values());
@@ -455,20 +455,20 @@ public class CSVParserTest {
         try {
             iterator.next();
             fail("NoSuchElementException expected");
-        } catch (NoSuchElementException e) {
+        } catch (final NoSuchElementException e) {
             // expected
         }
     }
 
     @Test
     public void testHeader() throws Exception {
-        Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
+        final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
 
-        Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader().parse(in).iterator();
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader().parse(in).iterator();
 
         for (int i = 0; i < 2; i++) {
             assertTrue(records.hasNext());
-            CSVRecord record = records.next();
+            final CSVRecord record = records.next();
             assertEquals(record.get(0), record.get("a"));
             assertEquals(record.get(1), record.get("b"));
             assertEquals(record.get(2), record.get("c"));
@@ -479,13 +479,13 @@ public class CSVParserTest {
 
     @Test
     public void testHeaderComment() throws Exception {
-        Reader in = new StringReader("# comment\na,b,c\n1,2,3\nx,y,z");
+        final Reader in = new StringReader("# comment\na,b,c\n1,2,3\nx,y,z");
 
-        Iterator<CSVRecord> records = CSVFormat.DEFAULT.withCommentStart('#').withHeader().parse(in).iterator();
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withCommentStart('#').withHeader().parse(in).iterator();
 
         for (int i = 0; i < 2; i++) {
             assertTrue(records.hasNext());
-            CSVRecord record = records.next();
+            final CSVRecord record = records.next();
             assertEquals(record.get(0), record.get("a"));
             assertEquals(record.get(1), record.get("b"));
             assertEquals(record.get(2), record.get("c"));
@@ -496,13 +496,13 @@ public class CSVParserTest {
 
     @Test
     public void testProvidedHeader() throws Exception {
-        Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
+        final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
 
-        Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("A", "B", "C").parse(in).iterator();
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("A", "B", "C").parse(in).iterator();
 
         for (int i = 0; i < 3; i++) {
             assertTrue(records.hasNext());
-            CSVRecord record = records.next();
+            final CSVRecord record = records.next();
             assertTrue(record.isMapped("A"));
             assertTrue(record.isMapped("B"));
             assertTrue(record.isMapped("C"));
@@ -523,12 +523,12 @@ public class CSVParserTest {
         Assert.assertEquals("A", columnNames.next());
         Assert.assertEquals("B", columnNames.next());
         Assert.assertEquals("C", columnNames.next());
-        Iterator<CSVRecord> records = parser.iterator();
+        final Iterator<CSVRecord> records = parser.iterator();
         
         // Parse to make sure getHeaderMap did not have a side-effect.
         for (int i = 0; i < 3; i++) {
             assertTrue(records.hasNext());
-            CSVRecord record = records.next();
+            final CSVRecord record = records.next();
             assertEquals(record.get(0), record.get("A"));
             assertEquals(record.get(1), record.get("B"));
             assertEquals(record.get(2), record.get("C"));
@@ -539,7 +539,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetLineNumberWithLF() throws Exception {
-        CSVParser parser = new CSVParser("a\nb\nc", CSVFormat.DEFAULT.withLineSeparator("\n"));
+        final CSVParser parser = new CSVParser("a\nb\nc", CSVFormat.DEFAULT.withLineSeparator("\n"));
 
         assertEquals(0, parser.getLineNumber());
         assertNotNull(parser.getRecord());
@@ -553,7 +553,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetLineNumberWithCRLF() throws Exception {
-        CSVParser parser = new CSVParser("a\r\nb\r\nc", CSVFormat.DEFAULT.withLineSeparator(CSVFormat.CRLF));
+        final CSVParser parser = new CSVParser("a\r\nb\r\nc", CSVFormat.DEFAULT.withLineSeparator(CSVFormat.CRLF));
 
         assertEquals(0, parser.getLineNumber());
         assertNotNull(parser.getRecord());
@@ -567,7 +567,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetLineNumberWithCR() throws Exception {
-        CSVParser parser = new CSVParser("a\rb\rc", CSVFormat.DEFAULT.withLineSeparator("\r"));
+        final CSVParser parser = new CSVParser("a\rb\rc", CSVFormat.DEFAULT.withLineSeparator("\r"));
 
         assertEquals(0, parser.getLineNumber());
         assertNotNull(parser.getRecord());

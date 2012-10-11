@@ -32,88 +32,88 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrinter1() throws IOException {
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a", "b");
         assertEquals("a,b" + lineSeparator, sw.toString());
     }
 
     @Test
     public void testPrinter2() throws IOException {
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a,b", "b");
         assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
     }
 
     @Test
     public void testPrinter3() throws IOException {
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a, b", "b ");
         assertEquals("\"a, b\",\"b \"" + lineSeparator, sw.toString());
     }
 
     @Test
     public void testPrinter4() throws IOException {
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a", "b\"c");
         assertEquals("a,\"b\"\"c\"" + lineSeparator, sw.toString());
     }
 
     @Test
     public void testPrinter5() throws IOException {
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a", "b\nc");
         assertEquals("a,\"b\nc\"" + lineSeparator, sw.toString());
     }
 
     @Test
     public void testPrinter6() throws IOException {
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a", "b\r\nc");
         assertEquals("a,\"b\r\nc\"" + lineSeparator, sw.toString());
     }
 
     @Test
     public void testPrinter7() throws IOException {
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a", "b\\c");
         assertEquals("a,b\\c" + lineSeparator, sw.toString());
     }
 
     @Test
     public void testExcelPrinter1() throws IOException {
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
         printer.println("a", "b");
         assertEquals("a,b" + lineSeparator, sw.toString());
     }
 
     @Test
     public void testExcelPrinter2() throws IOException {
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
         printer.println("a,b", "b");
         assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
     }
 
     @Test
     public void testPrintNullValues() throws IOException {
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.println("a", null, "b");
         assertEquals("a,,b" + lineSeparator, sw.toString());
     }
 
     @Test
     public void testDisabledComment() throws IOException {
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printComment("This is a comment");
 
         assertEquals("", sw.toString());
@@ -121,8 +121,8 @@ public class CSVPrinterTest {
 
     @Test
     public void testSingleLineComment() throws IOException {
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
         printer.printComment("This is a comment");
 
         assertEquals("# This is a comment" + lineSeparator, sw.toString());
@@ -130,8 +130,8 @@ public class CSVPrinterTest {
 
     @Test
     public void testMultiLineComment() throws IOException {
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
         printer.printComment("This is a comment\non multiple lines");
 
         assertEquals("# This is a comment" + lineSeparator + "# on multiple lines" + lineSeparator, sw.toString());
@@ -139,35 +139,35 @@ public class CSVPrinterTest {
 
     @Test
     public void testRandom() throws Exception {
-        int iter = 10000;
+        final int iter = 10000;
         doRandom(CSVFormat.DEFAULT, iter);
         doRandom(CSVFormat.EXCEL, iter);
         doRandom(CSVFormat.MYSQL, iter);
     }
 
-    public void doRandom(CSVFormat format, int iter) throws Exception {
+    public void doRandom(final CSVFormat format, final int iter) throws Exception {
         for (int i = 0; i < iter; i++) {
             doOneRandom(format);
         }
     }
 
-    public void doOneRandom(CSVFormat format) throws Exception {
-        Random r = new Random();
+    public void doOneRandom(final CSVFormat format) throws Exception {
+        final Random r = new Random();
 
-        int nLines = r.nextInt(4) + 1;
-        int nCol = r.nextInt(3) + 1;
+        final int nLines = r.nextInt(4) + 1;
+        final int nCol = r.nextInt(3) + 1;
         // nLines=1;nCol=2;
-        String[][] lines = new String[nLines][];
+        final String[][] lines = new String[nLines][];
         for (int i = 0; i < nLines; i++) {
-            String[] line = new String[nCol];
+            final String[] line = new String[nCol];
             lines[i] = line;
             for (int j = 0; j < nCol; j++) {
                 line[j] = randStr();
             }
         }
 
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, format);
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, format);
 
         for (int i = 0; i < nLines; i++) {
             // for (int j=0; j<lines[i].length; j++) System.out.println("### VALUE=:" + printable(lines[i][j]));
@@ -175,19 +175,19 @@ public class CSVPrinterTest {
         }
 
         printer.flush();
-        String result = sw.toString();
+        final String result = sw.toString();
         // System.out.println("### :" + printable(result));
 
-        CSVParser parser = new CSVParser(result, format);
-        List<CSVRecord> parseResult = parser.getRecords();
+        final CSVParser parser = new CSVParser(result, format);
+        final List<CSVRecord> parseResult = parser.getRecords();
 
         Utils.compare("Printer output :" + printable(result), lines, parseResult);
     }
 
-    public static String printable(String s) {
-        StringBuilder sb = new StringBuilder();
+    public static String printable(final String s) {
+        final StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
+            final char ch = s.charAt(i);
             if (ch <= ' ' || ch >= 128) {
                 sb.append("(").append((int) ch).append(")");
             } else {
@@ -198,15 +198,15 @@ public class CSVPrinterTest {
     }
 
     public String randStr() {
-        Random r = new Random();
+        final Random r = new Random();
 
-        int sz = r.nextInt(20);
+        final int sz = r.nextInt(20);
         // sz = r.nextInt(3);
-        char[] buf = new char[sz];
+        final char[] buf = new char[sz];
         for (int i = 0; i < sz; i++) {
             // stick in special chars with greater frequency
             char ch;
-            int what = r.nextInt(20);
+            final int what = r.nextInt(20);
             switch (what) {
                 case 0:
                     ch = '\r';

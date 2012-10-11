@@ -34,7 +34,7 @@ public class CSVFormatTest {
 
     @Test
     public void testImmutalibity() {
-        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, CSVFormat.CRLF, null);
+        final CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, CSVFormat.CRLF, null);
 
         format.withDelimiter('?');
         format.withEncapsulator('?');
@@ -56,7 +56,7 @@ public class CSVFormatTest {
 
     @Test
     public void testMutators() {
-        CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, CSVFormat.CRLF, null);
+        final CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, CSVFormat.CRLF, null);
 
         assertEquals('?', format.withDelimiter('?').getDelimiter());
         assertEquals('?', format.withEncapsulator('?').getEncapsulator());
@@ -70,7 +70,7 @@ public class CSVFormatTest {
 
     @Test
     public void testFormat() {
-        CSVFormat format = CSVFormat.DEFAULT;
+        final CSVFormat format = CSVFormat.DEFAULT;
 
         assertEquals("", format.format());
         assertEquals("a,b,c", format.format("a", "b", "c"));
@@ -79,54 +79,54 @@ public class CSVFormatTest {
 
     @Test
     public void testValidation() {
-        CSVFormat format = CSVFormat.DEFAULT;
+        final CSVFormat format = CSVFormat.DEFAULT;
 
         try {
             format.withDelimiter('\n');
             fail();
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             // expected
         }
 
         try {
             format.withEscape('\r');
             fail();
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             // expected
         }
 
         try {
             format.withEncapsulator('\n');
             fail();
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             // expected
         }
 
         try {
             format.withCommentStart('\r');
             fail();
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             // expected
         }
 
         try {
             format.withDelimiter('!').withEscape('!').validate();
             fail();
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             // expected
         }
 
         try {
             format.withDelimiter('!').withCommentStart('!').validate();
             fail();
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             // expected
         }
 
         try {
             format.withEncapsulator('!').withCommentStart('!').validate();
             fail();
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             // expected
         }
 
@@ -135,7 +135,7 @@ public class CSVFormatTest {
         try {
             format.withEscape('!').withCommentStart('!').validate();
             fail();
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             // expected
         }
 
@@ -145,7 +145,7 @@ public class CSVFormatTest {
         try {
             format.withEncapsulator('!').withDelimiter('!').validate();
             fail();
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             // expected
         }
     }
@@ -153,15 +153,15 @@ public class CSVFormatTest {
     @SuppressWarnings("boxing") // no need to worry about boxing here
     @Test
     public void testSerialization() throws Exception {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        ObjectOutputStream oos = new ObjectOutputStream(out);
+        final ObjectOutputStream oos = new ObjectOutputStream(out);
         oos.writeObject(CSVFormat.DEFAULT);
         oos.flush();
         oos.close();
 
-        ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(out.toByteArray()));
-        CSVFormat format = (CSVFormat) in.readObject();
+        final ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(out.toByteArray()));
+        final CSVFormat format = (CSVFormat) in.readObject();
 
         assertNotNull(format);
         assertEquals("delimiter", CSVFormat.DEFAULT.getDelimiter(), format.getDelimiter());

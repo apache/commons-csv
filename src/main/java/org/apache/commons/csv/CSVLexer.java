@@ -28,7 +28,7 @@ import java.io.IOException;
 class CSVLexer extends Lexer {
 
     // ctor needs to be public so can be called dynamically by PerformanceTest class
-    public CSVLexer(CSVFormat format, ExtendedBufferedReader in) {
+    public CSVLexer(final CSVFormat format, final ExtendedBufferedReader in) {
         super(format, in);
     }
 
@@ -44,7 +44,7 @@ class CSVLexer extends Lexer {
      *             on stream access error
      */
     @Override
-    Token nextToken(Token token) throws IOException {
+    Token nextToken(final Token token) throws IOException {
 
         // get the last read char (required for empty line detection)
         int lastChar = in.readAgain();
@@ -81,7 +81,7 @@ class CSVLexer extends Lexer {
         }
 
         if (isStartOfLine(lastChar) && isCommentStart(c)) {
-            String comment = in.readLine().trim();
+            final String comment = in.readLine().trim();
             token.content.append(comment);
             token.type = COMMENT;
             return token;
@@ -141,7 +141,7 @@ class CSVLexer extends Lexer {
      * @throws IOException
      *             on stream access error
      */
-    private Token simpleTokenLexer(Token tkn, int c) throws IOException {
+    private Token simpleTokenLexer(final Token tkn, int c) throws IOException {
         // Faster to use while(true)+break than while(tkn.type == INVALID)
         while (true) {
             if (isEndOfLine(c)) {
@@ -190,9 +190,9 @@ class CSVLexer extends Lexer {
      * @throws IOException
      *             on invalid state: EOF before closing encapsulator or invalid character before delimiter or EOL
      */
-    private Token encapsulatedTokenLexer(Token tkn) throws IOException {
+    private Token encapsulatedTokenLexer(final Token tkn) throws IOException {
         // save current line number in case needed for IOE
-        int startLineNumber = getLineNumber();
+        final int startLineNumber = getLineNumber();
         int c;
         while (true) {
             c = in.read();

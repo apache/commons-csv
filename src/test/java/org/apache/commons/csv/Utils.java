@@ -37,7 +37,7 @@ public class Utils {
      * @param expected the 2d array of expected results
      * @param actual the 2d array of actual results
      */
-    public static void compare(String message, String[][] expected, String[][] actual) {
+    public static void compare(final String message, final String[][] expected, final String[][] actual) {
         Assert.assertEquals(message+"  - outer array size", expected.length, actual.length);
         for(int i = 0; i < expected.length; i++) {
             Assert.assertArrayEquals(message+" (entry "+i+")",expected[i], actual[i]);
@@ -51,7 +51,7 @@ public class Utils {
      * @param expected the 2d array of expected results
      * @param actual the List of {@link CSVRecord} entries, each containing an array of values
      */
-    public static void compare(String message, String[][] expected, List<CSVRecord> actual) {
+    public static void compare(final String message, final String[][] expected, final List<CSVRecord> actual) {
         Assert.assertEquals(message+"  - outer array size", expected.length, actual.size());
         for(int i = 0; i < expected.length; i++) {
             Assert.assertArrayEquals(message+" (entry "+i+")",expected[i], actual.get(i).values());

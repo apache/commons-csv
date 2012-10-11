@@ -45,7 +45,7 @@ public class CSVPrinter {
      * @throws IllegalArgumentException
      *             thrown if the parameters of the format are inconsistent
      */
-    public CSVPrinter(Appendable out, CSVFormat format) {
+    public CSVPrinter(final Appendable out, final CSVFormat format) {
         this.out = out;
         this.format = format == null ? CSVFormat.DEFAULT : format;
         this.format.validate();
@@ -81,8 +81,8 @@ public class CSVPrinter {
      * @param values
      *            values to be outputted.
      */
-    public void println(String... values) throws IOException {
-        for (String value : values) {
+    public void println(final String... values) throws IOException {
+        for (final String value : values) {
             print(value);
         }
         println();
@@ -98,7 +98,7 @@ public class CSVPrinter {
      * @param comment
      *            the comment to output
      */
-    public void printComment(String comment) throws IOException {
+    public void printComment(final String comment) throws IOException {
         if (!format.isCommentingEnabled()) {
             return;
         }
@@ -108,7 +108,7 @@ public class CSVPrinter {
         out.append(format.getCommentStart());
         out.append(' ');
         for (int i = 0; i < comment.length(); i++) {
-            char c = comment.charAt(i);
+            final char c = comment.charAt(i);
             switch (c) {
             case '\r':
                 if (i + 1 < comment.length() && comment.charAt(i + 1) == '\n') {
@@ -128,7 +128,7 @@ public class CSVPrinter {
         println();
     }
 
-    private void print(CharSequence value, int offset, int len) throws IOException {
+    private void print(final CharSequence value, final int offset, final int len) throws IOException {
         if (format.isEncapsulating()) {
             printAndEncapsulate(value, offset, len);
         } else if (format.isEscaping()) {
@@ -147,15 +147,15 @@ public class CSVPrinter {
         }
     }
 
-    void printAndEscape(CharSequence value, int offset, int len) throws IOException {
+    void printAndEscape(final CharSequence value, final int offset, final int len) throws IOException {
         int start = offset;
         int pos = offset;
-        int end = offset + len;
+        final int end = offset + len;
 
         printSep();
 
-        char delim = format.getDelimiter();
-        char escape = format.getEscape();
+        final char delim = format.getDelimiter();
+        final char escape = format.getEscape();
 
         while (pos < end) {
             char c = value.charAt(pos);
@@ -185,17 +185,17 @@ public class CSVPrinter {
         }
     }
 
-    void printAndEncapsulate(CharSequence value, int offset, int len) throws IOException {
-        boolean first = newLine; // is this the first value on this line?
+    void printAndEncapsulate(final CharSequence value, final int offset, final int len) throws IOException {
+        final boolean first = newLine; // is this the first value on this line?
         boolean quote = false;
         int start = offset;
         int pos = offset;
-        int end = offset + len;
+        final int end = offset + len;
 
         printSep();
 
-        char delim = format.getDelimiter();
-        char encapsulator = format.getEncapsulator();
+        final char delim = format.getDelimiter();
+        final char encapsulator = format.getEncapsulator();
 
         if (len <= 0) {
             // always quote an empty token that is the first
@@ -252,7 +252,7 @@ public class CSVPrinter {
         // Pick up where we left off: pos should be positioned on the first character that caused
         // the need for encapsulation.
         while (pos < end) {
-            char c = value.charAt(pos);
+            final char c = value.charAt(pos);
             if (c == encapsulator) {
                 // write out the chunk up until this point
 
@@ -277,7 +277,7 @@ public class CSVPrinter {
      * @param value
      *            value to be outputted.
      */
-    public void print(String value, boolean checkForEscape) throws IOException {
+    public void print(String value, final boolean checkForEscape) throws IOException {
         if (value == null) {
             // null values are considered empty
             value = "";
@@ -298,7 +298,7 @@ public class CSVPrinter {
      * @param value
      *            value to be outputted.
      */
-    public void print(String value) throws IOException {
+    public void print(final String value) throws IOException {
         print(value, true);
     }
 }

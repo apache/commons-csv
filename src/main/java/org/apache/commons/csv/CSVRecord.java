@@ -40,7 +40,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
     /** The accumulated comments (if any) */
     private final String comment;
 
-    CSVRecord(String[] values, Map<String, Integer> mapping, String comment) {
+    CSVRecord(final String[] values, final Map<String, Integer> mapping, final String comment) {
         this.values = values != null ? values : EMPTY_STRING_ARRAY;
         this.mapping = mapping;
         this.comment = comment;
@@ -52,7 +52,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      * @param i
      *            the index of the column retrieved
      */
-    public String get(int i) {
+    public String get(final int i) {
         return values[i];
     }
 
@@ -65,12 +65,12 @@ public class CSVRecord implements Serializable, Iterable<String> {
      * @throws IllegalStateException
      *             if no header mapping was provided
      */
-    public String get(String name) {
+    public String get(final String name) {
         if (mapping == null) {
             throw new IllegalStateException("No header mapping was specified, the record values can't be accessed by name");
         }
 
-        Integer index = mapping.get(name);
+        final Integer index = mapping.get(name);
 
         return index != null ? values[index.intValue()] : null;
     }
@@ -82,7 +82,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *            the name of the column to be retrieved.
      * @return whether a given columns is mapped.
      */
-    public boolean isMapped(String name) {
+    public boolean isMapped(final String name) {
         return mapping != null ? mapping.containsKey(name) : false;
     }
     

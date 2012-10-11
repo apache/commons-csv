@@ -28,7 +28,7 @@ class CSVLexer1 extends Lexer {
     private final StringBuilder wsBuf = new StringBuilder();
 
     // ctor needs to be public so can be called dynamically by PerformanceTest class
-    public CSVLexer1(CSVFormat format, ExtendedBufferedReader in) {
+    public CSVLexer1(final CSVFormat format, final ExtendedBufferedReader in) {
         super(format, in);
     }
 
@@ -143,7 +143,7 @@ class CSVLexer1 extends Lexer {
      * @return the filled token
      * @throws IOException on stream access error
      */
-    private Token simpleTokenLexer(Token tkn, int c) throws IOException {
+    private Token simpleTokenLexer(final Token tkn, int c) throws IOException {
         while (true) {
             if (isEndOfLine(c)) {
                 // end of record
@@ -189,9 +189,9 @@ class CSVLexer1 extends Lexer {
      * @return a valid token object
      * @throws IOException on invalid state
      */
-    private Token encapsulatedTokenLexer(Token tkn, int c) throws IOException {
+    private Token encapsulatedTokenLexer(final Token tkn, int c) throws IOException {
         // save current line
-        int startLineNumber = getLineNumber();
+        final int startLineNumber = getLineNumber();
         // ignore the given delimiter
         // assert c == delimiter;
         while (true) {

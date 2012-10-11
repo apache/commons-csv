@@ -155,8 +155,8 @@ public class CSVFormat implements Serializable {
      * @param header
      *            the header
      */
-    CSVFormat(char delimiter, char encapsulator, char commentStart, char escape, boolean surroundingSpacesIgnored,
-            boolean emptyLinesIgnored, String lineSeparator, String[] header) {
+    CSVFormat(final char delimiter, final char encapsulator, final char commentStart, final char escape, final boolean surroundingSpacesIgnored,
+            final boolean emptyLinesIgnored, final String lineSeparator, final String[] header) {
         this.delimiter = delimiter;
         this.encapsulator = encapsulator;
         this.commentStart = commentStart;
@@ -178,7 +178,7 @@ public class CSVFormat implements Serializable {
      *
      * @return true if <code>c</code> is a line break character
      */
-    private static boolean isLineBreak(char c) {
+    private static boolean isLineBreak(final char c) {
         return c == '\n' || c == '\r';
     }
 
@@ -230,7 +230,7 @@ public class CSVFormat implements Serializable {
      * @throws IllegalArgumentException
      *             thrown if the specified character is a line break
      */
-    public CSVFormat withDelimiter(char delimiter) {
+    public CSVFormat withDelimiter(final char delimiter) {
         if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
@@ -256,7 +256,7 @@ public class CSVFormat implements Serializable {
      * @throws IllegalArgumentException
      *             thrown if the specified character is a line break
      */
-    public CSVFormat withEncapsulator(char encapsulator) {
+    public CSVFormat withEncapsulator(final char encapsulator) {
         if (isLineBreak(encapsulator)) {
             throw new IllegalArgumentException("The encapsulator cannot be a line break");
         }
@@ -293,7 +293,7 @@ public class CSVFormat implements Serializable {
      * @throws IllegalArgumentException
      *             thrown if the specified character is a line break
      */
-    public CSVFormat withCommentStart(char commentStart) {
+    public CSVFormat withCommentStart(final char commentStart) {
         if (isLineBreak(commentStart)) {
             throw new IllegalArgumentException("The comment start character cannot be a line break");
         }
@@ -330,7 +330,7 @@ public class CSVFormat implements Serializable {
      * @throws IllegalArgumentException
      *             thrown if the specified character is a line break
      */
-    public CSVFormat withEscape(char escape) {
+    public CSVFormat withEscape(final char escape) {
         if (isLineBreak(escape)) {
             throw new IllegalArgumentException("The escape character cannot be a line break");
         }
@@ -365,7 +365,7 @@ public class CSVFormat implements Serializable {
      *            spaces as is.
      * @return A copy of this format with the specified trimming behavior.
      */
-    public CSVFormat withIgnoreSurroundingSpaces(boolean ignoreSurroundingSpaces) {
+    public CSVFormat withIgnoreSurroundingSpaces(final boolean ignoreSurroundingSpaces) {
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, ignoreSurroundingSpaces,
                 ignoreEmptyLines, lineSeparator, header);
     }
@@ -388,7 +388,7 @@ public class CSVFormat implements Serializable {
      *            <tt>false</tt> to translate empty lines to empty records.
      * @return A copy of this format with the specified empty line skipping behavior.
      */
-    public CSVFormat withIgnoreEmptyLines(boolean ignoreEmptyLines) {
+    public CSVFormat withIgnoreEmptyLines(final boolean ignoreEmptyLines) {
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, ignoreSurroundingSpaces,
                 ignoreEmptyLines, lineSeparator, header);
     }
@@ -410,7 +410,7 @@ public class CSVFormat implements Serializable {
      *
      * @return A copy of this format using the specified output line separator
      */
-    public CSVFormat withLineSeparator(String lineSeparator) {
+    public CSVFormat withLineSeparator(final String lineSeparator) {
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, ignoreSurroundingSpaces,
                 ignoreEmptyLines, lineSeparator, header);
     }
@@ -438,7 +438,7 @@ public class CSVFormat implements Serializable {
      *
      * @return A copy of this format using the specified header
      */
-    public CSVFormat withHeader(String... header) {
+    public CSVFormat withHeader(final String... header) {
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, ignoreSurroundingSpaces,
                 ignoreEmptyLines, lineSeparator, header);
     }
@@ -449,7 +449,7 @@ public class CSVFormat implements Serializable {
      * @param in
      *            the input stream
      */
-    public Iterable<CSVRecord> parse(Reader in) throws IOException {
+    public Iterable<CSVRecord> parse(final Reader in) throws IOException {
         return new CSVParser(in, this);
     }
 
@@ -459,12 +459,12 @@ public class CSVFormat implements Serializable {
      * @param values
      *            the values to format
      */
-    public String format(String... values) {
-        StringWriter out = new StringWriter();
+    public String format(final String... values) {
+        final StringWriter out = new StringWriter();
         try {
             new CSVPrinter(out, this).println(values);
             return out.toString().trim();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // should not happen
             throw new IllegalStateException(e);
         }
@@ -472,7 +472,7 @@ public class CSVFormat implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append("Delimiter=<").append(delimiter).append('>');
         if (isEscaping()) {
             sb.append(' ');

@@ -41,7 +41,7 @@ abstract class Lexer {
     /** The input stream */
     final ExtendedBufferedReader in;
 
-    Lexer(CSVFormat format, ExtendedBufferedReader in) {
+    Lexer(final CSVFormat format, final ExtendedBufferedReader in) {
         this.format = format;
         this.in = in;
         this.isEncapsulating = format.isEncapsulating();
@@ -62,7 +62,7 @@ abstract class Lexer {
     // TODO escape handling needs more work
     int readEscape() throws IOException {
         // assume c is the escape char (normally a backslash)
-        int c = in.read();
+        final int c = in.read();
         switch (c) {
         case 'r':
             return '\r';
@@ -81,7 +81,7 @@ abstract class Lexer {
         }
     }
 
-    void trimTrailingSpaces(StringBuilder buffer) {
+    void trimTrailingSpaces(final StringBuilder buffer) {
         int length = buffer.length();
         while (length > 0 && Character.isWhitespace(buffer.charAt(length - 1))) {
             length = length - 1;
@@ -94,7 +94,7 @@ abstract class Lexer {
     /**
      * @return true if the given char is a whitespace character
      */
-    boolean isWhitespace(int c) {
+    boolean isWhitespace(final int c) {
         return c != format.getDelimiter() && Character.isWhitespace((char) c);
     }
 
@@ -118,32 +118,32 @@ abstract class Lexer {
      * @param c
      * @return true if the character is at the start of a line.
      */
-    boolean isStartOfLine(int c) {
+    boolean isStartOfLine(final int c) {
         return c == '\n' || c == '\r' || c == ExtendedBufferedReader.UNDEFINED;
     }
 
     /**
      * @return true if the given character indicates end of file
      */
-    boolean isEndOfFile(int c) {
+    boolean isEndOfFile(final int c) {
         return c == ExtendedBufferedReader.END_OF_STREAM;
     }
 
     abstract Token nextToken(Token reusableToken) throws IOException;
 
-    boolean isDelimiter(int c) {
+    boolean isDelimiter(final int c) {
         return c == delimiter;
     }
 
-    boolean isEscape(int c) {
+    boolean isEscape(final int c) {
         return isEscaping && c == escape;
     }
 
-    boolean isEncapsulator(int c) {
+    boolean isEncapsulator(final int c) {
         return isEncapsulating && c == encapsulator;
     }
 
-    boolean isCommentStart(int c) {
+    boolean isCommentStart(final int c) {
         return isCommentEnabled && c == commmentStart;
     }
 }

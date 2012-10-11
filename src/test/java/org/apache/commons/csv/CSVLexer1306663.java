@@ -28,7 +28,7 @@ import java.io.IOException;
 class CSVLexer1306663 extends Lexer {
 
     // ctor needs to be public so can be called dynamically by PerformanceTest class
-    public CSVLexer1306663(CSVFormat format, ExtendedBufferedReader in) {
+    public CSVLexer1306663(final CSVFormat format, final ExtendedBufferedReader in) {
         super(format, in);
     }
 
@@ -42,7 +42,7 @@ class CSVLexer1306663 extends Lexer {
      * @throws java.io.IOException on stream access error
      */
     @Override
-    Token nextToken(Token tkn) throws IOException {
+    Token nextToken(final Token tkn) throws IOException {
 
         // get the last read char (required for empty line detection)
         int lastChar = in.readAgain();
@@ -139,7 +139,7 @@ class CSVLexer1306663 extends Lexer {
      * @return the filled token
      * @throws IOException on stream access error
      */
-    private Token simpleTokenLexer(Token tkn, int c) throws IOException {
+    private Token simpleTokenLexer(final Token tkn, int c) throws IOException {
         // Faster to use while(true)+break than while(tkn.type == INVALID)
         while (true) {
             if (isEndOfLine(c)) {
@@ -180,9 +180,9 @@ class CSVLexer1306663 extends Lexer {
      * @return a valid token object
      * @throws IOException on invalid state
      */
-    private Token encapsulatedTokenLexer(Token tkn) throws IOException {
+    private Token encapsulatedTokenLexer(final Token tkn) throws IOException {
         // save current line
-        int startLineNumber = getLineNumber();
+        final int startLineNumber = getLineNumber();
         // ignore the given delimiter
         // assert c == delimiter;
         int c;

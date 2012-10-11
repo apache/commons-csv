@@ -36,7 +36,7 @@ class CSVLexer3 extends Lexer {
     private final char escape;
 
     // ctor needs to be public so can be called dynamically by PerformanceTest class
-    public CSVLexer3(CSVFormat format, ExtendedBufferedReader in) {
+    public CSVLexer3(final CSVFormat format, final ExtendedBufferedReader in) {
         super(format, in);
         this.escape = format.getEscape();
     }
@@ -55,7 +55,7 @@ class CSVLexer3 extends Lexer {
         EOFCHAR
     }
 
-    private CharType classify(int intch) {
+    private CharType classify(final int intch) {
         if (isDelimiter(intch)) {
             return CharType.DELIM;
         }
@@ -97,14 +97,14 @@ class CSVLexer3 extends Lexer {
      * @throws java.io.IOException on stream access error
      */
     @Override
-    Token nextToken(Token tkn) throws IOException {
+    Token nextToken(final Token tkn) throws IOException {
 
         State state = State.BEGIN;
         int intch;
         boolean trimTrailingSpaces = false;
         while(tkn.type == INVALID) {
             intch = in.read();
-            CharType type = classify(intch);
+            final CharType type = classify(intch);
             switch(state) {
                 case BEGIN:
                     switch(type){
