@@ -135,7 +135,6 @@ public class CSVFormat implements Serializable {
             .withEscape('\\')
             .withLineSeparator("\n");
 
-
     /**
      * Creates a customized CSV format.
      *
@@ -235,7 +234,6 @@ public class CSVFormat implements Serializable {
         if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
-
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored,
                 emptyLinesIgnored, lineSeparator, header);
     }
@@ -262,7 +260,6 @@ public class CSVFormat implements Serializable {
         if (isLineBreak(encapsulator)) {
             throw new IllegalArgumentException("The encapsulator cannot be a line break");
         }
-
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored,
                 emptyLinesIgnored, lineSeparator, header);
     }
@@ -300,7 +297,6 @@ public class CSVFormat implements Serializable {
         if (isLineBreak(commentStart)) {
             throw new IllegalArgumentException("The comment start character cannot be a line break");
         }
-
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored,
                 emptyLinesIgnored, lineSeparator, header);
     }
@@ -338,7 +334,6 @@ public class CSVFormat implements Serializable {
         if (isLineBreak(escape)) {
             throw new IllegalArgumentException("The escape character cannot be a line break");
         }
-
         return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored,
                 emptyLinesIgnored, lineSeparator, header);
     }
