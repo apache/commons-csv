@@ -29,6 +29,8 @@ import java.io.StringWriter;
  */
 public class CSVFormat implements Serializable {
 
+    private static final char COMMA = ',';
+
     private static final long serialVersionUID = 1L;
 
     /** According to RFC 4180, line breaks are delimited by CRLF */
@@ -70,7 +72,7 @@ public class CSVFormat implements Serializable {
      */
     public static final CSVFormat DEFAULT =
             PRISTINE.
-            withDelimiter(',')
+            withDelimiter(COMMA)
             .withEncapsulator('"')
             .withEmptyLinesIgnored(true)
             .withLineSeparator(CRLF);
@@ -86,7 +88,7 @@ public class CSVFormat implements Serializable {
      */
     public static final CSVFormat RFC4180 =
             PRISTINE.
-            withDelimiter(',')
+            withDelimiter(COMMA)
             .withEncapsulator('"')
             .withLineSeparator(CRLF);
 
@@ -102,7 +104,7 @@ public class CSVFormat implements Serializable {
      */
     public static final CSVFormat EXCEL =
             PRISTINE
-            .withDelimiter(',')
+            .withDelimiter(COMMA)
             .withEncapsulator('"')
             .withLineSeparator(CRLF);
 
