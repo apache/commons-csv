@@ -29,6 +29,8 @@ import java.io.StringWriter;
  */
 public class CSVFormat implements Serializable {
 
+    private static final char DOUBLE_QUOTE = '"';
+
     private static final char COMMA = ',';
 
     private static final long serialVersionUID = 1L;
@@ -73,7 +75,7 @@ public class CSVFormat implements Serializable {
     public static final CSVFormat DEFAULT =
             PRISTINE.
             withDelimiter(COMMA)
-            .withEncapsulator('"')
+            .withEncapsulator(DOUBLE_QUOTE)
             .withEmptyLinesIgnored(true)
             .withLineSeparator(CRLF);
 
@@ -89,7 +91,7 @@ public class CSVFormat implements Serializable {
     public static final CSVFormat RFC4180 =
             PRISTINE.
             withDelimiter(COMMA)
-            .withEncapsulator('"')
+            .withEncapsulator(DOUBLE_QUOTE)
             .withLineSeparator(CRLF);
 
     /**
@@ -105,14 +107,14 @@ public class CSVFormat implements Serializable {
     public static final CSVFormat EXCEL =
             PRISTINE
             .withDelimiter(COMMA)
-            .withEncapsulator('"')
+            .withEncapsulator(DOUBLE_QUOTE)
             .withLineSeparator(CRLF);
 
     /** Tab-delimited format, with quote; leading and trailing spaces ignored. */
     public static final CSVFormat TDF =
             PRISTINE
             .withDelimiter('\t')
-            .withEncapsulator('"')
+            .withEncapsulator(DOUBLE_QUOTE)
             .withSurroundingSpacesIgnored(true)
             .withEmptyLinesIgnored(true)
             .withLineSeparator(CRLF);
