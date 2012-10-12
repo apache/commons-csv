@@ -17,6 +17,8 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Constants.CRLF;
+import static org.apache.commons.csv.Constants.LF;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -307,7 +309,7 @@ public class CSVParserTest {
 
 
         final CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withEncapsulator('\'').withEscape('/')
-                               .withIgnoreEmptyLines(true).withLineSeparator(CSVFormat.CRLF);
+                               .withIgnoreEmptyLines(true).withLineSeparator(CRLF);
 
         final CSVParser parser = new CSVParser(code, format);
         final List<CSVRecord> records = parser.getRecords();
@@ -337,7 +339,7 @@ public class CSVParserTest {
 
 
         final CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withEscape('/')
-                .withIgnoreEmptyLines(true).withLineSeparator(CSVFormat.CRLF);
+                .withIgnoreEmptyLines(true).withLineSeparator(CRLF);
 
         final CSVParser parser = new CSVParser(code, format);
         final List<CSVRecord> records = parser.getRecords();
@@ -584,7 +586,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetLineNumberWithLF() throws Exception {
-        final CSVParser parser = new CSVParser("a\nb\nc", CSVFormat.DEFAULT.withLineSeparator("\n"));
+        final CSVParser parser = new CSVParser("a\nb\nc", CSVFormat.DEFAULT.withLineSeparator(LF));
 
         assertEquals(0, parser.getLineNumber());
         assertNotNull(parser.getRecord());
@@ -598,7 +600,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetLineNumberWithCRLF() throws Exception {
-        final CSVParser parser = new CSVParser("a\r\nb\r\nc", CSVFormat.DEFAULT.withLineSeparator(CSVFormat.CRLF));
+        final CSVParser parser = new CSVParser("a\r\nb\r\nc", CSVFormat.DEFAULT.withLineSeparator(CRLF));
 
         assertEquals(0, parser.getLineNumber());
         assertNotNull(parser.getRecord());

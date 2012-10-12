@@ -18,7 +18,7 @@
 package org.apache.commons.csv;
 
 import static org.apache.commons.csv.Constants.COMMA;
-import static org.apache.commons.csv.Constants.CR;
+import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.DOUBLE_QUOTE;
 import static org.apache.commons.csv.Constants.ESCAPE;
 import static org.apache.commons.csv.Constants.LF;
@@ -36,12 +36,7 @@ import java.io.StringWriter;
  */
 public class CSVFormat implements Serializable {
 
-    private static final String LF_STR = "" + LF;
-
     private static final long serialVersionUID = 1L;
-
-    /** According to RFC 4180, line breaks are delimited by CRLF */
-    public static final String CRLF = "" + CR + LF;
 
     private final char delimiter;
     private final char encapsulator;
@@ -136,7 +131,7 @@ public class CSVFormat implements Serializable {
             PRISTINE
             .withDelimiter(TAB)
             .withEscape(ESCAPE)
-            .withLineSeparator(LF_STR);
+            .withLineSeparator(LF);
 
     /**
      * Creates a customized CSV format.
@@ -403,6 +398,19 @@ public class CSVFormat implements Serializable {
      */
     public String getLineSeparator() {
         return lineSeparator;
+    }
+
+    /**
+     * Returns a copy of this format using the specified output line separator.
+     *
+     * @param lineSeparator
+     *            the line separator to be used for output.
+     *
+     * @return A copy of this format using the specified output line separator
+     */
+    public CSVFormat withLineSeparator(final char lineSeparator) {
+        return new CSVFormat(delimiter, encapsulator, commentStart, escape, ignoreSurroundingSpaces,
+                ignoreEmptyLines, String.valueOf(lineSeparator), header);
     }
 
     /**

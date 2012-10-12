@@ -17,6 +17,7 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Constants.CRLF;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -34,7 +35,7 @@ public class CSVFormatTest {
 
     @Test
     public void testImmutalibity() {
-        final CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, CSVFormat.CRLF, null);
+        final CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, CRLF, null);
 
         format.withDelimiter('?');
         format.withEncapsulator('?');
@@ -48,7 +49,7 @@ public class CSVFormatTest {
         assertEquals('!', format.getEncapsulator());
         assertEquals('!', format.getCommentStart());
         assertEquals('!', format.getEscape());
-        assertEquals(CSVFormat.CRLF, format.getLineSeparator());
+        assertEquals(CRLF, format.getLineSeparator());
 
         assertTrue(format.getIgnoreSurroundingSpaces());
         assertTrue(format.getIgnoreEmptyLines());
@@ -56,7 +57,7 @@ public class CSVFormatTest {
 
     @Test
     public void testMutators() {
-        final CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, CSVFormat.CRLF, null);
+        final CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, CRLF, null);
 
         assertEquals('?', format.withDelimiter('?').getDelimiter());
         assertEquals('?', format.withEncapsulator('?').getEncapsulator());
