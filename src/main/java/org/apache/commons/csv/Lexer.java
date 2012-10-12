@@ -24,6 +24,12 @@ import java.io.IOException;
  */
 abstract class Lexer {
 
+    private static final char FF = '\f';
+    private static final char BELL = '\b';
+    private static final char TAB = '\t';
+    private static final char LF = '\n';
+    private static final char CR = '\r';
+    
     private final boolean isEncapsulating;
     private final boolean isEscaping;
     private final boolean isCommentEnabled;
@@ -65,15 +71,15 @@ abstract class Lexer {
         final int c = in.read();
         switch (c) {
         case 'r':
-            return '\r';
+            return CR;
         case 'n':
-            return '\n';
+            return LF;
         case 't':
-            return '\t';
+            return TAB;
         case 'b':
-            return '\b';
+            return BELL;
         case 'f':
-            return '\f';
+            return FF;
         case ExtendedBufferedReader.END_OF_STREAM:
             throw new IOException("EOF whilst processing escape sequence");
         default:
@@ -105,11 +111,11 @@ abstract class Lexer {
      */
     boolean isEndOfLine(int c) throws IOException {
         // check if we have \r\n...
-        if (c == '\r' && in.lookAhead() == '\n') {
+        if (c == CR && in.lookAhead() == LF) {
             // note: does not change c outside of this method !!
             c = in.read();
         }
-        return c == '\n' || c == '\r';
+        return c == LF || c == CR;
     }
 
     /**
@@ -119,7 +125,7 @@ abstract class Lexer {
      * @return true if the character is at the start of a line.
      */
     boolean isStartOfLine(final int c) {
-        return c == '\n' || c == '\r' || c == ExtendedBufferedReader.UNDEFINED;
+        return c == LF || c == CR || c == ExtendedBufferedReader.UNDEFINED;
     }
 
     /**
