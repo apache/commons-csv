@@ -30,6 +30,7 @@ import java.io.Reader;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -64,13 +65,18 @@ public class PerformanceTest {
         return new BufferedReader(new FileReader(BIG_FILE));
     }
 
-    private long parse(final Reader in) throws IOException {
+    private long parse(final Reader in, boolean traverseColumns) throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(false);
-        long count = 0;
-        for (final Object record : format.parse(in)) {
-            count++;
+        long recordCount = 0;
+        for (final CSVRecord record : format.parse(in)) {
+            recordCount++;
+            if (traverseColumns) {
+                for (String value : record) {
+                    // do nothing for now
+                }
+            }
         }
-        return count;
+        return recordCount;
     }
 
     private void println() {
@@ -89,9 +95,9 @@ public class PerformanceTest {
         return count;
     }
 
-    public long testParseBigFile() throws Exception {
+    public long testParseBigFile(boolean traverseColumns) throws Exception {
         final long startMillis = System.currentTimeMillis();
-        final long count = this.parse(this.getBufferedReader());
+        final long count = this.parse(this.getBufferedReader(), traverseColumns);
         final long totalMillis = System.currentTimeMillis() - startMillis;
         this.println(String.format("File parsed in %,d milliseconds with Commons CSV: %,d lines.", totalMillis, count));
         return totalMillis;
@@ -101,7 +107,7 @@ public class PerformanceTest {
     public void testParseBigFileRepeat() throws Exception {
         long bestTime = Long.MAX_VALUE;
         for (int i = 0; i < this.max; i++) {
-            bestTime = Math.min(this.testParseBigFile(), bestTime);
+            bestTime = Math.min(this.testParseBigFile(false), bestTime);
         }
         this.println(String.format("Best time out of %,d is %,d milliseconds.", this.max, bestTime));
     }
