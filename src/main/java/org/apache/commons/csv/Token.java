@@ -20,7 +20,7 @@ package org.apache.commons.csv;
 import static org.apache.commons.csv.Token.Type.INVALID;
 
 /**
- * Token is an internal token representation.
+ * Internal token representation.
  * <p/>
  * It is used as contract between the lexer and the parser.
  */
@@ -36,13 +36,13 @@ class Token {
         /** Token with content, at beginning or in the middle of a line. */
         TOKEN,
 
-        /** Token (which can have content) when end of file is reached. */
+        /** Token (which can have content) when the end of file is reached. */
         EOF,
 
-        /** Token with content when end of a line is reached. */
+        /** Token with content when the end of a line is reached. */
         EORECORD,
 
-        /** Token is a comment line */
+        /** Token is a comment line. */
         COMMENT
     }
 
