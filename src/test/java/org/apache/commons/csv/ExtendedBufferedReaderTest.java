@@ -17,6 +17,8 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Constants.END_OF_STREAM;
+import static org.apache.commons.csv.Constants.UNDEFINED;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -30,9 +32,9 @@ public class ExtendedBufferedReaderTest {
     @Test
     public void testEmptyInput() throws Exception {
         final ExtendedBufferedReader br = getBufferedReader("");
-        assertEquals(ExtendedBufferedReader.END_OF_STREAM, br.read());
-        assertEquals(ExtendedBufferedReader.END_OF_STREAM, br.lookAhead());
-        assertEquals(ExtendedBufferedReader.END_OF_STREAM, br.readAgain());
+        assertEquals(END_OF_STREAM, br.read());
+        assertEquals(END_OF_STREAM, br.lookAhead());
+        assertEquals(END_OF_STREAM, br.readAgain());
         assertNull(br.readLine());
         assertEquals(0, br.read(new char[10], 0, 0));
     }
@@ -41,7 +43,7 @@ public class ExtendedBufferedReaderTest {
     public void testReadLookahead1() throws Exception {
         final ExtendedBufferedReader br = getBufferedReader("1\n2\r3\n");
         assertEquals('1', br.lookAhead());
-        assertEquals(ExtendedBufferedReader.UNDEFINED, br.readAgain());
+        assertEquals(UNDEFINED, br.readAgain());
         assertEquals('1', br.read());
         assertEquals('1', br.readAgain());
 
@@ -79,12 +81,12 @@ public class ExtendedBufferedReaderTest {
         assertEquals('\n', br.readAgain());
         assertEquals(3, br.getLineNumber());
 
-        assertEquals(ExtendedBufferedReader.END_OF_STREAM, br.lookAhead());
+        assertEquals(END_OF_STREAM, br.lookAhead());
         assertEquals('\n', br.readAgain());
-        assertEquals(ExtendedBufferedReader.END_OF_STREAM, br.read());
-        assertEquals(ExtendedBufferedReader.END_OF_STREAM, br.readAgain());
-        assertEquals(ExtendedBufferedReader.END_OF_STREAM, br.read());
-        assertEquals(ExtendedBufferedReader.END_OF_STREAM, br.lookAhead());
+        assertEquals(END_OF_STREAM, br.read());
+        assertEquals(END_OF_STREAM, br.readAgain());
+        assertEquals(END_OF_STREAM, br.read());
+        assertEquals(END_OF_STREAM, br.lookAhead());
 
     }
 

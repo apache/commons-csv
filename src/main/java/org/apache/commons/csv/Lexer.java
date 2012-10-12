@@ -17,6 +17,14 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Constants.BELL;
+import static org.apache.commons.csv.Constants.CR;
+import static org.apache.commons.csv.Constants.END_OF_STREAM;
+import static org.apache.commons.csv.Constants.FF;
+import static org.apache.commons.csv.Constants.LF;
+import static org.apache.commons.csv.Constants.TAB;
+import static org.apache.commons.csv.Constants.UNDEFINED;
+
 import java.io.IOException;
 
 /**
@@ -24,12 +32,6 @@ import java.io.IOException;
  */
 abstract class Lexer {
 
-    private static final char FF = '\f';
-    private static final char BELL = '\b';
-    private static final char TAB = '\t';
-    private static final char LF = '\n';
-    private static final char CR = '\r';
-    
     private final boolean isEncapsulating;
     private final boolean isEscaping;
     private final boolean isCommentEnabled;
@@ -80,7 +82,7 @@ abstract class Lexer {
             return BELL;
         case 'f':
             return FF;
-        case ExtendedBufferedReader.END_OF_STREAM:
+        case END_OF_STREAM:
             throw new IOException("EOF whilst processing escape sequence");
         default:
             return c;
@@ -125,14 +127,14 @@ abstract class Lexer {
      * @return true if the character is at the start of a line.
      */
     boolean isStartOfLine(final int c) {
-        return c == LF || c == CR || c == ExtendedBufferedReader.UNDEFINED;
+        return c == LF || c == CR || c == UNDEFINED;
     }
 
     /**
      * @return true if the given character indicates end of file
      */
     boolean isEndOfFile(final int c) {
-        return c == ExtendedBufferedReader.END_OF_STREAM;
+        return c == END_OF_STREAM;
     }
 
     abstract Token nextToken(Token reusableToken) throws IOException;

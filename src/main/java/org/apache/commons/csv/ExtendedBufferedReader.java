@@ -17,6 +17,11 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Constants.CR;
+import static org.apache.commons.csv.Constants.END_OF_STREAM;
+import static org.apache.commons.csv.Constants.LF;
+import static org.apache.commons.csv.Constants.UNDEFINED;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -28,16 +33,6 @@ import java.io.Reader;
  * {@link #read()}.
  */
 class ExtendedBufferedReader extends BufferedReader {
-
-    private static final char CR = '\r';
-
-    private static final char LF = '\n';
-
-    /** The end of stream symbol */
-    static final int END_OF_STREAM = -1;
-
-    /** Undefined state for the lookahead char */
-    static final int UNDEFINED = -2;
 
     /** The last char returned */
     private int lastChar = UNDEFINED;

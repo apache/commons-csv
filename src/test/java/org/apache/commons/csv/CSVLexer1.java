@@ -17,6 +17,7 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Constants.UNDEFINED;
 import static org.apache.commons.csv.Token.Type.EOF;
 import static org.apache.commons.csv.Token.Type.EORECORD;
 import static org.apache.commons.csv.Token.Type.TOKEN;
@@ -60,7 +61,7 @@ class CSVLexer1 extends Lexer {
         //  empty line detection: eol AND (last char was EOL or beginning)
         if (format.getIgnoreEmptyLines()) {
             while (eol
-                    && (lastChar == '\n' || lastChar == '\r' || lastChar == ExtendedBufferedReader.UNDEFINED)
+                    && (lastChar == '\n' || lastChar == '\r' || lastChar == UNDEFINED)
                     && !isEndOfFile(lastChar)) {
                 // go on char ahead ...
                 lastChar = c;

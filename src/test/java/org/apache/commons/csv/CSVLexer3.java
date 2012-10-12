@@ -17,6 +17,7 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Constants.END_OF_STREAM;
 import static org.apache.commons.csv.Token.Type.COMMENT;
 import static org.apache.commons.csv.Token.Type.EOF;
 import static org.apache.commons.csv.Token.Type.EORECORD;
@@ -74,7 +75,7 @@ class CSVLexer3 extends Lexer {
         if (isWhitespace(intch)) { // Must be after EOL check
             return CharType.WHITESPACE;
         }
-        if (intch == ExtendedBufferedReader.END_OF_STREAM) {
+        if (intch == END_OF_STREAM) {
             return CharType.EOFCHAR;
         }
         return CharType.OTHER;

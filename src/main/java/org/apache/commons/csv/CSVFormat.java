@@ -17,6 +17,13 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Constants.COMMA;
+import static org.apache.commons.csv.Constants.CR;
+import static org.apache.commons.csv.Constants.DOUBLE_QUOTE;
+import static org.apache.commons.csv.Constants.ESCAPE;
+import static org.apache.commons.csv.Constants.LF;
+import static org.apache.commons.csv.Constants.TAB;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Serializable;
@@ -29,20 +36,12 @@ import java.io.StringWriter;
  */
 public class CSVFormat implements Serializable {
 
-    private static final String LF = "\n";
-
-    private static final char ESCAPE = '\\';
-
-    private static final char TAB = '\t';
-
-    private static final char DOUBLE_QUOTE = '"';
-
-    private static final char COMMA = ',';
+    private static final String LF_STR = "" + LF;
 
     private static final long serialVersionUID = 1L;
 
     /** According to RFC 4180, line breaks are delimited by CRLF */
-    public static final String CRLF = "\r\n";
+    public static final String CRLF = "" + CR + LF;
 
     private final char delimiter;
     private final char encapsulator;
@@ -127,7 +126,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Default MySQL format used by the <tt>SELECT INTO OUTFILE</tt> and <tt>LOAD DATA INFILE</tt> operations. This is
-     * a tab-delimited format with a LF character as the line separator. Values are not quoted and special characters
+     * a tab-delimited format with a LF_STR character as the line separator. Values are not quoted and special characters
      * are escaped with '\'.
      *
      * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html">
@@ -137,7 +136,7 @@ public class CSVFormat implements Serializable {
             PRISTINE
             .withDelimiter(TAB)
             .withEscape(ESCAPE)
-            .withLineSeparator(LF);
+            .withLineSeparator(LF_STR);
 
     /**
      * Creates a customized CSV format.

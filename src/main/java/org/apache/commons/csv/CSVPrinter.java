@@ -17,6 +17,12 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Constants.COMMENT;
+import static org.apache.commons.csv.Constants.CR;
+import static org.apache.commons.csv.Constants.EMPTY;
+import static org.apache.commons.csv.Constants.LF;
+import static org.apache.commons.csv.Constants.SP;
+
 import java.io.Flushable;
 import java.io.IOException;
 
@@ -24,12 +30,6 @@ import java.io.IOException;
  * Print values as a comma separated list.
  */
 public class CSVPrinter {
-
-    private static final char COMMENT = '#';
-    private static final String EMPTY = "";
-    private static final char SP = ' ';
-    private static final char CR = '\r';
-    private static final char LF = '\n';
     
     /** The place that the values get written. */
     private final Appendable out;
