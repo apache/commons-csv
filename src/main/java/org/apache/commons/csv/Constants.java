@@ -24,7 +24,12 @@ class Constants {
     
     static final char BELL = '\b';
     static final char COMMA = ',';
+    
+    /**
+     * Starts a comment, the remainder of the line is the comment.
+     */
     static final char COMMENT = '#';
+    
     static final char CR = '\r';
     static final char DOUBLE_QUOTE = '"';
     static final char ESCAPE = '\\';
