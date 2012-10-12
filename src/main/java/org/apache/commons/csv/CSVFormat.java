@@ -29,7 +29,7 @@ import java.io.StringWriter;
  */
 public class CSVFormat implements Serializable {
 
-    private static final String CR = "\n";
+    private static final String LF = "\n";
 
     private static final char ESCAPE = '\\';
 
@@ -137,7 +137,7 @@ public class CSVFormat implements Serializable {
             PRISTINE
             .withDelimiter(TAB)
             .withEscape(ESCAPE)
-            .withLineSeparator(CR);
+            .withLineSeparator(LF);
 
     /**
      * Creates a customized CSV format.
