@@ -41,7 +41,7 @@ class Constants {
     static final int UNDEFINED = -2;
     
     /** According to RFC 4180, line breaks are delimited by CRLF */
-    public static final String CRLF = EMPTY + CR + LF;
+    public static final String CRLF = "\r\n";
 
 
 
