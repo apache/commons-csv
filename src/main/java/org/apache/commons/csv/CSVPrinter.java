@@ -25,6 +25,12 @@ import java.io.IOException;
  */
 public class CSVPrinter {
 
+    private static final char COMMENT = '#';
+    private static final String EMPTY = "";
+    private static final char SP = ' ';
+    private static final char CR = '\r';
+    private static final char LF = '\n';
+    
     /** The place that the values get written. */
     private final Appendable out;
     private final CSVFormat format;
@@ -106,19 +112,19 @@ public class CSVPrinter {
             println();
         }
         out.append(format.getCommentStart());
-        out.append(' ');
+        out.append(SP);
         for (int i = 0; i < comment.length(); i++) {
             final char c = comment.charAt(i);
             switch (c) {
-            case '\r':
-                if (i + 1 < comment.length() && comment.charAt(i + 1) == '\n') {
+            case CR:
+                if (i + 1 < comment.length() && comment.charAt(i + 1) == LF) {
                     i++;
                 }
                 //$FALL-THROUGH$ break intentionally excluded.
-            case '\n':
+            case LF:
                 println();
                 out.append(format.getCommentStart());
-                out.append(' ');
+                out.append(SP);
                 break;
             default:
                 out.append(c);
@@ -159,14 +165,14 @@ public class CSVPrinter {
 
         while (pos < end) {
             char c = value.charAt(pos);
-            if (c == '\r' || c == '\n' || c == delim || c == escape) {
+            if (c == CR || c == LF || c == delim || c == escape) {
                 // write out segment up until this char
                 if (pos > start) {
                     out.append(value, start, pos);
                 }
-                if (c == '\n') {
+                if (c == LF) {
                     c = 'n';
-                } else if (c == '\r') {
+                } else if (c == CR) {
                     c = 'r';
                 }
 
@@ -212,7 +218,7 @@ public class CSVPrinter {
             if (first && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || (c > 'z'))) {
                 quote = true;
                 // } else if (c == ' ' || c == '\f' || c == '\t') {
-            } else if (c <= '#') {
+            } else if (c <= COMMENT) {
                 // Some other chars at the start of a value caused the parser to fail, so for now
                 // encapsulate if we start in anything less than '#'. We are being conservative
                 // by including the default comment char too.
@@ -220,7 +226,7 @@ public class CSVPrinter {
             } else {
                 while (pos < end) {
                     c = value.charAt(pos);
-                    if (c == '\n' || c == '\r' || c == encapsulator || c == delim) {
+                    if (c == LF || c == CR || c == encapsulator || c == delim) {
                         quote = true;
                         break;
                     }
@@ -233,7 +239,7 @@ public class CSVPrinter {
                     // if (c == ' ' || c == '\f' || c == '\t') {
                     // Some other chars at the end caused the parser to fail, so for now
                     // encapsulate if we end in anything less than ' '
-                    if (c <= ' ') {
+                    if (c <= SP) {
                         quote = true;
                     }
                 }
@@ -280,7 +286,7 @@ public class CSVPrinter {
     public void print(String value, final boolean checkForEscape) throws IOException {
         if (value == null) {
             // null values are considered empty
-            value = "";
+            value = EMPTY;
         }
 
         if (!checkForEscape) {
