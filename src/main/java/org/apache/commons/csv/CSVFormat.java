@@ -29,6 +29,10 @@ import java.io.StringWriter;
  */
 public class CSVFormat implements Serializable {
 
+    private static final String CR = "\n";
+
+    private static final char ESCAPE = '\\';
+
     private static final char TAB = '\t';
 
     private static final char DOUBLE_QUOTE = '"';
@@ -132,8 +136,8 @@ public class CSVFormat implements Serializable {
     public static final CSVFormat MYSQL =
             PRISTINE
             .withDelimiter(TAB)
-            .withEscape('\\')
-            .withLineSeparator("\n");
+            .withEscape(ESCAPE)
+            .withLineSeparator(CR);
 
     /**
      * Creates a customized CSV format.
