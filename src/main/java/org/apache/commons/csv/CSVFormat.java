@@ -168,29 +168,31 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Verifies the consistency of the parameters and throws an IllegalArgumentException if necessary.
+     * Verifies the consistency of the parameters and throws an IllegalStateException if necessary.
+     * 
+     * @throws IllegalStateException
      */
-    void validate() throws IllegalArgumentException {
+    void validate() throws IllegalStateException {
         if (delimiter == encapsulator) {
-            throw new IllegalArgumentException("The encapsulator character and the delimiter cannot be the same ('" + encapsulator + ")");
+            throw new IllegalStateException("The encapsulator character and the delimiter cannot be the same ('" + encapsulator + ")");
         }
 
         if (delimiter == escape) {
-            throw new IllegalArgumentException("The escape character and the delimiter cannot be the same ('" + escape + "')");
+            throw new IllegalStateException("The escape character and the delimiter cannot be the same ('" + escape + "')");
         }
 
         if (delimiter == commentStart) {
-            throw new IllegalArgumentException("The comment start character and the delimiter cannot be the same ('" + commentStart + 
+            throw new IllegalStateException("The comment start character and the delimiter cannot be the same ('" + commentStart + 
                     "')");
         }
 
         if (encapsulator != null && encapsulator == commentStart) {
-            throw new IllegalArgumentException("The comment start character and the encapsulator cannot be the same ('" + commentStart + 
+            throw new IllegalStateException("The comment start character and the encapsulator cannot be the same ('" + commentStart + 
                     "')");
         }
 
         if (escape != null && escape == commentStart) {
-            throw new IllegalArgumentException("The comment start and the escape character cannot be the same ('" + commentStart + "')");
+            throw new IllegalStateException("The comment start and the escape character cannot be the same ('" + commentStart + "')");
         }
     }
 

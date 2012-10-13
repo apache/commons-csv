@@ -113,21 +113,21 @@ public class CSVFormatTest {
         try {
             format.withDelimiter('!').withEscape('!').validate();
             fail();
-        } catch (final IllegalArgumentException e) {
+        } catch (final IllegalStateException e) {
             // expected
         }
 
         try {
             format.withDelimiter('!').withCommentStart('!').validate();
             fail();
-        } catch (final IllegalArgumentException e) {
+        } catch (final IllegalStateException e) {
             // expected
         }
 
         try {
             format.withEncapsulator('!').withCommentStart('!').validate();
             fail();
-        } catch (final IllegalArgumentException e) {
+        } catch (final IllegalStateException e) {
             // expected
         }
 
@@ -136,7 +136,7 @@ public class CSVFormatTest {
         try {
             format.withEscape('!').withCommentStart('!').validate();
             fail();
-        } catch (final IllegalArgumentException e) {
+        } catch (final IllegalStateException e) {
             // expected
         }
 
@@ -146,7 +146,7 @@ public class CSVFormatTest {
         try {
             format.withEncapsulator('!').withDelimiter('!').validate();
             fail();
-        } catch (final IllegalArgumentException e) {
+        } catch (final IllegalStateException e) {
             // expected
         }
     }
