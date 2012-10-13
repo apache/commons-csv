@@ -70,6 +70,7 @@ public class CSVParser implements Iterable<CSVRecord> {
 
     private final Lexer lexer;
     private final Map<String, Integer> headerMap;
+    private long recordNumber;
 
     // the following objects are shared to reduce garbage
 
@@ -134,12 +135,23 @@ public class CSVParser implements Iterable<CSVRecord> {
     /**
      * Returns the current line number in the input stream.
      * <p/>
-     * ATTENTION: If your CSV input has multiline-values, the returned number does not correspond to the record-number.
+     * ATTENTION: If your CSV input has multi-line values, the returned number does not correspond to the record number.
      *
      * @return current line number
      */
     public int getLineNumber() {
         return lexer.getLineNumber();
+    }
+
+    /**
+     * Returns the current record number in the input stream.
+     * <p/>
+     * ATTENTION: If your CSV input has multi-line values, the returned number does not correspond to the line number.
+     *
+     * @return current line number
+     */
+    public long getRecordNumber() {
+        return recordNumber;
     }
 
     /**
@@ -150,7 +162,7 @@ public class CSVParser implements Iterable<CSVRecord> {
      *             on parse error or input read-failure
      */
     CSVRecord getRecord() throws IOException {
-        CSVRecord result = new CSVRecord(null, headerMap, null);
+        CSVRecord result = new CSVRecord(null, headerMap, null, recordNumber + 1);
         record.clear();
         StringBuilder sb = null;
         do {
@@ -185,8 +197,9 @@ public class CSVParser implements Iterable<CSVRecord> {
         } while (reusableToken.type == TOKEN);
 
         if (!record.isEmpty()) {
+            recordNumber++;
             final String comment = sb == null ? null : sb.toString();
-            result = new CSVRecord(record.toArray(new String[record.size()]), headerMap, comment);
+            result = new CSVRecord(record.toArray(new String[record.size()]), headerMap, comment, this.recordNumber);
         }
         return result;
     }

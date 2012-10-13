@@ -39,8 +39,12 @@ public class CSVRecord implements Serializable, Iterable<String> {
 
     /** The accumulated comments (if any) */
     private final String comment;
+    
+    /** The record number. */
+    private final long recordNumber;
 
-    CSVRecord(final String[] values, final Map<String, Integer> mapping, final String comment) {
+    CSVRecord(final String[] values, final Map<String, Integer> mapping, final String comment, long recordNumber) {
+        this.recordNumber = recordNumber;
         this.values = values != null ? values : EMPTY_STRING_ARRAY;
         this.mapping = mapping;
         this.comment = comment;
@@ -107,6 +111,10 @@ public class CSVRecord implements Serializable, Iterable<String> {
         return comment;
     }
 
+    public long getRecordNumber() {
+        return recordNumber;
+    }
+
     /**
      * Returns the number of values in this record.
      */
@@ -118,4 +126,5 @@ public class CSVRecord implements Serializable, Iterable<String> {
     public String toString() {
         return Arrays.toString(values);
     }
+
 }

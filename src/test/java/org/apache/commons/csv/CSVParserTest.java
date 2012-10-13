@@ -18,6 +18,7 @@
 package org.apache.commons.csv;
 
 import static org.apache.commons.csv.Constants.CRLF;
+import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.LF;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -586,43 +587,88 @@ public class CSVParserTest {
 
     @Test
     public void testGetLineNumberWithLF() throws Exception {
-        final CSVParser parser = new CSVParser("a\nb\nc", CSVFormat.DEFAULT.withLineSeparator(LF));
-
-        assertEquals(0, parser.getLineNumber());
-        assertNotNull(parser.getRecord());
-        assertEquals(1, parser.getLineNumber());
-        assertNotNull(parser.getRecord());
-        assertEquals(2, parser.getLineNumber());
-        assertNotNull(parser.getRecord());
-        assertEquals(2, parser.getLineNumber());
-        assertNull(parser.getRecord());
+        validateLineNumbers(String.valueOf(LF));
     }
 
     @Test
     public void testGetLineNumberWithCRLF() throws Exception {
-        final CSVParser parser = new CSVParser("a\r\nb\r\nc", CSVFormat.DEFAULT.withLineSeparator(CRLF));
-
-        assertEquals(0, parser.getLineNumber());
-        assertNotNull(parser.getRecord());
-        assertEquals(1, parser.getLineNumber());
-        assertNotNull(parser.getRecord());
-        assertEquals(2, parser.getLineNumber());
-        assertNotNull(parser.getRecord());
-        assertEquals(2, parser.getLineNumber());
-        assertNull(parser.getRecord());
+        validateLineNumbers(CRLF);
     }
 
     @Test
     public void testGetLineNumberWithCR() throws Exception {
-        final CSVParser parser = new CSVParser("a\rb\rc", CSVFormat.DEFAULT.withLineSeparator("\r"));
+        validateLineNumbers(String.valueOf(CR));
+    }
+    
+    @Test
+    public void testGetRecordNumberWithLF() throws Exception {
+        validateRecordNumbers(String.valueOf(LF));
+    }
 
+    @Test
+    public void testGetRecordWithMultiiLineValues() throws Exception {
+        final CSVParser parser = new CSVParser("\"a\r\n1\",\"a\r\n2\"" + CRLF + "\"b\r\n1\",\"b\r\n2\"" + CRLF + "\"c\r\n1\",\"c\r\n2\"",
+                CSVFormat.DEFAULT.withLineSeparator(CRLF));
+        CSVRecord record;
+        assertEquals(0, parser.getRecordNumber());
+        assertEquals(0, parser.getLineNumber());
+        assertNotNull(record = parser.getRecord());
+        assertEquals(3, parser.getLineNumber());
+        assertEquals(1, record.getRecordNumber());
+        assertEquals(1, parser.getRecordNumber());
+        assertNotNull(record = parser.getRecord());
+        assertEquals(6, parser.getLineNumber());
+        assertEquals(2, record.getRecordNumber());
+        assertEquals(2, parser.getRecordNumber());
+        assertNotNull(record = parser.getRecord());
+        assertEquals(8, parser.getLineNumber());
+        assertEquals(3, record.getRecordNumber());
+        assertEquals(3, parser.getRecordNumber());
+        assertNull(record = parser.getRecord());
+        assertEquals(8, parser.getLineNumber());
+        assertEquals(3, parser.getRecordNumber());
+    }
+
+    @Test
+    public void testGetRecordNumberWithCRLF() throws Exception {
+        validateRecordNumbers(CRLF);
+    }
+
+    @Test
+    public void testGetRecordNumberWithCR() throws Exception {
+        validateRecordNumbers(String.valueOf(CR));
+    }
+
+    private void validateRecordNumbers(String lineSeparator) throws IOException {
+        final CSVParser parser = new CSVParser("a" + lineSeparator + "b" + lineSeparator + "c", CSVFormat.DEFAULT.withLineSeparator(lineSeparator));
+        CSVRecord record;
+        assertEquals(0, parser.getRecordNumber());
+        assertNotNull(record = parser.getRecord());
+        assertEquals(1, record.getRecordNumber());        
+        assertEquals(1, parser.getRecordNumber());
+        assertNotNull(record = parser.getRecord());
+        assertEquals(2, record.getRecordNumber());        
+        assertEquals(2, parser.getRecordNumber());
+        assertNotNull(record = parser.getRecord());
+        assertEquals(3, record.getRecordNumber());        
+        assertEquals(3, parser.getRecordNumber());
+        assertNull(record = parser.getRecord());
+        assertEquals(3, parser.getRecordNumber());
+    }
+
+    private void validateLineNumbers(String lineSeparator) throws IOException {
+        final CSVParser parser = new CSVParser("a" + lineSeparator + "b" + lineSeparator + "c", CSVFormat.DEFAULT.withLineSeparator(lineSeparator));
         assertEquals(0, parser.getLineNumber());
         assertNotNull(parser.getRecord());
         assertEquals(1, parser.getLineNumber());
         assertNotNull(parser.getRecord());
         assertEquals(2, parser.getLineNumber());
         assertNotNull(parser.getRecord());
+        // Still 2 because the last line is does not have EOL chars
         assertEquals(2, parser.getLineNumber());
         assertNull(parser.getRecord());
+        // Still 2 because the last line is does not have EOL chars
+        assertEquals(2, parser.getLineNumber());
     }
+
 }
