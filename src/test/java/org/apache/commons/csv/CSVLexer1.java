@@ -55,7 +55,7 @@ class CSVLexer1 extends Lexer {
         *       is to call 'readAgain' on the stream...
         */
         int c = in.read();
-        boolean eol = isEndOfLine(c);
+        boolean eol = readEndOfLine(c);
         c = in.getLastChar();
 
         //  empty line detection: eol AND (last char was EOL or beginning)
@@ -66,7 +66,7 @@ class CSVLexer1 extends Lexer {
                 // go on char ahead ...
                 lastChar = c;
                 c = in.read();
-                eol = isEndOfLine(c);
+                eol = readEndOfLine(c);
                 c = in.getLastChar();
                 // reached end of file without any content (empty line at the end)
                 if (isEndOfFile(c)) {
@@ -89,7 +89,7 @@ class CSVLexer1 extends Lexer {
                 while (isWhitespace(c) && !eol) {
                     wsBuf.append((char) c);
                     c = in.read();
-                    eol = isEndOfLine(c);
+                    eol = readEndOfLine(c);
                 }
             }
 
@@ -147,7 +147,7 @@ class CSVLexer1 extends Lexer {
      */
     private Token simpleTokenLexer(final Token tkn, int c) throws IOException {
         while (true) {
-            if (isEndOfLine(c)) {
+            if (readEndOfLine(c)) {
                 // end of record
                 tkn.type = EORECORD;
                 tkn.isReady = true;
@@ -218,7 +218,7 @@ class CSVLexer1 extends Lexer {
                             tkn.type = EOF;
                             tkn.isReady = true;
                             return tkn;
-                        } else if (isEndOfLine(c)) {
+                        } else if (readEndOfLine(c)) {
                             // ok eo token reached
                             tkn.type = EORECORD;
                             tkn.isReady = true;
