@@ -67,7 +67,7 @@ abstract class Lexer {
         return c == null ? DISABLED : c.charValue();
     }
 
-    int getLineNumber() {
+    long getLineNumber() {
         return in.getLineNumber();
     }
 

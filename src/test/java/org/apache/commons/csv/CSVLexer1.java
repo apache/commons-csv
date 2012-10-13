@@ -192,7 +192,7 @@ class CSVLexer1 extends Lexer {
      */
     private Token encapsulatedTokenLexer(final Token tkn, int c) throws IOException {
         // save current line
-        final int startLineNumber = getLineNumber();
+        final long startLineNumber = getLineNumber();
         // ignore the given delimiter
         // assert c == delimiter;
         while (true) {

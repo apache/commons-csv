@@ -192,7 +192,7 @@ class CSVLexer extends Lexer {
      */
     private Token encapsulatedTokenLexer(final Token tkn) throws IOException {
         // save current line number in case needed for IOE
-        final int startLineNumber = getLineNumber();
+        final long startLineNumber = getLineNumber();
         int c;
         while (true) {
             c = in.read();

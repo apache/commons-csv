@@ -139,7 +139,7 @@ public class CSVParser implements Iterable<CSVRecord> {
      *
      * @return current line number
      */
-    public int getLineNumber() {
+    public long getLineNumber() {
         return lexer.getLineNumber();
     }
 

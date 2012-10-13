@@ -38,7 +38,7 @@ class ExtendedBufferedReader extends BufferedReader {
     private int lastChar = UNDEFINED;
 
     /** The line counter */
-    private int lineCounter = 0;
+    private long lineCounter;
 
     /**
      * Created extended buffered reader using default buffer-size
@@ -145,7 +145,7 @@ class ExtendedBufferedReader extends BufferedReader {
      *
      * @return the current-line-number (or -1)
      */
-    int getLineNumber() {
+    long getLineNumber() {
         return lineCounter;
     }
 }
