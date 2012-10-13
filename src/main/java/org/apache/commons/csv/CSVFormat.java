@@ -53,7 +53,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Constant char to be used for disabling comments, escapes and encapsulation. The value -2 is used because it
-     * won't be confused with an EOF signal (-1), and because the unicode value FFFE would be encoded as two chars
+     * won't be confused with an EOF signal (-1), and because the Unicode value {@code FFFE} would be encoded as two chars
      * (using surrogates) and thus there should never be a collision with a real text char.
      */
     static final char DISABLED = '\ufffe';
