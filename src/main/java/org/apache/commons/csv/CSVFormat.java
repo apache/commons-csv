@@ -39,7 +39,7 @@ public class CSVFormat implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Character delimiter;
+    private final char delimiter;
     private final Character encapsulator;
     private final Character commentStart;
     private final Character escape;
@@ -49,9 +49,9 @@ public class CSVFormat implements Serializable {
     private final String[] header;
 
     /**
-     * Starting format with no settings defined; used for creating other formats from scratch.
+     * Starting format; used for creating other formats.
      */
-    static final CSVFormat PRISTINE = new CSVFormat(null, null, null, null, false, false, null, null);
+    static final CSVFormat PRISTINE = new CSVFormat(COMMA, null, null, null, false, false, null, null);
 
     /**
      * Standard comma separated format, as for {@link #RFC4180} but allowing blank lines.
@@ -143,7 +143,7 @@ public class CSVFormat implements Serializable {
      * @param header
      *            the header
      */
-    public CSVFormat(final Character delimiter, final Character encapsulator, final Character commentStart, final Character escape, final 
+    public CSVFormat(final char delimiter, final Character encapsulator, final Character commentStart, final Character escape, final 
             boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String lineSeparator, final String[] header) {
         this.delimiter = delimiter;
         this.encapsulator = encapsulator;
@@ -173,10 +173,6 @@ public class CSVFormat implements Serializable {
      * @throws IllegalStateException
      */
     void validate() throws IllegalStateException {
-        if (delimiter == null) {
-            throw new IllegalStateException("The delimiter character cannot be null");
-        }
-
         if (delimiter == encapsulator) {
             throw new IllegalStateException("The encapsulator character and the delimiter cannot be the same ('" + encapsulator + "')");
         }
