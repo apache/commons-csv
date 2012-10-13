@@ -143,8 +143,8 @@ public class CSVFormat implements Serializable {
      * @param header
      *            the header
      */
-    CSVFormat(final Character delimiter, final Character encapsulator, final Character commentStart, final Character escape, final boolean surroundingSpacesIgnored,
-            final boolean emptyLinesIgnored, final String lineSeparator, final String[] header) {
+    public CSVFormat(final Character delimiter, final Character encapsulator, final Character commentStart, final Character escape, final 
+            boolean surroundingSpacesIgnored, final boolean emptyLinesIgnored, final String lineSeparator, final String[] header) {
         this.delimiter = delimiter;
         this.encapsulator = encapsulator;
         this.commentStart = commentStart;
