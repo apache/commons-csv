@@ -118,7 +118,7 @@ abstract class Lexer {
     boolean readEndOfLine(int c) throws IOException {
         // check if we have \r\n...
         if (c == CR && in.lookAhead() == LF) {
-            // note: does not change c outside of this method !!
+            // note: does not change c outside of this method!
             c = in.read();
         }
         return c == LF || c == CR;
