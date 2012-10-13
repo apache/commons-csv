@@ -32,10 +32,17 @@ import java.io.IOException;
  */
 abstract class Lexer {
 
-    private final Character delimiter;
-    private final Character escape;
-    private final Character encapsulator;
-    private final Character commmentStart;
+    /**
+     * Constant char to be used for disabling comments, escapes and encapsulation. The value -2 is used because it
+     * won't be confused with an EOF signal (-1), and because the Unicode value {@code FFFE} would be encoded as two chars
+     * (using surrogates) and thus there should never be a collision with a real text char.
+     */
+    private static final char DISABLED = '\ufffe';
+
+    private final char delimiter;
+    private final char escape;
+    private final char encapsulator;
+    private final char commmentStart;
 
     final boolean ignoreSurroundingSpaces;
     final boolean ignoreEmptyLines;
@@ -49,11 +56,15 @@ abstract class Lexer {
         this.format = format;
         this.in = in;
         this.delimiter = format.getDelimiter();
-        this.escape = format.getEscape();
-        this.encapsulator = format.getEncapsulator();
-        this.commmentStart = format.getCommentStart();
+        this.escape = nullMeansDisabled(format.getEscape());
+        this.encapsulator = nullMeansDisabled(format.getEncapsulator());
+        this.commmentStart = nullMeansDisabled(format.getCommentStart());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
+    }
+
+    private final char nullMeansDisabled(Character c) {
+        return c == null ? DISABLED : c.charValue();
     }
 
     int getLineNumber() {
@@ -137,14 +148,14 @@ abstract class Lexer {
     }
 
     boolean isEscape(final int c) {
-        return escape != null && c == escape;
+        return c == escape;
     }
 
     boolean isEncapsulator(final int c) {
-        return encapsulator != null && c == encapsulator;
+        return c == encapsulator;
     }
 
     boolean isCommentStart(final int c) {
-        return commmentStart != null && c == commmentStart;
+        return c == commmentStart;
     }
 }
