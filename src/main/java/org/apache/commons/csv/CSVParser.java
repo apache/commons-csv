@@ -134,7 +134,7 @@ public class CSVParser implements Iterable<CSVRecord> {
     /**
      * Returns the current line number in the input stream.
      * <p/>
-     * ATTENTION: in case your csv has multiline-values the returned number does not correspond to the record-number
+     * ATTENTION: If your CSV input has multiline-values, the returned number does not correspond to the record-number.
      *
      * @return current line number
      */
