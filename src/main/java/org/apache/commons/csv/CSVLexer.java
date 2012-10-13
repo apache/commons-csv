@@ -58,7 +58,7 @@ class CSVLexer extends Lexer {
         boolean eol = isEndOfLine(c);
 
         // empty line detection: eol AND (last char was EOL or beginning)
-        if (emptyLinesIgnored) {
+        if (ignoreEmptyLines) {
             while (eol && isStartOfLine(lastChar)) {
                 // go on char ahead ...
                 lastChar = c;

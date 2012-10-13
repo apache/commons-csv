@@ -38,7 +38,7 @@ abstract class Lexer {
     private final Character commmentStart;
 
     final boolean ignoreSurroundingSpaces;
-    final boolean emptyLinesIgnored;
+    final boolean ignoreEmptyLines;
 
     final CSVFormat format;
 
@@ -53,7 +53,7 @@ abstract class Lexer {
         this.encapsulator = format.getEncapsulator();
         this.commmentStart = format.getCommentStart();
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
-        this.emptyLinesIgnored = format.getIgnoreEmptyLines();
+        this.ignoreEmptyLines = format.getIgnoreEmptyLines();
     }
 
     int getLineNumber() {

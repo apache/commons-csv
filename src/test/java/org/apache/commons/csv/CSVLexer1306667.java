@@ -58,7 +58,7 @@ class CSVLexer1306667 extends Lexer {
         c = in.readAgain();
 
         //  empty line detection: eol AND (last char was EOL or beginning)
-        if (emptyLinesIgnored) {
+        if (ignoreEmptyLines) {
             while (eol && isStartOfLine(lastChar)) {
                 // go on char ahead ...
                 lastChar = c;
