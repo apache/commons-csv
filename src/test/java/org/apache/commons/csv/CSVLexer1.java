@@ -97,7 +97,8 @@ class CSVLexer1 extends Lexer {
             if (c == format.getCommentStart()) {
                 // ignore everything till end of line and continue (incr linecount)
                 in.readLine();
-                tkn = nextToken(tkn.reset());
+                tkn.reset();
+                tkn = nextToken(tkn);
             } else if (c == format.getDelimiter()) {
                 // empty token return TOKEN("")
                 tkn.type = TOKEN;

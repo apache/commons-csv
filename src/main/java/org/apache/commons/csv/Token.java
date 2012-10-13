@@ -55,11 +55,10 @@ class Token {
     /** Token ready flag: indicates a valid token with content (ready for the parser). */
     boolean isReady;
 
-    Token reset() {
+    void reset() {
         content.setLength(0);
         type = INVALID;
         isReady = false;
-        return this;
     }
 
     // Provide toString method for IDE debugging
