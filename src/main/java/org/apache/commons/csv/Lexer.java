@@ -111,7 +111,7 @@ abstract class Lexer {
     }
 
     /**
-     * Greedy - accepts \n, \r and \r\n This checker consumes silently the second control-character...
+     * Greedily accepts \n, \r and \r\n This checker consumes silently the second control-character...
      *
      * @return true if the given character is a line-terminator
      */
