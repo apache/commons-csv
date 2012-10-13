@@ -144,13 +144,13 @@ public class CSVFormat implements Serializable {
      *            the header
      */
     public CSVFormat(final Character delimiter, final Character encapsulator, final Character commentStart, final Character escape, final 
-            boolean surroundingSpacesIgnored, final boolean emptyLinesIgnored, final String lineSeparator, final String[] header) {
+            boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String lineSeparator, final String[] header) {
         this.delimiter = delimiter;
         this.encapsulator = encapsulator;
         this.commentStart = commentStart;
         this.escape = escape;
-        this.ignoreSurroundingSpaces = surroundingSpacesIgnored;
-        this.ignoreEmptyLines = emptyLinesIgnored;
+        this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;
+        this.ignoreEmptyLines = ignoreEmptyLines;
         this.lineSeparator = lineSeparator;
         this.header = header;
     }
