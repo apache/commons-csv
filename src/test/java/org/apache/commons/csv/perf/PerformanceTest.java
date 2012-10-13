@@ -33,15 +33,13 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * Tests performance.
  * 
- * Only enable for your own development.
+ * To run this test, use: mvn test -Dtest=PeformanceTest
  */
-@Ignore
 public class PerformanceTest {
 
     private final int max = 10;
