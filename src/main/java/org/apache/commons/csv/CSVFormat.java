@@ -121,7 +121,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Default MySQL format used by the <tt>SELECT INTO OUTFILE</tt> and <tt>LOAD DATA INFILE</tt> operations. This is
-     * a tab-delimited format with a LF_STR character as the line separator. Values are not quoted and special characters
+     * a tab-delimited format with a LF character as the line separator. Values are not quoted and special characters
      * are escaped with '\'.
      *
      * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html">
