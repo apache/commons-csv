@@ -70,10 +70,10 @@ public class CSVParserTest {
     public void testGetLine() throws IOException {
         final CSVParser parser = new CSVParser(new StringReader(CSVINPUT), CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
         for (final String[] re : RESULT) {
-            assertArrayEquals(re, parser.getRecord().values());
+            assertArrayEquals(re, parser.nextRecord().values());
         }
 
-        assertNull(parser.getRecord());
+        assertNull(parser.nextRecord());
     }
 
     @Test
@@ -232,7 +232,7 @@ public class CSVParserTest {
     @Test
     public void testEmptyFile() throws Exception {
         final CSVParser parser = new CSVParser("", CSVFormat.DEFAULT);
-        assertNull(parser.getRecord());
+        assertNull(parser.nextRecord());
     }
 
     @Test
@@ -612,19 +612,19 @@ public class CSVParserTest {
         CSVRecord record;
         assertEquals(0, parser.getRecordNumber());
         assertEquals(0, parser.getLineNumber());
-        assertNotNull(record = parser.getRecord());
+        assertNotNull(record = parser.nextRecord());
         assertEquals(3, parser.getLineNumber());
         assertEquals(1, record.getRecordNumber());
         assertEquals(1, parser.getRecordNumber());
-        assertNotNull(record = parser.getRecord());
+        assertNotNull(record = parser.nextRecord());
         assertEquals(6, parser.getLineNumber());
         assertEquals(2, record.getRecordNumber());
         assertEquals(2, parser.getRecordNumber());
-        assertNotNull(record = parser.getRecord());
+        assertNotNull(record = parser.nextRecord());
         assertEquals(8, parser.getLineNumber());
         assertEquals(3, record.getRecordNumber());
         assertEquals(3, parser.getRecordNumber());
-        assertNull(record = parser.getRecord());
+        assertNull(record = parser.nextRecord());
         assertEquals(8, parser.getLineNumber());
         assertEquals(3, parser.getRecordNumber());
     }
@@ -643,30 +643,30 @@ public class CSVParserTest {
         final CSVParser parser = new CSVParser("a" + lineSeparator + "b" + lineSeparator + "c", CSVFormat.DEFAULT.withLineSeparator(lineSeparator));
         CSVRecord record;
         assertEquals(0, parser.getRecordNumber());
-        assertNotNull(record = parser.getRecord());
+        assertNotNull(record = parser.nextRecord());
         assertEquals(1, record.getRecordNumber());        
         assertEquals(1, parser.getRecordNumber());
-        assertNotNull(record = parser.getRecord());
+        assertNotNull(record = parser.nextRecord());
         assertEquals(2, record.getRecordNumber());        
         assertEquals(2, parser.getRecordNumber());
-        assertNotNull(record = parser.getRecord());
+        assertNotNull(record = parser.nextRecord());
         assertEquals(3, record.getRecordNumber());        
         assertEquals(3, parser.getRecordNumber());
-        assertNull(record = parser.getRecord());
+        assertNull(record = parser.nextRecord());
         assertEquals(3, parser.getRecordNumber());
     }
 
     private void validateLineNumbers(String lineSeparator) throws IOException {
         final CSVParser parser = new CSVParser("a" + lineSeparator + "b" + lineSeparator + "c", CSVFormat.DEFAULT.withLineSeparator(lineSeparator));
         assertEquals(0, parser.getLineNumber());
-        assertNotNull(parser.getRecord());
+        assertNotNull(parser.nextRecord());
         assertEquals(1, parser.getLineNumber());
-        assertNotNull(parser.getRecord());
+        assertNotNull(parser.nextRecord());
         assertEquals(2, parser.getLineNumber());
-        assertNotNull(parser.getRecord());
+        assertNotNull(parser.nextRecord());
         // Still 2 because the last line is does not have EOL chars
         assertEquals(2, parser.getLineNumber());
-        assertNull(parser.getRecord());
+        assertNull(parser.nextRecord());
         // Still 2 because the last line is does not have EOL chars
         assertEquals(2, parser.getLineNumber());
     }

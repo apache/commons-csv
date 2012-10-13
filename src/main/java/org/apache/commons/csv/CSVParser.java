@@ -161,7 +161,7 @@ public class CSVParser implements Iterable<CSVRecord> {
      * @throws IOException
      *             on parse error or input read-failure
      */
-    CSVRecord getRecord() throws IOException {
+    CSVRecord nextRecord() throws IOException {
         CSVRecord result = new CSVRecord(null, headerMap, null, recordNumber + 1);
         record.clear();
         StringBuilder sb = null;
@@ -217,7 +217,7 @@ public class CSVParser implements Iterable<CSVRecord> {
     public List<CSVRecord> getRecords() throws IOException {
         final List<CSVRecord> records = new ArrayList<CSVRecord>();
         CSVRecord rec;
-        while ((rec = getRecord()) != null) {
+        while ((rec = nextRecord()) != null) {
             records.add(rec);
         }
         return records;
@@ -234,7 +234,7 @@ public class CSVParser implements Iterable<CSVRecord> {
             String[] header = null;
             if (format.getHeader().length == 0) {
                 // read the header from the first line of the file
-                final CSVRecord rec = getRecord();
+                final CSVRecord rec = nextRecord();
                 if (rec != null) {
                     header = rec.values();
                 }
@@ -262,7 +262,7 @@ public class CSVParser implements Iterable<CSVRecord> {
 
             private CSVRecord getNextRecord() {
                 try {
-                    return getRecord();
+                    return nextRecord();
                 } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
