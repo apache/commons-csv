@@ -17,7 +17,7 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.Constants.BELL;
+import static org.apache.commons.csv.Constants.BACKSPACE;
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.END_OF_STREAM;
 import static org.apache.commons.csv.Constants.FF;
@@ -79,7 +79,7 @@ abstract class Lexer {
         case 't':
             return TAB;
         case 'b':
-            return BELL;
+            return BACKSPACE;
         case 'f':
             return FF;
         case END_OF_STREAM:

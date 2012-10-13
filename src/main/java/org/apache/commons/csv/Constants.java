@@ -22,7 +22,7 @@ package org.apache.commons.csv;
  */
 class Constants {
     
-    static final char BELL = '\b';
+    static final char BACKSPACE = '\b';
     static final char COMMA = ',';
     
     /**
