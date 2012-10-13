@@ -18,9 +18,17 @@
 package org.apache.commons.csv;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Constructor;
+import java.util.zip.GZIPInputStream;
+
+import org.apache.commons.io.IOUtils;
 
 /**
  * Basic test harness.
@@ -57,7 +65,18 @@ public class PerformanceTest {
 
     private static final CSVFormat format = CSVFormat.EXCEL;
 
+    private static final File BIG_FILE = new File(System.getProperty("java.io.tmpdir"), "worldcitiespop.txt");
+
     public static void main(final String [] args) throws Exception {
+        if (BIG_FILE.exists()) {
+            System.out.println(String.format("Found test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
+        } else {
+            System.out.println("Decompressing test fixture " + BIG_FILE + "...");
+            final InputStream input = new GZIPInputStream(new FileInputStream("src/test/resources/perf/worldcitiespop.txt.gz"));
+            final OutputStream output = new FileOutputStream(BIG_FILE);
+            IOUtils.copy(input, output);
+            System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));            
+        }
         final int argc = args.length;
         String tests[];
         if (argc > 0) {
@@ -100,7 +119,7 @@ public class PerformanceTest {
     }
 
     private static BufferedReader getReader() throws IOException {
-        return new BufferedReader(new FileReader("worldcitiespop.txt"));
+        return new BufferedReader(new FileReader(BIG_FILE));
     }
 
     // Container for basic statistics
