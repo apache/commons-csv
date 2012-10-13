@@ -113,9 +113,9 @@ abstract class Lexer {
     /**
      * Greedily accepts \n, \r and \r\n This checker consumes silently the second control-character...
      *
-     * @return true if the given character is a line-terminator
+     * @return true if the given or next character is a line-terminator
      */
-    boolean isEndOfLine(int c) throws IOException {
+    boolean readEndOfLine(int c) throws IOException {
         // check if we have \r\n...
         if (c == CR && in.lookAhead() == LF) {
             // note: does not change c outside of this method !!
