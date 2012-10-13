@@ -174,7 +174,7 @@ public class CSVFormat implements Serializable {
      */
     void validate() throws IllegalStateException {
         if (delimiter == encapsulator) {
-            throw new IllegalStateException("The encapsulator character and the delimiter cannot be the same ('" + encapsulator + ")");
+            throw new IllegalStateException("The encapsulator character and the delimiter cannot be the same ('" + encapsulator + "')");
         }
 
         if (delimiter == escape) {
