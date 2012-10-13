@@ -25,7 +25,7 @@ import static org.apache.commons.csv.Token.Type.TOKEN;
 
 import java.io.IOException;
 
-class CSVLexer extends Lexer {
+final class CSVLexer extends Lexer {
 
     /** ctor needs to be public so can be called dynamically by PerformanceTest class */
     public CSVLexer(final CSVFormat format, final ExtendedBufferedReader in) {

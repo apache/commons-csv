@@ -32,7 +32,7 @@ import java.io.Reader;
  * In particular the reader supports a look-ahead option, which allows you to see the next char returned by
  * {@link #read()}.
  */
-class ExtendedBufferedReader extends BufferedReader {
+final class ExtendedBufferedReader extends BufferedReader {
 
     /** The last char returned */
     private int lastChar = UNDEFINED;

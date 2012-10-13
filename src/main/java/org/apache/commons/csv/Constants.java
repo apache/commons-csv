@@ -20,7 +20,7 @@ package org.apache.commons.csv;
 /**
  * Constants for this package.
  */
-class Constants {
+final class Constants {
     
     static final char BACKSPACE = '\b';
     static final char COMMA = ',';
