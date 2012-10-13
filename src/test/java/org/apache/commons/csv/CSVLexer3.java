@@ -133,7 +133,7 @@ class CSVLexer3 extends Lexer {
                             state = State.PLAIN;
                             break;
                         case WHITESPACE:
-                            if (!surroundingSpacesIgnored){
+                            if (!ignoreSurroundingSpaces){
                                 tkn.content.append((char) intch);
                                 state = State.PLAIN;
                             }
@@ -155,7 +155,7 @@ class CSVLexer3 extends Lexer {
                             state = State.ESCAPE_PLAIN;
                             break;
                         default:
-                            trimTrailingSpaces = surroundingSpacesIgnored; // we have a plain token
+                            trimTrailingSpaces = ignoreSurroundingSpaces; // we have a plain token
                             tkn.content.append((char) intch);
                             break;
                     }
@@ -191,7 +191,7 @@ class CSVLexer3 extends Lexer {
                             state = State.INQUOTE;
                             break;
                         case WHITESPACE: // trailing whitespace may be allowed
-                            if (!surroundingSpacesIgnored) {
+                            if (!ignoreSurroundingSpaces) {
                                 // error invalid char between token and next delimiter
                                 throw new IOException("(line " + getLineNumber() + ") invalid char between encapsulated token and delimiter");
                             }

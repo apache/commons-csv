@@ -90,7 +90,7 @@ class CSVLexer extends Lexer {
         // important: make sure a new char gets consumed in each iteration
         while (token.type == INVALID) {
             // ignore whitespaces at beginning of a token
-            if (surroundingSpacesIgnored) {
+            if (ignoreSurroundingSpaces) {
                 while (isWhitespace(c) && !eol) {
                     c = in.read();
                     eol = isEndOfLine(c);
@@ -163,7 +163,7 @@ class CSVLexer extends Lexer {
             }
         }
 
-        if (surroundingSpacesIgnored) {
+        if (ignoreSurroundingSpaces) {
             trimTrailingSpaces(tkn.content);
         }
 
