@@ -32,14 +32,10 @@ import java.io.IOException;
  */
 abstract class Lexer {
 
-    private final boolean isEncapsulating;
-    private final boolean isEscaping;
-    private final boolean isCommentEnabled;
-
-    private final char delimiter;
-    private final char escape;
-    private final char encapsulator;
-    private final char commmentStart;
+    private final Character delimiter;
+    private final Character escape;
+    private final Character encapsulator;
+    private final Character commmentStart;
 
     final boolean surroundingSpacesIgnored;
     final boolean emptyLinesIgnored;
@@ -52,9 +48,6 @@ abstract class Lexer {
     Lexer(final CSVFormat format, final ExtendedBufferedReader in) {
         this.format = format;
         this.in = in;
-        this.isEncapsulating = format.isEncapsulating();
-        this.isEscaping = format.isEscaping();
-        this.isCommentEnabled = format.isCommentingEnabled();
         this.delimiter = format.getDelimiter();
         this.escape = format.getEscape();
         this.encapsulator = format.getEncapsulator();
@@ -144,14 +137,14 @@ abstract class Lexer {
     }
 
     boolean isEscape(final int c) {
-        return isEscaping && c == escape;
+        return escape != null && c == escape;
     }
 
     boolean isEncapsulator(final int c) {
-        return isEncapsulating && c == encapsulator;
+        return encapsulator != null && c == encapsulator;
     }
 
     boolean isCommentStart(final int c) {
-        return isCommentEnabled && c == commmentStart;
+        return commmentStart != null && c == commmentStart;
     }
 }

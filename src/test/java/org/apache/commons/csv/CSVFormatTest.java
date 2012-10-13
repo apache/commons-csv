@@ -46,9 +46,9 @@ public class CSVFormatTest {
         format.withIgnoreEmptyLines(false);
 
         assertEquals('!', format.getDelimiter());
-        assertEquals('!', format.getEncapsulator());
-        assertEquals('!', format.getCommentStart());
-        assertEquals('!', format.getEscape());
+        assertEquals('!', format.getEncapsulator().charValue());
+        assertEquals('!', format.getCommentStart().charValue());
+        assertEquals('!', format.getEscape().charValue());
         assertEquals(CRLF, format.getLineSeparator());
 
         assertTrue(format.getIgnoreSurroundingSpaces());
@@ -60,10 +60,10 @@ public class CSVFormatTest {
         final CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, CRLF, null);
 
         assertEquals('?', format.withDelimiter('?').getDelimiter());
-        assertEquals('?', format.withEncapsulator('?').getEncapsulator());
-        assertEquals('?', format.withCommentStart('?').getCommentStart());
+        assertEquals('?', format.withEncapsulator('?').getEncapsulator().charValue());
+        assertEquals('?', format.withCommentStart('?').getCommentStart().charValue());
         assertEquals("?", format.withLineSeparator("?").getLineSeparator());
-        assertEquals('?', format.withEscape('?').getEscape());
+        assertEquals('?', format.withEscape('?').getEscape().charValue());
 
         assertFalse(format.withIgnoreSurroundingSpaces(false).getIgnoreSurroundingSpaces());
         assertFalse(format.withIgnoreEmptyLines(false).getIgnoreEmptyLines());
@@ -131,7 +131,7 @@ public class CSVFormatTest {
             // expected
         }
 
-        format.withEncapsulator(CSVFormat.DISABLED).withCommentStart(CSVFormat.DISABLED).validate();
+        format.withEncapsulator(null).withCommentStart(null).validate();
 
         try {
             format.withEscape('!').withCommentStart('!').validate();
@@ -140,7 +140,7 @@ public class CSVFormatTest {
             // expected
         }
 
-        format.withEscape(CSVFormat.DISABLED).withCommentStart(CSVFormat.DISABLED).validate();
+        format.withEscape(null).withCommentStart(null).validate();
 
 
         try {

@@ -18,6 +18,7 @@
 package org.apache.commons.csv;
 
 import static org.apache.commons.csv.Constants.COMMA;
+import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.DOUBLE_QUOTE;
 import static org.apache.commons.csv.Constants.ESCAPE;
@@ -38,30 +39,19 @@ public class CSVFormat implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final char delimiter;
-    private final char encapsulator;
-    private final char commentStart;
-    private final char escape;
+    private final Character delimiter;
+    private final Character encapsulator;
+    private final Character commentStart;
+    private final Character escape;
     private final boolean ignoreSurroundingSpaces; // Should leading/trailing spaces be ignored around values?
     private final boolean ignoreEmptyLines;
     private final String lineSeparator; // for outputs
     private final String[] header;
 
-    private final boolean isEscaping;
-    private final boolean isCommentingEnabled;
-    private final boolean isEncapsulating;
-
-    /**
-     * Constant char to be used for disabling comments, escapes and encapsulation. The value -2 is used because it
-     * won't be confused with an EOF signal (-1), and because the Unicode value {@code FFFE} would be encoded as two chars
-     * (using surrogates) and thus there should never be a collision with a real text char.
-     */
-    static final char DISABLED = '\ufffe';
-
     /**
      * Starting format with no settings defined; used for creating other formats from scratch.
      */
-    static final CSVFormat PRISTINE = new CSVFormat(DISABLED, DISABLED, DISABLED, DISABLED, false, false, null, null);
+    static final CSVFormat PRISTINE = new CSVFormat(null, null, null, null, false, false, null, null);
 
     /**
      * Standard comma separated format, as for {@link #RFC4180} but allowing blank lines.
@@ -73,8 +63,8 @@ public class CSVFormat implements Serializable {
      * </ul>
      */
     public static final CSVFormat DEFAULT =
-            PRISTINE.
-            withDelimiter(COMMA)
+            PRISTINE
+            .withDelimiter(COMMA)
             .withEncapsulator(DOUBLE_QUOTE)
             .withIgnoreEmptyLines(true)
             .withLineSeparator(CRLF);
@@ -89,8 +79,8 @@ public class CSVFormat implements Serializable {
      * </ul>
      */
     public static final CSVFormat RFC4180 =
-            PRISTINE.
-            withDelimiter(COMMA)
+            PRISTINE
+            .withDelimiter(COMMA)
             .withEncapsulator(DOUBLE_QUOTE)
             .withLineSeparator(CRLF);
 
@@ -127,7 +117,7 @@ public class CSVFormat implements Serializable {
      * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html">
      *      http://dev.mysql.com/doc/refman/5.1/en/load-data.html</a>
      */
-    public static final CSVFormat MYSQL =
+    public static final CSVFormat MYSQL = 
             PRISTINE
             .withDelimiter(TAB)
             .withEscape(ESCAPE)
@@ -153,7 +143,7 @@ public class CSVFormat implements Serializable {
      * @param header
      *            the header
      */
-    CSVFormat(final char delimiter, final char encapsulator, final char commentStart, final char escape, final boolean surroundingSpacesIgnored,
+    CSVFormat(final Character delimiter, final Character encapsulator, final Character commentStart, final Character escape, final boolean surroundingSpacesIgnored,
             final boolean emptyLinesIgnored, final String lineSeparator, final String[] header) {
         this.delimiter = delimiter;
         this.encapsulator = encapsulator;
@@ -163,9 +153,6 @@ public class CSVFormat implements Serializable {
         this.ignoreEmptyLines = emptyLinesIgnored;
         this.lineSeparator = lineSeparator;
         this.header = header;
-        this.isEncapsulating = encapsulator != DISABLED;
-        this.isCommentingEnabled = commentStart != DISABLED;
-        this.isEscaping = escape != DISABLED;
     }
 
     /**
@@ -176,8 +163,8 @@ public class CSVFormat implements Serializable {
      *
      * @return true if <code>c</code> is a line break character
      */
-    private static boolean isLineBreak(final char c) {
-        return c == '\n' || c == '\r';
+    private static boolean isLineBreak(final Character c) {
+        return c != null && (c == LF || c == CR);
     }
 
     /**
@@ -199,12 +186,12 @@ public class CSVFormat implements Serializable {
                     commentStart + "\")");
         }
 
-        if (encapsulator != DISABLED && encapsulator == commentStart) {
+        if (encapsulator != null && encapsulator == commentStart) {
             throw new IllegalArgumentException(
                     "The comment start character and the encapsulator cannot be the same (\"" + commentStart + "\")");
         }
 
-        if (escape != DISABLED && escape == commentStart) {
+        if (escape != null && escape == commentStart) {
             throw new IllegalArgumentException("The comment start and the escape character cannot be the same (\"" +
                     commentStart + "\")");
         }
@@ -229,6 +216,19 @@ public class CSVFormat implements Serializable {
      *             thrown if the specified character is a line break
      */
     public CSVFormat withDelimiter(final char delimiter) {
+        return withDelimiter(Character.valueOf(delimiter));
+    }
+
+    /**
+     * Returns a copy of this format using the specified delimiter character.
+     *
+     * @param delimiter
+     *            the delimiter character
+     * @return A copy of this format using the specified delimiter character
+     * @throws IllegalArgumentException
+     *             thrown if the specified character is a line break
+     */
+    public CSVFormat withDelimiter(final Character delimiter) {
         if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
@@ -241,7 +241,7 @@ public class CSVFormat implements Serializable {
      *
      * @return the encapsulator character
      */
-    public char getEncapsulator() {
+    public Character getEncapsulator() {
         return encapsulator;
     }
 
@@ -255,6 +255,19 @@ public class CSVFormat implements Serializable {
      *             thrown if the specified character is a line break
      */
     public CSVFormat withEncapsulator(final char encapsulator) {
+        return withEncapsulator(Character.valueOf(encapsulator));
+    }
+
+    /**
+     * Returns a copy of this format using the specified encapsulator character.
+     *
+     * @param encapsulator
+     *            the encapsulator character
+     * @return A copy of this format using the specified encapsulator character
+     * @throws IllegalArgumentException
+     *             thrown if the specified character is a line break
+     */
+    public CSVFormat withEncapsulator(final Character encapsulator) {
         if (isLineBreak(encapsulator)) {
             throw new IllegalArgumentException("The encapsulator cannot be a line break");
         }
@@ -268,7 +281,7 @@ public class CSVFormat implements Serializable {
      * @return {@code true} if an encapsulator is defined
      */
     public boolean isEncapsulating() {
-        return isEncapsulating;
+        return encapsulator != null;
     }
 
     /**
@@ -276,7 +289,7 @@ public class CSVFormat implements Serializable {
      *
      * @return the comment start marker.
      */
-    public char getCommentStart() {
+    public Character getCommentStart() {
         return commentStart;
     }
 
@@ -292,6 +305,21 @@ public class CSVFormat implements Serializable {
      *             thrown if the specified character is a line break
      */
     public CSVFormat withCommentStart(final char commentStart) {
+        return withCommentStart(Character.valueOf(commentStart));
+    }
+
+    /**
+     * Returns a copy of this format using the specified character as the comment start marker.
+     *
+     * Note that the comment introducer character is only recognised at the start of a line.
+     *
+     * @param commentStart
+     *            the comment start marker
+     * @return A copy of this format using the specified character as the comment start marker
+     * @throws IllegalArgumentException
+     *             thrown if the specified character is a line break
+     */
+    public CSVFormat withCommentStart(final Character commentStart) {
         if (isLineBreak(commentStart)) {
             throw new IllegalArgumentException("The comment start character cannot be a line break");
         }
@@ -307,7 +335,7 @@ public class CSVFormat implements Serializable {
      * @return <tt>true</tt> is comments are supported, <tt>false</tt> otherwise
      */
     public boolean isCommentingEnabled() {
-        return isCommentingEnabled;
+        return commentStart != null;
     }
 
     /**
@@ -315,7 +343,7 @@ public class CSVFormat implements Serializable {
      *
      * @return the escape character
      */
-    public char getEscape() {
+    public Character getEscape() {
         return escape;
     }
 
@@ -329,6 +357,19 @@ public class CSVFormat implements Serializable {
      *             thrown if the specified character is a line break
      */
     public CSVFormat withEscape(final char escape) {
+        return withEscape(Character.valueOf(escape));
+    }
+
+    /**
+     * Returns a copy of this format using the specified escape character.
+     *
+     * @param escape
+     *            the escape character
+     * @return A copy of this format using the specified escape character
+     * @throws IllegalArgumentException
+     *             thrown if the specified character is a line break
+     */
+    public CSVFormat withEscape(final Character escape) {
         if (isLineBreak(escape)) {
             throw new IllegalArgumentException("The escape character cannot be a line break");
         }
@@ -342,7 +383,7 @@ public class CSVFormat implements Serializable {
      * @return {@code true} if escapes are processed
      */
     public boolean isEscaping() {
-        return isEscaping;
+        return escape != null;
     }
 
     /**
