@@ -45,7 +45,7 @@ class CSVLexer1306663 extends Lexer {
     Token nextToken(final Token tkn) throws IOException {
 
         // get the last read char (required for empty line detection)
-        int lastChar = in.readAgain();
+        int lastChar = in.getLastChar();
 
         //  read the next char and set eol
         int c = in.read();
@@ -61,7 +61,7 @@ class CSVLexer1306663 extends Lexer {
         *       is to call 'readAgain' on the stream...
         */
         boolean eol = isEndOfLine(c);
-        c = in.readAgain();
+        c = in.getLastChar();
 
         //  empty line detection: eol AND (last char was EOL or beginning)
         if (ignoreEmptyLines) {
@@ -70,7 +70,7 @@ class CSVLexer1306663 extends Lexer {
                 lastChar = c;
                 c = in.read();
                 eol = isEndOfLine(c);
-                c = in.readAgain();
+                c = in.getLastChar();
                 // reached end of file without any content (empty line at the end)
                 if (isEndOfFile(c)) {
                     tkn.type = EOF;

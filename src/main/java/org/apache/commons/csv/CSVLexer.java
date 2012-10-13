@@ -47,7 +47,7 @@ final class CSVLexer extends Lexer {
     Token nextToken(final Token token) throws IOException {
 
         // get the last read char (required for empty line detection)
-        int lastChar = in.readAgain();
+        int lastChar = in.getLastChar();
 
         // read the next char and set eol
         int c = in.read();

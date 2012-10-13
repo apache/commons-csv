@@ -47,7 +47,7 @@ class CSVLexer1 extends Lexer {
         wsBuf.setLength(0); // reuse
 
         // get the last read char (required for empty line detection)
-        int lastChar = in.readAgain();
+        int lastChar = in.getLastChar();
 
         //  read the next char and set eol
         /* note: unfortunately isEndOfLine may consumes a character silently.
@@ -56,7 +56,7 @@ class CSVLexer1 extends Lexer {
         */
         int c = in.read();
         boolean eol = isEndOfLine(c);
-        c = in.readAgain();
+        c = in.getLastChar();
 
         //  empty line detection: eol AND (last char was EOL or beginning)
         if (format.getIgnoreEmptyLines()) {
@@ -67,7 +67,7 @@ class CSVLexer1 extends Lexer {
                 lastChar = c;
                 c = in.read();
                 eol = isEndOfLine(c);
-                c = in.readAgain();
+                c = in.getLastChar();
                 // reached end of file without any content (empty line at the end)
                 if (isEndOfFile(c)) {
                     tkn.type = EOF;

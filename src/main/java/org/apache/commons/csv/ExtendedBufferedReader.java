@@ -65,7 +65,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      *
      * @return the last character that was read
      */
-    int readAgain() {
+    int getLastChar() {
         return lastChar;
     }
 
