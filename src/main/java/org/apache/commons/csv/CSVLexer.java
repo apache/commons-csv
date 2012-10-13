@@ -27,7 +27,7 @@ import java.io.IOException;
 
 class CSVLexer extends Lexer {
 
-    // ctor needs to be public so can be called dynamically by PerformanceTest class
+    /** ctor needs to be public so can be called dynamically by PerformanceTest class */
     public CSVLexer(final CSVFormat format, final ExtendedBufferedReader in) {
         super(format, in);
     }
