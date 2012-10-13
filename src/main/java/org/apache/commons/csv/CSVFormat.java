@@ -173,15 +173,15 @@ public class CSVFormat implements Serializable {
      * @throws IllegalStateException
      */
     void validate() throws IllegalStateException {
-        if (delimiter == encapsulator) {
+        if (encapsulator != null && delimiter == encapsulator) {
             throw new IllegalStateException("The encapsulator character and the delimiter cannot be the same ('" + encapsulator + "')");
         }
 
-        if (delimiter == escape) {
+        if (escape != null && delimiter == escape) {
             throw new IllegalStateException("The escape character and the delimiter cannot be the same ('" + escape + "')");
         }
 
-        if (delimiter == commentStart) {
+        if (commentStart != null && delimiter == commentStart) {
             throw new IllegalStateException("The comment start character and the delimiter cannot be the same ('" + commentStart + 
                     "')");
         }
