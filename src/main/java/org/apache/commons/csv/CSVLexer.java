@@ -55,7 +55,7 @@ final class CSVLexer extends Lexer {
          * Note: The following call will swallow LF if c == CR. But we don't need to know if the last char was CR or LF
          * - they are equivalent here.
          */
-        boolean eol = isEndOfLine(c);
+        boolean eol = readEndOfLine(c);
 
         // empty line detection: eol AND (last char was EOL or beginning)
         if (ignoreEmptyLines) {
@@ -63,7 +63,7 @@ final class CSVLexer extends Lexer {
                 // go on char ahead ...
                 lastChar = c;
                 c = in.read();
-                eol = isEndOfLine(c);
+                eol = readEndOfLine(c);
                 // reached end of file without any content (empty line at the end)
                 if (isEndOfFile(c)) {
                     token.type = EOF;
@@ -93,7 +93,7 @@ final class CSVLexer extends Lexer {
             if (ignoreSurroundingSpaces) {
                 while (isWhitespace(c) && !eol) {
                     c = in.read();
-                    eol = isEndOfLine(c);
+                    eol = readEndOfLine(c);
                 }
             }
 
@@ -144,7 +144,7 @@ final class CSVLexer extends Lexer {
     private Token simpleTokenLexer(final Token tkn, int c) throws IOException {
         // Faster to use while(true)+break than while(tkn.type == INVALID)
         while (true) {
-            if (isEndOfLine(c)) {
+            if (readEndOfLine(c)) {
                 tkn.type = EORECORD;
                 break;
             } else if (isEndOfFile(c)) {
@@ -215,7 +215,7 @@ final class CSVLexer extends Lexer {
                             tkn.type = EOF;
                             tkn.isReady = true; // There is data at EOF
                             return tkn;
-                        } else if (isEndOfLine(c)) {
+                        } else if (readEndOfLine(c)) {
                             tkn.type = EORECORD;
                             return tkn;
                         } else if (!isWhitespace(c)) {
