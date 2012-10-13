@@ -162,7 +162,7 @@ public class CSVParser implements Iterable<CSVRecord> {
      *             on parse error or input read-failure
      */
     CSVRecord nextRecord() throws IOException {
-        CSVRecord result = new CSVRecord(null, headerMap, null, recordNumber + 1);
+        CSVRecord result = null;
         record.clear();
         StringBuilder sb = null;
         do {
