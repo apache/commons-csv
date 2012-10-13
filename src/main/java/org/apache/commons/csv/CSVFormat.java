@@ -117,7 +117,7 @@ public class CSVFormat implements Serializable {
      * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html">
      *      http://dev.mysql.com/doc/refman/5.1/en/load-data.html</a>
      */
-    public static final CSVFormat MYSQL = 
+    public static final CSVFormat MYSQL =
             PRISTINE
             .withDelimiter(TAB)
             .withEscape(ESCAPE)
@@ -172,28 +172,25 @@ public class CSVFormat implements Serializable {
      */
     void validate() throws IllegalArgumentException {
         if (delimiter == encapsulator) {
-            throw new IllegalArgumentException("The encapsulator character and the delimiter cannot be the same (\"" +
-                    encapsulator + "\")");
+            throw new IllegalArgumentException("The encapsulator character and the delimiter cannot be the same ('" + encapsulator + ")");
         }
 
         if (delimiter == escape) {
-            throw new IllegalArgumentException("The escape character and the delimiter cannot be the same (\"" +
-                    escape + "\")");
+            throw new IllegalArgumentException("The escape character and the delimiter cannot be the same ('" + escape + "')");
         }
 
         if (delimiter == commentStart) {
-            throw new IllegalArgumentException("The comment start character and the delimiter cannot be the same (\"" +
-                    commentStart + "\")");
+            throw new IllegalArgumentException("The comment start character and the delimiter cannot be the same ('" + commentStart + 
+                    "')");
         }
 
         if (encapsulator != null && encapsulator == commentStart) {
-            throw new IllegalArgumentException(
-                    "The comment start character and the encapsulator cannot be the same (\"" + commentStart + "\")");
+            throw new IllegalArgumentException("The comment start character and the encapsulator cannot be the same ('" + commentStart + 
+                    "')");
         }
 
         if (escape != null && escape == commentStart) {
-            throw new IllegalArgumentException("The comment start and the escape character cannot be the same (\"" +
-                    commentStart + "\")");
+            throw new IllegalArgumentException("The comment start and the escape character cannot be the same ('" + commentStart + "')");
         }
     }
 
