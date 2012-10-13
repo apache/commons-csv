@@ -56,14 +56,14 @@ abstract class Lexer {
         this.format = format;
         this.in = in;
         this.delimiter = format.getDelimiter();
-        this.escape = nullMeansDisabled(format.getEscape());
-        this.encapsulator = nullMeansDisabled(format.getEncapsulator());
-        this.commmentStart = nullMeansDisabled(format.getCommentStart());
+        this.escape = mapNullToDisabled(format.getEscape());
+        this.encapsulator = mapNullToDisabled(format.getEncapsulator());
+        this.commmentStart = mapNullToDisabled(format.getCommentStart());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
     }
 
-    private final char nullMeansDisabled(Character c) {
+    private final char mapNullToDisabled(Character c) {
         return c == null ? DISABLED : c.charValue();
     }
 
