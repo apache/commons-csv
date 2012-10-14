@@ -510,7 +510,7 @@ public class CSVFormat implements Serializable {
      * @param values
      *            the values to format
      */
-    public String format(final String... values) {
+    public String format(final Object... values) {
         final StringWriter out = new StringWriter();
         try {
             new CSVPrinter(out, this).println(values);
