@@ -136,7 +136,7 @@ public class CSVPrinter {
 
     private void print(final CharSequence value, final int offset, final int len) throws IOException {
         if (format.isQuoting()) {
-            printAndEncapsulate(value, offset, len);
+            printAndQuote(value, offset, len);
         } else if (format.isEscaping()) {
             printAndEscape(value, offset, len);
         } else {
@@ -191,7 +191,7 @@ public class CSVPrinter {
         }
     }
 
-    void printAndEncapsulate(final CharSequence value, final int offset, final int len) throws IOException {
+    void printAndQuote(final CharSequence value, final int offset, final int len) throws IOException {
         final boolean first = newLine; // is this the first value on this line?
         boolean quote = false;
         int start = offset;
