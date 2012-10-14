@@ -140,12 +140,12 @@ public class CSVPrinter {
         } else if (format.isEscaping()) {
             printAndEscape(value, offset, len);
         } else {
-            printSep();
+            printDelimiter();
             out.append(value, offset, offset + len);
         }
     }
 
-    void printSep() throws IOException {
+    void printDelimiter() throws IOException {
         if (newLine) {
             newLine = false;
         } else {
@@ -158,7 +158,7 @@ public class CSVPrinter {
         int pos = offset;
         final int end = offset + len;
 
-        printSep();
+        printDelimiter();
 
         final char delim = format.getDelimiter();
         final char escape = format.getEscape();
@@ -198,7 +198,7 @@ public class CSVPrinter {
         int pos = offset;
         final int end = offset + len;
 
-        printSep();
+        printDelimiter();
 
         final char delim = format.getDelimiter();
         final char encapsulator = format.getEncapsulator();
@@ -291,7 +291,7 @@ public class CSVPrinter {
 
         if (!checkForEscape) {
             // write directly from string
-            printSep();
+            printDelimiter();
             out.append(value);
         } else {
             print(value, 0, value.length());
