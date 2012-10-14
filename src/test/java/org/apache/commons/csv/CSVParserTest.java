@@ -238,9 +238,9 @@ public class CSVParserTest {
     @Test
     public void testCSV57() throws Exception {
         final CSVParser parser = new CSVParser("", CSVFormat.DEFAULT);
-        final List<CSVRecord> l = parser.getRecords();
-        assertNotNull(l);
-        assertEquals(0, l.size());
+        final List<CSVRecord> list = parser.getRecords();
+        assertNotNull(list);
+        assertEquals(0, list.size());
     }
 
     @Test
