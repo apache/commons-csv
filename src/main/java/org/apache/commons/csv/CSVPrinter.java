@@ -200,8 +200,8 @@ public class CSVPrinter {
 
         printDelimiter();
 
-        final char delim = format.getDelimiter();
-        final char encapsulator = format.getQuoteChar();
+        final char delimChar = format.getDelimiter();
+        final char quoteChar = format.getQuoteChar();
 
         if (len <= 0) {
             // always quote an empty token that is the first
@@ -226,7 +226,7 @@ public class CSVPrinter {
             } else {
                 while (pos < end) {
                     c = value.charAt(pos);
-                    if (c == LF || c == CR || c == encapsulator || c == delim) {
+                    if (c == LF || c == CR || c == quoteChar || c == delimChar) {
                         quote = true;
                         break;
                     }
@@ -253,13 +253,13 @@ public class CSVPrinter {
         }
 
         // we hit something that needed encapsulation
-        out.append(encapsulator);
+        out.append(quoteChar);
 
         // Pick up where we left off: pos should be positioned on the first character that caused
         // the need for encapsulation.
         while (pos < end) {
             final char c = value.charAt(pos);
-            if (c == encapsulator) {
+            if (c == quoteChar) {
                 // write out the chunk up until this point
 
                 // add 1 to the length to write out the encapsulator also
@@ -273,7 +273,7 @@ public class CSVPrinter {
 
         // write the last segment
         out.append(value, start, pos);
-        out.append(encapsulator);
+        out.append(quoteChar);
     }
 
     /**
