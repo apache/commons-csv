@@ -34,187 +34,20 @@ import org.junit.Test;
 
 public class CSVPrinterTest {
 
+    public static String printable(final String s) {
+        final StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            final char ch = s.charAt(i);
+            if (ch <= ' ' || ch >= 128) {
+                sb.append("(").append((int) ch).append(")");
+            } else {
+                sb.append(ch);
+            }
+        }
+        return sb.toString();
+    }
+
     String lineSeparator = CSVFormat.DEFAULT.getLineSeparator();
-
-    @Test
-    public void testPrinter1() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.printRecord("a", "b");
-        assertEquals("a,b" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testPrinter2() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.printRecord("a,b", "b");
-        assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testPrinter3() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.printRecord("a, b", "b ");
-        assertEquals("\"a, b\",\"b \"" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testPrinter4() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.printRecord("a", "b\"c");
-        assertEquals("a,\"b\"\"c\"" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testPrinter5() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.printRecord("a", "b\nc");
-        assertEquals("a,\"b\nc\"" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testQuoteAll() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuotePolicy(Quote.ALL));
-        printer.printRecord("a", "b\nc", "d");
-        assertEquals("\"a\",\"b\nc\",\"d\"" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testPrinter6() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.printRecord("a", "b\r\nc");
-        assertEquals("a,\"b\r\nc\"" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testJdbcPrinter() throws IOException, ClassNotFoundException, SQLException {
-        final StringWriter sw = new StringWriter();
-        Class.forName("org.h2.Driver");
-        final Connection connection = DriverManager.getConnection("jdbc:h2:mem:my_test;", "sa", "");
-        try {
-            final Statement stmt = connection.createStatement();
-            stmt.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
-            stmt.execute("insert into TEST values(1, 'r1')");
-            stmt.execute("insert into TEST values(2, 'r2')");
-            final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-            printer.printRecords(stmt.executeQuery("select ID, NAME from TEST"));
-            assertEquals("1,r1" + lineSeparator + "2,r2" + lineSeparator, sw.toString());
-        } finally {
-            connection.close();
-        }
-    }
-
-    @Test
-    public void testPrinter7() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.printRecord("a", "b\\c");
-        assertEquals("a,b\\c" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testExcelPrintAllArrayOfArrays() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
-        printer.printRecords(new String[][] { { "r1c1", "r1c2" }, { "r2c1", "r2c2" } });
-        assertEquals("r1c1,r1c2" + lineSeparator + "r2c1,r2c2" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testExcelPrintAllArrayOfLists() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
-        printer.printRecords(new List[] { Arrays.asList(new String[] { "r1c1", "r1c2" }), Arrays.asList(new String[] { "r2c1", "r2c2" }) });
-        assertEquals("r1c1,r1c2" + lineSeparator + "r2c1,r2c2" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testExcelPrintAllIterableOfLists() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
-        printer.printRecords(Arrays.asList(new List[] { Arrays.asList(new String[] { "r1c1", "r1c2" }),
-                Arrays.asList(new String[] { "r2c1", "r2c2" }) }));
-        assertEquals("r1c1,r1c2" + lineSeparator + "r2c1,r2c2" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testExcelPrintAllIterableOfArrays() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
-        printer.printRecords(Arrays.asList(new String[][] { { "r1c1", "r1c2" }, { "r2c1", "r2c2" } }));
-        assertEquals("r1c1,r1c2" + lineSeparator + "r2c1,r2c2" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testExcelPrinter1() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
-        printer.printRecord("a", "b");
-        assertEquals("a,b" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testExcelPrinter2() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
-        printer.printRecord("a,b", "b");
-        assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testPrintNullValues() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.printRecord("a", null, "b");
-        assertEquals("a,,b" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testDisabledComment() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.printComment("This is a comment");
-
-        assertEquals("", sw.toString());
-    }
-
-    @Test
-    public void testSingleLineComment() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
-        printer.printComment("This is a comment");
-
-        assertEquals("# This is a comment" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testMultiLineComment() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
-        printer.printComment("This is a comment\non multiple lines");
-
-        assertEquals("# This is a comment" + lineSeparator + "# on multiple lines" + lineSeparator, sw.toString());
-    }
-
-    @Test
-    public void testRandom() throws Exception {
-        final int iter = 10000;
-        doRandom(CSVFormat.DEFAULT, iter);
-        doRandom(CSVFormat.EXCEL, iter);
-        doRandom(CSVFormat.MYSQL, iter);
-    }
-
-    public void doRandom(final CSVFormat format, final int iter) throws Exception {
-        for (int i = 0; i < iter; i++) {
-            doOneRandom(format);
-        }
-    }
 
     public void doOneRandom(final CSVFormat format) throws Exception {
         final Random r = new Random();
@@ -249,17 +82,10 @@ public class CSVPrinterTest {
         Utils.compare("Printer output :" + printable(result), lines, parseResult);
     }
 
-    public static String printable(final String s) {
-        final StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < s.length(); i++) {
-            final char ch = s.charAt(i);
-            if (ch <= ' ' || ch >= 128) {
-                sb.append("(").append((int) ch).append(")");
-            } else {
-                sb.append(ch);
-            }
+    public void doRandom(final CSVFormat format, final int iter) throws Exception {
+        for (int i = 0; i < iter; i++) {
+            doOneRandom(format);
         }
-        return sb.toString();
     }
 
     public String randStr() {
@@ -308,6 +134,180 @@ public class CSVPrinterTest {
             buf[i] = ch;
         }
         return new String(buf);
+    }
+
+    @Test
+    public void testDisabledComment() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.printComment("This is a comment");
+
+        assertEquals("", sw.toString());
+    }
+
+    @Test
+    public void testExcelPrintAllArrayOfArrays() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
+        printer.printRecords(new String[][] { { "r1c1", "r1c2" }, { "r2c1", "r2c2" } });
+        assertEquals("r1c1,r1c2" + lineSeparator + "r2c1,r2c2" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testExcelPrintAllArrayOfLists() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
+        printer.printRecords(new List[] { Arrays.asList(new String[] { "r1c1", "r1c2" }), Arrays.asList(new String[] { "r2c1", "r2c2" }) });
+        assertEquals("r1c1,r1c2" + lineSeparator + "r2c1,r2c2" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testExcelPrintAllIterableOfArrays() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
+        printer.printRecords(Arrays.asList(new String[][] { { "r1c1", "r1c2" }, { "r2c1", "r2c2" } }));
+        assertEquals("r1c1,r1c2" + lineSeparator + "r2c1,r2c2" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testExcelPrintAllIterableOfLists() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
+        printer.printRecords(Arrays.asList(new List[] { Arrays.asList(new String[] { "r1c1", "r1c2" }),
+                Arrays.asList(new String[] { "r2c1", "r2c2" }) }));
+        assertEquals("r1c1,r1c2" + lineSeparator + "r2c1,r2c2" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testExcelPrinter1() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
+        printer.printRecord("a", "b");
+        assertEquals("a,b" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testExcelPrinter2() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
+        printer.printRecord("a,b", "b");
+        assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testJdbcPrinter() throws IOException, ClassNotFoundException, SQLException {
+        final StringWriter sw = new StringWriter();
+        Class.forName("org.h2.Driver");
+        final Connection connection = DriverManager.getConnection("jdbc:h2:mem:my_test;", "sa", "");
+        try {
+            final Statement stmt = connection.createStatement();
+            stmt.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
+            stmt.execute("insert into TEST values(1, 'r1')");
+            stmt.execute("insert into TEST values(2, 'r2')");
+            final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+            printer.printRecords(stmt.executeQuery("select ID, NAME from TEST"));
+            assertEquals("1,r1" + lineSeparator + "2,r2" + lineSeparator, sw.toString());
+        } finally {
+            connection.close();
+        }
+    }
+
+    @Test
+    public void testMultiLineComment() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
+        printer.printComment("This is a comment\non multiple lines");
+
+        assertEquals("# This is a comment" + lineSeparator + "# on multiple lines" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testPrinter1() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.printRecord("a", "b");
+        assertEquals("a,b" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testPrinter2() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.printRecord("a,b", "b");
+        assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testPrinter3() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.printRecord("a, b", "b ");
+        assertEquals("\"a, b\",\"b \"" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testPrinter4() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.printRecord("a", "b\"c");
+        assertEquals("a,\"b\"\"c\"" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testPrinter5() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.printRecord("a", "b\nc");
+        assertEquals("a,\"b\nc\"" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testPrinter6() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.printRecord("a", "b\r\nc");
+        assertEquals("a,\"b\r\nc\"" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testPrinter7() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.printRecord("a", "b\\c");
+        assertEquals("a,b\\c" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testPrintNullValues() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.printRecord("a", null, "b");
+        assertEquals("a,,b" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testQuoteAll() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuotePolicy(Quote.ALL));
+        printer.printRecord("a", "b\nc", "d");
+        assertEquals("\"a\",\"b\nc\",\"d\"" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testRandom() throws Exception {
+        final int iter = 10000;
+        doRandom(CSVFormat.DEFAULT, iter);
+        doRandom(CSVFormat.EXCEL, iter);
+        doRandom(CSVFormat.MYSQL, iter);
+    }
+
+    @Test
+    public void testSingleLineComment() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
+        printer.printComment("This is a comment");
+
+        assertEquals("# This is a comment" + lineSeparator, sw.toString());
     }
 
 }
