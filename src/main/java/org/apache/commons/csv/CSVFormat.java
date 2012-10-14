@@ -531,7 +531,7 @@ public class CSVFormat implements Serializable {
     public String format(final Object... values) {
         final StringWriter out = new StringWriter();
         try {
-            new CSVPrinter(out, this).println(values);
+            new CSVPrinter(out, this).printRecord(values);
             return out.toString().trim();
         } catch (final IOException e) {
             // should not happen because a StringWriter does not do IO.

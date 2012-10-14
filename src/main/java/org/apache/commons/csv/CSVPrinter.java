@@ -25,6 +25,8 @@ import static org.apache.commons.csv.Constants.SP;
 
 import java.io.Flushable;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Prints values in a CSV format.
@@ -81,13 +83,13 @@ public class CSVPrinter {
     }
 
     /**
-     * Prints a single line of comma separated values. The values will be quoted if needed. Quotes and newLine
+     * Prints a single line of delimiter separated values. The values will be quoted if needed. Quotes and newLine
      * characters will be escaped.
      *
      * @param values
      *            values to output.
      */
-    public void println(final Object... values) throws IOException {
+    public void printRecord(final Object... values) throws IOException {
         for (final Object value : values) {
             print(value);
         }
@@ -95,7 +97,21 @@ public class CSVPrinter {
     }
 
     /**
-     * Prints a comment on a new line among the comma separated values. Comments will always begin on a new line and
+     * Prints a single line of delimiter separated values. The values will be quoted if needed. Quotes and newLine
+     * characters will be escaped.
+     *
+     * @param values
+     *            values to output.
+     */
+    public void printRecord(final Iterable<?> values) throws IOException {
+        for (final Object value : values) {
+            print(value);
+        }
+        println();
+    }
+
+    /**
+     * Prints a comment on a new line among the delimiter separated values. Comments will always begin on a new line and
      * occupy a least one full line. The character specified to start comments and a space will be inserted at the
      * beginning of each new line in the comment.
      * <p/>
@@ -282,6 +298,8 @@ public class CSVPrinter {
      *
      * @param object
      *            value to output.
+     * @throws  IOException
+     *          If an I/O error occurs
      */
     public void print(Object object, final boolean checkForEscape) throws IOException {
         // null values are considered empty
@@ -300,8 +318,50 @@ public class CSVPrinter {
      *
      * @param value
      *            value to be output.
+     * @throws  IOException
+     *          If an I/O error occurs
      */
     public void print(final Object value) throws IOException {
         print(value, true);
+    }
+
+    /**
+     * Prints all the objects in the given array.
+     * 
+     * @param values
+     *            the values to print.
+     * @throws  IOException
+     *          If an I/O error occurs
+     */
+    public void printRecords(Object[] values) throws IOException {
+        for (Object value : values) {
+            if (value instanceof Object[]) {
+                this.printRecord((Object[]) value);
+            } else if (value instanceof Iterable) {
+                this.printRecord((Iterable<?>) value);
+            } else {
+                this.printRecord(value);
+            }
+        }
+    }
+
+    /**
+     * Prints all the objects in the given collection.
+     * 
+     * @param values
+     *            the values to print.
+     * @throws  IOException
+     *          If an I/O error occurs
+     */
+    public void printRecords(Iterable<?> values) throws IOException {
+        for (Object value : values) {
+            if (value instanceof Object[]) {
+                this.printRecord((Object[]) value);
+            } else if (value instanceof Iterable) {
+                this.printRecord((Iterable<?>) value);
+            } else {
+                this.printRecord(value);
+            }
+        }
     }
 }

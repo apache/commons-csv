@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -34,7 +35,7 @@ public class CSVPrinterTest {
     public void testPrinter1() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.println("a", "b");
+        printer.printRecord("a", "b");
         assertEquals("a,b" + lineSeparator, sw.toString());
     }
 
@@ -42,7 +43,7 @@ public class CSVPrinterTest {
     public void testPrinter2() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.println("a,b", "b");
+        printer.printRecord("a,b", "b");
         assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
     }
 
@@ -50,7 +51,7 @@ public class CSVPrinterTest {
     public void testPrinter3() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.println("a, b", "b ");
+        printer.printRecord("a, b", "b ");
         assertEquals("\"a, b\",\"b \"" + lineSeparator, sw.toString());
     }
 
@@ -58,7 +59,7 @@ public class CSVPrinterTest {
     public void testPrinter4() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.println("a", "b\"c");
+        printer.printRecord("a", "b\"c");
         assertEquals("a,\"b\"\"c\"" + lineSeparator, sw.toString());
     }
 
@@ -66,7 +67,7 @@ public class CSVPrinterTest {
     public void testPrinter5() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.println("a", "b\nc");
+        printer.printRecord("a", "b\nc");
         assertEquals("a,\"b\nc\"" + lineSeparator, sw.toString());
     }
 
@@ -74,7 +75,7 @@ public class CSVPrinterTest {
     public void testPrinter6() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.println("a", "b\r\nc");
+        printer.printRecord("a", "b\r\nc");
         assertEquals("a,\"b\r\nc\"" + lineSeparator, sw.toString());
     }
 
@@ -82,15 +83,48 @@ public class CSVPrinterTest {
     public void testPrinter7() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.println("a", "b\\c");
+        printer.printRecord("a", "b\\c");
         assertEquals("a,b\\c" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testExcelPrintAllArrayOfArrays() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
+        printer.printRecords(new String[][] { { "r1c1", "r1c2" }, { "r2c1", "r2c2" } });
+        assertEquals("r1c1,r1c2" + lineSeparator + "r2c1,r2c2" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testExcelPrintAllArrayOfLists() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
+        printer.printRecords(new List[] { Arrays.asList(new String[] { "r1c1", "r1c2" }), Arrays.asList(new String[] { "r2c1", "r2c2" }) });
+        assertEquals("r1c1,r1c2" + lineSeparator + "r2c1,r2c2" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testExcelPrintAllIterableOfLists() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
+        printer.printRecords(Arrays.asList(new List[] { Arrays.asList(new String[] { "r1c1", "r1c2" }),
+                Arrays.asList(new String[] { "r2c1", "r2c2" }) }));
+        assertEquals("r1c1,r1c2" + lineSeparator + "r2c1,r2c2" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testExcelPrintAllIterableOfArrays() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
+        printer.printRecords(Arrays.asList(new String[][] { { "r1c1", "r1c2" }, { "r2c1", "r2c2" } }));
+        assertEquals("r1c1,r1c2" + lineSeparator + "r2c1,r2c2" + lineSeparator, sw.toString());
     }
 
     @Test
     public void testExcelPrinter1() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
-        printer.println("a", "b");
+        printer.printRecord("a", "b");
         assertEquals("a,b" + lineSeparator, sw.toString());
     }
 
@@ -98,7 +132,7 @@ public class CSVPrinterTest {
     public void testExcelPrinter2() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
-        printer.println("a,b", "b");
+        printer.printRecord("a,b", "b");
         assertEquals("\"a,b\",b" + lineSeparator, sw.toString());
     }
 
@@ -106,7 +140,7 @@ public class CSVPrinterTest {
     public void testPrintNullValues() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
-        printer.println("a", null, "b");
+        printer.printRecord("a", null, "b");
         assertEquals("a,,b" + lineSeparator, sw.toString());
     }
 
@@ -171,7 +205,7 @@ public class CSVPrinterTest {
 
         for (int i = 0; i < nLines; i++) {
             // for (int j=0; j<lines[i].length; j++) System.out.println("### VALUE=:" + printable(lines[i][j]));
-            printer.println(lines[i]);
+            printer.printRecord(lines[i]);
         }
 
         printer.flush();
