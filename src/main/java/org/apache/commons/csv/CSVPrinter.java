@@ -281,7 +281,7 @@ public class CSVPrinter {
      * checkForEscape==true
      *
      * @param value
-     *            value to be outputted.
+     *            value to output.
      */
     public void print(String value, final boolean checkForEscape) throws IOException {
         if (value == null) {
