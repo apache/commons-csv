@@ -153,7 +153,14 @@ public class CSVFormatTest {
         } catch (final IllegalStateException e) {
             // expected
         }
-    }
+
+        try {
+            format.withQuoteChar('!').withQuotePolicy(Quote.NONE).validate();
+            fail();
+        } catch (final IllegalStateException e) {
+            // expected
+        }
+}
 
     @SuppressWarnings("boxing") // no need to worry about boxing here
     @Test

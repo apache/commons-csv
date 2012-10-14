@@ -199,6 +199,10 @@ public class CSVFormat implements Serializable {
         if (escape != null && escape == commentStart) {
             throw new IllegalStateException("The comment start and the escape character cannot be the same ('" + commentStart + "')");
         }
+
+        if (escape == null && quotePolicy == Quote.NONE) {
+            throw new IllegalStateException("No quotes mode set but no escape character is set");
+        }
     }
 
     /**
