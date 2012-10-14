@@ -343,10 +343,10 @@ public class CSVPrinter {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public void print(final Object object) throws IOException {
+    public void print(final Object value) throws IOException {
         // null values are considered empty
-        final String value = object == null ? EMPTY : object.toString();
-        print(object, value, 0, value.length());
+        final String strValue = value == null ? EMPTY : value.toString();
+        print(value, strValue, 0, strValue.length());
     }
 
     /**
