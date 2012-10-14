@@ -25,8 +25,6 @@ import static org.apache.commons.csv.Constants.SP;
 
 import java.io.Flushable;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * Prints values in a CSV format.
