@@ -516,7 +516,7 @@ public class CSVFormat implements Serializable {
             new CSVPrinter(out, this).println(values);
             return out.toString().trim();
         } catch (final IOException e) {
-            // should not happen
+            // should not happen because a StringWriter does not do IO.
             throw new IllegalStateException(e);
         }
     }
