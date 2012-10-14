@@ -47,7 +47,7 @@ public class CSVFormatTest {
         format.withQuotePolicy(Quote.ALL);
 
         assertEquals('!', format.getDelimiter());
-        assertEquals('!', format.getEncapsulator().charValue());
+        assertEquals('!', format.getQuoteChar().charValue());
         assertEquals('!', format.getCommentStart().charValue());
         assertEquals('!', format.getEscape().charValue());
         assertEquals(CRLF, format.getLineSeparator());
@@ -63,7 +63,7 @@ public class CSVFormatTest {
         final CSVFormat format = new CSVFormat('!', '!', null, '!', '!', true, true, CRLF, null);
 
         assertEquals('?', format.withDelimiter('?').getDelimiter());
-        assertEquals('?', format.withEncapsulator('?').getEncapsulator().charValue());
+        assertEquals('?', format.withEncapsulator('?').getQuoteChar().charValue());
         assertEquals('?', format.withCommentStart('?').getCommentStart().charValue());
         assertEquals("?", format.withLineSeparator("?").getLineSeparator());
         assertEquals('?', format.withEscape('?').getEscape().charValue());
@@ -171,7 +171,7 @@ public class CSVFormatTest {
 
         assertNotNull(format);
         assertEquals("delimiter", CSVFormat.DEFAULT.getDelimiter(), format.getDelimiter());
-        assertEquals("encapsulator", CSVFormat.DEFAULT.getEncapsulator(), format.getEncapsulator());
+        assertEquals("encapsulator", CSVFormat.DEFAULT.getQuoteChar(), format.getQuoteChar());
         assertEquals("comment start", CSVFormat.DEFAULT.getCommentStart(), format.getCommentStart());
         assertEquals("line separator", CSVFormat.DEFAULT.getLineSeparator(), format.getLineSeparator());
         assertEquals("escape", CSVFormat.DEFAULT.getEscape(), format.getEscape());

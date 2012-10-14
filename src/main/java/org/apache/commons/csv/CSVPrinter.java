@@ -201,7 +201,7 @@ public class CSVPrinter {
         printDelimiter();
 
         final char delim = format.getDelimiter();
-        final char encapsulator = format.getEncapsulator();
+        final char encapsulator = format.getQuoteChar();
 
         if (len <= 0) {
             // always quote an empty token that is the first

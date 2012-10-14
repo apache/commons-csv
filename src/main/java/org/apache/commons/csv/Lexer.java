@@ -57,7 +57,7 @@ abstract class Lexer {
         this.in = in;
         this.delimiter = format.getDelimiter();
         this.escape = mapNullToDisabled(format.getEscape());
-        this.encapsulator = mapNullToDisabled(format.getEncapsulator());
+        this.encapsulator = mapNullToDisabled(format.getQuoteChar());
         this.commmentStart = mapNullToDisabled(format.getCommentStart());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
