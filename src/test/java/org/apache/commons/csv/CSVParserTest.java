@@ -31,6 +31,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -433,6 +434,17 @@ public class CSVParserTest {
         assertArrayEquals(new String[]{"a", "b", "c"}, records.get(0).values());
         assertArrayEquals(new String[]{"1", "2", "3"}, records.get(1).values());
         assertArrayEquals(new String[]{"x", "y", "z"}, records.get(2).values());
+    }
+
+    @Test
+    public void testRoundtrip() throws Exception {
+        StringWriter out = new StringWriter();
+        CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+        final String input = "a,b,c\r\n1,2,3\r\nx,y,z\r\n";
+        for (final CSVRecord record : CSVFormat.DEFAULT.parse(new StringReader(input))) {
+            printer.printRecord(record);
+        }
+        assertEquals(input, out.toString());
     }
 
     @Test
