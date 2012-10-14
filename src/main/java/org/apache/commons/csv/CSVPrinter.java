@@ -87,8 +87,8 @@ public class CSVPrinter {
      * @param values
      *            values to be outputted.
      */
-    public void println(final String... values) throws IOException {
-        for (final String value : values) {
+    public void println(final Object... values) throws IOException {
+        for (final Object value : values) {
             print(value);
         }
         println();
@@ -280,15 +280,12 @@ public class CSVPrinter {
      * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed if
      * checkForEscape==true
      *
-     * @param value
+     * @param object
      *            value to output.
      */
-    public void print(String value, final boolean checkForEscape) throws IOException {
-        if (value == null) {
-            // null values are considered empty
-            value = EMPTY;
-        }
-
+    public void print(Object object, final boolean checkForEscape) throws IOException {
+        // null values are considered empty
+        final String value = object == null ? EMPTY : object.toString();
         if (!checkForEscape) {
             // write directly from string
             printDelimiter();
@@ -302,9 +299,9 @@ public class CSVPrinter {
      * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
      *
      * @param value
-     *            value to be outputted.
+     *            value to be output.
      */
-    public void print(final String value) throws IOException {
+    public void print(final Object value) throws IOException {
         print(value, true);
     }
 }
