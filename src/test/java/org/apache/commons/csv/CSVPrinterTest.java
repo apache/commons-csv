@@ -77,7 +77,7 @@ public class CSVPrinterTest {
     }
 
     @Test
-    public void testPrinterQuoteAll() throws IOException {
+    public void testQuoteAll() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuotePolicy(Quote.ALL));
         printer.printRecord("a", "b\nc", "d");
