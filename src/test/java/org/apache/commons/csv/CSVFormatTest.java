@@ -39,12 +39,12 @@ public class CSVFormatTest {
 
         format.withDelimiter('?');
         format.withQuoteChar('?');
+        format.withQuotePolicy(Quote.ALL);
         format.withCommentStart('?');
         format.withLineSeparator("?");
         format.withEscape('?');
         format.withIgnoreSurroundingSpaces(false);
         format.withIgnoreEmptyLines(false);
-        format.withQuotePolicy(Quote.ALL);
 
         assertEquals('!', format.getDelimiter());
         assertEquals('!', format.getQuoteChar().charValue());
@@ -64,14 +64,13 @@ public class CSVFormatTest {
 
         assertEquals('?', format.withDelimiter('?').getDelimiter());
         assertEquals('?', format.withQuoteChar('?').getQuoteChar().charValue());
+        assertEquals(Quote.ALL, format.withQuotePolicy(Quote.ALL).getQuotePolicy());
         assertEquals('?', format.withCommentStart('?').getCommentStart().charValue());
         assertEquals("?", format.withLineSeparator("?").getLineSeparator());
         assertEquals('?', format.withEscape('?').getEscape().charValue());
 
         assertFalse(format.withIgnoreSurroundingSpaces(false).getIgnoreSurroundingSpaces());
         assertFalse(format.withIgnoreEmptyLines(false).getIgnoreEmptyLines());
-
-        assertEquals(Quote.ALL, format.withQuotePolicy(Quote.ALL).getQuotePolicy());
     }
 
     @Test
