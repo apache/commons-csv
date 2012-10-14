@@ -21,6 +21,11 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -77,6 +82,20 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a", "b\r\nc");
         assertEquals("a,\"b\r\nc\"" + lineSeparator, sw.toString());
+    }
+
+    @Test
+    public void testJdbcPrinter() throws IOException, ClassNotFoundException, SQLException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        Class.forName("org.h2.Driver");
+        final Connection connection = DriverManager.getConnection("jdbc:h2:mem:my_test;", "sa", "");
+        final Statement stmt = connection.createStatement();
+        stmt.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
+        stmt.execute("insert into TEST values(1, 'r1')");
+        stmt.execute("insert into TEST values(2, 'r2')");
+        printer.printRecords(stmt.executeQuery("select ID, NAME from TEST"));
+        assertEquals("1,r1" + lineSeparator + "2,r2" + lineSeparator, sw.toString());
     }
 
     @Test

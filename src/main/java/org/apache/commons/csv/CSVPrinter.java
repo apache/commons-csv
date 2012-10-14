@@ -25,12 +25,14 @@ import static org.apache.commons.csv.Constants.SP;
 
 import java.io.Flushable;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Prints values in a CSV format.
  */
 public class CSVPrinter {
-    
+
     /** The place that the values get written. */
     private final Appendable out;
     private final CSVFormat format;
@@ -43,7 +45,7 @@ public class CSVPrinter {
      * <p/>
      * Currently, only a pure encapsulation format or a pure escaping format is supported. Hybrid formats
      * (encapsulation and escaping with a different character) are not supported.
-     *
+     * 
      * @param out
      *            stream to which to print.
      * @param format
@@ -62,7 +64,7 @@ public class CSVPrinter {
     // ======================================================
 
     /**
-     * Outputs a blank line
+     * Outputs a the line separator.
      */
     public void println() throws IOException {
         out.append(format.getLineSeparator());
@@ -71,7 +73,7 @@ public class CSVPrinter {
 
     /**
      * Flushes the underlying stream.
-     *
+     * 
      * @throws IOException
      */
     public void flush() throws IOException {
@@ -83,7 +85,7 @@ public class CSVPrinter {
     /**
      * Prints a single line of delimiter separated values. The values will be quoted if needed. Quotes and newLine
      * characters will be escaped.
-     *
+     * 
      * @param values
      *            values to output.
      */
@@ -97,7 +99,7 @@ public class CSVPrinter {
     /**
      * Prints a single line of delimiter separated values. The values will be quoted if needed. Quotes and newLine
      * characters will be escaped.
-     *
+     * 
      * @param values
      *            values to output.
      */
@@ -109,12 +111,12 @@ public class CSVPrinter {
     }
 
     /**
-     * Prints a comment on a new line among the delimiter separated values. Comments will always begin on a new line and
-     * occupy a least one full line. The character specified to start comments and a space will be inserted at the
+     * Prints a comment on a new line among the delimiter separated values. Comments will always begin on a new line
+     * and occupy a least one full line. The character specified to start comments and a space will be inserted at the
      * beginning of each new line in the comment.
      * <p/>
      * If comments are disabled in the current CSV format this method does nothing.
-     *
+     * 
      * @param comment
      *            the comment to output
      */
@@ -293,11 +295,11 @@ public class CSVPrinter {
     /**
      * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed if
      * checkForEscape==true
-     *
+     * 
      * @param object
      *            value to output.
-     * @throws  IOException
-     *          If an I/O error occurs
+     * @throws IOException
+     *             If an I/O error occurs
      */
     public void print(Object object, final boolean checkForEscape) throws IOException {
         // null values are considered empty
@@ -313,11 +315,11 @@ public class CSVPrinter {
 
     /**
      * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
-     *
+     * 
      * @param value
      *            value to be output.
-     * @throws  IOException
-     *          If an I/O error occurs
+     * @throws IOException
+     *             If an I/O error occurs
      */
     public void print(final Object value) throws IOException {
         print(value, true);
@@ -328,8 +330,8 @@ public class CSVPrinter {
      * 
      * @param values
      *            the values to print.
-     * @throws  IOException
-     *          If an I/O error occurs
+     * @throws IOException
+     *             If an I/O error occurs
      */
     public void printRecords(Object[] values) throws IOException {
         for (Object value : values) {
@@ -348,8 +350,8 @@ public class CSVPrinter {
      * 
      * @param values
      *            the values to print.
-     * @throws  IOException
-     *          If an I/O error occurs
+     * @throws IOException
+     *             If an I/O error occurs
      */
     public void printRecords(Iterable<?> values) throws IOException {
         for (Object value : values) {
@@ -360,6 +362,24 @@ public class CSVPrinter {
             } else {
                 this.printRecord(value);
             }
+        }
+    }
+
+    /**
+     * Prints all the objects in the given JDBC result set.
+     * 
+     * @param resultSet result set
+     *            the values to print.
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    public void printRecords(ResultSet resultSet) throws SQLException, IOException {
+        int columnCount = resultSet.getMetaData().getColumnCount();
+        while (resultSet.next()) {
+            for (int i = 1; i <= columnCount; i++) {
+                print(resultSet.getString(i));
+            }
+            println();
         }
     }
 }
