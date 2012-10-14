@@ -294,6 +294,14 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testQuoteNonNumeric() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuotePolicy(Quote.NON_NUMERIC));
+        printer.printRecord("a", "b\nc", Integer.valueOf(1));
+        assertEquals("\"a\",\"b\nc\",1" + lineSeparator, sw.toString());
+    }
+
+    @Test
     public void testRandom() throws Exception {
         final int iter = 10000;
         doRandom(CSVFormat.DEFAULT, iter);

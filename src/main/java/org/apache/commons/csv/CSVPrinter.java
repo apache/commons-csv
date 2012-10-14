@@ -150,9 +150,9 @@ public class CSVPrinter {
         println();
     }
 
-    private void print(final CharSequence value, final int offset, final int len) throws IOException {
+    private void print(Object object, final CharSequence value, final int offset, final int len) throws IOException {
         if (format.isQuoting()) {
-            printAndQuote(value, offset, len);
+            printAndQuote(object, value, offset, len);
         } else if (format.isEscaping()) {
             printAndEscape(value, offset, len);
         } else {
@@ -207,7 +207,7 @@ public class CSVPrinter {
         }
     }
 
-    void printAndQuote(final CharSequence value, final int offset, final int len) throws IOException {
+    void printAndQuote(Object object, final CharSequence value, final int offset, final int len) throws IOException {
         final boolean first = newLine; // is this the first value on this line?
         boolean quote = false;
         int start = offset;
@@ -219,9 +219,20 @@ public class CSVPrinter {
         final char delimChar = format.getDelimiter();
         final char quoteChar = format.getQuoteChar();
 
-        if (format.getQuotePolicy() == Quote.ALL) {
+        Quote quotePolicy = format.getQuotePolicy();
+        if (quotePolicy == null) {
+            quotePolicy = Quote.MINIMAL;
+        }
+        switch (quotePolicy) {
+        case ALL:
             quote = true;
-        } else {
+            break;
+        case NON_NUMERIC:
+            quote = !(object instanceof Number);
+            break;
+        case NONE:
+            throw new IllegalArgumentException("Not implemented yet");
+        case MINIMAL:
             if (len <= 0) {
                 // always quote an empty token that is the first
                 // on the line, as it may be the only thing on the
@@ -270,8 +281,15 @@ public class CSVPrinter {
                 out.append(value, start, end);
                 return;
             }
+            break;
         }
 
+        if (!quote) {
+            // no encapsulation needed - write out the original value
+            out.append(value, start, end);
+            return;
+        }
+        
         // we hit something that needed encapsulation
         out.append(quoteChar);
 
@@ -313,7 +331,7 @@ public class CSVPrinter {
             printDelimiter();
             out.append(value);
         } else {
-            print(value, 0, value.length());
+            print(object, value, 0, value.length());
         }
     }
 
@@ -325,8 +343,10 @@ public class CSVPrinter {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public void print(final Object value) throws IOException {
-        print(value, true);
+    public void print(final Object object) throws IOException {
+        // null values are considered empty
+        final String value = object == null ? EMPTY : object.toString();
+        print(object, value, 0, value.length());
     }
 
     /**
