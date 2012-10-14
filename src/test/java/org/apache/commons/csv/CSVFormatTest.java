@@ -35,7 +35,7 @@ public class CSVFormatTest {
 
     @Test
     public void testImmutalibity() {
-        final CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, CRLF, null);
+        final CSVFormat format = new CSVFormat('!', '!', Quote.MINIMAL, '!', '!', true, true, CRLF, null);
 
         format.withDelimiter('?');
         format.withEncapsulator('?');
@@ -44,6 +44,7 @@ public class CSVFormatTest {
         format.withEscape('?');
         format.withIgnoreSurroundingSpaces(false);
         format.withIgnoreEmptyLines(false);
+        format.withQuotePolicy(Quote.ALL);
 
         assertEquals('!', format.getDelimiter());
         assertEquals('!', format.getEncapsulator().charValue());
@@ -53,11 +54,13 @@ public class CSVFormatTest {
 
         assertTrue(format.getIgnoreSurroundingSpaces());
         assertTrue(format.getIgnoreEmptyLines());
+
+        assertEquals(Quote.MINIMAL, format.getQuotePolicy());
     }
 
     @Test
     public void testMutators() {
-        final CSVFormat format = new CSVFormat('!', '!', '!', '!', true, true, CRLF, null);
+        final CSVFormat format = new CSVFormat('!', '!', null, '!', '!', true, true, CRLF, null);
 
         assertEquals('?', format.withDelimiter('?').getDelimiter());
         assertEquals('?', format.withEncapsulator('?').getEncapsulator().charValue());
@@ -67,6 +70,8 @@ public class CSVFormatTest {
 
         assertFalse(format.withIgnoreSurroundingSpaces(false).getIgnoreSurroundingSpaces());
         assertFalse(format.withIgnoreEmptyLines(false).getIgnoreEmptyLines());
+
+        assertEquals(Quote.ALL, format.withQuotePolicy(Quote.ALL).getQuotePolicy());
     }
 
     @Test
