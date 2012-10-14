@@ -27,7 +27,7 @@ import java.io.Flushable;
 import java.io.IOException;
 
 /**
- * Print values as a comma separated list.
+ * Prints values as a comma separated list.
  */
 public class CSVPrinter {
     
@@ -39,7 +39,7 @@ public class CSVPrinter {
     private boolean newLine = true;
 
     /**
-     * Create a printer that will print values to the given stream following the CSVFormat.
+     * Creates a printer that will print values to the given stream following the CSVFormat.
      * <p/>
      * Currently, only a pure encapsulation format or a pure escaping format is supported. Hybrid formats
      * (encapsulation and escaping with a different character) are not supported.
@@ -62,7 +62,7 @@ public class CSVPrinter {
     // ======================================================
 
     /**
-     * Output a blank line
+     * Outputs a blank line
      */
     public void println() throws IOException {
         out.append(format.getLineSeparator());
@@ -70,7 +70,7 @@ public class CSVPrinter {
     }
 
     /**
-     * Flush the underlying stream.
+     * Flushes the underlying stream.
      *
      * @throws IOException
      */
@@ -81,7 +81,7 @@ public class CSVPrinter {
     }
 
     /**
-     * Print a single line of comma separated values. The values will be quoted if needed. Quotes and newLine
+     * Prints a single line of comma separated values. The values will be quoted if needed. Quotes and newLine
      * characters will be escaped.
      *
      * @param values
@@ -95,7 +95,7 @@ public class CSVPrinter {
     }
 
     /**
-     * Put a comment on a new line among the comma separated values. Comments will always begin on a new line and
+     * Prints a comment on a new line among the comma separated values. Comments will always begin on a new line and
      * occupy a least one full line. The character specified to start comments and a space will be inserted at the
      * beginning of each new line in the comment.
      * <p/>
@@ -277,7 +277,7 @@ public class CSVPrinter {
     }
 
     /**
-     * Print the string as the next value on the line. The value will be escaped or encapsulated as needed if
+     * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed if
      * checkForEscape==true
      *
      * @param value
@@ -299,7 +299,7 @@ public class CSVPrinter {
     }
 
     /**
-     * Print the string as the next value on the line. The value will be escaped or encapsulated as needed.
+     * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
      *
      * @param value
      *            value to be outputted.
