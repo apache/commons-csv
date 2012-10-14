@@ -284,7 +284,7 @@ public class CSVFormat implements Serializable {
      *
      * @return {@code true} if an quoteChar is defined
      */
-    public boolean isEncapsulating() {
+    public boolean isQuoting() {
         return quoteChar != null;
     }
 
@@ -547,7 +547,7 @@ public class CSVFormat implements Serializable {
             sb.append(' ');
             sb.append("Escape=<").append(escape).append('>');
         }
-        if (isEncapsulating()) {
+        if (isQuoting()) {
             sb.append(' ');
             sb.append("Encapsulator=<").append(quoteChar).append('>');
         }

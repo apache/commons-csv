@@ -135,7 +135,7 @@ public class CSVPrinter {
     }
 
     private void print(final CharSequence value, final int offset, final int len) throws IOException {
-        if (format.isEncapsulating()) {
+        if (format.isQuoting()) {
             printAndEncapsulate(value, offset, len);
         } else if (format.isEscaping()) {
             printAndEscape(value, offset, len);
