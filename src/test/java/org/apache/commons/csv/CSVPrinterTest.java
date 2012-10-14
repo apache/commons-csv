@@ -77,6 +77,14 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testPrinterQuoteAll() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuotePolicy(Quote.ALL));
+        printer.printRecord("a", "b\nc", "d");
+        assertEquals("\"a\",\"b\nc\",\"d\"" + lineSeparator, sw.toString());
+    }
+
+    @Test
     public void testPrinter6() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
@@ -87,15 +95,19 @@ public class CSVPrinterTest {
     @Test
     public void testJdbcPrinter() throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         Class.forName("org.h2.Driver");
         final Connection connection = DriverManager.getConnection("jdbc:h2:mem:my_test;", "sa", "");
-        final Statement stmt = connection.createStatement();
-        stmt.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
-        stmt.execute("insert into TEST values(1, 'r1')");
-        stmt.execute("insert into TEST values(2, 'r2')");
-        printer.printRecords(stmt.executeQuery("select ID, NAME from TEST"));
-        assertEquals("1,r1" + lineSeparator + "2,r2" + lineSeparator, sw.toString());
+        try {
+            final Statement stmt = connection.createStatement();
+            stmt.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
+            stmt.execute("insert into TEST values(1, 'r1')");
+            stmt.execute("insert into TEST values(2, 'r2')");
+            final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+            printer.printRecords(stmt.executeQuery("select ID, NAME from TEST"));
+            assertEquals("1,r1" + lineSeparator + "2,r2" + lineSeparator, sw.toString());
+        } finally {
+            connection.close();
+        }
     }
 
     @Test

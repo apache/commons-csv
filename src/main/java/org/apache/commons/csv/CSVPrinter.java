@@ -219,53 +219,57 @@ public class CSVPrinter {
         final char delimChar = format.getDelimiter();
         final char quoteChar = format.getQuoteChar();
 
-        if (len <= 0) {
-            // always quote an empty token that is the first
-            // on the line, as it may be the only thing on the
-            // line. If it were not quoted in that case,
-            // an empty line has no tokens.
-            if (first) {
-                quote = true;
-            }
+        if (format.getQuotePolicy() == Quote.ALL) {
+            quote = true;
         } else {
-            char c = value.charAt(pos);
-
-            // Hmmm, where did this rule come from?
-            if (first && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || (c > 'z'))) {
-                quote = true;
-                // } else if (c == ' ' || c == '\f' || c == '\t') {
-            } else if (c <= COMMENT) {
-                // Some other chars at the start of a value caused the parser to fail, so for now
-                // encapsulate if we start in anything less than '#'. We are being conservative
-                // by including the default comment char too.
-                quote = true;
-            } else {
-                while (pos < end) {
-                    c = value.charAt(pos);
-                    if (c == LF || c == CR || c == quoteChar || c == delimChar) {
-                        quote = true;
-                        break;
-                    }
-                    pos++;
+            if (len <= 0) {
+                // always quote an empty token that is the first
+                // on the line, as it may be the only thing on the
+                // line. If it were not quoted in that case,
+                // an empty line has no tokens.
+                if (first) {
+                    quote = true;
                 }
+            } else {
+                char c = value.charAt(pos);
 
-                if (!quote) {
-                    pos = end - 1;
-                    c = value.charAt(pos);
-                    // if (c == ' ' || c == '\f' || c == '\t') {
-                    // Some other chars at the end caused the parser to fail, so for now
-                    // encapsulate if we end in anything less than ' '
-                    if (c <= SP) {
-                        quote = true;
+                // Hmmm, where did this rule come from?
+                if (first && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || (c > 'z'))) {
+                    quote = true;
+                    // } else if (c == ' ' || c == '\f' || c == '\t') {
+                } else if (c <= COMMENT) {
+                    // Some other chars at the start of a value caused the parser to fail, so for now
+                    // encapsulate if we start in anything less than '#'. We are being conservative
+                    // by including the default comment char too.
+                    quote = true;
+                } else {
+                    while (pos < end) {
+                        c = value.charAt(pos);
+                        if (c == LF || c == CR || c == quoteChar || c == delimChar) {
+                            quote = true;
+                            break;
+                        }
+                        pos++;
+                    }
+
+                    if (!quote) {
+                        pos = end - 1;
+                        c = value.charAt(pos);
+                        // if (c == ' ' || c == '\f' || c == '\t') {
+                        // Some other chars at the end caused the parser to fail, so for now
+                        // encapsulate if we end in anything less than ' '
+                        if (c <= SP) {
+                            quote = true;
+                        }
                     }
                 }
             }
-        }
 
-        if (!quote) {
-            // no encapsulation needed - write out the original value
-            out.append(value, start, end);
-            return;
+            if (!quote) {
+                // no encapsulation needed - write out the original value
+                out.append(value, start, end);
+                return;
+            }
         }
 
         // we hit something that needed encapsulation
