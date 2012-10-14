@@ -85,7 +85,7 @@ public class CSVPrinter {
      * characters will be escaped.
      *
      * @param values
-     *            values to be outputted.
+     *            values to output.
      */
     public void println(final Object... values) throws IOException {
         for (final Object value : values) {
