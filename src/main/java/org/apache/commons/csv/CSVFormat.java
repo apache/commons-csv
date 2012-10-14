@@ -66,7 +66,7 @@ public class CSVFormat implements Serializable {
     public static final CSVFormat DEFAULT =
             PRISTINE
             .withDelimiter(COMMA)
-            .withEncapsulator(DOUBLE_QUOTE)
+            .withQuoteChar(DOUBLE_QUOTE)
             .withIgnoreEmptyLines(true)
             .withLineSeparator(CRLF);
 
@@ -82,7 +82,7 @@ public class CSVFormat implements Serializable {
     public static final CSVFormat RFC4180 =
             PRISTINE
             .withDelimiter(COMMA)
-            .withEncapsulator(DOUBLE_QUOTE)
+            .withQuoteChar(DOUBLE_QUOTE)
             .withLineSeparator(CRLF);
 
     /**
@@ -98,14 +98,14 @@ public class CSVFormat implements Serializable {
     public static final CSVFormat EXCEL =
             PRISTINE
             .withDelimiter(COMMA)
-            .withEncapsulator(DOUBLE_QUOTE)
+            .withQuoteChar(DOUBLE_QUOTE)
             .withLineSeparator(CRLF);
 
     /** Tab-delimited format, with quote; leading and trailing spaces ignored. */
     public static final CSVFormat TDF =
             PRISTINE
             .withDelimiter(TAB)
-            .withEncapsulator(DOUBLE_QUOTE)
+            .withQuoteChar(DOUBLE_QUOTE)
             .withIgnoreSurroundingSpaces(true)
             .withIgnoreEmptyLines(true)
             .withLineSeparator(CRLF);
@@ -258,8 +258,8 @@ public class CSVFormat implements Serializable {
      * @throws IllegalArgumentException
      *             thrown if the specified character is a line break
      */
-    public CSVFormat withEncapsulator(final char encapsulator) {
-        return withEncapsulator(Character.valueOf(encapsulator));
+    public CSVFormat withQuoteChar(final char quoteChar) {
+        return withQuoteChar(Character.valueOf(quoteChar));
     }
 
     /**
@@ -271,11 +271,11 @@ public class CSVFormat implements Serializable {
      * @throws IllegalArgumentException
      *             thrown if the specified character is a line break
      */
-    public CSVFormat withEncapsulator(final Character encapsulator) {
-        if (isLineBreak(encapsulator)) {
+    public CSVFormat withQuoteChar(final Character quoteChar) {
+        if (isLineBreak(quoteChar)) {
             throw new IllegalArgumentException("The quoteChar cannot be a line break");
         }
-        return new CSVFormat(delimiter, encapsulator, quotePolicy, commentStart, escape,
+        return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
                 ignoreSurroundingSpaces, ignoreEmptyLines, lineSeparator, header);
     }
 

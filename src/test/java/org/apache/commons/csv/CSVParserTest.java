@@ -309,7 +309,7 @@ public class CSVParserTest {
         };
 
 
-        final CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withEncapsulator('\'').withEscape('/')
+        final CSVFormat format = CSVFormat.PRISTINE.withDelimiter(',').withQuoteChar('\'').withEscape('/')
                                .withIgnoreEmptyLines(true).withLineSeparator(CRLF);
 
         final CSVParser parser = new CSVParser(code, format);

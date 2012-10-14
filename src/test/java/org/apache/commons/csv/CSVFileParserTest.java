@@ -88,7 +88,7 @@ public class CSVFileParserTest {
         assertTrue(testName+" require 1 param", split.length >= 1);
          // first line starts with csv data file name
         final BufferedReader csvFile = new BufferedReader(new FileReader(new File(BASE, split[0])));
-        CSVFormat fmt = CSVFormat.PRISTINE.withDelimiter(',').withEncapsulator('"');
+        CSVFormat fmt = CSVFormat.PRISTINE.withDelimiter(',').withQuoteChar('"');
         boolean checkComments = false;
         for(int i=1; i < split.length; i++) {
             final String option = split[i];

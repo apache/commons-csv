@@ -38,7 +38,7 @@ public class CSVFormatTest {
         final CSVFormat format = new CSVFormat('!', '!', Quote.MINIMAL, '!', '!', true, true, CRLF, null);
 
         format.withDelimiter('?');
-        format.withEncapsulator('?');
+        format.withQuoteChar('?');
         format.withCommentStart('?');
         format.withLineSeparator("?");
         format.withEscape('?');
@@ -63,7 +63,7 @@ public class CSVFormatTest {
         final CSVFormat format = new CSVFormat('!', '!', null, '!', '!', true, true, CRLF, null);
 
         assertEquals('?', format.withDelimiter('?').getDelimiter());
-        assertEquals('?', format.withEncapsulator('?').getQuoteChar().charValue());
+        assertEquals('?', format.withQuoteChar('?').getQuoteChar().charValue());
         assertEquals('?', format.withCommentStart('?').getCommentStart().charValue());
         assertEquals("?", format.withLineSeparator("?").getLineSeparator());
         assertEquals('?', format.withEscape('?').getEscape().charValue());
@@ -102,7 +102,7 @@ public class CSVFormatTest {
         }
 
         try {
-            format.withEncapsulator('\n');
+            format.withQuoteChar('\n');
             fail();
         } catch (final IllegalArgumentException e) {
             // expected
@@ -130,13 +130,13 @@ public class CSVFormatTest {
         }
 
         try {
-            format.withEncapsulator('!').withCommentStart('!').validate();
+            format.withQuoteChar('!').withCommentStart('!').validate();
             fail();
         } catch (final IllegalStateException e) {
             // expected
         }
 
-        format.withEncapsulator(null).withCommentStart(null).validate();
+        format.withQuoteChar(null).withCommentStart(null).validate();
 
         try {
             format.withEscape('!').withCommentStart('!').validate();
@@ -149,7 +149,7 @@ public class CSVFormatTest {
 
 
         try {
-            format.withEncapsulator('!').withDelimiter('!').validate();
+            format.withQuoteChar('!').withDelimiter('!').validate();
             fail();
         } catch (final IllegalStateException e) {
             // expected
