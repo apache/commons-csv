@@ -27,7 +27,7 @@ import java.io.Flushable;
 import java.io.IOException;
 
 /**
- * Prints values as a comma separated list.
+ * Prints values in a CSV format.
  */
 public class CSVPrinter {
     
