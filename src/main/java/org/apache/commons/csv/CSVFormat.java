@@ -449,7 +449,7 @@ public class CSVFormat implements Serializable {
      * Returns a copy of this format using the specified output line separator.
      *
      * @param lineSeparator
-     *            the line separator to be used for output.
+     *            the line separator to use for output.
      *
      * @return A copy of this format using the specified output line separator
      */
@@ -462,7 +462,7 @@ public class CSVFormat implements Serializable {
      * Returns a copy of this format using the specified output line separator.
      *
      * @param lineSeparator
-     *            the line separator to be used for output.
+     *            the line separator to use for output.
      *
      * @return A copy of this format using the specified output line separator
      */
@@ -475,7 +475,7 @@ public class CSVFormat implements Serializable {
      * Returns a copy of this format using the specified output quote policy.
      *
      * @param quotePolicy
-     *            the quote policy to be used for output.
+     *            the quote policy to use for output.
      *
      * @return A copy of this format using the specified output line separator
      */
