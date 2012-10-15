@@ -192,15 +192,15 @@ public class CSVFormat implements Serializable {
      * @throws IllegalStateException
      */
     void validate() throws IllegalStateException {
-        if (quoteChar != null && delimiter == quoteChar) {
+        if (quoteChar != null && delimiter == quoteChar.charValue()) {
             throw new IllegalStateException("The quoteChar character and the delimiter cannot be the same ('" + quoteChar + "')");
         }
 
-        if (escape != null && delimiter == escape) {
+        if (escape != null && delimiter == escape.charValue()) {
             throw new IllegalStateException("The escape character and the delimiter cannot be the same ('" + escape + "')");
         }
 
-        if (commentStart != null && delimiter == commentStart) {
+        if (commentStart != null && delimiter == commentStart.charValue()) {
             throw new IllegalStateException("The comment start character and the delimiter cannot be the same ('" + commentStart + 
                     "')");
         }
