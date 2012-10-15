@@ -171,7 +171,19 @@ public class CSVFormat implements Serializable {
      * @return true if <code>c</code> is a line break character
      */
     private static boolean isLineBreak(final Character c) {
-        return c != null && (c == LF || c == CR);
+        return c != null && isLineBreak(c.charValue());
+    }
+
+    /**
+     * Returns true if the given character is a line break character.
+     *
+     * @param c
+     *            the character to check
+     *
+     * @return true if <code>c</code> is a line break character
+     */
+    private static boolean isLineBreak(final char c) {
+        return c == LF || c == CR;
     }
 
     /**
@@ -226,19 +238,6 @@ public class CSVFormat implements Serializable {
      *             thrown if the specified character is a line break
      */
     public CSVFormat withDelimiter(final char delimiter) {
-        return withDelimiter(Character.valueOf(delimiter));
-    }
-
-    /**
-     * Returns a copy of this format using the specified delimiter character.
-     *
-     * @param delimiter
-     *            the delimiter character
-     * @return A copy of this format using the specified delimiter character
-     * @throws IllegalArgumentException
-     *             thrown if the specified character is a line break
-     */
-    public CSVFormat withDelimiter(final Character delimiter) {
         if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
