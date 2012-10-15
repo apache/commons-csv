@@ -140,10 +140,26 @@ public class CSVFormatTest {
             // expected
         }
 
+        // Cannot assume that callers won't use different Character objects
+        try {
+            format.withQuoteChar(new Character('!')).withCommentStart('!').validate();
+            fail();
+        } catch (final IllegalStateException e) {
+            // expected
+        }
+
         format.withQuoteChar(null).withCommentStart(null).validate();
 
         try {
             format.withEscape('!').withCommentStart('!').validate();
+            fail();
+        } catch (final IllegalStateException e) {
+            // expected
+        }
+
+        // Cannot assume that callers won't use different Character objects
+        try {
+            format.withEscape(new Character('!')).withCommentStart(new Character('!')).validate();
             fail();
         } catch (final IllegalStateException e) {
             // expected
@@ -165,7 +181,7 @@ public class CSVFormatTest {
         } catch (final IllegalStateException e) {
             // expected
         }
-}
+    }
 
     @SuppressWarnings("boxing") // no need to worry about boxing here
     @Test

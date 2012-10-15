@@ -205,12 +205,12 @@ public class CSVFormat implements Serializable {
                     "')");
         }
 
-        if (quoteChar != null && quoteChar == commentStart) {
+        if (quoteChar != null && quoteChar.equals(commentStart)) {
             throw new IllegalStateException("The comment start character and the quoteChar cannot be the same ('" + commentStart + 
                     "')");
         }
 
-        if (escape != null && escape == commentStart) {
+        if (escape != null && escape.equals(commentStart)) {
             throw new IllegalStateException("The comment start and the escape character cannot be the same ('" + commentStart + "')");
         }
 
