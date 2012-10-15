@@ -42,7 +42,7 @@ public enum Quote {
 
     /**
      * Never quotes fields. When the delimiter occurs in data, it is preceded by the current escape character. If the
-     * escape character is not set, printing will thrown an exception if any characters that require escaping are
+     * escape character is not set, printing will throw an exception if any characters that require escaping are
      * encountered.
      */
     NONE
