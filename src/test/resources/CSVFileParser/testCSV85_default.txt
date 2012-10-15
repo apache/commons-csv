@@ -1,5 +1,5 @@
 testCSV85.csv CommentStart=# CheckComments
-Delimiter=<,> Encapsulator=<"> CommentStart=<#>
+Delimiter=<,> QuoteChar=<"> CommentStart=<#>
 # Comment 1
 5:[a, b, c, e, f]#Comment 1
 # Very Long

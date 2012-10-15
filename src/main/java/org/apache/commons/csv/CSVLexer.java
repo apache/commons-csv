@@ -110,7 +110,7 @@ final class CSVLexer extends Lexer {
                 // empty token return EORECORD("")
                 // noop: tkn.content.append("");
                 token.type = EORECORD;
-            } else if (isEncapsulator(c)) {
+            } else if (isQuoteChar(c)) {
                 // consume encapsulated token
                 encapsulatedTokenLexer(token);
             } else if (isEndOfFile(c)) {
@@ -204,8 +204,8 @@ final class CSVLexer extends Lexer {
 
             if (isEscape(c)) {
                 tkn.content.append((char) readEscape());
-            } else if (isEncapsulator(c)) {
-                if (isEncapsulator(in.lookAhead())) {
+            } else if (isQuoteChar(c)) {
+                if (isQuoteChar(in.lookAhead())) {
                     // double or escaped encapsulator -> add single encapsulator to token
                     c = in.read();
                     tkn.content.append((char) c);

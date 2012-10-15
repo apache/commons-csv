@@ -1,5 +1,5 @@
 test.csv IgnoreSpaces=true
-Delimiter=<,> Encapsulator=<"> SurroundingSpaces:ignored
+Delimiter=<,> QuoteChar=<"> SurroundingSpaces:ignored
 4:[A, B, C, D]
 1:[# plain values]
 4:[a, b, c, d]

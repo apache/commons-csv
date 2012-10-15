@@ -43,7 +43,7 @@ abstract class Lexer {
 
     private final char delimiter;
     private final char escape;
-    private final char encapsulator;
+    private final char quoteChar;
     private final char commmentStart;
 
     final boolean ignoreSurroundingSpaces;
@@ -59,7 +59,7 @@ abstract class Lexer {
         this.in = in;
         this.delimiter = format.getDelimiter();
         this.escape = mapNullToDisabled(format.getEscape());
-        this.encapsulator = mapNullToDisabled(format.getQuoteChar());
+        this.quoteChar = mapNullToDisabled(format.getQuoteChar());
         this.commmentStart = mapNullToDisabled(format.getCommentStart());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
@@ -153,8 +153,8 @@ abstract class Lexer {
         return c == escape;
     }
 
-    boolean isEncapsulator(final int c) {
-        return c == encapsulator;
+    boolean isQuoteChar(final int c) {
+        return c == quoteChar;
     }
 
     boolean isCommentStart(final int c) {

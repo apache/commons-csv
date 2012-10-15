@@ -1,5 +1,5 @@
 testCSV85.csv CommentStart=# IgnoreEmpty=true CheckComments
-Delimiter=<,> Encapsulator=<"> CommentStart=<#> EmptyLines:ignored
+Delimiter=<,> QuoteChar=<"> CommentStart=<#> EmptyLines:ignored
 # Comment 1
 5:[a, b, c, e, f]#Comment 1
 # Very Long

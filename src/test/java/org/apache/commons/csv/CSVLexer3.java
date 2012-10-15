@@ -64,7 +64,7 @@ class CSVLexer3 extends Lexer {
         if (isCommentStart(intch)) {
             return CharType.COMMENT_START;
         }
-        if (isEncapsulator(intch)) {
+        if (isQuoteChar(intch)) {
             return CharType.ENCAP;
         }
         if (isEscape(intch)) {
