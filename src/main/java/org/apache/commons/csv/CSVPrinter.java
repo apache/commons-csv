@@ -30,6 +30,8 @@ import java.sql.SQLException;
 
 /**
  * Prints values in a CSV format.
+ * 
+ * @version $Id: $
  */
 public class CSVPrinter {
 

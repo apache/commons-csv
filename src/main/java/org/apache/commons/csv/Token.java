@@ -23,6 +23,8 @@ import static org.apache.commons.csv.Token.Type.INVALID;
  * Internal token representation.
  * <p/>
  * It is used as contract between the lexer and the parser.
+ * 
+ * @version $Id$
  */
 final class Token {
 

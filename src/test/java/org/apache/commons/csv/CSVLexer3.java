@@ -31,6 +31,7 @@ import java.io.IOException;
  * Unfortunately it is twice as slow.
  * For reference purpose only.
  *
+ * @version $Id$
  */
 class CSVLexer3 extends Lexer {
 

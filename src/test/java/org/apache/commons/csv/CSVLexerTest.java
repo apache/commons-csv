@@ -31,6 +31,11 @@ import java.io.StringReader;
 
 import org.junit.Test;
 
+/**
+ * 
+ * 
+ * @version $Id$
+ */
 public class CSVLexerTest {
 
     private Lexer getLexer(final String input, final CSVFormat format) {

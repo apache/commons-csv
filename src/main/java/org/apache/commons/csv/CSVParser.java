@@ -65,6 +65,8 @@ import java.util.NoSuchElementException;
  * <p>
  * see <a href="package-summary.html">package documentation</a> for more details
  * </p>
+ * 
+ * @version $Id: $
  */
 public class CSVParser implements Iterable<CSVRecord> {
 

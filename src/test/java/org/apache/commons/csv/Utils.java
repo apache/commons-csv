@@ -24,6 +24,8 @@ import org.junit.Assert;
 
 /**
  * Utility methods for test cases
+ * 
+ * @version $Id$
  */
 public class Utils {
 

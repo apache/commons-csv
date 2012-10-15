@@ -35,6 +35,7 @@ import org.apache.commons.io.IOUtils;
  *
  * Requires test file to be downloaded separately.
  *
+ * @version $Id$
  */
 @SuppressWarnings("boxing")
 public class PerformanceTest {

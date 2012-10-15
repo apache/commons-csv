@@ -34,6 +34,8 @@ import java.io.StringWriter;
  * The format specification of a CSV file.
  *
  * This class is immutable.
+ * 
+ * @version $Id: $
  */
 public class CSVFormat implements Serializable {
 

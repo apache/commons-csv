@@ -24,6 +24,11 @@ import static org.apache.commons.csv.Token.Type.TOKEN;
 
 import java.io.IOException;
 
+/**
+ * 
+ * 
+ * @version $Id$
+ */
 class CSVLexer1 extends Lexer {
 
     private final StringBuilder wsBuf = new StringBuilder();

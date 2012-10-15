@@ -27,6 +27,11 @@ import java.io.StringReader;
 
 import org.junit.Test;
 
+/**
+ * 
+ * 
+ * @version $Id: $
+ */
 public class ExtendedBufferedReaderTest {
 
     @Test

@@ -25,6 +25,11 @@ import static org.apache.commons.csv.Token.Type.TOKEN;
 
 import java.io.IOException;
 
+/**
+ * 
+ * 
+ * @version $Id$
+ */
 class CSVLexer1306667 extends Lexer {
 
     // ctor needs to be public so can be called dynamically by PerformanceTest class
