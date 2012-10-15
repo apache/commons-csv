@@ -127,10 +127,21 @@ public class CSVFormat implements Serializable {
             .withLineSeparator(LF);
 
     /**
+     * Creates a basic CSV format.
+     * 
+     * @param delimiter 
+     *            the char used for value separation, must not be a line break character
+     * @throws IllegalArgumentException if the delimiter is a line break character
+     */
+    public CSVFormat(char delimiter){
+        this(delimiter,  null, null, null, null, false, false, null, null);
+    }
+
+    /**
      * Creates a customized CSV format.
      *
      * @param delimiter
-     *            the char used for value separation
+     *            the char used for value separation, must not be a line break character
      * @param quoteChar
      *            the char used as value encapsulation marker
      * @param quotePolicy 
@@ -147,10 +158,14 @@ public class CSVFormat implements Serializable {
      *            the line separator to use for output
      * @param header
      *            the header
+     * @throws IllegalArgumentException if the delimiter is a line break character
      */
     public CSVFormat(final char delimiter, final Character quoteChar, final Quote quotePolicy, final Character commentStart, final Character escape, final 
                     boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String lineSeparator, 
             final String[] header) {
+        if (isLineBreak(delimiter)) {
+            throw new IllegalArgumentException("The delimiter cannot be a line break");
+        }
         this.delimiter = delimiter;
         this.quoteChar = quoteChar;
         this.quotePolicy = quotePolicy;
@@ -238,9 +253,6 @@ public class CSVFormat implements Serializable {
      *             thrown if the specified character is a line break
      */
     public CSVFormat withDelimiter(final char delimiter) {
-        if (isLineBreak(delimiter)) {
-            throw new IllegalArgumentException("The delimiter cannot be a line break");
-        }
         return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
                 ignoreSurroundingSpaces, ignoreEmptyLines, lineSeparator, header);
     }

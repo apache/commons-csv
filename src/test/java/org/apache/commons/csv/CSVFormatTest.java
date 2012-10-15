@@ -89,6 +89,20 @@ public class CSVFormatTest {
 
     @Test
     public void testValidation() {
+        try {
+            new CSVFormat('\n');
+            fail();
+        } catch (final IllegalArgumentException e) {
+            // expected
+        }
+
+        try {
+            new CSVFormat('\r');
+            fail();
+        } catch (final IllegalArgumentException e) {
+            // expected
+        }
+
         final CSVFormat format = CSVFormat.DEFAULT;
 
         try {
