@@ -23,6 +23,7 @@ import static org.apache.commons.csv.Constants.EMPTY;
 import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.SP;
 
+import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -33,7 +34,7 @@ import java.sql.SQLException;
  * 
  * @version $Id: $
  */
-public class CSVPrinter implements Flushable {
+public class CSVPrinter implements Flushable, Closeable {
 
     /** The place that the values get written. */
     private final Appendable out;
@@ -385,6 +386,12 @@ public class CSVPrinter implements Flushable {
                 print(resultSet.getString(i));
             }
             println();
+        }
+    }
+
+    public void close() throws IOException {
+        if (out instanceof Closeable) {
+            ((Closeable) out).close();
         }
     }
 }

@@ -77,6 +77,7 @@ public class CSVPrinterTest {
         }
 
         printer.flush();
+        printer.close();
         final String result = sw.toString();
         // System.out.println("### :" + printable(result));
 
