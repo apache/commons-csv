@@ -27,7 +27,7 @@ public enum Quote {
     ALL,
 
     /**
-     * Quotes fields which contain special characters such as a delimiter, encapsulator or any of the characters in
+     * Quotes fields which contain special characters such as a delimiter, quote character or any of the characters in
      * line separator.
      */
     MINIMAL,
