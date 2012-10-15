@@ -79,10 +79,6 @@ public class PerformanceTest {
         return recordCount;
     }
 
-    private void println() {
-        System.out.println();
-    }
-
     private void println(final String s) {
         System.out.println(s);
     }
