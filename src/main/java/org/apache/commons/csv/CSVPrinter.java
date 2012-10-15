@@ -317,27 +317,6 @@ public class CSVPrinter {
     }
 
     /**
-     * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed if
-     * checkForEscape==true
-     * 
-     * @param object
-     *            value to output.
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    public void print(Object object, final boolean checkForEscape) throws IOException {
-        // null values are considered empty
-        final String value = object == null ? EMPTY : object.toString();
-        if (!checkForEscape) {
-            // write directly from string
-            printDelimiter();
-            out.append(value);
-        } else {
-            print(object, value, 0, value.length());
-        }
-    }
-
-    /**
      * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
      * 
      * @param value
