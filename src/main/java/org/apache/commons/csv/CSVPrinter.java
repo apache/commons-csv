@@ -67,7 +67,7 @@ public class CSVPrinter implements Flushable, Closeable {
     // ======================================================
 
     /**
-     * Outputs a the line separator.
+     * Outputs the line separator.
      */
     public void println() throws IOException {
         out.append(format.getLineSeparator());
@@ -130,7 +130,7 @@ public class CSVPrinter implements Flushable, Closeable {
         if (!newLine) {
             println();
         }
-        out.append(format.getCommentStart());
+        out.append(format.getCommentStart().charValue());
         out.append(SP);
         for (int i = 0; i < comment.length(); i++) {
             final char c = comment.charAt(i);
@@ -142,7 +142,7 @@ public class CSVPrinter implements Flushable, Closeable {
                 //$FALL-THROUGH$ break intentionally excluded.
             case LF:
                 println();
-                out.append(format.getCommentStart());
+                out.append(format.getCommentStart().charValue());
                 out.append(SP);
                 break;
             default:
@@ -172,6 +172,9 @@ public class CSVPrinter implements Flushable, Closeable {
         }
     }
 
+    /*
+     * Note: must only be called if escaping is enabled, otherwise will generate NPE
+     */
     void printAndEscape(final CharSequence value, final int offset, final int len) throws IOException {
         int start = offset;
         int pos = offset;
@@ -180,7 +183,7 @@ public class CSVPrinter implements Flushable, Closeable {
         printDelimiter();
 
         final char delim = format.getDelimiter();
-        final char escape = format.getEscape();
+        final char escape = format.getEscape().charValue();
 
         while (pos < end) {
             char c = value.charAt(pos);
@@ -210,6 +213,9 @@ public class CSVPrinter implements Flushable, Closeable {
         }
     }
 
+    /*
+     * Note: must only be called if quoting is enabled, otherwise will generate NPE
+     */
     void printAndQuote(Object object, final CharSequence value, final int offset, final int len) throws IOException {
         final boolean first = newLine; // is this the first value on this line?
         boolean quote = false;
@@ -220,7 +226,7 @@ public class CSVPrinter implements Flushable, Closeable {
         printDelimiter();
 
         final char delimChar = format.getDelimiter();
-        final char quoteChar = format.getQuoteChar();
+        final char quoteChar = format.getQuoteChar().charValue();
 
         Quote quotePolicy = format.getQuotePolicy();
         if (quotePolicy == null) {
