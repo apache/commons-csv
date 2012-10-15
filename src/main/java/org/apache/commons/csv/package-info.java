@@ -69,9 +69,10 @@
  * <blockquote><pre>
  * Reader in = new StringReader("a,b,c");
  * for (CSVRecord record : CSVFormat.DEFAULT.parse(in)) {
- *     for (int i = 0; i &lt; record.length; i++) {
- *         System.out.println("value " + i + "=" + record.get(i));
+ *     for (String field : record) {
+ *         System.out.print("\"" + field + "\", ");
  *     }
+ *     System.out.println();
  * }
  * </pre></blockquote>
  */
