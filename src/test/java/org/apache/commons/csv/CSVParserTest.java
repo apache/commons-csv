@@ -17,8 +17,8 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.CR;
+import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.LF;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
