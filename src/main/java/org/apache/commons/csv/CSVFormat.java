@@ -167,7 +167,8 @@ public class CSVFormat implements Serializable {
      *            the header
      * @throws IllegalArgumentException if the delimiter is a line break character
      */
-    public CSVFormat(final char delimiter, final Character quoteChar, final Quote quotePolicy, final Character commentStart, final Character escape, final 
+    // package protected for use by test code
+    CSVFormat(final char delimiter, final Character quoteChar, final Quote quotePolicy, final Character commentStart, final Character escape, final 
                     boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String lineSeparator, 
             final String[] header) {
         if (isLineBreak(delimiter)) {
