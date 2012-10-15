@@ -555,7 +555,7 @@ public class CSVFormat implements Serializable {
         }
         if (isQuoting()) {
             sb.append(' ');
-            sb.append("Encapsulator=<").append(quoteChar).append('>');
+            sb.append("QuoteChar=<").append(quoteChar).append('>');
         }
         if (isCommentingEnabled()) {
             sb.append(' ');
