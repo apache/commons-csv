@@ -180,8 +180,6 @@ public class CSVParser implements Iterable<CSVRecord> {
             case EOF:
                 if (reusableToken.isReady) {
                     record.add(reusableToken.content.toString());
-                } else {
-                    result = null;
                 }
                 break;
             case INVALID:
