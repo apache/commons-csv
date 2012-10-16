@@ -85,7 +85,6 @@ public class CSVFormat implements Serializable {
      * <li>withDelimiter(',')</li>
      * <li>withQuoteChar('"')</li>
      * <li>withLineSeparator(CRLF)</li>
-     * <li></li>
      * </ul>
      */
     public static final CSVFormat RFC4180 =
