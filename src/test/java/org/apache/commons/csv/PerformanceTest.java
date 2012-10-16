@@ -226,8 +226,7 @@ public class PerformanceTest {
 
    private static Constructor<Lexer> getLexerCtor(final String clazz) throws Exception {
        @SuppressWarnings("unchecked")
-    final
-       Class<Lexer> lexer = (Class<Lexer>) Class.forName("org.apache.commons.csv."+clazz);
+       final Class<Lexer> lexer = (Class<Lexer>) Class.forName("org.apache.commons.csv."+clazz);
        final Constructor<Lexer> ctor = lexer.getConstructor(new Class<?>[]{CSVFormat.class, ExtendedBufferedReader.class});
        return ctor;
    }
