@@ -264,7 +264,7 @@ public class CSVParser implements Iterable<CSVRecord> {
                 try {
                     return nextRecord();
                 } catch (final IOException e) {
-                    // This is not great, throw an ISE instead?
+                    // TODO: This is not great, throw an ISE instead?
                     throw new RuntimeException(e);
                 }
             }
