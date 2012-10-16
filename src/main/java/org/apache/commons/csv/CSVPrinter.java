@@ -70,7 +70,7 @@ public class CSVPrinter implements Flushable, Closeable {
      * Outputs the line separator.
      */
     public void println() throws IOException {
-        out.append(format.getLineSeparator());
+        out.append(format.getRecordSeparator());
         newLine = true;
     }
 

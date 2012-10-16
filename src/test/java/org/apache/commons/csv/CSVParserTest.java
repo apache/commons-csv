@@ -313,7 +313,7 @@ public class CSVParserTest {
 
 
         final CSVFormat format = new CSVFormat(',').withQuoteChar('\'').withEscape('/')
-                               .withIgnoreEmptyLines(true).withLineSeparator(CRLF);
+                               .withIgnoreEmptyLines(true).withRecordSeparator(CRLF);
 
         final CSVParser parser = new CSVParser(code, format);
         final List<CSVRecord> records = parser.getRecords();
@@ -343,7 +343,7 @@ public class CSVParserTest {
 
 
         final CSVFormat format = new CSVFormat(',').withEscape('/')
-                .withIgnoreEmptyLines(true).withLineSeparator(CRLF);
+                .withIgnoreEmptyLines(true).withRecordSeparator(CRLF);
 
         final CSVParser parser = new CSVParser(code, format);
         final List<CSVRecord> records = parser.getRecords();
@@ -622,7 +622,7 @@ public class CSVParserTest {
     @Test
     public void testGetRecordWithMultiiLineValues() throws Exception {
         final CSVParser parser = new CSVParser("\"a\r\n1\",\"a\r\n2\"" + CRLF + "\"b\r\n1\",\"b\r\n2\"" + CRLF + "\"c\r\n1\",\"c\r\n2\"",
-                CSVFormat.DEFAULT.withLineSeparator(CRLF));
+                CSVFormat.DEFAULT.withRecordSeparator(CRLF));
         CSVRecord record;
         assertEquals(0, parser.getRecordNumber());
         assertEquals(0, parser.getLineNumber());
@@ -654,7 +654,7 @@ public class CSVParserTest {
     }
 
     private void validateRecordNumbers(String lineSeparator) throws IOException {
-        final CSVParser parser = new CSVParser("a" + lineSeparator + "b" + lineSeparator + "c", CSVFormat.DEFAULT.withLineSeparator(lineSeparator));
+        final CSVParser parser = new CSVParser("a" + lineSeparator + "b" + lineSeparator + "c", CSVFormat.DEFAULT.withRecordSeparator(lineSeparator));
         CSVRecord record;
         assertEquals(0, parser.getRecordNumber());
         assertNotNull(record = parser.nextRecord());
@@ -671,7 +671,7 @@ public class CSVParserTest {
     }
 
     private void validateLineNumbers(String lineSeparator) throws IOException {
-        final CSVParser parser = new CSVParser("a" + lineSeparator + "b" + lineSeparator + "c", CSVFormat.DEFAULT.withLineSeparator(lineSeparator));
+        final CSVParser parser = new CSVParser("a" + lineSeparator + "b" + lineSeparator + "c", CSVFormat.DEFAULT.withRecordSeparator(lineSeparator));
         assertEquals(0, parser.getLineNumber());
         assertNotNull(parser.nextRecord());
         assertEquals(1, parser.getLineNumber());
