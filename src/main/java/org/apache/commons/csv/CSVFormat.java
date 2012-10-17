@@ -64,22 +64,6 @@ public class CSVFormat implements Serializable {
     private static final CSVFormat PRISTINE = new CSVFormat(DISABLED, null, null, null, null, false, false, null, null);
 
     /**
-     * Standard comma separated format, as for {@link #RFC4180} but allowing blank lines.
-     * <ul>
-     * <li>withDelimiter(',')</li>
-     * <li>withQuoteChar('"')</li>
-     * <li>withEmptyLinesIgnored(true)</li>
-     * <li>withLineSeparator(CRLF)</li>
-     * </ul>
-     */
-    public static final CSVFormat DEFAULT =
-            PRISTINE
-            .withDelimiter(COMMA)
-            .withQuoteChar(DOUBLE_QUOTE)
-            .withIgnoreEmptyLines(true)
-            .withRecordSeparator(CRLF);
-
-    /**
      * Comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
      * <ul>
      * <li>withDelimiter(',')</li>
@@ -92,6 +76,19 @@ public class CSVFormat implements Serializable {
             .withDelimiter(COMMA)
             .withQuoteChar(DOUBLE_QUOTE)
             .withRecordSeparator(CRLF);
+
+    /**
+     * Standard comma separated format, as for {@link #RFC4180} but allowing blank lines.
+     * <ul>
+     * <li>withDelimiter(',')</li>
+     * <li>withQuoteChar('"')</li>
+     * <li>withEmptyLinesIgnored(true)</li>
+     * <li>withLineSeparator(CRLF)</li>
+     * </ul>
+     */
+    public static final CSVFormat DEFAULT = // TODO rename to something more meaningful
+            RFC4180
+            .withIgnoreEmptyLines(true);
 
     /**
      * Excel file format (using a comma as the value delimiter). Note that the actual value delimiter used by Excel is
