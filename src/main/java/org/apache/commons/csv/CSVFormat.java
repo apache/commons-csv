@@ -99,6 +99,13 @@ public class CSVFormat implements Serializable {
      * <pre>
      * CSVFormat fmt = CSVFormat.EXCEL.withDelimiter(';');
      * </pre>
+     * Settings are:
+     * <ul>
+     * <li>withDelimiter(',')</li>
+     * <li>withQuoteChar('"')</li>
+     * <li>withLineSeparator(CRLF)</li>
+     * </ul>
+     * Note: this is currently the same as RFC4180
      */
     public static final CSVFormat EXCEL =
             PRISTINE
