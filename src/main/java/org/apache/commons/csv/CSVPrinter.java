@@ -152,7 +152,7 @@ public class CSVPrinter implements Flushable, Closeable {
         println();
     }
 
-    private void print(Object object, final CharSequence value, final int offset, final int len) throws IOException {
+    private void print(final Object object, final CharSequence value, final int offset, final int len) throws IOException {
         if (format.isQuoting()) {
             printAndQuote(object, value, offset, len);
         } else if (format.isEscaping()) {
@@ -215,7 +215,7 @@ public class CSVPrinter implements Flushable, Closeable {
     /*
      * Note: must only be called if quoting is enabled, otherwise will generate NPE
      */
-    void printAndQuote(Object object, final CharSequence value, final int offset, final int len) throws IOException {
+    void printAndQuote(final Object object, final CharSequence value, final int offset, final int len) throws IOException {
         final boolean first = newLine; // is this the first value on this line?
         boolean quote = false;
         int start = offset;
@@ -344,8 +344,8 @@ public class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public void printRecords(Object[] values) throws IOException {
-        for (Object value : values) {
+    public void printRecords(final Object[] values) throws IOException {
+        for (final Object value : values) {
             if (value instanceof Object[]) {
                 this.printRecord((Object[]) value);
             } else if (value instanceof Iterable) {
@@ -364,8 +364,8 @@ public class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public void printRecords(Iterable<?> values) throws IOException {
-        for (Object value : values) {
+    public void printRecords(final Iterable<?> values) throws IOException {
+        for (final Object value : values) {
             if (value instanceof Object[]) {
                 this.printRecord((Object[]) value);
             } else if (value instanceof Iterable) {
@@ -384,8 +384,8 @@ public class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public void printRecords(ResultSet resultSet) throws SQLException, IOException {
-        int columnCount = resultSet.getMetaData().getColumnCount();
+    public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
+        final int columnCount = resultSet.getMetaData().getColumnCount();
         while (resultSet.next()) {
             for (int i = 1; i <= columnCount; i++) {
                 print(resultSet.getString(i));

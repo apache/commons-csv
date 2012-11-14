@@ -65,13 +65,13 @@ public class PerformanceTest {
         return new BufferedReader(new FileReader(BIG_FILE));
     }
 
-    private long parse(final Reader in, boolean traverseColumns) throws IOException {
+    private long parse(final Reader in, final boolean traverseColumns) throws IOException {
         final CSVFormat format = CSVFormat.newBuilder().withIgnoreSurroundingSpaces(false).build();
         long recordCount = 0;
         for (final CSVRecord record : format.parse(in)) {
             recordCount++;
             if (traverseColumns) {
-                for (String value : record) {
+                for (final String value : record) {
                     // do nothing for now
                 }
             }
@@ -91,7 +91,7 @@ public class PerformanceTest {
         return count;
     }
 
-    public long testParseBigFile(boolean traverseColumns) throws Exception {
+    public long testParseBigFile(final boolean traverseColumns) throws Exception {
         final long startMillis = System.currentTimeMillis();
         final long count = this.parse(this.getBufferedReader(), traverseColumns);
         final long totalMillis = System.currentTimeMillis() - startMillis;

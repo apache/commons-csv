@@ -65,7 +65,7 @@ abstract class Lexer {
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
     }
 
-    private final char mapNullToDisabled(Character c) {
+    private final char mapNullToDisabled(final Character c) {
         return c == null ? DISABLED : c.charValue();
     }
 

@@ -440,8 +440,8 @@ public class CSVParserTest {
 
     @Test
     public void testRoundtrip() throws Exception {
-        StringWriter out = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+        final StringWriter out = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
         final String input = "a,b,c\r\n1,2,3\r\nx,y,z\r\n";
         for (final CSVRecord record : CSVFormat.DEFAULT.parse(new StringReader(input))) {
             printer.printRecord(record);
@@ -653,7 +653,7 @@ public class CSVParserTest {
         validateRecordNumbers(String.valueOf(CR));
     }
 
-    private void validateRecordNumbers(String lineSeparator) throws IOException {
+    private void validateRecordNumbers(final String lineSeparator) throws IOException {
         final CSVParser parser = new CSVParser("a" + lineSeparator + "b" + lineSeparator + "c", CSVFormat.newBuilder().withRecordSeparator(lineSeparator).build());
         CSVRecord record;
         assertEquals(0, parser.getRecordNumber());
@@ -670,7 +670,7 @@ public class CSVParserTest {
         assertEquals(3, parser.getRecordNumber());
     }
 
-    private void validateLineNumbers(String lineSeparator) throws IOException {
+    private void validateLineNumbers(final String lineSeparator) throws IOException {
         final CSVParser parser = new CSVParser("a" + lineSeparator + "b" + lineSeparator + "c", CSVFormat.newBuilder().withRecordSeparator(lineSeparator).build());
         assertEquals(0, parser.getLineNumber());
         assertNotNull(parser.nextRecord());
