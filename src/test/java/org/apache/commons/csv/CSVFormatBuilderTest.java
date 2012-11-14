@@ -17,8 +17,11 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.Constants.*;
-import static org.junit.Assert.*;
+import static org.apache.commons.csv.Constants.CR;
+import static org.apache.commons.csv.Constants.CRLF;
+import static org.apache.commons.csv.Constants.LF;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.apache.commons.csv.CSVFormat.CSVFormatBuilder;
 import org.junit.Before;

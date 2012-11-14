@@ -30,8 +30,6 @@ import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringWriter;
 
-import org.apache.commons.csv.CSVFormat.CSVFormatBuilder;
-
 /**
  * The format specification of a CSV file.
  *
