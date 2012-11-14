@@ -62,7 +62,7 @@ public class CSVFormat implements Serializable {
      * </ul>
      */
     public static final CSVFormat RFC4180 =
-            defaults()
+            newBuilder()
             .withIgnoreEmptyLines(false)
             .build();
 
@@ -76,7 +76,7 @@ public class CSVFormat implements Serializable {
      * </ul>
      */
     public static final CSVFormat DEFAULT = // TODO rename to something more meaningful
-            defaults()
+            newBuilder()
             .build();
 
     /**
@@ -97,13 +97,13 @@ public class CSVFormat implements Serializable {
      * Note: this is currently the same as RFC4180
      */
     public static final CSVFormat EXCEL =
-            defaults()
+            newBuilder()
             .withIgnoreEmptyLines(false)
             .build();
 
     /** Tab-delimited format, with quote; leading and trailing spaces ignored. */
     public static final CSVFormat TDF =
-            defaults()
+            newBuilder()
             .withDelimiter(TAB)
             .withIgnoreSurroundingSpaces(true)
             .build();
@@ -117,7 +117,7 @@ public class CSVFormat implements Serializable {
      *      http://dev.mysql.com/doc/refman/5.1/en/load-data.html</a>
      */
     public static final CSVFormat MYSQL =
-            defaults()
+            newBuilder()
             .withDelimiter(TAB)
             .withQuoteChar(null)
             .withEscape(ESCAPE)
@@ -126,13 +126,13 @@ public class CSVFormat implements Serializable {
             .build();
 
     /**
-     * Factory method for creating CSV formats.
+     * Creates a new CSV format builds.
      * 
      * @param delimiter 
      *            the char used for value separation, must not be a line break character
      * @throws IllegalArgumentException if the delimiter is a line break character
      */
-    public static CSVFormatBuilder newFormat(char delimiter) {
+    public static CSVFormatBuilder newBuilder(char delimiter) {
         return new CSVFormatBuilder(delimiter);
     }
 
@@ -145,7 +145,7 @@ public class CSVFormat implements Serializable {
      * <li>withLineSeparator(CRLF)</li>
      * </ul>
      */
-    public static CSVFormatBuilder defaults() {
+    public static CSVFormatBuilder newBuilder() {
         return new CSVFormatBuilder(COMMA, DOUBLE_QUOTE, null, null, null, false, true, CRLF, null);
     }
 

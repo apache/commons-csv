@@ -51,7 +51,7 @@ public class CSVLexerTest {
     @Test
     public void testNextToken1() throws IOException {
         final String code = "abc,def, hijk,  lmnop,   qrst,uv ,wxy   ,z , ,";
-        final Lexer parser = getLexer(code, CSVFormat.defaults().withIgnoreSurroundingSpaces(true).build());
+        final Lexer parser = getLexer(code, CSVFormat.newBuilder().withIgnoreSurroundingSpaces(true).build());
         assertTokenEquals(TOKEN, "abc", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "def", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "hijk", parser.nextToken(new Token()));
@@ -83,7 +83,7 @@ public class CSVLexerTest {
                 "\n"+
                 "\n"+
                 "# Final comment\n";       // 7
-        final CSVFormat format = CSVFormat.defaults().withCommentStart('#').build();
+        final CSVFormat format = CSVFormat.newBuilder().withCommentStart('#').build();
         assertTrue("Should ignore empty lines", format.getIgnoreEmptyLines());
 
         final Lexer parser = getLexer(code, format);
@@ -126,7 +126,7 @@ public class CSVLexerTest {
                 "\n"+                      // 6b
                 "\n"+                      // 6c
                 "# Final comment\n";       // 7
-        final CSVFormat format = CSVFormat.defaults().withCommentStart('#').withIgnoreEmptyLines(false).build();
+        final CSVFormat format = CSVFormat.newBuilder().withCommentStart('#').withIgnoreEmptyLines(false).build();
         assertFalse("Should not ignore empty lines", format.getIgnoreEmptyLines());
 
         final Lexer parser = getLexer(code, format);
@@ -187,7 +187,7 @@ public class CSVLexerTest {
         *       \,,
         */
         final String code = "a,\\,,b\\\\\n\\,,\\\nc,d\\\r\ne";
-        final CSVFormat format = CSVFormat.defaults().withEscape('\\').withIgnoreEmptyLines(false).build();
+        final CSVFormat format = CSVFormat.newBuilder().withEscape('\\').withIgnoreEmptyLines(false).build();
         assertTrue(format.isEscaping());
         final Lexer parser = getLexer(code, format);
 
@@ -204,7 +204,7 @@ public class CSVLexerTest {
     @Test
     public void testNextToken3BadEscaping() throws IOException {
         final String code = "a,b,c\\";
-        final CSVFormat format = CSVFormat.defaults().withEscape('\\').build();
+        final CSVFormat format = CSVFormat.newBuilder().withEscape('\\').build();
         assertTrue(format.isEscaping());
         final Lexer parser = getLexer(code, format);
 
@@ -226,7 +226,7 @@ public class CSVLexerTest {
         *        a,  " foo " ,b
         */
         final String code = "a,\"foo\",b\na,   \" foo\",b\na,\"foo \"  ,b\na,  \" foo \"  ,b";
-        final Lexer parser = getLexer(code, CSVFormat.defaults().withIgnoreSurroundingSpaces(true).build());
+        final Lexer parser = getLexer(code, CSVFormat.newBuilder().withIgnoreSurroundingSpaces(true).build());
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "foo", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "b", parser.nextToken(new Token()));
@@ -264,7 +264,7 @@ public class CSVLexerTest {
         *       ;;
         */
         final String code = "a;'b and '' more\n'\n!comment;;;;\n;;";
-        final CSVFormat format = CSVFormat.defaults().withDelimiter(';').withQuoteChar('\'').withCommentStart('!').build();
+        final CSVFormat format = CSVFormat.newBuilder().withDelimiter(';').withQuoteChar('\'').withCommentStart('!').build();
         final Lexer parser = getLexer(code, format);
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "b and ' more\n", parser.nextToken(new Token()));

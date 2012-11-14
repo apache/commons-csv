@@ -45,12 +45,12 @@ public class CSVFormatBuilderTest {
     
     @Test(expected = IllegalArgumentException.class)
     public void testNewFormatLFThrowsException() {
-        CSVFormat.newFormat(LF);
+        CSVFormat.newBuilder(LF);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNewFormatCRThrowsException() {
-        CSVFormat.newFormat(CR);
+        CSVFormat.newBuilder(CR);
     }
     
     @Test(expected = IllegalArgumentException.class)
@@ -101,7 +101,7 @@ public class CSVFormatBuilderTest {
     
     @Test(expected = IllegalStateException.class)
     public void testQuotePolicyNoneWithoutEscapeThrowsException() {
-        CSVFormat.newFormat('!').withQuotePolicy(Quote.NONE).build();
+        CSVFormat.newBuilder('!').withQuotePolicy(Quote.NONE).build();
     }
 
     @Test

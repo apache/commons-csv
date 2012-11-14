@@ -220,7 +220,7 @@ public class CSVPrinterTest {
     @Test
     public void testMultiLineComment() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.defaults().withCommentStart('#').build());
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.newBuilder().withCommentStart('#').build());
         printer.printComment("This is a comment\non multiple lines");
 
         assertEquals("# This is a comment" + recordSeparator + "# on multiple lines" + recordSeparator, sw.toString());
@@ -293,7 +293,7 @@ public class CSVPrinterTest {
     @Test
     public void testQuoteAll() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.defaults().withQuotePolicy(Quote.ALL).build());
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.newBuilder().withQuotePolicy(Quote.ALL).build());
         printer.printRecord("a", "b\nc", "d");
         assertEquals("\"a\",\"b\nc\",\"d\"" + recordSeparator, sw.toString());
     }
@@ -301,7 +301,7 @@ public class CSVPrinterTest {
     @Test
     public void testQuoteNonNumeric() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.defaults().withQuotePolicy(Quote.NON_NUMERIC).build());
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.newBuilder().withQuotePolicy(Quote.NON_NUMERIC).build());
         printer.printRecord("a", "b\nc", Integer.valueOf(1));
         assertEquals("\"a\",\"b\nc\",1" + recordSeparator, sw.toString());
     }
@@ -317,7 +317,7 @@ public class CSVPrinterTest {
     @Test
     public void testSingleLineComment() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.defaults().withCommentStart('#').build());
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.newBuilder().withCommentStart('#').build());
         printer.printComment("This is a comment");
 
         assertEquals("# This is a comment" + recordSeparator, sw.toString());
