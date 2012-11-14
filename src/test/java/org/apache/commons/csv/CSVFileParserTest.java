@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.csv.CSVFormat.CSVFormatBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -89,17 +90,18 @@ public class CSVFileParserTest {
         assertTrue(testName+" require 1 param", split.length >= 1);
          // first line starts with csv data file name
         final BufferedReader csvFile = new BufferedReader(new FileReader(new File(BASE, split[0])));
-        CSVFormat fmt = new CSVFormat(',').withQuoteChar('"');
+        CSVFormatBuilder builder = CSVFormat.newFormat(',').withQuoteChar('"');
+        CSVFormat fmt = builder.build(); 
         boolean checkComments = false;
         for(int i=1; i < split.length; i++) {
             final String option = split[i];
             final String[] option_parts = option.split("=",2);
             if ("IgnoreEmpty".equalsIgnoreCase(option_parts[0])){
-                fmt = fmt.withIgnoreEmptyLines(Boolean.parseBoolean(option_parts[1]));
+                fmt = builder.withIgnoreEmptyLines(Boolean.parseBoolean(option_parts[1])).build();
             } else if ("IgnoreSpaces".equalsIgnoreCase(option_parts[0])) {
-                fmt = fmt.withIgnoreSurroundingSpaces(Boolean.parseBoolean(option_parts[1]));
+                fmt = builder.withIgnoreSurroundingSpaces(Boolean.parseBoolean(option_parts[1])).build();
             } else if ("CommentStart".equalsIgnoreCase(option_parts[0])) {
-                fmt = fmt.withCommentStart(option_parts[1].charAt(0));
+                fmt = builder.withCommentStart(option_parts[1].charAt(0)).build();
             } else if ("CheckComments".equalsIgnoreCase(option_parts[0])) {
                 checkComments = true;
             } else {

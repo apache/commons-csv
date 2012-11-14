@@ -29,6 +29,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.apache.commons.csv.CSVFormat.CSVFormatBuilder;
 import org.junit.Test;
 
 /**
@@ -39,162 +40,12 @@ import org.junit.Test;
 public class CSVFormatTest {
 
     @Test
-    public void testImmutalibity() {
-        final CSVFormat format = new CSVFormat('!', '!', Quote.MINIMAL, '!', '!', true, true, CRLF, null);
-
-        format.withDelimiter('?');
-        format.withQuoteChar('?');
-        format.withQuotePolicy(Quote.ALL);
-        format.withCommentStart('?');
-        format.withRecordSeparator("?");
-        format.withEscape('?');
-        format.withIgnoreSurroundingSpaces(false);
-        format.withIgnoreEmptyLines(false);
-
-        assertEquals('!', format.getDelimiter());
-        assertEquals('!', format.getQuoteChar().charValue());
-        assertEquals('!', format.getCommentStart().charValue());
-        assertEquals('!', format.getEscape().charValue());
-        assertEquals(CRLF, format.getRecordSeparator());
-
-        assertTrue(format.getIgnoreSurroundingSpaces());
-        assertTrue(format.getIgnoreEmptyLines());
-
-        assertEquals(Quote.MINIMAL, format.getQuotePolicy());
-    }
-
-    @Test
-    public void testMutators() {
-        final CSVFormat format = new CSVFormat('!', '!', null, '!', '!', true, true, CRLF, null);
-
-        assertEquals('?', format.withDelimiter('?').getDelimiter());
-        assertEquals('?', format.withQuoteChar('?').getQuoteChar().charValue());
-        assertEquals(Quote.ALL, format.withQuotePolicy(Quote.ALL).getQuotePolicy());
-        assertEquals('?', format.withCommentStart('?').getCommentStart().charValue());
-        assertEquals("?", format.withRecordSeparator("?").getRecordSeparator());
-        assertEquals('?', format.withEscape('?').getEscape().charValue());
-
-        assertFalse(format.withIgnoreSurroundingSpaces(false).getIgnoreSurroundingSpaces());
-        assertFalse(format.withIgnoreEmptyLines(false).getIgnoreEmptyLines());
-    }
-
-    @Test
     public void testFormat() {
         final CSVFormat format = CSVFormat.DEFAULT;
 
         assertEquals("", format.format());
         assertEquals("a,b,c", format.format("a", "b", "c"));
         assertEquals("\"x,y\",z", format.format("x,y", "z"));
-    }
-
-    @Test
-    public void testValidation() {
-        try {
-            new CSVFormat('\n');
-            fail();
-        } catch (final IllegalArgumentException e) {
-            // expected
-        }
-
-        try {
-            new CSVFormat('\r');
-            fail();
-        } catch (final IllegalArgumentException e) {
-            // expected
-        }
-
-        final CSVFormat format = CSVFormat.DEFAULT;
-
-        try {
-            format.withDelimiter('\n');
-            fail();
-        } catch (final IllegalArgumentException e) {
-            // expected
-        }
-
-        try {
-            format.withEscape('\r');
-            fail();
-        } catch (final IllegalArgumentException e) {
-            // expected
-        }
-
-        try {
-            format.withQuoteChar('\n');
-            fail();
-        } catch (final IllegalArgumentException e) {
-            // expected
-        }
-
-        try {
-            format.withCommentStart('\r');
-            fail();
-        } catch (final IllegalArgumentException e) {
-            // expected
-        }
-
-        try {
-            format.withDelimiter('!').withEscape('!').validate();
-            fail();
-        } catch (final IllegalStateException e) {
-            // expected
-        }
-
-        try {
-            format.withDelimiter('!').withCommentStart('!').validate();
-            fail();
-        } catch (final IllegalStateException e) {
-            // expected
-        }
-
-        try {
-            format.withQuoteChar('!').withCommentStart('!').validate();
-            fail();
-        } catch (final IllegalStateException e) {
-            // expected
-        }
-
-        // Cannot assume that callers won't use different Character objects
-        try {
-            format.withQuoteChar(new Character('!')).withCommentStart('!').validate();
-            fail();
-        } catch (final IllegalStateException e) {
-            // expected
-        }
-
-        format.withQuoteChar(null).withCommentStart(null).validate();
-
-        try {
-            format.withEscape('!').withCommentStart('!').validate();
-            fail();
-        } catch (final IllegalStateException e) {
-            // expected
-        }
-
-        // Cannot assume that callers won't use different Character objects
-        try {
-            format.withEscape(new Character('!')).withCommentStart(new Character('!')).validate();
-            fail();
-        } catch (final IllegalStateException e) {
-            // expected
-        }
-
-        format.withEscape(null).withCommentStart(null).validate();
-
-
-        try {
-            format.withQuoteChar('!').withDelimiter('!').validate();
-            fail();
-        } catch (final IllegalStateException e) {
-            // expected
-        }
-
-        try {
-            format.withQuoteChar('!').withQuotePolicy(Quote.NONE).validate();
-            fail();
-        } catch (final IllegalStateException e) {
-            // expected
-        }
     }
 
     @SuppressWarnings("boxing") // no need to worry about boxing here

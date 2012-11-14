@@ -103,7 +103,6 @@ public class CSVParser implements Iterable<CSVRecord> {
      *             thrown if the parameters of the format are inconsistent
      */
     public CSVParser(final Reader input, final CSVFormat format) throws IOException {
-        format.validate();
         this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));
         this.headerMap = initializeHeader(format);
     }
