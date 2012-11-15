@@ -35,7 +35,7 @@ import java.io.StringWriter;
  *
  * This class is immutable.
  * 
- * @version $Id: $
+ * @version $Id$
  */
 public class CSVFormat implements Serializable {
 
