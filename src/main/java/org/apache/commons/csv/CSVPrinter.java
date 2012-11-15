@@ -32,7 +32,7 @@ import java.sql.SQLException;
 /**
  * Prints values in a CSV format.
  * 
- * @version $Id: $
+ * @version $Id$
  */
 public class CSVPrinter implements Flushable, Closeable {
 
