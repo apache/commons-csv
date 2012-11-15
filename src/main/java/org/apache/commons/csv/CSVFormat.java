@@ -84,7 +84,7 @@ public class CSVFormat implements Serializable {
      * For example for parsing or generating a CSV file on a French system the following format will be used:
      *
      * <pre>
-     * CSVFormat fmt = CSVFormat.EXCEL.withDelimiter(';');
+     * CSVFormat fmt = CSVFormat.newBuilder(EXCEL).withDelimiter(';').build();
      * </pre>
      * Settings are:
      * <ul>
@@ -134,6 +134,10 @@ public class CSVFormat implements Serializable {
         return new CSVFormatBuilder(delimiter);
     }
 
+    public static CSVFormatBuilder newBuilder(final CSVFormat format) {
+        return new CSVFormatBuilder(format);
+    }
+    
     /**
      * Standard comma separated format, as for {@link #RFC4180} but allowing blank lines.
      * <ul>
@@ -421,6 +425,20 @@ public class CSVFormat implements Serializable {
             this.ignoreEmptyLines = ignoreEmptyLines;
             this.recordSeparator = lineSeparator;
             this.header = header;
+        }
+        
+        /**
+         * 
+         * Creates a CSVFormatBuilder, using the values of the given CSVFormat.
+         * 
+         * @param format
+         *            The format to use values from
+         */
+        private CSVFormatBuilder(CSVFormat format) {
+            this(format.delimiter, format.quoteChar, format.quotePolicy,
+                    format.commentStart, format.escape,
+                    format.ignoreSurroundingSpaces, format.ignoreEmptyLines,
+                    format.recordSeparator, format.header);
         }
 
         /**

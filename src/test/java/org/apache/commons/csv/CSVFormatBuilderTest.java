@@ -17,11 +17,14 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.CSVFormat.RFC4180;
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.LF;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.csv.CSVFormat.CSVFormatBuilder;
 import org.junit.Before;
@@ -151,5 +154,30 @@ public class CSVFormatBuilderTest {
     @Test
     public void testIgnoreEmptyLines() {
         assertFalse(builder.withIgnoreEmptyLines(false).build().getIgnoreEmptyLines());
+    }
+    
+    @Test
+    public void testCopiedFormatIsEqualToOriginal() {
+        CSVFormat copyOfRCF4180 = CSVFormat.newBuilder(RFC4180).build();
+        assertEqualFormats(RFC4180, copyOfRCF4180);
+    }
+
+    @Test
+    public void testCopiedFormatWithChanges() {
+        CSVFormat newFormat = CSVFormat.newBuilder(RFC4180).withDelimiter('!').build();
+        assertTrue(newFormat.getDelimiter() != RFC4180.getDelimiter());
+    }
+    
+    // FIXME implement equals on CSVFormat to allow use of Assert.assertEquals()
+    private static void assertEqualFormats(CSVFormat expected, CSVFormat acutal) {
+        assertEquals(expected.getCommentStart(), acutal.getCommentStart());
+        assertEquals(expected.getDelimiter(), acutal.getDelimiter());
+        assertEquals(expected.getEscape(), acutal.getEscape());
+        assertArrayEquals(expected.getHeader(), acutal.getHeader());
+        assertEquals(expected.getIgnoreEmptyLines(), acutal.getIgnoreEmptyLines());
+        assertEquals(expected.getIgnoreSurroundingSpaces(), acutal.getIgnoreSurroundingSpaces());
+        assertEquals(expected.getQuoteChar(), acutal.getQuoteChar());
+        assertEquals(expected.getQuotePolicy(), acutal.getQuotePolicy());
+        assertEquals(expected.getRecordSeparator(), acutal.getRecordSeparator());
     }
 }
