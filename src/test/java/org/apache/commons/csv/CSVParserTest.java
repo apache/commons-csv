@@ -52,7 +52,7 @@ import org.junit.Test;
  * fixing a potential bug (its likely that the parser itself fails if the lexer
  * has problems...).
  * 
- * @version $Id: $
+ * @version $Id$
  */
 public class CSVParserTest {
 

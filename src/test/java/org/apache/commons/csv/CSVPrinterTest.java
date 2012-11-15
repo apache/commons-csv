@@ -34,7 +34,7 @@ import org.junit.Test;
 /**
  * 
  * 
- * @version $Id: $
+ * @version $Id$
  */
 public class CSVPrinterTest {
 
