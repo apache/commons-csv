@@ -20,7 +20,7 @@ package org.apache.commons.csv;
 import static org.apache.commons.csv.Constants.COMMA;
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.CRLF;
-import static org.apache.commons.csv.Constants.DOUBLE_QUOTE;
+import static org.apache.commons.csv.Constants.DOUBLE_QUOTE_CHAR;
 import static org.apache.commons.csv.Constants.BACKSLASH;
 import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.TAB;
@@ -149,7 +149,7 @@ public class CSVFormat implements Serializable {
      * </ul>
      */
     public static CSVFormatBuilder newBuilder() {
-        return new CSVFormatBuilder(COMMA, DOUBLE_QUOTE, null, null, null, false, true, CRLF, null);
+        return new CSVFormatBuilder(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, null);
     }
 
     /**

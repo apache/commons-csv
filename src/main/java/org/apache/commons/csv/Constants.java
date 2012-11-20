@@ -33,7 +33,7 @@ final class Constants {
     static final char COMMENT = '#';
     
     static final char CR = '\r';
-    static final char DOUBLE_QUOTE = '"';
+    static final Character DOUBLE_QUOTE_CHAR = Character.valueOf('"');
     static final char BACKSLASH = '\\';
     static final char FF = '\f';
     static final char LF = '\n';
