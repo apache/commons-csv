@@ -34,7 +34,7 @@ final class Constants {
     
     static final char CR = '\r';
     static final char DOUBLE_QUOTE = '"';
-    static final char ESCAPE = '\\';
+    static final char BACKSLASH = '\\';
     static final char FF = '\f';
     static final char LF = '\n';
     static final char SP = ' ';

@@ -21,7 +21,7 @@ import static org.apache.commons.csv.Constants.COMMA;
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.DOUBLE_QUOTE;
-import static org.apache.commons.csv.Constants.ESCAPE;
+import static org.apache.commons.csv.Constants.BACKSLASH;
 import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.TAB;
 
@@ -119,7 +119,7 @@ public class CSVFormat implements Serializable {
             newBuilder()
             .withDelimiter(TAB)
             .withQuoteChar(null)
-            .withEscape(ESCAPE)
+            .withEscape(BACKSLASH)
             .withIgnoreEmptyLines(false)
             .withRecordSeparator(LF)
             .build();
