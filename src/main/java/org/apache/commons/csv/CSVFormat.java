@@ -175,9 +175,9 @@ public class CSVFormat implements Serializable {
      *            the header
      * @throws IllegalArgumentException if the delimiter is a line break character
      */
-    private CSVFormat(final char delimiter, final Character quoteChar, final Quote quotePolicy, final Character commentStart, final Character escape, final
-                    boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String lineSeparator,
- final String[] header)
+    // package protected to give access without needing a synthetic accessor
+    CSVFormat(final char delimiter, final Character quoteChar, final Quote quotePolicy, final Character commentStart, final Character escape,
+              final boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String lineSeparator, final String[] header)
     {
         if (isLineBreak(delimiter))
         {
@@ -202,7 +202,8 @@ public class CSVFormat implements Serializable {
      *
      * @return true if <code>c</code> is a line break character
      */
-    private static boolean isLineBreak(final Character c) {
+    // package protected to give access without needing a synthetic accessor
+    static boolean isLineBreak(final Character c) {
         return c != null && isLineBreak(c.charValue());
     }
 
@@ -214,7 +215,8 @@ public class CSVFormat implements Serializable {
      *
      * @return true if <code>c</code> is a line break character
      */
-    private static boolean isLineBreak(final char c) {
+    // package protected to give access without needing a synthetic accessor
+    static boolean isLineBreak(final char c) {
         return c == LF || c == CR;
     }
 
@@ -539,7 +541,9 @@ public class CSVFormat implements Serializable {
          * @param format
          *            The format to use values from
          */
-        private CSVFormatBuilder(CSVFormat format) {
+        @SuppressWarnings("synthetic-access") // TODO fields could be made package-protected
+        // package protected to give access without needing a synthetic accessor
+        CSVFormatBuilder(CSVFormat format) {
             this(format.delimiter, format.quoteChar, format.quotePolicy,
                     format.commentStart, format.escape,
                     format.ignoreSurroundingSpaces, format.ignoreEmptyLines,
@@ -553,7 +557,8 @@ public class CSVFormat implements Serializable {
          *            the char used for value separation, must not be a line break character
          * @throws IllegalArgumentException if the delimiter is a line break character
          */
-        private CSVFormatBuilder(final char delimiter){
+        // package protected to give access without needing a synthetic accessor
+        CSVFormatBuilder(final char delimiter){
             this(delimiter, null, null, null, null, false, false, null, null);
         }
 
