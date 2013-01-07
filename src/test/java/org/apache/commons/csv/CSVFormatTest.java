@@ -69,8 +69,8 @@ public class CSVFormatTest {
     
     @Test
     public void testEquals() {
-        CSVFormat right = CSVFormat.DEFAULT;
-        CSVFormat left = CSVFormat.newBuilder().build();
+        final CSVFormat right = CSVFormat.DEFAULT;
+        final CSVFormat left = CSVFormat.newBuilder().build();
 
         assertFalse(right.equals(null));
         assertFalse(right.equals("A String Instance"));
@@ -85,27 +85,27 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsDelimiter() {
-        CSVFormat right = CSVFormat.newBuilder('!').build();
-        CSVFormat left = CSVFormat.newBuilder('?').build();
+        final CSVFormat right = CSVFormat.newBuilder('!').build();
+        final CSVFormat left = CSVFormat.newBuilder('?').build();
 
         assertNotEquals(right, left);
     }
 
     @Test
     public void testEqualsQuoteChar() {
-        CSVFormat right = CSVFormat.newBuilder('\'').withQuoteChar('"').build();
-        CSVFormat left = CSVFormat.newBuilder(right).withQuoteChar('!').build();
+        final CSVFormat right = CSVFormat.newBuilder('\'').withQuoteChar('"').build();
+        final CSVFormat left = CSVFormat.newBuilder(right).withQuoteChar('!').build();
 
         assertNotEquals(right, left);
     }
 
     @Test
     public void testEqualsQuotePolicy() {
-        CSVFormat right = CSVFormat.newBuilder('\'')
+        final CSVFormat right = CSVFormat.newBuilder('\'')
                 .withQuoteChar('"')
                 .withQuotePolicy(Quote.ALL)
                 .build();
-        CSVFormat left = CSVFormat.newBuilder(right)
+        final CSVFormat left = CSVFormat.newBuilder(right)
                 .withQuotePolicy(Quote.MINIMAL)
                 .build();
 
@@ -114,12 +114,12 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsCommentStart() {
-        CSVFormat right = CSVFormat.newBuilder('\'')
+        final CSVFormat right = CSVFormat.newBuilder('\'')
                 .withQuoteChar('"')
                 .withQuotePolicy(Quote.ALL)
                 .withCommentStart('#')
                 .build();
-        CSVFormat left = CSVFormat.newBuilder(right)
+        final CSVFormat left = CSVFormat.newBuilder(right)
                 .withCommentStart('!')
                 .build();
 
@@ -128,13 +128,13 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsEscape() {
-        CSVFormat right = CSVFormat.newBuilder('\'')
+        final CSVFormat right = CSVFormat.newBuilder('\'')
                 .withQuoteChar('"')
                 .withQuotePolicy(Quote.ALL)
                 .withCommentStart('#')
                 .withEscape('+')
                 .build();
-        CSVFormat left = CSVFormat.newBuilder(right)
+        final CSVFormat left = CSVFormat.newBuilder(right)
                 .withEscape('!')
                 .build();
 
@@ -143,14 +143,14 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsIgnoreSurroundingSpaces() {
-        CSVFormat right = CSVFormat.newBuilder('\'')
+        final CSVFormat right = CSVFormat.newBuilder('\'')
                 .withQuoteChar('"')
                 .withQuotePolicy(Quote.ALL)
                 .withCommentStart('#')
                 .withEscape('+')
                 .withIgnoreSurroundingSpaces(true)
                 .build();
-        CSVFormat left = CSVFormat.newBuilder(right)
+        final CSVFormat left = CSVFormat.newBuilder(right)
                 .withIgnoreSurroundingSpaces(false)
                 .build();
 
@@ -159,7 +159,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsIgnoreEmptyLines() {
-        CSVFormat right = CSVFormat.newBuilder('\'')
+        final CSVFormat right = CSVFormat.newBuilder('\'')
                 .withQuoteChar('"')
                 .withQuotePolicy(Quote.ALL)
                 .withCommentStart('#')
@@ -167,7 +167,7 @@ public class CSVFormatTest {
                 .withIgnoreSurroundingSpaces(true)
                 .withIgnoreEmptyLines(true)
                 .build();
-        CSVFormat left = CSVFormat.newBuilder(right)
+        final CSVFormat left = CSVFormat.newBuilder(right)
                 .withIgnoreEmptyLines(false)
                 .build();
 
@@ -176,7 +176,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsRecordSeparator() {
-        CSVFormat right = CSVFormat.newBuilder('\'')
+        final CSVFormat right = CSVFormat.newBuilder('\'')
                 .withQuoteChar('"')
                 .withQuotePolicy(Quote.ALL)
                 .withCommentStart('#')
@@ -185,7 +185,7 @@ public class CSVFormatTest {
                 .withIgnoreEmptyLines(true)
                 .withRecordSeparator('*')
                 .build();
-        CSVFormat left = CSVFormat.newBuilder(right)
+        final CSVFormat left = CSVFormat.newBuilder(right)
                 .withRecordSeparator('!')
                 .build();
 
@@ -194,7 +194,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsHeader() {
-        CSVFormat right = CSVFormat.newBuilder('\'')
+        final CSVFormat right = CSVFormat.newBuilder('\'')
                 .withQuoteChar('"')
                 .withQuotePolicy(Quote.ALL)
                 .withCommentStart('#')
@@ -204,14 +204,14 @@ public class CSVFormatTest {
                 .withRecordSeparator('*')
                 .withHeader("One", "Two", "Three")
                 .build();
-        CSVFormat left = CSVFormat.newBuilder(right)
+        final CSVFormat left = CSVFormat.newBuilder(right)
                 .withHeader("Three", "Two", "One")
                 .build();
         
         assertNotEquals(right, left);
     }
 
-    private static void assertNotEquals(Object right, Object left) {
+    private static void assertNotEquals(final Object right, final Object left) {
         assertFalse(right.equals(left));
         assertFalse(left.equals(right));
     }

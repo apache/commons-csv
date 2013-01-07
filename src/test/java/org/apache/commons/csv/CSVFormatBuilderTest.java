@@ -158,23 +158,23 @@ public class CSVFormatBuilderTest {
     
     @Test
     public void testCopiedFormatIsEqualToOriginal() {
-        CSVFormat copyOfRCF4180 = CSVFormat.newBuilder(RFC4180).build();
+        final CSVFormat copyOfRCF4180 = CSVFormat.newBuilder(RFC4180).build();
         assertEquals(RFC4180, copyOfRCF4180);
     }
 
     @Test
     public void testCopiedFormatWithChanges() {
-        CSVFormat newFormat = CSVFormat.newBuilder(RFC4180).withDelimiter('!').build();
+        final CSVFormat newFormat = CSVFormat.newBuilder(RFC4180).withDelimiter('!').build();
         assertTrue(newFormat.getDelimiter() != RFC4180.getDelimiter());
     }
     
     @Test
     public void testHeaderReferenceCannotEscape() {
-        String[] header = new String[]{"one", "tow", "three"};
+        final String[] header = new String[]{"one", "tow", "three"};
         builder.withHeader(header);
         
-        CSVFormat firstFormat = builder.build();
-        CSVFormat secondFormat = builder.build();
+        final CSVFormat firstFormat = builder.build();
+        final CSVFormat secondFormat = builder.build();
         assertNotSame(header, firstFormat.getHeader());
         assertNotSame(firstFormat, secondFormat.getHeader());
     }

@@ -398,7 +398,7 @@ public class CSVFormat implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(final Object obj)
     {
         if (this == obj)
         {
@@ -413,7 +413,7 @@ public class CSVFormat implements Serializable {
             return false;
         }
 
-        CSVFormat other = (CSVFormat) obj;
+        final CSVFormat other = (CSVFormat) obj;
         if (delimiter != other.delimiter)
         {
             return false;
@@ -543,7 +543,7 @@ public class CSVFormat implements Serializable {
          */
         @SuppressWarnings("synthetic-access") // TODO fields could be made package-protected
         // package protected to give access without needing a synthetic accessor
-        CSVFormatBuilder(CSVFormat format) {
+        CSVFormatBuilder(final CSVFormat format) {
             this(format.delimiter, format.quoteChar, format.quotePolicy,
                     format.commentStart, format.escape,
                     format.ignoreSurroundingSpaces, format.ignoreEmptyLines,
