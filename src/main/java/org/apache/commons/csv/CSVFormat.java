@@ -178,9 +178,8 @@ public class CSVFormat implements Serializable {
     // package protected to give access without needing a synthetic accessor
     CSVFormat(final char delimiter, final Character quoteChar, final Quote quotePolicy, final Character commentStart, final Character escape,
               final boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String lineSeparator, final String[] header)
-    {
-        if (isLineBreak(delimiter))
-        {
+ {
+        if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
         this.delimiter = delimiter;
