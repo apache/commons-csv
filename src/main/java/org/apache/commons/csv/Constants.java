@@ -19,19 +19,19 @@ package org.apache.commons.csv;
 
 /**
  * Constants for this package.
- * 
+ *
  * @version $Id$
  */
 final class Constants {
-    
+
     static final char BACKSPACE = '\b';
     static final char COMMA = ',';
-    
+
     /**
      * Starts a comment, the remainder of the line is the comment.
      */
     static final char COMMENT = '#';
-    
+
     static final char CR = '\r';
     static final Character DOUBLE_QUOTE_CHAR = Character.valueOf('"');
     static final char BACKSLASH = '\\';
@@ -40,13 +40,13 @@ final class Constants {
     static final char SP = ' ';
     static final char TAB = '\t';
     static final String EMPTY = "";
-    
+
     /** The end of stream symbol */
     static final int END_OF_STREAM = -1;
 
     /** Undefined state for the lookahead char */
     static final int UNDEFINED = -2;
-    
+
     /** According to RFC 4180, line breaks are delimited by CRLF */
     static final String CRLF = "\r\n";
 

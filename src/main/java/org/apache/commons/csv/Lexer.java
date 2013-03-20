@@ -29,7 +29,7 @@ import java.io.IOException;
 
 /**
  * Abstract lexer class; contains common utility routines shared by lexers
- * 
+ *
  * @version $Id$
  */
 abstract class Lexer {

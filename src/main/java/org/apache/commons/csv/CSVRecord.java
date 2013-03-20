@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * A CSV record
- * 
+ *
  * @version $Id$
  */
 public class CSVRecord implements Serializable, Iterable<String> {
@@ -41,7 +41,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
 
     /** The accumulated comments (if any) */
     private final String comment;
-    
+
     /** The record number. */
     private final long recordNumber;
 
@@ -81,7 +81,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
 
     /**
      * Checks whether a given column is mapped.
-     * 
+     *
      * @param name
      *            the name of the column to be retrieved.
      * @return whether a given columns is mapped.
@@ -89,10 +89,10 @@ public class CSVRecord implements Serializable, Iterable<String> {
     public boolean isMapped(final String name) {
         return mapping != null ? mapping.containsKey(name) : false;
     }
-    
+
     /**
      * Checks whether a given columns is mapped and has a value.
-     * 
+     *
      * @param name
      *            the name of the column to be retrieved.
      * @return whether a given columns is mapped.
@@ -100,7 +100,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
     public boolean isSet(final String name) {
         return isMapped(name) && mapping.get(name).intValue() < values.length;
     }
-    
+
     public Iterator<String> iterator() {
         return Arrays.asList(values).iterator();
     }

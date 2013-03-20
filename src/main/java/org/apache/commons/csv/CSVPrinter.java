@@ -31,7 +31,7 @@ import java.sql.SQLException;
 
 /**
  * Prints values in a CSV format.
- * 
+ *
  * @version $Id$
  */
 public class CSVPrinter implements Flushable, Closeable {
@@ -48,7 +48,7 @@ public class CSVPrinter implements Flushable, Closeable {
      * <p/>
      * Currently, only a pure encapsulation format or a pure escaping format is supported. Hybrid formats
      * (encapsulation and escaping with a different character) are not supported.
-     * 
+     *
      * @param out
      *            stream to which to print.
      * @param format
@@ -75,7 +75,7 @@ public class CSVPrinter implements Flushable, Closeable {
 
     /**
      * Flushes the underlying stream.
-     * 
+     *
      * @throws IOException
      */
     public void flush() throws IOException {
@@ -87,7 +87,7 @@ public class CSVPrinter implements Flushable, Closeable {
     /**
      * Prints a single line of delimiter separated values. The values will be quoted if needed. Quotes and newLine
      * characters will be escaped.
-     * 
+     *
      * @param values
      *            values to output.
      */
@@ -101,7 +101,7 @@ public class CSVPrinter implements Flushable, Closeable {
     /**
      * Prints a single line of delimiter separated values. The values will be quoted if needed. Quotes and newLine
      * characters will be escaped.
-     * 
+     *
      * @param values
      *            values to output.
      */
@@ -118,7 +118,7 @@ public class CSVPrinter implements Flushable, Closeable {
      * beginning of each new line in the comment.
      * <p/>
      * If comments are disabled in the current CSV format this method does nothing.
-     * 
+     *
      * @param comment
      *            the comment to output
      */
@@ -297,7 +297,7 @@ public class CSVPrinter implements Flushable, Closeable {
             out.append(value, start, end);
             return;
         }
-        
+
         // we hit something that needed encapsulation
         out.append(quoteChar);
 
@@ -324,7 +324,7 @@ public class CSVPrinter implements Flushable, Closeable {
 
     /**
      * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
-     * 
+     *
      * @param value
      *            value to be output.
      * @throws IOException
@@ -338,7 +338,7 @@ public class CSVPrinter implements Flushable, Closeable {
 
     /**
      * Prints all the objects in the given array.
-     * 
+     *
      * @param values
      *            the values to print.
      * @throws IOException
@@ -358,7 +358,7 @@ public class CSVPrinter implements Flushable, Closeable {
 
     /**
      * Prints all the objects in the given collection.
-     * 
+     *
      * @param values
      *            the values to print.
      * @throws IOException
@@ -378,7 +378,7 @@ public class CSVPrinter implements Flushable, Closeable {
 
     /**
      * Prints all the objects in the given JDBC result set.
-     * 
+     *
      * @param resultSet result set
      *            the values to print.
      * @throws IOException

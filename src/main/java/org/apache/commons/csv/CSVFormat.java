@@ -129,7 +129,7 @@ public class CSVFormat implements Serializable {
      *
      * @param delimiter
      *            the char used for value separation, must not be a line break character
-     * @return a new CSV format builder. 
+     * @return a new CSV format builder.
      * @throws IllegalArgumentException if the delimiter is a line break character
      */
     public static CSVFormatBuilder newBuilder(final char delimiter) {
