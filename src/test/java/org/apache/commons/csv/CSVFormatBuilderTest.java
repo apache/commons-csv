@@ -45,96 +45,42 @@ public class CSVFormatBuilderTest {
     }
 
     @Test
+    public void testCommentStart() {
+        assertEquals('?', builder.withCommentStart('?').build().getCommentStart().charValue());
+    }
+    
+    @Test
+    public void testCopiedFormatIsEqualToOriginal() {
+        final CSVFormat copyOfRCF4180 = CSVFormat.newBuilder(RFC4180).build();
+        assertEquals(RFC4180, copyOfRCF4180);
+    }
+
+    @Test
+    public void testCopiedFormatWithChanges() {
+        final CSVFormat newFormat = CSVFormat.newBuilder(RFC4180).withDelimiter('!').build();
+        assertTrue(newFormat.getDelimiter() != RFC4180.getDelimiter());
+    }
+    
+    @Test
     public void testDelimiter() {
         assertEquals('?', builder.withDelimiter('?').build().getDelimiter());
     }
     
-    @Test(expected = IllegalArgumentException.class)
-    public void testNewFormatLFThrowsException() {
-        CSVFormat.newBuilder(LF);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testNewFormatCRThrowsException() {
-        CSVFormat.newBuilder(CR);
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void testWithDelimiterLFThrowsException() {
-        builder.withDelimiter(LF).build();
-    }
-    
-    @Test(expected = IllegalStateException.class)
-    public void testDelimiterSameAsEscapeThrowsException() {
-        builder.withDelimiter('!').withEscape('!').build();
-    }
-
     @Test(expected = IllegalStateException.class)
     public void testDelimiterSameAsCommentStartThrowsException() {
         builder.withDelimiter('!').withCommentStart('!').build();
     }
 
-    @Test
-    public void testQuoteChar() {
-        assertEquals('?', builder.withQuoteChar('?').build().getQuoteChar().charValue());
-    }
-    
     @Test(expected = IllegalStateException.class)
-    public void testQuoteCharSameAsCommentStartThrowsException() {
-        builder.withQuoteChar('!').withCommentStart('!').build();
+    public void testDelimiterSameAsEscapeThrowsException() {
+        builder.withDelimiter('!').withEscape('!').build();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testQuoteCharSameAsCommentStartThrowsExceptionForWrapperType() {
-        // Cannot assume that callers won't use different Character objects
-        builder.withQuoteChar(new Character('!')).withCommentStart('!').build();
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testQuoteCharSameAsDelimiterThrowsException() {
-        builder.withQuoteChar('!').withDelimiter('!').build();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testWithQuoteLFThrowsException() {
-        builder.withQuoteChar(LF).build();
-    }
-
-    @Test
-    public void testQuotePolicy() {
-        assertEquals(Quote.ALL, builder.withQuotePolicy(Quote.ALL).build().getQuotePolicy());
-    }
-    
-    @Test(expected = IllegalStateException.class)
-    public void testQuotePolicyNoneWithoutEscapeThrowsException() {
-        CSVFormat.newBuilder('!').withQuotePolicy(Quote.NONE).build();
-    }
-
-    @Test
-    public void testCommentStart() {
-        assertEquals('?', builder.withCommentStart('?').build().getCommentStart().charValue());
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void testWithCommentStartCRThrowsException() {
-        builder.withCommentStart(CR).build();
-    }
-
-    @Test
-    public void testRecoardSeparator() {
-        assertEquals("?", builder.withRecordSeparator("?").build().getRecordSeparator());
-    }
-    
     @Test
     public void testEscape() {
         assertEquals('?', builder.withEscape('?').build().getEscape().charValue());
     }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testWithEscapeCRThrowsExceptions() {
-        builder.withEscape(CR).build();
-    }
-
+    
     @Test(expected = IllegalStateException.class)
     public void testEscapeSameAsCommentStartThrowsException() {
         builder.withEscape('!').withCommentStart('!').build();
@@ -147,21 +93,72 @@ public class CSVFormatBuilderTest {
     }
 
     @Test
-    public void testIgnoreSurroundingSpaces() {
-        assertFalse(builder.withIgnoreSurroundingSpaces(false).build().getIgnoreSurroundingSpaces());
+    public void testHeaderReferenceCannotEscape() {
+        final String[] header = new String[]{"one", "tow", "three"};
+        builder.withHeader(header);
+        
+        final CSVFormat firstFormat = builder.build();
+        final CSVFormat secondFormat = builder.build();
+        assertNotSame(header, firstFormat.getHeader());
+        assertNotSame(firstFormat, secondFormat.getHeader());
     }
-    
+
     @Test
     public void testIgnoreEmptyLines() {
         assertFalse(builder.withIgnoreEmptyLines(false).build().getIgnoreEmptyLines());
     }
-    
+
     @Test
-    public void testCopiedFormatIsEqualToOriginal() {
-        final CSVFormat copyOfRCF4180 = CSVFormat.newBuilder(RFC4180).build();
-        assertEquals(RFC4180, copyOfRCF4180);
+    public void testIgnoreSurroundingSpaces() {
+        assertFalse(builder.withIgnoreSurroundingSpaces(false).build().getIgnoreSurroundingSpaces());
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testNewFormatCRThrowsException() {
+        CSVFormat.newBuilder(CR);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testNewFormatLFThrowsException() {
+        CSVFormat.newBuilder(LF);
+    }
+    
+    @Test
+    public void testQuoteChar() {
+        assertEquals('?', builder.withQuoteChar('?').build().getQuoteChar().charValue());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testQuoteCharSameAsCommentStartThrowsException() {
+        builder.withQuoteChar('!').withCommentStart('!').build();
+    }
+    
+    @Test(expected = IllegalStateException.class)
+    public void testQuoteCharSameAsCommentStartThrowsExceptionForWrapperType() {
+        // Cannot assume that callers won't use different Character objects
+        builder.withQuoteChar(new Character('!')).withCommentStart('!').build();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testQuoteCharSameAsDelimiterThrowsException() {
+        builder.withQuoteChar('!').withDelimiter('!').build();
+    }
+
+    @Test
+    public void testQuotePolicy() {
+        assertEquals(Quote.ALL, builder.withQuotePolicy(Quote.ALL).build().getQuotePolicy());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testQuotePolicyNoneWithoutEscapeThrowsException() {
+        CSVFormat.newBuilder('!').withQuotePolicy(Quote.NONE).build();
+    }
+
+    @Test
+    public void testRecoardSeparator() {
+        assertEquals("?", builder.withRecordSeparator("?").build().getRecordSeparator());
+    }
+    
     @Test
     public void testRFC4180() {
         assertEquals(null, RFC4180.getCommentStart());
@@ -172,21 +169,24 @@ public class CSVFormatBuilderTest {
         assertEquals(null, RFC4180.getQuotePolicy());
         assertEquals("\r\n", RFC4180.getRecordSeparator());
     }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testWithCommentStartCRThrowsException() {
+        builder.withCommentStart(CR).build();
+    }
 
-    @Test
-    public void testCopiedFormatWithChanges() {
-        final CSVFormat newFormat = CSVFormat.newBuilder(RFC4180).withDelimiter('!').build();
-        assertTrue(newFormat.getDelimiter() != RFC4180.getDelimiter());
+    @Test(expected = IllegalArgumentException.class)
+    public void testWithDelimiterLFThrowsException() {
+        builder.withDelimiter(LF).build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testWithEscapeCRThrowsExceptions() {
+        builder.withEscape(CR).build();
     }
     
-    @Test
-    public void testHeaderReferenceCannotEscape() {
-        final String[] header = new String[]{"one", "tow", "three"};
-        builder.withHeader(header);
-        
-        final CSVFormat firstFormat = builder.build();
-        final CSVFormat secondFormat = builder.build();
-        assertNotSame(header, firstFormat.getHeader());
-        assertNotSame(firstFormat, secondFormat.getHeader());
+    @Test(expected = IllegalArgumentException.class)
+    public void testWithQuoteLFThrowsException() {
+        builder.withQuoteChar(LF).build();
     }
 }
