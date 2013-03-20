@@ -70,7 +70,7 @@ public class CSVFormat implements Serializable {
      * <ul>
      * <li>withDelimiter(',')</li>
      * <li>withQuoteChar('"')</li>
-     * <li>withEmptyLinesIgnored(true)</li>
+     * <li>withIgnoreEmptyLines(true)</li>
      * <li>withLineSeparator(CRLF)</li>
      * </ul>
      */
