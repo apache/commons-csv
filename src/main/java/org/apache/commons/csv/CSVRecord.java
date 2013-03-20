@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * A CSV record
+ * A CSV record parsed from a CSV file.
  *
  * @version $Id$
  */
@@ -103,6 +103,11 @@ public class CSVRecord implements Serializable, Iterable<String> {
         return isMapped(name) && mapping.get(name).intValue() < values.length;
     }
 
+    /**
+     * Returns an iterator over the values of this record.
+     *
+     * @return an iterator over the values of this record.
+     */
     public Iterator<String> iterator() {
         return Arrays.asList(values).iterator();
     }
@@ -111,16 +116,29 @@ public class CSVRecord implements Serializable, Iterable<String> {
         return values;
     }
 
+    /**
+     * Returns the comment for this record, if any.
+     *
+     * @return the comment for this record, or null if no comment for this
+     *         record is available.
+     */
     public String getComment() {
         return comment;
     }
 
+    /**
+     * Returns the number of this record in the parsed CSV file.
+     *
+     * @return the number of this record.
+     */
     public long getRecordNumber() {
         return recordNumber;
     }
 
     /**
      * Returns the number of values in this record.
+     *
+     * @return the number of values.
      */
     public int size() {
         return values.length;
