@@ -45,7 +45,8 @@ public class CSVRecord implements Serializable, Iterable<String> {
     /** The record number. */
     private final long recordNumber;
 
-    CSVRecord(final String[] values, final Map<String, Integer> mapping, final String comment, final long recordNumber) {
+    CSVRecord(final String[] values, final Map<String, Integer> mapping,
+            final String comment, final long recordNumber) {
         this.recordNumber = recordNumber;
         this.values = values != null ? values : EMPTY_STRING_ARRAY;
         this.mapping = mapping;
@@ -73,7 +74,8 @@ public class CSVRecord implements Serializable, Iterable<String> {
      */
     public String get(final String name) {
         if (mapping == null) {
-            throw new IllegalStateException("No header mapping was specified, the record values can't be accessed by name");
+            throw new IllegalStateException(
+                    "No header mapping was specified, the record values can't be accessed by name");
         }
         final Integer index = mapping.get(name);
         return index != null ? values[index.intValue()] : null;
