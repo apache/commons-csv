@@ -163,6 +163,17 @@ public class CSVFormatBuilderTest {
     }
 
     @Test
+    public void testRFC4180() {
+        assertEquals(null, RFC4180.getCommentStart());
+        assertEquals(',', RFC4180.getDelimiter());
+        assertEquals(null, RFC4180.getEscape());
+        assertEquals(false, RFC4180.getIgnoreEmptyLines());
+        assertEquals(Character.valueOf('"'), RFC4180.getQuoteChar());
+        assertEquals(null, RFC4180.getQuotePolicy());
+        assertEquals("\r\n", RFC4180.getRecordSeparator());
+    }
+
+    @Test
     public void testCopiedFormatWithChanges() {
         final CSVFormat newFormat = CSVFormat.newBuilder(RFC4180).withDelimiter('!').build();
         assertTrue(newFormat.getDelimiter() != RFC4180.getDelimiter());
