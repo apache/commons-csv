@@ -580,25 +580,28 @@ public class CSVFormat implements Serializable {
          */
         private void validate() throws IllegalStateException {
             if (quoteChar != null && delimiter == quoteChar.charValue()) {
-                throw new IllegalStateException("The quoteChar character and the delimiter cannot be the same ('" + quoteChar + "')");
+                throw new IllegalStateException(
+                        "The quoteChar character and the delimiter cannot be the same ('" + quoteChar + "')");
             }
 
             if (escape != null && delimiter == escape.charValue()) {
-                throw new IllegalStateException("The escape character and the delimiter cannot be the same ('" + escape + "')");
+                throw new IllegalStateException(
+                        "The escape character and the delimiter cannot be the same ('" + escape + "')");
             }
 
             if (commentStart != null && delimiter == commentStart.charValue()) {
-                throw new IllegalStateException("The comment start character and the delimiter cannot be the same ('" + commentStart +
-                        "')");
+                throw new IllegalStateException(
+                        "The comment start character and the delimiter cannot be the same ('" + commentStart + "')");
             }
 
             if (quoteChar != null && quoteChar.equals(commentStart)) {
-                throw new IllegalStateException("The comment start character and the quoteChar cannot be the same ('" + commentStart +
-                        "')");
+                throw new IllegalStateException(
+                        "The comment start character and the quoteChar cannot be the same ('" + commentStart + "')");
             }
 
             if (escape != null && escape.equals(commentStart)) {
-                throw new IllegalStateException("The comment start and the escape character cannot be the same ('" + commentStart + "')");
+                throw new IllegalStateException(
+                        "The comment start and the escape character cannot be the same ('" + commentStart + "')");
             }
 
             if (escape == null && quotePolicy == Quote.NONE) {
