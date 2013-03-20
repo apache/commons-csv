@@ -178,9 +178,11 @@ public class CSVFormat implements Serializable {
      * @throws IllegalArgumentException if the delimiter is a line break character
      */
     // package protected to give access without needing a synthetic accessor
-    CSVFormat(final char delimiter, final Character quoteChar, final Quote quotePolicy, final Character commentStart, final Character escape,
-              final boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String lineSeparator, final String[] header)
- {
+	CSVFormat(final char delimiter, final Character quoteChar,
+			final Quote quotePolicy, final Character commentStart,
+			final Character escape, final boolean ignoreSurroundingSpaces,
+			final boolean ignoreEmptyLines, final String lineSeparator,
+			final String[] header) {
         if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
@@ -518,9 +520,11 @@ public class CSVFormat implements Serializable {
          * @throws IllegalArgumentException if the delimiter is a line break character
          */
         // package protected for use by test code
-        CSVFormatBuilder(final char delimiter, final Character quoteChar, final Quote quotePolicy, final Character commentStart, final Character escape, final
-                        boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String lineSeparator,
-                final String[] header) {
+		CSVFormatBuilder(final char delimiter, final Character quoteChar,
+				final Quote quotePolicy, final Character commentStart,
+				final Character escape, final boolean ignoreSurroundingSpaces,
+				final boolean ignoreEmptyLines, final String lineSeparator,
+				final String[] header) {
             if (isLineBreak(delimiter)) {
                 throw new IllegalArgumentException("The delimiter cannot be a line break");
             }
