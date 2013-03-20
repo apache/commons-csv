@@ -36,8 +36,8 @@ abstract class Lexer {
 
     /**
      * Constant char to use for disabling comments, escapes and encapsulation. The value -2 is used because it
-     * won't be confused with an EOF signal (-1), and because the Unicode value {@code FFFE} would be encoded as two chars
-     * (using surrogates) and thus there should never be a collision with a real text char.
+     * won't be confused with an EOF signal (-1), and because the Unicode value {@code FFFE} would be encoded as two
+     * chars (using surrogates) and thus there should never be a collision with a real text char.
      */
     private static final char DISABLED = '\ufffe';
 
