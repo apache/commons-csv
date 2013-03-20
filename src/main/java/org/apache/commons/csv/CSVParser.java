@@ -252,7 +252,7 @@ public class CSVParser implements Iterable<CSVRecord> {
     }
 
     /**
-     * Returns an iterator on the records. IOExceptions occuring during the iteration are wrapped in a
+     * Returns an iterator on the records. IOExceptions occurring during the iteration are wrapped in a
      * RuntimeException.
      */
     public Iterator<CSVRecord> iterator() {
