@@ -125,10 +125,11 @@ public class CSVFormat implements Serializable {
             .build();
 
     /**
-     * Creates a new CSV format builds.
+     * Creates a new CSV format builder.
      *
      * @param delimiter
      *            the char used for value separation, must not be a line break character
+     * @return a new CSV format builder. 
      * @throws IllegalArgumentException if the delimiter is a line break character
      */
     public static CSVFormatBuilder newBuilder(final char delimiter) {
@@ -140,13 +141,14 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Standard comma separated format, as for {@link #RFC4180} but allowing blank lines.
+     * Creates a standard comma separated format builder, as for {@link #RFC4180} but allowing empty lines.
      * <ul>
      * <li>withDelimiter(',')</li>
      * <li>withQuoteChar('"')</li>
      * <li>withEmptyLinesIgnored(true)</li>
      * <li>withLineSeparator(CRLF)</li>
      * </ul>
+     * @return a standard comma separated format builder, as for {@link #RFC4180} but allowing empty lines.
      */
     public static CSVFormatBuilder newBuilder() {
         return new CSVFormatBuilder(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, null);
