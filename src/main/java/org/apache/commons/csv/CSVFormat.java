@@ -66,7 +66,7 @@ public class CSVFormat implements Serializable {
             .build();
 
     /**
-     * Standard comma separated format, as for {@link #RFC4180} but allowing blank lines.
+     * Standard comma separated format, as for {@link #RFC4180} but allowing empty lines.
      * <ul>
      * <li>withDelimiter(',')</li>
      * <li>withQuoteChar('"')</li>
