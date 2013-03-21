@@ -136,6 +136,13 @@ public class CSVFormat implements Serializable {
         return new CSVFormatBuilder(delimiter);
     }
 
+    /**
+     * Creates a CSVFormatBuilder, using the values of the given CSVFormat.
+     *
+     * @param format
+     *            The format to use values from
+     * @return a new CSVFormatBuilder 
+     */
     public static CSVFormatBuilder newBuilder(final CSVFormat format) {
         return new CSVFormatBuilder(format);
     }
@@ -326,6 +333,7 @@ public class CSVFormat implements Serializable {
      *
      * @param in
      *            the input stream
+     * @throws IOException 
      */
     public Iterable<CSVRecord> parse(final Reader in) throws IOException {
         return new CSVParser(in, this);
@@ -484,6 +492,9 @@ public class CSVFormat implements Serializable {
         return true;
     }
 
+    /**
+     * Builds CSVFormat objects.
+     */
     public static class CSVFormatBuilder {
 
         private char delimiter;
@@ -540,7 +551,6 @@ public class CSVFormat implements Serializable {
         }
 
         /**
-         *
          * Creates a CSVFormatBuilder, using the values of the given CSVFormat.
          *
          * @param format
@@ -567,6 +577,11 @@ public class CSVFormat implements Serializable {
             this(delimiter, null, null, null, null, false, false, null, null);
         }
 
+        /**
+         * Builds a new CSVFormat configured with the values from this builder.
+         * 
+         * @return a new CSVFormat
+         */
         public CSVFormat build() {
             validate();
             return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,

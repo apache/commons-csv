@@ -96,7 +96,7 @@ public class CSVParser implements Iterable<CSVRecord> {
      * Customized CSV parser using the given {@link CSVFormat}
      *
      * @param input
-     *            a Reader containing "csv-formatted" input
+     *            a Reader containing CSV-formatted input
      * @param format
      *            the CSVFormat used for CSV parsing
      * @throws IllegalArgumentException
