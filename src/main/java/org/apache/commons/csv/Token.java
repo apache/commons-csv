@@ -52,7 +52,7 @@ final class Token {
     Token.Type type = INVALID;
 
     /** The content buffer. */
-    StringBuilder content = new StringBuilder(INITIAL_TOKEN_LENGTH);
+    final StringBuilder content = new StringBuilder(INITIAL_TOKEN_LENGTH);
 
     /** Token ready flag: indicates a valid token with content (ready for the parser). */
     boolean isReady;
