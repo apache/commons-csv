@@ -27,7 +27,7 @@ limitations under the License.
   <artifactId>commons-csv</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>Commons CSV</name>
-  <url>http://commons.apache.org/proper/csv/</url>
+  <url>http://commons.apache.org/proper/commons-csv/</url>
   <description>
 The Commons CSV library provides a simple interface for reading and writing
 CSV files of various types.
