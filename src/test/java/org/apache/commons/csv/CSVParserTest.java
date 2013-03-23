@@ -51,7 +51,7 @@ import org.junit.Test;
  * section. In case a test fails, you should follow a top-down approach for
  * fixing a potential bug (its likely that the parser itself fails if the lexer
  * has problems...).
- * 
+ *
  * @version $Id$
  */
 public class CSVParserTest {
@@ -561,7 +561,7 @@ public class CSVParserTest {
         assertFalse(record.isSet("C"));
         assertEquals("1", record.get("A"));
         assertEquals("2", record.get("B"));
-        
+
         // 2nd record
         record = records.next();
         assertTrue(record.isMapped("A"));
@@ -573,7 +573,7 @@ public class CSVParserTest {
         assertEquals("x", record.get("A"));
         assertEquals("y", record.get("B"));
         assertEquals("z", record.get("C"));
-        
+
         assertFalse(records.hasNext());
     }
 
@@ -586,7 +586,7 @@ public class CSVParserTest {
         Assert.assertEquals("B", columnNames.next());
         Assert.assertEquals("C", columnNames.next());
         final Iterator<CSVRecord> records = parser.iterator();
-        
+
         // Parse to make sure getHeaderMap did not have a side-effect.
         for (int i = 0; i < 3; i++) {
             assertTrue(records.hasNext());
@@ -613,7 +613,7 @@ public class CSVParserTest {
     public void testGetLineNumberWithCR() throws Exception {
         validateLineNumbers(String.valueOf(CR));
     }
-    
+
     @Test
     public void testGetRecordNumberWithLF() throws Exception {
         validateRecordNumbers(String.valueOf(LF));
@@ -658,13 +658,13 @@ public class CSVParserTest {
         CSVRecord record;
         assertEquals(0, parser.getRecordNumber());
         assertNotNull(record = parser.nextRecord());
-        assertEquals(1, record.getRecordNumber());        
+        assertEquals(1, record.getRecordNumber());
         assertEquals(1, parser.getRecordNumber());
         assertNotNull(record = parser.nextRecord());
-        assertEquals(2, record.getRecordNumber());        
+        assertEquals(2, record.getRecordNumber());
         assertEquals(2, parser.getRecordNumber());
         assertNotNull(record = parser.nextRecord());
-        assertEquals(3, record.getRecordNumber());        
+        assertEquals(3, record.getRecordNumber());
         assertEquals(3, parser.getRecordNumber());
         assertNull(record = parser.nextRecord());
         assertEquals(3, parser.getRecordNumber());
