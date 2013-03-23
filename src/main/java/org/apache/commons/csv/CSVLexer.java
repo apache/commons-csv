@@ -112,7 +112,7 @@ final class CSVLexer extends Lexer {
                 token.type = EORECORD;
             } else if (isQuoteChar(c)) {
                 // consume encapsulated token
-                encapsulatedTokenLexer(token);
+                parseEncapsulatedToken(token);
             } else if (isEndOfFile(c)) {
                 // end of file return EOF()
                 // noop: tkn.content.append("");
@@ -121,14 +121,14 @@ final class CSVLexer extends Lexer {
             } else {
                 // next token must be a simple token
                 // add removed blanks when not ignoring whitespace chars...
-                simpleTokenLexer(token, c);
+                parseSimpleToken(token, c);
             }
         }
         return token;
     }
 
     /**
-     * A simple token lexer
+     * Parsed a simple token.
      * <p/>
      * Simple token are tokens which are not surrounded by encapsulators. A simple token might contain escaped
      * delimiters (as \, or \;). The token is finished when one of the following conditions become true:
@@ -146,7 +146,7 @@ final class CSVLexer extends Lexer {
      * @throws IOException
      *             on stream access error
      */
-    private Token simpleTokenLexer(final Token tkn, int c) throws IOException {
+    private Token parseSimpleToken(final Token tkn, int c) throws IOException {
         // Faster to use while(true)+break than while(tkn.type == INVALID)
         while (true) {
             if (readEndOfLine(c)) {
@@ -176,7 +176,7 @@ final class CSVLexer extends Lexer {
     }
 
     /**
-     * An encapsulated token lexer
+     * Parses an encapsulated token.
      * <p/>
      * Encapsulated tokens are surrounded by the given encapsulating-string. The encapsulator itself might be included
      * in the token using a doubling syntax (as "", '') or using escaping (as in \", \'). Whitespaces before and after
@@ -195,7 +195,7 @@ final class CSVLexer extends Lexer {
      * @throws IOException
      *             on invalid state: EOF before closing encapsulator or invalid character before delimiter or EOL
      */
-    private Token encapsulatedTokenLexer(final Token tkn) throws IOException {
+    private Token parseEncapsulatedToken(final Token tkn) throws IOException {
         // save current line number in case needed for IOE
         final long startLineNumber = getLineNumber();
         int c;
