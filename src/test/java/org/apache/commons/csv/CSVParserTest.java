@@ -577,6 +577,7 @@ public class CSVParserTest {
         assertFalse(records.hasNext());
     }
 
+    @Test
     public void testGetHeaderMap() throws Exception {
         final CSVParser parser = new CSVParser("a,b,c\n1,2,3\nx,y,z", CSVFormat.newBuilder().withHeader("A", "B", "C").build());
         final Map<String, Integer> headerMap = parser.getHeaderMap();
