@@ -17,6 +17,11 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Constants.BACKSPACE;
+import static org.apache.commons.csv.Constants.CR;
+import static org.apache.commons.csv.Constants.FF;
+import static org.apache.commons.csv.Constants.LF;
+import static org.apache.commons.csv.Constants.TAB;
 import static org.apache.commons.csv.Token.Type.COMMENT;
 import static org.apache.commons.csv.Token.Type.EOF;
 import static org.apache.commons.csv.Token.Type.EORECORD;
@@ -281,5 +286,30 @@ public class CSVLexerTest {
         assertTokenEquals(TOKEN, "four", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "five", parser.nextToken(new Token()));
         assertTokenEquals(EOF, "six", parser.nextToken(new Token()));
+    }
+
+    @Test
+    public void testEscaping() throws Exception {
+        final String code = "plain," +
+        		"CR!" + CR + "Escaped," +
+        		"LF!" + LF +"Escaped," +
+                "TAB!" + TAB +"Escaped," +
+                "BACKSPACE!" + BACKSPACE +"Escaped," +
+                "FF!" + FF +"Escaped";
+        final Lexer lexer = getLexer(code, CSVFormat.newBuilder().withEscape('!').build());
+        assertTokenEquals(TOKEN, "plain", lexer.nextToken(new Token()));
+        assertTokenEquals(TOKEN, "CR" + CR + "Escaped", lexer.nextToken(new Token()));
+        assertTokenEquals(TOKEN, "LF" + LF + "Escaped", lexer.nextToken(new Token()));
+        assertTokenEquals(TOKEN, "TAB" + TAB + "Escaped", lexer.nextToken(new Token()));
+        assertTokenEquals(TOKEN, "BACKSPACE" + BACKSPACE + "Escaped", lexer.nextToken(new Token()));
+        assertTokenEquals(EOF, "FF" + FF + "Escaped", lexer.nextToken(new Token()));
+    }
+
+    @Test(expected = IOException.class)
+    public void testEscapingAtEOF() throws Exception {
+        final String code = "escaping at EOF is evil!";
+        final Lexer lexer = getLexer(code, CSVFormat.newBuilder().withEscape('!').build());
+
+        lexer.nextToken(new Token());
     }
 }
