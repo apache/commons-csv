@@ -141,7 +141,7 @@ public class CSVFormat implements Serializable {
      *
      * @param format
      *            The format to use values from
-     * @return a new CSVFormatBuilder 
+     * @return a new CSVFormatBuilder
      */
     public static CSVFormatBuilder newBuilder(final CSVFormat format) {
         return new CSVFormatBuilder(format);
@@ -155,6 +155,9 @@ public class CSVFormat implements Serializable {
      * <li>withEmptyLinesIgnored(true)</li>
      * <li>withLineSeparator(CRLF)</li>
      * </ul>
+     *
+     * Shortcut for {@code CSVFormat.newBuilder(CSVFormat.DEFAULT)}
+     *
      * @return a standard comma separated format builder, as for {@link #RFC4180} but allowing empty lines.
      */
     public static CSVFormatBuilder newBuilder() {
@@ -333,7 +336,7 @@ public class CSVFormat implements Serializable {
      *
      * @param in
      *            the input stream
-     * @throws IOException 
+     * @throws IOException
      */
     public Iterable<CSVRecord> parse(final Reader in) throws IOException {
         return new CSVParser(in, this);
@@ -579,7 +582,7 @@ public class CSVFormat implements Serializable {
 
         /**
          * Builds a new CSVFormat configured with the values from this builder.
-         * 
+         *
          * @return a new CSVFormat
          */
         public CSVFormat build() {
