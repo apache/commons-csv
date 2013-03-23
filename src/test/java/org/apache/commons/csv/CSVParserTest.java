@@ -318,9 +318,8 @@ public class CSVParserTest {
         final CSVParser parser = new CSVParser(code, format);
         final List<CSVRecord> records = parser.getRecords();
         assertTrue(records.size() > 0);
-        for (int i = 0; i < res.length; i++) {
-            assertArrayEquals(res[i], records.get(i).values());
-        }
+
+        Utils.compare("Records do not match expected result", res, records);
     }
 
     @Test
