@@ -168,7 +168,7 @@ public class CSVFormatBuilderTest {
         assertEquals(null, RFC4180.getCommentStart());
         assertEquals(',', RFC4180.getDelimiter());
         assertEquals(null, RFC4180.getEscape());
-        assertEquals(false, RFC4180.getIgnoreEmptyLines());
+        assertFalse(RFC4180.getIgnoreEmptyLines());
         assertEquals(Character.valueOf('"'), RFC4180.getQuoteChar());
         assertEquals(null, RFC4180.getQuotePolicy());
         assertEquals("\r\n", RFC4180.getRecordSeparator());
