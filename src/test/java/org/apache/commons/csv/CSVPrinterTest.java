@@ -148,6 +148,7 @@ public class CSVPrinterTest {
         printer.printComment("This is a comment");
 
         assertEquals("", sw.toString());
+        printer.close();
     }
 
     @Test
@@ -156,6 +157,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
         printer.printRecords(new String[][] { { "r1c1", "r1c2" }, { "r2c1", "r2c2" } });
         assertEquals("r1c1,r1c2" + recordSeparator + "r2c1,r2c2" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -164,6 +166,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
         printer.printRecords(new List[] { Arrays.asList(new String[] { "r1c1", "r1c2" }), Arrays.asList(new String[] { "r2c1", "r2c2" }) });
         assertEquals("r1c1,r1c2" + recordSeparator + "r2c1,r2c2" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -172,6 +175,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
         printer.printRecords(Arrays.asList(new String[][] { { "r1c1", "r1c2" }, { "r2c1", "r2c2" } }));
         assertEquals("r1c1,r1c2" + recordSeparator + "r2c1,r2c2" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -181,6 +185,7 @@ public class CSVPrinterTest {
         printer.printRecords(Arrays.asList(new List[] { Arrays.asList(new String[] { "r1c1", "r1c2" }),
                 Arrays.asList(new String[] { "r2c1", "r2c2" }) }));
         assertEquals("r1c1,r1c2" + recordSeparator + "r2c1,r2c2" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -189,6 +194,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
         printer.printRecord("a", "b");
         assertEquals("a,b" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -197,6 +203,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
         printer.printRecord("a,b", "b");
         assertEquals("\"a,b\",b" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -212,6 +219,7 @@ public class CSVPrinterTest {
             final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
             printer.printRecords(stmt.executeQuery("select ID, NAME from TEST"));
             assertEquals("1,r1" + recordSeparator + "2,r2" + recordSeparator, sw.toString());
+            printer.close();
         } finally {
             connection.close();
         }
@@ -224,6 +232,7 @@ public class CSVPrinterTest {
         printer.printComment("This is a comment\non multiple lines");
 
         assertEquals("# This is a comment" + recordSeparator + "# on multiple lines" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -232,6 +241,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a", "b");
         assertEquals("a,b" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -240,6 +250,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a,b", "b");
         assertEquals("\"a,b\",b" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -248,6 +259,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a, b", "b ");
         assertEquals("\"a, b\",\"b \"" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -256,6 +268,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a", "b\"c");
         assertEquals("a,\"b\"\"c\"" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -264,6 +277,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a", "b\nc");
         assertEquals("a,\"b\nc\"" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -272,6 +286,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a", "b\r\nc");
         assertEquals("a,\"b\r\nc\"" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -280,6 +295,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a", "b\\c");
         assertEquals("a,b\\c" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -288,6 +304,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a", null, "b");
         assertEquals("a,,b" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -296,6 +313,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.newBuilder().withQuotePolicy(Quote.ALL).build());
         printer.printRecord("a", "b\nc", "d");
         assertEquals("\"a\",\"b\nc\",\"d\"" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -304,6 +322,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.newBuilder().withQuotePolicy(Quote.NON_NUMERIC).build());
         printer.printRecord("a", "b\nc", Integer.valueOf(1));
         assertEquals("\"a\",\"b\nc\",1" + recordSeparator, sw.toString());
+        printer.close();
     }
 
     @Test
@@ -321,6 +340,7 @@ public class CSVPrinterTest {
         printer.printComment("This is a comment");
 
         assertEquals("# This is a comment" + recordSeparator, sw.toString());
+        printer.close();
     }
 
 }

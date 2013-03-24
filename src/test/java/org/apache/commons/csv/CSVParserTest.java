@@ -446,6 +446,7 @@ public class CSVParserTest {
             printer.printRecord(record);
         }
         assertEquals(input, out.toString());
+        printer.close();
     }
 
     @Test
