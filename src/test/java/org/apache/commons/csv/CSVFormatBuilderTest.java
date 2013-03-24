@@ -53,6 +53,8 @@ public class CSVFormatBuilderTest {
     public void testCopiedFormatIsEqualToOriginal() {
         final CSVFormat copyOfRCF4180 = CSVFormat.newBuilder(RFC4180).build();
         assertEquals(RFC4180, copyOfRCF4180);
+        final CSVFormat copy2OfRCF4180 = RFC4180.toBuilder().build();
+        assertEquals(RFC4180, copy2OfRCF4180);
     }
 
     @Test
