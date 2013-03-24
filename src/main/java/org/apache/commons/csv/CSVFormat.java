@@ -412,84 +412,59 @@ public class CSVFormat implements Serializable {
     }
 
     @Override
-    public boolean equals(final Object obj)
-    {
-        if (this == obj)
-        {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (obj == null)
-        {
+        if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass())
-        {
+        if (getClass() != obj.getClass()) {
             return false;
         }
 
         final CSVFormat other = (CSVFormat) obj;
-        if (delimiter != other.delimiter)
-        {
+        if (delimiter != other.delimiter) {
             return false;
         }
-        if (quotePolicy != other.quotePolicy)
-        {
+        if (quotePolicy != other.quotePolicy) {
             return false;
         }
-        if (quoteChar == null)
-        {
-            if (other.quoteChar != null)
-            {
+        if (quoteChar == null) {
+            if (other.quoteChar != null) {
                 return false;
             }
-        }
-        else if (!quoteChar.equals(other.quoteChar))
-        {
+        } else if (!quoteChar.equals(other.quoteChar)) {
             return false;
         }
-        if (commentStart == null)
-        {
-            if (other.commentStart != null)
-            {
+        if (commentStart == null) {
+            if (other.commentStart != null) {
                 return false;
             }
-        }
-        else if (!commentStart.equals(other.commentStart))
-        {
+        } else if (!commentStart.equals(other.commentStart)) {
             return false;
         }
-        if (escape == null)
-        {
-            if (other.escape != null)
-            {
+        if (escape == null) {
+            if (other.escape != null) {
                 return false;
             }
-        }
-        else if (!escape.equals(other.escape))
-        {
+        } else if (!escape.equals(other.escape)) {
             return false;
         }
-        if (!Arrays.equals(header, other.header))
-        {
+        if (!Arrays.equals(header, other.header)) {
             return false;
         }
-        if (ignoreSurroundingSpaces != other.ignoreSurroundingSpaces)
-        {
+        if (ignoreSurroundingSpaces != other.ignoreSurroundingSpaces) {
             return false;
         }
-        if (ignoreEmptyLines != other.ignoreEmptyLines)
-        {
+        if (ignoreEmptyLines != other.ignoreEmptyLines) {
             return false;
         }
-        if (recordSeparator == null)
-        {
-            if (other.recordSeparator != null)
-            {
+        if (recordSeparator == null) {
+            if (other.recordSeparator != null) {
                 return false;
             }
-        }
-        else if (!recordSeparator.equals(other.recordSeparator))
-        {
+        } else if (!recordSeparator.equals(other.recordSeparator)) {
             return false;
         }
         return true;
