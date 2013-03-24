@@ -206,23 +206,6 @@ public class CSVLexerTest {
         assertTokenEquals(EOF, "e", parser.nextToken(new Token()));
     }
 
-    // simple token with escaping enabled
-    @Test
-    public void testNextToken3BadEscaping() throws IOException {
-        final String code = "a,b,c\\";
-        final CSVFormat format = CSVFormat.newBuilder().withEscape('\\').build();
-        assertTrue(format.isEscaping());
-        final Lexer parser = getLexer(code, format);
-
-        assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "b", parser.nextToken(new Token()));
-        try {
-            final Token tkn = parser.nextToken(new Token());
-            fail("Expected IOE, found "+tkn);
-        } catch (final IOException e) {
-        }
-    }
-
     // encapsulator tokenizer (single line)
     @Test
     public void testNextToken4() throws IOException {
