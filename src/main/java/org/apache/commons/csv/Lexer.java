@@ -106,13 +106,6 @@ abstract class Lexer {
     }
 
     /**
-     * @return true if the given char is a whitespace character
-     */
-    boolean isWhitespace(final int c) {
-        return c != format.getDelimiter() && Character.isWhitespace((char) c);
-    }
-
-    /**
      * Greedily accepts \n, \r and \r\n This checker consumes silently the second control-character...
      *
      * @return true if the given or next character is a line-terminator
@@ -124,6 +117,15 @@ abstract class Lexer {
             c = in.read();
         }
         return c == LF || c == CR;
+    }
+
+    abstract Token nextToken(Token reusableToken) throws IOException;
+
+    /**
+     * @return true if the given char is a whitespace character
+     */
+    boolean isWhitespace(final int c) {
+        return c != format.getDelimiter() && Character.isWhitespace((char) c);
     }
 
     /**
@@ -142,8 +144,6 @@ abstract class Lexer {
     boolean isEndOfFile(final int c) {
         return c == END_OF_STREAM;
     }
-
-    abstract Token nextToken(Token reusableToken) throws IOException;
 
     boolean isDelimiter(final int c) {
         return c == delimiter;
