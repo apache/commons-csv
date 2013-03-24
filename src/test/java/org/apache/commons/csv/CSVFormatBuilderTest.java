@@ -59,6 +59,8 @@ public class CSVFormatBuilderTest {
     public void testCopiedFormatWithChanges() {
         final CSVFormat newFormat = CSVFormat.newBuilder(RFC4180).withDelimiter('!').build();
         assertTrue(newFormat.getDelimiter() != RFC4180.getDelimiter());
+        final CSVFormat newFormat2 = RFC4180.toBuilder().withDelimiter('!').build();
+        assertTrue(newFormat2.getDelimiter() != RFC4180.getDelimiter());
     }
     
     @Test

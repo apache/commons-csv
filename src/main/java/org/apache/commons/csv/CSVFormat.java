@@ -471,6 +471,15 @@ public class CSVFormat implements Serializable {
     }
 
     /**
+     * Creates a builder based on this format.
+     * 
+     * @return a new builder
+     */
+    public CSVFormatBuilder toBuilder() {
+        return new CSVFormatBuilder(this);
+    }
+
+    /**
      * Builds CSVFormat objects.
      */
     public static class CSVFormatBuilder {
