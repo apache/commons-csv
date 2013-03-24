@@ -329,6 +329,7 @@ public class CSVLexerTest {
     @Test
     @Ignore
     public void testEscapedControlCharacter() throws Exception {
+        // we are explicitly using an escape different from \ here, because \r is the character sequence for CR
         final Lexer lexer = getLexer("character!rEscaped", CSVFormat.newBuilder().withEscape('!').build());
         assertTokenEquals(EOF, "character!rEscaped", lexer.nextToken(new Token()));
     }
