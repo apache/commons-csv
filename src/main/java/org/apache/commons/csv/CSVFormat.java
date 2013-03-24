@@ -33,9 +33,14 @@ import java.util.Arrays;
 
 /**
  * The format specification of a CSV file.
- *
+ * <p>
  * This class is immutable.
- *
+ * </p>
+ * <p>
+ * You can extend a format through a builder. For example, to extend the Excel format with columns header, you write:
+ * </p>
+ * <pre>CSVFormat.EXCEL.toBuilder().withHeader(&quot;Col1&quot;, &quot;Col2&quot;, &quot;Col3&quot;).build();</pre>
+ * 
  * @version $Id$
  */
 public class CSVFormat implements Serializable {
