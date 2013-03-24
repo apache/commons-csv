@@ -81,6 +81,12 @@ CSV files of various types.
       <url>http://www.garygregory.com</url>
       <timezone>-5</timezone>
     </developer>
+    <developer>
+      <name>Benedikt Ritter</name>
+      <id>britter</id>
+      <email>britter@apache.org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
   </developers>
   <contributors>
   </contributors>
