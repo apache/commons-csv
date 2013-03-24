@@ -73,7 +73,7 @@ public class CSVPrinterTest {
 
         for (int i = 0; i < nLines; i++) {
             // for (int j=0; j<lines[i].length; j++) System.out.println("### VALUE=:" + printable(lines[i][j]));
-            printer.printRecord(lines[i]);
+            printer.printRecord((Object[])lines[i]);
         }
 
         printer.flush();
