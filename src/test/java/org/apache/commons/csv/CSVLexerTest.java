@@ -34,6 +34,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.io.StringReader;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -43,6 +44,13 @@ import org.junit.Test;
  * @version $Id$
  */
 public class CSVLexerTest {
+
+    private CSVFormat formatWithEscaping;
+
+    @Before
+    public void setUp() {
+        formatWithEscaping = CSVFormat.newBuilder().withEscape('\\').build();
+    }
 
     private Lexer getLexer(final String input, final CSVFormat format) {
         return new CSVLexer(format, new ExtendedBufferedReader(new StringReader(input)));
@@ -193,7 +201,7 @@ public class CSVLexerTest {
         *       \,,
         */
         final String code = "a,\\,,b\\\\\n\\,,\\\nc,d\\\r\ne";
-        final CSVFormat format = CSVFormat.newBuilder().withEscape('\\').withIgnoreEmptyLines(false).build();
+        final CSVFormat format = formatWithEscaping.toBuilder().withIgnoreEmptyLines(false).build();
         assertTrue(format.isEscaping());
         final Lexer parser = getLexer(code, format);
 
@@ -274,38 +282,38 @@ public class CSVLexerTest {
 
     @Test
     public void testEscapedCR() throws Exception {
-        final Lexer lexer = getLexer("character\\" + CR + "Escaped", CSVFormat.newBuilder().withEscape('\\').build());
+        final Lexer lexer = getLexer("character\\" + CR + "Escaped", formatWithEscaping);
         assertTokenEquals(EOF, "character" + CR + "Escaped", lexer.nextToken(new Token()));
     }
 
     @Test
     public void testEscapedLF() throws Exception {
-        final Lexer lexer = getLexer("character\\" + LF + "Escaped", CSVFormat.newBuilder().withEscape('\\').build());
+        final Lexer lexer = getLexer("character\\" + LF + "Escaped", formatWithEscaping);
         assertTokenEquals(EOF, "character" + LF + "Escaped", lexer.nextToken(new Token()));
     }
 
     @Test
     public void testEscapedTab() throws Exception {
-        final Lexer lexer = getLexer("character\\" + TAB + "Escaped", CSVFormat.newBuilder().withEscape('\\').build());
+        final Lexer lexer = getLexer("character\\" + TAB + "Escaped", formatWithEscaping);
         assertTokenEquals(EOF, "character" + TAB + "Escaped", lexer.nextToken(new Token()));
     }
 
     @Test
     public void testEscapeBackspace() throws Exception {
-        final Lexer lexer = getLexer("character\\" + BACKSPACE + "Escaped", CSVFormat.newBuilder().withEscape('\\').build());
+        final Lexer lexer = getLexer("character\\" + BACKSPACE + "Escaped", formatWithEscaping);
         assertTokenEquals(EOF, "character" + BACKSPACE + "Escaped", lexer.nextToken(new Token()));
     }
 
     @Test
     public void testEscapeFF() throws Exception {
-        final Lexer lexer = getLexer("character\\" + FF + "Escaped", CSVFormat.newBuilder().withEscape('\\').build());
+        final Lexer lexer = getLexer("character\\" + FF + "Escaped", formatWithEscaping);
         assertTokenEquals(EOF, "character" + FF + "Escaped", lexer.nextToken(new Token()));
     }
 
     @Test
     public void testEscapedMySqlNullValue() throws Exception {
         // MySQL uses \N to symbolize null values. We have to restore this
-        final Lexer lexer = getLexer("character\\\\NEscaped", CSVFormat.newBuilder().withEscape('\\').build());
+        final Lexer lexer = getLexer("character\\\\NEscaped", formatWithEscaping);
         assertTokenEquals(EOF, "character\\NEscaped", lexer.nextToken(new Token()));
     }
 
@@ -313,7 +321,7 @@ public class CSVLexerTest {
     @Test
     @Ignore
     public void testEscapedCharacter() throws Exception {
-        final Lexer lexer = getLexer("character\\aEscaped", CSVFormat.newBuilder().withEscape('\\').build());
+        final Lexer lexer = getLexer("character\\aEscaped", formatWithEscaping);
         assertTokenEquals(EOF, "character\\aEscaped", lexer.nextToken(new Token()));
     }
 
@@ -327,8 +335,8 @@ public class CSVLexerTest {
 
     @Test(expected = IOException.class)
     public void testEscapingAtEOF() throws Exception {
-        final String code = "escaping at EOF is evil!";
-        final Lexer lexer = getLexer(code, CSVFormat.newBuilder().withEscape('!').build());
+        final String code = "escaping at EOF is evil\\";
+        final Lexer lexer = getLexer(code, formatWithEscaping);
 
         lexer.nextToken(new Token());
     }
