@@ -60,19 +60,19 @@ CSV files of various types.
       <id>bayard</id>
       <name>Henri Yandell</name>
       <email>bayard@apache.org</email>
-      <organization>Apache Software Foundation</organization>
+      <organization>The Apache Software Foundation</organization>
     </developer>
     <developer>
       <name>Martin van den Bemt</name>
       <id>mvdb</id>
       <email>mvdb@apache.org</email>
-      <organization>Apache Software Foundation</organization>
+      <organization>The Apache Software Foundation</organization>
     </developer>
     <developer>
       <name>Yonik Seeley</name>
       <id>yonik</id>
       <email>yonik@apache.org</email>
-      <organization>Apache Software Foundation</organization>
+      <organization>The Apache Software Foundation</organization>
     </developer>
     <developer>
       <name>Gary Gregory</name>
@@ -85,7 +85,7 @@ CSV files of various types.
       <name>Benedikt Ritter</name>
       <id>britter</id>
       <email>britter@apache.org</email>
-      <organization>Apache Software Foundation</organization>
+      <organization>The Apache Software Foundation</organization>
     </developer>
   </developers>
   <contributors>
