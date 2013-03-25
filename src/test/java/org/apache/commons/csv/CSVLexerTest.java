@@ -324,7 +324,7 @@ public class CSVLexerTest {
         assertTokenEquals(EOF, "character\\aEscaped", lexer.nextToken(new Token()));
     }
 
-    // FIXME this should work after CSV-58 is resolved. Currentyl the result will be "characterCREscaped"
+    // FIXME this should work after CSV-58 is resolved. Currently the result will be "characterCREscaped"
     @Test
     @Ignore
     public void testEscapedControlCharacter() throws Exception {
