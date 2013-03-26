@@ -363,6 +363,7 @@ public class CSVFormat implements Serializable {
      *
      * @param values
      *            the values to format
+     * @return the formatted values
      */
     public String format(final Object... values) {
         final StringWriter out = new StringWriter();
