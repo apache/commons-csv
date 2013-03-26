@@ -51,7 +51,7 @@ public class CSVPrinterTest {
         return sb.toString();
     }
 
-    String recordSeparator = CSVFormat.RFC4180_EMPTY_LINES.getRecordSeparator();
+    String recordSeparator = CSVFormat.DEFAULT.getRecordSeparator();
 
     public void doOneRandom(final CSVFormat format) throws Exception {
         final Random r = new Random();
@@ -144,7 +144,7 @@ public class CSVPrinterTest {
     @Test
     public void testDisabledComment() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180_EMPTY_LINES);
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printComment("This is a comment");
 
         assertEquals("", sw.toString());
@@ -216,7 +216,7 @@ public class CSVPrinterTest {
             stmt.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
             stmt.execute("insert into TEST values(1, 'r1')");
             stmt.execute("insert into TEST values(2, 'r2')");
-            final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180_EMPTY_LINES);
+            final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
             printer.printRecords(stmt.executeQuery("select ID, NAME from TEST"));
             assertEquals("1,r1" + recordSeparator + "2,r2" + recordSeparator, sw.toString());
             printer.close();
@@ -238,7 +238,7 @@ public class CSVPrinterTest {
     @Test
     public void testPrinter1() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180_EMPTY_LINES);
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a", "b");
         assertEquals("a,b" + recordSeparator, sw.toString());
         printer.close();
@@ -247,7 +247,7 @@ public class CSVPrinterTest {
     @Test
     public void testPrinter2() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180_EMPTY_LINES);
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a,b", "b");
         assertEquals("\"a,b\",b" + recordSeparator, sw.toString());
         printer.close();
@@ -256,7 +256,7 @@ public class CSVPrinterTest {
     @Test
     public void testPrinter3() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180_EMPTY_LINES);
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a, b", "b ");
         assertEquals("\"a, b\",\"b \"" + recordSeparator, sw.toString());
         printer.close();
@@ -265,7 +265,7 @@ public class CSVPrinterTest {
     @Test
     public void testPrinter4() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180_EMPTY_LINES);
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a", "b\"c");
         assertEquals("a,\"b\"\"c\"" + recordSeparator, sw.toString());
         printer.close();
@@ -274,7 +274,7 @@ public class CSVPrinterTest {
     @Test
     public void testPrinter5() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180_EMPTY_LINES);
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a", "b\nc");
         assertEquals("a,\"b\nc\"" + recordSeparator, sw.toString());
         printer.close();
@@ -283,7 +283,7 @@ public class CSVPrinterTest {
     @Test
     public void testPrinter6() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180_EMPTY_LINES);
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a", "b\r\nc");
         assertEquals("a,\"b\r\nc\"" + recordSeparator, sw.toString());
         printer.close();
@@ -292,7 +292,7 @@ public class CSVPrinterTest {
     @Test
     public void testPrinter7() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180_EMPTY_LINES);
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a", "b\\c");
         assertEquals("a,b\\c" + recordSeparator, sw.toString());
         printer.close();
@@ -301,7 +301,7 @@ public class CSVPrinterTest {
     @Test
     public void testPrintNullValues() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180_EMPTY_LINES);
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
         printer.printRecord("a", null, "b");
         assertEquals("a,,b" + recordSeparator, sw.toString());
         printer.close();
@@ -328,7 +328,7 @@ public class CSVPrinterTest {
     @Test
     public void testRandom() throws Exception {
         final int iter = 10000;
-        doRandom(CSVFormat.RFC4180_EMPTY_LINES, iter);
+        doRandom(CSVFormat.DEFAULT, iter);
         doRandom(CSVFormat.EXCEL, iter);
         doRandom(CSVFormat.MYSQL, iter);
     }

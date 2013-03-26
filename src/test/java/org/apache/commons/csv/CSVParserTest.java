@@ -234,13 +234,13 @@ public class CSVParserTest {
 
     @Test
     public void testEmptyFile() throws Exception {
-        final CSVParser parser = new CSVParser("", CSVFormat.RFC4180_EMPTY_LINES);
+        final CSVParser parser = new CSVParser("", CSVFormat.DEFAULT);
         assertNull(parser.nextRecord());
     }
 
     @Test
     public void testCSV57() throws Exception {
-        final CSVParser parser = new CSVParser("", CSVFormat.RFC4180_EMPTY_LINES);
+        final CSVParser parser = new CSVParser("", CSVFormat.DEFAULT);
         final List<CSVRecord> list = parser.getRecords();
         assertNotNull(list);
         assertEquals(0, list.size());
@@ -366,7 +366,7 @@ public class CSVParserTest {
                 {"# Final comment"}
         };
 
-        CSVFormat format = CSVFormat.RFC4180_EMPTY_LINES;
+        CSVFormat format = CSVFormat.DEFAULT;
         assertFalse(format.isCommentingEnabled());
 
         CSVParser parser = new CSVParser(code, format);
@@ -427,7 +427,7 @@ public class CSVParserTest {
 
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
 
-        for (final CSVRecord record : CSVFormat.RFC4180_EMPTY_LINES.parse(in)) {
+        for (final CSVRecord record : CSVFormat.DEFAULT.parse(in)) {
             records.add(record);
         }
 
@@ -440,9 +440,9 @@ public class CSVParserTest {
     @Test
     public void testRoundtrip() throws Exception {
         final StringWriter out = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(out, CSVFormat.RFC4180_EMPTY_LINES);
+        final CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
         final String input = "a,b,c\r\n1,2,3\r\nx,y,z\r\n";
-        for (final CSVRecord record : CSVFormat.RFC4180_EMPTY_LINES.parse(new StringReader(input))) {
+        for (final CSVRecord record : CSVFormat.DEFAULT.parse(new StringReader(input))) {
             printer.printRecord(record);
         }
         assertEquals(input, out.toString());
@@ -453,7 +453,7 @@ public class CSVParserTest {
     public void testIterator() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
 
-        final Iterator<CSVRecord> iterator = CSVFormat.RFC4180_EMPTY_LINES.parse(in).iterator();
+        final Iterator<CSVRecord> iterator = CSVFormat.DEFAULT.parse(in).iterator();
 
         assertTrue(iterator.hasNext());
         try {

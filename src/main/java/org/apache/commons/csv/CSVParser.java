@@ -89,7 +89,7 @@ public class CSVParser implements Iterable<CSVRecord> {
      *             thrown if the parameters of the format are inconsistent
      */
     public CSVParser(final Reader input) throws IOException {
-        this(input, CSVFormat.RFC4180_EMPTY_LINES);
+        this(input, CSVFormat.DEFAULT);
     }
 
     /**
