@@ -59,6 +59,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
+     * <h3>RFC 4180:</h3>
      * <ul>
      * <li>withDelimiter(',')</li>
      * <li>withQuoteChar('"')</li>
@@ -72,11 +73,15 @@ public class CSVFormat implements Serializable {
 
     /**
      * Standard comma separated format, as for {@link #RFC4180} but allowing empty lines.
+     * <h3>RFC 4180:</h3>
      * <ul>
      * <li>withDelimiter(',')</li>
      * <li>withQuoteChar('"')</li>
-     * <li>withIgnoreEmptyLines(true)</li>
      * <li>withLineSeparator(CRLF)</li>
+     * </ul>
+     * <h3>Additional:</h3>
+     * <ul>
+     * <li>withIgnoreEmptyLines(true)</li>
      * </ul>
      */
     public static final CSVFormat RFC4180_EMPTY_LINES =
