@@ -128,7 +128,7 @@ final class CSVLexer extends Lexer {
     }
 
     /**
-     * Parsed a simple token.
+     * Parses a simple token.
      * <p/>
      * Simple token are tokens which are not surrounded by encapsulators. A simple token might contain escaped
      * delimiters (as \, or \;). The token is finished when one of the following conditions become true:
