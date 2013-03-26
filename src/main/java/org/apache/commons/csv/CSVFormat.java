@@ -359,7 +359,7 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Format the specified values.
+     * Formats the specified values.
      *
      * @param values
      *            the values to format
