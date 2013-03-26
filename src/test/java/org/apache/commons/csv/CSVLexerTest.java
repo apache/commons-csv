@@ -178,7 +178,7 @@ public class CSVLexerTest {
         *       \,,
         */
         final String code = "a,\\,,b\\\n\\,,";
-        final CSVFormat format = CSVFormat.DEFAULT;
+        final CSVFormat format = CSVFormat.RFC4180_EMPTY_LINES;
         assertFalse(format.isEscaping());
         final Lexer parser = getLexer(code, format);
 
@@ -242,7 +242,7 @@ public class CSVLexerTest {
     @Test
     public void testNextToken5() throws IOException {
         final String code = "a,\"foo\n\",b\n\"foo\n  baar ,,,\"\n\"\n\t \n\"";
-        final Lexer parser = getLexer(code, CSVFormat.DEFAULT);
+        final Lexer parser = getLexer(code, CSVFormat.RFC4180_EMPTY_LINES);
         assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
         assertTokenEquals(TOKEN, "foo\n", parser.nextToken(new Token()));
         assertTokenEquals(EORECORD, "b", parser.nextToken(new Token()));

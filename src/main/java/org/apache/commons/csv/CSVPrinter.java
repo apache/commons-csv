@@ -52,13 +52,13 @@ public class CSVPrinter implements Flushable, Closeable {
      * @param out
      *            stream to which to print.
      * @param format
-     *            the CSV format. If null the default format is used ({@link CSVFormat#DEFAULT})
+     *            the CSV format. If null the default format is used ({@link CSVFormat#RFC4180_EMPTY_LINES})
      * @throws IllegalArgumentException
      *             thrown if the parameters of the format are inconsistent
      */
     public CSVPrinter(final Appendable out, final CSVFormat format) {
         this.out = out;
-        this.format = format == null ? CSVFormat.DEFAULT : format;
+        this.format = format == null ? CSVFormat.RFC4180_EMPTY_LINES : format;
     }
 
     // ======================================================

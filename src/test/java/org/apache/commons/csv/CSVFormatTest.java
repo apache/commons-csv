@@ -37,7 +37,7 @@ public class CSVFormatTest {
 
     @Test
     public void testFormat() {
-        final CSVFormat format = CSVFormat.DEFAULT;
+        final CSVFormat format = CSVFormat.RFC4180_EMPTY_LINES;
 
         assertEquals("", format.format());
         assertEquals("a,b,c", format.format("a", "b", "c"));
@@ -50,7 +50,7 @@ public class CSVFormatTest {
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         final ObjectOutputStream oos = new ObjectOutputStream(out);
-        oos.writeObject(CSVFormat.DEFAULT);
+        oos.writeObject(CSVFormat.RFC4180_EMPTY_LINES);
         oos.flush();
         oos.close();
 
@@ -58,18 +58,18 @@ public class CSVFormatTest {
         final CSVFormat format = (CSVFormat) in.readObject();
 
         assertNotNull(format);
-        assertEquals("delimiter", CSVFormat.DEFAULT.getDelimiter(), format.getDelimiter());
-        assertEquals("encapsulator", CSVFormat.DEFAULT.getQuoteChar(), format.getQuoteChar());
-        assertEquals("comment start", CSVFormat.DEFAULT.getCommentStart(), format.getCommentStart());
-        assertEquals("line separator", CSVFormat.DEFAULT.getRecordSeparator(), format.getRecordSeparator());
-        assertEquals("escape", CSVFormat.DEFAULT.getEscape(), format.getEscape());
-        assertEquals("trim", CSVFormat.DEFAULT.getIgnoreSurroundingSpaces(), format.getIgnoreSurroundingSpaces());
-        assertEquals("empty lines", CSVFormat.DEFAULT.getIgnoreEmptyLines(), format.getIgnoreEmptyLines());
+        assertEquals("delimiter", CSVFormat.RFC4180_EMPTY_LINES.getDelimiter(), format.getDelimiter());
+        assertEquals("encapsulator", CSVFormat.RFC4180_EMPTY_LINES.getQuoteChar(), format.getQuoteChar());
+        assertEquals("comment start", CSVFormat.RFC4180_EMPTY_LINES.getCommentStart(), format.getCommentStart());
+        assertEquals("line separator", CSVFormat.RFC4180_EMPTY_LINES.getRecordSeparator(), format.getRecordSeparator());
+        assertEquals("escape", CSVFormat.RFC4180_EMPTY_LINES.getEscape(), format.getEscape());
+        assertEquals("trim", CSVFormat.RFC4180_EMPTY_LINES.getIgnoreSurroundingSpaces(), format.getIgnoreSurroundingSpaces());
+        assertEquals("empty lines", CSVFormat.RFC4180_EMPTY_LINES.getIgnoreEmptyLines(), format.getIgnoreEmptyLines());
     }
     
     @Test
     public void testEquals() {
-        final CSVFormat right = CSVFormat.DEFAULT;
+        final CSVFormat right = CSVFormat.RFC4180_EMPTY_LINES;
         final CSVFormat left = CSVFormat.newBuilder().build();
 
         assertFalse(right.equals(null));

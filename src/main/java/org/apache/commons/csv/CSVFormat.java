@@ -79,7 +79,7 @@ public class CSVFormat implements Serializable {
      * <li>withLineSeparator(CRLF)</li>
      * </ul>
      */
-    public static final CSVFormat DEFAULT = // TODO rename to something more meaningful
+    public static final CSVFormat RFC4180_EMPTY_LINES =
             newBuilder()
             .build();
 
@@ -161,7 +161,7 @@ public class CSVFormat implements Serializable {
      * <li>withLineSeparator(CRLF)</li>
      * </ul>
      *
-     * Shortcut for {@code CSVFormat.newBuilder(CSVFormat.DEFAULT)}
+     * Shortcut for {@code CSVFormat.newBuilder(CSVFormat.RFC4180_EMPTY_LINES)}
      *
      * @return a standard comma separated format builder, as for {@link #RFC4180} but allowing empty lines.
      */

@@ -68,7 +68,7 @@
  * <p>Example usage:</p>
  * <blockquote><pre>
  * Reader in = new StringReader("a,b,c");
- * for (CSVRecord record : CSVFormat.DEFAULT.parse(in)) {
+ * for (CSVRecord record : CSVFormat.RFC4180_EMPTY_LINES.parse(in)) {
  *     for (String field : record) {
  *         System.out.print("\"" + field + "\", ");
  *     }
