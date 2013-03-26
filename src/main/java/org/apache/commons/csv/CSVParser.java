@@ -99,6 +99,8 @@ public class CSVParser implements Iterable<CSVRecord> {
      *            a Reader containing "csv-formatted" input
      * @throws IllegalArgumentException
      *             thrown if the parameters of the format are inconsistent
+     * @throws IOException
+     *             If an I/O error occurs
      */
     public CSVParser(final Reader input) throws IOException {
         this(input, CSVFormat.DEFAULT);
@@ -113,6 +115,8 @@ public class CSVParser implements Iterable<CSVRecord> {
      *            the CSVFormat used for CSV parsing
      * @throws IllegalArgumentException
      *             thrown if the parameters of the format are inconsistent
+     * @throws IOException
+     *             If an I/O error occurs
      */
     public CSVParser(final Reader input, final CSVFormat format) throws IOException {
         this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));
@@ -128,6 +132,8 @@ public class CSVParser implements Iterable<CSVRecord> {
      *            the CSVFormat used for CSV parsing
      * @throws IllegalArgumentException
      *             thrown if the parameters of the format are inconsistent
+     * @throws IOException
+     *             If an I/O error occurs
      */
     public CSVParser(final String input, final CSVFormat format) throws IOException {
         this(new StringReader(input), format);

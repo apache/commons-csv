@@ -80,6 +80,7 @@ public class CSVPrinter implements Flushable, Closeable {
      * Flushes the underlying stream.
      *
      * @throws IOException
+     *             If an I/O error occurs
      */
     public void flush() throws IOException {
         if (out instanceof Flushable) {

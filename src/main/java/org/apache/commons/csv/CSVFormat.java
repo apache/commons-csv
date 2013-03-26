@@ -353,6 +353,7 @@ public class CSVFormat implements Serializable {
      *            the input stream
      * @return a stream of CSVRecord
      * @throws IOException
+     *             If an I/O error occurs
      */
     public Iterable<CSVRecord> parse(final Reader in) throws IOException {
         return new CSVParser(in, this);
@@ -599,7 +600,8 @@ public class CSVFormat implements Serializable {
          * @param in
          *            the input stream
          * @return a CSVRecord stream
-         * @throws IOException
+     * @throws IOException
+     *             If an I/O error occurs
          */
         public Iterable<CSVRecord> parse(final Reader in) throws IOException {
             return this.build().parse(in);
