@@ -67,6 +67,9 @@ public class CSVPrinter implements Flushable, Closeable {
 
     /**
      * Outputs the line separator.
+     * 
+     * @throws IOException
+     *             If an I/O error occurs
      */
     public void println() throws IOException {
         out.append(format.getRecordSeparator());
@@ -90,6 +93,8 @@ public class CSVPrinter implements Flushable, Closeable {
      *
      * @param values
      *            values to output.
+     * @throws IOException
+     *             If an I/O error occurs
      */
     public void printRecord(final Object... values) throws IOException {
         for (final Object value : values) {
@@ -104,6 +109,8 @@ public class CSVPrinter implements Flushable, Closeable {
      *
      * @param values
      *            values to output.
+     * @throws IOException
+     *             If an I/O error occurs
      */
     public void printRecord(final Iterable<?> values) throws IOException {
         for (final Object value : values) {
@@ -121,6 +128,8 @@ public class CSVPrinter implements Flushable, Closeable {
      *
      * @param comment
      *            the comment to output
+     * @throws IOException
+     *             If an I/O error occurs
      */
     public void printComment(final String comment) throws IOException {
         if (!format.isCommentingEnabled()) {
