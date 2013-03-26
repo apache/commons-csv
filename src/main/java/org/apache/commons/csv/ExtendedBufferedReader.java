@@ -45,8 +45,8 @@ final class ExtendedBufferedReader extends BufferedReader {
     /**
      * Created extended buffered reader using default buffer-size
      */
-    ExtendedBufferedReader(final Reader r) {
-        super(r);
+    ExtendedBufferedReader(final Reader reader) {
+        super(reader);
     }
 
     @Override
