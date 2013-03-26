@@ -251,9 +251,9 @@ public class CSVParser implements Iterable<CSVRecord> {
             String[] header = null;
             if (format.getHeader().length == 0) {
                 // read the header from the first line of the file
-                final CSVRecord rec = nextRecord();
-                if (rec != null) {
-                    header = rec.values();
+                final CSVRecord record = nextRecord();
+                if (record != null) {
+                    header = record.values();
                 }
             } else {
                 header = format.getHeader();
