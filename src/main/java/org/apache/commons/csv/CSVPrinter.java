@@ -385,6 +385,7 @@ public class CSVPrinter implements Flushable, Closeable {
      *            the values to print.
      * @throws IOException
      *             If an I/O error occurs
+     * @throws SQLException if a database access error occurs
      */
     public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
         final int columnCount = resultSet.getMetaData().getColumnCount();
