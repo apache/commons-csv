@@ -36,28 +36,40 @@ import java.util.NoSuchElementException;
  * specification of a {@link CSVFormat}.
  *
  * <p>
- * Parsing of a csv-string having tabs as separators, '"' as an optional value encapsulator, and comments starting with
- * '#':
+ * To parse a CSV input with tabs as separators, '"' (double-quote) as an optional value encapsulator, 
+ * and comments starting with '#', you write:
  * </p>
  *
  * <pre>
- * CSVFormat format = new CSVFormat('\t', '&quot;', '#');
  * Reader in = new StringReader(&quot;a\tb\nc\td&quot;);
- * List&lt;CSVRecord&gt; records = new CSVParser(in, format).getRecords();
+ * Iterable&lt;CSVRecord&gt; parser = CSVFormat.newBuilder()
+ *     .withCommentStart('#')
+ *     .withDelimiter('\t')
+ *     .withQuoteChar('"').parse(in);
+ *  for (CSVRecord csvRecord : parse) {
+ *     ...
+ *  }
  * </pre>
  *
  * <p>
- * Parsing of a csv-string in Excel CSV format, using a for-each loop:
+ * To parse CSV input in a given format like Excel, you write:
  * </p>
  *
  * <pre>
  * Reader in = new StringReader("a;b\nc;d");
- * CSVParser parser = new CSVParser(in, CSVFormat.EXCEL);
+ * Iterable&lt;CSVRecord&gt; parser = CSVFormat.EXCEL.parse(in);
  * for (CSVRecord record : parser) {
  *     ...
  * }
  * </pre>
- *
+ * <p>
+ * You may also get a List of records:
+ * </p>
+ * <pre>
+ * Reader in = new StringReader("a;b\nc;d");
+ * CSVParser parser = new CSVParser(in, CSVFormat.EXCEL);
+ * List&lt;CSVRecord&gt; list = parser.getRecords();
+ * </pre>
  * <p>
  * Internal parser state is completely covered by the format and the reader-state.
  * </p>
