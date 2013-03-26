@@ -481,7 +481,7 @@ public class CSVParserTest {
     public void testHeader() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
 
-        final Iterator<CSVRecord> records = CSVFormat.newBuilder().withHeader().build().parse(in).iterator();
+        final Iterator<CSVRecord> records = CSVFormat.newBuilder().withHeader().parse(in).iterator();
 
         for (int i = 0; i < 2; i++) {
             assertTrue(records.hasNext());
@@ -498,7 +498,7 @@ public class CSVParserTest {
     public void testHeaderComment() throws Exception {
         final Reader in = new StringReader("# comment\na,b,c\n1,2,3\nx,y,z");
 
-        final Iterator<CSVRecord> records = CSVFormat.newBuilder().withCommentStart('#').withHeader().build().parse(in).iterator();
+        final Iterator<CSVRecord> records = CSVFormat.newBuilder().withCommentStart('#').withHeader().parse(in).iterator();
 
         for (int i = 0; i < 2; i++) {
             assertTrue(records.hasNext());
@@ -515,7 +515,7 @@ public class CSVParserTest {
     public void testProvidedHeader() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
 
-        final Iterator<CSVRecord> records = CSVFormat.newBuilder().withHeader("A", "B", "C").build().parse(in).iterator();
+        final Iterator<CSVRecord> records = CSVFormat.newBuilder().withHeader("A", "B", "C").parse(in).iterator();
 
         for (int i = 0; i < 3; i++) {
             assertTrue(records.hasNext());
@@ -536,7 +536,7 @@ public class CSVParserTest {
     public void testMappedButNotSetAsOutlook2007ContactExport() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2\nx,y,z");
 
-        final Iterator<CSVRecord> records = CSVFormat.newBuilder().withHeader("A", "B", "C").build().parse(in).iterator();
+        final Iterator<CSVRecord> records = CSVFormat.newBuilder().withHeader("A", "B", "C").parse(in).iterator();
 
         // header record
         assertTrue(records.hasNext());

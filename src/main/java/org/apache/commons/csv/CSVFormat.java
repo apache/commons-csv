@@ -32,14 +32,19 @@ import java.io.StringWriter;
 import java.util.Arrays;
 
 /**
- * The format specification of a CSV file.
+ * Specifies the format of a CSV file and parses input.
  * <p>
  * This class is immutable.
  * </p>
- * <p>
  * You can extend a format through a builder. For example, to extend the Excel format with columns header, you write:
  * </p>
  * <pre>CSVFormat.EXCEL.toBuilder().withHeader(&quot;Col1&quot;, &quot;Col2&quot;, &quot;Col3&quot;).build();</pre>
+ * <p>
+ * You can parse through a format. For example, to parse an Excel file with columns header, you write:
+ * </p>
+ * <pre>Reader in = ...;
+ *CSVFormat.EXCEL.toBuilder().withHeader(&quot;Col1&quot;, &quot;Col2&quot;, &quot;Col3&quot;).parse(in);</pre>
+ * <p>
  * 
  * @version $Id$
  */
@@ -346,6 +351,7 @@ public class CSVFormat implements Serializable {
      *
      * @param in
      *            the input stream
+     * @return a stream of CSVRecord
      * @throws IOException
      */
     public Iterable<CSVRecord> parse(final Reader in) throws IOException {
@@ -583,6 +589,19 @@ public class CSVFormat implements Serializable {
             validate();
             return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
                                  ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, header);
+        }
+
+        /**
+         * Parses the specified content. Short-hand for:
+         * <pre>format.build().parse(in);</pre>
+         *
+         * @param in
+         *            the input stream
+         * @return a CSVRecord stream
+         * @throws IOException
+         */
+        public Iterable<CSVRecord> parse(final Reader in) throws IOException {
+            return this.build().parse(in);
         }
 
         /**

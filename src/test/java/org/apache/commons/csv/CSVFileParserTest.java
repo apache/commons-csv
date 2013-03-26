@@ -91,17 +91,17 @@ public class CSVFileParserTest {
          // first line starts with csv data file name
         final BufferedReader csvFile = new BufferedReader(new FileReader(new File(BASE, split[0])));
         final CSVFormatBuilder builder = CSVFormat.newBuilder(',').withQuoteChar('"');
-        CSVFormat fmt = builder.build(); 
+        CSVFormat format = builder.build(); 
         boolean checkComments = false;
         for(int i=1; i < split.length; i++) {
             final String option = split[i];
             final String[] option_parts = option.split("=",2);
             if ("IgnoreEmpty".equalsIgnoreCase(option_parts[0])){
-                fmt = builder.withIgnoreEmptyLines(Boolean.parseBoolean(option_parts[1])).build();
+                format = builder.withIgnoreEmptyLines(Boolean.parseBoolean(option_parts[1])).build();
             } else if ("IgnoreSpaces".equalsIgnoreCase(option_parts[0])) {
-                fmt = builder.withIgnoreSurroundingSpaces(Boolean.parseBoolean(option_parts[1])).build();
+                format = builder.withIgnoreSurroundingSpaces(Boolean.parseBoolean(option_parts[1])).build();
             } else if ("CommentStart".equalsIgnoreCase(option_parts[0])) {
-                fmt = builder.withCommentStart(option_parts[1].charAt(0)).build();
+                format = builder.withCommentStart(option_parts[1].charAt(0)).build();
             } else if ("CheckComments".equalsIgnoreCase(option_parts[0])) {
                 checkComments = true;
             } else {
@@ -109,18 +109,18 @@ public class CSVFileParserTest {
             }
         }
         line = readTestData(); // get string version of format
-        assertEquals(testName+" Expected format ", line, fmt.toString());
+        assertEquals(testName+" Expected format ", line, format.toString());
 
         // Now parse the file and compare against the expected results
-        for(final CSVRecord rec : fmt.parse(csvFile)) {
-            String parsed = rec.toString();
+        for(final CSVRecord record : format.parse(csvFile)) {
+            String parsed = record.toString();
             if (checkComments) {
-                final String comment = rec.getComment().replace("\n", "\\n");
+                final String comment = record.getComment().replace("\n", "\\n");
                 if (comment != null) {
                     parsed += "#" + comment;
                 }
             }
-            final int count = rec.size();
+            final int count = record.size();
             assertEquals(testName, readTestData(), count+":"+parsed);
         }
     }
