@@ -83,6 +83,17 @@ public class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
+     * Returns true if this record is consistent, false if not. Currently, the only check is matching the record size to
+     * the header size. Some programs can export files that fails this test but still produce parsable files.
+     * 
+     * @return true of this record is valid, false if not
+     * @see CSVParserTest#org.apache.commons.csv.CSVParserTest.testMappedButNotSetAsOutlook2007ContactExport()
+     */
+    public boolean isConsistent() {
+        return mapping == null ? true : mapping.size() == values.length;
+    }
+    
+    /**
      * Checks whether a given column is mapped.
      *
      * @param name

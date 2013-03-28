@@ -550,6 +550,7 @@ public class CSVParserTest {
         assertEquals("a", record.get("A"));
         assertEquals("b", record.get("B"));
         assertEquals("c", record.get("C"));
+        assertTrue(record.isConsistent());
 
         // 1st record
         record = records.next();
@@ -561,6 +562,7 @@ public class CSVParserTest {
         assertFalse(record.isSet("C"));
         assertEquals("1", record.get("A"));
         assertEquals("2", record.get("B"));
+        assertFalse(record.isConsistent());
 
         // 2nd record
         record = records.next();
@@ -573,6 +575,7 @@ public class CSVParserTest {
         assertEquals("x", record.get("A"));
         assertEquals("y", record.get("B"));
         assertEquals("z", record.get("C"));
+        assertTrue(record.isConsistent());
 
         assertFalse(records.hasNext());
     }
