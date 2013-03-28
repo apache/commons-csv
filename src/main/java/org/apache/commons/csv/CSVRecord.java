@@ -55,9 +55,10 @@ public class CSVRecord implements Serializable, Iterable<String> {
 
     /**
      * Returns a value by index.
-     *
+     * 
      * @param i
-     *            the index of the column retrieved
+     *            a column index (0-based)
+     * @return the String at the given index
      */
     public String get(final int i) {
         return values[i];
