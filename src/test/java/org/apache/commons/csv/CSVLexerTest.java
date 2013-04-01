@@ -29,6 +29,8 @@ import static org.apache.commons.csv.Token.Type.TOKEN;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
+import static org.apache.commons.csv.TokenMatchers.hasContent;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -282,38 +284,38 @@ public class CSVLexerTest {
     @Test
     public void testEscapedCR() throws Exception {
         final Lexer lexer = getLexer("character\\" + CR + "Escaped", formatWithEscaping);
-        assertTokenEquals(EOF, "character" + CR + "Escaped", lexer.nextToken(new Token()));
+        assertThat(lexer.nextToken(new Token()), hasContent("character" + CR + "Escaped"));
     }
 
     @Test
     public void testEscapedLF() throws Exception {
         final Lexer lexer = getLexer("character\\" + LF + "Escaped", formatWithEscaping);
-        assertTokenEquals(EOF, "character" + LF + "Escaped", lexer.nextToken(new Token()));
+        assertThat(lexer.nextToken(new Token()), hasContent("character" + LF + "Escaped"));
     }
 
     @Test
     public void testEscapedTab() throws Exception {
         final Lexer lexer = getLexer("character\\" + TAB + "Escaped", formatWithEscaping);
-        assertTokenEquals(EOF, "character" + TAB + "Escaped", lexer.nextToken(new Token()));
+        assertThat(lexer.nextToken(new Token()), hasContent("character" + TAB + "Escaped"));
     }
 
     @Test
     public void testEscapeBackspace() throws Exception {
         final Lexer lexer = getLexer("character\\" + BACKSPACE + "Escaped", formatWithEscaping);
-        assertTokenEquals(EOF, "character" + BACKSPACE + "Escaped", lexer.nextToken(new Token()));
+        assertThat(lexer.nextToken(new Token()), hasContent("character" + BACKSPACE + "Escaped"));
     }
 
     @Test
     public void testEscapeFF() throws Exception {
         final Lexer lexer = getLexer("character\\" + FF + "Escaped", formatWithEscaping);
-        assertTokenEquals(EOF, "character" + FF + "Escaped", lexer.nextToken(new Token()));
+        assertThat(lexer.nextToken(new Token()), hasContent("character" + FF + "Escaped"));
     }
 
     @Test
     public void testEscapedMySqlNullValue() throws Exception {
         // MySQL uses \N to symbolize null values. We have to restore this
         final Lexer lexer = getLexer("character\\\\NEscaped", formatWithEscaping);
-        assertTokenEquals(EOF, "character\\NEscaped", lexer.nextToken(new Token()));
+        assertThat(lexer.nextToken(new Token()), hasContent("character\\NEscaped"));
     }
 
     // FIXME this should work after CSV-58 is resolved. Currently the result will be "characteraEscaped"
@@ -321,7 +323,7 @@ public class CSVLexerTest {
     @Ignore
     public void testEscapedCharacter() throws Exception {
         final Lexer lexer = getLexer("character\\aEscaped", formatWithEscaping);
-        assertTokenEquals(EOF, "character\\aEscaped", lexer.nextToken(new Token()));
+        assertThat(lexer.nextToken(new Token()), hasContent("character\\aEscaped"));
     }
 
     // FIXME this should work after CSV-58 is resolved. Currently the result will be "characterCREscaped"
@@ -330,7 +332,13 @@ public class CSVLexerTest {
     public void testEscapedControlCharacter() throws Exception {
         // we are explicitly using an escape different from \ here, because \r is the character sequence for CR
         final Lexer lexer = getLexer("character!rEscaped", CSVFormat.newBuilder().withEscape('!').build());
-        assertTokenEquals(EOF, "character!rEscaped", lexer.nextToken(new Token()));
+        assertThat(lexer.nextToken(new Token()), hasContent("character!rEscaped"));
+    }
+
+    @Test
+    public void testEscapedControlCharacter2() throws Exception {
+        final Lexer lexer = getLexer("character\\rEscaped", CSVFormat.newBuilder().withEscape('\\').build());
+        assertThat(lexer.nextToken(new Token()), hasContent("character"+CR+"Escaped"));
     }
 
     @Test(expected = IOException.class)
