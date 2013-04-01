@@ -338,7 +338,7 @@ public class CSVLexerTest {
     @Test
     public void testEscapedControlCharacter2() throws Exception {
         final Lexer lexer = getLexer("character\\rEscaped", CSVFormat.newBuilder().withEscape('\\').build());
-        assertThat(lexer.nextToken(new Token()), hasContent("character"+CR+"Escaped"));
+        assertThat(lexer.nextToken(new Token()), hasContent("character" + CR + "Escaped"));
     }
 
     @Test(expected = IOException.class)
