@@ -45,7 +45,7 @@ import java.util.Arrays;
  * <pre>Reader in = ...;
  *CSVFormat.EXCEL.toBuilder().withHeader(&quot;Col1&quot;, &quot;Col2&quot;, &quot;Col3&quot;).parse(in);</pre>
  * <p>
- * 
+ *
  * @version $Id$
  */
 public class CSVFormat implements Serializable {
@@ -490,7 +490,7 @@ public class CSVFormat implements Serializable {
 
     /**
      * Creates a builder based on this format.
-     * 
+     *
      * @return a new builder
      */
     public CSVFormatBuilder toBuilder() {
@@ -600,8 +600,8 @@ public class CSVFormat implements Serializable {
          * @param in
          *            the input stream
          * @return a CSVRecord stream
-     * @throws IOException
-     *             If an I/O error occurs
+         * @throws IOException
+         *             If an I/O error occurs
          */
         public Iterable<CSVRecord> parse(final Reader in) throws IOException {
             return this.build().parse(in);
