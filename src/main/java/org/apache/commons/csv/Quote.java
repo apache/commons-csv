@@ -37,7 +37,6 @@ public enum Quote {
     /**
      * Quotes all non-numeric fields.
      */
-
     NON_NUMERIC,
 
     /**
