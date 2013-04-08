@@ -206,7 +206,7 @@ public class CSVFormat implements Serializable {
     CSVFormat(final char delimiter, final Character quoteChar,
             final Quote quotePolicy, final Character commentStart,
             final Character escape, final boolean ignoreSurroundingSpaces,
-            final boolean ignoreEmptyLines, final String lineSeparator,
+            final boolean ignoreEmptyLines, final String recordSeparator,
             final String[] header) {
         if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
@@ -218,7 +218,7 @@ public class CSVFormat implements Serializable {
         this.escape = escape;
         this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;
         this.ignoreEmptyLines = ignoreEmptyLines;
-        this.recordSeparator = lineSeparator;
+        this.recordSeparator = recordSeparator;
         this.header = header == null ? null : header.clone();
     }
 
