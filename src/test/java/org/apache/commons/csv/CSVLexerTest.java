@@ -26,11 +26,11 @@ import static org.apache.commons.csv.Token.Type.COMMENT;
 import static org.apache.commons.csv.Token.Type.EOF;
 import static org.apache.commons.csv.Token.Type.EORECORD;
 import static org.apache.commons.csv.Token.Type.TOKEN;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThat;
 import static org.apache.commons.csv.TokenMatchers.hasContent;
+import static org.apache.commons.csv.TokenMatchers.matches;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -57,26 +57,21 @@ public class CSVLexerTest {
         return new CSVLexer(format, new ExtendedBufferedReader(new StringReader(input)));
     }
 
-    private void assertTokenEquals(final Token.Type expectedType, final String expectedContent, final Token token) {
-        assertEquals("Token type", expectedType, token.type);
-        assertEquals("Token content", expectedContent, token.content.toString());
-    }
-
     // Single line (without comment)
     @Test
     public void testNextToken1() throws IOException {
         final String code = "abc,def, hijk,  lmnop,   qrst,uv ,wxy   ,z , ,";
         final Lexer parser = getLexer(code, CSVFormat.newBuilder().withIgnoreSurroundingSpaces(true).build());
-        assertTokenEquals(TOKEN, "abc", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "def", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "hijk", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "lmnop", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "qrst", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "uv", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "wxy", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "z", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "", parser.nextToken(new Token()));
-        assertTokenEquals(EOF, "", parser.nextToken(new Token()));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "abc"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "def"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "hijk"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "lmnop"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "qrst"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "uv"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "wxy"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "z"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, ""));
+        assertThat(parser.nextToken(new Token()), matches(EOF, ""));
     }
 
     // multiline including comments (and empty lines)
@@ -104,22 +99,22 @@ public class CSVLexerTest {
         final Lexer parser = getLexer(code, format);
 
 
-        assertTokenEquals(TOKEN, "1", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "2", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "3", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 1
-        assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "b x", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "c#no-comment", parser.nextToken(new Token())); // 2
-        assertTokenEquals(COMMENT, "foo", parser.nextToken(new Token()));              // 3
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "1"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "2"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "3"));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, ""));             // 1
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "b x"));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, "c#no-comment")); // 2
+        assertThat(parser.nextToken(new Token()), matches(COMMENT, "foo"));              // 3
         // 4 empty line, ignored                                                    // 4
-        assertTokenEquals(TOKEN, "d", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "e", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "#no-comment", parser.nextToken(new Token()));  // 5
-        assertTokenEquals(COMMENT, "penultimate comment", parser.nextToken(new Token()));              // 6
-        assertTokenEquals(COMMENT, "Final comment", parser.nextToken(new Token()));              // 7
-        assertTokenEquals(EOF, "", parser.nextToken(new Token()));
-        assertTokenEquals(EOF, "", parser.nextToken(new Token()));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "d"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "e"));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, "#no-comment"));  // 5
+        assertThat(parser.nextToken(new Token()), matches(COMMENT, "penultimate comment"));              // 6
+        assertThat(parser.nextToken(new Token()), matches(COMMENT, "Final comment"));              // 7
+        assertThat(parser.nextToken(new Token()), matches(EOF, ""));
+        assertThat(parser.nextToken(new Token()), matches(EOF, ""));
 
     }
 
@@ -147,29 +142,29 @@ public class CSVLexerTest {
         final Lexer parser = getLexer(code, format);
 
 
-        assertTokenEquals(TOKEN, "1", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "2", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "3", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 1
-        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 1b
-        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 1c
-        assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "b x", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "c#no-comment", parser.nextToken(new Token())); // 2
-        assertTokenEquals(COMMENT, "foo", parser.nextToken(new Token()));           // 3
-        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 4
-        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 4b
-        assertTokenEquals(TOKEN, "d", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "e", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "#no-comment", parser.nextToken(new Token()));  // 5
-        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 5b
-        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 5c
-        assertTokenEquals(COMMENT, "penultimate comment", parser.nextToken(new Token()));              // 6
-        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 6b
-        assertTokenEquals(EORECORD, "", parser.nextToken(new Token()));             // 6c
-        assertTokenEquals(COMMENT, "Final comment", parser.nextToken(new Token()));              // 7
-        assertTokenEquals(EOF, "", parser.nextToken(new Token()));
-        assertTokenEquals(EOF, "", parser.nextToken(new Token()));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "1"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "2"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "3"));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, ""));             // 1
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, ""));             // 1b
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, ""));             // 1c
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "b x"));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, "c#no-comment")); // 2
+        assertThat(parser.nextToken(new Token()), matches(COMMENT, "foo"));           // 3
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, ""));             // 4
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, ""));             // 4b
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "d"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "e"));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, "#no-comment"));  // 5
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, ""));             // 5b
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, ""));             // 5c
+        assertThat(parser.nextToken(new Token()), matches(COMMENT, "penultimate comment"));              // 6
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, ""));             // 6b
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, ""));             // 6c
+        assertThat(parser.nextToken(new Token()), matches(COMMENT, "Final comment"));              // 7
+        assertThat(parser.nextToken(new Token()), matches(EOF, ""));
+        assertThat(parser.nextToken(new Token()), matches(EOF, ""));
 
     }
 
@@ -184,15 +179,15 @@ public class CSVLexerTest {
         assertFalse(format.isEscaping());
         final Lexer parser = getLexer(code, format);
 
-        assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
         // an unquoted single backslash is not an escape char
-        assertTokenEquals(TOKEN, "\\", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "b\\", parser.nextToken(new Token()));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "\\"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, ""));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, "b\\"));
         // an unquoted single backslash is not an escape char
-        assertTokenEquals(TOKEN, "\\", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "", parser.nextToken(new Token()));
-        assertTokenEquals(EOF, "", parser.nextToken(new Token()));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "\\"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, ""));
+        assertThat(parser.nextToken(new Token()), matches(EOF, ""));
     }
 
     // simple token with escaping enabled
@@ -206,13 +201,13 @@ public class CSVLexerTest {
         assertTrue(format.isEscaping());
         final Lexer parser = getLexer(code, format);
 
-        assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, ",", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "b\\", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, ",", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "\nc", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "d\r", parser.nextToken(new Token()));
-        assertTokenEquals(EOF, "e", parser.nextToken(new Token()));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, ","));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, "b\\"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, ","));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "\nc"));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, "d\r"));
+        assertThat(parser.nextToken(new Token()), matches(EOF, "e"));
     }
 
     // encapsulator tokenizer (single line)
@@ -225,19 +220,19 @@ public class CSVLexerTest {
         */
         final String code = "a,\"foo\",b\na,   \" foo\",b\na,\"foo \"  ,b\na,  \" foo \"  ,b";
         final Lexer parser = getLexer(code, CSVFormat.newBuilder().withIgnoreSurroundingSpaces(true).build());
-        assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "foo", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "b", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, " foo", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "b", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "foo ", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "b", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, " foo ", parser.nextToken(new Token()));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "foo"));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, "b"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, " foo"));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, "b"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "foo "));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, "b"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, " foo "));
 //      assertTokenEquals(EORECORD, "b", parser.nextToken(new Token()));
-        assertTokenEquals(EOF, "b", parser.nextToken(new Token()));
+        assertThat(parser.nextToken(new Token()), matches(EOF, "b"));
     }
 
     // encapsulator tokenizer (multi line, delimiter in string)
@@ -245,11 +240,11 @@ public class CSVLexerTest {
     public void testNextToken5() throws IOException {
         final String code = "a,\"foo\n\",b\n\"foo\n  baar ,,,\"\n\"\n\t \n\"";
         final Lexer parser = getLexer(code, CSVFormat.DEFAULT);
-        assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "foo\n", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "b", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "foo\n  baar ,,,", parser.nextToken(new Token()));
-        assertTokenEquals(EOF, "\n\t \n", parser.nextToken(new Token()));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "foo\n"));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, "b"));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, "foo\n  baar ,,,"));
+        assertThat(parser.nextToken(new Token()), matches(EOF, "\n\t \n"));
 
     }
 
@@ -264,8 +259,8 @@ public class CSVLexerTest {
         final String code = "a;'b and '' more\n'\n!comment;;;;\n;;";
         final CSVFormat format = CSVFormat.newBuilder().withDelimiter(';').withQuoteChar('\'').withCommentStart('!').build();
         final Lexer parser = getLexer(code, format);
-        assertTokenEquals(TOKEN, "a", parser.nextToken(new Token()));
-        assertTokenEquals(EORECORD, "b and ' more\n", parser.nextToken(new Token()));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
+        assertThat(parser.nextToken(new Token()), matches(EORECORD, "b and ' more\n"));
     }
 
     // From CSV-1
@@ -273,12 +268,12 @@ public class CSVLexerTest {
     public void testDelimiterIsWhitespace() throws IOException {
         final String code = "one\ttwo\t\tfour \t five\t six";
         final Lexer parser = getLexer(code, CSVFormat.TDF);
-        assertTokenEquals(TOKEN, "one", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "two", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "four", parser.nextToken(new Token()));
-        assertTokenEquals(TOKEN, "five", parser.nextToken(new Token()));
-        assertTokenEquals(EOF, "six", parser.nextToken(new Token()));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "one"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "two"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, ""));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "four"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "five"));
+        assertThat(parser.nextToken(new Token()), matches(EOF, "six"));
     }
 
     @Test
