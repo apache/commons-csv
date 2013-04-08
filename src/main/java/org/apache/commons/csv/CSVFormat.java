@@ -439,7 +439,7 @@ public class CSVFormat implements Serializable {
      * @return a standard comma separated format builder, as for {@link #RFC4180} but allowing empty lines.
      */
     public static CSVFormatBuilder newBuilder() {
-        return new CSVFormatBuilder(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, Constants.EMPTY, 
+        return new CSVFormatBuilder(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, Constants.EMPTY,
                 null);
     }
     private final char delimiter;
