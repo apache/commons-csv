@@ -41,7 +41,7 @@ public class CSVFormatBuilderTest {
 
     @Before
     public void setUp() throws Exception {
-        builder = new CSVFormatBuilder('+', Character.valueOf('!'), null, Character.valueOf('#'), Character.valueOf('!'), true, true, CRLF, null);
+        builder = new CSVFormatBuilder('+', Character.valueOf('!'), null, Character.valueOf('#'), Character.valueOf('!'), true, true, CRLF, Constants.EMPTY, null);
     }
 
     @Test

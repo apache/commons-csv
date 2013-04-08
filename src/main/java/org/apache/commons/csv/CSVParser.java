@@ -36,7 +36,7 @@ import java.util.NoSuchElementException;
  * specification of a {@link CSVFormat}.
  *
  * <p>
- * To parse a CSV input with tabs as separators, '"' (double-quote) as an optional value encapsulator, 
+ * To parse a CSV input with tabs as separators, '"' (double-quote) as an optional value encapsulator,
  * and comments starting with '#', you write:
  * </p>
  *

@@ -63,6 +63,7 @@ public class CSVFormat implements Serializable {
         private boolean ignoreSurroundingSpaces; // Should leading/trailing spaces be ignored around values?
         private boolean ignoreEmptyLines;
         private String recordSeparator; // for outputs
+        private String nullToString; // for outputs
         private String[] header;
 
         /**
@@ -74,7 +75,7 @@ public class CSVFormat implements Serializable {
          */
         // package protected to give access without needing a synthetic accessor
         CSVFormatBuilder(final char delimiter){
-            this(delimiter, null, null, null, null, false, false, null, null);
+            this(delimiter, null, null, null, null, false, false, null, Constants.EMPTY, null);
         }
 
         /**
@@ -94,10 +95,11 @@ public class CSVFormat implements Serializable {
          *            <tt>true</tt> when whitespaces enclosing values should be ignored
          * @param ignoreEmptyLines
          *            <tt>true</tt> when the parser should skip empty lines
-         * @param recordSeparator
-         *            the line separator to use for output
+         * @param nullToString TODO
          * @param header
          *            the header
+         * @param recordSeparator
+         *            the line separator to use for output
          * @throws IllegalArgumentException if the delimiter is a line break character
          */
         // package protected for use by test code
@@ -105,7 +107,7 @@ public class CSVFormat implements Serializable {
                 final Quote quotePolicy, final Character commentStart,
                 final Character escape, final boolean ignoreSurroundingSpaces,
                 final boolean ignoreEmptyLines, final String lineSeparator,
-                final String[] header) {
+                String nullToString, final String[] header) {
             if (isLineBreak(delimiter)) {
                 throw new IllegalArgumentException("The delimiter cannot be a line break");
             }
@@ -117,6 +119,7 @@ public class CSVFormat implements Serializable {
             this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;
             this.ignoreEmptyLines = ignoreEmptyLines;
             this.recordSeparator = lineSeparator;
+            this.nullToString = nullToString;
             this.header = header;
         }
 
@@ -132,7 +135,7 @@ public class CSVFormat implements Serializable {
             this(format.delimiter, format.quoteChar, format.quotePolicy,
                     format.commentStart, format.escape,
                     format.ignoreSurroundingSpaces, format.ignoreEmptyLines,
-                    format.recordSeparator, format.header);
+                    format.recordSeparator, format.nullToString, format.header);
         }
 
         /**
@@ -143,7 +146,7 @@ public class CSVFormat implements Serializable {
         public CSVFormat build() {
             validate();
             return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, header);
+                                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullToString, header);
         }
 
         /**
@@ -328,6 +331,19 @@ public class CSVFormat implements Serializable {
         }
 
         /**
+         * Sets the String to use for null values for output.
+         *
+         * @param nullToString
+         *            the String to use for null values for output.
+         *
+         * @return This builder with the the specified output record separator
+         */
+        public CSVFormatBuilder withNullToString(final String nullToString) {
+            this.nullToString = nullToString;
+            return this;
+        }
+
+        /**
          * Sets the quoteChar of the format to the specified character.
          *
          * @param quoteChar
@@ -423,7 +439,8 @@ public class CSVFormat implements Serializable {
      * @return a standard comma separated format builder, as for {@link #RFC4180} but allowing empty lines.
      */
     public static CSVFormatBuilder newBuilder() {
-        return new CSVFormatBuilder(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, null);
+        return new CSVFormatBuilder(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, Constants.EMPTY, 
+                null);
     }
     private final char delimiter;
     private final Character quoteChar;
@@ -431,10 +448,11 @@ public class CSVFormat implements Serializable {
     private final Character commentStart;
     private final Character escape;
     private final boolean ignoreSurroundingSpaces; // Should leading/trailing spaces be ignored around values?
-
     private final boolean ignoreEmptyLines;
 
     private final String recordSeparator; // for outputs
+
+    private final String nullToString; // for outputs
 
     private final String[] header;
 
@@ -570,6 +588,7 @@ public class CSVFormat implements Serializable {
      *            <tt>true</tt> when the parser should skip empty lines
      * @param recordSeparator
      *            the line separator to use for output
+     * @param nullToString TODO
      * @param header
      *            the header
      * @throws IllegalArgumentException if the delimiter is a line break character
@@ -579,7 +598,7 @@ public class CSVFormat implements Serializable {
             final Quote quotePolicy, final Character commentStart,
             final Character escape, final boolean ignoreSurroundingSpaces,
             final boolean ignoreEmptyLines, final String recordSeparator,
-            final String[] header) {
+            String nullToString, final String[] header) {
         if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
@@ -591,6 +610,7 @@ public class CSVFormat implements Serializable {
         this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;
         this.ignoreEmptyLines = ignoreEmptyLines;
         this.recordSeparator = recordSeparator;
+        this.nullToString = nullToString;
         this.header = header == null ? null : header.clone();
     }
 
@@ -720,6 +740,15 @@ public class CSVFormat implements Serializable {
      */
     public boolean getIgnoreSurroundingSpaces() {
         return ignoreSurroundingSpaces;
+    }
+
+    /**
+     * Returns the value to use for writing null values.
+     *
+     * @return the value to use for writing null values.
+     */
+    public String getNullToString() {
+        return nullToString;
     }
 
     /**

@@ -67,7 +67,7 @@ public class CSVPrinter implements Flushable, Closeable {
 
     /**
      * Outputs the line separator.
-     * 
+     *
      * @throws IOException
      *             If an I/O error occurs
      */
@@ -344,7 +344,7 @@ public class CSVPrinter implements Flushable, Closeable {
      */
     public void print(final Object value) throws IOException {
         // null values are considered empty
-        final String strValue = value == null ? EMPTY : value.toString();
+        final String strValue = value == null ? format.getNullToString() : value.toString();
         print(value, strValue, 0, strValue.length());
     }
 

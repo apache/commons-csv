@@ -308,6 +308,15 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testPrintCustomNullValues() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.toBuilder().withNullToString("NULL").build());
+        printer.printRecord("a", null, "b");
+        assertEquals("a,NULL,b" + recordSeparator, sw.toString());
+        printer.close();
+    }
+
+    @Test
     public void testQuoteAll() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.newBuilder().withQuotePolicy(Quote.ALL).build());
