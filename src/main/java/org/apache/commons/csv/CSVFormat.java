@@ -50,16 +50,392 @@ import java.util.Arrays;
  */
 public class CSVFormat implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * Builds CSVFormat objects.
+     */
+    public static class CSVFormatBuilder {
 
+        private char delimiter;
+        private Character quoteChar;
+        private Quote quotePolicy;
+        private Character commentStart;
+        private Character escape;
+        private boolean ignoreSurroundingSpaces; // Should leading/trailing spaces be ignored around values?
+        private boolean ignoreEmptyLines;
+        private String recordSeparator; // for outputs
+        private String[] header;
+
+        /**
+         * Creates a basic CSVFormatBuilder.
+         *
+         * @param delimiter
+         *            the char used for value separation, must not be a line break character
+         * @throws IllegalArgumentException if the delimiter is a line break character
+         */
+        // package protected to give access without needing a synthetic accessor
+        CSVFormatBuilder(final char delimiter){
+            this(delimiter, null, null, null, null, false, false, null, null);
+        }
+
+        /**
+         * Creates a customized CSV format.
+         *
+         * @param delimiter
+         *            the char used for value separation, must not be a line break character
+         * @param quoteChar
+         *            the char used as value encapsulation marker
+         * @param quotePolicy
+         *            the quote policy
+         * @param commentStart
+         *            the char used for comment identification
+         * @param escape
+         *            the char used to escape special characters in values
+         * @param ignoreSurroundingSpaces
+         *            <tt>true</tt> when whitespaces enclosing values should be ignored
+         * @param ignoreEmptyLines
+         *            <tt>true</tt> when the parser should skip empty lines
+         * @param recordSeparator
+         *            the line separator to use for output
+         * @param header
+         *            the header
+         * @throws IllegalArgumentException if the delimiter is a line break character
+         */
+        // package protected for use by test code
+        CSVFormatBuilder(final char delimiter, final Character quoteChar,
+                final Quote quotePolicy, final Character commentStart,
+                final Character escape, final boolean ignoreSurroundingSpaces,
+                final boolean ignoreEmptyLines, final String lineSeparator,
+                final String[] header) {
+            if (isLineBreak(delimiter)) {
+                throw new IllegalArgumentException("The delimiter cannot be a line break");
+            }
+            this.delimiter = delimiter;
+            this.quoteChar = quoteChar;
+            this.quotePolicy = quotePolicy;
+            this.commentStart = commentStart;
+            this.escape = escape;
+            this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;
+            this.ignoreEmptyLines = ignoreEmptyLines;
+            this.recordSeparator = lineSeparator;
+            this.header = header;
+        }
+
+        /**
+         * Creates a CSVFormatBuilder, using the values of the given CSVFormat.
+         *
+         * @param format
+         *            The format to use values from
+         */
+        @SuppressWarnings("synthetic-access") // TODO fields could be made package-protected
+        // package protected to give access without needing a synthetic accessor
+        CSVFormatBuilder(final CSVFormat format) {
+            this(format.delimiter, format.quoteChar, format.quotePolicy,
+                    format.commentStart, format.escape,
+                    format.ignoreSurroundingSpaces, format.ignoreEmptyLines,
+                    format.recordSeparator, format.header);
+        }
+
+        /**
+         * Builds a new CSVFormat configured with the values from this builder.
+         *
+         * @return a new CSVFormat
+         */
+        public CSVFormat build() {
+            validate();
+            return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
+                                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, header);
+        }
+
+        /**
+         * Parses the specified content. Short-hand for:
+         * <pre>format.build().parse(in);</pre>
+         *
+         * @param in
+         *            the input stream
+         * @return a CSVRecord stream
+         * @throws IOException
+         *             If an I/O error occurs
+         */
+        public Iterable<CSVRecord> parse(final Reader in) throws IOException {
+            return this.build().parse(in);
+        }
+
+        /**
+         * Verifies the consistency of the parameters and throws an IllegalStateException if necessary.
+         *
+         * @throws IllegalStateException
+         */
+        private void validate() throws IllegalStateException {
+            if (quoteChar != null && delimiter == quoteChar.charValue()) {
+                throw new IllegalStateException(
+                        "The quoteChar character and the delimiter cannot be the same ('" + quoteChar + "')");
+            }
+
+            if (escape != null && delimiter == escape.charValue()) {
+                throw new IllegalStateException(
+                        "The escape character and the delimiter cannot be the same ('" + escape + "')");
+            }
+
+            if (commentStart != null && delimiter == commentStart.charValue()) {
+                throw new IllegalStateException(
+                        "The comment start character and the delimiter cannot be the same ('" + commentStart + "')");
+            }
+
+            if (quoteChar != null && quoteChar.equals(commentStart)) {
+                throw new IllegalStateException(
+                        "The comment start character and the quoteChar cannot be the same ('" + commentStart + "')");
+            }
+
+            if (escape != null && escape.equals(commentStart)) {
+                throw new IllegalStateException(
+                        "The comment start and the escape character cannot be the same ('" + commentStart + "')");
+            }
+
+            if (escape == null && quotePolicy == Quote.NONE) {
+                throw new IllegalStateException("No quotes mode set but no escape character is set");
+            }
+        }
+
+        /**
+         * Sets the comment start marker of the format to the specified character.
+         *
+         * Note that the comment introducer character is only recognised at the start of a line.
+         *
+         * @param commentStart
+         *            the comment start marker
+         * @return This builder with the specified character as the comment start marker
+         * @throws IllegalArgumentException
+         *             thrown if the specified character is a line break
+         */
+        public CSVFormatBuilder withCommentStart(final char commentStart) {
+            return withCommentStart(Character.valueOf(commentStart));
+        }
+
+        /**
+         * Sets the comment start marker of the format to the specified character.
+         *
+         * Note that the comment introducer character is only recognised at the start of a line.
+         *
+         * @param commentStart
+         *            the comment start marker
+         * @return This builder with the specified character as the comment start marker
+         * @throws IllegalArgumentException
+         *             thrown if the specified character is a line break
+         */
+        public CSVFormatBuilder withCommentStart(final Character commentStart) {
+            if (isLineBreak(commentStart)) {
+                throw new IllegalArgumentException("The comment start character cannot be a line break");
+            }
+            this.commentStart = commentStart;
+            return this;
+        }
+
+        /**
+         * Sets the delimiter of the format to the specified character.
+         *
+         * @param delimiter
+         *            the delimiter character
+         * @return This builder with the specified character as delimiter
+         * @throws IllegalArgumentException
+         *             thrown if the specified character is a line break
+         */
+        public CSVFormatBuilder withDelimiter(final char delimiter) {
+            if (isLineBreak(delimiter)) {
+                throw new IllegalArgumentException("The delimiter cannot be a line break");
+            }
+            this.delimiter = delimiter;
+            return this;
+        }
+
+        /**
+         * Sets the escape character of the format to the specified character.
+         *
+         * @param escape
+         *            the escape character
+         * @return This builder with the specified character as the escape character
+         * @throws IllegalArgumentException
+         *             thrown if the specified character is a line break
+         */
+        public CSVFormatBuilder withEscape(final char escape) {
+            return withEscape(Character.valueOf(escape));
+        }
+
+        /**
+         * Sets the escape character of the format to the specified character.
+         *
+         * @param escape
+         *            the escape character
+         * @return This builder with the specified character as the escape character
+         * @throws IllegalArgumentException
+         *             thrown if the specified character is a line break
+         */
+        public CSVFormatBuilder withEscape(final Character escape) {
+            if (isLineBreak(escape)) {
+                throw new IllegalArgumentException("The escape character cannot be a line break");
+            }
+            this.escape = escape;
+            return this;
+        }
+
+        /**
+         * Sets the header of the format. The header can either be parsed automatically from the
+         * input file with:
+         *
+         * <pre>
+         * CSVFormat format = aformat.withHeader();
+         * </pre>
+         *
+         * or specified manually with:
+         *
+         * <pre>
+         * CSVFormat format = aformat.withHeader(&quot;name&quot;, &quot;email&quot;, &quot;phone&quot;);
+         * </pre>
+         *
+         * @param header
+         *            the header, <tt>null</tt> if disabled, empty if parsed automatically, user specified otherwise.
+         *
+         * @return This builder with the specified header
+         */
+        public CSVFormatBuilder withHeader(final String... header) {
+            this.header = header;
+            return this;
+        }
+
+        /**
+         * Sets the empty line skipping behavior of the format.
+         *
+         * @param ignoreEmptyLines
+         *            the empty line skipping behavior, <tt>true</tt> to ignore the empty lines between the records,
+         *            <tt>false</tt> to translate empty lines to empty records.
+         * @return This builder with the specified empty line skipping behavior.
+         */
+        public CSVFormatBuilder withIgnoreEmptyLines(final boolean ignoreEmptyLines) {
+            this.ignoreEmptyLines = ignoreEmptyLines;
+            return this;
+        }
+
+        /**
+         * Sets the trimming behavior of the format.
+         *
+         * @param ignoreSurroundingSpaces
+         *            the trimming behavior, <tt>true</tt> to remove the surrounding spaces, <tt>false</tt> to leave the
+         *            spaces as is.
+         * @return This builder with the specified trimming behavior.
+         */
+        public CSVFormatBuilder withIgnoreSurroundingSpaces(final boolean ignoreSurroundingSpaces) {
+            this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;
+            return this;
+        }
+
+        /**
+         * Sets the quoteChar of the format to the specified character.
+         *
+         * @param quoteChar
+         *            the quoteChar character
+         * @return This builder with the specified character as quoteChar
+         * @throws IllegalArgumentException
+         *             thrown if the specified character is a line break
+         */
+        public CSVFormatBuilder withQuoteChar(final char quoteChar) {
+            return withQuoteChar(Character.valueOf(quoteChar));
+        }
+
+        /**
+         * Sets the quoteChar of the format to the specified character.
+         *
+         * @param quoteChar
+         *            the quoteChar character
+         * @return This builder with the specified character as quoteChar
+         * @throws IllegalArgumentException
+         *             thrown if the specified character is a line break
+         */
+        public CSVFormatBuilder withQuoteChar(final Character quoteChar) {
+            if (isLineBreak(quoteChar)) {
+                throw new IllegalArgumentException("The quoteChar cannot be a line break");
+            }
+            this.quoteChar = quoteChar;
+            return this;
+        }
+
+        /**
+         * Sets the output quote policy of the format to the specified value.
+         *
+         * @param quotePolicy
+         *            the quote policy to use for output.
+         *
+         * @return This builder with the specified quote policy
+         */
+        public CSVFormatBuilder withQuotePolicy(final Quote quotePolicy) {
+            this.quotePolicy = quotePolicy;
+            return this;
+        }
+
+        /**
+         * Sets the record separator of the format to the specified character.
+         *
+         * @param recordSeparator
+         *            the record separator to use for output.
+         *
+         * @return This builder with the the specified output record separator
+         */
+        public CSVFormatBuilder withRecordSeparator(final char recordSeparator) {
+            return withRecordSeparator(String.valueOf(recordSeparator));
+        }
+
+        /**
+         * Sets the record separator of the format to the specified String.
+         *
+         * @param recordSeparator
+         *            the record separator to use for output.
+         *
+         * @return This builder with the the specified output record separator
+         */
+        public CSVFormatBuilder withRecordSeparator(final String recordSeparator) {
+            this.recordSeparator = recordSeparator;
+            return this;
+        }
+    }
+
+    private static final long serialVersionUID = 1L;
+    /**
+     * Returns true if the given character is a line break character.
+     *
+     * @param c
+     *            the character to check
+     *
+     * @return true if <code>c</code> is a line break character
+     */
+    // package protected to give access without needing a synthetic accessor
+    static boolean isLineBreak(final Character c) {
+        return c != null && isLineBreak(c.charValue());
+    }
+    /**
+     * Creates a standard comma separated format builder, as for {@link #RFC4180} but allowing empty lines.
+     * <ul>
+     * <li>withDelimiter(',')</li>
+     * <li>withQuoteChar('"')</li>
+     * <li>withEmptyLinesIgnored(true)</li>
+     * <li>withLineSeparator(CRLF)</li>
+     * </ul>
+     *
+     * Shortcut for {@code CSVFormat.newBuilder(CSVFormat.DEFAULT)}
+     *
+     * @return a standard comma separated format builder, as for {@link #RFC4180} but allowing empty lines.
+     */
+    public static CSVFormatBuilder newBuilder() {
+        return new CSVFormatBuilder(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, null);
+    }
     private final char delimiter;
     private final Character quoteChar;
     private final Quote quotePolicy;
     private final Character commentStart;
     private final Character escape;
     private final boolean ignoreSurroundingSpaces; // Should leading/trailing spaces be ignored around values?
+
     private final boolean ignoreEmptyLines;
+
     private final String recordSeparator; // for outputs
+
     private final String[] header;
 
     /**
@@ -140,6 +516,19 @@ public class CSVFormat implements Serializable {
             .build();
 
     /**
+     * Returns true if the given character is a line break character.
+     *
+     * @param c
+     *            the character to check
+     *
+     * @return true if <code>c</code> is a line break character
+     */
+    // package protected to give access without needing a synthetic accessor
+    static boolean isLineBreak(final char c) {
+        return c == LF || c == CR;
+    }
+
+    /**
      * Creates a new CSV format builder.
      *
      * @param delimiter
@@ -160,23 +549,6 @@ public class CSVFormat implements Serializable {
      */
     public static CSVFormatBuilder newBuilder(final CSVFormat format) {
         return new CSVFormatBuilder(format);
-    }
-
-    /**
-     * Creates a standard comma separated format builder, as for {@link #RFC4180} but allowing empty lines.
-     * <ul>
-     * <li>withDelimiter(',')</li>
-     * <li>withQuoteChar('"')</li>
-     * <li>withEmptyLinesIgnored(true)</li>
-     * <li>withLineSeparator(CRLF)</li>
-     * </ul>
-     *
-     * Shortcut for {@code CSVFormat.newBuilder(CSVFormat.DEFAULT)}
-     *
-     * @return a standard comma separated format builder, as for {@link #RFC4180} but allowing empty lines.
-     */
-    public static CSVFormatBuilder newBuilder() {
-        return new CSVFormatBuilder(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, null);
     }
 
     /**
@@ -220,213 +592,6 @@ public class CSVFormat implements Serializable {
         this.ignoreEmptyLines = ignoreEmptyLines;
         this.recordSeparator = recordSeparator;
         this.header = header == null ? null : header.clone();
-    }
-
-    /**
-     * Returns true if the given character is a line break character.
-     *
-     * @param c
-     *            the character to check
-     *
-     * @return true if <code>c</code> is a line break character
-     */
-    // package protected to give access without needing a synthetic accessor
-    static boolean isLineBreak(final Character c) {
-        return c != null && isLineBreak(c.charValue());
-    }
-
-    /**
-     * Returns true if the given character is a line break character.
-     *
-     * @param c
-     *            the character to check
-     *
-     * @return true if <code>c</code> is a line break character
-     */
-    // package protected to give access without needing a synthetic accessor
-    static boolean isLineBreak(final char c) {
-        return c == LF || c == CR;
-    }
-
-    /**
-     * Returns the character delimiting the values (typically ';', ',' or '\t').
-     *
-     * @return the delimiter character
-     */
-    public char getDelimiter() {
-        return delimiter;
-    }
-
-    /**
-     * Returns the character used to encapsulate values containing special characters.
-     *
-     * @return the quoteChar character
-     */
-    public Character getQuoteChar() {
-        return quoteChar;
-    }
-
-    /**
-     * Returns whether an quoteChar has been defined.
-     *
-     * @return {@code true} if an quoteChar is defined
-     */
-    public boolean isQuoting() {
-        return quoteChar != null;
-    }
-
-    /**
-     * Returns the character marking the start of a line comment.
-     *
-     * @return the comment start marker.
-     */
-    public Character getCommentStart() {
-        return commentStart;
-    }
-
-    /**
-     * Specifies whether comments are supported by this format.
-     *
-     * Note that the comment introducer character is only recognised at the start of a line.
-     *
-     * @return <tt>true</tt> is comments are supported, <tt>false</tt> otherwise
-     */
-    public boolean isCommentingEnabled() {
-        return commentStart != null;
-    }
-
-    /**
-     * Returns the escape character.
-     *
-     * @return the escape character
-     */
-    public Character getEscape() {
-        return escape;
-    }
-
-    /**
-     * Returns whether escape are being processed.
-     *
-     * @return {@code true} if escapes are processed
-     */
-    public boolean isEscaping() {
-        return escape != null;
-    }
-
-    /**
-     * Specifies whether spaces around values are ignored when parsing input.
-     *
-     * @return <tt>true</tt> if spaces around values are ignored, <tt>false</tt> if they are treated as part of the
-     *         value.
-     */
-    public boolean getIgnoreSurroundingSpaces() {
-        return ignoreSurroundingSpaces;
-    }
-
-    /**
-     * Specifies whether empty lines between records are ignored when parsing input.
-     *
-     * @return <tt>true</tt> if empty lines between records are ignored, <tt>false</tt> if they are turned into empty
-     *         records.
-     */
-    public boolean getIgnoreEmptyLines() {
-        return ignoreEmptyLines;
-    }
-
-    /**
-     * Returns the line separator delimiting output records.
-     *
-     * @return the line separator
-     */
-    public String getRecordSeparator() {
-        return recordSeparator;
-    }
-
-    String[] getHeader() {
-        return header;
-    }
-
-    /**
-     * Parses the specified content.
-     *
-     * @param in
-     *            the input stream
-     * @return a stream of CSVRecord
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    public Iterable<CSVRecord> parse(final Reader in) throws IOException {
-        return new CSVParser(in, this);
-    }
-
-    /**
-     * Formats the specified values.
-     *
-     * @param values
-     *            the values to format
-     * @return the formatted values
-     */
-    public String format(final Object... values) {
-        final StringWriter out = new StringWriter();
-        try {
-            new CSVPrinter(out, this).printRecord(values);
-            return out.toString().trim();
-        } catch (final IOException e) {
-            // should not happen because a StringWriter does not do IO.
-            throw new IllegalStateException(e);
-        }
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Delimiter=<").append(delimiter).append('>');
-        if (isEscaping()) {
-            sb.append(' ');
-            sb.append("Escape=<").append(escape).append('>');
-        }
-        if (isQuoting()) {
-            sb.append(' ');
-            sb.append("QuoteChar=<").append(quoteChar).append('>');
-        }
-        if (isCommentingEnabled()) {
-            sb.append(' ');
-            sb.append("CommentStart=<").append(commentStart).append('>');
-        }
-        if (getIgnoreEmptyLines()) {
-            sb.append(" EmptyLines:ignored");
-        }
-        if (getIgnoreSurroundingSpaces()) {
-            sb.append(" SurroundingSpaces:ignored");
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Returns the quote policy output fields.
-     *
-     * @return the quote policy
-     */
-    public Quote getQuotePolicy() {
-        return quotePolicy;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-
-        result = prime * result + delimiter;
-        result = prime * result + ((quotePolicy == null) ? 0 : quotePolicy.hashCode());
-        result = prime * result + ((quoteChar == null) ? 0 : quoteChar.hashCode());
-        result = prime * result + ((commentStart == null) ? 0 : commentStart.hashCode());
-        result = prime * result + ((escape == null) ? 0 : escape.hashCode());
-        result = prime * result + (ignoreSurroundingSpaces ? 1231 : 1237);
-        result = prime * result + (ignoreEmptyLines ? 1231 : 1237);
-        result = prime * result + ((recordSeparator == null) ? 0 : recordSeparator.hashCode());
-        result = prime * result + Arrays.hashCode(header);
-        return result;
     }
 
     @Override
@@ -489,6 +654,162 @@ public class CSVFormat implements Serializable {
     }
 
     /**
+     * Formats the specified values.
+     *
+     * @param values
+     *            the values to format
+     * @return the formatted values
+     */
+    public String format(final Object... values) {
+        final StringWriter out = new StringWriter();
+        try {
+            new CSVPrinter(out, this).printRecord(values);
+            return out.toString().trim();
+        } catch (final IOException e) {
+            // should not happen because a StringWriter does not do IO.
+            throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     * Returns the character marking the start of a line comment.
+     *
+     * @return the comment start marker.
+     */
+    public Character getCommentStart() {
+        return commentStart;
+    }
+
+    /**
+     * Returns the character delimiting the values (typically ';', ',' or '\t').
+     *
+     * @return the delimiter character
+     */
+    public char getDelimiter() {
+        return delimiter;
+    }
+
+    /**
+     * Returns the escape character.
+     *
+     * @return the escape character
+     */
+    public Character getEscape() {
+        return escape;
+    }
+
+    String[] getHeader() {
+        return header;
+    }
+
+    /**
+     * Specifies whether empty lines between records are ignored when parsing input.
+     *
+     * @return <tt>true</tt> if empty lines between records are ignored, <tt>false</tt> if they are turned into empty
+     *         records.
+     */
+    public boolean getIgnoreEmptyLines() {
+        return ignoreEmptyLines;
+    }
+
+    /**
+     * Specifies whether spaces around values are ignored when parsing input.
+     *
+     * @return <tt>true</tt> if spaces around values are ignored, <tt>false</tt> if they are treated as part of the
+     *         value.
+     */
+    public boolean getIgnoreSurroundingSpaces() {
+        return ignoreSurroundingSpaces;
+    }
+
+    /**
+     * Returns the character used to encapsulate values containing special characters.
+     *
+     * @return the quoteChar character
+     */
+    public Character getQuoteChar() {
+        return quoteChar;
+    }
+
+    /**
+     * Returns the quote policy output fields.
+     *
+     * @return the quote policy
+     */
+    public Quote getQuotePolicy() {
+        return quotePolicy;
+    }
+
+    /**
+     * Returns the line separator delimiting output records.
+     *
+     * @return the line separator
+     */
+    public String getRecordSeparator() {
+        return recordSeparator;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+
+        result = prime * result + delimiter;
+        result = prime * result + ((quotePolicy == null) ? 0 : quotePolicy.hashCode());
+        result = prime * result + ((quoteChar == null) ? 0 : quoteChar.hashCode());
+        result = prime * result + ((commentStart == null) ? 0 : commentStart.hashCode());
+        result = prime * result + ((escape == null) ? 0 : escape.hashCode());
+        result = prime * result + (ignoreSurroundingSpaces ? 1231 : 1237);
+        result = prime * result + (ignoreEmptyLines ? 1231 : 1237);
+        result = prime * result + ((recordSeparator == null) ? 0 : recordSeparator.hashCode());
+        result = prime * result + Arrays.hashCode(header);
+        return result;
+    }
+
+    /**
+     * Specifies whether comments are supported by this format.
+     *
+     * Note that the comment introducer character is only recognised at the start of a line.
+     *
+     * @return <tt>true</tt> is comments are supported, <tt>false</tt> otherwise
+     */
+    public boolean isCommentingEnabled() {
+        return commentStart != null;
+    }
+
+    /**
+     * Returns whether escape are being processed.
+     *
+     * @return {@code true} if escapes are processed
+     */
+    public boolean isEscaping() {
+        return escape != null;
+    }
+
+    /**
+     * Returns whether an quoteChar has been defined.
+     *
+     * @return {@code true} if an quoteChar is defined
+     */
+    public boolean isQuoting() {
+        return quoteChar != null;
+    }
+
+    /**
+     * Parses the specified content.
+     *
+     * @param in
+     *            the input stream
+     * @return a stream of CSVRecord
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    public Iterable<CSVRecord> parse(final Reader in) throws IOException {
+        return new CSVParser(in, this);
+    }
+
+    /**
      * Creates a builder based on this format.
      *
      * @return a new builder
@@ -497,349 +818,28 @@ public class CSVFormat implements Serializable {
         return new CSVFormatBuilder(this);
     }
 
-    /**
-     * Builds CSVFormat objects.
-     */
-    public static class CSVFormatBuilder {
-
-        private char delimiter;
-        private Character quoteChar;
-        private Quote quotePolicy;
-        private Character commentStart;
-        private Character escape;
-        private boolean ignoreSurroundingSpaces; // Should leading/trailing spaces be ignored around values?
-        private boolean ignoreEmptyLines;
-        private String recordSeparator; // for outputs
-        private String[] header;
-
-        /**
-         * Creates a customized CSV format.
-         *
-         * @param delimiter
-         *            the char used for value separation, must not be a line break character
-         * @param quoteChar
-         *            the char used as value encapsulation marker
-         * @param quotePolicy
-         *            the quote policy
-         * @param commentStart
-         *            the char used for comment identification
-         * @param escape
-         *            the char used to escape special characters in values
-         * @param ignoreSurroundingSpaces
-         *            <tt>true</tt> when whitespaces enclosing values should be ignored
-         * @param ignoreEmptyLines
-         *            <tt>true</tt> when the parser should skip empty lines
-         * @param recordSeparator
-         *            the line separator to use for output
-         * @param header
-         *            the header
-         * @throws IllegalArgumentException if the delimiter is a line break character
-         */
-        // package protected for use by test code
-        CSVFormatBuilder(final char delimiter, final Character quoteChar,
-                final Quote quotePolicy, final Character commentStart,
-                final Character escape, final boolean ignoreSurroundingSpaces,
-                final boolean ignoreEmptyLines, final String lineSeparator,
-                final String[] header) {
-            if (isLineBreak(delimiter)) {
-                throw new IllegalArgumentException("The delimiter cannot be a line break");
-            }
-            this.delimiter = delimiter;
-            this.quoteChar = quoteChar;
-            this.quotePolicy = quotePolicy;
-            this.commentStart = commentStart;
-            this.escape = escape;
-            this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;
-            this.ignoreEmptyLines = ignoreEmptyLines;
-            this.recordSeparator = lineSeparator;
-            this.header = header;
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Delimiter=<").append(delimiter).append('>');
+        if (isEscaping()) {
+            sb.append(' ');
+            sb.append("Escape=<").append(escape).append('>');
         }
-
-        /**
-         * Creates a CSVFormatBuilder, using the values of the given CSVFormat.
-         *
-         * @param format
-         *            The format to use values from
-         */
-        @SuppressWarnings("synthetic-access") // TODO fields could be made package-protected
-        // package protected to give access without needing a synthetic accessor
-        CSVFormatBuilder(final CSVFormat format) {
-            this(format.delimiter, format.quoteChar, format.quotePolicy,
-                    format.commentStart, format.escape,
-                    format.ignoreSurroundingSpaces, format.ignoreEmptyLines,
-                    format.recordSeparator, format.header);
+        if (isQuoting()) {
+            sb.append(' ');
+            sb.append("QuoteChar=<").append(quoteChar).append('>');
         }
-
-        /**
-         * Creates a basic CSVFormatBuilder.
-         *
-         * @param delimiter
-         *            the char used for value separation, must not be a line break character
-         * @throws IllegalArgumentException if the delimiter is a line break character
-         */
-        // package protected to give access without needing a synthetic accessor
-        CSVFormatBuilder(final char delimiter){
-            this(delimiter, null, null, null, null, false, false, null, null);
+        if (isCommentingEnabled()) {
+            sb.append(' ');
+            sb.append("CommentStart=<").append(commentStart).append('>');
         }
-
-        /**
-         * Builds a new CSVFormat configured with the values from this builder.
-         *
-         * @return a new CSVFormat
-         */
-        public CSVFormat build() {
-            validate();
-            return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, header);
+        if (getIgnoreEmptyLines()) {
+            sb.append(" EmptyLines:ignored");
         }
-
-        /**
-         * Parses the specified content. Short-hand for:
-         * <pre>format.build().parse(in);</pre>
-         *
-         * @param in
-         *            the input stream
-         * @return a CSVRecord stream
-         * @throws IOException
-         *             If an I/O error occurs
-         */
-        public Iterable<CSVRecord> parse(final Reader in) throws IOException {
-            return this.build().parse(in);
+        if (getIgnoreSurroundingSpaces()) {
+            sb.append(" SurroundingSpaces:ignored");
         }
-
-        /**
-         * Verifies the consistency of the parameters and throws an IllegalStateException if necessary.
-         *
-         * @throws IllegalStateException
-         */
-        private void validate() throws IllegalStateException {
-            if (quoteChar != null && delimiter == quoteChar.charValue()) {
-                throw new IllegalStateException(
-                        "The quoteChar character and the delimiter cannot be the same ('" + quoteChar + "')");
-            }
-
-            if (escape != null && delimiter == escape.charValue()) {
-                throw new IllegalStateException(
-                        "The escape character and the delimiter cannot be the same ('" + escape + "')");
-            }
-
-            if (commentStart != null && delimiter == commentStart.charValue()) {
-                throw new IllegalStateException(
-                        "The comment start character and the delimiter cannot be the same ('" + commentStart + "')");
-            }
-
-            if (quoteChar != null && quoteChar.equals(commentStart)) {
-                throw new IllegalStateException(
-                        "The comment start character and the quoteChar cannot be the same ('" + commentStart + "')");
-            }
-
-            if (escape != null && escape.equals(commentStart)) {
-                throw new IllegalStateException(
-                        "The comment start and the escape character cannot be the same ('" + commentStart + "')");
-            }
-
-            if (escape == null && quotePolicy == Quote.NONE) {
-                throw new IllegalStateException("No quotes mode set but no escape character is set");
-            }
-        }
-
-        /**
-         * Sets the delimiter of the format to the specified character.
-         *
-         * @param delimiter
-         *            the delimiter character
-         * @return This builder with the specified character as delimiter
-         * @throws IllegalArgumentException
-         *             thrown if the specified character is a line break
-         */
-        public CSVFormatBuilder withDelimiter(final char delimiter) {
-            if (isLineBreak(delimiter)) {
-                throw new IllegalArgumentException("The delimiter cannot be a line break");
-            }
-            this.delimiter = delimiter;
-            return this;
-        }
-
-        /**
-         * Sets the quoteChar of the format to the specified character.
-         *
-         * @param quoteChar
-         *            the quoteChar character
-         * @return This builder with the specified character as quoteChar
-         * @throws IllegalArgumentException
-         *             thrown if the specified character is a line break
-         */
-        public CSVFormatBuilder withQuoteChar(final char quoteChar) {
-            return withQuoteChar(Character.valueOf(quoteChar));
-        }
-
-        /**
-         * Sets the quoteChar of the format to the specified character.
-         *
-         * @param quoteChar
-         *            the quoteChar character
-         * @return This builder with the specified character as quoteChar
-         * @throws IllegalArgumentException
-         *             thrown if the specified character is a line break
-         */
-        public CSVFormatBuilder withQuoteChar(final Character quoteChar) {
-            if (isLineBreak(quoteChar)) {
-                throw new IllegalArgumentException("The quoteChar cannot be a line break");
-            }
-            this.quoteChar = quoteChar;
-            return this;
-        }
-
-        /**
-         * Sets the comment start marker of the format to the specified character.
-         *
-         * Note that the comment introducer character is only recognised at the start of a line.
-         *
-         * @param commentStart
-         *            the comment start marker
-         * @return This builder with the specified character as the comment start marker
-         * @throws IllegalArgumentException
-         *             thrown if the specified character is a line break
-         */
-        public CSVFormatBuilder withCommentStart(final char commentStart) {
-            return withCommentStart(Character.valueOf(commentStart));
-        }
-
-        /**
-         * Sets the comment start marker of the format to the specified character.
-         *
-         * Note that the comment introducer character is only recognised at the start of a line.
-         *
-         * @param commentStart
-         *            the comment start marker
-         * @return This builder with the specified character as the comment start marker
-         * @throws IllegalArgumentException
-         *             thrown if the specified character is a line break
-         */
-        public CSVFormatBuilder withCommentStart(final Character commentStart) {
-            if (isLineBreak(commentStart)) {
-                throw new IllegalArgumentException("The comment start character cannot be a line break");
-            }
-            this.commentStart = commentStart;
-            return this;
-        }
-
-        /**
-         * Sets the escape character of the format to the specified character.
-         *
-         * @param escape
-         *            the escape character
-         * @return This builder with the specified character as the escape character
-         * @throws IllegalArgumentException
-         *             thrown if the specified character is a line break
-         */
-        public CSVFormatBuilder withEscape(final char escape) {
-            return withEscape(Character.valueOf(escape));
-        }
-
-        /**
-         * Sets the escape character of the format to the specified character.
-         *
-         * @param escape
-         *            the escape character
-         * @return This builder with the specified character as the escape character
-         * @throws IllegalArgumentException
-         *             thrown if the specified character is a line break
-         */
-        public CSVFormatBuilder withEscape(final Character escape) {
-            if (isLineBreak(escape)) {
-                throw new IllegalArgumentException("The escape character cannot be a line break");
-            }
-            this.escape = escape;
-            return this;
-        }
-
-        /**
-         * Sets the header of the format. The header can either be parsed automatically from the
-         * input file with:
-         *
-         * <pre>
-         * CSVFormat format = aformat.withHeader();
-         * </pre>
-         *
-         * or specified manually with:
-         *
-         * <pre>
-         * CSVFormat format = aformat.withHeader(&quot;name&quot;, &quot;email&quot;, &quot;phone&quot;);
-         * </pre>
-         *
-         * @param header
-         *            the header, <tt>null</tt> if disabled, empty if parsed automatically, user specified otherwise.
-         *
-         * @return This builder with the specified header
-         */
-        public CSVFormatBuilder withHeader(final String... header) {
-            this.header = header;
-            return this;
-        }
-
-        /**
-         * Sets the trimming behavior of the format.
-         *
-         * @param ignoreSurroundingSpaces
-         *            the trimming behavior, <tt>true</tt> to remove the surrounding spaces, <tt>false</tt> to leave the
-         *            spaces as is.
-         * @return This builder with the specified trimming behavior.
-         */
-        public CSVFormatBuilder withIgnoreSurroundingSpaces(final boolean ignoreSurroundingSpaces) {
-            this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;
-            return this;
-        }
-
-        /**
-         * Sets the empty line skipping behavior of the format.
-         *
-         * @param ignoreEmptyLines
-         *            the empty line skipping behavior, <tt>true</tt> to ignore the empty lines between the records,
-         *            <tt>false</tt> to translate empty lines to empty records.
-         * @return This builder with the specified empty line skipping behavior.
-         */
-        public CSVFormatBuilder withIgnoreEmptyLines(final boolean ignoreEmptyLines) {
-            this.ignoreEmptyLines = ignoreEmptyLines;
-            return this;
-        }
-
-        /**
-         * Sets the record separator of the format to the specified character.
-         *
-         * @param recordSeparator
-         *            the record separator to use for output.
-         *
-         * @return This builder with the the specified output record separator
-         */
-        public CSVFormatBuilder withRecordSeparator(final char recordSeparator) {
-            return withRecordSeparator(String.valueOf(recordSeparator));
-        }
-
-        /**
-         * Sets the record separator of the format to the specified String.
-         *
-         * @param recordSeparator
-         *            the record separator to use for output.
-         *
-         * @return This builder with the the specified output record separator
-         */
-        public CSVFormatBuilder withRecordSeparator(final String recordSeparator) {
-            this.recordSeparator = recordSeparator;
-            return this;
-        }
-
-        /**
-         * Sets the output quote policy of the format to the specified value.
-         *
-         * @param quotePolicy
-         *            the quote policy to use for output.
-         *
-         * @return This builder with the specified quote policy
-         */
-        public CSVFormatBuilder withQuotePolicy(final Quote quotePolicy) {
-            this.quotePolicy = quotePolicy;
-            return this;
-        }
+        return sb.toString();
     }
 }
