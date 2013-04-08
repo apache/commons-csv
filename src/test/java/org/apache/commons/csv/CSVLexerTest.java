@@ -59,7 +59,7 @@ public class CSVLexerTest {
 
     // Single line (without comment)
     @Test
-    public void testNextToken1() throws IOException {
+    public void testIgnoreSurroundingSpacesAreDeleted() throws IOException {
         final String code = "abc,def, hijk,  lmnop,   qrst,uv ,wxy   ,z , ,";
         final Lexer parser = getLexer(code, CSVFormat.newBuilder().withIgnoreSurroundingSpaces(true).build());
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "abc"));
