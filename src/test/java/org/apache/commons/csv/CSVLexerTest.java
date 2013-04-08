@@ -60,16 +60,13 @@ public class CSVLexerTest {
     // Single line (without comment)
     @Test
     public void testIgnoreSurroundingSpacesAreDeleted() throws IOException {
-        final String code = "abc,def, hijk,  lmnop,   qrst,uv ,wxy   ,z , ,";
+        final String code = "noSpaces,  leadingSpaces,trailingSpaces  ,  surroundingSpaces  ,  ,,";
         final Lexer parser = getLexer(code, CSVFormat.newBuilder().withIgnoreSurroundingSpaces(true).build());
-        assertThat(parser.nextToken(new Token()), matches(TOKEN, "abc"));
-        assertThat(parser.nextToken(new Token()), matches(TOKEN, "def"));
-        assertThat(parser.nextToken(new Token()), matches(TOKEN, "hijk"));
-        assertThat(parser.nextToken(new Token()), matches(TOKEN, "lmnop"));
-        assertThat(parser.nextToken(new Token()), matches(TOKEN, "qrst"));
-        assertThat(parser.nextToken(new Token()), matches(TOKEN, "uv"));
-        assertThat(parser.nextToken(new Token()), matches(TOKEN, "wxy"));
-        assertThat(parser.nextToken(new Token()), matches(TOKEN, "z"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "noSpaces"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "leadingSpaces"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "trailingSpaces"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "surroundingSpaces"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, ""));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, ""));
         assertThat(parser.nextToken(new Token()), matches(EOF, ""));
     }
