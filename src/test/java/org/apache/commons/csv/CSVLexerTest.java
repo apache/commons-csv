@@ -57,7 +57,6 @@ public class CSVLexerTest {
         return new CSVLexer(format, new ExtendedBufferedReader(new StringReader(input)));
     }
 
-    // Single line (without comment)
     @Test
     public void testIgnoreSurroundingSpacesAreDeleted() throws IOException {
         final String code = "noSpaces,  leadingSpaces,trailingSpaces  ,  surroundingSpaces  ,  ,,";
