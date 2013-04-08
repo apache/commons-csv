@@ -55,7 +55,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
 
     /**
      * Returns a value by index.
-     * 
+     *
      * @param i
      *            a column index (0-based)
      * @return the String at the given index
@@ -72,6 +72,9 @@ public class CSVRecord implements Serializable, Iterable<String> {
      * @return the column value, or {@code null} if the column name is not found
      * @throws IllegalStateException
      *             if no header mapping was provided
+     * @throws IllegalArgumentException
+     *             if the record is inconsistent
+     * @see #isConsistent()
      */
     public String get(final String name) {
         if (mapping == null) {
@@ -79,20 +82,27 @@ public class CSVRecord implements Serializable, Iterable<String> {
                     "No header mapping was specified, the record values can't be accessed by name");
         }
         final Integer index = mapping.get(name);
-        return index != null ? values[index.intValue()] : null;
+        try {
+            return index != null ? values[index.intValue()] : null;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new IllegalArgumentException(
+                    String.format(
+                            "Index for header '%s' is %d but CSVRecord only has %d values!",
+                            name, index.intValue(), values.length));
+        }
     }
 
     /**
      * Returns true if this record is consistent, false if not. Currently, the only check is matching the record size to
      * the header size. Some programs can export files that fails this test but still produce parsable files.
-     * 
+     *
      * @return true of this record is valid, false if not
      * @see CSVParserTest#org.apache.commons.csv.CSVParserTest.testMappedButNotSetAsOutlook2007ContactExport()
      */
     public boolean isConsistent() {
         return mapping == null ? true : mapping.size() == values.length;
     }
-    
+
     /**
      * Checks whether a given column is mapped.
      *
