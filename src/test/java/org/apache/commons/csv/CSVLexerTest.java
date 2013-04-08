@@ -88,11 +88,8 @@ public class CSVLexerTest {
                 "\n"+
                 "\n"+
                 "# Final comment\n";       // 7
-        final CSVFormat format = CSVFormat.newBuilder().withCommentStart('#').build();
-        assertTrue("Should ignore empty lines", format.getIgnoreEmptyLines());
-
+        final CSVFormat format = CSVFormat.newBuilder().withCommentStart('#').withIgnoreEmptyLines(true).build();
         final Lexer parser = getLexer(code, format);
-
 
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "1"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "2"));
