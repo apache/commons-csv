@@ -71,6 +71,19 @@ public class CSVLexerTest {
     }
 
     @Test
+    public void testSurroundingTabsAreDeleted() throws IOException {
+        final String code = "noTabs,\tleadingTab,trailingTab\t,\tsurroundingTabs\t,\t\t,,";
+        final Lexer parser = getLexer(code, CSVFormat.newBuilder().withIgnoreSurroundingSpaces(true).build());
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "noTabs"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "leadingTab"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "trailingTab"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, "surroundingTabs"));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, ""));
+        assertThat(parser.nextToken(new Token()), matches(TOKEN, ""));
+        assertThat(parser.nextToken(new Token()), matches(EOF, ""));
+    }
+
+    @Test
     public void testIgnoreEmptyLines() throws IOException {
         final String code =
                 "first,line,\n"+
