@@ -58,7 +58,7 @@ public class CSVLexerTest {
     }
 
     @Test
-    public void testIgnoreSurroundingSpacesAreDeleted() throws IOException {
+    public void testSurroundingSpacesAreDeleted() throws IOException {
         final String code = "noSpaces,  leadingSpaces,trailingSpaces  ,  surroundingSpaces  ,  ,,";
         final Lexer parser = getLexer(code, CSVFormat.newBuilder().withIgnoreSurroundingSpaces(true).build());
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "noSpaces"));
