@@ -329,7 +329,7 @@ public class CSVLexerTest {
         assertThat(lexer.nextToken(new Token()), hasContent("character" + FF + "Escaped"));
     }
 
-    // FIXME this should work after CSV-58 is resolved. Currently the result will be "characteraEscaped"
+    // FIXME this should work after CSV-58 is resolved. Currently the result will be "charactera\NEscaped"
     @Test
     @Ignore
     public void testEscapedMySqlNullValue() throws Exception {
