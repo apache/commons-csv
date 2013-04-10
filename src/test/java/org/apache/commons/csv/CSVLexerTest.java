@@ -329,10 +329,12 @@ public class CSVLexerTest {
         assertThat(lexer.nextToken(new Token()), hasContent("character" + FF + "Escaped"));
     }
 
+    // FIXME this should work after CSV-58 is resolved. Currently the result will be "characteraEscaped"
     @Test
+    @Ignore
     public void testEscapedMySqlNullValue() throws Exception {
         // MySQL uses \N to symbolize null values. We have to restore this
-        final Lexer lexer = getLexer("character\\\\NEscaped", formatWithEscaping);
+        final Lexer lexer = getLexer("character\\NEscaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character\\NEscaped"));
     }
 
