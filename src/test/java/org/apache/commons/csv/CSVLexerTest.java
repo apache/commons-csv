@@ -142,9 +142,8 @@ public class CSVLexerTest {
         assertThat(parser.nextToken(new Token()), matches(EOF, ""));
     }
 
-    // multiline including comments (and empty lines)
     @Test
-    public void testNextToken2EmptyLines() throws IOException {
+    public void testCommentsAndEmptyLines() throws IOException {
         final String code =
                 "1,2,3,\n"+                // 1
                 "\n"+                      // 1b
