@@ -98,7 +98,7 @@ public class CSVFormat implements Serializable {
          * @param nullToString TODO
          * @param header
          *            the header
-         * @param recordSeparator
+         * @param lineSeparator
          *            the line separator to use for output
          * @throws IllegalArgumentException if the delimiter is a line break character
          */
