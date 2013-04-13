@@ -131,7 +131,7 @@ abstract class Lexer {
     /**
      * Checks if the current character represents the start of a line: a CR, LF or is at the start of the file.
      *
-     * @param c
+     * @param c the character to check
      * @return true if the character is at the start of a line.
      */
     boolean isStartOfLine(final int c) {
