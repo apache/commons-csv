@@ -193,7 +193,7 @@ public class CSVLexerTest {
 
     // simple token with escaping not enabled
     @Test
-    public void testNextToken3() throws IOException {
+    public void testBackslashWithoutEscaping() throws IOException {
         /* file: a,\,,b
         *       \,,
         */
@@ -215,7 +215,7 @@ public class CSVLexerTest {
 
     // simple token with escaping enabled
     @Test
-    public void testNextToken3Escaping() throws IOException {
+    public void testBackslashWithEscaping() throws IOException {
         /* file: a,\,,b
         *       \,,
         */
