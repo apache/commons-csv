@@ -40,8 +40,8 @@ public class CSVPrinter implements Flushable, Closeable {
     private final Appendable out;
     private final CSVFormat format;
 
-    /** True if we just began a new line. */
-    private boolean newLine = true;
+    /** True if we just began a new record. */
+    private boolean newRecord = true;
 
     /**
      * Creates a printer that will print values to the given stream following the CSVFormat.
@@ -66,14 +66,14 @@ public class CSVPrinter implements Flushable, Closeable {
     // ======================================================
 
     /**
-     * Outputs the line separator.
+     * Outputs the record separator.
      *
      * @throws IOException
      *             If an I/O error occurs
      */
     public void println() throws IOException {
         out.append(format.getRecordSeparator());
-        newLine = true;
+        newRecord = true;
     }
 
     /**
@@ -136,7 +136,7 @@ public class CSVPrinter implements Flushable, Closeable {
         if (!format.isCommentingEnabled()) {
             return;
         }
-        if (!newLine) {
+        if (!newRecord) {
             println();
         }
         out.append(format.getCommentStart().charValue());
@@ -175,8 +175,8 @@ public class CSVPrinter implements Flushable, Closeable {
     }
 
     void printDelimiter() throws IOException {
-        if (newLine) {
-            newLine = false;
+        if (newRecord) {
+            newRecord = false;
         } else {
             out.append(format.getDelimiter());
         }
@@ -228,7 +228,7 @@ public class CSVPrinter implements Flushable, Closeable {
      */
     void printAndQuote(final Object object, final CharSequence value,
             final int offset, final int len) throws IOException {
-        final boolean first = newLine; // is this the first value on this line?
+        final boolean first = newRecord; // is this the first value on this line?
         boolean quote = false;
         int start = offset;
         int pos = offset;
