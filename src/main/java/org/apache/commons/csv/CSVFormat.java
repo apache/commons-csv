@@ -98,15 +98,15 @@ public class CSVFormat implements Serializable {
          * @param nullToString TODO
          * @param header
          *            the header
-         * @param lineSeparator
-         *            the line separator to use for output
+         * @param recordSeparator
+         *            the record separator to use for output
          * @throws IllegalArgumentException if the delimiter is a line break character
          */
         // package protected for use by test code
         CSVFormatBuilder(final char delimiter, final Character quoteChar,
                 final Quote quotePolicy, final Character commentStart,
                 final Character escape, final boolean ignoreSurroundingSpaces,
-                final boolean ignoreEmptyLines, final String lineSeparator,
+                final boolean ignoreEmptyLines, final String recordSeparator,
                 String nullToString, final String[] header) {
             if (isLineBreak(delimiter)) {
                 throw new IllegalArgumentException("The delimiter cannot be a line break");
@@ -118,7 +118,7 @@ public class CSVFormat implements Serializable {
             this.escape = escape;
             this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;
             this.ignoreEmptyLines = ignoreEmptyLines;
-            this.recordSeparator = lineSeparator;
+            this.recordSeparator = recordSeparator;
             this.nullToString = nullToString;
             this.header = header;
         }
@@ -431,7 +431,7 @@ public class CSVFormat implements Serializable {
      * <li>withDelimiter(',')</li>
      * <li>withQuoteChar('"')</li>
      * <li>withEmptyLinesIgnored(true)</li>
-     * <li>withLineSeparator(CRLF)</li>
+     * <li>withRecordSeparator(CRLF)</li>
      * </ul>
      *
      * Shortcut for {@code CSVFormat.newBuilder(CSVFormat.DEFAULT)}
@@ -462,7 +462,7 @@ public class CSVFormat implements Serializable {
      * <ul>
      * <li>withDelimiter(',')</li>
      * <li>withQuoteChar('"')</li>
-     * <li>withLineSeparator(CRLF)</li>
+     * <li>withRecordSeparator(CRLF)</li>
      * </ul>
      */
     public static final CSVFormat RFC4180 =
@@ -476,7 +476,7 @@ public class CSVFormat implements Serializable {
      * <ul>
      * <li>withDelimiter(',')</li>
      * <li>withQuoteChar('"')</li>
-     * <li>withLineSeparator(CRLF)</li>
+     * <li>withRecordSeparator(CRLF)</li>
      * </ul>
      * <h3>Additional:</h3>
      * <ul>
@@ -500,7 +500,7 @@ public class CSVFormat implements Serializable {
      * <ul>
      * <li>withDelimiter(',')</li>
      * <li>withQuoteChar('"')</li>
-     * <li>withLineSeparator(CRLF)</li>
+     * <li>withRecordSeparator(CRLF)</li>
      * </ul>
      * Note: this is currently the same as RFC4180
      */
