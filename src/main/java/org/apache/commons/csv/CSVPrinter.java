@@ -19,7 +19,6 @@ package org.apache.commons.csv;
 
 import static org.apache.commons.csv.Constants.COMMENT;
 import static org.apache.commons.csv.Constants.CR;
-import static org.apache.commons.csv.Constants.EMPTY;
 import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.SP;
 
