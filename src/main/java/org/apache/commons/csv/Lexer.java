@@ -146,7 +146,7 @@ abstract class Lexer {
      * @return true if the given char is a whitespace character
      */
     boolean isWhitespace(final int c) {
-        return c != format.getDelimiter() && Character.isWhitespace((char) c);
+        return !isDelimiter(c) && Character.isWhitespace((char) c);
     }
 
     /**
