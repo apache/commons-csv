@@ -307,7 +307,7 @@ public class CSVParserTest {
                 {",", ","},              // 5
                 {"/", "/"},              // 6
                 {"/", "/"},              // 7
-                {"   8   ", "   \"quoted \"\" \" / string\"   "},
+                {"   8   ", "   \"quoted \"\" /\" / string\"   "},
                 {"9", "   \n   "},
         };
 
