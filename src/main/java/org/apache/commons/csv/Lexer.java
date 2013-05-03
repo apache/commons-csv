@@ -74,8 +74,18 @@ abstract class Lexer {
     }
 
     // TODO escape handling needs more work
+    /**
+     * Handle an escape sequence.
+     * The current character must be the escape character.
+     * On return, the next character is available by calling {@link ExtendedBufferedReader#getLastChar()}
+     * on the input stream.
+     * 
+     * @return the unescaped character (as an int) or {@link END_OF_STREAM} if char following the escape is invalid. 
+     * @throws IOException if there is a problem reading the stream or the end of stream is detected: 
+     * the escape character is not allowed at end of strem
+     */
     int readEscape() throws IOException {
-        // assume c is the escape char (normally a backslash)
+        // the escape char has just been read (normally a backslash)
         final int c = in.read();
         switch (c) {
         case 'r':
@@ -88,10 +98,21 @@ abstract class Lexer {
             return BACKSPACE;
         case 'f':
             return FF;
+        case CR:
+        case LF:
+        case FF: // TODO is this correct?
+        case TAB: // TODO is this correct? Do tabs need to be escaped?
+        case BACKSPACE: // TODO is this correct?
+            return c;
         case END_OF_STREAM:
             throw new IOException("EOF whilst processing escape sequence");
         default:
-            return c;
+            // Now check for meta-characters
+            if (isDelimiter(c) || isEscape(c) || isQuoteChar(c) || isCommentStart(c)) {
+                return c;
+            }
+            // indicate unexpected char - available from in.getLastChar()
+            return END_OF_STREAM;
         }
     }
 

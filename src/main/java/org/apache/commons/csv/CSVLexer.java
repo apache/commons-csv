@@ -160,7 +160,12 @@ final class CSVLexer extends Lexer {
                 tkn.type = TOKEN;
                 break;
             } else if (isEscape(c)) {
-                tkn.content.append((char) readEscape());
+                final int unescaped = readEscape();
+                if (unescaped == Constants.END_OF_STREAM) { // unexpected char after escape
+                    tkn.content.append((char) c).append((char) in.getLastChar());
+                } else {
+                    tkn.content.append((char) unescaped);
+                }
                 c = in.read(); // continue
             } else {
                 tkn.content.append((char) c);
@@ -203,7 +208,12 @@ final class CSVLexer extends Lexer {
             c = in.read();
 
             if (isEscape(c)) {
-                tkn.content.append((char) readEscape());
+                final int unescaped = readEscape();
+                if (unescaped == Constants.END_OF_STREAM) { // unexpected char after escape
+                    tkn.content.append((char) c).append((char) in.getLastChar());
+                } else {
+                    tkn.content.append((char) unescaped);
+                }
             } else if (isQuoteChar(c)) {
                 if (isQuoteChar(in.lookAhead())) {
                     // double or escaped encapsulator -> add single encapsulator to token
