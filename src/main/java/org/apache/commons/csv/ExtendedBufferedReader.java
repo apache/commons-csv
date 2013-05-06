@@ -145,7 +145,7 @@ final class ExtendedBufferedReader extends BufferedReader {
     /**
      * Returns the number of lines read
      *
-     * @return the current-line-number (or -1)
+     * @return the current-line-number
      */
     long getLineNumber() {
         return lineCounter;
