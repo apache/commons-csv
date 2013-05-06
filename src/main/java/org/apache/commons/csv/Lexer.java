@@ -69,6 +69,11 @@ abstract class Lexer {
         return c == null ? DISABLED : c.charValue();
     }
 
+    /**
+     * Returns the number of lines read
+     *
+     * @return the number of EOLs seen so far
+     */
     long getLineNumber() {
         return in.getLineNumber();
     }
