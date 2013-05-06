@@ -164,6 +164,7 @@ public class CSVPrinter implements Flushable, Closeable {
     private void print(final Object object, final CharSequence value,
             final int offset, final int len) throws IOException {
         if (format.isQuoting()) {
+            // the original object is needed so can check for Number
             printAndQuote(object, value, offset, len);
         } else if (format.isEscaping()) {
             printAndEscape(value, offset, len);
@@ -225,6 +226,7 @@ public class CSVPrinter implements Flushable, Closeable {
     /*
      * Note: must only be called if quoting is enabled, otherwise will generate NPE
      */
+    // the original object is needed so can check for Number
     void printAndQuote(final Object object, final CharSequence value,
             final int offset, final int len) throws IOException {
         final boolean first = newRecord; // is this the first value on this line?
