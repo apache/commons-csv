@@ -818,9 +818,9 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns whether an quoteChar has been defined.
+     * Returns whether a quoteChar has been defined.
      *
-     * @return {@code true} if an quoteChar is defined
+     * @return {@code true} if a quoteChar is defined
      */
     public boolean isQuoting() {
         return quoteChar != null;
