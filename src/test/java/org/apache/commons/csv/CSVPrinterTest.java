@@ -382,6 +382,16 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testEOLQuoted() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.newBuilder().withQuoteChar('\'').build());
+        printer.print("a\rb\nc");
+        printer.print("x\by\fz");
+        assertEquals("'a\rb\nc',x\by\fz", sw.toString());
+        printer.close();
+    }
+
+    @Test
     public void testPlainEscaped() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.newBuilder().withQuoteChar(null).withEscape('!').build());
@@ -402,6 +412,16 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testEOLEscaped() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.newBuilder().withQuoteChar(null).withEscape('!').build());
+        printer.print("a\rb\nc");
+        printer.print("x\fy\bz");
+        assertEquals("a!rb!nc,x\fy\bz", sw.toString());
+        printer.close();
+    }
+
+    @Test
     public void testPlainPlain() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.newBuilder().withQuoteChar(null).build());
@@ -418,6 +438,16 @@ public class CSVPrinterTest {
         printer.print("a,b,c");
         printer.print("xyz");
         assertEquals("a,b,c,xyz", sw.toString());
+        printer.close();
+    }
+
+    @Test
+    public void testEOLPlain() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.newBuilder().withQuoteChar(null).build());
+        printer.print("a\rb\nc");
+        printer.print("x\fy\bz");
+        assertEquals("a\rb\nc,x\fy\bz", sw.toString());
         printer.close();
     }
 
