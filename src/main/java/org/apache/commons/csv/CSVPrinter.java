@@ -163,34 +163,27 @@ public class CSVPrinter implements Flushable, Closeable {
 
     private void print(final Object object, final CharSequence value,
             final int offset, final int len) throws IOException {
+        if (!newRecord) {
+            out.append(format.getDelimiter());
+        }
         if (format.isQuoting()) {
             // the original object is needed so can check for Number
             printAndQuote(object, value, offset, len);
         } else if (format.isEscaping()) {
             printAndEscape(value, offset, len);
         } else {
-            printDelimiter();
             out.append(value, offset, offset + len);
         }
-    }
-
-    void printDelimiter() throws IOException {
-        if (newRecord) {
-            newRecord = false;
-        } else {
-            out.append(format.getDelimiter());
-        }
+        newRecord = false;        
     }
 
     /*
      * Note: must only be called if escaping is enabled, otherwise will generate NPE
      */
-    void printAndEscape(final CharSequence value, final int offset, final int len) throws IOException {
+    private void printAndEscape(final CharSequence value, final int offset, final int len) throws IOException {
         int start = offset;
         int pos = offset;
         final int end = offset + len;
-
-        printDelimiter();
 
         final char delim = format.getDelimiter();
         final char escape = format.getEscape().charValue();
@@ -227,15 +220,12 @@ public class CSVPrinter implements Flushable, Closeable {
      * Note: must only be called if quoting is enabled, otherwise will generate NPE
      */
     // the original object is needed so can check for Number
-    void printAndQuote(final Object object, final CharSequence value,
+    private void printAndQuote(final Object object, final CharSequence value,
             final int offset, final int len) throws IOException {
-        final boolean first = newRecord; // is this the first value on this line?
         boolean quote = false;
         int start = offset;
         int pos = offset;
         final int end = offset + len;
-
-        printDelimiter();
 
         final char delimChar = format.getDelimiter();
         final char quoteChar = format.getQuoteChar().charValue();
@@ -259,14 +249,14 @@ public class CSVPrinter implements Flushable, Closeable {
                 // on the line, as it may be the only thing on the
                 // line. If it were not quoted in that case,
                 // an empty line has no tokens.
-                if (first) {
+                if (newRecord) {
                     quote = true;
                 }
             } else {
                 char c = value.charAt(pos);
 
                 // Hmmm, where did this rule come from?
-                if (first && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || (c > 'z'))) {
+                if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || (c > 'z'))) {
                     quote = true;
                     // } else if (c == ' ' || c == '\f' || c == '\t') {
                 } else if (c <= COMMENT) {
