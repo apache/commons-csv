@@ -39,8 +39,8 @@ final class ExtendedBufferedReader extends BufferedReader {
     /** The last char returned */
     private int lastChar = UNDEFINED;
 
-    /** The line counter */
-    private long lineCounter;
+    /** The count of EOLs (CR/LF/CRLF) seen so far */
+    private long eolCounter = 0;
 
     /**
      * Created extended buffered reader using default buffer-size
@@ -53,7 +53,7 @@ final class ExtendedBufferedReader extends BufferedReader {
     public int read() throws IOException {
         final int current = super.read();
         if (current == CR || (current == LF && lastChar != CR)) {
-            lineCounter++;
+            eolCounter++;
         }
         lastChar = current;
         return lastChar;
@@ -85,10 +85,10 @@ final class ExtendedBufferedReader extends BufferedReader {
                 final char ch = buf[i];
                 if (ch == LF) {
                     if (CR != (i > 0 ? buf[i - 1] : lastChar)) {
-                        lineCounter++;
+                        eolCounter++;
                     }
                 } else if (ch == CR) {
-                    lineCounter++;
+                    eolCounter++;
                 }
             }
 
@@ -105,7 +105,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      * Calls {@link BufferedReader#readLine()} which drops the line terminator(s). This method should only be called
      * when processing a comment, otherwise information can be lost.
      * <p>
-     * Increments {@link #lineCounter}
+     * Increments {@link #eolCounter}
      * <p>
      * Sets {@link #lastChar} to {@link #END_OF_STREAM} at EOF, otherwise to LF
      *
@@ -117,7 +117,7 @@ final class ExtendedBufferedReader extends BufferedReader {
 
         if (line != null) {
             lastChar = LF; // needed for detecting start of line
-            lineCounter++;
+            eolCounter++;
         } else {
             lastChar = END_OF_STREAM;
         }
@@ -127,7 +127,7 @@ final class ExtendedBufferedReader extends BufferedReader {
 
     /**
      * Returns the next character in the current reader without consuming it. So the next call to {@link #read()} will
-     * still return this value.
+     * still return this value. Does not affect line number or last character.
      *
      * @return the next character
      *
@@ -143,11 +143,15 @@ final class ExtendedBufferedReader extends BufferedReader {
     }
 
     /**
-     * Returns the number of lines read
+     * Returns the current line number
      *
-     * @return the number of EOLs seen so far
+     * @return the current line number
      */
-    long getLineNumber() {
-        return lineCounter;
+    long getCurrentLineNumber() {
+        // Check if we are at EOL or EOF or just starting
+        if (lastChar == CR || lastChar == LF || lastChar == UNDEFINED || lastChar == END_OF_STREAM) {
+            return eolCounter; // counter is accurate
+        }
+        return eolCounter + 1; // Allow for counter being incremented only at EOL
     }
 }

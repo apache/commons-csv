@@ -158,8 +158,8 @@ public class CSVParser implements Iterable<CSVRecord> {
      *
      * @return current line number
      */
-    public long getLineNumber() {
-        return lexer.getLineNumber();
+    public long getCurrentLineNumber() {
+        return lexer.getCurrentLineNumber();
     }
 
     /**
@@ -200,7 +200,7 @@ public class CSVParser implements Iterable<CSVRecord> {
                 }
                 break;
             case INVALID:
-                throw new IOException("(line " + getLineNumber() + ") invalid parse sequence");
+                throw new IOException("(line " + getCurrentLineNumber() + ") invalid parse sequence");
             case COMMENT: // Ignored currently
                 if (sb == null) { // first comment for this record
                     sb = new StringBuilder();

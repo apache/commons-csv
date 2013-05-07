@@ -629,21 +629,21 @@ public class CSVParserTest {
                 CSVFormat.newBuilder().withRecordSeparator(CRLF).build());
         CSVRecord record;
         assertEquals(0, parser.getRecordNumber());
-        assertEquals(0, parser.getLineNumber());
+        assertEquals(0, parser.getCurrentLineNumber());
         assertNotNull(record = parser.nextRecord());
-        assertEquals(3, parser.getLineNumber());
+        assertEquals(3, parser.getCurrentLineNumber());
         assertEquals(1, record.getRecordNumber());
         assertEquals(1, parser.getRecordNumber());
         assertNotNull(record = parser.nextRecord());
-        assertEquals(6, parser.getLineNumber());
+        assertEquals(6, parser.getCurrentLineNumber());
         assertEquals(2, record.getRecordNumber());
         assertEquals(2, parser.getRecordNumber());
         assertNotNull(record = parser.nextRecord());
-        assertEquals(8, parser.getLineNumber());
+        assertEquals(8, parser.getCurrentLineNumber());
         assertEquals(3, record.getRecordNumber());
         assertEquals(3, parser.getRecordNumber());
         assertNull(record = parser.nextRecord());
-        assertEquals(8, parser.getLineNumber());
+        assertEquals(8, parser.getCurrentLineNumber());
         assertEquals(3, parser.getRecordNumber());
     }
 
@@ -676,17 +676,17 @@ public class CSVParserTest {
 
     private void validateLineNumbers(final String lineSeparator) throws IOException {
         final CSVParser parser = new CSVParser("a" + lineSeparator + "b" + lineSeparator + "c", CSVFormat.newBuilder().withRecordSeparator(lineSeparator).build());
-        assertEquals(0, parser.getLineNumber());
+        assertEquals(0, parser.getCurrentLineNumber());
         assertNotNull(parser.nextRecord());
-        assertEquals(1, parser.getLineNumber());
+        assertEquals(1, parser.getCurrentLineNumber());
         assertNotNull(parser.nextRecord());
-        assertEquals(2, parser.getLineNumber());
+        assertEquals(2, parser.getCurrentLineNumber());
         assertNotNull(parser.nextRecord());
         // Still 2 because the last line is does not have EOL chars
-        assertEquals(2, parser.getLineNumber());
+        assertEquals(2, parser.getCurrentLineNumber());
         assertNull(parser.nextRecord());
         // Still 2 because the last line is does not have EOL chars
-        assertEquals(2, parser.getLineNumber());
+        assertEquals(2, parser.getCurrentLineNumber());
     }
 
 }

@@ -187,7 +187,7 @@ class CSVLexer1306667 extends Lexer {
      */
     private Token encapsulatedTokenLexer(final Token tkn) throws IOException {
         // save current line
-        final long startLineNumber = getLineNumber();
+        final long startLineNumber = getCurrentLineNumber();
         // ignore the given delimiter
         // assert c == delimiter;
         int c;
@@ -218,7 +218,7 @@ class CSVLexer1306667 extends Lexer {
                             return tkn;
                         } else if (!isWhitespace(c)) {
                             // error invalid char between token and next delimiter
-                            throw new IOException("(line " + getLineNumber() + ") invalid char between encapsulated token and delimiter");
+                            throw new IOException("(line " + getCurrentLineNumber() + ") invalid char between encapsulated token and delimiter");
                         }
                     }
                 }

@@ -70,12 +70,12 @@ abstract class Lexer {
     }
 
     /**
-     * Returns the number of lines read
+     * Returns the current line number
      *
-     * @return the number of EOLs seen so far
+     * @return the current line number
      */
-    long getLineNumber() {
-        return in.getLineNumber();
+    long getCurrentLineNumber() {
+        return in.getCurrentLineNumber();
     }
 
     // TODO escape handling needs more work

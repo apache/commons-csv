@@ -202,7 +202,7 @@ final class CSVLexer extends Lexer {
      */
     private Token parseEncapsulatedToken(final Token tkn) throws IOException {
         // save current line number in case needed for IOE
-        final long startLineNumber = getLineNumber();
+        final long startLineNumber = getCurrentLineNumber();
         int c;
         while (true) {
             c = in.read();
@@ -235,7 +235,7 @@ final class CSVLexer extends Lexer {
                             return tkn;
                         } else if (!isWhitespace(c)) {
                             // error invalid char between token and next delimiter
-                            throw new IOException("(line " + getLineNumber() +
+                            throw new IOException("(line " + getCurrentLineNumber() +
                                     ") invalid char between encapsulated token and delimiter");
                         }
                     }

@@ -170,7 +170,7 @@ class CSVLexer3 extends Lexer {
                             state = State.ESCAPE_QUOTE;
                             break;
                         case EOFCHAR:
-                            throw new IOException("(line " + getLineNumber() + ") unexpected EOF in quoted string");
+                            throw new IOException("(line " + getCurrentLineNumber() + ") unexpected EOF in quoted string");
                         default:
                             tkn.content.append((char) intch);
                             break;
@@ -194,7 +194,7 @@ class CSVLexer3 extends Lexer {
                         case WHITESPACE: // trailing whitespace may be allowed
                             if (!ignoreSurroundingSpaces) {
                                 // error invalid char between token and next delimiter
-                                throw new IOException("(line " + getLineNumber() + ") invalid char between encapsulated token and delimiter");
+                                throw new IOException("(line " + getCurrentLineNumber() + ") invalid char between encapsulated token and delimiter");
                             }
                             break;
                         // Everything else is invalid
@@ -202,7 +202,7 @@ class CSVLexer3 extends Lexer {
                         case OTHER:
                         case COMMENT_START:
                             // error invalid char between token and next delimiter
-                            throw new IOException("(line " + getLineNumber() + ") invalid char between encapsulated token and delimiter");
+                            throw new IOException("(line " + getCurrentLineNumber() + ") invalid char between encapsulated token and delimiter");
                     }
                     break;
                 case ESCAPE_PLAIN:
@@ -221,7 +221,7 @@ class CSVLexer3 extends Lexer {
                             tkn.content.append((char) intch);
                             break;
                         case EOFCHAR:
-                            throw new IOException("(line " + getLineNumber() + ") unexpected EOF in escape sequence");
+                            throw new IOException("(line " + getCurrentLineNumber() + ") unexpected EOF in escape sequence");
                     }
                     break;
                 case ESCAPE_QUOTE:
@@ -239,7 +239,7 @@ class CSVLexer3 extends Lexer {
                             tkn.content.append((char) intch);
                             break;
                         case EOFCHAR:
-                            throw new IOException("(line " + getLineNumber() + ") unexpected EOF in escape sequence");
+                            throw new IOException("(line " + getCurrentLineNumber() + ") unexpected EOF in escape sequence");
                     }
                     break;
                 default:
