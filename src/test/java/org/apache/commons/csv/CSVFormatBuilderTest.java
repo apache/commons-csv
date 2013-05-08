@@ -24,6 +24,7 @@ import static org.apache.commons.csv.Constants.LF;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.csv.CSVFormat.CSVFormatBuilder;
@@ -151,6 +152,11 @@ public class CSVFormatBuilderTest {
     @Test
     public void testQuotePolicy() {
         assertEquals(Quote.ALL, builder.withQuotePolicy(Quote.ALL).build().getQuotePolicy());
+    }
+
+    @Test
+    public void testDefaultQuotePolicy() {
+        assertNull(builder.build().getQuotePolicy());
     }
 
     @Test(expected = IllegalStateException.class)
