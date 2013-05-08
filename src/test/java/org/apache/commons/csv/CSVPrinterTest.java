@@ -382,6 +382,17 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testDelimeterQuoteNONE() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVFormat format = CSVFormat.newBuilder().withEscape('!').withQuotePolicy(Quote.NONE).build();
+        final CSVPrinter printer = new CSVPrinter(sw, format);
+        printer.print("a,b,c");
+        printer.print("xyz");
+        assertEquals("a!,b!,c,xyz", sw.toString());
+        printer.close();
+    }
+
+    @Test
     public void testEOLQuoted() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.newBuilder().withQuoteChar('\'').build());

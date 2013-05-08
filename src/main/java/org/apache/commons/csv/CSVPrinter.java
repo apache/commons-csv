@@ -242,7 +242,9 @@ public class CSVPrinter implements Flushable, Closeable {
             quote = !(object instanceof Number);
             break;
         case NONE:
-            throw new IllegalArgumentException("Not implemented yet");
+            // Use the existing escaping code
+            printAndEscape(value, offset, len);
+            return;
         case MINIMAL:
             if (len <= 0) {
                 // always quote an empty token that is the first
