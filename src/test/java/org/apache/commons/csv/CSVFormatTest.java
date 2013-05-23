@@ -29,8 +29,8 @@ import java.io.ObjectOutputStream;
 import org.junit.Test;
 
 /**
- * 
- * 
+ *
+ *
  * @version $Id$
  */
 public class CSVFormatTest {
@@ -66,7 +66,7 @@ public class CSVFormatTest {
         assertEquals("trim", CSVFormat.DEFAULT.getIgnoreSurroundingSpaces(), format.getIgnoreSurroundingSpaces());
         assertEquals("empty lines", CSVFormat.DEFAULT.getIgnoreEmptyLines(), format.getIgnoreEmptyLines());
     }
-    
+
     @Test
     public void testEquals() {
         final CSVFormat right = CSVFormat.DEFAULT;
@@ -78,7 +78,7 @@ public class CSVFormatTest {
         assertEquals(right, right);
         assertEquals(right, left);
         assertEquals(left, right);
-        
+
         assertEquals(right.hashCode(), right.hashCode());
         assertEquals(right.hashCode(), left.hashCode());
     }
@@ -207,7 +207,7 @@ public class CSVFormatTest {
         final CSVFormat left = CSVFormat.newBuilder(right)
                 .withHeader("Three", "Two", "One")
                 .build();
-        
+
         assertNotEquals(right, left);
     }
 

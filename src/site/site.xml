@@ -31,7 +31,7 @@
       <item name="Download"    href="/downloads.html"/>
       <item name="Wiki"        href="http://wiki.apache.org/commons/CSV"/>
     </menu>
-    
+
     <menu name="Development">
       <item name="History"                 href="/changes-report.html"/>
       <item name="Mailing Lists"           href="/mail-lists.html"/>

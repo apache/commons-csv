@@ -588,7 +588,7 @@ public class CSVFormat implements Serializable {
      *            <tt>true</tt> when the parser should skip empty lines
      * @param recordSeparator
      *            the line separator to use for output
-     * @param nullToString 
+     * @param nullToString
      *            the String to use to write <code>null</code> values.
      * @param header
      *            the header

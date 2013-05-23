@@ -37,9 +37,9 @@ import org.junit.Test;
 
 /**
  * Tests performance.
- * 
+ *
  * To run this test, use: mvn test -Dtest=PeformanceTest
- * 
+ *
  * @version $Id$
  */
 public class PerformanceTest {

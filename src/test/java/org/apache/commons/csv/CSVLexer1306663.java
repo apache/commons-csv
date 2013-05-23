@@ -26,8 +26,8 @@ import static org.apache.commons.csv.Token.Type.TOKEN;
 import java.io.IOException;
 
 /**
- * 
- * 
+ *
+ *
  * @version $Id$
  */
 class CSVLexer1306663 extends Lexer {

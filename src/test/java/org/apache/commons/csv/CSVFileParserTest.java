@@ -91,7 +91,7 @@ public class CSVFileParserTest {
          // first line starts with csv data file name
         final BufferedReader csvFile = new BufferedReader(new FileReader(new File(BASE, split[0])));
         final CSVFormatBuilder builder = CSVFormat.newBuilder(',').withQuoteChar('"');
-        CSVFormat format = builder.build(); 
+        CSVFormat format = builder.build();
         boolean checkComments = false;
         for(int i=1; i < split.length; i++) {
             final String option = split[i];

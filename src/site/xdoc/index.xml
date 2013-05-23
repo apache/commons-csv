@@ -29,8 +29,8 @@ limitations under the License.
 Iterable&lt;CSVRecord&gt; parser = CSVFormat.EXCEL.parse(in);
 for (CSVRecord record : parser) {
     ...
-}</source>  
-  <p>Other formats are available, please consult the Javadoc for <a href="apidocs/org/apache/commons/csv/CSVFormat.html">CSVFormat</a> and 
+}</source>
+  <p>Other formats are available, please consult the Javadoc for <a href="apidocs/org/apache/commons/csv/CSVFormat.html">CSVFormat</a> and
   <a href="apidocs/org/apache/commons/csv/CSVParser.html">CSVParser</a></p>
 </section>
 

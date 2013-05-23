@@ -174,7 +174,7 @@ public class CSVPrinter implements Flushable, Closeable {
         } else {
             out.append(value, offset, offset + len);
         }
-        newRecord = false;        
+        newRecord = false;
     }
 
     /*

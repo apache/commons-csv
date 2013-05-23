@@ -84,9 +84,9 @@ abstract class Lexer {
      * The current character must be the escape character.
      * On return, the next character is available by calling {@link ExtendedBufferedReader#getLastChar()}
      * on the input stream.
-     * 
-     * @return the unescaped character (as an int) or {@link END_OF_STREAM} if char following the escape is invalid. 
-     * @throws IOException if there is a problem reading the stream or the end of stream is detected: 
+     *
+     * @return the unescaped character (as an int) or {@link END_OF_STREAM} if char following the escape is invalid.
+     * @throws IOException if there is a problem reading the stream or the end of stream is detected:
      * the escape character is not allowed at end of strem
      */
     int readEscape() throws IOException {
@@ -186,7 +186,7 @@ abstract class Lexer {
     boolean isCommentStart(final int c) {
         return c == commmentStart;
     }
-    
+
     private boolean isMetaChar(final int c) {
         return c == delimiter
             || c == escape
