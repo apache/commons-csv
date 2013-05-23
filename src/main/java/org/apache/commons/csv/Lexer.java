@@ -188,10 +188,10 @@ abstract class Lexer {
     }
 
     private boolean isMetaChar(final int c) {
-        return c == delimiter
-            || c == escape
-            || c == quoteChar
-            || c == commmentStart
-                ;
+        return c == delimiter ||
+               c == escape ||
+               c == quoteChar ||
+               c == commmentStart
+               ;
     }
 }
