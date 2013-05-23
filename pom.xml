@@ -97,6 +97,11 @@ CSV files of various types.
     <url>http://svn.apache.org/repos/asf/commons/proper/csv/trunk</url>
   </scm>
 
+  <issueManagement>
+    <system>jira</system>
+    <url>http://issues.apache.org/jira/browse/CSV</url>
+  </issueManagement>
+
   <distributionManagement>
     <site>
       <id>apache.website</id>
@@ -157,7 +162,7 @@ CSV files of various types.
         <configuration>
           <configLocation>${basedir}/checkstyle.xml</configLocation>
           <enableRulesSummary>false</enableRulesSummary>
-          <headerFile>${basedir}/LICENSE-header.txt</headerFile>
+          <headerLocation>${basedir}/LICENSE-header.txt</headerLocation>
         </configuration>
         <!-- We need to specify reportSets because 2.9.1 creates two reports -->
         <reportSets>
