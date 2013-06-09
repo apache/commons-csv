@@ -94,7 +94,7 @@ CSV files of various types.
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/csv/trunk</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/csv/trunk</developerConnection>
-    <url>http://svn.apache.org/repos/asf/commons/proper/csv/trunk</url>
+    <url>http://svn.apache.org/viewvc/commons/proper/csv/trunk</url>
   </scm>
 
   <issueManagement>
