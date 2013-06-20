@@ -95,8 +95,8 @@ public class CSVRecordTest {
     @Test
     public void testIterator() {
         int i = 0;
-        for (Iterator<String> itr = record.iterator(); itr.hasNext();) {
-            String value = itr.next();
+        for (final Iterator<String> itr = record.iterator(); itr.hasNext();) {
+            final String value = itr.next();
             assertEquals(values[i], value);
             i++;
         }

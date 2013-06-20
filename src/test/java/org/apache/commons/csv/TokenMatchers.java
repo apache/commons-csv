@@ -29,14 +29,14 @@ final class TokenMatchers {
     public static Matcher<Token> hasType(final Token.Type expectedType) {
         return new TypeSafeDiagnosingMatcher<Token>() {
 
-            public void describeTo(Description description) {
+            public void describeTo(final Description description) {
                 description.appendText("token has type ");
                 description.appendValue(expectedType);
             }
 
             @Override
-            protected boolean matchesSafely(Token item,
-                    Description mismatchDescription) {
+            protected boolean matchesSafely(final Token item,
+                    final Description mismatchDescription) {
                 mismatchDescription.appendText("token type is ");
                 mismatchDescription.appendValue(item.type);
                 if (item.type == expectedType) {
@@ -50,14 +50,14 @@ final class TokenMatchers {
     public static Matcher<Token> hasContent(final String expectedContent) {
         return new TypeSafeDiagnosingMatcher<Token>() {
 
-            public void describeTo(Description description) {
+            public void describeTo(final Description description) {
                 description.appendText("token has content ");
                 description.appendValue(expectedContent);
             }
 
             @Override
-            protected boolean matchesSafely(Token item,
-                    Description mismatchDescription) {
+            protected boolean matchesSafely(final Token item,
+                    final Description mismatchDescription) {
                 mismatchDescription.appendText("token content is ");
                 mismatchDescription.appendValue(item.content.toString());
                 if (expectedContent.equals(item.content.toString())) {
@@ -71,13 +71,13 @@ final class TokenMatchers {
     public static Matcher<Token> isReady() {
         return new TypeSafeDiagnosingMatcher<Token>() {
 
-            public void describeTo(Description description) {
+            public void describeTo(final Description description) {
                 description.appendText("token is ready ");
             }
 
             @Override
-            protected boolean matchesSafely(Token item,
-                    Description mismatchDescription) {
+            protected boolean matchesSafely(final Token item,
+                    final Description mismatchDescription) {
                 mismatchDescription.appendText("token is not ready ");
                 return item.isReady;
             }

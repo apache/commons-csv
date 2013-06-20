@@ -84,7 +84,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
         final Integer index = mapping.get(name);
         try {
             return index != null ? values[index.intValue()] : null;
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (final ArrayIndexOutOfBoundsException e) {
             throw new IllegalArgumentException(
                     String.format(
                             "Index for header '%s' is %d but CSVRecord only has %d values!",

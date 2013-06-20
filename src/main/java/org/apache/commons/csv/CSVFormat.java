@@ -107,7 +107,7 @@ public class CSVFormat implements Serializable {
                 final Quote quotePolicy, final Character commentStart,
                 final Character escape, final boolean ignoreSurroundingSpaces,
                 final boolean ignoreEmptyLines, final String recordSeparator,
-                String nullToString, final String[] header) {
+                final String nullToString, final String[] header) {
             if (isLineBreak(delimiter)) {
                 throw new IllegalArgumentException("The delimiter cannot be a line break");
             }
@@ -599,7 +599,7 @@ public class CSVFormat implements Serializable {
             final Quote quotePolicy, final Character commentStart,
             final Character escape, final boolean ignoreSurroundingSpaces,
             final boolean ignoreEmptyLines, final String recordSeparator,
-            String nullToString, final String[] header) {
+            final String nullToString, final String[] header) {
         if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
