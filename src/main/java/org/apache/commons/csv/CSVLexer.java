@@ -86,7 +86,13 @@ final class CSVLexer extends Lexer {
         }
 
         if (isStartOfLine(lastChar) && isCommentStart(c)) {
-            final String comment = in.readLine().trim();
+            String line = in.readLine();
+            if (line == null) {
+                token.type = EOF;
+                // don't set token.isReady here because no content
+                return token;                
+            }
+            final String comment = line.trim();
             token.content.append(comment);
             token.type = COMMENT;
             return token;
