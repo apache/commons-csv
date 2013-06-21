@@ -72,7 +72,7 @@ final class CSVLexer extends Lexer {
                 // reached end of file without any content (empty line at the end)
                 if (isEndOfFile(c)) {
                     token.type = EOF;
-                    // don't set tkn.isReady here because no content
+                    // don't set token.isReady here because no content
                     return token;
                 }
             }
@@ -81,7 +81,7 @@ final class CSVLexer extends Lexer {
         // did we reach eof during the last iteration already ? EOF
         if (isEndOfFile(lastChar) || (!isDelimiter(lastChar) && isEndOfFile(c))) {
             token.type = EOF;
-            // don't set tkn.isReady here because no content
+            // don't set token.isReady here because no content
             return token;
         }
 
@@ -108,14 +108,14 @@ final class CSVLexer extends Lexer {
                 token.type = TOKEN;
             } else if (eol) {
                 // empty token return EORECORD("")
-                // noop: tkn.content.append("");
+                // noop: token.content.append("");
                 token.type = EORECORD;
             } else if (isQuoteChar(c)) {
                 // consume encapsulated token
                 parseEncapsulatedToken(token);
             } else if (isEndOfFile(c)) {
                 // end of file return EOF()
-                // noop: tkn.content.append("");
+                // noop: token.content.append("");
                 token.type = EOF;
                 token.isReady = true; // there is data at EOF
             } else {
@@ -138,7 +138,7 @@ final class CSVLexer extends Lexer {
      * <li>an unescaped delimiter has been reached (TOKEN)</li>
      * </ul>
      *
-     * @param tkn
+     * @param token
      *            the current token
      * @param c
      *            the current character
@@ -146,38 +146,38 @@ final class CSVLexer extends Lexer {
      * @throws IOException
      *             on stream access error
      */
-    private Token parseSimpleToken(final Token tkn, int c) throws IOException {
-        // Faster to use while(true)+break than while(tkn.type == INVALID)
+    private Token parseSimpleToken(final Token token, int c) throws IOException {
+        // Faster to use while(true)+break than while(token.type == INVALID)
         while (true) {
             if (readEndOfLine(c)) {
-                tkn.type = EORECORD;
+                token.type = EORECORD;
                 break;
             } else if (isEndOfFile(c)) {
-                tkn.type = EOF;
-                tkn.isReady = true; // There is data at EOF
+                token.type = EOF;
+                token.isReady = true; // There is data at EOF
                 break;
             } else if (isDelimiter(c)) {
-                tkn.type = TOKEN;
+                token.type = TOKEN;
                 break;
             } else if (isEscape(c)) {
                 final int unescaped = readEscape();
                 if (unescaped == Constants.END_OF_STREAM) { // unexpected char after escape
-                    tkn.content.append((char) c).append((char) in.getLastChar());
+                    token.content.append((char) c).append((char) in.getLastChar());
                 } else {
-                    tkn.content.append((char) unescaped);
+                    token.content.append((char) unescaped);
                 }
                 c = in.read(); // continue
             } else {
-                tkn.content.append((char) c);
+                token.content.append((char) c);
                 c = in.read(); // continue
             }
         }
 
         if (ignoreSurroundingSpaces) {
-            trimTrailingSpaces(tkn.content);
+            trimTrailingSpaces(token.content);
         }
 
-        return tkn;
+        return token;
     }
 
     /**
@@ -194,13 +194,13 @@ final class CSVLexer extends Lexer {
      * </ul>
      * <li>end of stream has been reached (EOF)</li> </ul>
      *
-     * @param tkn
+     * @param token
      *            the current token
      * @return a valid token object
      * @throws IOException
      *             on invalid state: EOF before closing encapsulator or invalid character before delimiter or EOL
      */
-    private Token parseEncapsulatedToken(final Token tkn) throws IOException {
+    private Token parseEncapsulatedToken(final Token token) throws IOException {
         // save current line number in case needed for IOE
         final long startLineNumber = getCurrentLineNumber();
         int c;
@@ -210,29 +210,29 @@ final class CSVLexer extends Lexer {
             if (isEscape(c)) {
                 final int unescaped = readEscape();
                 if (unescaped == Constants.END_OF_STREAM) { // unexpected char after escape
-                    tkn.content.append((char) c).append((char) in.getLastChar());
+                    token.content.append((char) c).append((char) in.getLastChar());
                 } else {
-                    tkn.content.append((char) unescaped);
+                    token.content.append((char) unescaped);
                 }
             } else if (isQuoteChar(c)) {
                 if (isQuoteChar(in.lookAhead())) {
                     // double or escaped encapsulator -> add single encapsulator to token
                     c = in.read();
-                    tkn.content.append((char) c);
+                    token.content.append((char) c);
                 } else {
                     // token finish mark (encapsulator) reached: ignore whitespace till delimiter
                     while (true) {
                         c = in.read();
                         if (isDelimiter(c)) {
-                            tkn.type = TOKEN;
-                            return tkn;
+                            token.type = TOKEN;
+                            return token;
                         } else if (isEndOfFile(c)) {
-                            tkn.type = EOF;
-                            tkn.isReady = true; // There is data at EOF
-                            return tkn;
+                            token.type = EOF;
+                            token.isReady = true; // There is data at EOF
+                            return token;
                         } else if (readEndOfLine(c)) {
-                            tkn.type = EORECORD;
-                            return tkn;
+                            token.type = EORECORD;
+                            return token;
                         } else if (!isWhitespace(c)) {
                             // error invalid char between token and next delimiter
                             throw new IOException("(line " + getCurrentLineNumber() +
@@ -246,7 +246,7 @@ final class CSVLexer extends Lexer {
                         ") EOF reached before encapsulated token finished");
             } else {
                 // consume character
-                tkn.content.append((char) c);
+                token.content.append((char) c);
             }
         }
     }
