@@ -74,7 +74,7 @@ public class CSVFormat implements Serializable {
          * @throws IllegalArgumentException if the delimiter is a line break character
          */
         // package protected to give access without needing a synthetic accessor
-        CSVFormatBuilder(final char delimiter){
+        CSVFormatBuilder(final char delimiter) {
             this(delimiter, null, null, null, null, false, false, null, null, null);
         }
 
