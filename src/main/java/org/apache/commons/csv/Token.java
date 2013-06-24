@@ -63,7 +63,11 @@ final class Token {
         isReady = false;
     }
 
-    // Provide toString method for IDE debugging
+    /**
+     * Eases IDE debugging.
+     * 
+     * @return a string helpful for debugging.
+     */
     @Override
     public String toString() {
         return type.name() + " [" + content.toString() + "]";
