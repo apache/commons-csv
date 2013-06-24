@@ -18,14 +18,17 @@
 package org.apache.commons.csv;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -310,10 +313,28 @@ public class CSVPrinterTest {
     @Test
     public void testPrintCustomNullValues() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.toBuilder().withNullToString("NULL").build());
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.toBuilder().withNullString("NULL").build());
         printer.printRecord("a", null, "b");
         assertEquals("a,NULL,b" + recordSeparator, sw.toString());
         printer.close();
+    }
+
+    @Test
+    public void testParseCustomNullValues() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVFormat format = CSVFormat.DEFAULT.toBuilder().withNullString("NULL").build();
+        final CSVPrinter printer = new CSVPrinter(sw, format);
+        printer.printRecord("a", null, "b");
+        printer.close();
+        String csvString = sw.toString();
+        assertEquals("a,NULL,b" + recordSeparator, csvString);
+        final Iterable<CSVRecord> iterable = format.parse(new StringReader(csvString));
+        final Iterator<CSVRecord> iterator = iterable.iterator();
+        final CSVRecord record = iterator.next();
+        assertEquals("a", record.get(0));
+        assertEquals(null, record.get(1));
+        assertEquals("b", record.get(2));
+        assertFalse(iterator.hasNext());
     }
 
     @Test

@@ -63,7 +63,7 @@ public class CSVFormat implements Serializable {
         private boolean ignoreSurroundingSpaces; // Should leading/trailing spaces be ignored around values?
         private boolean ignoreEmptyLines;
         private String recordSeparator; // for outputs
-        private String nullToString; // for outputs
+        private String nullString;
         private String[] header;
 
         /**
@@ -75,7 +75,7 @@ public class CSVFormat implements Serializable {
          */
         // package protected to give access without needing a synthetic accessor
         CSVFormatBuilder(final char delimiter){
-            this(delimiter, null, null, null, null, false, false, null, Constants.EMPTY, null);
+            this(delimiter, null, null, null, null, false, false, null, null, null);
         }
 
         /**
@@ -95,11 +95,12 @@ public class CSVFormat implements Serializable {
          *            <tt>true</tt> when whitespaces enclosing values should be ignored
          * @param ignoreEmptyLines
          *            <tt>true</tt> when the parser should skip empty lines
-         * @param nullToString TODO
-         * @param header
-         *            the header
          * @param recordSeparator
          *            the record separator to use for output
+         * @param nullString
+         *            the String to convert to and from {@code null}. No substitution occurs if {@code null}
+         * @param header
+         *            the header
          * @throws IllegalArgumentException if the delimiter is a line break character
          */
         // package protected for use by test code
@@ -107,7 +108,7 @@ public class CSVFormat implements Serializable {
                 final Quote quotePolicy, final Character commentStart,
                 final Character escape, final boolean ignoreSurroundingSpaces,
                 final boolean ignoreEmptyLines, final String recordSeparator,
-                final String nullToString, final String[] header) {
+                String nullString, final String[] header) {
             if (isLineBreak(delimiter)) {
                 throw new IllegalArgumentException("The delimiter cannot be a line break");
             }
@@ -119,7 +120,7 @@ public class CSVFormat implements Serializable {
             this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;
             this.ignoreEmptyLines = ignoreEmptyLines;
             this.recordSeparator = recordSeparator;
-            this.nullToString = nullToString;
+            this.nullString = nullString;
             this.header = header;
         }
 
@@ -135,7 +136,7 @@ public class CSVFormat implements Serializable {
             this(format.delimiter, format.quoteChar, format.quotePolicy,
                     format.commentStart, format.escape,
                     format.ignoreSurroundingSpaces, format.ignoreEmptyLines,
-                    format.recordSeparator, format.nullToString, format.header);
+                    format.recordSeparator, format.nullString, format.header);
         }
 
         /**
@@ -146,7 +147,8 @@ public class CSVFormat implements Serializable {
         public CSVFormat build() {
             validate();
             return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullToString, header);
+                                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, 
+                                 header);
         }
 
         /**
@@ -331,15 +333,22 @@ public class CSVFormat implements Serializable {
         }
 
         /**
-         * Sets the String to use for null values for output.
-         *
-         * @param nullToString
-         *            the String to use for null values for output.
-         *
-         * @return This builder with the the specified output record separator
+         * Performs conversions to and from null for strings on input and output.
+         * <ul>
+         * <li>
+         * <strong>Reading:</strong> Converts strings equal to the given {@code nullString} to {@code null} when reading
+         * records.</li>
+         * <li>
+         * <strong>Writing:</strong> Writes {@code null} as the given {@code nullString} when writing records.</li>
+         * </ul>
+         * 
+         * @param nullString
+         *            the String to convert to and from {@code null}. No substitution occurs if {@code null}
+         * 
+         * @return This builder with the the specified null conversion string.
          */
-        public CSVFormatBuilder withNullToString(final String nullToString) {
-            this.nullToString = nullToString;
+        public CSVFormatBuilder withNullString(final String nullString) {
+            this.nullString = nullString;
             return this;
         }
 
@@ -439,9 +448,9 @@ public class CSVFormat implements Serializable {
      * @return a standard comma separated format builder, as for {@link #RFC4180} but allowing empty lines.
      */
     public static CSVFormatBuilder newBuilder() {
-        return new CSVFormatBuilder(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, Constants.EMPTY,
-                null);
+        return new CSVFormatBuilder(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, null, null);
     }
+    
     private final char delimiter;
     private final Character quoteChar;
     private final Quote quotePolicy;
@@ -449,11 +458,8 @@ public class CSVFormat implements Serializable {
     private final Character escape;
     private final boolean ignoreSurroundingSpaces; // Should leading/trailing spaces be ignored around values?
     private final boolean ignoreEmptyLines;
-
     private final String recordSeparator; // for outputs
-
-    private final String nullToString; // for outputs
-
+    private final String nullString;
     private final String[] header;
 
     /**
@@ -588,8 +594,8 @@ public class CSVFormat implements Serializable {
      *            <tt>true</tt> when the parser should skip empty lines
      * @param recordSeparator
      *            the line separator to use for output
-     * @param nullToString
-     *            the String to use to write <code>null</code> values.
+     * @param nullString
+     *            the line separator to use for output
      * @param header
      *            the header
      * @throws IllegalArgumentException if the delimiter is a line break character
@@ -599,7 +605,7 @@ public class CSVFormat implements Serializable {
             final Quote quotePolicy, final Character commentStart,
             final Character escape, final boolean ignoreSurroundingSpaces,
             final boolean ignoreEmptyLines, final String recordSeparator,
-            final String nullToString, final String[] header) {
+            final String nullString, final String[] header) {
         if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
@@ -611,7 +617,7 @@ public class CSVFormat implements Serializable {
         this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;
         this.ignoreEmptyLines = ignoreEmptyLines;
         this.recordSeparator = recordSeparator;
-        this.nullToString = nullToString;
+        this.nullString = nullString;
         this.header = header == null ? null : header.clone();
     }
 
@@ -744,12 +750,20 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns the value to use for writing null values.
-     *
-     * @return the value to use for writing null values.
+     * Gets the String to convert to and from {@code null}.
+     * <ul>
+     * <li>
+     * <strong>Reading:</strong> Converts strings equal to the given {@code nullString} to {@code null} when reading
+     * records.
+     * </li>
+     * <li>
+     * <strong>Writing:</strong> Writes {@code null} as the given {@code nullString} when writing records.</li>
+     * </ul>
+     * 
+     * @return the String to convert to and from {@code null}. No substitution occurs if {@code null}
      */
-    public String getNullToString() {
-        return nullToString;
+    public String getNullString() {
+        return nullString;
     }
 
     /**

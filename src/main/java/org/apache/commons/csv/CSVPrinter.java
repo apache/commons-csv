@@ -337,8 +337,14 @@ public class CSVPrinter implements Flushable, Closeable {
      */
     public void print(final Object value) throws IOException {
         // null values are considered empty
-        final String strValue = value == null ? format.getNullToString() : value.toString();
-        print(value, strValue, 0, strValue.length());
+        String strValue;
+        if (value == null) {
+            final String nullString = format.getNullString();
+            strValue = nullString == null ? Constants.EMPTY : nullString;
+        } else {
+            strValue = value.toString();
+        }
+        this.print(value, strValue, 0, strValue.length());
     }
 
     /**

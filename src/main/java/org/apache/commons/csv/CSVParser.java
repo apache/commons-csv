@@ -85,6 +85,7 @@ public class CSVParser implements Iterable<CSVRecord> {
     private final Lexer lexer;
     private final Map<String, Integer> headerMap;
     private long recordNumber;
+    private final CSVFormat format;
 
     // the following objects are shared to reduce garbage
 
@@ -120,7 +121,8 @@ public class CSVParser implements Iterable<CSVRecord> {
      */
     public CSVParser(final Reader input, final CSVFormat format) throws IOException {
         this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));
-        this.headerMap = initializeHeader(format);
+        this.format = format;
+        this.headerMap = initializeHeader();
     }
 
     /**
@@ -189,14 +191,14 @@ public class CSVParser implements Iterable<CSVRecord> {
             lexer.nextToken(reusableToken);
             switch (reusableToken.type) {
             case TOKEN:
-                record.add(reusableToken.content.toString());
+                this.addRecordValue();
                 break;
             case EORECORD:
-                record.add(reusableToken.content.toString());
+                this.addRecordValue();
                 break;
             case EOF:
                 if (reusableToken.isReady) {
-                    record.add(reusableToken.content.toString());
+                    this.addRecordValue();
                 }
                 break;
             case INVALID:
@@ -221,6 +223,15 @@ public class CSVParser implements Iterable<CSVRecord> {
         return result;
     }
 
+    private void addRecordValue() {
+        final String input = reusableToken.content.toString();
+        final String nullString = this.format.getNullString();
+        if (nullString == null) {
+            record.add(input);
+        } else {
+            record.add(input.equalsIgnoreCase(nullString) ? null : input);
+        }}
+
     /**
      * Parses the CSV input according to the given format and returns the content as an array of {@link CSVRecord}
      * entries.
@@ -243,7 +254,7 @@ public class CSVParser implements Iterable<CSVRecord> {
     /**
      * Initializes the name to index mapping if the format defines a header.
      */
-    private Map<String, Integer> initializeHeader(final CSVFormat format) throws IOException {
+    private Map<String, Integer> initializeHeader() throws IOException {
         Map<String, Integer> hdrMap = null;
         if (format.getHeader() != null) {
             hdrMap = new LinkedHashMap<String, Integer>();
