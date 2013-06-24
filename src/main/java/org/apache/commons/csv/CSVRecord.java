@@ -104,11 +104,11 @@ public class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Checks whether a given column is mapped.
+     * Checks whether a given column is mapped, i.e. its name has been defined to the parser.
      *
      * @param name
      *            the name of the column to be retrieved.
-     * @return whether a given columns is mapped.
+     * @return whether a given column is mapped.
      */
     public boolean isMapped(final String name) {
         return mapping != null ? mapping.containsKey(name) : false;
