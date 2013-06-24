@@ -49,5 +49,20 @@ final class Constants {
 
     /** According to RFC 4180, line breaks are delimited by CRLF */
     static final String CRLF = "\r\n";
+    
+    /**
+     * Unicode line separator.
+     */
+    static final String LINE_SEPARATOR = "\u2028";
+
+    /**
+     * Unicode paragraph separator.
+     */
+    static final String PARAGRAPH_SEPARATOR = "\u2029";
+
+    /**
+     * Unicode next line.
+     */
+    static final String NEXT_LINE = "\u0085";
 
 }
