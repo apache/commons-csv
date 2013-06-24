@@ -207,7 +207,7 @@ public class CSVParser implements Iterable<CSVRecord> {
                 if (sb == null) { // first comment for this record
                     sb = new StringBuilder();
                 } else {
-                    sb.append("\n");
+                    sb.append(Constants.LF);
                 }
                 sb.append(reusableToken.content);
                 reusableToken.type = TOKEN; // Read another token
