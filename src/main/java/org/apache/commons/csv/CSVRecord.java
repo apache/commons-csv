@@ -119,7 +119,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *
      * @param name
      *            the name of the column to be retrieved.
-     * @return whether a given columns is mapped.
+     * @return whether a given columns is mapped and has a value
      */
     public boolean isSet(final String name) {
         return isMapped(name) && mapping.get(name).intValue() < values.length;
