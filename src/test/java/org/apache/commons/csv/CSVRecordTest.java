@@ -18,6 +18,7 @@ package org.apache.commons.csv;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
@@ -67,6 +68,11 @@ public class CSVRecordTest {
     public void testGetStringInconsistentRecord() {
         header.put("fourth", Integer.valueOf(4));
         recordWithHeader.get("fourth");
+    }
+
+    @Test
+    public void testGetUnmapped() {
+        assertNull(recordWithHeader.get("fourth"));
     }
 
     @Test
