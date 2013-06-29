@@ -21,7 +21,7 @@ limitations under the License.
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>30</version>
+    <version>31</version>
   </parent>
   <groupId>org.apache.commons</groupId>
   <artifactId>commons-csv</artifactId>
@@ -117,8 +117,8 @@ CSV files of various types.
     <commons.componentid>csv</commons.componentid>
     <commons.jira.id>CSV</commons.jira.id>
     <commons.jira.pid>12313222</commons.jira.pid>
-    <maven.compile.source>1.5</maven.compile.source>
-    <maven.compile.target>1.5</maven.compile.target>
+    <maven.compiler.source>1.5</maven.compiler.source>
+    <maven.compiler.target>1.5</maven.compiler.target>
     <!-- Ensure copies work OK (can be removed later when this is in parent POM) -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
