@@ -21,7 +21,7 @@ limitations under the License.
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>31</version>
+    <version>32</version>
   </parent>
   <groupId>org.apache.commons</groupId>
   <artifactId>commons-csv</artifactId>
