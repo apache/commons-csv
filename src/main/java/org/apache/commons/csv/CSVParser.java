@@ -83,15 +83,15 @@ import java.util.NoSuchElementException;
  */
 public class CSVParser implements Iterable<CSVRecord>, Closeable {
 
-    private final Lexer lexer;
-    private final Map<String, Integer> headerMap;
-    private long recordNumber;
     private final CSVFormat format;
+    private final Map<String, Integer> headerMap;
+    private final Lexer lexer;
+    /** A record buffer for getRecord(). Grows as necessary and is reused. */
+    private final List<String> record = new ArrayList<String>();
 
     // the following objects are shared to reduce garbage
 
-    /** A record buffer for getRecord(). Grows as necessary and is reused. */
-    private final List<String> record = new ArrayList<String>();
+    private long recordNumber;
     private final Token reusableToken = new Token();
 
     /**
@@ -143,88 +143,6 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
         this(new StringReader(input), format);
     }
 
-    /**
-     * Returns a copy of the header map that iterates in column order.
-     * <p>
-     * The map keys are column names.
-     * The map values are 0-based indices.
-     *
-     * @return a copy of the header map that iterates in column order.
-     */
-    public Map<String, Integer> getHeaderMap() {
-        return new LinkedHashMap<String, Integer>(headerMap);
-    }
-
-    /**
-     * Returns the current line number in the input stream.
-     * <p/>
-     * ATTENTION: If your CSV input has multi-line values, the returned number does not correspond to the record number.
-     *
-     * @return current line number
-     */
-    public long getCurrentLineNumber() {
-        return lexer.getCurrentLineNumber();
-    }
-
-    /**
-     * Returns the current record number in the input stream.
-     * <p/>
-     * ATTENTION: If your CSV input has multi-line values, the returned number does not correspond to the line number.
-     *
-     * @return current line number
-     */
-    public long getRecordNumber() {
-        return recordNumber;
-    }
-
-    /**
-     * Parses the next record from the current point in the stream.
-     *
-     * @return the record as an array of values, or <tt>null</tt> if the end of the stream has been reached
-     * @throws IOException
-     *             on parse error or input read-failure
-     */
-    CSVRecord nextRecord() throws IOException {
-        CSVRecord result = null;
-        record.clear();
-        StringBuilder sb = null;
-        do {
-            reusableToken.reset();
-            lexer.nextToken(reusableToken);
-            switch (reusableToken.type) {
-            case TOKEN:
-                this.addRecordValue();
-                break;
-            case EORECORD:
-                this.addRecordValue();
-                break;
-            case EOF:
-                if (reusableToken.isReady) {
-                    this.addRecordValue();
-                }
-                break;
-            case INVALID:
-                throw new IOException("(line " + getCurrentLineNumber() + ") invalid parse sequence");
-            case COMMENT: // Ignored currently
-                if (sb == null) { // first comment for this record
-                    sb = new StringBuilder();
-                } else {
-                    sb.append(Constants.LF);
-                }
-                sb.append(reusableToken.content);
-                reusableToken.type = TOKEN; // Read another token
-                break;
-            }
-        } while (reusableToken.type == TOKEN);
-
-        if (!record.isEmpty()) {
-            recordNumber++;
-            final String comment = sb == null ? null : sb.toString();
-            result = new CSVRecord(record.toArray(new String[record.size()]), headerMap, comment, this.recordNumber);
-        }
-        return result;
-    }
-
     private void addRecordValue() {
         final String input = reusableToken.content.toString();
         final String nullString = this.format.getNullString();
@@ -245,6 +163,40 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
 			lexer.close();
 		}		
 	}
+
+    /**
+     * Returns the current line number in the input stream.
+     * <p/>
+     * ATTENTION: If your CSV input has multi-line values, the returned number does not correspond to the record number.
+     *
+     * @return current line number
+     */
+    public long getCurrentLineNumber() {
+        return lexer.getCurrentLineNumber();
+    }
+
+    /**
+     * Returns a copy of the header map that iterates in column order.
+     * <p>
+     * The map keys are column names.
+     * The map values are 0-based indices.
+     *
+     * @return a copy of the header map that iterates in column order.
+     */
+    public Map<String, Integer> getHeaderMap() {
+        return new LinkedHashMap<String, Integer>(headerMap);
+    }
+
+    /**
+     * Returns the current record number in the input stream.
+     * <p/>
+     * ATTENTION: If your CSV input has multi-line values, the returned number does not correspond to the line number.
+     *
+     * @return current line number
+     */
+    public long getRecordNumber() {
+        return recordNumber;
+    }
 
     /**
      * Parses the CSV input according to the given format and returns the content as an array of {@link CSVRecord}
@@ -293,6 +245,10 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
         }
         return hdrMap;
     }
+
+    public boolean isClosed() {
+		return lexer.isClosed();
+	}
 
     /**
      * Returns an iterator on the records. IOExceptions occurring during the iteration are wrapped in a
@@ -346,8 +302,52 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
         };
     }
 
-	public boolean isClosed() {
-		return lexer.isClosed();
-	}
+	/**
+     * Parses the next record from the current point in the stream.
+     *
+     * @return the record as an array of values, or <tt>null</tt> if the end of the stream has been reached
+     * @throws IOException
+     *             on parse error or input read-failure
+     */
+    CSVRecord nextRecord() throws IOException {
+        CSVRecord result = null;
+        record.clear();
+        StringBuilder sb = null;
+        do {
+            reusableToken.reset();
+            lexer.nextToken(reusableToken);
+            switch (reusableToken.type) {
+            case TOKEN:
+                this.addRecordValue();
+                break;
+            case EORECORD:
+                this.addRecordValue();
+                break;
+            case EOF:
+                if (reusableToken.isReady) {
+                    this.addRecordValue();
+                }
+                break;
+            case INVALID:
+                throw new IOException("(line " + getCurrentLineNumber() + ") invalid parse sequence");
+            case COMMENT: // Ignored currently
+                if (sb == null) { // first comment for this record
+                    sb = new StringBuilder();
+                } else {
+                    sb.append(Constants.LF);
+                }
+                sb.append(reusableToken.content);
+                reusableToken.type = TOKEN; // Read another token
+                break;
+            }
+        } while (reusableToken.type == TOKEN);
+
+        if (!record.isEmpty()) {
+            recordNumber++;
+            final String comment = sb == null ? null : sb.toString();
+            result = new CSVRecord(record.toArray(new String[record.size()]), headerMap, comment, this.recordNumber);
+        }
+        return result;
+    }
 
 }
