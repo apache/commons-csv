@@ -148,6 +148,10 @@ abstract class Lexer implements Closeable {
 
     abstract Token nextToken(Token reusableToken) throws IOException;
 
+    boolean isClosed() {
+    	return in.isClosed();
+    }
+    
     /**
      * @return true if the given char is a whitespace character
      */
@@ -197,10 +201,11 @@ abstract class Lexer implements Closeable {
 
     /**
      * Closes resources.
+     * 
+	 * @throws IOException
+	 *             If an I/O error occurs
      */
 	public void close() throws IOException {
-		if (in != null) {
-			in.close();
-		}
+		in.close();
 	}
 }

@@ -236,6 +236,9 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     /**
      * Closes resources.
+     * 
+	 * @throws IOException
+	 *             If an I/O error occurs
      */
 	public void close() throws IOException {
 		if (lexer != null) {
@@ -309,6 +312,9 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
             }
 
             public boolean hasNext() {
+            	if (isClosed()) {
+            		return false;
+            	}
                 if (current == null) {
                     current = getNextRecord();
                 }
@@ -317,6 +323,9 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
             }
 
             public CSVRecord next() {
+            	if (isClosed()) {
+            		return null;
+            	}
                 CSVRecord next = current;
                 current = null;
 
@@ -336,5 +345,9 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
             }
         };
     }
+
+	public boolean isClosed() {
+		return lexer.isClosed();
+	}
 
 }

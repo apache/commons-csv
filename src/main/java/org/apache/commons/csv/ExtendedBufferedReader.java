@@ -41,6 +41,8 @@ final class ExtendedBufferedReader extends BufferedReader {
 
     /** The count of EOLs (CR/LF/CRLF) seen so far */
     private long eolCounter = 0;
+    
+    private boolean closed;
 
     /**
      * Created extended buffered reader using default buffer-size
@@ -154,4 +156,23 @@ final class ExtendedBufferedReader extends BufferedReader {
         }
         return eolCounter + 1; // Allow for counter being incremented only at EOL
     }
+
+	public boolean isClosed() {
+		return closed;
+	}
+
+	/**
+	 * Closes the stream.
+	 * 
+	 * @throws IOException
+	 *             If an I/O error occurs
+	 */
+	@Override
+	public void close() throws IOException {
+		// Set ivars before calling super close() in case close() throws an IOException.
+		closed = true;
+		lastChar = END_OF_STREAM;
+		super.close();
+	}
+
 }

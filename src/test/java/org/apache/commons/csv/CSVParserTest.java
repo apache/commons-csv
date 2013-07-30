@@ -39,7 +39,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.junit.Assert;
-
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -396,6 +395,19 @@ public class CSVParserTest {
     }
 
     @Test
+    public void testClose() throws Exception {
+        final Reader in = new StringReader("# comment\na,b,c\n1,2,3\nx,y,z");
+        final CSVParser parser = CSVFormat.DEFAULT.withCommentStart('#').withHeader().parse(in);
+        final Iterator<CSVRecord> records = parser.iterator();
+        assertTrue(records.hasNext());
+        parser.close();
+        assertFalse(records.hasNext());
+        assertNull(records.next());
+        assertFalse(records.hasNext());
+        assertNull(records.next());
+    }
+
+    @Test
     public void testCarriageReturnEndings() throws IOException {
         final String code = "foo\rbaar,\rhello,world\r,kanu";
         final CSVParser parser = new CSVParser(new StringReader(code));
@@ -605,22 +617,22 @@ public class CSVParserTest {
 
     @Test
     public void testGetLineNumberWithLF() throws Exception {
-        validateLineNumbers(String.valueOf(LF));
+        this.validateLineNumbers(String.valueOf(LF));
     }
 
     @Test
     public void testGetLineNumberWithCRLF() throws Exception {
-        validateLineNumbers(CRLF);
+        this.validateLineNumbers(CRLF);
     }
 
     @Test
     public void testGetLineNumberWithCR() throws Exception {
-        validateLineNumbers(String.valueOf(CR));
+        this.validateLineNumbers(String.valueOf(CR));
     }
 
     @Test
     public void testGetRecordNumberWithLF() throws Exception {
-        validateRecordNumbers(String.valueOf(LF));
+        this.validateRecordNumbers(String.valueOf(LF));
     }
 
     @Test
@@ -649,17 +661,17 @@ public class CSVParserTest {
 
     @Test
     public void testGetRecordNumberWithCRLF() throws Exception {
-        validateRecordNumbers(CRLF);
+        this.validateRecordNumbers(CRLF);
     }
 
     @Test
     public void testGetRecordNumberWithCR() throws Exception {
-        validateRecordNumbers(String.valueOf(CR));
+        this.validateRecordNumbers(String.valueOf(CR));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidFormat() throws Exception {
-        CSVFormat invalidFormat = CSVFormat.DEFAULT.withDelimiter(CR);
+        final CSVFormat invalidFormat = CSVFormat.DEFAULT.withDelimiter(CR);
         new CSVParser((Reader) null, invalidFormat);
     }
 
