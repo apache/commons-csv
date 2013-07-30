@@ -452,6 +452,10 @@ public class CSVFormat implements Serializable {
 	/**
 	 * Parses the specified content.
 	 * 
+	 * <p>
+	 * See also the various static parse methods on {@link CSVParser}.
+	 * </p>
+	 * 
 	 * @param in
 	 *            the input stream
 	 * @return a parser over a stream of {@link #CSVRecord}s.
