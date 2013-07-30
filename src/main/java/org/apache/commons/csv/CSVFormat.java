@@ -17,11 +17,11 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Constants.BACKSLASH;
 import static org.apache.commons.csv.Constants.COMMA;
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.DOUBLE_QUOTE_CHAR;
-import static org.apache.commons.csv.Constants.BACKSLASH;
 import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.TAB;
 
@@ -30,6 +30,8 @@ import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Specifies the format of a CSV file and parses input.
@@ -529,6 +531,14 @@ public class CSVFormat implements Serializable {
 
         if (escape == null && quotePolicy == Quote.NONE) {
             throw new IllegalStateException("No quotes mode set but no escape character is set");
+        }
+        
+        if (header != null) {
+            Set<String> set = new HashSet<String>(header.length);
+            set.addAll(Arrays.asList(header));
+            if (set.size() != header.length) {
+                throw new IllegalStateException("The header contains duplicate names: " + Arrays.toString(header));
+            }
         }
     }
 

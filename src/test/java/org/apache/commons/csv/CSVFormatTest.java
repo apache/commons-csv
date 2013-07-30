@@ -57,6 +57,11 @@ public class CSVFormatTest {
         CSVFormat.DEFAULT.withDelimiter('!').withEscape('!').validate();
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void testDuplicateHeaderElements() {
+        CSVFormat.DEFAULT.withHeader("A", "A").validate();
+    }
+
     @Test
     public void testEquals() {
         final CSVFormat right = CSVFormat.DEFAULT;
