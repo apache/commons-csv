@@ -88,7 +88,7 @@ public class CSVFileParserTest {
         final String[] split = line.split(" ");
         assertTrue(testName+" require 1 param", split.length >= 1);
          // first line starts with csv data file name
-        final BufferedReader csvFile = new BufferedReader(new FileReader(new File(BASE, split[0])));
+        final BufferedReader csvFileReader = new BufferedReader(new FileReader(new File(BASE, split[0])));
         CSVFormat format = CSVFormat.newFormat(',').withQuoteChar('"');
         boolean checkComments = false;
         for(int i=1; i < split.length; i++) {
@@ -110,7 +110,7 @@ public class CSVFileParserTest {
         assertEquals(testName+" Expected format ", line, format.toString());
 
         // Now parse the file and compare against the expected results
-        for(final CSVRecord record : format.parse(csvFile)) {
+        for(final CSVRecord record : format.parse(csvFileReader)) {
             String parsed = record.toString();
             if (checkComments) {
                 final String comment = record.getComment().replace("\n", "\\n");
