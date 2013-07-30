@@ -507,6 +507,26 @@ public class CSVParserTest {
     }
 
     @Test
+    public void testSkipSetHeader() throws Exception {
+        final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("a", "b", "c").parse(in).iterator();
+        final CSVRecord record = records.next();
+        assertEquals("1", record.get("a"));
+        assertEquals("2", record.get("b"));
+        assertEquals("3", record.get("c"));
+    }
+
+    @Test
+    public void testSkipAutoHeader() throws Exception {
+        final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader().parse(in).iterator();
+        final CSVRecord record = records.next();
+        assertEquals("1", record.get("a"));
+        assertEquals("2", record.get("b"));
+        assertEquals("3", record.get("c"));
+    }
+
+    @Test
     public void testHeaderComment() throws Exception {
         final Reader in = new StringReader("# comment\na,b,c\n1,2,3\nx,y,z");
 
@@ -529,7 +549,7 @@ public class CSVParserTest {
 
         final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("A", "B", "C").parse(in).iterator();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             assertTrue(records.hasNext());
             final CSVRecord record = records.next();
             assertTrue(record.isMapped("A"));
@@ -545,24 +565,31 @@ public class CSVParserTest {
     }
 
     @Test
+    public void testProvidedHeaderAuto() throws Exception {
+        final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
+
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader().parse(in).iterator();
+
+        for (int i = 0; i < 2; i++) {
+            assertTrue(records.hasNext());
+            final CSVRecord record = records.next();
+            assertTrue(record.isMapped("a"));
+            assertTrue(record.isMapped("b"));
+            assertTrue(record.isMapped("c"));
+            assertFalse(record.isMapped("NOT MAPPED"));
+            assertEquals(record.get(0), record.get("a"));
+            assertEquals(record.get(1), record.get("b"));
+            assertEquals(record.get(2), record.get("c"));
+        }
+
+        assertFalse(records.hasNext());
+    }
+
+    @Test
     public void testMappedButNotSetAsOutlook2007ContactExport() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2\nx,y,z");
-
         final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("A", "B", "C").parse(in).iterator();
-
-        // header record
-        assertTrue(records.hasNext());
-        CSVRecord record = records.next();
-        assertTrue(record.isMapped("A"));
-        assertTrue(record.isMapped("B"));
-        assertTrue(record.isMapped("C"));
-        assertTrue(record.isSet("A"));
-        assertTrue(record.isSet("B"));
-        assertTrue(record.isSet("C"));
-        assertEquals("a", record.get("A"));
-        assertEquals("b", record.get("B"));
-        assertEquals("c", record.get("C"));
-        assertTrue(record.isConsistent());
+        CSVRecord record;
 
         // 1st record
         record = records.next();
@@ -604,7 +631,7 @@ public class CSVParserTest {
         final Iterator<CSVRecord> records = parser.iterator();
 
         // Parse to make sure getHeaderMap did not have a side-effect.
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             assertTrue(records.hasNext());
             final CSVRecord record = records.next();
             assertEquals(record.get(0), record.get("A"));

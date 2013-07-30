@@ -323,12 +323,12 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
         Map<String, Integer> hdrMap = null;
         String[] formatHeader = this.format.getHeader();
         if (formatHeader != null) {
+            final CSVRecord record = this.nextRecord();
             hdrMap = new LinkedHashMap<String, Integer>();
 
             String[] header = null;
             if (formatHeader.length == 0) {
                 // read the header from the first line of the file
-                final CSVRecord record = this.nextRecord();
                 if (record != null) {
                     header = record.values();
                 }

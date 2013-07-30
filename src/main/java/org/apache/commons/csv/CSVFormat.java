@@ -614,22 +614,24 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Sets the header of the format. The header can either be parsed automatically from the
-     * input file with:
-     *
+     * Sets the header of the format. The header can either be parsed automatically from the input file with:
+     * 
      * <pre>
      * CSVFormat format = aformat.withHeader();
      * </pre>
-     *
+     * 
      * or specified manually with:
-     *
+     * 
      * <pre>
      * CSVFormat format = aformat.withHeader(&quot;name&quot;, &quot;email&quot;, &quot;phone&quot;);
      * </pre>
-     *
+     * 
+     * When this option is is set to any non-null value, the first record is the first <em>data</em> record, not the
+     * header record.
+     * 
      * @param header
      *            the header, <tt>null</tt> if disabled, empty if parsed automatically, user specified otherwise.
-     *
+     * 
      * @return A new CSVFormat that is equal to this but with the specified header
      */
     public CSVFormat withHeader(final String... header) {
