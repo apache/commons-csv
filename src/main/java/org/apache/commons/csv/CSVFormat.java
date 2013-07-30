@@ -38,7 +38,7 @@ import java.util.Arrays;
  * </p>
  * You can extend a format through a builder. For example, to extend the Excel format with columns header, you write:
  * </p>
- * <pre>CSVFormat.EXCEL.toBuilder().withHeader(&quot;Col1&quot;, &quot;Col2&quot;, &quot;Col3&quot;).build();</pre>
+ * <pre>CSVFormat.EXCEL.toBuilder().withHeader(&quot;Col1&quot;, &quot;Col2&quot;, &quot;Col3&quot;);</pre>
  * <p>
  * You can parse through a format. For example, to parse an Excel file with columns header, you write:
  * </p>
@@ -108,7 +108,7 @@ public class CSVFormat implements Serializable {
      * For example for parsing or generating a CSV file on a French system the following format will be used:
      *
      * <pre>
-     * CSVFormat fmt = CSVFormat.newBuilder(EXCEL).withDelimiter(';').build();
+     * CSVFormat fmt = CSVFormat.newBuilder(EXCEL).withDelimiter(';');
      * </pre>
      * Settings are:
      * <ul>
