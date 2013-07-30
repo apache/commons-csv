@@ -25,6 +25,7 @@ import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.TAB;
 import static org.apache.commons.csv.Constants.UNDEFINED;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 /**
@@ -32,7 +33,7 @@ import java.io.IOException;
  *
  * @version $Id$
  */
-abstract class Lexer {
+abstract class Lexer implements Closeable {
 
     /**
      * Constant char to use for disabling comments, escapes and encapsulation. The value -2 is used because it
@@ -191,7 +192,15 @@ abstract class Lexer {
         return c == delimiter ||
                c == escape ||
                c == quoteChar ||
-               c == commmentStart
-               ;
+               c == commmentStart;
     }
+
+    /**
+     * Closes resources.
+     */
+	public void close() throws IOException {
+		if (in != null) {
+			in.close();
+		}
+	}
 }

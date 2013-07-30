@@ -19,6 +19,7 @@ package org.apache.commons.csv;
 
 import static org.apache.commons.csv.Token.Type.TOKEN;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -80,7 +81,7 @@ import java.util.NoSuchElementException;
  *
  * @version $Id$
  */
-public class CSVParser implements Iterable<CSVRecord> {
+public class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     private final Lexer lexer;
     private final Map<String, Integer> headerMap;
@@ -234,6 +235,15 @@ public class CSVParser implements Iterable<CSVRecord> {
         }}
 
     /**
+     * Closes resources.
+     */
+	public void close() throws IOException {
+		if (lexer != null) {
+			lexer.close();
+		}		
+	}
+
+    /**
      * Parses the CSV input according to the given format and returns the content as an array of {@link CSVRecord}
      * entries.
      * <p/>
@@ -326,4 +336,5 @@ public class CSVParser implements Iterable<CSVRecord> {
             }
         };
     }
+
 }
