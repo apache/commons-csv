@@ -66,7 +66,7 @@ public class PerformanceTest {
     }
 
     private long parse(final Reader in, final boolean traverseColumns) throws IOException {
-        final CSVFormat format = CSVFormat.newBuilder().withIgnoreSurroundingSpaces(false).build();
+        final CSVFormat format = CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(false);
         long recordCount = 0;
         for (final CSVRecord record : format.parse(in)) {
             recordCount++;

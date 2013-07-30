@@ -58,6 +58,7 @@ public class CSVPrinter implements Flushable, Closeable {
     public CSVPrinter(final Appendable out, final CSVFormat format) {
         this.out = out;
         this.format = format == null ? CSVFormat.DEFAULT : format;
+        format.validate();
     }
 
     // ======================================================

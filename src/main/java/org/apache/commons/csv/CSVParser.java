@@ -42,7 +42,7 @@ import java.util.NoSuchElementException;
  *
  * <pre>
  * Reader in = new StringReader(&quot;a\tb\nc\td&quot;);
- * Iterable&lt;CSVRecord&gt; parser = CSVFormat.newBuilder()
+ * Iterable&lt;CSVRecord&gt; parser = CSVFormat.DEFAULT
  *     .withCommentStart('#')
  *     .withDelimiter('\t')
  *     .withQuoteChar('"').parse(in);
@@ -120,8 +120,9 @@ public class CSVParser implements Iterable<CSVRecord> {
      *             If an I/O error occurs
      */
     public CSVParser(final Reader input, final CSVFormat format) throws IOException {
-        this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));
+        format.validate();
         this.format = format;
+        this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));
         this.headerMap = initializeHeader();
     }
 
