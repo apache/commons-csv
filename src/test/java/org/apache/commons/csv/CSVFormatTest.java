@@ -31,6 +31,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -224,9 +225,27 @@ public class CSVFormatTest {
     @Test
     public void testWithHeader() throws Exception {
         String[] header = new String[]{"one", "two", "three"};
+        // withHeader() makes a copy of the header array.
         CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
         assertArrayEquals(header, formatWithHeader.getHeader());
         assertNotSame(header, formatWithHeader.getHeader());
+        header[0] = "A";
+        header[1] = "B";
+        header[2] = "C";
+        assertFalse(Arrays.equals(formatWithHeader.getHeader(), header));
+    }
+
+    @Test
+    public void testGetHeader() throws Exception {
+        String[] header = new String[]{"one", "two", "three"};
+        CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
+        // getHeader() makes a copy of the header array.
+        String[] headerCopy = formatWithHeader.getHeader();
+        headerCopy[0] = "A";
+        headerCopy[1] = "B";
+        headerCopy[2] = "C";
+        assertFalse(Arrays.equals(formatWithHeader.getHeader(), headerCopy));
+        assertNotSame(formatWithHeader.getHeader(), headerCopy);
     }
 
     @Test

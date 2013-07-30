@@ -321,18 +321,19 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     private Map<String, Integer> initializeHeader() throws IOException {
         Map<String, Integer> hdrMap = null;
-        if (this.format.getHeader() != null) {
+        String[] formatHeader = this.format.getHeader();
+        if (formatHeader != null) {
             hdrMap = new LinkedHashMap<String, Integer>();
 
             String[] header = null;
-            if (this.format.getHeader().length == 0) {
+            if (formatHeader.length == 0) {
                 // read the header from the first line of the file
                 final CSVRecord record = this.nextRecord();
                 if (record != null) {
                     header = record.values();
                 }
             } else {
-                header = this.format.getHeader();
+                header = formatHeader;
             }
 
             // build the name to index mappings

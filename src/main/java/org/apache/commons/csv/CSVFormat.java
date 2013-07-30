@@ -334,8 +334,13 @@ public class CSVFormat implements Serializable {
         return escape;
     }
 
-    String[] getHeader() {
-        return header;
+    /**
+     * Returns a copy of the header array. 
+     * 
+     * @return a copy of the header array
+     */
+    public String[] getHeader() {
+        return header != null ? header.clone() : null;
     }
 
     /**
