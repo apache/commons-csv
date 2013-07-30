@@ -93,6 +93,21 @@ import java.util.NoSuchElementException;
 public class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     /**
+     * Creates a parser for the given {@link File}.
+     * 
+     * @param file
+     *            a CSV file
+     * @param format
+     *            the CSVFormat used for CSV parsing
+     * @return a new parser
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    public static CSVParser parseFile(File file, final CSVFormat format) throws IOException {
+        return new CSVParser(new FileReader(file), format);
+    }
+    
+    /**
      * Creates a parser for the given resource.
      * 
      * <p>
@@ -128,7 +143,7 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
     public static CSVParser parseString(String string) throws IOException {
         return parseString(string, CSVFormat.DEFAULT);
     }
-    
+
     /**
      * Creates a parser for the given {@link String}.
      * 
@@ -142,21 +157,6 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     public static CSVParser parseString(String string, final CSVFormat format) throws IOException {
         return new CSVParser(new StringReader(string), format);
-    }
-
-    /**
-     * Creates a parser for the given {@link File}.
-     * 
-     * @param file
-     *            a CSV file
-     * @param format
-     *            the CSVFormat used for CSV parsing
-     * @return a new parser
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    public static CSVParser parseFile(File file, final CSVFormat format) throws IOException {
-        return new CSVParser(new FileReader(file), format);
     }
 
     /**
