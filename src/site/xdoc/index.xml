@@ -25,13 +25,14 @@ limitations under the License.
 <section name="Using Commons CSV">
   <p>Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.</p>
   <p>To parse an Excel CSV file, write:</p>
-  <source>Reader in = ...;
+  <source>Reader in = new FileReader(&quot;path/to/file.csv&quot;);
 Iterable&lt;CSVRecord&gt; parser = CSVFormat.EXCEL.parse(in);
 for (CSVRecord record : parser) {
-    ...
+  String lastName = record.get("Last Name");
+  String firstName = record.get("First Name");
 }</source>
   <p>Other formats are available, please consult the Javadoc for <a href="apidocs/org/apache/commons/csv/CSVFormat.html">CSVFormat</a> and
-  <a href="apidocs/org/apache/commons/csv/CSVParser.html">CSVParser</a></p>
+  <a href="apidocs/org/apache/commons/csv/CSVParser.html">CSVParser</a>.</p>
 </section>
 
 <section name="Getting the code">
