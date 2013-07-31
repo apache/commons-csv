@@ -140,7 +140,7 @@ abstract class Lexer implements Closeable {
     boolean readEndOfLine(int ch) throws IOException {
         // check if we have \r\n...
         if (ch == CR && in.lookAhead() == LF) {
-            // note: does not change c outside of this method!
+            // note: does not change ch outside of this method!
             ch = in.read();
         }
         return ch == LF || ch == CR;
