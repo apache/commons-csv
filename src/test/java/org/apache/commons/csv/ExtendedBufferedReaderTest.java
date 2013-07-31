@@ -174,23 +174,29 @@ public class ExtendedBufferedReaderTest {
         final String LF="\n"; final String CR="\r"; final String CRLF=CR+LF; final String LFCR=LF+CR;// easier to read the string below
         final String test="a" + LF + "b" + CR + "c" + LF + LF + "d" + CR + CR + "e" + LFCR + "f "+ CRLF;
         //                EOL        eol        EOL  EOL        eol  eol        EOL+CR        EOL
-        final int EOLeolct=9;
+        final int EOLeolct = 9;
         ExtendedBufferedReader br;
 
         br = getBufferedReader(test);
         assertEquals(0, br.getCurrentLineNumber());
-        while(br.readLine()!=null) {}
+        while (br.readLine() != null) {
+            // consume all
+        }
         assertEquals(EOLeolct, br.getCurrentLineNumber());
 
         br = getBufferedReader(test);
         assertEquals(0, br.getCurrentLineNumber());
-        while(br.read()!=-1) {}
+        while (br.read() != -1) {
+            // consume all
+        }
         assertEquals(EOLeolct, br.getCurrentLineNumber());
 
         br = getBufferedReader(test);
         assertEquals(0, br.getCurrentLineNumber());
         final char[] buff = new char[10];
-        while(br.read(buff ,0, 3)!=-1) {}
+        while (br.read(buff, 0, 3) != -1) {
+            // consume all
+        }
         assertEquals(EOLeolct, br.getCurrentLineNumber());
     }
 
