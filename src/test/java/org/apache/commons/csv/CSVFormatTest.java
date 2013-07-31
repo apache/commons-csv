@@ -65,7 +65,7 @@ public class CSVFormatTest {
     @Test
     public void testEquals() {
         final CSVFormat right = CSVFormat.DEFAULT;
-        final CSVFormat left = CSVFormat.copy(right);
+        final CSVFormat left = copy(right);
 
         assertFalse(right.equals(null));
         assertFalse(right.equals("A String Instance"));
@@ -84,7 +84,7 @@ public class CSVFormatTest {
                 .withQuoteChar('"')
                 .withCommentStart('#')
                 .withQuotePolicy(Quote.ALL);
-        final CSVFormat left = CSVFormat.copy(right)
+        final CSVFormat left = right
                 .withCommentStart('!');
 
         assertNotEquals(right, left);
@@ -105,7 +105,7 @@ public class CSVFormatTest {
                 .withCommentStart('#')
                 .withEscape('+')
                 .withQuotePolicy(Quote.ALL);
-        final CSVFormat left = CSVFormat.copy(right)
+        final CSVFormat left = right
                 .withEscape('!');
 
         assertNotEquals(right, left);
@@ -122,7 +122,7 @@ public class CSVFormatTest {
                 .withIgnoreSurroundingSpaces(true)
                 .withQuoteChar('"')
                 .withQuotePolicy(Quote.ALL);
-        final CSVFormat left = CSVFormat.copy(right)
+        final CSVFormat left = right
                 .withHeader("Three", "Two", "One");
 
         assertNotEquals(right, left);
@@ -137,7 +137,7 @@ public class CSVFormatTest {
                 .withIgnoreSurroundingSpaces(true)
                 .withQuoteChar('"')
                 .withQuotePolicy(Quote.ALL);
-        final CSVFormat left = CSVFormat.copy(right)
+        final CSVFormat left = right
                 .withIgnoreEmptyLines(false);
 
         assertNotEquals(right, left);
@@ -151,7 +151,7 @@ public class CSVFormatTest {
                 .withIgnoreSurroundingSpaces(true)
                 .withQuoteChar('"')
                 .withQuotePolicy(Quote.ALL);
-        final CSVFormat left = CSVFormat.copy(right)
+        final CSVFormat left = right
                 .withIgnoreSurroundingSpaces(false);
 
         assertNotEquals(right, left);
@@ -160,7 +160,7 @@ public class CSVFormatTest {
     @Test
     public void testEqualsQuoteChar() {
         final CSVFormat right = CSVFormat.newFormat('\'').withQuoteChar('"');
-        final CSVFormat left = CSVFormat.copy(right).withQuoteChar('!');
+        final CSVFormat left = right.withQuoteChar('!');
 
         assertNotEquals(right, left);
     }
@@ -170,7 +170,7 @@ public class CSVFormatTest {
         final CSVFormat right = CSVFormat.newFormat('\'')
                 .withQuoteChar('"')
                 .withQuotePolicy(Quote.ALL);
-        final CSVFormat left = CSVFormat.copy(right)
+        final CSVFormat left = right
                 .withQuotePolicy(Quote.MINIMAL);
 
         assertNotEquals(right, left);
@@ -186,7 +186,7 @@ public class CSVFormatTest {
                 .withIgnoreSurroundingSpaces(true)
                 .withQuoteChar('"')
                 .withQuotePolicy(Quote.ALL);
-        final CSVFormat left = CSVFormat.copy(right)
+        final CSVFormat left = right
                 .withRecordSeparator('!');
 
         assertNotEquals(right, left);
@@ -365,5 +365,9 @@ public class CSVFormatTest {
     public void testWithRecordSeparator() throws Exception {
         CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator('!');
         assertEquals("!", formatWithRecordSeparator.getRecordSeparator());
+    }
+
+    private static CSVFormat copy(final CSVFormat format) {
+        return format.withDelimiter(format.getDelimiter());
     }
 }

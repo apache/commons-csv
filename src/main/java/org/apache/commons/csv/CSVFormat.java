@@ -172,17 +172,6 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Creates a CSVFormatBuilder, using the values of the given CSVFormat.
-     *
-     * @param format
-     *            The format to use values from
-     * @return a new CSVFormat
-     */
-    public static CSVFormat copy(final CSVFormat format) {
-        return new CSVFormat(format);
-    }
-
-    /**
      * Creates a customized CSV format.
      *
      * @param delimiter
@@ -228,12 +217,6 @@ public class CSVFormat implements Serializable {
         this.nullString = nullString;
         this.header = header == null ? null : header.clone();
         this.skipHeaderRecord = skipHeaderRecord;
-    }
-
-    CSVFormat(final CSVFormat format) {
-        this(format.getDelimiter(), format.getQuoteChar(), format.getQuotePolicy(), format.getCommentStart(),
-                format.getEscape(), format.getIgnoreSurroundingSpaces(), format.getIgnoreEmptyLines(),
-                format.getRecordSeparator(), format.getNullString(), format.getHeader(), format.getSkipHeaderRecord());
     }
 
     @Override
