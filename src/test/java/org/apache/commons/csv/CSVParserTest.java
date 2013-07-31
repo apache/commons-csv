@@ -509,7 +509,8 @@ public class CSVParserTest {
     @Test
     public void testSkipSetHeader() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
-        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("a", "b", "c").parse(in).iterator();
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("a", "b", "c").withSkipHeaderRecord(true)
+                .parse(in).iterator();
         final CSVRecord record = records.next();
         assertEquals("1", record.get("a"));
         assertEquals("2", record.get("b"));
@@ -549,7 +550,7 @@ public class CSVParserTest {
 
         final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("A", "B", "C").parse(in).iterator();
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             assertTrue(records.hasNext());
             final CSVRecord record = records.next();
             assertTrue(record.isMapped("A"));
@@ -588,7 +589,8 @@ public class CSVParserTest {
     @Test
     public void testMappedButNotSetAsOutlook2007ContactExport() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2\nx,y,z");
-        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("A", "B", "C").parse(in).iterator();
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("A", "B", "C").withSkipHeaderRecord(true)
+                .parse(in).iterator();
         CSVRecord record;
 
         // 1st record
@@ -631,7 +633,7 @@ public class CSVParserTest {
         final Iterator<CSVRecord> records = parser.iterator();
 
         // Parse to make sure getHeaderMap did not have a side-effect.
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             assertTrue(records.hasNext());
             final CSVRecord record = records.next();
             assertEquals(record.get(0), record.get("A"));
