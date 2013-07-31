@@ -146,36 +146,36 @@ final class CSVLexer extends Lexer {
      *
      * @param token
      *            the current token
-     * @param c
+     * @param ch
      *            the current character
      * @return the filled token
      * @throws IOException
      *             on stream access error
      */
-    private Token parseSimpleToken(final Token token, int c) throws IOException {
+    private Token parseSimpleToken(final Token token, int ch) throws IOException {
         // Faster to use while(true)+break than while(token.type == INVALID)
         while (true) {
-            if (readEndOfLine(c)) {
+            if (readEndOfLine(ch)) {
                 token.type = EORECORD;
                 break;
-            } else if (isEndOfFile(c)) {
+            } else if (isEndOfFile(ch)) {
                 token.type = EOF;
                 token.isReady = true; // There is data at EOF
                 break;
-            } else if (isDelimiter(c)) {
+            } else if (isDelimiter(ch)) {
                 token.type = TOKEN;
                 break;
-            } else if (isEscape(c)) {
+            } else if (isEscape(ch)) {
                 final int unescaped = readEscape();
                 if (unescaped == Constants.END_OF_STREAM) { // unexpected char after escape
-                    token.content.append((char) c).append((char) in.getLastChar());
+                    token.content.append((char) ch).append((char) in.getLastChar());
                 } else {
                     token.content.append((char) unescaped);
                 }
-                c = in.read(); // continue
+                ch = in.read(); // continue
             } else {
-                token.content.append((char) c);
-                c = in.read(); // continue
+                token.content.append((char) ch);
+                ch = in.read(); // continue
             }
         }
 

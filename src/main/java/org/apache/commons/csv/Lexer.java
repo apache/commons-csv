@@ -92,8 +92,8 @@ abstract class Lexer implements Closeable {
      */
     int readEscape() throws IOException {
         // the escape char has just been read (normally a backslash)
-        final int c = in.read();
-        switch (c) {
+        final int ch = in.read();
+        switch (ch) {
         case 'r':
             return CR;
         case 'n':
@@ -109,13 +109,13 @@ abstract class Lexer implements Closeable {
         case FF: // TODO is this correct?
         case TAB: // TODO is this correct? Do tabs need to be escaped?
         case BACKSPACE: // TODO is this correct?
-            return c;
+            return ch;
         case END_OF_STREAM:
             throw new IOException("EOF whilst processing escape sequence");
         default:
             // Now check for meta-characters
-            if (isMetaChar(c)) {
-                return c;
+            if (isMetaChar(ch)) {
+                return ch;
             }
             // indicate unexpected char - available from in.getLastChar()
             return END_OF_STREAM;
@@ -137,13 +137,13 @@ abstract class Lexer implements Closeable {
      *
      * @return true if the given or next character is a line-terminator
      */
-    boolean readEndOfLine(int c) throws IOException {
+    boolean readEndOfLine(int ch) throws IOException {
         // check if we have \r\n...
-        if (c == CR && in.lookAhead() == LF) {
+        if (ch == CR && in.lookAhead() == LF) {
             // note: does not change c outside of this method!
-            c = in.read();
+            ch = in.read();
         }
-        return c == LF || c == CR;
+        return ch == LF || ch == CR;
     }
 
     abstract Token nextToken(Token reusableToken) throws IOException;
@@ -155,48 +155,48 @@ abstract class Lexer implements Closeable {
     /**
      * @return true if the given char is a whitespace character
      */
-    boolean isWhitespace(final int c) {
-        return !isDelimiter(c) && Character.isWhitespace((char) c);
+    boolean isWhitespace(final int ch) {
+        return !isDelimiter(ch) && Character.isWhitespace((char) ch);
     }
 
     /**
      * Checks if the current character represents the start of a line: a CR, LF or is at the start of the file.
      *
-     * @param c the character to check
+     * @param ch the character to check
      * @return true if the character is at the start of a line.
      */
-    boolean isStartOfLine(final int c) {
-        return c == LF || c == CR || c == UNDEFINED;
+    boolean isStartOfLine(final int ch) {
+        return ch == LF || ch == CR || ch == UNDEFINED;
     }
 
     /**
      * @return true if the given character indicates end of file
      */
-    boolean isEndOfFile(final int c) {
-        return c == END_OF_STREAM;
+    boolean isEndOfFile(final int ch) {
+        return ch == END_OF_STREAM;
     }
 
-    boolean isDelimiter(final int c) {
-        return c == delimiter;
+    boolean isDelimiter(final int ch) {
+        return ch == delimiter;
     }
 
-    boolean isEscape(final int c) {
-        return c == escape;
+    boolean isEscape(final int ch) {
+        return ch == escape;
     }
 
-    boolean isQuoteChar(final int c) {
-        return c == quoteChar;
+    boolean isQuoteChar(final int ch) {
+        return ch == quoteChar;
     }
 
-    boolean isCommentStart(final int c) {
-        return c == commmentStart;
+    boolean isCommentStart(final int ch) {
+        return ch == commmentStart;
     }
 
-    private boolean isMetaChar(final int c) {
-        return c == delimiter ||
-               c == escape ||
-               c == quoteChar ||
-               c == commmentStart;
+    private boolean isMetaChar(final int ch) {
+        return ch == delimiter ||
+               ch == escape ||
+               ch == quoteChar ||
+               ch == commmentStart;
     }
 
     /**
