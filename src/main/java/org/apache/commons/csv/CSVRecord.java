@@ -88,7 +88,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
             throw new IllegalArgumentException(
                     String.format(
                             "Index for header '%s' is %d but CSVRecord only has %d values!",
-                            name, index.intValue(), values.length));
+                            name, index, Integer.valueOf(values.length)));
         }
     }
 
