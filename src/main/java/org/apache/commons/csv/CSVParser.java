@@ -201,8 +201,6 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param charset
      *            the charset for the resource, if {@code null}, uses {@code UTF-8}. UTF-8 is one of the encodings
      *            required by the Java specification.
-     * @param classLoader
-     *            the class loader to load the resource.
      * @param format
      *            the CSVFormat used for CSV parsing
      * @return a new parser
