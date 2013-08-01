@@ -44,12 +44,12 @@ public class CSVRecordBooleanTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetBooleanByMissingString() {
-        Assert.assertEquals(null, Boolean.valueOf(record.getBoolean("ABSENT")));
+        record.getBoolean("ABSENT");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetBooleanByNullString() {
-        Assert.assertEquals(null, Boolean.valueOf(record.getBoolean(null)));
+        record.getBoolean(null);
     }
 
     @Test
