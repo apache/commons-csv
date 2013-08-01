@@ -29,6 +29,8 @@ import org.junit.Test;
 
 public class CSVRecordTest {
 
+    private enum EnumFixture { UNKNOWN_COLUMN };
+    
     private String[] values;
     private CSVRecord record, recordWithHeader;
     private Map<String, Integer> header;
@@ -69,9 +71,24 @@ public class CSVRecordTest {
         recordWithHeader.get("fourth");
     }
 
-    @Test
-    public void testGetUnmapped() {
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetUnmappedName() {
         assertNull(recordWithHeader.get("fourth"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetUnmappedEnum() {
+        assertNull(recordWithHeader.get(EnumFixture.UNKNOWN_COLUMN));
+    }
+
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void testGetUnmappedNegativeInt() {
+        assertNull(recordWithHeader.get(Integer.MIN_VALUE));
+    }
+
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void testGetUnmappedPositiveInt() {
+        assertNull(recordWithHeader.get(Integer.MAX_VALUE));
     }
 
     @Test

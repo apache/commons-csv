@@ -80,12 +80,13 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *
      * @param name
      *            the name of the column to be retrieved.
-     * @return the column value, or {@code null} if the column name is not found
+     * @return the column value, maybe null depending on {@link CSVFormat#getNullString()}.
      * @throws IllegalStateException
      *             if no header mapping was provided
      * @throws IllegalArgumentException
-     *             if the record is inconsistent
+     *             if {@code name} is not mapped or if the record is inconsistent
      * @see #isConsistent()
+     * @see CSVFormat#withNullString(String)
      */
     public String get(final String name) {
         if (mapping == null) {
@@ -93,16 +94,36 @@ public class CSVRecord implements Serializable, Iterable<String> {
                     "No header mapping was specified, the record values can't be accessed by name");
         }
         final Integer index = mapping.get(name);
+        if (index == null) {
+            throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name,
+                    mapping.keySet()));
+        }
         try {
-            return index != null ? values[index.intValue()] : null;
+            return values[index.intValue()];
         } catch (final ArrayIndexOutOfBoundsException e) {
-            throw new IllegalArgumentException(
-                    String.format(
-                            "Index for header '%s' is %d but CSVRecord only has %d values!",
-                            name, index, Integer.valueOf(values.length)));
+            throw new IllegalArgumentException(String.format(
+                    "Index for header '%s' is %d but CSVRecord only has %d values!", name, index,
+                    Integer.valueOf(values.length)));
         }
     }
 
+    /**
+     * Returns a value by name.
+     *
+     * @param name
+     *            the name of the column to be retrieved.
+     * @return the column value
+     * @throws IllegalStateException
+     *             if no header mapping was provided
+     * @throws IllegalArgumentException
+     *             if the record is inconsistent
+     * @see #isConsistent()
+     */
+    public boolean getBoolean(String name) {
+        String s = this.get(name);
+        return s != null ? Boolean.parseBoolean(s) : false;
+    }
+   
     /**
      * Returns the comment for this record, if any.
      *
