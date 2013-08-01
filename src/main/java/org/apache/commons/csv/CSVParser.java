@@ -208,8 +208,8 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If an I/O error occurs
      */
     public static CSVParser parseURL(URL url, Charset charset, final CSVFormat format) throws IOException {
-        return new CSVParser(new InputStreamReader(url.openStream(), charset == null ? Charset.forName("UTF-8")
-                : charset), format);
+        return new CSVParser(new InputStreamReader(url.openStream(), 
+                             charset == null ? Charset.forName("UTF-8") : charset), format);
     }
 
     // the following objects are shared to reduce garbage
