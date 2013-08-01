@@ -22,7 +22,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.junit.Before;
@@ -101,8 +100,7 @@ public class CSVRecordTest {
     @Test
     public void testIterator() {
         int i = 0;
-        for (final Iterator<String> itr = record.iterator(); itr.hasNext();) {
-            final String value = itr.next();
+        for (String value : record) {
             assertEquals(values[i], value);
             i++;
         }

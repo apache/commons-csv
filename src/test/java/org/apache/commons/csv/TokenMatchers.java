@@ -16,10 +16,11 @@
  */
 package org.apache.commons.csv;
 
+import static org.hamcrest.core.AllOf.allOf;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
-import static org.hamcrest.core.AllOf.allOf;
 
 /**
  * Collection of matchers for asserting the type and content of tokens.

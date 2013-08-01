@@ -327,7 +327,7 @@ public class CSVPrinterTest {
         final CSVPrinter printer = new CSVPrinter(sw, format);
         printer.printRecord("a", null, "b");
         printer.close();
-        String csvString = sw.toString();
+        final String csvString = sw.toString();
         assertEquals("a,NULL,b" + recordSeparator, csvString);
         final Iterable<CSVRecord> iterable = format.parse(new StringReader(csvString));
         final Iterator<CSVRecord> iterator = iterable.iterator();
@@ -486,7 +486,7 @@ public class CSVPrinterTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidFormat() throws Exception {
-        CSVFormat invalidFormat = CSVFormat.DEFAULT.withDelimiter(CR);
+        final CSVFormat invalidFormat = CSVFormat.DEFAULT.withDelimiter(CR);
         new CSVPrinter(null, invalidFormat);
     }
 }

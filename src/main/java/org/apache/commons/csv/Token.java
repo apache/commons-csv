@@ -65,7 +65,7 @@ final class Token {
 
     /**
      * Eases IDE debugging.
-     * 
+     *
      * @return a string helpful for debugging.
      */
     @Override

@@ -26,11 +26,11 @@ import static org.apache.commons.csv.Token.Type.COMMENT;
 import static org.apache.commons.csv.Token.Type.EOF;
 import static org.apache.commons.csv.Token.Type.EORECORD;
 import static org.apache.commons.csv.Token.Type.TOKEN;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertThat;
 import static org.apache.commons.csv.TokenMatchers.hasContent;
 import static org.apache.commons.csv.TokenMatchers.matches;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.StringReader;

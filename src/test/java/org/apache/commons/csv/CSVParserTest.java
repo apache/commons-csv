@@ -472,7 +472,7 @@ public class CSVParserTest {
             iterator.remove();
             fail("expected UnsupportedOperationException");
         } catch (final UnsupportedOperationException expected) {
-            // expected 
+            // expected
         }
         assertArrayEquals(new String[]{"a", "b", "c"}, iterator.next().values());
         assertArrayEquals(new String[]{"1", "2", "3"}, iterator.next().values());

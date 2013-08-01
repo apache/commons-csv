@@ -41,7 +41,7 @@ final class ExtendedBufferedReader extends BufferedReader {
 
     /** The count of EOLs (CR/LF/CRLF) seen so far */
     private long eolCounter = 0;
-    
+
     private boolean closed;
 
     /**
@@ -163,7 +163,7 @@ final class ExtendedBufferedReader extends BufferedReader {
 
 	/**
 	 * Closes the stream.
-	 * 
+	 *
 	 * @throws IOException
 	 *             If an I/O error occurs
 	 */

@@ -214,10 +214,10 @@ public class CSVFormatTest {
 
     @Test
     public void testGetHeader() throws Exception {
-        String[] header = new String[]{"one", "two", "three"};
-        CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
+        final String[] header = new String[]{"one", "two", "three"};
+        final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
         // getHeader() makes a copy of the header array.
-        String[] headerCopy = formatWithHeader.getHeader();
+        final String[] headerCopy = formatWithHeader.getHeader();
         headerCopy[0] = "A";
         headerCopy[1] = "B";
         headerCopy[2] = "C";
@@ -282,7 +282,7 @@ public class CSVFormatTest {
 
     @Test
     public void testWithCommentStart() throws Exception {
-        CSVFormat formatWithCommentStart = CSVFormat.DEFAULT.withCommentStart('#');
+        final CSVFormat formatWithCommentStart = CSVFormat.DEFAULT.withCommentStart('#');
         assertEquals( Character.valueOf('#'), formatWithCommentStart.getCommentStart());
     }
 
@@ -293,7 +293,7 @@ public class CSVFormatTest {
 
     @Test
     public void testWithDelimiter() throws Exception {
-        CSVFormat formatWithDelimiter = CSVFormat.DEFAULT.withDelimiter('!');
+        final CSVFormat formatWithDelimiter = CSVFormat.DEFAULT.withDelimiter('!');
         assertEquals('!', formatWithDelimiter.getDelimiter());
     }
 
@@ -304,7 +304,7 @@ public class CSVFormatTest {
 
     @Test
     public void testWithEscape() throws Exception {
-        CSVFormat formatWithEscape = CSVFormat.DEFAULT.withEscape('&');
+        final CSVFormat formatWithEscape = CSVFormat.DEFAULT.withEscape('&');
         assertEquals(Character.valueOf('&'), formatWithEscape.getEscape());
     }
 
@@ -315,9 +315,9 @@ public class CSVFormatTest {
 
     @Test
     public void testWithHeader() throws Exception {
-        String[] header = new String[]{"one", "two", "three"};
+        final String[] header = new String[]{"one", "two", "three"};
         // withHeader() makes a copy of the header array.
-        CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
+        final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
         assertArrayEquals(header, formatWithHeader.getHeader());
         assertNotSame(header, formatWithHeader.getHeader());
         header[0] = "A";
@@ -340,13 +340,13 @@ public class CSVFormatTest {
 
     @Test
     public void testWithNullString() throws Exception {
-        CSVFormat formatWithNullString = CSVFormat.DEFAULT.withNullString("null");
+        final CSVFormat formatWithNullString = CSVFormat.DEFAULT.withNullString("null");
         assertEquals("null", formatWithNullString.getNullString());
     }
 
     @Test
     public void testWithQuoteChar() throws Exception {
-        CSVFormat formatWithQuoteChar = CSVFormat.DEFAULT.withQuoteChar('"');
+        final CSVFormat formatWithQuoteChar = CSVFormat.DEFAULT.withQuoteChar('"');
         assertEquals(Character.valueOf('"'), formatWithQuoteChar.getQuoteChar());
     }
 
@@ -357,13 +357,13 @@ public class CSVFormatTest {
 
     @Test
     public void testWithQuotePolicy() throws Exception {
-        CSVFormat formatWithQuotePolicy = CSVFormat.DEFAULT.withQuotePolicy(Quote.ALL);
+        final CSVFormat formatWithQuotePolicy = CSVFormat.DEFAULT.withQuotePolicy(Quote.ALL);
         assertEquals(Quote.ALL, formatWithQuotePolicy.getQuotePolicy());
     }
 
     @Test
     public void testWithRecordSeparator() throws Exception {
-        CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator('!');
+        final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator('!');
         assertEquals("!", formatWithRecordSeparator.getRecordSeparator());
     }
 

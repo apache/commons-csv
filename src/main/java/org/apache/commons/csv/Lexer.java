@@ -151,7 +151,7 @@ abstract class Lexer implements Closeable {
     boolean isClosed() {
     	return in.isClosed();
     }
-    
+
     /**
      * @return true if the given char is a whitespace character
      */
@@ -201,7 +201,7 @@ abstract class Lexer implements Closeable {
 
     /**
      * Closes resources.
-     * 
+     *
 	 * @throws IOException
 	 *             If an I/O error occurs
      */

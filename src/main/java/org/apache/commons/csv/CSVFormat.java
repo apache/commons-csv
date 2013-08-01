@@ -53,7 +53,7 @@ import java.util.Set;
 public class CSVFormat implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * Returns true if the given character is a line break character.
      *
@@ -66,7 +66,7 @@ public class CSVFormat implements Serializable {
     static boolean isLineBreak(final Character c) {
         return c != null && isLineBreak(c.charValue());
     }
-    
+
     private final char delimiter;
     private final Character quoteChar;
     private final Quote quotePolicy;
@@ -324,8 +324,8 @@ public class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a copy of the header array. 
-     * 
+     * Returns a copy of the header array.
+     *
      * @return a copy of the header array
      */
     public String[] getHeader() {
@@ -362,7 +362,7 @@ public class CSVFormat implements Serializable {
      * <li>
      * <strong>Writing:</strong> Writes {@code null} as the given {@code nullString} when writing records.</li>
      * </ul>
-     * 
+     *
      * @return the String to convert to and from {@code null}. No substitution occurs if {@code null}
      */
     public String getNullString() {
@@ -454,11 +454,11 @@ public class CSVFormat implements Serializable {
 
 	/**
 	 * Parses the specified content.
-	 * 
+	 *
 	 * <p>
 	 * See also the various static parse methods on {@link CSVParser}.
 	 * </p>
-	 * 
+	 *
 	 * @param in
 	 *            the input stream
 	 * @return a parser over a stream of {@link #CSVRecord}s.
@@ -528,9 +528,9 @@ public class CSVFormat implements Serializable {
         if (escape == null && quotePolicy == Quote.NONE) {
             throw new IllegalStateException("No quotes mode set but no escape character is set");
         }
-        
+
         if (header != null) {
-            Set<String> set = new HashSet<String>(header.length);
+            final Set<String> set = new HashSet<String>(header.length);
             set.addAll(Arrays.asList(header));
             if (set.size() != header.length) {
                 throw new IllegalStateException("The header contains duplicate names: " + Arrays.toString(header));
@@ -621,18 +621,18 @@ public class CSVFormat implements Serializable {
 
     /**
      * Sets the header of the format. The header can either be parsed automatically from the input file with:
-     * 
+     *
      * <pre>
      * CSVFormat format = aformat.withHeader();</pre>
-     * 
+     *
      * or specified manually with:
-     * 
+     *
      * <pre>
      * CSVFormat format = aformat.withHeader(&quot;name&quot;, &quot;email&quot;, &quot;phone&quot;);</pre>
-     * 
+     *
      * @param header
      *            the header, <tt>null</tt> if disabled, empty if parsed automatically, user specified otherwise.
-     * 
+     *
      * @return A new CSVFormat that is equal to this but with the specified header
      * @see #withSkipHeaderRecord(boolean)
      */
