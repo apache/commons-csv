@@ -146,6 +146,23 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *             if the record is inconsistent
      * @see #isConsistent()
      */
+    public int getInt(String name) {
+        String s = this.get(name);
+        return s != null ? Integer.parseInt(s) : 0;
+    }
+
+    /**
+     * Returns a value by name.
+     *
+     * @param name
+     *            the name of the column to be retrieved.
+     * @return the column value
+     * @throws IllegalStateException
+     *             if no header mapping was provided
+     * @throws IllegalArgumentException
+     *             if the record is inconsistent
+     * @see #isConsistent()
+     */
     public long getLong(String name) {
         String s = this.get(name);
         return s != null ? Long.parseLong(s) : 0;
