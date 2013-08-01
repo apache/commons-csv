@@ -35,19 +35,65 @@ import java.util.Set;
 
 /**
  * Specifies the format of a CSV file and parses input.
+ * <h4>Using predefined formats</h4>
  * <p>
- * This class is immutable.
+ * You can use one of the predefined formats:
  * </p>
- * You can extend a format through a builder. For example, to extend the Excel format with columns header, you write:
+ * <ul>
+ * <li>{@link #DEFAULT}</li>
+ * <li>{@link #EXCEL}</li>
+ * <li>{@link #MYSQL}</li>
+ * <li>{@link #RFC4180}</li>
+ * </ul>
+ * <p>For example:</p>
+ * <pre>CSVParser parser = CSVFormat.EXCEL.parse(reader);</pre>
+ * <p>The {@link CSVRecord} provides static methods to parse other input types, for example:</p>
+ * <pre>CSVParser parser = CSVFormat.parseFile(file, CSVFormat.EXCEL);</pre>
+ * <h4>Defining formats</h4>
+ * <p>
+ * You can extend a format by calling the {@code with} methods. For example:
+ * </p>
+ * <pre>CSVFormat.EXCEL
+ *   .withNullString(&quot;N/A&quot;)
+ *   .withIgnoreSurroundingSpaces(true);</pre>
+ * <h4>Defining column names</h4>
+ * <p>
+ * To define the column names you want to use to access records, write:
  * </p>
  * <pre>CSVFormat.EXCEL.withHeader(&quot;Col1&quot;, &quot;Col2&quot;, &quot;Col3&quot;);</pre>
  * <p>
- * You can parse through a format. For example, to parse an Excel file with columns header, you write:
+ * Calling {@link #withHeader(String...)} let's you use the given names to address values in a {@link CSVRecord}, and 
+ * assumes that your CSV source does not contain a first record that also defines column names. If it does, then
+ * you are overriding this metadata with your names and you should skip the first record by calling 
+ * {@link #withSkipHeaderRecord(boolean)} with {@code true}. 
+ * </p>
+ * <h4>Parsing</h4>
+ * <p>
+ * You can use a format directly to parse a reader. For example, to parse an Excel file with columns header, write:
  * </p>
  * <pre>Reader in = ...;
  *CSVFormat.EXCEL.withHeader(&quot;Col1&quot;, &quot;Col2&quot;, &quot;Col3&quot;).parse(in);</pre>
  * <p>
- *
+ * For other input types, like resources, files, and URLs, use the static methods on {@link CSVParser}.
+ * </p>
+ * <h4>Referencing columns safely</h4>
+ * <p>
+ * If your source contains a header record, you can simplify your code and safely reference columns, 
+ * by using {@link #withHeader(String...)} with no arguments:
+ * </p>
+ * <pre>CSVFormat.EXCEL.withHeader();</pre>
+ * <p>
+ * This causes the parser to read the first record and use its values as column names.
+ * Then, call one of the {@link CSVRecord} get method that takes a String column name argument:
+ * </p> 
+ * <pre>String value = record.get(&quot;Col1&quot;);</pre>
+ * <p>
+ * This makes your code impervious to changes in column order in the CSV file.
+ * </p>
+ * <h4>Notes</h4> 
+ * <p>
+ * This class is immutable.
+ * </p>
  * @version $Id$
  */
 public class CSVFormat implements Serializable {
