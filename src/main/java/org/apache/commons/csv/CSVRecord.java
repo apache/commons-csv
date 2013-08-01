@@ -29,21 +29,21 @@ import java.util.Map;
  */
 public class CSVRecord implements Serializable, Iterable<String> {
 
-    private static final long serialVersionUID = 1L;
-
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    /** The values of the record */
-    private final String[] values;
-
-    /** The column name to index mapping. */
-    private final Map<String, Integer> mapping;
+    private static final long serialVersionUID = 1L;
 
     /** The accumulated comments (if any) */
     private final String comment;
 
+    /** The column name to index mapping. */
+    private final Map<String, Integer> mapping;
+
     /** The record number. */
     private final long recordNumber;
+
+    /** The values of the record */
+    private final String[] values;
 
     CSVRecord(final String[] values, final Map<String, Integer> mapping,
             final String comment, final long recordNumber) {
@@ -104,6 +104,25 @@ public class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
+     * Returns the comment for this record, if any.
+     *
+     * @return the comment for this record, or null if no comment for this
+     *         record is available.
+     */
+    public String getComment() {
+        return comment;
+    }
+
+    /**
+     * Returns the number of this record in the parsed CSV file.
+     *
+     * @return the number of this record.
+     */
+    public long getRecordNumber() {
+        return recordNumber;
+    }
+
+    /**
      * Returns true if this record is consistent, false if not. Currently, the only check is matching the record size to
      * the header size. Some programs can export files that fails this test but still produce parsable files.
      *
@@ -145,29 +164,6 @@ public class CSVRecord implements Serializable, Iterable<String> {
         return Arrays.asList(values).iterator();
     }
 
-    String[] values() {
-        return values;
-    }
-
-    /**
-     * Returns the comment for this record, if any.
-     *
-     * @return the comment for this record, or null if no comment for this
-     *         record is available.
-     */
-    public String getComment() {
-        return comment;
-    }
-
-    /**
-     * Returns the number of this record in the parsed CSV file.
-     *
-     * @return the number of this record.
-     */
-    public long getRecordNumber() {
-        return recordNumber;
-    }
-
     /**
      * Returns the number of values in this record.
      *
@@ -180,6 +176,10 @@ public class CSVRecord implements Serializable, Iterable<String> {
     @Override
     public String toString() {
         return Arrays.toString(values);
+    }
+
+    String[] values() {
+        return values;
     }
 
 
