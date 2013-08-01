@@ -381,8 +381,12 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Returns an iterator on the records. IOExceptions occurring during the iteration are wrapped in a
+     * Returns an iterator on the records.
+     *
+     * <p>IOExceptions occurring during the iteration are wrapped in a
      * RuntimeException.
+     * If the parser is closed a call to {@code next()} will throw a
+     * NoSuchElementException.</p>
      */
     public Iterator<CSVRecord> iterator() {
         return new Iterator<CSVRecord>() {
@@ -410,7 +414,7 @@ public class CSVParser implements Iterable<CSVRecord>, Closeable {
 
             public CSVRecord next() {
                 if (CSVParser.this.isClosed()) {
-                    return null;
+                    throw new NoSuchElementException("CSVParser has been closed");
                 }
                 CSVRecord next = this.current;
                 this.current = null;

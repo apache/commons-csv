@@ -394,7 +394,7 @@ public class CSVParserTest {
         assertEquals(4, records.size());
     }
 
-    @Test
+    @Test(expected = NoSuchElementException.class)
     public void testClose() throws Exception {
         final Reader in = new StringReader("# comment\na,b,c\n1,2,3\nx,y,z");
         final CSVParser parser = CSVFormat.DEFAULT.withCommentStart('#').withHeader().parse(in);
@@ -402,9 +402,7 @@ public class CSVParserTest {
         assertTrue(records.hasNext());
         parser.close();
         assertFalse(records.hasNext());
-        assertNull(records.next());
-        assertFalse(records.hasNext());
-        assertNull(records.next());
+        records.next();
     }
 
     @Test
