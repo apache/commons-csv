@@ -68,14 +68,14 @@ public class CSVFormat implements Serializable {
     }
 
     private final char delimiter;
-    private final Character quoteChar;
+    private final Character quoteChar; // null if quoting is disabled
     private final Quote quotePolicy;
-    private final Character commentStart;
-    private final Character escape;
+    private final Character commentStart; // null if commenting is disabled
+    private final Character escape; // null if escaping is disabled
     private final boolean ignoreSurroundingSpaces; // Should leading/trailing spaces be ignored around values?
     private final boolean ignoreEmptyLines;
     private final String recordSeparator; // for outputs
-    private final String nullString;
+    private final String nullString; // the string to be used for null values
     private final String[] header;
     private final boolean skipHeaderRecord;
 
@@ -177,13 +177,13 @@ public class CSVFormat implements Serializable {
      * @param delimiter
      *            the char used for value separation, must not be a line break character
      * @param quoteChar
-     *            the char used as value encapsulation marker
+     *            the Character used as value encapsulation marker, may be {@code null} to disable
      * @param quotePolicy
      *            the quote policy
      * @param commentStart
-     *            the char used for comment identification
+     *            the Character used for comment identification, may be {@code null} to disable
      * @param escape
-     *            the char used to escape special characters in values
+     *            the Character used to escape special characters in values, may be {@code null} to disable
      * @param ignoreSurroundingSpaces
      *            <tt>true</tt> when whitespaces enclosing values should be ignored
      * @param ignoreEmptyLines
@@ -299,7 +299,7 @@ public class CSVFormat implements Serializable {
     /**
      * Returns the character marking the start of a line comment.
      *
-     * @return the comment start marker.
+     * @return the comment start marker, may be {@code null}
      */
     public Character getCommentStart() {
         return commentStart;
@@ -317,7 +317,7 @@ public class CSVFormat implements Serializable {
     /**
      * Returns the escape character.
      *
-     * @return the escape character
+     * @return the escape character, may be {@code null}
      */
     public Character getEscape() {
         return escape;
@@ -372,7 +372,7 @@ public class CSVFormat implements Serializable {
     /**
      * Returns the character used to encapsulate values containing special characters.
      *
-     * @return the quoteChar character
+     * @return the quoteChar character, may be {@code null}
      */
     public Character getQuoteChar() {
         return quoteChar;
@@ -461,7 +461,7 @@ public class CSVFormat implements Serializable {
 	 *
 	 * @param in
 	 *            the input stream
-	 * @return a parser over a stream of {@link #CSVRecord}s.
+	 * @return a parser over a stream of {@link CSVRecord}s.
 	 * @throws IOException
 	 *             If an I/O error occurs
 	 */
@@ -559,7 +559,7 @@ public class CSVFormat implements Serializable {
      * Note that the comment start character is only recognised at the start of a line.
      *
      * @param commentStart
-     *            the comment start marker
+     *            the comment start marker, use {@code null} to disable
      * @return A new CSVFormat that is equal to this one but with the specified character as the comment start marker
      * @throws IllegalArgumentException
      *             thrown if the specified character is a line break
@@ -606,7 +606,7 @@ public class CSVFormat implements Serializable {
      * Sets the escape character of the format to the specified character.
      *
      * @param escape
-     *            the escape character
+     *            the escape character, use {@code null} to disable
      * @return A new CSVFormat that is equal to this but with the specified character as the escape character
      * @throws IllegalArgumentException
      *             thrown if the specified character is a line break
@@ -704,7 +704,7 @@ public class CSVFormat implements Serializable {
      * Sets the quoteChar of the format to the specified character.
      *
      * @param quoteChar
-     *            the quoteChar character
+     *            the quoteChar character, use {@code null} to disable
      * @return A new CSVFormat that is equal to this but with the specified character as quoteChar
      * @throws IllegalArgumentException
      *             thrown if the specified character is a line break
