@@ -26,17 +26,20 @@ public class CSVRecordBooleanTest {
 
     private CSVRecord record;
 
+    /**
+     * @return
+     * @throws IOException
+     */
+    private CSVRecord createTestRecord() throws IOException {
+        String csv = "A,B,C,D\ntrue, TRUE, false, foo";
+        CSVRecord record = CSVParser.parseString(csv, CSVFormat.DEFAULT.withHeader().withIgnoreSurroundingSpaces(true))
+                .iterator().next();
+        return record;
+    }
+
     @Before
     public void setUp() throws IOException {
         this.record = createTestRecord();
-    }
-
-    @Test
-    public void testGetBooleanByString() {
-        Assert.assertEquals(Boolean.TRUE, Boolean.valueOf(record.getBoolean("A")));
-        Assert.assertEquals(Boolean.TRUE, Boolean.valueOf(record.getBoolean("B")));
-        Assert.assertEquals(Boolean.FALSE, Boolean.valueOf(record.getBoolean("C")));
-        Assert.assertEquals(Boolean.FALSE, Boolean.valueOf(record.getBoolean("D")));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -49,15 +52,12 @@ public class CSVRecordBooleanTest {
         Assert.assertEquals(null, Boolean.valueOf(record.getBoolean(null)));
     }
 
-    /**
-     * @return
-     * @throws IOException
-     */
-    private CSVRecord createTestRecord() throws IOException {
-        String csv = "A,B,C,D\ntrue, TRUE, false, foo";
-        CSVRecord record = CSVParser.parseString(csv, CSVFormat.DEFAULT.withHeader().withIgnoreSurroundingSpaces(true))
-                .iterator().next();
-        return record;
+    @Test
+    public void testGetBooleanByString() {
+        Assert.assertEquals(Boolean.TRUE, Boolean.valueOf(record.getBoolean("A")));
+        Assert.assertEquals(Boolean.TRUE, Boolean.valueOf(record.getBoolean("B")));
+        Assert.assertEquals(Boolean.FALSE, Boolean.valueOf(record.getBoolean("C")));
+        Assert.assertEquals(Boolean.FALSE, Boolean.valueOf(record.getBoolean("D")));
     }
 
 }
