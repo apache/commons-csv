@@ -123,7 +123,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
         String s = this.get(name);
         return s != null ? Boolean.parseBoolean(s) : false;
     }
-   
+
     /**
      * Returns the comment for this record, if any.
      *
@@ -132,6 +132,23 @@ public class CSVRecord implements Serializable, Iterable<String> {
      */
     public String getComment() {
         return comment;
+    }
+
+    /**
+     * Returns a value by name.
+     *
+     * @param name
+     *            the name of the column to be retrieved.
+     * @return the column value
+     * @throws IllegalStateException
+     *             if no header mapping was provided
+     * @throws IllegalArgumentException
+     *             if the record is inconsistent
+     * @see #isConsistent()
+     */
+    public long getLong(String name) {
+        String s = this.get(name);
+        return s != null ? Long.parseLong(s) : 0;
     }
 
     /**
