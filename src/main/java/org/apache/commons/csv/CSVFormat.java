@@ -40,12 +40,12 @@ import java.util.Set;
  * </p>
  * You can extend a format through a builder. For example, to extend the Excel format with columns header, you write:
  * </p>
- * <pre>CSVFormat.EXCEL.toBuilder().withHeader(&quot;Col1&quot;, &quot;Col2&quot;, &quot;Col3&quot;);</pre>
+ * <pre>CSVFormat.EXCEL.withHeader(&quot;Col1&quot;, &quot;Col2&quot;, &quot;Col3&quot;);</pre>
  * <p>
  * You can parse through a format. For example, to parse an Excel file with columns header, you write:
  * </p>
  * <pre>Reader in = ...;
- *CSVFormat.EXCEL.toBuilder().withHeader(&quot;Col1&quot;, &quot;Col2&quot;, &quot;Col3&quot;).parse(in);</pre>
+ *CSVFormat.EXCEL.withHeader(&quot;Col1&quot;, &quot;Col2&quot;, &quot;Col3&quot;).parse(in);</pre>
  * <p>
  *
  * @version $Id$
