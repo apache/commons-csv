@@ -58,9 +58,9 @@ public class CSVFormat implements Serializable {
      * Returns true if the given character is a line break character.
      *
      * @param c
-     *            the character to check
+     *            the character to check, may be null
      *
-     * @return true if <code>c</code> is a line break character
+     * @return true if <code>c</code> is a line break character (and not null)
      */
     // package protected to give access without needing a synthetic accessor
     static boolean isLineBreak(final Character c) {
