@@ -54,6 +54,17 @@ public class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
+     * Returns a value by {@link Enum}.
+     *
+     * @param e
+     *            an enum
+     * @return the String at the given enum String
+     */
+    public String get(Enum<?> e) {
+        return get(e.toString());
+    }
+
+    /**
      * Returns a value by index.
      *
      * @param i
@@ -170,5 +181,6 @@ public class CSVRecord implements Serializable, Iterable<String> {
     public String toString() {
         return Arrays.toString(values);
     }
+
 
 }
