@@ -306,9 +306,9 @@ public class CSVLexerTest {
 
     @Test
     public void testCR() throws Exception {
-        final Lexer lexer = getLexer("character" + CR + "Escaped", formatWithEscaping);
+        final Lexer lexer = getLexer("character" + CR + "NotEscaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character"));
-        assertThat(lexer.nextToken(new Token()), hasContent("Escaped"));
+        assertThat(lexer.nextToken(new Token()), hasContent("NotEscaped"));
     }
 
     @Test
@@ -319,9 +319,9 @@ public class CSVLexerTest {
 
     @Test
     public void testLF() throws Exception {
-        final Lexer lexer = getLexer("character" + LF + "Escaped", formatWithEscaping);
+        final Lexer lexer = getLexer("character" + LF + "NotEscaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character"));
-        assertThat(lexer.nextToken(new Token()), hasContent("Escaped"));
+        assertThat(lexer.nextToken(new Token()), hasContent("NotEscaped"));
     }
 
     @Test // TODO is this correct? Do we expect TAB to be un/escaped?
@@ -332,8 +332,8 @@ public class CSVLexerTest {
 
     @Test // TODO is this correct? Do we expect TAB to be un/escaped?
     public void testTab() throws Exception {
-        final Lexer lexer = getLexer("character" + TAB + "Escaped", formatWithEscaping);
-        assertThat(lexer.nextToken(new Token()), hasContent("character" + TAB + "Escaped"));
+        final Lexer lexer = getLexer("character" + TAB + "NotEscaped", formatWithEscaping);
+        assertThat(lexer.nextToken(new Token()), hasContent("character" + TAB + "NotEscaped"));
     }
 
     @Test // TODO is this correct? Do we expect BACKSPACE to be un/escaped?
@@ -344,8 +344,8 @@ public class CSVLexerTest {
 
     @Test // TODO is this correct? Do we expect BACKSPACE to be un/escaped?
     public void testBackspace() throws Exception {
-        final Lexer lexer = getLexer("character" + BACKSPACE + "Escaped", formatWithEscaping);
-        assertThat(lexer.nextToken(new Token()), hasContent("character" + BACKSPACE + "Escaped"));
+        final Lexer lexer = getLexer("character" + BACKSPACE + "NotEscaped", formatWithEscaping);
+        assertThat(lexer.nextToken(new Token()), hasContent("character" + BACKSPACE + "NotEscaped"));
     }
 
     @Test // TODO is this correct? Do we expect FF to be un/escaped?
@@ -356,8 +356,8 @@ public class CSVLexerTest {
 
     @Test // TODO is this correct? Do we expect FF to be un/escaped?
     public void testFF() throws Exception {
-        final Lexer lexer = getLexer("character" + FF + "Escaped", formatWithEscaping);
-        assertThat(lexer.nextToken(new Token()), hasContent("character" + FF + "Escaped"));
+        final Lexer lexer = getLexer("character" + FF + "NotEscaped", formatWithEscaping);
+        assertThat(lexer.nextToken(new Token()), hasContent("character" + FF + "NotEscaped"));
     }
 
     @Test
