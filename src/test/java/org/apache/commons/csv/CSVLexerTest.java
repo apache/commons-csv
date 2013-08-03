@@ -317,13 +317,13 @@ public class CSVLexerTest {
     }
 
     @Test // TODO is this correct? Do we expect BACKSPACE to be un/escaped?
-    public void testEscapeBackspace() throws Exception {
+    public void testEscapedBackspace() throws Exception {
         final Lexer lexer = getLexer("character\\" + BACKSPACE + "Escaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character" + BACKSPACE + "Escaped"));
     }
 
     @Test // TODO is this correct? Do we expect FF to be un/escaped?
-    public void testEscapeFF() throws Exception {
+    public void testEscapedFF() throws Exception {
         final Lexer lexer = getLexer("character\\" + FF + "Escaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character" + FF + "Escaped"));
     }
