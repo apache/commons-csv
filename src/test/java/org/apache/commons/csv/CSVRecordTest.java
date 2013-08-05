@@ -29,7 +29,7 @@ import org.junit.Test;
 
 public class CSVRecordTest {
 
-    private enum EnumFixture { UNKNOWN_COLUMN };
+    private enum EnumFixture { UNKNOWN_COLUMN }
     
     private String[] values;
     private CSVRecord record, recordWithHeader;
