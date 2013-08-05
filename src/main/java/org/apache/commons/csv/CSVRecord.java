@@ -108,23 +108,6 @@ public class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a value by name.
-     *
-     * @param name
-     *            the name of the column to be retrieved.
-     * @return the column value
-     * @throws IllegalStateException
-     *             if no header mapping was provided
-     * @throws IllegalArgumentException
-     *             if the record is inconsistent
-     * @see #isConsistent()
-     */
-    public boolean getBoolean(String name) {
-        String s = this.get(name);
-        return s != null ? Boolean.parseBoolean(s) : false;
-    }
-
-    /**
      * Returns the comment for this record, if any.
      *
      * @return the comment for this record, or null if no comment for this
@@ -132,40 +115,6 @@ public class CSVRecord implements Serializable, Iterable<String> {
      */
     public String getComment() {
         return comment;
-    }
-
-    /**
-     * Returns a value by name.
-     *
-     * @param name
-     *            the name of the column to be retrieved.
-     * @return the column value
-     * @throws IllegalStateException
-     *             if no header mapping was provided
-     * @throws IllegalArgumentException
-     *             if the record is inconsistent
-     * @see #isConsistent()
-     */
-    public int getInt(String name) {
-        String s = this.get(name);
-        return s != null ? Integer.parseInt(s) : 0;
-    }
-
-    /**
-     * Returns a value by name.
-     *
-     * @param name
-     *            the name of the column to be retrieved.
-     * @return the column value
-     * @throws IllegalStateException
-     *             if no header mapping was provided
-     * @throws IllegalArgumentException
-     *             if the record is inconsistent
-     * @see #isConsistent()
-     */
-    public long getLong(String name) {
-        String s = this.get(name);
-        return s != null ? Long.parseLong(s) : 0;
     }
 
     /**
