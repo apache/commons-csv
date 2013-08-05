@@ -90,7 +90,7 @@ import java.util.NoSuchElementException;
  *
  * @version $Id$
  */
-public class CSVParser implements Iterable<CSVRecord>, Closeable {
+public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     /**
      * Creates a parser for the given {@link File}.

@@ -27,7 +27,7 @@ import java.util.Map;
  *
  * @version $Id$
  */
-public class CSVRecord implements Serializable, Iterable<String> {
+public final class CSVRecord implements Serializable, Iterable<String> {
 
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 

@@ -33,7 +33,7 @@ import java.sql.SQLException;
  *
  * @version $Id$
  */
-public class CSVPrinter implements Flushable, Closeable {
+public final class CSVPrinter implements Flushable, Closeable {
 
     /** The place that the values get written. */
     private final Appendable out;
