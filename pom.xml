@@ -90,6 +90,9 @@ CSV files of various types.
     </developer>
   </developers>
   <contributors>
+    <contributor>
+      <name>Bob Smith</name>
+    </contributor>
   </contributors>
 
   <scm>
