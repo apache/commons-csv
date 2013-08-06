@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.io.Reader;
 
 /**
- * A special reader decorator which supports more sophisticated access to the underlying reader object.
+ * A special buffered reader which supports sophisticated read access.
  * <p>
  * In particular the reader supports a look-ahead option, which allows you to see the next char returned by
  * {@link #read()}.
