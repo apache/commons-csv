@@ -52,14 +52,14 @@ public class CSVLexerTest {
         formatWithEscaping = CSVFormat.DEFAULT.withEscape('\\');
     }
 
-    private Lexer getLexer(final String input, final CSVFormat format) {
+    private CSVLexer getLexer(final String input, final CSVFormat format) {
         return new CSVLexer(format, new ExtendedBufferedReader(new StringReader(input)));
     }
 
     @Test
     public void testSurroundingSpacesAreDeleted() throws IOException {
         final String code = "noSpaces,  leadingSpaces,trailingSpaces  ,  surroundingSpaces  ,  ,,";
-        final Lexer parser = getLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
+        final CSVLexer parser = getLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "noSpaces"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "leadingSpaces"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "trailingSpaces"));
@@ -72,7 +72,7 @@ public class CSVLexerTest {
     @Test
     public void testSurroundingTabsAreDeleted() throws IOException {
         final String code = "noTabs,\tleadingTab,trailingTab\t,\tsurroundingTabs\t,\t\t,,";
-        final Lexer parser = getLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
+        final CSVLexer parser = getLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "noTabs"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "leadingTab"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "trailingTab"));
@@ -99,7 +99,7 @@ public class CSVLexerTest {
                 "\n"+
                 "\n";
         final CSVFormat format = CSVFormat.DEFAULT.withIgnoreEmptyLines(true);
-        final Lexer parser = getLexer(code, format);
+        final CSVLexer parser = getLexer(code, format);
 
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "first"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "line"));
@@ -123,7 +123,7 @@ public class CSVLexerTest {
                 "# penultimate comment\n"+
                 "# Final comment\n";
         final CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
-        final Lexer parser = getLexer(code, format);
+        final CSVLexer parser = getLexer(code, format);
 
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "first"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "line"));
@@ -161,7 +161,7 @@ public class CSVLexerTest {
         final CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#').withIgnoreEmptyLines(false);
         assertFalse("Should not ignore empty lines", format.getIgnoreEmptyLines());
 
-        final Lexer parser = getLexer(code, format);
+        final CSVLexer parser = getLexer(code, format);
 
 
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "1"));
@@ -199,7 +199,7 @@ public class CSVLexerTest {
         final String code = "a,\\,,b\\\n\\,,";
         final CSVFormat format = CSVFormat.DEFAULT;
         assertFalse(format.isEscaping());
-        final Lexer parser = getLexer(code, format);
+        final CSVLexer parser = getLexer(code, format);
 
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
         // an unquoted single backslash is not an escape char
@@ -221,7 +221,7 @@ public class CSVLexerTest {
         final String code = "a,\\,,b\\\\\n\\,,\\\nc,d\\\r\ne";
         final CSVFormat format = formatWithEscaping.withIgnoreEmptyLines(false);
         assertTrue(format.isEscaping());
-        final Lexer parser = getLexer(code, format);
+        final CSVLexer parser = getLexer(code, format);
 
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, ","));
@@ -241,7 +241,7 @@ public class CSVLexerTest {
         *        a,  " foo " ,b
         */
         final String code = "a,\"foo\",b\na,   \" foo\",b\na,\"foo \"  ,b\na,  \" foo \"  ,b";
-        final Lexer parser = getLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
+        final CSVLexer parser = getLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "foo"));
         assertThat(parser.nextToken(new Token()), matches(EORECORD, "b"));
@@ -261,7 +261,7 @@ public class CSVLexerTest {
     @Test
     public void testNextToken5() throws IOException {
         final String code = "a,\"foo\n\",b\n\"foo\n  baar ,,,\"\n\"\n\t \n\"";
-        final Lexer parser = getLexer(code, CSVFormat.DEFAULT);
+        final CSVLexer parser = getLexer(code, CSVFormat.DEFAULT);
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "foo\n"));
         assertThat(parser.nextToken(new Token()), matches(EORECORD, "b"));
@@ -280,7 +280,7 @@ public class CSVLexerTest {
         */
         final String code = "a;'b and '' more\n'\n!comment;;;;\n;;";
         final CSVFormat format = CSVFormat.DEFAULT.withQuoteChar('\'').withCommentStart('!').withDelimiter(';');
-        final Lexer parser = getLexer(code, format);
+        final CSVLexer parser = getLexer(code, format);
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
         assertThat(parser.nextToken(new Token()), matches(EORECORD, "b and ' more\n"));
     }
@@ -289,7 +289,7 @@ public class CSVLexerTest {
     @Test
     public void testDelimiterIsWhitespace() throws IOException {
         final String code = "one\ttwo\t\tfour \t five\t six";
-        final Lexer parser = getLexer(code, CSVFormat.TDF);
+        final CSVLexer parser = getLexer(code, CSVFormat.TDF);
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "one"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "two"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, ""));
@@ -300,96 +300,96 @@ public class CSVLexerTest {
 
     @Test
     public void testEscapedCR() throws Exception {
-        final Lexer lexer = getLexer("character\\" + CR + "Escaped", formatWithEscaping);
+        final CSVLexer lexer = getLexer("character\\" + CR + "Escaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character" + CR + "Escaped"));
     }
 
     @Test
     public void testCR() throws Exception {
-        final Lexer lexer = getLexer("character" + CR + "NotEscaped", formatWithEscaping);
+        final CSVLexer lexer = getLexer("character" + CR + "NotEscaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character"));
         assertThat(lexer.nextToken(new Token()), hasContent("NotEscaped"));
     }
 
     @Test
     public void testEscapedLF() throws Exception {
-        final Lexer lexer = getLexer("character\\" + LF + "Escaped", formatWithEscaping);
+        final CSVLexer lexer = getLexer("character\\" + LF + "Escaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character" + LF + "Escaped"));
     }
 
     @Test
     public void testLF() throws Exception {
-        final Lexer lexer = getLexer("character" + LF + "NotEscaped", formatWithEscaping);
+        final CSVLexer lexer = getLexer("character" + LF + "NotEscaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character"));
         assertThat(lexer.nextToken(new Token()), hasContent("NotEscaped"));
     }
 
     @Test // TODO is this correct? Do we expect <esc>TAB to be unescaped?
     public void testEscapedTab() throws Exception {
-        final Lexer lexer = getLexer("character\\" + TAB + "Escaped", formatWithEscaping);
+        final CSVLexer lexer = getLexer("character\\" + TAB + "Escaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character" + TAB + "Escaped"));
     }
 
     @Test
     public void testTab() throws Exception {
-        final Lexer lexer = getLexer("character" + TAB + "NotEscaped", formatWithEscaping);
+        final CSVLexer lexer = getLexer("character" + TAB + "NotEscaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character" + TAB + "NotEscaped"));
     }
 
     @Test // TODO is this correct? Do we expect <esc>BACKSPACE to be unescaped?
     public void testEscapedBackspace() throws Exception {
-        final Lexer lexer = getLexer("character\\" + BACKSPACE + "Escaped", formatWithEscaping);
+        final CSVLexer lexer = getLexer("character\\" + BACKSPACE + "Escaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character" + BACKSPACE + "Escaped"));
     }
 
     @Test
     public void testBackspace() throws Exception {
-        final Lexer lexer = getLexer("character" + BACKSPACE + "NotEscaped", formatWithEscaping);
+        final CSVLexer lexer = getLexer("character" + BACKSPACE + "NotEscaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character" + BACKSPACE + "NotEscaped"));
     }
 
     @Test // TODO is this correct? Do we expect <esc>FF to be unescaped?
     public void testEscapedFF() throws Exception {
-        final Lexer lexer = getLexer("character\\" + FF + "Escaped", formatWithEscaping);
+        final CSVLexer lexer = getLexer("character\\" + FF + "Escaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character" + FF + "Escaped"));
     }
 
     @Test
     public void testFF() throws Exception {
-        final Lexer lexer = getLexer("character" + FF + "NotEscaped", formatWithEscaping);
+        final CSVLexer lexer = getLexer("character" + FF + "NotEscaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character" + FF + "NotEscaped"));
     }
 
     @Test
     public void testEscapedMySqlNullValue() throws Exception {
         // MySQL uses \N to symbolize null values. We have to restore this
-        final Lexer lexer = getLexer("character\\NEscaped", formatWithEscaping);
+        final CSVLexer lexer = getLexer("character\\NEscaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character\\NEscaped"));
     }
 
     @Test
     public void testEscapedCharacter() throws Exception {
-        final Lexer lexer = getLexer("character\\aEscaped", formatWithEscaping);
+        final CSVLexer lexer = getLexer("character\\aEscaped", formatWithEscaping);
         assertThat(lexer.nextToken(new Token()), hasContent("character\\aEscaped"));
     }
 
     @Test
     public void testEscapedControlCharacter() throws Exception {
         // we are explicitly using an escape different from \ here
-        final Lexer lexer = getLexer("character!rEscaped", CSVFormat.DEFAULT.withEscape('!'));
+        final CSVLexer lexer = getLexer("character!rEscaped", CSVFormat.DEFAULT.withEscape('!'));
         assertThat(lexer.nextToken(new Token()), hasContent("character" + CR + "Escaped"));
     }
 
     @Test
     public void testEscapedControlCharacter2() throws Exception {
-        final Lexer lexer = getLexer("character\\rEscaped", CSVFormat.DEFAULT.withEscape('\\'));
+        final CSVLexer lexer = getLexer("character\\rEscaped", CSVFormat.DEFAULT.withEscape('\\'));
         assertThat(lexer.nextToken(new Token()), hasContent("character" + CR + "Escaped"));
     }
 
     @Test(expected = IOException.class)
     public void testEscapingAtEOF() throws Exception {
         final String code = "escaping at EOF is evil\\";
-        final Lexer lexer = getLexer(code, formatWithEscaping);
+        final CSVLexer lexer = getLexer(code, formatWithEscaping);
 
         lexer.nextToken(new Token());
     }

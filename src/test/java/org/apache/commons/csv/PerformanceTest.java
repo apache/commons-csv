@@ -224,9 +224,9 @@ public class PerformanceTest {
    }
 
 
-   private static Constructor<Lexer> getLexerCtor(final String clazz) throws Exception {
+   private static Constructor<CSVLexer> getLexerCtor(final String clazz) throws Exception {
        @SuppressWarnings("unchecked")
-       final Class<Lexer> lexer = (Class<Lexer>) Class.forName("org.apache.commons.csv." + clazz);
+       final Class<CSVLexer> lexer = (Class<CSVLexer>) Class.forName("org.apache.commons.csv." + clazz);
        return lexer.getConstructor(new Class<?>[]{CSVFormat.class, ExtendedBufferedReader.class});
    }
 
@@ -235,7 +235,7 @@ public class PerformanceTest {
        String dynamic = "";
        for (int i = 0; i < max; i++) {
            final ExtendedBufferedReader input = new ExtendedBufferedReader(getReader());
-           Lexer lexer = null;
+           CSVLexer lexer = null;
            if (test.startsWith("CSVLexer")) {
                dynamic="!";
                lexer = getLexerCtor(test).newInstance(new Object[]{format, input});
