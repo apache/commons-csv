@@ -51,17 +51,14 @@ final class CSVLexer {
     private final char quoteChar;
     private final char commmentStart;
 
-    final boolean ignoreSurroundingSpaces;
-    final boolean ignoreEmptyLines;
-
-    final CSVFormat format;
+    private final boolean ignoreSurroundingSpaces;
+    private final boolean ignoreEmptyLines;
 
     /** The input stream */
-    final ExtendedBufferedReader in;
+    private final ExtendedBufferedReader in;
 
-    /** INTERNAL API. ctor needs to be public so can be called dynamically by PerformanceTest class */
+    /** INTERNAL API. but ctor needs to be called dynamically by PerformanceTest class */
     CSVLexer(final CSVFormat format, final ExtendedBufferedReader in) {
-        this.format = format;
         this.in = in;
         this.delimiter = format.getDelimiter();
         this.escape = mapNullToDisabled(format.getEscape());
