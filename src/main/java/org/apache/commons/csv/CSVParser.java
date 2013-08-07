@@ -217,7 +217,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private final CSVFormat format;
     private final Map<String, Integer> headerMap;
 
-    private final CSVLexer lexer;
+    private final Lexer lexer;
 
     /** A record buffer for getRecord(). Grows as necessary and is reused. */
     private final List<String> record = new ArrayList<String>();
@@ -265,7 +265,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public CSVParser(final Reader reader, final CSVFormat format) throws IOException {
         format.validate();
         this.format = format;
-        this.lexer = new CSVLexer(format, new ExtendedBufferedReader(reader));
+        this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
         this.headerMap = this.initializeHeader();
     }
 

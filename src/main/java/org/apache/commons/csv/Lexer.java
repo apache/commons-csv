@@ -37,7 +37,7 @@ import java.io.IOException;
  *
  * @version $Id$
  */
-final class CSVLexer {
+final class Lexer {
 
     /**
      * Constant char to use for disabling comments, escapes and encapsulation. The value -2 is used because it
@@ -58,7 +58,7 @@ final class CSVLexer {
     private final ExtendedBufferedReader in;
 
     /** INTERNAL API. but ctor needs to be called dynamically by PerformanceTest class */
-    CSVLexer(final CSVFormat format, final ExtendedBufferedReader in) {
+    Lexer(final CSVFormat format, final ExtendedBufferedReader in) {
         this.in = in;
         this.delimiter = format.getDelimiter();
         this.escape = mapNullToDisabled(format.getEscape());
