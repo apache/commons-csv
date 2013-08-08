@@ -42,7 +42,7 @@ public class FercGovTest {
 
     @Test
     public void testContractFile() throws IOException {
-        final CSVParser parser = CSVParser.parseResource("ferc.gov/contract.txt", US_ASCII,
+        final CSVParser parser = CSVParser.parse("ferc.gov/contract.txt", US_ASCII,
                 CSVFormat.DEFAULT.withHeader());
         try {
             final List<CSVRecord> records = parser.getRecords();
@@ -65,7 +65,7 @@ public class FercGovTest {
 
     @Test
     public void testTransactionFile() throws IOException {
-        final CSVParser parser = CSVParser.parseResource("ferc.gov/transaction.txt", US_ASCII,
+        final CSVParser parser = CSVParser.parse("ferc.gov/transaction.txt", US_ASCII,
                 CSVFormat.DEFAULT.withHeader());
         try {
             final List<CSVRecord> records = parser.getRecords();

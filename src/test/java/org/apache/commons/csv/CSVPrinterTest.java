@@ -85,7 +85,7 @@ public class CSVPrinterTest {
         final String result = sw.toString();
         // System.out.println("### :" + printable(result));
 
-        final CSVParser parser = CSVParser.parseString(result, format);
+        final CSVParser parser = CSVParser.parse(result, format);
         final List<CSVRecord> parseResult = parser.getRecords();
 
         Utils.compare("Printer output :" + printable(result), lines, parseResult);

@@ -103,7 +103,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public static CSVParser parseFile(File file, final CSVFormat format) throws IOException {
+    public static CSVParser parse(File file, final CSVFormat format) throws IOException {
         return new CSVParser(new FileReader(file), format);
     }
 
@@ -126,13 +126,13 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public static CSVParser parseResource(String resource, Charset charset, ClassLoader classLoader,
+    public static CSVParser parse(String resource, Charset charset, ClassLoader classLoader,
             final CSVFormat format) throws IOException {
         final URL url = classLoader.getResource(resource);
         if (url == null) {
             throw new IllegalArgumentException("Resource cannot be found: " + resource);
         }
-        return parseURL(url, charset, format);
+        return parse(url, charset, format);
     }
 
     /**
@@ -152,12 +152,12 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public static CSVParser parseResource(String resource, Charset charset, final CSVFormat format) throws IOException {
+    public static CSVParser parse(String resource, Charset charset, final CSVFormat format) throws IOException {
         final URL url = ClassLoader.getSystemResource(resource);
         if (url == null) {
             throw new IllegalArgumentException("System resource cannot be found: " + resource);
         }
-        return parseURL(url, charset, format);
+        return parse(url, charset, format);
     }
 
     /**
@@ -171,7 +171,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public static CSVParser parseString(String string, final CSVFormat format) throws IOException {
+    public static CSVParser parse(String string, final CSVFormat format) throws IOException {
         return new CSVParser(new StringReader(string), format);
     }
 
@@ -194,7 +194,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public static CSVParser parseURL(URL url, Charset charset, final CSVFormat format) throws IOException {
+    public static CSVParser parse(URL url, Charset charset, final CSVFormat format) throws IOException {
         return new CSVParser(new InputStreamReader(url.openStream(), 
                              charset == null ? Charset.forName("UTF-8") : charset), format);
     }

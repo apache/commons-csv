@@ -111,7 +111,7 @@ public class CSVFileParserTest {
 
         // Now parse the file and compare against the expected results
         // We use a buffered reader internally so no need to create one here.
-        final CSVParser parser = CSVParser.parseFile(new File(BASE, split[0]), format);
+        final CSVParser parser = CSVParser.parse(new File(BASE, split[0]), format);
         for(final CSVRecord record : parser) {
             String parsed = record.toString();
             if (checkComments) {
@@ -153,7 +153,7 @@ public class CSVFileParserTest {
         assertEquals(testName + " Expected format ", line, format.toString());
 
         // Now parse the file and compare against the expected results
-        final CSVParser parser = CSVParser.parseResource("CSVFileParser/" + split[0], Charset.forName("UTF-8"),
+        final CSVParser parser = CSVParser.parse("CSVFileParser/" + split[0], Charset.forName("UTF-8"),
                 this.getClass().getClassLoader(), format);
         for (final CSVRecord record : parser) {
             String parsed = record.toString();
