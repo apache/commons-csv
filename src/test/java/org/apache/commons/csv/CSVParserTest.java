@@ -175,7 +175,7 @@ public class CSVParserTest {
                 {"world", ""}
         };
         for (final String code : codes) {
-            final CSVParser parser = CSVParser.parseString(code);
+            final CSVParser parser = CSVParser.parseString(code, CSVFormat.DEFAULT);
             final List<CSVRecord> records = parser.getRecords();
             assertEquals(res.length, records.size());
             assertTrue(records.size() > 0);
@@ -269,7 +269,7 @@ public class CSVParserTest {
                 {"a\\", "b"},  // a backslash must be returnd
                 {"a\\\\,b"}    // backslash in quotes only escapes a delimiter (",")
         };
-        final CSVParser parser = CSVParser.parseString(code);
+        final CSVParser parser = CSVParser.parseString(code, CSVFormat.DEFAULT);
         final List<CSVRecord> records = parser.getRecords();
         assertEquals(res.length, records.size());
         assertTrue(records.size() > 0);
@@ -408,7 +408,7 @@ public class CSVParserTest {
     @Test
     public void testCarriageReturnEndings() throws IOException {
         final String code = "foo\rbaar,\rhello,world\r,kanu";
-        final CSVParser parser = CSVParser.parseString(code);
+        final CSVParser parser = CSVParser.parseString(code, CSVFormat.DEFAULT);
         final List<CSVRecord> records = parser.getRecords();
         assertEquals(4, records.size());
     }
@@ -416,7 +416,7 @@ public class CSVParserTest {
     @Test
     public void testLineFeedEndings() throws IOException {
         final String code = "foo\nbaar,\nhello,world\n,kanu";
-        final CSVParser parser = CSVParser.parseString(code);
+        final CSVParser parser = CSVParser.parseString(code, CSVFormat.DEFAULT);
         final List<CSVRecord> records = parser.getRecords();
         assertEquals(4, records.size());
     }
@@ -426,7 +426,7 @@ public class CSVParserTest {
         final String code = "\nfoo,baar\n\r\n,\n\n,world\r\n\n";
         //String code = "world\r\n\n";
         //String code = "foo;baar\r\n\r\nhello;\r\n\r\nworld;\r\n";
-        final CSVParser parser = CSVParser.parseString(code);
+        final CSVParser parser = CSVParser.parseString(code, CSVFormat.DEFAULT);
         final List<CSVRecord> records = parser.getRecords();
         assertEquals(3, records.size());
     }

@@ -161,19 +161,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Creates a parser for the given {@link String} using the default format {@link CSVFormat#DEFAULT}.
-     *
-     * @param string
-     *            a CSV string
-     * @return a new parser
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    public static CSVParser parseString(String string) throws IOException {
-        return parseString(string, CSVFormat.DEFAULT);
-    }
-
-    /**
      * Creates a parser for the given {@link String}.
      *
      * @param string
