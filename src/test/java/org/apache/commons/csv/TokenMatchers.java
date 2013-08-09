@@ -40,10 +40,7 @@ final class TokenMatchers {
                     final Description mismatchDescription) {
                 mismatchDescription.appendText("token type is ");
                 mismatchDescription.appendValue(item.type);
-                if (item.type == expectedType) {
-                    return true;
-                }
-                return false;
+                return item.type == expectedType;
             }
         };
     }
@@ -61,10 +58,7 @@ final class TokenMatchers {
                     final Description mismatchDescription) {
                 mismatchDescription.appendText("token content is ");
                 mismatchDescription.appendValue(item.content.toString());
-                if (expectedContent.equals(item.content.toString())) {
-                    return true;
-                }
-                return false;
+                return expectedContent.equals(item.content.toString());
             }
         };
     }
