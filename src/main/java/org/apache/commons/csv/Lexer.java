@@ -287,7 +287,7 @@ final class Lexer {
         }
     }
 
-    private final char mapNullToDisabled(final Character c) {
+    private char mapNullToDisabled(final Character c) {
         return c == null ? DISABLED : c.charValue();
     }
 
