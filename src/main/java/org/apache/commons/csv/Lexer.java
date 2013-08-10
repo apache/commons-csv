@@ -49,7 +49,7 @@ final class Lexer {
     private final char delimiter;
     private final char escape;
     private final char quoteChar;
-    private final char commmentStart;
+    private final char commentStart;
 
     private final boolean ignoreSurroundingSpaces;
     private final boolean ignoreEmptyLines;
@@ -63,7 +63,7 @@ final class Lexer {
         this.delimiter = format.getDelimiter();
         this.escape = mapNullToDisabled(format.getEscape());
         this.quoteChar = mapNullToDisabled(format.getQuoteChar());
-        this.commmentStart = mapNullToDisabled(format.getCommentStart());
+        this.commentStart = mapNullToDisabled(format.getCommentStart());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
     }
@@ -409,14 +409,14 @@ final class Lexer {
     }
 
     boolean isCommentStart(final int ch) {
-        return ch == commmentStart;
+        return ch == commentStart;
     }
 
     private boolean isMetaChar(final int ch) {
         return ch == delimiter ||
                ch == escape ||
                ch == quoteChar ||
-               ch == commmentStart;
+               ch == commentStart;
     }
 
     /**
