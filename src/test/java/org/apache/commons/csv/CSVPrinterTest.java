@@ -168,7 +168,7 @@ public class CSVPrinterTest {
     public void testExcelPrintAllArrayOfLists() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
-        printer.printRecords(new List[] { Arrays.asList(new String[] { "r1c1", "r1c2" }), Arrays.asList(new String[] { "r2c1", "r2c2" }) });
+        printer.printRecords(new List[] { Arrays.asList("r1c1", "r1c2"), Arrays.asList("r2c1", "r2c2") });
         assertEquals("r1c1,r1c2" + recordSeparator + "r2c1,r2c2" + recordSeparator, sw.toString());
         printer.close();
     }
@@ -186,8 +186,8 @@ public class CSVPrinterTest {
     public void testExcelPrintAllIterableOfLists() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
-        printer.printRecords(Arrays.asList(new List[] { Arrays.asList(new String[] { "r1c1", "r1c2" }),
-                Arrays.asList(new String[] { "r2c1", "r2c2" }) }));
+        printer.printRecords(Arrays.asList(new List[] { Arrays.asList("r1c1", "r1c2"),
+                Arrays.asList("r2c1", "r2c2") }));
         assertEquals("r1c1,r1c2" + recordSeparator + "r2c1,r2c2" + recordSeparator, sw.toString());
         printer.close();
     }
