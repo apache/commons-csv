@@ -27,7 +27,7 @@ import org.junit.Assert;
  *
  * @version $Id$
  */
-public class Utils {
+final class Utils {
 
     private Utils() {
     }
