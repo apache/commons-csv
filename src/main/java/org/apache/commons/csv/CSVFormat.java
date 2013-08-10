@@ -187,8 +187,7 @@ public class CSVFormat implements Serializable {
      *
      * @return true if <code>c</code> is a line break character
      */
-    // package protected to give access without needing a synthetic accessor
-    static boolean isLineBreak(final char c) {
+    private static boolean isLineBreak(final char c) {
         return c == LF || c == CR;
     }
 
@@ -200,8 +199,7 @@ public class CSVFormat implements Serializable {
      *
      * @return true if <code>c</code> is a line break character (and not null)
      */
-    // package protected to give access without needing a synthetic accessor
-    static boolean isLineBreak(final Character c) {
+    private static boolean isLineBreak(final Character c) {
         return c != null && isLineBreak(c.charValue());
     }
 
