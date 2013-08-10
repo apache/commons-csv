@@ -131,7 +131,6 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * the header size. Some programs can export files that fails this test but still produce parsable files.
      *
      * @return true of this record is valid, false if not
-     * @see CSVParserTest#org.apache.commons.csv.CSVParserTest.testMappedButNotSetAsOutlook2007ContactExport()
      */
     public boolean isConsistent() {
         return mapping == null ? true : mapping.size() == values.length;
