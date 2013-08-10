@@ -62,10 +62,10 @@ import java.util.Set;
  * </p>
  * <pre>CSVFormat.EXCEL.withHeader(&quot;Col1&quot;, &quot;Col2&quot;, &quot;Col3&quot;);</pre>
  * <p>
- * Calling {@link #withHeader(String...)} let's you use the given names to address values in a {@link CSVRecord}, and 
+ * Calling {@link #withHeader(String...)} let's you use the given names to address values in a {@link CSVRecord}, and
  * assumes that your CSV source does not contain a first record that also defines column names. If it does, then
- * you are overriding this metadata with your names and you should skip the first record by calling 
- * {@link #withSkipHeaderRecord(boolean)} with {@code true}. 
+ * you are overriding this metadata with your names and you should skip the first record by calling
+ * {@link #withSkipHeaderRecord(boolean)} with {@code true}.
  * </p>
  * <h4>Parsing</h4>
  * <p>
@@ -78,19 +78,19 @@ import java.util.Set;
  * </p>
  * <h4>Referencing columns safely</h4>
  * <p>
- * If your source contains a header record, you can simplify your code and safely reference columns, 
+ * If your source contains a header record, you can simplify your code and safely reference columns,
  * by using {@link #withHeader(String...)} with no arguments:
  * </p>
  * <pre>CSVFormat.EXCEL.withHeader();</pre>
  * <p>
  * This causes the parser to read the first record and use its values as column names.
  * Then, call one of the {@link CSVRecord} get method that takes a String column name argument:
- * </p> 
+ * </p>
  * <pre>String value = record.get(&quot;Col1&quot;);</pre>
  * <p>
  * This makes your code impervious to changes in column order in the CSV file.
  * </p>
- * <h4>Notes</h4> 
+ * <h4>Notes</h4>
  * <p>
  * This class is immutable.
  * </p>
@@ -125,7 +125,8 @@ public class CSVFormat implements Serializable {
      * <li>withIgnoreEmptyLines(true)</li>
      * </ul>
      */
-    public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, null, null, false);
+    public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null,
+                                                            false, true, CRLF, null, null, false);
 
     /**
      * Comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
