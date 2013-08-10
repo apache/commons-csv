@@ -63,9 +63,9 @@ final class ExtendedBufferedReader extends BufferedReader {
 
     /**
      * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by
-     * any of the read methods. This will not include a character read using the {@link #peek()} method. If no
-     * character has been read then this will return {@link #UNDEFINED}. If the end of the stream was reached on the
-     * last read then this will return {@link #END_OF_STREAM}.
+     * any of the read methods. This will not include a character read using the {@link #lookAhead()} method. If no
+     * character has been read then this will return {@link Constants#UNDEFINED}. If the end of the stream was reached on the
+     * last read then this will return {@link Constants#END_OF_STREAM}.
      *
      * @return the last character that was read
      */
@@ -109,7 +109,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      * <p>
      * Increments {@link #eolCounter}
      * <p>
-     * Sets {@link #lastChar} to {@link #END_OF_STREAM} at EOF, otherwise to LF
+     * Sets {@link #lastChar} to {@link Constants#END_OF_STREAM} at EOF, otherwise to LF
      *
      * @return the line that was read, or null if reached EOF.
      */
