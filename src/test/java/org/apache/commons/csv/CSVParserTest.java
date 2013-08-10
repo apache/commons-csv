@@ -700,7 +700,7 @@ public class CSVParserTest {
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidFormat() throws Exception {
         final CSVFormat invalidFormat = CSVFormat.DEFAULT.withDelimiter(CR);
-        new CSVParser((Reader) null, invalidFormat).close();
+        new CSVParser(null, invalidFormat).close();
     }
 
     private void validateRecordNumbers(final String lineSeparator) throws IOException {
