@@ -64,8 +64,8 @@ final class ExtendedBufferedReader extends BufferedReader {
     /**
      * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by
      * any of the read methods. This will not include a character read using the {@link #lookAhead()} method. If no
-     * character has been read then this will return {@link Constants#UNDEFINED}. If the end of the stream was reached on the
-     * last read then this will return {@link Constants#END_OF_STREAM}.
+     * character has been read then this will return {@link Constants#UNDEFINED}. If the end of the stream was reached
+     * on the last read then this will return {@link Constants#END_OF_STREAM}.
      *
      * @return the last character that was read
      */
@@ -157,22 +157,22 @@ final class ExtendedBufferedReader extends BufferedReader {
         return eolCounter + 1; // Allow for counter being incremented only at EOL
     }
 
-	public boolean isClosed() {
-		return closed;
-	}
+    public boolean isClosed() {
+        return closed;
+    }
 
-	/**
-	 * Closes the stream.
-	 *
-	 * @throws IOException
-	 *             If an I/O error occurs
-	 */
-	@Override
-	public void close() throws IOException {
-		// Set ivars before calling super close() in case close() throws an IOException.
-		closed = true;
-		lastChar = END_OF_STREAM;
-		super.close();
-	}
+    /**
+     * Closes the stream.
+     *
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    @Override
+    public void close() throws IOException {
+        // Set ivars before calling super close() in case close() throws an IOException.
+        closed = true;
+        lastChar = END_OF_STREAM;
+        super.close();
+    }
 
 }
