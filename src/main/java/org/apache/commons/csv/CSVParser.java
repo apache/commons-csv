@@ -195,7 +195,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If an I/O error occurs
      */
     public static CSVParser parse(URL url, Charset charset, final CSVFormat format) throws IOException {
-        return new CSVParser(new InputStreamReader(url.openStream(), 
+        return new CSVParser(new InputStreamReader(url.openStream(),
                              charset == null ? Charset.forName("UTF-8") : charset), format);
     }
 
