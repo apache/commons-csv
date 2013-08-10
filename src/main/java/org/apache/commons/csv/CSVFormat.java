@@ -100,19 +100,6 @@ public class CSVFormat implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Returns true if the given character is a line break character.
-     *
-     * @param c
-     *            the character to check, may be null
-     *
-     * @return true if <code>c</code> is a line break character (and not null)
-     */
-    // package protected to give access without needing a synthetic accessor
-    static boolean isLineBreak(final Character c) {
-        return c != null && isLineBreak(c.charValue());
-    }
-
     private final char delimiter;
     private final Character quoteChar; // null if quoting is disabled
     private final Quote quotePolicy;
@@ -203,6 +190,19 @@ public class CSVFormat implements Serializable {
     // package protected to give access without needing a synthetic accessor
     static boolean isLineBreak(final char c) {
         return c == LF || c == CR;
+    }
+
+    /**
+     * Returns true if the given character is a line break character.
+     *
+     * @param c
+     *            the character to check, may be null
+     *
+     * @return true if <code>c</code> is a line break character (and not null)
+     */
+    // package protected to give access without needing a synthetic accessor
+    static boolean isLineBreak(final Character c) {
+        return c != null && isLineBreak(c.charValue());
     }
 
     /**
