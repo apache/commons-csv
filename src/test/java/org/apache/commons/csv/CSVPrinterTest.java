@@ -42,7 +42,9 @@ import org.junit.Test;
  */
 public class CSVPrinterTest {
 
-    public static String printable(final String s) {
+    private final String recordSeparator = CSVFormat.DEFAULT.getRecordSeparator();
+
+    private static String printable(final String s) {
         final StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             final char ch = s.charAt(i);
@@ -55,9 +57,7 @@ public class CSVPrinterTest {
         return sb.toString();
     }
 
-    String recordSeparator = CSVFormat.DEFAULT.getRecordSeparator();
-
-    public void doOneRandom(final CSVFormat format) throws Exception {
+    private void doOneRandom(final CSVFormat format) throws Exception {
         final Random r = new Random();
 
         final int nLines = r.nextInt(4) + 1;
@@ -91,13 +91,13 @@ public class CSVPrinterTest {
         Utils.compare("Printer output :" + printable(result), lines, parseResult);
     }
 
-    public void doRandom(final CSVFormat format, final int iter) throws Exception {
+    private void doRandom(final CSVFormat format, final int iter) throws Exception {
         for (int i = 0; i < iter; i++) {
             doOneRandom(format);
         }
     }
 
-    public String randStr() {
+    private String randStr() {
         final Random r = new Random();
 
         final int sz = r.nextInt(20);
