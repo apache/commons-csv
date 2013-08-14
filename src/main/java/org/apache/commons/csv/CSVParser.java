@@ -108,59 +108,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Creates a parser for the given resource.
-     *
-     * <p>
-     * If you do not read all records from the given source, you should call {@link #close()} on the parser.
-     * </p>
-     *
-     * @param resource
-     *            a resource path
-     * @param charset
-     *            the charset for the resource
-     * @param classLoader
-     *            the class loader to load the resource.
-     * @param format
-     *            the CSVFormat used for CSV parsing
-     * @return a new parser
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    public static CSVParser parse(String resource, Charset charset, ClassLoader classLoader,
-            final CSVFormat format) throws IOException {
-        final URL url = classLoader.getResource(resource);
-        if (url == null) {
-            throw new IllegalArgumentException("Resource cannot be found: " + resource);
-        }
-        return parse(url, charset, format);
-    }
-
-    /**
-     * Creates a parser for the given resource.
-     *
-     * <p>
-     * If you do not read all records from the given source, you should call {@link #close()} on the parser.
-     * </p>
-     *
-     * @param resource
-     *            a resource path
-     * @param charset
-     *            the charset for the resource
-     * @param format
-     *            the CSVFormat used for CSV parsing
-     * @return a new parser
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    public static CSVParser parse(String resource, Charset charset, final CSVFormat format) throws IOException {
-        final URL url = ClassLoader.getSystemResource(resource);
-        if (url == null) {
-            throw new IllegalArgumentException("System resource cannot be found: " + resource);
-        }
-        return parse(url, charset, format);
-    }
-
-    /**
      * Creates a parser for the given {@link String}.
      *
      * @param string
@@ -212,25 +159,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private long recordNumber;
 
     private final Token reusableToken = new Token();
-
-    /**
-     * CSV parser using the default format {@link CSVFormat#DEFAULT}.
-     *
-     * <p>
-     * If you do not read all records from the given {@code reader}, you should call {@link #close()} on the parser,
-     * unless you close the {@code reader}.
-     * </p>
-     *
-     * @param input
-     *            a Reader containing "csv-formatted" input
-     * @throws IllegalArgumentException
-     *             thrown if the parameters of the format are inconsistent
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    public CSVParser(final Reader input) throws IOException {
-        this(input, CSVFormat.DEFAULT);
-    }
 
     /**
      * Customized CSV parser using the given {@link CSVFormat}

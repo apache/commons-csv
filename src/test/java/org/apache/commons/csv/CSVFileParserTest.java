@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -126,7 +127,7 @@ public class CSVFileParserTest {
     }
 
     @Test
-    public void testCSVResource() throws Exception {
+    public void testCSVUrl() throws Exception {
         String line = readTestData();
         assertNotNull("file must contain config line", line);
         final String[] split = line.split(" ");
@@ -153,8 +154,8 @@ public class CSVFileParserTest {
         assertEquals(testName + " Expected format ", line, format.toString());
 
         // Now parse the file and compare against the expected results
-        final CSVParser parser = CSVParser.parse("CSVFileParser/" + split[0], Charset.forName("UTF-8"),
-                this.getClass().getClassLoader(), format);
+        URL resource = ClassLoader.getSystemResource("CSVFileParser/" + split[0]);
+        final CSVParser parser = CSVParser.parse(resource, Charset.forName("UTF-8"), format);
         for (final CSVRecord record : parser) {
             String parsed = record.toString();
             if (checkComments) {
