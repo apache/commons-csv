@@ -28,10 +28,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -719,6 +722,46 @@ public class CSVParserTest {
     public void testInvalidFormat() throws Exception {
         final CSVFormat invalidFormat = CSVFormat.DEFAULT.withDelimiter(CR);
         new CSVParser(null, invalidFormat).close();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseNullFileFormat() throws Exception {
+        CSVParser.parse((File) null, CSVFormat.DEFAULT);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseFileNullFormat() throws Exception {
+        CSVParser.parse(new File(""), null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseNullStringFormat() throws Exception {
+        CSVParser.parse((String) null, CSVFormat.DEFAULT);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseStringNullFormat() throws Exception {
+        CSVParser.parse("csv data", null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseNullUrlCharsetFormat() throws Exception {
+        CSVParser.parse(null, Charset.defaultCharset(), CSVFormat.DEFAULT);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseUrlCharsetNullFormat() throws Exception {
+        CSVParser.parse(new URL("http://commons.apache.org"), Charset.defaultCharset(), null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNewCSVParserNullReaderFormat() throws Exception {
+        new CSVParser(null, CSVFormat.DEFAULT);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNewCSVParserReaderNullFormat() throws Exception {
+        new CSVParser(new StringReader(""), null);
     }
 
     private void validateRecordNumbers(final String lineSeparator) throws IOException {

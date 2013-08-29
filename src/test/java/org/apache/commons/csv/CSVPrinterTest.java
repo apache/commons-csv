@@ -487,6 +487,16 @@ public class CSVPrinterTest {
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidFormat() throws Exception {
         final CSVFormat invalidFormat = CSVFormat.DEFAULT.withDelimiter(CR);
-        new CSVPrinter(null, invalidFormat).close();
+        new CSVPrinter(new StringWriter(), invalidFormat).close();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNewCSVPrinterNullAppendableFormat() throws Exception {
+        new CSVPrinter(null, CSVFormat.DEFAULT);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNewCsvPrinterAppendableNullFormat() throws Exception {
+        new CSVPrinter(new StringWriter(), null);
     }
 }

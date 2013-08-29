@@ -96,14 +96,19 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Creates a parser for the given {@link File}.
      *
      * @param file
-     *            a CSV file
+     *            a CSV file. Must not be null.
      * @param format
-     *            the CSVFormat used for CSV parsing
+     *            the CSVFormat used for CSV parsing. Must not be null.
      * @return a new parser
+     * @throws IllegalArgumentException
+     *             If the parameters of the format are inconsistent or if either file or format are null.
      * @throws IOException
      *             If an I/O error occurs
      */
     public static CSVParser parse(File file, final CSVFormat format) throws IOException {
+        Assertions.notNull(file, "file");
+        Assertions.notNull(format, "format");
+
         return new CSVParser(new FileReader(file), format);
     }
 
@@ -111,14 +116,19 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Creates a parser for the given {@link String}.
      *
      * @param string
-     *            a CSV string
+     *            a CSV string. Must not be null.
      * @param format
-     *            the CSVFormat used for CSV parsing
+     *            the CSVFormat used for CSV parsing. Must not be null.
      * @return a new parser
+     * @throws IllegalArgumentException
+     *             If the parameters of the format are inconsistent or if either string or format are null.
      * @throws IOException
      *             If an I/O error occurs
      */
     public static CSVParser parse(String string, final CSVFormat format) throws IOException {
+        Assertions.notNull(string, "string");
+        Assertions.notNull(format, "format");
+
         return new CSVParser(new StringReader(string), format);
     }
 
@@ -131,17 +141,22 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * </p>
      *
      * @param url
-     *            a URL
+     *            a URL. Must not be null.
      * @param charset
      *            the charset for the resource, if {@code null}, uses {@code UTF-8}. UTF-8 is one of the encodings
      *            required by the Java specification.
      * @param format
-     *            the CSVFormat used for CSV parsing
+     *            the CSVFormat used for CSV parsing. Must not be null.
      * @return a new parser
+     * @throws IllegalArgumentException
+     *             If the parameters of the format are inconsistent or if either url or format are null.
      * @throws IOException
      *             If an I/O error occurs
      */
     public static CSVParser parse(URL url, Charset charset, final CSVFormat format) throws IOException {
+        Assertions.notNull(url, "url");
+        Assertions.notNull(format, "format");
+
         return new CSVParser(new InputStreamReader(url.openStream(),
                              charset == null ? Charset.forName("UTF-8") : charset), format);
     }
@@ -169,15 +184,18 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * </p>
      *
      * @param reader
-     *            a Reader containing CSV-formatted input
+     *            a Reader containing CSV-formatted input. Must not be null.
      * @param format
-     *            the CSVFormat used for CSV parsing
+     *            the CSVFormat used for CSV parsing. Must not be null.
      * @throws IllegalArgumentException
-     *             thrown if the parameters of the format are inconsistent
+     *             If the parameters of the format are inconsistent or if either reader or format are null.
      * @throws IOException
      *             If an I/O error occurs
      */
     public CSVParser(final Reader reader, final CSVFormat format) throws IOException {
+        Assertions.notNull(reader, "reader");
+        Assertions.notNull(format, "format");
+
         format.validate();
         this.format = format;
         this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));

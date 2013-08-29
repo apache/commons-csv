@@ -49,15 +49,18 @@ public final class CSVPrinter implements Flushable, Closeable {
      * (encapsulation and escaping with a different character) are not supported.
      *
      * @param out
-     *            stream to which to print.
+     *            stream to which to print. Must not be null.
      * @param format
-     *            the CSV format. If null the default format is used ({@link CSVFormat#DEFAULT})
+     *            the CSV format. Must not be null.
      * @throws IllegalArgumentException
-     *             thrown if the parameters of the format are inconsistent
+     *             thrown if the parameters of the format are inconsistent or if either out or format are null.
      */
     public CSVPrinter(final Appendable out, final CSVFormat format) {
+        Assertions.notNull(out, "out");
+        Assertions.notNull(format, "format");
+
         this.out = out;
-        this.format = format == null ? CSVFormat.DEFAULT : format;
+        this.format = format;
         this.format.validate();
     }
 
