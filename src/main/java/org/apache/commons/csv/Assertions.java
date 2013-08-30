@@ -28,7 +28,7 @@ final class Assertions {
         // can not be instantiated
     }
 
-    public static <T> void notNull(T parameter, String parameterName) {
+    public static void notNull(Object parameter, String parameterName) {
         if (parameter == null) {
             throw new IllegalArgumentException("Parameter '" + parameterName + "' must not be null!");
         }
