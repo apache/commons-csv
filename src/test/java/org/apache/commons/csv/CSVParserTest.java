@@ -750,6 +750,11 @@ public class CSVParserTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testParserUrlNullCharsetFormat() throws Exception {
+        CSVParser.parse(new URL("http://commons.apache.org"), null, CSVFormat.DEFAULT);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testParseUrlCharsetNullFormat() throws Exception {
         CSVParser.parse(new URL("http://commons.apache.org"), Charset.defaultCharset(), null);
     }
