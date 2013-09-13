@@ -90,7 +90,7 @@ import java.util.NoSuchElementException;
  * customising CSVFormats is available in {@link CSVFormat CSVFormat JavaDoc}.
  * </p>
  *
- * <h4>Parsing completely into memory</h4>
+ * <h4>Parsing into memory</h4>
  * <p>
  * If parsing record wise is not desired, the contents of the input can be read completely into memory.
  * </p>
