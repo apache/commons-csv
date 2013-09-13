@@ -41,6 +41,8 @@ import java.util.NoSuchElementException;
  * Because CSV appears in many different dialects, the parser supports many formats by allowing the
  * specification of a {@link CSVFormat}.
  *
+ * The parser works record wise. It is not possible to go back, once a record has been parsed from the input stream.
+ *
  * <h4>Creating instances</h4>
  * There are several static factory methods that can be used to create instances for various types of resources:
  * <p>
@@ -56,32 +58,37 @@ import java.util.NoSuchElementException;
  *
  * <h4>Parsing record wise</h4>
  * <p>
- * To parse a CSV input with tabs as separators, '"' (double-quote) as an optional value encapsulator, and comments
- * starting with '#', you write:
+ * To parse a CSV input from a file, you write:
  * </p>
  *
  * <pre>
- * Reader in = new StringReader(&quot;a\tb\nc\td&quot;);
- * Iterable&lt;CSVRecord&gt; parser = CSVFormat.DEFAULT
- *     .withCommentStart('#')
- *     .withDelimiter('\t')
- *     .withQuoteChar('"').parse(in);
- *  for (CSVRecord csvRecord : parse) {
- *     ...
- *  }
- * </pre>
- *
- * <p>
- * To parse CSV input in a given format like Excel, you write:
- * </p>
- *
- * <pre>
- * Reader in = new StringReader("a;b\nc;d");
- * Iterable&lt;CSVRecord&gt; parser = CSVFormat.EXCEL.parse(in);
- * for (CSVRecord record : parser) {
+ * File csvData = new File(&quot;/path/to/csv&quot;);
+ * CSVParser parser = CSVParser.parse(csvData, CSVFormat.RFC4180);
+ * for (CSVRecord csvRecord : parser) {
  *     ...
  * }
  * </pre>
+ *
+ * <p>
+ * This will read the parse the contents of the file using the
+ * <a href="http://tools.ietf.org/html/rfc4180" target="_blank">RFC 4180</a> format.
+ * </p>
+ *
+ * <p>
+ * To parse CSV input in a format like Excel, you write:
+ * </p>
+ *
+ * <pre>
+ * CSVParser parser = CSVParser.parse(csvData, CSVFormat.EXCEL);
+ * for (CSVRecord csvRecord : parser) {
+ *     ...
+ * }
+ * </pre>
+ *
+ * <p>
+ * If the predefined formats don't match the format at hands, custom formats can be defined. More information about
+ * customising CSVFormats is available in {@link CSVFormat CSVFormat JavaDoc}.
+ * </p>
  *
  * <h4>Parsing completely into memory</h4>
  * <p>
