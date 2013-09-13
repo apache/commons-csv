@@ -36,9 +36,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 /**
- * Parses CSV files according to the specified configuration.
+ * Parses CSV files according to the specified format.
  *
- * Because CSV appears in many different dialects, the parser supports many configuration settings by allowing the
+ * Because CSV appears in many different dialects, the parser supports many formats by allowing the
  * specification of a {@link CSVFormat}.
  *
  * <p>
