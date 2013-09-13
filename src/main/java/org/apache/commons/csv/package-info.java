@@ -19,8 +19,9 @@
  * Apache Commons CSV Format Support.
  *
  * <p>CSV (or its dialects) are widely used as interfaces to legacy systems or
- *    manual data-imports. Basically CSV stands for "Comma Separated Values" but
- *    this simple abbreviation leads to more confusion than definitions.</p>
+ *    manual data-imports. CSV stands for "Comma Separated Values" (or sometimes
+ *    "Character Separated Values") but this simple abbreviation leads to more
+ *    confusion than definitions.</p>
  *
  * <p>Common to all file dialects is its basic structure: The CSV data-format
  *    is record oriented, whereas each record starts on a new textual line. A
