@@ -40,11 +40,11 @@ import java.util.Set;
  * You can use one of the predefined formats:
  * </p>
  * <ul>
- * <li>{@link #DEFAULT}</li>
- * <li>{@link #EXCEL}</li>
- * <li>{@link #MYSQL}</li>
- * <li>{@link #RFC4180}</li>
- * <li>{@link #TDF}</li>
+ *      <li>{@link #DEFAULT}</li>
+ *      <li>{@link #EXCEL}</li>
+ *      <li>{@link #MYSQL}</li>
+ *      <li>{@link #RFC4180}</li>
+ *      <li>{@link #TDF}</li>
  * </ul>
  * <p>For example:</p>
  * <pre>CSVParser parser = CSVFormat.EXCEL.parse(reader);</pre>
