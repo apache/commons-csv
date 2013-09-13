@@ -595,6 +595,7 @@ public class CSVFormat implements Serializable {
         if (getIgnoreSurroundingSpaces()) {
             sb.append(" SurroundingSpaces:ignored");
         }
+        sb.append(" SkipHeaderRecord:").append(skipHeaderRecord);
         return sb.toString();
     }
 
