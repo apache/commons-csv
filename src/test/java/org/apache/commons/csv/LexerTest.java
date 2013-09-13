@@ -43,7 +43,7 @@ import org.junit.Test;
  *
  * @version $Id$
  */
-public class CSVLexerTest {
+public class LexerTest {
 
     private CSVFormat formatWithEscaping;
 
