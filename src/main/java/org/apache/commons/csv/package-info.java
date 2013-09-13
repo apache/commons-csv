@@ -31,7 +31,7 @@
  *       record := values*
  * </pre>
  *
- * <p>The following list contains the csv aspects the Commons CSV parser supports:</p>
+ * <p>The following list contains the CSV aspects the Commons CSV parser supports:</p>
  * <dl>
  *   <dt>Separators (for lines)</dt>
  *   <dd>The record separators are hardcoded and cannot be changed. The must be '\r', '\n' or '\r\n'.</dd>
