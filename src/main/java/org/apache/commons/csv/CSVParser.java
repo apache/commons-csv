@@ -92,7 +92,7 @@ import java.util.NoSuchElementException;
  *
  * <h4>Parsing completely into memory</h4>
  * <p>
- * You may also get a List of records:
+ * If parsing record wise is not desired, the contents of the input can be read completely into memory.
  * </p>
  *
  * <pre>
@@ -100,6 +100,20 @@ import java.util.NoSuchElementException;
  * CSVParser parser = new CSVParser(in, CSVFormat.EXCEL);
  * List&lt;CSVRecord&gt; list = parser.getRecords();
  * </pre>
+ *
+ * <p>
+ * There are two constraints that have to be kept in mind:
+ * </p>
+ *
+ * <p>
+ * <ol>
+ *     <li>Parsing into memory starts at the current position of the parser. If you have already parsed records from
+ *     the input, those records will not end up in the in memory representation of your CSV data.</li>
+ *     <li>Parsing into memory may consume a lot of system resources depending on the input. For example if you're
+ *     parsing a 150MB file of CSV data the contents will be read completely into memory.</li>
+ * </ol>
+ * </p>
+ *
  * <p>
  * Internal parser state is completely covered by the format and the reader-state.
  * </p>
