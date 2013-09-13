@@ -535,6 +535,15 @@ public class CSVFormat implements Serializable {
     }
 
     /**
+     * Returns whether a nullString has been defined.
+     *
+     * @return {@code true} if a nullString is defined
+     */
+    public boolean isNullHandling() {
+        return nullString != null;
+    }
+
+    /**
      * Returns whether a quoteChar has been defined.
      *
      * @return {@code true} if a quoteChar is defined
