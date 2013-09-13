@@ -197,6 +197,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     // the following objects are shared to reduce garbage
 
     private final CSVFormat format;
+
+    /** A mapping of column names to column indices */
     private final Map<String, Integer> headerMap;
 
     private final Lexer lexer;
