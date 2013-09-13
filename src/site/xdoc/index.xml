@@ -38,7 +38,7 @@ for (CSVRecord record : records) {
 <section name="Getting the code">
   <p>There are currently no official downloads, and will not be until version 1.0 is released, but nightly builds may be available from <a href="http://people.apache.org/builds/commons/nightly/commons-csv/">http://people.apache.org/builds/commons/nightly/commons-csv/</a>. </p>
   <p>The latest code can be checked out from our Subversion repository at <a href="http://svn.apache.org/repos/asf/commons/proper/csv/trunk/">http://svn.apache.org/repos/asf/commons/proper/csv/trunk/</a>. </p>
-  <p>You can build the component using Apache Maven 3. For example: mvn clean site. Maven 2 will not work.</p>
+  <p>You can build the component using Apache Maven 3. For example: mvn clean package. Maven 2 will not work.</p>
 </section>
 
 <section name="Reporting bugs">
