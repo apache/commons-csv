@@ -1,5 +1,5 @@
 test.csv
-Delimiter=<,> QuoteChar=<">
+Delimiter=<,> QuoteChar=<"> SkipHeaderRecord:false
 4:[A, B, C, D]
 1:[# plain values]
 4:[a, b, c, d]

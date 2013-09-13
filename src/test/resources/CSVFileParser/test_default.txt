@@ -1,5 +1,5 @@
 test.csv IgnoreEmpty=true
-Delimiter=<,> QuoteChar=<"> EmptyLines:ignored
+Delimiter=<,> QuoteChar=<"> EmptyLines:ignored SkipHeaderRecord:false
 4:[A, B, C, D]
 1:[# plain values]
 4:[a, b, c, d]
