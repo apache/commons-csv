@@ -90,9 +90,6 @@ import java.util.NoSuchElementException;
  * List&lt;CSVRecord&gt; list = parser.getRecords();
  * </pre>
  * <p>
- * See also the various static parse methods on this class.
- * </p>
- * <p>
  * Internal parser state is completely covered by the format and the reader-state.
  * </p>
  *
