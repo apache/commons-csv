@@ -685,7 +685,7 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testGetRecordWithMultiiLineValues() throws Exception {
+    public void testGetRecordWithMultiLineValues() throws Exception {
         final CSVParser parser = CSVParser.parse("\"a\r\n1\",\"a\r\n2\"" + CRLF + "\"b\r\n1\",\"b\r\n2\"" + CRLF + "\"c\r\n1\",\"c\r\n2\"",
                 CSVFormat.DEFAULT.withRecordSeparator(CRLF));
         CSVRecord record;
