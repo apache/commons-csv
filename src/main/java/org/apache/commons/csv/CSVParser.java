@@ -41,6 +41,7 @@ import java.util.NoSuchElementException;
  * Because CSV appears in many different dialects, the parser supports many formats by allowing the
  * specification of a {@link CSVFormat}.
  *
+ * <h4>Creating instances</h4>
  * There are several static factory methods that can be used to create instances for various types of resources:
  * <p>
  * <ul>
@@ -53,6 +54,7 @@ import java.util.NoSuchElementException;
  * Alternatively parsers can also be created by passing a {@link Reader} directly to the sole constructor.
  * </p>
  *
+ * <h4>Parsing record wise</h4>
  * <p>
  * To parse a CSV input with tabs as separators, '"' (double-quote) as an optional value encapsulator, and comments
  * starting with '#', you write:
@@ -80,6 +82,8 @@ import java.util.NoSuchElementException;
  *     ...
  * }
  * </pre>
+ *
+ * <h4>Parsing completely into memory</h4>
  * <p>
  * You may also get a List of records:
  * </p>
