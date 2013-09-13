@@ -258,12 +258,12 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Parses the CSV input according to the given format and returns the content as an array of {@link CSVRecord}
-     * entries.
+     * Parses the CSV input according to the given format and returns the content as a list of
+     * {@link CSVRecord CSVRecords}.
      * <p/>
      * The returned content starts at the current parse-position in the stream.
      *
-     * @return list of {@link CSVRecord} entries, may be empty
+     * @return list of {@link CSVRecord CSVRecords}, may be empty
      * @throws IOException
      *             on parse error or input read-failure
      */
