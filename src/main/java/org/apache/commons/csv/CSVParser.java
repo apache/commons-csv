@@ -114,6 +114,7 @@ import java.util.NoSuchElementException;
  * </ol>
  * </p>
  *
+ * <h4>Notes</h4>
  * <p>
  * Internal parser state is completely covered by the format and the reader-state.
  * </p>
