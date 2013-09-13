@@ -41,6 +41,18 @@ import java.util.NoSuchElementException;
  * Because CSV appears in many different dialects, the parser supports many formats by allowing the
  * specification of a {@link CSVFormat}.
  *
+ * There are several static factory methods that can be used to create instances for various types of resources:
+ * <p>
+ * <ul>
+ *     <li>{@link #parse(java.io.File, CSVFormat)}</li>
+ *     <li>{@link #parse(String, CSVFormat)}</li>
+ *     <li>{@link #parse(java.net.URL, java.nio.charset.Charset, CSVFormat)}</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Alternatively parsers can also be created by passing a {@link Reader} directly to the sole constructor.
+ * </p>
+ *
  * <p>
  * To parse a CSV input with tabs as separators, '"' (double-quote) as an optional value encapsulator, and comments
  * starting with '#', you write:
