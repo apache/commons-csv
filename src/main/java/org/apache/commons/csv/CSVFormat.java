@@ -585,6 +585,10 @@ public class CSVFormat implements Serializable {
             sb.append(' ');
             sb.append("CommentStart=<").append(commentStart).append('>');
         }
+        if (isNullHandling()) {
+            sb.append(' ');
+            sb.append("NullString=<").append(nullString).append('>');
+        }
         if (getIgnoreEmptyLines()) {
             sb.append(" EmptyLines:ignored");
         }
