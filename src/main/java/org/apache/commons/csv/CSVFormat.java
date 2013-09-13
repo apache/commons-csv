@@ -600,6 +600,10 @@ public class CSVFormat implements Serializable {
             sb.append(" SurroundingSpaces:ignored");
         }
         sb.append(" SkipHeaderRecord:").append(skipHeaderRecord);
+        if (header != null) {
+            sb.append(' ');
+            sb.append("Header:").append(Arrays.toString(header));
+        }
         return sb.toString();
     }
 
