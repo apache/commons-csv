@@ -54,7 +54,14 @@ import java.util.NoSuchElementException;
  * </p>
  * <p>
  * Alternatively parsers can also be created by passing a {@link Reader} directly to the sole constructor.
+ * 
+ * For those who like fluent APIs, parsers can be created using {@link CSVFormat#parse(java.io.Reader)} as a shortcut:
  * </p>
+ * <pre>
+ * for(CSVRecord record : CSVFormat.EXCEL.parse(in)) {
+ *     ...
+ * }
+ * </pre>
  *
  * <h4>Parsing record wise</h4>
  * <p>
