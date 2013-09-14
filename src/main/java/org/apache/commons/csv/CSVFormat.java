@@ -142,7 +142,7 @@ import java.util.Set;
  *
  * @version $Id$
  */
-public class CSVFormat implements Serializable {
+public final class CSVFormat implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
