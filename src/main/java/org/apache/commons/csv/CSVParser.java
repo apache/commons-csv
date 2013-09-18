@@ -281,11 +281,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Returns a copy of the header map that iterates in column order.
      * <p>
      * The map keys are column names. The map values are 0-based indices.
-     *
+     * </p>
      * @return a copy of the header map that iterates in column order.
      */
     public Map<String, Integer> getHeaderMap() {
-        return new LinkedHashMap<String, Integer>(this.headerMap);
+        return this.headerMap == null ? null : new LinkedHashMap<String, Integer>(this.headerMap);
     }
 
     /**
