@@ -330,9 +330,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             String[] header = null;
             if (formatHeader.length == 0) {
                 // read the header from the first line of the file
-                final CSVRecord record = this.nextRecord();
-                if (record != null) {
-                    header = record.values();
+                final CSVRecord nextRecord = this.nextRecord();
+                if (nextRecord != null) {
+                    header = nextRecord.values();
                 }
             } else {
                 if (this.format.getSkipHeaderRecord()) {
