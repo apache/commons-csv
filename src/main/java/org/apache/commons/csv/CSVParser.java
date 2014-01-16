@@ -320,6 +320,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     /**
      * Initializes the name to index mapping if the format defines a header.
+     * 
+     * @return null if the format has no header.
      */
     private Map<String, Integer> initializeHeader() throws IOException {
         Map<String, Integer> hdrMap = null;
