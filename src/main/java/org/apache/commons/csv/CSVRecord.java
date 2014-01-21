@@ -203,7 +203,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Converts this record into a Map.
+     * Copies this record into a new Map. The new map is not connect
      * 
      * @return A new Map. The map is empty if the record has no headers.
      */
