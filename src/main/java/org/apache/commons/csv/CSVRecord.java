@@ -193,7 +193,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Convert the values to a List.
+     * Converts the values to a List.
      * 
      * TODO: Maybe make this public?
      * @return a new List
