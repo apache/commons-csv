@@ -60,25 +60,25 @@ public class CSVRecordTest {
         assertEquals(values[2], recordWithHeader.get("third"));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testGetStringNoHeader() {
-        record.get("first");
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void testGetStringInconsistentRecord() {
         header.put("fourth", Integer.valueOf(4));
         recordWithHeader.get("fourth");
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testGetUnmappedName() {
-        assertNull(recordWithHeader.get("fourth"));
+    @Test(expected = IllegalStateException.class)
+    public void testGetStringNoHeader() {
+        record.get("first");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetUnmappedEnum() {
         assertNull(recordWithHeader.get(EnumFixture.UNKNOWN_COLUMN));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetUnmappedName() {
+        assertNull(recordWithHeader.get("fourth"));
     }
 
     @Test(expected = ArrayIndexOutOfBoundsException.class)
