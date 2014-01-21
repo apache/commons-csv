@@ -493,17 +493,17 @@ public class CSVParserTest {
 
     @Test // TODO this may lead to strange behavior, throw an exception if iterator() has already been called?
     public void testMultipleIterators() throws Exception {
-        CSVParser parser = CSVParser.parse("a,b,c" + CR + "d,e,f", CSVFormat.DEFAULT);
+        final CSVParser parser = CSVParser.parse("a,b,c" + CR + "d,e,f", CSVFormat.DEFAULT);
 
-        Iterator<CSVRecord> itr1 = parser.iterator();
-        Iterator<CSVRecord> itr2 = parser.iterator();
+        final Iterator<CSVRecord> itr1 = parser.iterator();
+        final Iterator<CSVRecord> itr2 = parser.iterator();
 
-        CSVRecord first = itr1.next();
+        final CSVRecord first = itr1.next();
         assertEquals("a", first.get(0));
         assertEquals("b", first.get(1));
         assertEquals("c", first.get(2));
 
-        CSVRecord second = itr2.next();
+        final CSVRecord second = itr2.next();
         assertEquals("d", second.get(0));
         assertEquals("e", second.get(1));
         assertEquals("f", second.get(2));

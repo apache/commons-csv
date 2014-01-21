@@ -62,7 +62,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *            an enum
      * @return the String at the given enum String
      */
-    public String get(Enum<?> e) {
+    public String get(final Enum<?> e) {
         return get(e.toString());
     }
 
@@ -175,8 +175,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @param map The Map to populate.
      * @return the given map.
      */
-    public Map<String, String> putIn(Map<String, String> map) {
-        for (Entry<String, Integer> entry : mapping.entrySet()) {
+    public Map<String, String> putIn(final Map<String, String> map) {
+        for (final Entry<String, Integer> entry : mapping.entrySet()) {
             map.put(entry.getKey(), values[entry.getValue().intValue()]);
         }
         return map;

@@ -293,7 +293,7 @@ public final class CSVFormat implements Serializable {
             final Quote quotePolicy, final Character commentStart,
             final Character escape, final boolean ignoreSurroundingSpaces,
             final boolean ignoreEmptyLines, final String recordSeparator,
-            final String nullString, final String[] header, boolean skipHeaderRecord) {
+            final String nullString, final String[] header, final boolean skipHeaderRecord) {
         if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }

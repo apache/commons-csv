@@ -43,7 +43,7 @@ public class FercGovTest {
 
     @Test
     public void testContractFile() throws IOException {
-        URL contractData = ClassLoader.getSystemClassLoader().getResource("ferc.gov/contract.txt");
+        final URL contractData = ClassLoader.getSystemClassLoader().getResource("ferc.gov/contract.txt");
         final CSVParser parser = CSVParser.parse(contractData, US_ASCII,
                 CSVFormat.DEFAULT.withHeader());
         try {
@@ -67,7 +67,7 @@ public class FercGovTest {
 
     @Test
     public void testTransactionFile() throws IOException {
-        URL transactionData = ClassLoader.getSystemClassLoader().getResource("ferc.gov/transaction.txt");
+        final URL transactionData = ClassLoader.getSystemClassLoader().getResource("ferc.gov/transaction.txt");
         final CSVParser parser = CSVParser.parse(transactionData, US_ASCII,
                 CSVFormat.DEFAULT.withHeader());
         try {

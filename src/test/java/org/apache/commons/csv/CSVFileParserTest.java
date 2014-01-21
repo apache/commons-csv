@@ -154,7 +154,7 @@ public class CSVFileParserTest {
         assertEquals(testName + " Expected format ", line, format.toString());
 
         // Now parse the file and compare against the expected results
-        URL resource = ClassLoader.getSystemResource("CSVFileParser/" + split[0]);
+        final URL resource = ClassLoader.getSystemResource("CSVFileParser/" + split[0]);
         final CSVParser parser = CSVParser.parse(resource, Charset.forName("UTF-8"), format);
         for (final CSVRecord record : parser) {
             String parsed = record.toString();

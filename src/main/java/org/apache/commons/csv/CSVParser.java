@@ -145,7 +145,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public static CSVParser parse(File file, final CSVFormat format) throws IOException {
+    public static CSVParser parse(final File file, final CSVFormat format) throws IOException {
         Assertions.notNull(file, "file");
         Assertions.notNull(format, "format");
 
@@ -165,7 +165,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public static CSVParser parse(String string, final CSVFormat format) throws IOException {
+    public static CSVParser parse(final String string, final CSVFormat format) throws IOException {
         Assertions.notNull(string, "string");
         Assertions.notNull(format, "format");
 
@@ -192,7 +192,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public static CSVParser parse(URL url, Charset charset, final CSVFormat format) throws IOException {
+    public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException {
         Assertions.notNull(url, "url");
         Assertions.notNull(charset, "charset");
         Assertions.notNull(format, "format");

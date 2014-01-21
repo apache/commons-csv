@@ -118,7 +118,7 @@ public class CSVRecordTest {
     @Test
     public void testIterator() {
         int i = 0;
-        for (String value : record) {
+        for (final String value : record) {
             assertEquals(values[i], value);
             i++;
         }
@@ -126,18 +126,18 @@ public class CSVRecordTest {
 
     @Test
     public void testPutInMap() {
-        Map<String, String> map = new ConcurrentHashMap<String, String>();
+        final Map<String, String> map = new ConcurrentHashMap<String, String>();
         this.recordWithHeader.putIn(map);
         this.validateMap(map, false);
     }
 
     @Test
     public void testToMap() {
-        Map<String, String> map = this.recordWithHeader.toMap();
+        final Map<String, String> map = this.recordWithHeader.toMap();
         this.validateMap(map, true);
     }
 
-    private void validateMap(Map<String, String> map, boolean allowsNulls) {
+    private void validateMap(final Map<String, String> map, final boolean allowsNulls) {
         assertTrue(map.containsKey("first"));
         assertTrue(map.containsKey("second"));
         assertTrue(map.containsKey("third"));
