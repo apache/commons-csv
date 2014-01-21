@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -166,7 +167,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return an iterator over the values of this record.
      */
     public Iterator<String> iterator() {
-        return Arrays.asList(values).iterator();
+        return toList().iterator();
     }
 
     /**
@@ -189,6 +190,16 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     public int size() {
         return values.length;
+    }
+
+    /**
+     * Convert the values to a List.
+     * 
+     * TODO: Maybe make this public?
+     * @return a new List
+     */
+    private List<String> toList() {
+        return Arrays.asList(values);
     }
 
     /**
