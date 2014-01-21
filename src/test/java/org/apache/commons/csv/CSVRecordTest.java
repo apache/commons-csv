@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,7 @@ public class CSVRecordTest {
 
     @Before
     public void setUp() throws Exception {
-        values = new String[] { "first", "second", "third" };
+        values = new String[] { "A", "B", "C" };
         record = new CSVRecord(values, null, null, 0);
         header = new HashMap<String, Integer>();
         header.put("first", Integer.valueOf(0));
@@ -121,6 +122,33 @@ public class CSVRecordTest {
             assertEquals(values[i], value);
             i++;
         }
+    }
+
+    @Test
+    public void testPutInMap() {
+        Map<String, String> map = new ConcurrentHashMap<String, String>();
+        this.recordWithHeader.putIn(map);
+        this.validateMap(map, false);
+    }
+
+    @Test
+    public void testToMap() {
+        Map<String, String> map = this.recordWithHeader.toMap();
+        this.validateMap(map, true);
+    }
+
+    private void validateMap(Map<String, String> map, boolean allowsNulls) {
+        assertTrue(map.containsKey("first"));
+        assertTrue(map.containsKey("second"));
+        assertTrue(map.containsKey("third"));
+        assertFalse(map.containsKey("fourth"));
+        if (allowsNulls) {
+            assertFalse(map.containsKey(null));
+        }
+        assertEquals("A", map.get("first"));
+        assertEquals("B", map.get("second"));
+        assertEquals("C", map.get("third"));
+        assertEquals(null, map.get("fourth"));
     }
 
 }

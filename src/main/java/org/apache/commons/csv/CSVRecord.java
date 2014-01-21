@@ -19,8 +19,10 @@ package org.apache.commons.csv;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * A CSV record parsed from a CSV file.
@@ -168,12 +170,34 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
+     * Puts all values of this record into the given Map.
+     * 
+     * @param map The Map to populate.
+     * @return the given map.
+     */
+    public Map<String, String> putIn(Map<String, String> map) {
+        for (Entry<String, Integer> entry : mapping.entrySet()) {
+            map.put(entry.getKey(), values[entry.getValue().intValue()]);
+        }
+        return map;
+    }
+
+    /**
      * Returns the number of values in this record.
      *
      * @return the number of values.
      */
     public int size() {
         return values.length;
+    }
+
+    /**
+     * Converts this record into a Map.
+     * 
+     * @return A new Map. The map is empty if the record has no headers.
+     */
+    public Map<String, String> toMap() {
+        return putIn(new HashMap<String, String>(values.length));
     }
 
     @Override
