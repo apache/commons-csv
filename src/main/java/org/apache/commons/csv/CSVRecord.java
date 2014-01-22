@@ -176,7 +176,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @param map The Map to populate.
      * @return the given map.
      */
-    Map<String, String> putIn(final Map<String, String> map) {
+    <M extends Map<String, String>> M putIn(final M map) {
         for (final Entry<String, Integer> entry : mapping.entrySet()) {
             map.put(entry.getKey(), values[entry.getValue().intValue()]);
         }

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Assert;
@@ -133,6 +134,9 @@ public class CSVRecordTest {
         final Map<String, String> map = new ConcurrentHashMap<String, String>();
         this.recordWithHeader.putIn(map);
         this.validateMap(map, false);
+        // Test that we can compile with assigment to the same map as the param.
+        final TreeMap<String, String> map2 = recordWithHeader.putIn(new TreeMap<String, String>());
+        this.validateMap(map2, false);
     }
 
     @Test
@@ -141,7 +145,7 @@ public class CSVRecordTest {
         final CSVPrinter printer = new CSVPrinter(new StringBuilder(), CSVFormat.DEFAULT);
         final Map<String, String> map = recordWithHeader.toMap();
         map.remove("OldColumn");
-        map.put("NewColumn", "NewValue");
+        map.put("ZColumn", "NewValue");
         // check:
         final ArrayList<String> list = new ArrayList<String>(map.values());
         Collections.sort(list);
