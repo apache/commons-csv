@@ -21,17 +21,21 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class CSVRecordTest {
 
     private enum EnumFixture { UNKNOWN_COLUMN }
-    
+
     private String[] values;
     private CSVRecord record, recordWithHeader;
     private Map<String, Integer> header;
@@ -129,6 +133,20 @@ public class CSVRecordTest {
         final Map<String, String> map = new ConcurrentHashMap<String, String>();
         this.recordWithHeader.putIn(map);
         this.validateMap(map, false);
+    }
+
+    @Test
+    public void testRemoveAndAddColumns() throws IOException {
+        // do:
+        final CSVPrinter printer = new CSVPrinter(new StringBuilder(), CSVFormat.DEFAULT);
+        final Map<String, String> map = recordWithHeader.toMap();
+        map.remove("OldColumn");
+        map.put("NewColumn", "NewValue");
+        // check:
+        final ArrayList<String> list = new ArrayList<String>(map.values());
+        Collections.sort(list);
+        printer.printRecord(list);
+        Assert.assertEquals("A,B,C,NewValue" + CSVFormat.DEFAULT.getRecordSeparator(), printer.getOut().toString());
     }
 
     @Test
