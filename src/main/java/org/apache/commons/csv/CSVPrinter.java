@@ -68,15 +68,10 @@ public final class CSVPrinter implements Flushable, Closeable {
     // printing implementation
     // ======================================================
 
-    /**
-     * Outputs the record separator.
-     *
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    public void println() throws IOException {
-        out.append(format.getRecordSeparator());
-        newRecord = true;
+    public void close() throws IOException {
+        if (out instanceof Closeable) {
+            ((Closeable) out).close();
+        }
     }
 
     /**
@@ -92,77 +87,23 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Prints a single line of delimiter separated values. The values will be quoted if needed. Quotes and newLine
-     * characters will be escaped.
+     * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
      *
-     * @param values
-     *            values to output.
+     * @param value
+     *            value to be output.
      * @throws IOException
      *             If an I/O error occurs
      */
-    public void printRecord(final Object... values) throws IOException {
-        for (final Object value : values) {
-            print(value);
+    public void print(final Object value) throws IOException {
+        // null values are considered empty
+        String strValue;
+        if (value == null) {
+            final String nullString = format.getNullString();
+            strValue = nullString == null ? Constants.EMPTY : nullString;
+        } else {
+            strValue = value.toString();
         }
-        println();
-    }
-
-    /**
-     * Prints a single line of delimiter separated values. The values will be quoted if needed. Quotes and newLine
-     * characters will be escaped.
-     *
-     * @param values
-     *            values to output.
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    public void printRecord(final Iterable<?> values) throws IOException {
-        for (final Object value : values) {
-            print(value);
-        }
-        println();
-    }
-
-    /**
-     * Prints a comment on a new line among the delimiter separated values. Comments will always begin on a new line
-     * and occupy a least one full line. The character specified to start comments and a space will be inserted at the
-     * beginning of each new line in the comment.
-     * <p/>
-     * If comments are disabled in the current CSV format this method does nothing.
-     *
-     * @param comment
-     *            the comment to output
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    public void printComment(final String comment) throws IOException {
-        if (!format.isCommentingEnabled()) {
-            return;
-        }
-        if (!newRecord) {
-            println();
-        }
-        out.append(format.getCommentStart().charValue());
-        out.append(SP);
-        for (int i = 0; i < comment.length(); i++) {
-            final char c = comment.charAt(i);
-            switch (c) {
-            case CR:
-                if (i + 1 < comment.length() && comment.charAt(i + 1) == LF) {
-                    i++;
-                }
-                //$FALL-THROUGH$ break intentionally excluded.
-            case LF:
-                println();
-                out.append(format.getCommentStart().charValue());
-                out.append(SP);
-                break;
-            default:
-                out.append(c);
-                break;
-            }
-        }
-        println();
+        this.print(value, strValue, 0, strValue.length());
     }
 
     private void print(final Object object, final CharSequence value,
@@ -332,34 +273,99 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
+     * Prints a comment on a new line among the delimiter separated values. Comments will always begin on a new line
+     * and occupy a least one full line. The character specified to start comments and a space will be inserted at the
+     * beginning of each new line in the comment.
+     * <p/>
+     * If comments are disabled in the current CSV format this method does nothing.
      *
-     * @param value
-     *            value to be output.
+     * @param comment
+     *            the comment to output
      * @throws IOException
      *             If an I/O error occurs
      */
-    public void print(final Object value) throws IOException {
-        // null values are considered empty
-        String strValue;
-        if (value == null) {
-            final String nullString = format.getNullString();
-            strValue = nullString == null ? Constants.EMPTY : nullString;
-        } else {
-            strValue = value.toString();
+    public void printComment(final String comment) throws IOException {
+        if (!format.isCommentingEnabled()) {
+            return;
         }
-        this.print(value, strValue, 0, strValue.length());
+        if (!newRecord) {
+            println();
+        }
+        out.append(format.getCommentStart().charValue());
+        out.append(SP);
+        for (int i = 0; i < comment.length(); i++) {
+            final char c = comment.charAt(i);
+            switch (c) {
+            case CR:
+                if (i + 1 < comment.length() && comment.charAt(i + 1) == LF) {
+                    i++;
+                }
+                //$FALL-THROUGH$ break intentionally excluded.
+            case LF:
+                println();
+                out.append(format.getCommentStart().charValue());
+                out.append(SP);
+                break;
+            default:
+                out.append(c);
+                break;
+            }
+        }
+        println();
     }
 
     /**
-     * Prints all the objects in the given array.
+     * Outputs the record separator.
+     *
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    public void println() throws IOException {
+        out.append(format.getRecordSeparator());
+        newRecord = true;
+    }
+
+    /**
+     * Prints a single line of delimiter separated values. The values will be quoted if needed. Quotes and newLine
+     * characters will be escaped.
+     *
+     * @param values
+     *            values to output.
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    public void printRecord(final Iterable<?> values) throws IOException {
+        for (final Object value : values) {
+            print(value);
+        }
+        println();
+    }
+
+    /**
+     * Prints a single line of delimiter separated values. The values will be quoted if needed. Quotes and newLine
+     * characters will be escaped.
+     *
+     * @param values
+     *            values to output.
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    public void printRecord(final Object... values) throws IOException {
+        for (final Object value : values) {
+            print(value);
+        }
+        println();
+    }
+
+    /**
+     * Prints all the objects in the given collection.
      *
      * @param values
      *            the values to print.
      * @throws IOException
      *             If an I/O error occurs
      */
-    public void printRecords(final Object[] values) throws IOException {
+    public void printRecords(final Iterable<?> values) throws IOException {
         for (final Object value : values) {
             if (value instanceof Object[]) {
                 this.printRecord((Object[]) value);
@@ -372,14 +378,14 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Prints all the objects in the given collection.
+     * Prints all the objects in the given array.
      *
      * @param values
      *            the values to print.
      * @throws IOException
      *             If an I/O error occurs
      */
-    public void printRecords(final Iterable<?> values) throws IOException {
+    public void printRecords(final Object[] values) throws IOException {
         for (final Object value : values) {
             if (value instanceof Object[]) {
                 this.printRecord((Object[]) value);
@@ -407,12 +413,6 @@ public final class CSVPrinter implements Flushable, Closeable {
                 print(resultSet.getString(i));
             }
             println();
-        }
-    }
-
-    public void close() throws IOException {
-        if (out instanceof Closeable) {
-            ((Closeable) out).close();
         }
     }
 }
