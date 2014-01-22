@@ -415,4 +415,13 @@ public final class CSVPrinter implements Flushable, Closeable {
             println();
         }
     }
+
+    /**
+     * Gets the target Appendable. 
+     * 
+     * @return the target Appendable. 
+     */
+    public Appendable getOut() {
+        return this.out;
+    }
 }
