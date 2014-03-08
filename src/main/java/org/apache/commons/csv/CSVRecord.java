@@ -136,7 +136,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return true of this record is valid, false if not
      */
     public boolean isConsistent() {
-        return mapping == null ? true : mapping.size() == values.length;
+        return mapping == null || mapping.size() == values.length;
     }
 
     /**
@@ -147,7 +147,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return whether a given column is mapped.
      */
     public boolean isMapped(final String name) {
-        return mapping != null ? mapping.containsKey(name) : false;
+        return mapping != null && mapping.containsKey(name);
     }
 
     /**
