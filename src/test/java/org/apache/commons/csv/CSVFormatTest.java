@@ -47,6 +47,10 @@ public class CSVFormatTest {
         assertFalse(left.equals(right));
     }
 
+    private static CSVFormat copy(final CSVFormat format) {
+        return format.withDelimiter(format.getDelimiter());
+    }
+
     @Test(expected = IllegalStateException.class)
     public void testDelimiterSameAsCommentStartThrowsException() {
         CSVFormat.DEFAULT.withDelimiter('!').withCommentStart('!').validate();
@@ -365,9 +369,5 @@ public class CSVFormatTest {
     public void testWithRecordSeparator() throws Exception {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator('!');
         assertEquals("!", formatWithRecordSeparator.getRecordSeparator());
-    }
-
-    private static CSVFormat copy(final CSVFormat format) {
-        return format.withDelimiter(format.getDelimiter());
     }
 }
