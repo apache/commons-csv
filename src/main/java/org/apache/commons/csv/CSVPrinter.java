@@ -321,7 +321,10 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void println() throws IOException {
-        out.append(format.getRecordSeparator());
+        final String recordSeparator = format.getRecordSeparator();
+        if (recordSeparator != null) {
+            out.append(recordSeparator);
+        }
         newRecord = true;
     }
 
