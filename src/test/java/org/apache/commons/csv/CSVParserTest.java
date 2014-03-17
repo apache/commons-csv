@@ -30,6 +30,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -41,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.io.input.BOMInputStream;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -173,6 +175,34 @@ public class CSVParserTest {
         assertTrue(records.size() > 0);
         for (int i = 0; i < res.length; i++) {
             assertArrayEquals(res[i], records.get(i).values());
+        }
+    }
+
+    @Test
+    @Ignore("CSV-107")
+    public void testBOM() throws IOException {
+        URL url = ClassLoader.getSystemClassLoader().getResource("CSVFileParser/bom.csv");
+        final CSVParser parser = CSVParser.parse(url, null, CSVFormat.EXCEL.withHeader());
+        try {
+            for (CSVRecord record : parser) {
+                System.out.println("date: " + record.get("Date"));
+            }
+        } finally {
+            parser.close();
+        }
+    }
+
+    @Test
+    public void testBOMInputStream() throws IOException {
+        URL url = ClassLoader.getSystemClassLoader().getResource("CSVFileParser/bom.csv");
+        Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
+        final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
+        try {
+            for (CSVRecord record : parser) {
+                System.out.println("date: " + record.get("Date"));
+            }
+        } finally {
+            parser.close();
         }
     }
 
