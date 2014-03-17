@@ -183,7 +183,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param url
      *            a URL. Must not be null.
      * @param charset
-     *            the charset for the resource. Must not be null.
+     *            the charset for the resource. If {@code null}, use {@code UTF-8}.
      * @param format
      *            the CSVFormat used for CSV parsing. Must not be null.
      * @return a new parser
@@ -194,7 +194,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException {
         Assertions.notNull(url, "url");
-        Assertions.notNull(charset, "charset");
         Assertions.notNull(format, "format");
 
         return new CSVParser(new InputStreamReader(url.openStream(),
