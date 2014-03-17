@@ -185,7 +185,9 @@ public class CSVParserTest {
         final CSVParser parser = CSVParser.parse(url, null, CSVFormat.EXCEL.withHeader());
         try {
             for (CSVRecord record : parser) {
-                System.out.println("date: " + record.get("Date"));
+                final String string = record.get("Date");
+                Assert.assertNotNull(string);
+                //System.out.println("date: " + record.get("Date"));
             }
         } finally {
             parser.close();
@@ -199,7 +201,9 @@ public class CSVParserTest {
         final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
         try {
             for (CSVRecord record : parser) {
-                System.out.println("date: " + record.get("Date"));
+                final String string = record.get("Date");
+                Assert.assertNotNull(string);
+                //System.out.println("date: " + record.get("Date"));
             }
         } finally {
             parser.close();
