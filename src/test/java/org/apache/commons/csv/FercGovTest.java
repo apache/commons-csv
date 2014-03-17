@@ -44,8 +44,7 @@ public class FercGovTest {
     @Test
     public void testContractFile() throws IOException {
         final URL contractData = ClassLoader.getSystemClassLoader().getResource("ferc.gov/contract.txt");
-        final CSVParser parser = CSVParser.parse(contractData, US_ASCII,
-                CSVFormat.DEFAULT.withHeader());
+        final CSVParser parser = CSVParser.parse(contractData, US_ASCII, CSVFormat.DEFAULT.withHeader());
         try {
             final List<CSVRecord> records = parser.getRecords();
             CSVRecord record = records.get(0);
