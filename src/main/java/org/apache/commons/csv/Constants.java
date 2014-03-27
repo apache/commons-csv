@@ -39,6 +39,13 @@ final class Constants {
     static final char LF = '\n';
     static final char SP = ' ';
     static final char TAB = '\t';
+    
+    /** ASCII record separator */
+    static final char RS = 30;
+
+    /** ASCII unit separator */
+    static final char US = 31;
+    
     static final String EMPTY = "";
 
     /** The end of stream symbol */
