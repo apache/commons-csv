@@ -449,6 +449,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 sb.append(this.reusableToken.content);
                 this.reusableToken.type = TOKEN; // Read another token
                 break;
+            default:
+                throw new IllegalStateException("Unexpected Token type: " + this.reusableToken.type);
             }
         } while (this.reusableToken.type == TOKEN);
 

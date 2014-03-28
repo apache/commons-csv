@@ -240,6 +240,8 @@ public final class CSVPrinter implements Flushable, Closeable {
                 return;
             }
             break;
+        default:
+            throw new IllegalStateException("Unexpected Quote value: " + quotePolicy);
         }
 
         if (!quote) {
