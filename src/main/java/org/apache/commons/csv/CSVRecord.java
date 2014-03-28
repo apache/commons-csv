@@ -172,7 +172,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     /**
      * Puts all values of this record into the given Map.
-     * 
+     *
      * @param map The Map to populate.
      * @return the given map.
      */
@@ -194,7 +194,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     /**
      * Converts the values to a List.
-     * 
+     *
      * TODO: Maybe make this public?
      * @return a new List
      */
@@ -204,7 +204,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     /**
      * Copies this record into a new Map. The new map is not connect
-     * 
+     *
      * @return A new Map. The map is empty if the record has no headers.
      */
     public Map<String, String> toMap() {

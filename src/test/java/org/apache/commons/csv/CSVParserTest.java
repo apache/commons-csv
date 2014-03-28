@@ -757,7 +757,7 @@ public class CSVParserTest {
     @Test(expected = IllegalArgumentException.class)
     public void testParseUrlCharsetNullFormat() throws Exception {
         final CSVParser parser = CSVParser.parse(new URL("http://commons.apache.org"), Charset.defaultCharset(), null);
-        parser.close();        
+        parser.close();
     }
 
     @Test
