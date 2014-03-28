@@ -36,7 +36,7 @@ limitations under the License.
   <!-- Checks for Tab characters -->
   <!-- See http://checkstyle.sourceforge.net/config_whitespace.html#FileTabCharacter -->
   <module name="FileTabCharacter">
-    <property name="fileExtensions" value="java" />
+    <property name="fileExtensions" value="java,xml" />
   </module>
 
   <!-- Checks for white space at the end of the line -->
