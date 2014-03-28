@@ -42,6 +42,7 @@ import org.junit.Test;
  *
  * @version $Id$
  */
+@SuppressWarnings("boxing") // test code
 public class PerformanceTest {
 
     private final int max = 10;
