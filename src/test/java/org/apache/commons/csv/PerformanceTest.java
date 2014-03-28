@@ -219,6 +219,7 @@ public class PerformanceTest {
            final Stats s = iterate(parser);
            reader.close();
            show("CSV", s, t0);
+           parser.close();
        }
        show();
    }
@@ -266,6 +267,8 @@ public class PerformanceTest {
                    break;
                 case COMMENT: // not really expecting these
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected Token type: " + token.type);
               }
 
            } while (!token.type.equals(Token.Type.EOF));

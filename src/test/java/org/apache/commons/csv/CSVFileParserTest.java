@@ -124,6 +124,7 @@ public class CSVFileParserTest {
             final int count = record.size();
             assertEquals(testName, readTestData(), count+":"+parsed);
         }
+        parser.close();
     }
 
     @Test
@@ -167,5 +168,6 @@ public class CSVFileParserTest {
             final int count = record.size();
             assertEquals(testName, readTestData(), count + ":" + parsed);
         }
+        parser.close();
     }
 }

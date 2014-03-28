@@ -151,6 +151,7 @@ public class CSVRecordTest {
         Collections.sort(list);
         printer.printRecord(list);
         Assert.assertEquals("A,B,C,NewValue" + CSVFormat.DEFAULT.getRecordSeparator(), printer.getOut().toString());
+        printer.close();
     }
 
     @Test

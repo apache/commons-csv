@@ -89,6 +89,7 @@ public class CSVPrinterTest {
         final List<CSVRecord> parseResult = parser.getRecords();
 
         Utils.compare("Printer output :" + printable(result), lines, parseResult);
+        parser.close();
     }
 
     private void doRandom(final CSVFormat format, final int iter) throws Exception {
@@ -336,6 +337,7 @@ public class CSVPrinterTest {
         assertEquals(null, record.get(1));
         assertEquals("b", record.get(2));
         assertFalse(iterator.hasNext());
+        ((CSVParser) iterable).close();
     }
 
     @Test
@@ -492,11 +494,11 @@ public class CSVPrinterTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNewCSVPrinterNullAppendableFormat() throws Exception {
-        new CSVPrinter(null, CSVFormat.DEFAULT);
+        new CSVPrinter(null, CSVFormat.DEFAULT).close();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNewCsvPrinterAppendableNullFormat() throws Exception {
-        new CSVPrinter(new StringWriter(), null);
+        new CSVPrinter(new StringWriter(), null).close();
     }
 }
