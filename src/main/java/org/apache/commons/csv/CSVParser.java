@@ -29,6 +29,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -309,7 +310,22 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             on parse error or input read-failure
      */
     public List<CSVRecord> getRecords() throws IOException {
-        final List<CSVRecord> records = new ArrayList<CSVRecord>();
+        return getRecords(new ArrayList<CSVRecord>());
+    }
+
+    /**
+     * Parses the CSV input according to the given format and adds the content to the collection of {@link CSVRecord
+     * CSVRecords}.
+     * <p/>
+     * The returned content starts at the current parse-position in the stream.
+     * 
+     * @param records
+     *            The collection to add to.
+     * @return a collection of {@link CSVRecord CSVRecords}, may be empty
+     * @throws IOException
+     *             on parse error or input read-failure
+     */
+    public <T extends Collection<CSVRecord>> T getRecords(T records) throws IOException {
         CSVRecord rec;
         while ((rec = this.nextRecord()) != null) {
             records.add(rec);
