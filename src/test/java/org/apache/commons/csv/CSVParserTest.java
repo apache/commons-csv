@@ -60,7 +60,7 @@ import org.junit.Test;
  */
 public class CSVParserTest {
 
-    private static final String CSVINPUT = "a,b,c,d\n"
+    private static final String CSV_INPUT = "a,b,c,d\n"
                     + " a , b , 1 2 \n"
                     + "\"foo baar\", b,\n"
                     // + "   \"foo\n,,\n\"\",,\n\\\"\",d,e\n";
@@ -487,7 +487,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetLine() throws IOException {
-        final CSVParser parser = CSVParser.parse(CSVINPUT, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
+        final CSVParser parser = CSVParser.parse(CSV_INPUT, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
         for (final String[] re : RESULT) {
             assertArrayEquals(re, parser.nextRecord().values());
         }
@@ -528,7 +528,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetRecords() throws IOException {
-        final CSVParser parser = CSVParser.parse(CSVINPUT, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
+        final CSVParser parser = CSVParser.parse(CSV_INPUT, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
         final List<CSVRecord> records = parser.getRecords();
         assertEquals(RESULT.length, records.size());
         assertTrue(records.size() > 0);
