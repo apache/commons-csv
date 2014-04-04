@@ -38,6 +38,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -65,6 +66,8 @@ public class CSVParserTest {
                     + "\"foo baar\", b,\n"
                     // + "   \"foo\n,,\n\"\",,\n\\\"\",d,e\n";
                     + "   \"foo\n,,\n\"\",,\n\"\"\",d,e\n";   // changed to use standard CSV escaping
+
+    private static final String CSV_INPUT_1 = "a,b,c,d";
 
     private static final String[][] RESULT = {
             {"a", "b", "c", "d"},
@@ -509,6 +512,22 @@ public class CSVParserTest {
     @Test
     public void testGetLineNumberWithLF() throws Exception {
         this.validateLineNumbers(String.valueOf(LF));
+    }
+
+    @Test
+    public void testGetOneLine() throws IOException {
+        final CSVParser parser = CSVParser.parse(CSV_INPUT_1, CSVFormat.DEFAULT);
+        final CSVRecord record = parser.getRecords().get(0);
+        assertArrayEquals(RESULT[0], record.values());
+        parser.close();
+    }
+
+    @Test
+    public void testGetOneLineCustomCollection() throws IOException {
+        final CSVParser parser = CSVParser.parse(CSV_INPUT_1, CSVFormat.DEFAULT);
+        final CSVRecord record = parser.getRecords(new LinkedList<CSVRecord>()).getFirst();
+        assertArrayEquals(RESULT[0], record.values());
+        parser.close();
     }
 
     @Test
