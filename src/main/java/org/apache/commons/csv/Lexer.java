@@ -55,11 +55,11 @@ final class Lexer {
     private final boolean ignoreEmptyLines;
 
     /** The input stream */
-    private final ExtendedBufferedReader in;
+    private final ExtendedBufferedReader reader;
 
     /** INTERNAL API. but ctor needs to be called dynamically by PerformanceTest class */
-    Lexer(final CSVFormat format, final ExtendedBufferedReader in) {
-        this.in = in;
+    Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
+        this.reader = reader;
         this.delimiter = format.getDelimiter();
         this.escape = mapNullToDisabled(format.getEscape());
         this.quoteChar = mapNullToDisabled(format.getQuoteChar());
@@ -82,10 +82,10 @@ final class Lexer {
     Token nextToken(final Token token) throws IOException {
 
         // get the last read char (required for empty line detection)
-        int lastChar = in.getLastChar();
+        int lastChar = reader.getLastChar();
 
         // read the next char and set eol
-        int c = in.read();
+        int c = reader.read();
         /*
          * Note: The following call will swallow LF if c == CR. But we don't need to know if the last char was CR or LF
          * - they are equivalent here.
@@ -97,7 +97,7 @@ final class Lexer {
             while (eol && isStartOfLine(lastChar)) {
                 // go on char ahead ...
                 lastChar = c;
-                c = in.read();
+                c = reader.read();
                 eol = readEndOfLine(c);
                 // reached end of file without any content (empty line at the end)
                 if (isEndOfFile(c)) {
@@ -116,7 +116,7 @@ final class Lexer {
         }
 
         if (isStartOfLine(lastChar) && isCommentStart(c)) {
-            final String line = in.readLine();
+            final String line = reader.readLine();
             if (line == null) {
                 token.type = EOF;
                 // don't set token.isReady here because no content
@@ -133,7 +133,7 @@ final class Lexer {
             // ignore whitespaces at beginning of a token
             if (ignoreSurroundingSpaces) {
                 while (isWhitespace(c) && !eol) {
-                    c = in.read();
+                    c = reader.read();
                     eol = readEndOfLine(c);
                 }
             }
@@ -198,14 +198,14 @@ final class Lexer {
             } else if (isEscape(ch)) {
                 final int unescaped = readEscape();
                 if (unescaped == Constants.END_OF_STREAM) { // unexpected char after escape
-                    token.content.append((char) ch).append((char) in.getLastChar());
+                    token.content.append((char) ch).append((char) reader.getLastChar());
                 } else {
                     token.content.append((char) unescaped);
                 }
-                ch = in.read(); // continue
+                ch = reader.read(); // continue
             } else {
                 token.content.append((char) ch);
-                ch = in.read(); // continue
+                ch = reader.read(); // continue
             }
         }
 
@@ -241,24 +241,24 @@ final class Lexer {
         final long startLineNumber = getCurrentLineNumber();
         int c;
         while (true) {
-            c = in.read();
+            c = reader.read();
 
             if (isEscape(c)) {
                 final int unescaped = readEscape();
                 if (unescaped == Constants.END_OF_STREAM) { // unexpected char after escape
-                    token.content.append((char) c).append((char) in.getLastChar());
+                    token.content.append((char) c).append((char) reader.getLastChar());
                 } else {
                     token.content.append((char) unescaped);
                 }
             } else if (isQuoteChar(c)) {
-                if (isQuoteChar(in.lookAhead())) {
+                if (isQuoteChar(reader.lookAhead())) {
                     // double or escaped encapsulator -> add single encapsulator to token
-                    c = in.read();
+                    c = reader.read();
                     token.content.append((char) c);
                 } else {
                     // token finish mark (encapsulator) reached: ignore whitespace till delimiter
                     while (true) {
-                        c = in.read();
+                        c = reader.read();
                         if (isDelimiter(c)) {
                             token.type = TOKEN;
                             return token;
@@ -297,7 +297,7 @@ final class Lexer {
      * @return the current line number
      */
     long getCurrentLineNumber() {
-        return in.getCurrentLineNumber();
+        return reader.getCurrentLineNumber();
     }
 
     // TODO escape handling needs more work
@@ -314,7 +314,7 @@ final class Lexer {
      */
     int readEscape() throws IOException {
         // the escape char has just been read (normally a backslash)
-        final int ch = in.read();
+        final int ch = reader.read();
         switch (ch) {
         case 'r':
             return CR;
@@ -361,15 +361,15 @@ final class Lexer {
      */
     boolean readEndOfLine(int ch) throws IOException {
         // check if we have \r\n...
-        if (ch == CR && in.lookAhead() == LF) {
+        if (ch == CR && reader.lookAhead() == LF) {
             // note: does not change ch outside of this method!
-            ch = in.read();
+            ch = reader.read();
         }
         return ch == LF || ch == CR;
     }
 
     boolean isClosed() {
-        return in.isClosed();
+        return reader.isClosed();
     }
 
     /**
@@ -426,6 +426,6 @@ final class Lexer {
      *             If an I/O error occurs
      */
     void close() throws IOException {
-        in.close();
+        reader.close();
     }
 }
