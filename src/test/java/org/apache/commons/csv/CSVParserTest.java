@@ -546,10 +546,12 @@ public class CSVParserTest {
         final CSVFormat format = CSVFormat.DEFAULT;
         final CSVParser parser = new CSVParser(reader, format);
         try {
-            writer.append(CSV_INPUT_1 + format.getRecordSeparator());
+            writer.append(CSV_INPUT_1);
+            writer.append(format.getRecordSeparator());
             final CSVRecord record1 = parser.nextRecord();
             assertArrayEquals(RESULT[0], record1.values());
-            writer.append(CSV_INPUT_2 + format.getRecordSeparator());
+            writer.append(CSV_INPUT_2);
+            writer.append(format.getRecordSeparator());
             final CSVRecord record2 = parser.nextRecord();
             assertArrayEquals(RESULT[1], record2.values());
         } finally {
