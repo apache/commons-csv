@@ -31,6 +31,8 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PipedReader;
+import java.io.PipedWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -68,6 +70,8 @@ public class CSVParserTest {
                     + "   \"foo\n,,\n\"\",,\n\"\"\",d,e\n";   // changed to use standard CSV escaping
 
     private static final String CSV_INPUT_1 = "a,b,c,d";
+
+    private static final String CSV_INPUT_2 = "a,b,1 2";
 
     private static final String[][] RESULT = {
             {"a", "b", "c", "d"},
@@ -528,6 +532,29 @@ public class CSVParserTest {
         final CSVRecord record = parser.getRecords(new LinkedList<CSVRecord>()).getFirst();
         assertArrayEquals(RESULT[0], record.values());
         parser.close();
+    }
+
+    /**
+     * Tests reusing a parser to process new string records one at a time as they are being discovered. See [CSV-110].
+     * 
+     * @throws IOException
+     */
+    @Test
+    public void testGetOneLineOneParser() throws IOException {
+        PipedWriter writer = new PipedWriter();
+        PipedReader reader = new PipedReader(writer);
+        final CSVFormat format = CSVFormat.DEFAULT;
+        final CSVParser parser = new CSVParser(reader, format);
+        try {
+            writer.append(CSV_INPUT_1 + format.getRecordSeparator());
+            final CSVRecord record1 = parser.nextRecord();
+            assertArrayEquals(RESULT[0], record1.values());
+            writer.append(CSV_INPUT_2 + format.getRecordSeparator());
+            final CSVRecord record2 = parser.nextRecord();
+            assertArrayEquals(RESULT[1], record2.values());
+        } finally {
+            parser.close();
+        }
     }
 
     @Test
