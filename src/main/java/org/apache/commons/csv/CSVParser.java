@@ -435,7 +435,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             on parse error or input read-failure
      */
-    public CSVRecord nextRecord() throws IOException {
+    CSVRecord nextRecord() throws IOException {
         CSVRecord result = null;
         this.record.clear();
         StringBuilder sb = null;
