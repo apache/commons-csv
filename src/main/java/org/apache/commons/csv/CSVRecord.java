@@ -178,7 +178,10 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     <M extends Map<String, String>> M putIn(final M map) {
         for (final Entry<String, Integer> entry : mapping.entrySet()) {
-            map.put(entry.getKey(), values[entry.getValue().intValue()]);
+            final int col = entry.getValue().intValue();
+            if (col < values.length) {
+                map.put(entry.getKey(), values[col]);
+            }
         }
         return map;
     }
