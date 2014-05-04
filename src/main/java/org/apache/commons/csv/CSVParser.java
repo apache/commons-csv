@@ -269,7 +269,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Returns the current line number in the input stream.
      *
      * <p>
-     * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to the record number.
+     * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
+     * the record number.
      * </p>
      *
      * @return current line number
@@ -293,7 +294,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Returns the current record number in the input stream.
      *
      * <p>
-     * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to the line number.
+     * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
+     * the line number.
      * </p>
      *
      * @return current line number
@@ -370,7 +372,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             if (header != null) {
                 for (int i = 0; i < header.length; i++) {
                     if (hdrMap.containsKey(header[i])) {
-                        throw new IllegalStateException("The header contains duplicate names: " + Arrays.toString(header));
+                        throw new IllegalStateException("The header contains duplicate names: "
+                                + Arrays.toString(header));
                     }
                     hdrMap.put(header[i], Integer.valueOf(i));
                 }
