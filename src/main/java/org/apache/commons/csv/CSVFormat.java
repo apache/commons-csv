@@ -36,7 +36,7 @@ import java.util.Set;
 /**
  * Specifies the format of a CSV file and parses input.
  *
- * <h4>Using predefined formats</h4>
+ * <h2>Using predefined formats</h2>
  *
  * <p>
  * You can use one of the predefined formats:
@@ -64,7 +64,7 @@ import java.util.Set;
  *
  * <pre>CSVParser parser = CSVFormat.parseFile(file, CSVFormat.EXCEL);</pre>
  *
- * <h4>Defining formats</h4>
+ * <h2>Defining formats</h2>
  *
  * <p>
  * You can extend a format by calling the {@code with} methods. For example:
@@ -76,7 +76,7 @@ import java.util.Set;
  *   .withIgnoreSurroundingSpaces(true);
  * </pre>
  *
- * <h4>Defining column names</h4>
+ * <h2>Defining column names</h2>
  *
  * <p>
  * To define the column names you want to use to access records, write:
@@ -94,7 +94,7 @@ import java.util.Set;
  * {@link #withSkipHeaderRecord(boolean)} with {@code true}.
  * </p>
  *
- * <h4>Parsing</h4>
+ * <h2>Parsing</h2>
  *
  * <p>
  * You can use a format directly to parse a reader. For example, to parse an Excel file with columns header, write:
@@ -109,7 +109,7 @@ import java.util.Set;
  * For other input types, like resources, files, and URLs, use the static methods on {@link CSVParser}.
  * </p>
  *
- * <h4>Referencing columns safely</h4>
+ * <h2>Referencing columns safely</h2>
  *
  * <p>
  * If your source contains a header record, you can simplify your code and safely reference columns,
@@ -134,7 +134,7 @@ import java.util.Set;
  * This makes your code impervious to changes in column order in the CSV file.
  * </p>
  *
- * <h4>Notes</h4>
+ * <h2>Notes</h2>
  *
  * <p>
  * This class is immutable.
@@ -188,13 +188,18 @@ public final class CSVFormat implements Serializable {
     /**
      * Excel file format (using a comma as the value delimiter). Note that the actual value delimiter used by Excel is
      * locale dependent, it might be necessary to customize this format to accommodate to your regional settings.
-     * <p/>
+     *
+     * <p>
      * For example for parsing or generating a CSV file on a French system the following format will be used:
+     * </p>
      *
      * <pre>
      * CSVFormat fmt = CSVFormat.newBuilder(EXCEL).withDelimiter(';');
      * </pre>
+     *
+     * <p>
      * Settings are:
+     * </p>
      * <ul>
      * <li>withDelimiter(',')</li>
      * <li>withQuoteChar('"')</li>

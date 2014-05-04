@@ -44,9 +44,10 @@ public final class CSVPrinter implements Flushable, Closeable {
 
     /**
      * Creates a printer that will print values to the given stream following the CSVFormat.
-     * <p/>
+     * <p>
      * Currently, only a pure encapsulation format or a pure escaping format is supported. Hybrid formats
      * (encapsulation and escaping with a different character) are not supported.
+     * </p>
      *
      * @param out
      *            stream to which to print. Must not be null.
@@ -275,10 +276,13 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Prints a comment on a new line among the delimiter separated values. Comments will always begin on a new line
-     * and occupy a least one full line. The character specified to start comments and a space will be inserted at the
-     * beginning of each new line in the comment.
-     * <p/>
+     * Prints a comment on a new line among the delimiter separated values.
+     *
+     * <p>
+     * Comments will always begin on a new line and occupy a least one full line. The character specified to start
+     * comments and a space will be inserted at the beginning of each new line in the comment.
+     * </p>
+     *
      * If comments are disabled in the current CSV format this method does nothing.
      *
      * @param comment

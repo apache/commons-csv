@@ -44,15 +44,15 @@ import java.util.NoSuchElementException;
  *
  * The parser works record wise. It is not possible to go back, once a record has been parsed from the input stream.
  *
- * <h4>Creating instances</h4>
- * There are several static factory methods that can be used to create instances for various types of resources:
+ * <h2>Creating instances</h2>
  * <p>
+ * There are several static factory methods that can be used to create instances for various types of resources:
+ * </p>
  * <ul>
  *     <li>{@link #parse(java.io.File, CSVFormat)}</li>
  *     <li>{@link #parse(String, CSVFormat)}</li>
  *     <li>{@link #parse(java.net.URL, java.nio.charset.Charset, CSVFormat)}</li>
  * </ul>
- * </p>
  * <p>
  * Alternatively parsers can also be created by passing a {@link Reader} directly to the sole constructor.
  *
@@ -64,7 +64,7 @@ import java.util.NoSuchElementException;
  * }
  * </pre>
  *
- * <h4>Parsing record wise</h4>
+ * <h2>Parsing record wise</h2>
  * <p>
  * To parse a CSV input from a file, you write:
  * </p>
@@ -98,7 +98,7 @@ import java.util.NoSuchElementException;
  * customising CSVFormats is available in {@link CSVFormat CSVFormat JavaDoc}.
  * </p>
  *
- * <h4>Parsing into memory</h4>
+ * <h2>Parsing into memory</h2>
  * <p>
  * If parsing record wise is not desired, the contents of the input can be read completely into memory.
  * </p>
@@ -113,16 +113,14 @@ import java.util.NoSuchElementException;
  * There are two constraints that have to be kept in mind:
  * </p>
  *
- * <p>
  * <ol>
  *     <li>Parsing into memory starts at the current position of the parser. If you have already parsed records from
  *     the input, those records will not end up in the in memory representation of your CSV data.</li>
  *     <li>Parsing into memory may consume a lot of system resources depending on the input. For example if you're
  *     parsing a 150MB file of CSV data the contents will be read completely into memory.</li>
  * </ol>
- * </p>
  *
- * <h4>Notes</h4>
+ * <h2>Notes</h2>
  * <p>
  * Internal parser state is completely covered by the format and the reader-state.
  * </p>
@@ -268,8 +266,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     /**
      * Returns the current line number in the input stream.
-     * <p/>
-     * ATTENTION: If your CSV input has multi-line values, the returned number does not correspond to the record number.
+     *
+     * <p>
+     * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to the record number.
+     * </p>
      *
      * @return current line number
      */
@@ -290,8 +290,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     /**
      * Returns the current record number in the input stream.
-     * <p/>
-     * ATTENTION: If your CSV input has multi-line values, the returned number does not correspond to the line number.
+     *
+     * <p>
+     * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to the line number.
+     * </p>
      *
      * @return current line number
      */
@@ -302,8 +304,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     /**
      * Parses the CSV input according to the given format and returns the content as a list of
      * {@link CSVRecord CSVRecords}.
-     * <p/>
+     *
+     * <p>
      * The returned content starts at the current parse-position in the stream.
+     * </p>
      *
      * @return list of {@link CSVRecord CSVRecords}, may be empty
      * @throws IOException
@@ -316,11 +320,14 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     /**
      * Parses the CSV input according to the given format and adds the content to the collection of {@link CSVRecord
      * CSVRecords}.
-     * <p/>
+     *
+     * <p>
      * The returned content starts at the current parse-position in the stream.
-     * 
+     * </p>
+     *
      * @param records
      *            The collection to add to.
+     * @param <T> the type of collection used.
      * @return a collection of {@link CSVRecord CSVRecords}, may be empty
      * @throws IOException
      *             on parse error or input read-failure
