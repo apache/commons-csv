@@ -40,6 +40,39 @@ The <action> type attribute can be add,update,fix,remove.
   <body>
 
     <release version="1.0" date="TBD" description="First release">
+        <action issue="CSV-112" type="fix" dev="britter">HeaderMap is inconsistent when it is parsed from an input with duplicate columns names</action>
+        <action issue="CSV-111" type="fix" dev="ggregory">CSVRecord.toMap() fails if row length shorter than header length</action>
+        <action issue="CSV-106" type="fix" dev="ggregory">CSVFormat.format allways append null</action>
+        <action issue="CSV-105" type="add" dev="ggregory">Add Map conversion API to CSVRecord</action>
+        <action issue="CSV-100" type="fix" dev="ggregory">CSVParser: getHeaderMap throws NPE</action>
+        <action issue="CSV-42" type="update" dev="ebourg" due-to="Bob Smith">Lots of possible changes</action>
+        <action issue="CSV-78" type="update" dev="sebb">Use Character instead of char for char fields except delimiter</action>
+        <action issue="CSV-99" type="update" dev="britter">Revert Builder implementation in CSVFormat</action>
+        <action issue="CSV-53" type="fix" dev="britter">CSVRecord does not verify that the length of the header mapping matches the number of values</action>
+        <action issue="CSV-93" type="update" dev="ggregory">Allow the handling of NULL values</action>
+        <action issue="CSV-68" type="update" dev="ggregory">Use the Builder pattern for CSVFormat</action>
+        <action issue="CSV-84" type="update" dev="sebb">Clarify comment handling</action>
+        <action issue="CSV-25" type="update" dev="ebourg">CSVParser.nextValue() seems pointless</action>
+        <action issue="CSV-97" type="update" dev="ggregory">Allow the String value for null to be customized for the CSV printer</action>
+        <action issue="CSV-88" type="update" dev="ggregory">Not possible to create a CSVFormat from scratch</action>
+        <action issue="CSV-52" type="add" dev="ggregory">Keep track of record number</action>
+        <action issue="CSV-94" type="update" dev="sebb">Lexer should only use char fields</action>
+        <action issue="CSV-92" type="add" dev="ggregory">Need a way to extract parsed headers, e.g. for use in formatting output</action>
+        <action issue="CSV-65" type="add" dev="ebourg">Header support</action>
+        <action issue="CSV-54" type="fix" dev="sebb">Confusing semantic of the ignore leading/trailing spaces parameters</action>
+        <action issue="CSV-71" type="update" dev="sebb">Add convenience methods to CSVLexer</action>
+        <action issue="CSV-59" type="update" dev="ebourg">Is CharBuffer really needed, now that StringBuilder is available?</action>
+        <action issue="CSV-55" type="update" dev="britter">Replace while(true)-loop in CSVParser.getRecord with do-while-loop</action>
+        <action issue="CSV-34" type="fix" dev="sebb">CSVFormat describes itself as immutable, but it is not - in particular it is not thread-safe</action>
+        <action issue="CSV-36" type="fix" dev="yonik">Endless loops in CSV parser</action>
+        <action issue="CSV-13" type="fix" dev="ebourg">NullPointerException in CSVPrinter.print()/println()</action>
+        <action issue="CSV-45" type="update" dev="yonik">CSVPrinter overhaul</action>
+        <action issue="CSV-23" type="fix" dev="ebourg">Excel strategy uses wrong separator</action>
+        <action issue="CSV-49" type="update" dev="ebourg" due-to="Bob Smith">CSVStrategy has modifiable public static variables</action>
+        <action issue="CSV-48" type="add" dev="ebourg">Predefined format for MYSQL</action>
+        <action issue="CSV-46" type="update" dev="ebourg">Reduce visibility of methods in internal classes</action>
+        <action issue="CSV-26" type="update" dev="jacopoc">ExtendedBufferedReader does too much</action>
+        <action issue="CSV-27" type="update" dev="ebourg">Decide whether to keep the csv.writer subpackage</action>
     </release>
 
   </body>
