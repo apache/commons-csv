@@ -372,8 +372,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             if (header != null) {
                 for (int i = 0; i < header.length; i++) {
                     if (hdrMap.containsKey(header[i])) {
-                        throw new IllegalStateException("The header contains duplicate names: "
-                                + Arrays.toString(header));
+                        throw new IllegalStateException("The header contains duplicate names: " +
+                                Arrays.toString(header));
                     }
                     hdrMap.put(header[i], Integer.valueOf(i));
                 }
