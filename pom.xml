@@ -127,10 +127,7 @@ CSV files of various types.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <commons.encoding>UTF-8</commons.encoding>
-    <!--
-        Use 2.9.1 instead of 2.10; 2.10 seems to scan the 'target' dir
-        and wants license headers in .properties to be the header for Java files.
-    -->
+
     <checkstyle.version>2.12.1</checkstyle.version>
     <checkstyle.header.file>${basedir}/LICENSE-header.txt</checkstyle.header.file>
   </properties>
