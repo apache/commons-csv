@@ -135,6 +135,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     /**
      * Creates a parser for the given {@link File}.
      *
+     * <p><strong>Note:</strong> This method internally creates a FileReader using
+     * {@link FileReader#FileReader(java.io.File)} which in turn relies on the default encoding of the JVM that
+     * is executing the code. If this is insufficient create a URL to the file and use
+     * {@link #parse(URL, Charset, CSVFormat)}</p>
+     *
      * @param file
      *            a CSV file. Must not be null.
      * @param format
