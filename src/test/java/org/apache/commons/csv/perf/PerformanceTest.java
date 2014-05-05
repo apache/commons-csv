@@ -74,7 +74,7 @@ public class PerformanceTest {
         for (final CSVRecord record : format.parse(in)) {
             recordCount++;
             if (traverseColumns) {
-                for (final String value : record) {
+                for (@SuppressWarnings("unused") final String value : record) {
                     // do nothing for now
                 }
             }
