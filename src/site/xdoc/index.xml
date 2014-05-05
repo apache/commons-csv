@@ -42,7 +42,7 @@ for (CSVRecord record : records) {
 </section>
 
 <section name="Reporting bugs">
-  <p>Please report any bugs or issues in the Commons Sandbox Jira project at <a href="http://issues.apache.org/jira/browse/CSV">http://issues.apache.org/jira/browse/CSV</a>. Please ask any questions or suggest any ideas for improvement on the commons-dev and commons-user <a href="mail-lists.html">mailing lists</a>. </p>
+  <p>Please report any bugs or issues in the Commons CSV Jira project at <a href="http://issues.apache.org/jira/browse/CSV">http://issues.apache.org/jira/browse/CSV</a>. Please ask any questions or suggest any ideas for improvement on the commons-dev and commons-user <a href="mail-lists.html">mailing lists</a>. </p>
 </section>
 
 <section name="About Commons CSV">
