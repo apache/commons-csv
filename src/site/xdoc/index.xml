@@ -41,9 +41,21 @@ for (CSVRecord record : records) {
   <p>You can build the component using Apache Maven. For example: mvn clean package.</p>
 </section>
 
-<section name="Reporting bugs">
-  <p>Please report any bugs or issues in the Commons CSV Jira project at <a href="http://issues.apache.org/jira/browse/CSV">http://issues.apache.org/jira/browse/CSV</a>. Please ask any questions or suggest any ideas for improvement on the commons-dev and commons-user <a href="mail-lists.html">mailing lists</a>. </p>
+<!-- ================================================== -->
+<section name="Support">
+  <p>
+    The <a href="mail-lists.html">commons mailing lists</a> act as the main support forum.
+    The user list is suitable for most library usage queries.
+    The dev list is intended for the development discussion.
+    Please remember that the lists are shared between all commons components,
+    so prefix your email by [csv].
+  </p>
+  <p>
+    Bug reports and enhancements are also welcomed via the <a href="issue-tracking.html">JIRA</a> issue tracker.
+    Please read the instructions carefully.
+  </p>
 </section>
+<!-- ================================================== -->
 
 <section name="About Commons CSV">
   <p>Commons CSV was started to unify a common and simple interface for reading and writing CSV files under an ASL license. It has been bootstrapped by a code donation from Netcetera in Switzerland. There are three pre-existing BSD compatible CSV parsers which this component will hopefully make redundant (authors willing): </p>
