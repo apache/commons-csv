@@ -201,51 +201,51 @@ CSV files of various types.
         <artifactId>findbugs-maven-plugin</artifactId>
         <version>2.5.3</version>
       </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>taglist-maven-plugin</artifactId>
-          <version>2.4</version>
-          <configuration>
-            <tagListOptions>
-              <tagClasses>
-                <tagClass>
-                  <displayName>Needs Work</displayName>
-                  <tags>
-                    <tag>
-                      <matchString>TODO</matchString>
-                      <matchType>exact</matchType>
-                    </tag>
-                    <tag>
-                      <matchString>FIXME</matchString>
-                      <matchType>exact</matchType>
-                    </tag>
-                    <tag>
-                      <matchString>XXX</matchString>
-                      <matchType>exact</matchType>
-                    </tag>
-                  </tags>
-                </tagClass>
-                <tagClass>
-                  <displayName>Noteable Markers</displayName>
-                  <tags>
-                    <tag>
-                      <matchString>NOTE</matchString>
-                      <matchType>exact</matchType>
-                    </tag>
-                    <tag>
-                      <matchString>NOPMD</matchString>
-                      <matchType>exact</matchType>
-                    </tag>
-                    <tag>
-                      <matchString>NOSONAR</matchString>
-                      <matchType>exact</matchType>
-                    </tag>
-                  </tags>
-                </tagClass>
-              </tagClasses>
-            </tagListOptions>
-          </configuration>
-        </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <tagListOptions>
+            <tagClasses>
+              <tagClass>
+                <displayName>Needs Work</displayName>
+                <tags>
+                  <tag>
+                    <matchString>TODO</matchString>
+                    <matchType>exact</matchType>
+                  </tag>
+                  <tag>
+                    <matchString>FIXME</matchString>
+                    <matchType>exact</matchType>
+                  </tag>
+                  <tag>
+                    <matchString>XXX</matchString>
+                    <matchType>exact</matchType>
+                  </tag>
+                </tags>
+              </tagClass>
+              <tagClass>
+                <displayName>Noteable Markers</displayName>
+                <tags>
+                  <tag>
+                    <matchString>NOTE</matchString>
+                    <matchType>exact</matchType>
+                  </tag>
+                  <tag>
+                    <matchString>NOPMD</matchString>
+                    <matchType>exact</matchType>
+                  </tag>
+                  <tag>
+                    <matchString>NOSONAR</matchString>
+                    <matchType>exact</matchType>
+                  </tag>
+                </tags>
+              </tagClass>
+            </tagClasses>
+          </tagListOptions>
+        </configuration>
+      </plugin>
       <!--
           NOTE: this requires Maven 3.0.x; when used with Maven 2.2.1, the following error is seen:
           Embedded error: Error rendering Maven report: org.dom4j.DocumentFactory cannot be cast to org.dom4j.DocumentFactory
