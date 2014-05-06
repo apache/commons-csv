@@ -196,6 +196,41 @@ public class CSVFormatTest {
         assertNotEquals(right, left);
     }
 
+    @Test
+    public void testEqualsNullString() {
+        final CSVFormat right = CSVFormat.newFormat('\'')
+                .withRecordSeparator('*')
+                .withCommentStart('#')
+                .withEscape('+')
+                .withIgnoreEmptyLines(true)
+                .withIgnoreSurroundingSpaces(true)
+                .withQuoteChar('"')
+                .withQuotePolicy(Quote.ALL)
+                .withNullString("null");
+        final CSVFormat left = right
+                .withNullString("---");
+
+        assertNotEquals(right, left);
+    }
+
+    @Test
+    public void testEqualsSkipHeaderRecord() {
+        final CSVFormat right = CSVFormat.newFormat('\'')
+                .withRecordSeparator('*')
+                .withCommentStart('#')
+                .withEscape('+')
+                .withIgnoreEmptyLines(true)
+                .withIgnoreSurroundingSpaces(true)
+                .withQuoteChar('"')
+                .withQuotePolicy(Quote.ALL)
+                .withNullString("null")
+                .withSkipHeaderRecord(true);
+        final CSVFormat left = right
+                .withSkipHeaderRecord(false);
+
+        assertNotEquals(right, left);
+    }
+
     @Test(expected = IllegalStateException.class)
     public void testEscapeSameAsCommentStartThrowsException() {
         CSVFormat.DEFAULT.withEscape('!').withCommentStart('!').validate();
