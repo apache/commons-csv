@@ -293,8 +293,7 @@ public final class CSVFormat implements Serializable {
      * @param skipHeaderRecord TODO
      * @throws IllegalArgumentException if the delimiter is a line break character
      */
-    // package protected to give access without needing a synthetic accessor
-    CSVFormat(final char delimiter, final Character quoteChar,
+    private CSVFormat(final char delimiter, final Character quoteChar,
             final Quote quotePolicy, final Character commentStart,
             final Character escape, final boolean ignoreSurroundingSpaces,
             final boolean ignoreEmptyLines, final String recordSeparator,
