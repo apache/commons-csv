@@ -441,7 +441,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Returns a copy of the header array.
      *
-     * @return a copy of the header array
+     * @return a copy of the header array; {@code null} if disabled, the empty array if to be read from the file
      */
     public String[] getHeader() {
         return header != null ? header.clone() : null;
