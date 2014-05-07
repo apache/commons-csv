@@ -61,7 +61,7 @@ public class CSVFormatTest {
         CSVFormat.DEFAULT.withDelimiter('!').withEscape('!').validate();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testDuplicateHeaderElements() {
         CSVFormat.DEFAULT.withHeader("A", "A").validate();
     }

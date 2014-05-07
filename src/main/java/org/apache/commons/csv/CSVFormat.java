@@ -155,7 +155,7 @@ public final class CSVFormat implements Serializable {
     private final boolean ignoreEmptyLines;
     private final String recordSeparator; // for outputs
     private final String nullString; // the string to be used for null values
-    private final String[] header;
+    private final String[] header; // array of header column names
     private final boolean skipHeaderRecord;
 
     /**
@@ -310,7 +310,17 @@ public final class CSVFormat implements Serializable {
         this.ignoreEmptyLines = ignoreEmptyLines;
         this.recordSeparator = recordSeparator;
         this.nullString = nullString;
-        this.header = header == null ? null : header.clone();
+        if (header == null) {
+        	this.header = null;
+        } else {
+        	Set<String> dupCheck = new HashSet<String>();
+        	for(String hdr : header) {
+        		if (!dupCheck.add(hdr)) {
+        			throw new IllegalArgumentException("The header contains a duplicate entry: '" + hdr + "' in " + Arrays.toString(header));
+        		}
+        	}
+            this.header = header.clone();        	
+        }
         this.skipHeaderRecord = skipHeaderRecord;
     }
 
@@ -658,13 +668,6 @@ public final class CSVFormat implements Serializable {
             throw new IllegalStateException("No quotes mode set but no escape character is set");
         }
 
-        if (header != null) {
-            final Set<String> set = new HashSet<String>(header.length);
-            set.addAll(Arrays.asList(header));
-            if (set.size() != header.length) {
-                throw new IllegalStateException("The header contains duplicate names: " + Arrays.toString(header));
-            }
-        }
     }
 
     /**
