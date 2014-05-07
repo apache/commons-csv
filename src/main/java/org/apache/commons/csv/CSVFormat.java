@@ -311,15 +311,15 @@ public final class CSVFormat implements Serializable {
         this.recordSeparator = recordSeparator;
         this.nullString = nullString;
         if (header == null) {
-        	this.header = null;
+            this.header = null;
         } else {
-        	Set<String> dupCheck = new HashSet<String>();
-        	for(String hdr : header) {
-        		if (!dupCheck.add(hdr)) {
-        			throw new IllegalArgumentException("The header contains a duplicate entry: '" + hdr + "' in " + Arrays.toString(header));
-        		}
-        	}
-            this.header = header.clone();        	
+            Set<String> dupCheck = new HashSet<String>();
+            for(String hdr : header) {
+                if (!dupCheck.add(hdr)) {
+                    throw new IllegalArgumentException("The header contains a duplicate entry: '" + hdr + "' in " + Arrays.toString(header));
+                }
+            }
+            this.header = header.clone();
         }
         this.skipHeaderRecord = skipHeaderRecord;
     }
