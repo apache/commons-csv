@@ -236,7 +236,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either reader or format are null.
      * @throws IOException
-     *             If an I/O error occurs
+     *             If there is a problem reading the header or skipping the first record
      */
     public CSVParser(final Reader reader, final CSVFormat format) throws IOException {
         Assertions.notNull(reader, "reader");
@@ -352,6 +352,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Initializes the name to index mapping if the format defines a header.
      *
      * @return null if the format has no header.
+     * @throws IOException if there is a problem reading the header or skipping the first record
      */
     private Map<String, Integer> initializeHeader() throws IOException {
         Map<String, Integer> hdrMap = null;
@@ -377,7 +378,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             if (header != null) {
                 for (int i = 0; i < header.length; i++) {
                     if (hdrMap.containsKey(header[i])) {
-                        throw new IllegalStateException("The header contains duplicate names: " +
+                        throw new IllegalArgumentException("The header contains duplicate names: " +
                                 Arrays.toString(header));
                     }
                     hdrMap.put(header[i], Integer.valueOf(i));
