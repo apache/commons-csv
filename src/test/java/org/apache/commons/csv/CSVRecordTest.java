@@ -18,6 +18,7 @@ package org.apache.commons.csv;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -165,6 +166,15 @@ public class CSVRecordTest {
        final CSVParser parser =  CSVParser.parse("a,b", CSVFormat.DEFAULT.withHeader("A", "B", "C"));
        final CSVRecord shortRec = parser.iterator().next();
        shortRec.toMap();
+    }
+
+    @Test
+    public void testToMapWithNoHeader() throws Exception {
+       final CSVParser parser =  CSVParser.parse("a,b", CSVFormat.newFormat(','));
+       final CSVRecord shortRec = parser.iterator().next();
+       Map<String, String> map = shortRec.toMap();
+       assertNotNull("Map is not null.", map);
+       assertTrue("Map is empty.", map.isEmpty());
     }
     
     private void validateMap(final Map<String, String> map, final boolean allowsNulls) {

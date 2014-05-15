@@ -177,6 +177,9 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return the given map.
      */
     <M extends Map<String, String>> M putIn(final M map) {
+        if (mapping == null) {
+            return map;
+        }
         for (final Entry<String, Integer> entry : mapping.entrySet()) {
             final int col = entry.getValue().intValue();
             if (col < values.length) {
