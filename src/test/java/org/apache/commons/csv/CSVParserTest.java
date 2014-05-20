@@ -17,16 +17,10 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.Constants.CR;
-import static org.apache.commons.csv.Constants.CRLF;
-import static org.apache.commons.csv.Constants.LF;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.apache.commons.io.input.BOMInputStream;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,10 +39,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.io.input.BOMInputStream;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.apache.commons.csv.Constants.*;
+import static org.junit.Assert.*;
 
 /**
  * CSVParserTest
@@ -496,6 +488,11 @@ public class CSVParserTest {
     public void testDuplicateHeaderEntries() throws Exception {
         CSVParser.parse("a,b,a\n1,2,3\nx,y,z", CSVFormat.DEFAULT.withHeader(new String[]{}));
     }
+
+  @Test()
+  public void testDuplicateHeaderEntriesWithEmptyHeaders() throws Exception {
+    CSVParser.parse("a,,c,d,,\n1,2,3,4,5,6\nx,y,z,v,u,w", CSVFormat.DEFAULT.withHeader(new String[]{}));
+  }
 
     @Test
     public void testGetLine() throws IOException {
