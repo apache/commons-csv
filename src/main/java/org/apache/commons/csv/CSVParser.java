@@ -17,8 +17,6 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.Token.Type.TOKEN;
-
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileReader;
@@ -36,6 +34,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+import static org.apache.commons.csv.Token.Type.TOKEN;
 
 /**
  * Parses CSV files according to the specified format.
@@ -377,6 +377,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             // build the name to index mappings
             if (header != null) {
                 for (int i = 0; i < header.length; i++) {
+                    // skip the header when it is empty
+                    if(header[i] == null || "".equals(header[i])) {
+                      continue;
+                    }
                     if (hdrMap.containsKey(header[i])) {
                         throw new IllegalArgumentException("The header contains duplicate names: " +
                                 Arrays.toString(header));
