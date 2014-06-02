@@ -304,6 +304,15 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testPrint() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = CSVFormat.DEFAULT.print(sw);
+        printer.printRecord("a", "b\\c");
+        assertEquals("a,b\\c" + recordSeparator, sw.toString());
+        printer.close();
+    }
+
+    @Test
     public void testPrintNullValues() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);

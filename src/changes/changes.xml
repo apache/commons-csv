@@ -40,6 +40,7 @@
   <body>
 
     <release version="1.0" date="TBD" description="First release">
+      <action issue="CSV-119" type="add" dev="ggregory" due-to="Sergei Lebedev">CSVFormat is missing a print(...) method</action>
       <action issue="CSV-118" type="fix" dev="ggregory" due-to="Enrique Lara">CSVRecord.toMap() throws NPE on formats with no
         headers.</action>
       <action issue="CSV-113" type="fix" dev="sebb">Check whether ISE/IAE are being used appropriately</action>

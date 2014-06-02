@@ -595,6 +595,21 @@ public final class CSVFormat implements Serializable {
         return new CSVParser(in, this);
     }
 
+    /**
+     * Prints to the specified output.
+     * 
+     * <p>
+     * See also {@link CSVPrinter}.
+     * </p>
+     * 
+     * @param out
+     *        the output
+     * @return a printer to an output
+     */
+    public CSVPrinter print(final Appendable out) {
+        return new CSVPrinter(out, this);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
