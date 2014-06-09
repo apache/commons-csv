@@ -45,24 +45,31 @@ public final class CSVPrinter implements Flushable, Closeable {
     /**
      * Creates a printer that will print values to the given stream following the CSVFormat.
      * <p>
-     * Currently, only a pure encapsulation format or a pure escaping format is supported. Hybrid formats
-     * (encapsulation and escaping with a different character) are not supported.
+     * Currently, only a pure encapsulation format or a pure escaping format is supported. Hybrid formats (encapsulation
+     * and escaping with a different character) are not supported.
      * </p>
-     *
+     * 
      * @param out
-     *            stream to which to print. Must not be null.
+     *        stream to which to print. Must not be null.
      * @param format
-     *            the CSV format. Must not be null.
+     *        the CSV format. Must not be null.
+     * @throws IOException
+     *         thrown if the optional header cannot be printed.
      * @throws IllegalArgumentException
-     *             thrown if the parameters of the format are inconsistent or if either out or format are null.
+     *         thrown if the parameters of the format are inconsistent or if either out or format are null.
      */
-    public CSVPrinter(final Appendable out, final CSVFormat format) {
+    public CSVPrinter(final Appendable out, final CSVFormat format) throws IOException {
         Assertions.notNull(out, "out");
         Assertions.notNull(format, "format");
 
         this.out = out;
         this.format = format;
         this.format.validate();
+        // TODO: Is it a good idea to do this here instead of on the first call to a print method?
+        // It seems a pain to have to track whether the header has already been printed or not.
+        if (format.getHeader() != null) {
+            this.printRecord((Object[]) format.getHeader());
+        }
     }
 
     // ======================================================

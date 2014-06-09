@@ -39,7 +39,8 @@
   </properties>
   <body>
 
-    <release version="1.0" date="TBD" description="First release">
+    <release version="1.0" date="TBD" description="First release">    
+      <action issue="CSV-120" type="add" dev="ggregory" due-to="Sergei Lebedev">CSVFormat#withHeader doesn't work with CSVPrinter</action>
       <action issue="CSV-119" type="add" dev="ggregory" due-to="Sergei Lebedev">CSVFormat is missing a print(...) method</action>
       <action issue="CSV-118" type="fix" dev="ggregory" due-to="Enrique Lara">CSVRecord.toMap() throws NPE on formats with no
         headers.</action>

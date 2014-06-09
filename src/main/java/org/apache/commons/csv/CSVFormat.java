@@ -605,8 +605,10 @@ public final class CSVFormat implements Serializable {
      * @param out
      *        the output
      * @return a printer to an output
+     * @throws IOException
+     *         thrown if the optional header cannot be printed.
      */
-    public CSVPrinter print(final Appendable out) {
+    public CSVPrinter print(final Appendable out) throws IOException {
         return new CSVPrinter(out, this);
     }
 
