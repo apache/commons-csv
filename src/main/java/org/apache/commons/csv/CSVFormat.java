@@ -152,7 +152,7 @@ public final class CSVFormat implements Serializable {
     private final Character commentStart; // null if commenting is disabled
     private final Character escape; // null if escaping is disabled
     private final boolean ignoreSurroundingSpaces; // Should leading/trailing spaces be ignored around values?
-    private boolean ignoreEmptyHeaders;
+    private final boolean ignoreEmptyHeaders;
     private final boolean ignoreEmptyLines;
     private final String recordSeparator; // for outputs
     private final String nullString; // the string to be used for null values
