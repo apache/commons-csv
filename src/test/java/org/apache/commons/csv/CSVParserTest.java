@@ -649,6 +649,12 @@ public class CSVParserTest {
         assertFalse(records.hasNext());
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testHeadersMissingException() throws Exception {
+        final Reader in = new StringReader("a,,c,,d\n1,2,3,4\nx,y,z,zz");
+        CSVFormat.DEFAULT.withHeader().parse(in).iterator();
+    }
+
     @Test
     public void testHeaderComment() throws Exception {
         final Reader in = new StringReader("# comment\na,b,c\n1,2,3\nx,y,z");
