@@ -493,7 +493,7 @@ public class CSVParserTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testDuplicateHeaderEntries() throws Exception {
+    public void testDuplicateHeaders() throws Exception {
         CSVParser.parse("a,b,a\n1,2,3\nx,y,z", CSVFormat.DEFAULT.withHeader(new String[]{}));
     }
 
@@ -653,6 +653,12 @@ public class CSVParserTest {
     public void testHeadersMissingException() throws Exception {
         final Reader in = new StringReader("a,,c,,d\n1,2,3,4\nx,y,z,zz");
         CSVFormat.DEFAULT.withHeader().parse(in).iterator();
+    }
+
+    @Test
+    public void testHeadersMissing() throws Exception {
+        final Reader in = new StringReader("a,,c,,d\n1,2,3,4\nx,y,z,zz");
+        CSVFormat.DEFAULT.withHeader().withIgnoreEmptyHeaders(true).parse(in).iterator();
     }
 
     @Test

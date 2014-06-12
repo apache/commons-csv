@@ -360,28 +360,31 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         if (formatHeader != null) {
             hdrMap = new LinkedHashMap<String, Integer>();
 
-            String[] header = null;
+            String[] headerRecord = null;
             if (formatHeader.length == 0) {
                 // read the header from the first line of the file
                 final CSVRecord nextRecord = this.nextRecord();
                 if (nextRecord != null) {
-                    header = nextRecord.values();
+                    headerRecord = nextRecord.values();
                 }
             } else {
                 if (this.format.getSkipHeaderRecord()) {
                     this.nextRecord();
                 }
-                header = formatHeader;
+                headerRecord = formatHeader;
             }
 
             // build the name to index mappings
-            if (header != null) {
-                for (int i = 0; i < header.length; i++) {
-                    if (hdrMap.containsKey(header[i])) {
-                        throw new IllegalArgumentException("The header contains duplicate names: " +
-                                Arrays.toString(header));
+            if (headerRecord != null) {
+                for (int i = 0; i < headerRecord.length; i++) {
+                    final String header = headerRecord[i];
+                    final boolean containsHeader = hdrMap.containsKey(header);
+                    final boolean emptyHeader = header.trim().isEmpty();
+                    if (containsHeader && (!emptyHeader || (emptyHeader && !this.format.getIgnoreEmptyHeaders()))) {
+                        throw new IllegalArgumentException("The header contains a duplicate name: \"" + header
+                                + "\" in " + Arrays.toString(headerRecord));
                     }
-                    hdrMap.put(header[i], Integer.valueOf(i));
+                    hdrMap.put(header, Integer.valueOf(i));
                 }
             }
         }
