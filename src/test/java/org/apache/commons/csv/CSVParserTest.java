@@ -634,6 +634,22 @@ public class CSVParserTest {
     }
 
     @Test
+    public void testHeaderMissing() throws Exception {
+        final Reader in = new StringReader("a,,c\n1,2,3\nx,y,z");
+
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader().parse(in).iterator();
+
+        for (int i = 0; i < 2; i++) {
+            assertTrue(records.hasNext());
+            final CSVRecord record = records.next();
+            assertEquals(record.get(0), record.get("a"));
+            assertEquals(record.get(2), record.get("c"));
+        }
+
+        assertFalse(records.hasNext());
+    }
+
+    @Test
     public void testHeaderComment() throws Exception {
         final Reader in = new StringReader("# comment\na,b,c\n1,2,3\nx,y,z");
 
