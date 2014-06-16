@@ -384,8 +384,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     final boolean containsHeader = hdrMap.containsKey(header);
                     final boolean emptyHeader = header.trim().isEmpty();
                     if (containsHeader && (!emptyHeader || (emptyHeader && !this.format.getIgnoreEmptyHeaders()))) {
-                        throw new IllegalArgumentException("The header contains a duplicate name: \"" + header
-                                + "\" in " + Arrays.toString(headerRecord));
+                        throw new IllegalArgumentException("The header contains a duplicate name: \"" + header +
+                                "\" in " + Arrays.toString(headerRecord));
                     }
                     hdrMap.put(header, Integer.valueOf(i));
                 }
