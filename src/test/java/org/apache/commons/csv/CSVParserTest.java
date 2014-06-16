@@ -806,12 +806,12 @@ public class CSVParserTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseFileNullFormat() throws Exception {
-        CSVParser.parse(new File(""), null);
+        CSVParser.parse(new File(""), Charset.defaultCharset(), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseNullFileFormat() throws Exception {
-        CSVParser.parse((File) null, CSVFormat.DEFAULT);
+        CSVParser.parse((File) null, Charset.defaultCharset(), CSVFormat.DEFAULT);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -821,7 +821,7 @@ public class CSVParserTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseNullUrlCharsetFormat() throws Exception {
-        CSVParser.parse(null, Charset.defaultCharset(), CSVFormat.DEFAULT);
+        CSVParser.parse((File) null, Charset.defaultCharset(), CSVFormat.DEFAULT);
     }
 
     @Test(expected = IllegalArgumentException.class)

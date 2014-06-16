@@ -17,10 +17,9 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.Token.Type.TOKEN;
-
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -37,6 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import static org.apache.commons.csv.Token.Type.*;
+
 /**
  * Parses CSV files according to the specified format.
  *
@@ -50,7 +51,7 @@ import java.util.NoSuchElementException;
  * There are several static factory methods that can be used to create instances for various types of resources:
  * </p>
  * <ul>
- *     <li>{@link #parse(java.io.File, CSVFormat)}</li>
+ *     <li>{@link #parse(java.io.File, Charset, CSVFormat)}</li>
  *     <li>{@link #parse(String, CSVFormat)}</li>
  *     <li>{@link #parse(java.net.URL, java.nio.charset.Charset, CSVFormat)}</li>
  * </ul>
@@ -142,6 +143,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *
      * @param file
      *            a CSV file. Must not be null.
+     * @param charset 
+     *            A charset
      * @param format
      *            the CSVFormat used for CSV parsing. Must not be null.
      * @return a new parser
@@ -150,11 +153,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public static CSVParser parse(final File file, final CSVFormat format) throws IOException {
+    public static CSVParser parse(final File file, Charset charset, final CSVFormat format) throws IOException {
         Assertions.notNull(file, "file");
         Assertions.notNull(format, "format");
-
-        return new CSVParser(new FileReader(file), format);
+        // Use the default Charset explicitly
+        return new CSVParser(new InputStreamReader(new FileInputStream(file), charset), format);
     }
 
     /**
