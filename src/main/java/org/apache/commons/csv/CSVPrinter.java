@@ -48,7 +48,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * Currently, only a pure encapsulation format or a pure escaping format is supported. Hybrid formats (encapsulation
      * and escaping with a different character) are not supported.
      * </p>
-     * 
+     *
      * @param out
      *        stream to which to print. Must not be null.
      * @param format
