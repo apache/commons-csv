@@ -299,7 +299,7 @@ public final class CSVFormat implements Serializable {
             final Quote quotePolicy, final Character commentStart,
             final Character escape, final boolean ignoreSurroundingSpaces,
             final boolean ignoreEmptyLines, final String recordSeparator,
-            final String nullString, final String[] header, final boolean skipHeaderRecord, 
+            final String nullString, final String[] header, final boolean skipHeaderRecord,
             final boolean ignoreEmptyHeaders) {
         if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
@@ -732,7 +732,7 @@ public final class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The comment start character cannot be a line break");
         }
         return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord, 
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 ignoreEmptyHeaders);
     }
 
@@ -750,7 +750,7 @@ public final class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
         return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord, 
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 ignoreEmptyHeaders);
     }
 
@@ -781,7 +781,7 @@ public final class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The escape character cannot be a line break");
         }
         return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord, 
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 ignoreEmptyHeaders);
     }
 
@@ -804,7 +804,7 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withHeader(final String... header) {
         return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord, 
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 ignoreEmptyHeaders);
     }
 
@@ -818,7 +818,7 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withIgnoreEmptyHeaders(final boolean ignoreEmptyHeaders) {
         return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                ignoreSurroundingSpaces, ignoreEmptyHeaders, recordSeparator, nullString, header, skipHeaderRecord, 
+                ignoreSurroundingSpaces, ignoreEmptyHeaders, recordSeparator, nullString, header, skipHeaderRecord,
                 ignoreEmptyHeaders);
     }
 
@@ -832,7 +832,7 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withIgnoreEmptyLines(final boolean ignoreEmptyLines) {
         return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord, 
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 ignoreEmptyHeaders);
     }
 
@@ -846,7 +846,7 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withIgnoreSurroundingSpaces(final boolean ignoreSurroundingSpaces) {
         return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord, 
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 ignoreEmptyHeaders);
     }
 
@@ -867,7 +867,7 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withNullString(final String nullString) {
         return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord, 
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 ignoreEmptyHeaders);
     }
 
@@ -898,7 +898,7 @@ public final class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The quoteChar cannot be a line break");
         }
         return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord, 
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 ignoreEmptyHeaders);
     }
 
@@ -912,7 +912,7 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withQuotePolicy(final Quote quotePolicy) {
         return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord, 
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 ignoreEmptyHeaders);
     }
 
@@ -938,7 +938,7 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withRecordSeparator(final String recordSeparator) {
         return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord, 
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 ignoreEmptyHeaders);
     }
 
@@ -953,7 +953,7 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withSkipHeaderRecord(final boolean skipHeaderRecord) {
         return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord, 
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 ignoreEmptyHeaders);
     }
 }

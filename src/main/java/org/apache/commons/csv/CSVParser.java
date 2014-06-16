@@ -143,7 +143,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *
      * @param file
      *            a CSV file. Must not be null.
-     * @param charset 
+     * @param charset
      *            A charset
      * @param format
      *            the CSVFormat used for CSV parsing. Must not be null.
