@@ -153,7 +153,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public static CSVParser parse(final File file, Charset charset, final CSVFormat format) throws IOException {
+    public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException {
         Assertions.notNull(file, "file");
         Assertions.notNull(format, "format");
         // Use the default Charset explicitly
@@ -343,7 +343,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             on parse error or input read-failure
      */
-    public <T extends Collection<CSVRecord>> T getRecords(T records) throws IOException {
+    public <T extends Collection<CSVRecord>> T getRecords(final T records) throws IOException {
         CSVRecord rec;
         while ((rec = this.nextRecord()) != null) {
             records.add(rec);

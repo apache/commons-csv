@@ -191,10 +191,10 @@ public class CSVParserTest {
     @Test
     @Ignore("CSV-107")
     public void testBOM() throws IOException {
-        URL url = ClassLoader.getSystemClassLoader().getResource("CSVFileParser/bom.csv");
+        final URL url = ClassLoader.getSystemClassLoader().getResource("CSVFileParser/bom.csv");
         final CSVParser parser = CSVParser.parse(url, null, CSVFormat.EXCEL.withHeader());
         try {
-            for (CSVRecord record : parser) {
+            for (final CSVRecord record : parser) {
                 final String string = record.get("Date");
                 Assert.assertNotNull(string);
                 //System.out.println("date: " + record.get("Date"));
@@ -206,11 +206,11 @@ public class CSVParserTest {
 
     @Test
     public void testBOMInputStream() throws IOException {
-        URL url = ClassLoader.getSystemClassLoader().getResource("CSVFileParser/bom.csv");
-        Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
+        final URL url = ClassLoader.getSystemClassLoader().getResource("CSVFileParser/bom.csv");
+        final Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
         final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
         try {
-            for (CSVRecord record : parser) {
+            for (final CSVRecord record : parser) {
                 final String string = record.get("Date");
                 Assert.assertNotNull(string);
                 //System.out.println("date: " + record.get("Date"));
@@ -546,8 +546,8 @@ public class CSVParserTest {
      */
     @Test
     public void testGetOneLineOneParser() throws IOException {
-        PipedWriter writer = new PipedWriter();
-        PipedReader reader = new PipedReader(writer);
+        final PipedWriter writer = new PipedWriter();
+        final PipedReader reader = new PipedReader(writer);
         final CSVFormat format = CSVFormat.DEFAULT;
         final CSVParser parser = new CSVParser(reader, format);
         try {

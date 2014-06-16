@@ -317,8 +317,8 @@ public final class CSVFormat implements Serializable {
         if (header == null) {
             this.header = null;
         } else {
-            Set<String> dupCheck = new HashSet<String>();
-            for (String hdr : header) {
+            final Set<String> dupCheck = new HashSet<String>();
+            for (final String hdr : header) {
                 if (!dupCheck.add(hdr)) {
                     throw new IllegalArgumentException("The header contains a duplicate entry: '" + hdr + "' in " +
                             Arrays.toString(header));
