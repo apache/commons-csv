@@ -30,6 +30,7 @@ import static org.apache.commons.csv.Token.Type.EORECORD;
 import static org.apache.commons.csv.Token.Type.INVALID;
 import static org.apache.commons.csv.Token.Type.TOKEN;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 /**
@@ -37,7 +38,7 @@ import java.io.IOException;
  *
  * @version $Id$
  */
-final class Lexer {
+final class Lexer implements Closeable {
 
     /**
      * Constant char to use for disabling comments, escapes and encapsulation. The value -2 is used because it
@@ -425,7 +426,7 @@ final class Lexer {
      * @throws IOException
      *             If an I/O error occurs
      */
-    void close() throws IOException {
+    public void close() throws IOException {
         reader.close();
     }
 }
