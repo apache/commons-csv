@@ -398,7 +398,7 @@ public class CSVFormatTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testWithQuoteLfThrowsException() {
+    public void testWithQuoteLFThrowsException() {
         CSVFormat.DEFAULT.withQuoteChar(LF).validate();
     }
 
