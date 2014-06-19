@@ -192,7 +192,7 @@ public class CSVParserTest {
     @Ignore("CSV-107")
     public void testBOM() throws IOException {
         final URL url = ClassLoader.getSystemClassLoader().getResource("CSVFileParser/bom.csv");
-        final CSVParser parser = CSVParser.parse(url, null, CSVFormat.EXCEL.withHeader());
+        final CSVParser parser = CSVParser.parse(url, Charset.forName("UTF-8"), CSVFormat.EXCEL.withHeader());
         try {
             for (final CSVRecord record : parser) {
                 final String string = record.get("Date");
