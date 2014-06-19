@@ -245,7 +245,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         Assertions.notNull(reader, "reader");
         Assertions.notNull(format, "format");
 
-        format.validate();
         this.format = format;
         this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
         this.headerMap = this.initializeHeader();

@@ -40,6 +40,7 @@
   <body>
 
     <release version="1.0" date="TBD" description="First release">    
+      <action issue="CSV-117" type="update" dev="sebb">Validate format parameters in constructor</action>
       <action issue="CSV-121" type="add" dev="ggregory" due-to="Sebastian Hardt">IllegalArgumentException thrown when the header contains duplicate names when the column names are empty.</action>
       <action issue="CSV-120" type="add" dev="ggregory" due-to="Sergei Lebedev">CSVFormat#withHeader doesn't work with CSVPrinter</action>
       <action issue="CSV-119" type="add" dev="ggregory" due-to="Sergei Lebedev">CSVFormat is missing a print(...) method</action>

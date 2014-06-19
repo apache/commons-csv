@@ -327,6 +327,7 @@ public final class CSVFormat implements Serializable {
             this.header = header.clone();
         }
         this.skipHeaderRecord = skipHeaderRecord;
+        validate();
     }
 
     @Override
@@ -666,38 +667,38 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Verifies the consistency of the parameters and throws an IllegalStateException if necessary.
+     * Verifies the consistency of the parameters and throws an IllegalArgumentException if necessary.
      *
-     * @throws IllegalStateException
+     * @throws IllegalArgumentException
      */
-    void validate() throws IllegalStateException {
+    private void validate() throws IllegalArgumentException {
         if (quoteChar != null && delimiter == quoteChar.charValue()) {
-            throw new IllegalStateException(
+            throw new IllegalArgumentException(
                     "The quoteChar character and the delimiter cannot be the same ('" + quoteChar + "')");
         }
 
         if (escape != null && delimiter == escape.charValue()) {
-            throw new IllegalStateException(
+            throw new IllegalArgumentException(
                     "The escape character and the delimiter cannot be the same ('" + escape + "')");
         }
 
         if (commentStart != null && delimiter == commentStart.charValue()) {
-            throw new IllegalStateException(
+            throw new IllegalArgumentException(
                     "The comment start character and the delimiter cannot be the same ('" + commentStart + "')");
         }
 
         if (quoteChar != null && quoteChar.equals(commentStart)) {
-            throw new IllegalStateException(
+            throw new IllegalArgumentException(
                     "The comment start character and the quoteChar cannot be the same ('" + commentStart + "')");
         }
 
         if (escape != null && escape.equals(commentStart)) {
-            throw new IllegalStateException(
+            throw new IllegalArgumentException(
                     "The comment start and the escape character cannot be the same ('" + commentStart + "')");
         }
 
         if (escape == null && quotePolicy == Quote.NONE) {
-            throw new IllegalStateException("No quotes mode set but no escape character is set");
+            throw new IllegalArgumentException("No quotes mode set but no escape character is set");
         }
 
     }
