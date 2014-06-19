@@ -283,7 +283,7 @@ public class CSVFormatTest {
         CSVFormat.DEFAULT.withQuoteChar(new Character('!')).withCommentStart('!');
     }
 
-    @Test//(expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testQuoteCharSameAsDelimiterThrowsException() {
         CSVFormat.DEFAULT.withQuoteChar('!').withDelimiter('!');
     }
