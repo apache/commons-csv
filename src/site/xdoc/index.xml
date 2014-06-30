@@ -32,7 +32,28 @@ for (CSVRecord record : records) {
   String firstName = record.get("First Name");
 }</source>
   <p>Other formats are available, please consult the Javadoc for <a href="apidocs/org/apache/commons/csv/CSVFormat.html">CSVFormat</a> and
-  <a href="apidocs/org/apache/commons/csv/CSVParser.html">CSVParser</a>.</p>
+    <a href="apidocs/org/apache/commons/csv/CSVParser.html">CSVParser</a>.
+  </p>
+</section>
+<section name="Handling Byte Order Marks">
+  <p>
+    To handle files that start with a Byte Order Mark (BOM) like some Excel CSV files, you need an extra step to deal with these optional bytes.
+    You can use the 
+    <a href="https://commons.apache.org/proper/commons-io/apidocs/org/apache/commons/io/input/BOMInputStream.html">BOMInputStream</a> 
+    class from <a href="https://commons.apache.org/proper/commons-io/">Apache Commons IO</a> for example: 
+  </p>
+  <source>final URL url = ...;
+final Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
+final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
+try {
+  for (final CSVRecord record : parser) {
+    final String string = record.get("SomeColumn");
+    ...
+  }
+} finally {
+  parser.close();
+  reader.close();
+}</source>
 </section>
 
 <section name="Getting the code">
