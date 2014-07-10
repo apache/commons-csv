@@ -701,10 +701,10 @@ public final class CSVFormat implements Serializable {
             throw new IllegalArgumentException("No quotes mode set but no escape character is set");
         }
 
-        if(recordSeparator != null
-                && !(CRLF.equals(recordSeparator)
-                    || String.valueOf(CR).equals(recordSeparator)
-                    || String.valueOf(LF).equals(recordSeparator))) {
+        if(recordSeparator != null &&
+                !(CRLF.equals(recordSeparator) ||
+                        String.valueOf(CR).equals(recordSeparator) ||
+                        String.valueOf(LF).equals(recordSeparator))) {
             throw new IllegalArgumentException("Record separator can only by CR, LF or CRLF");
         }
     }
