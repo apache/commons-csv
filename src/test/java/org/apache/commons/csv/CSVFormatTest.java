@@ -19,6 +19,7 @@ package org.apache.commons.csv;
 
 import static org.apache.commons.csv.CSVFormat.RFC4180;
 import static org.apache.commons.csv.Constants.CR;
+import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.LF;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -118,7 +119,7 @@ public class CSVFormatTest {
     @Test
     public void testEqualsHeader() {
         final CSVFormat right = CSVFormat.newFormat('\'')
-                .withRecordSeparator('*')
+                .withRecordSeparator(CR)
                 .withCommentStart('#')
                 .withEscape('+')
                 .withHeader("One", "Two", "Three")
@@ -183,7 +184,7 @@ public class CSVFormatTest {
     @Test
     public void testEqualsRecordSeparator() {
         final CSVFormat right = CSVFormat.newFormat('\'')
-                .withRecordSeparator('*')
+                .withRecordSeparator(CR)
                 .withCommentStart('#')
                 .withEscape('+')
                 .withIgnoreEmptyLines(true)
@@ -191,7 +192,7 @@ public class CSVFormatTest {
                 .withQuoteChar('"')
                 .withQuotePolicy(Quote.ALL);
         final CSVFormat left = right
-                .withRecordSeparator('!');
+                .withRecordSeparator(LF);
 
         assertNotEquals(right, left);
     }
@@ -199,7 +200,7 @@ public class CSVFormatTest {
     @Test
     public void testEqualsNullString() {
         final CSVFormat right = CSVFormat.newFormat('\'')
-                .withRecordSeparator('*')
+                .withRecordSeparator(CR)
                 .withCommentStart('#')
                 .withEscape('+')
                 .withIgnoreEmptyLines(true)
@@ -216,7 +217,7 @@ public class CSVFormatTest {
     @Test
     public void testEqualsSkipHeaderRecord() {
         final CSVFormat right = CSVFormat.newFormat('\'')
-                .withRecordSeparator('*')
+                .withRecordSeparator(CR)
                 .withCommentStart('#')
                 .withEscape('+')
                 .withIgnoreEmptyLines(true)
@@ -409,8 +410,25 @@ public class CSVFormatTest {
     }
 
     @Test
-    public void testWithRecordSeparator() throws Exception {
-        final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator('!');
-        assertEquals("!", formatWithRecordSeparator.getRecordSeparator());
+    public void testWithRecordSeparatorCR() throws Exception {
+        final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator(CR);
+        assertEquals(String.valueOf(CR), formatWithRecordSeparator.getRecordSeparator());
+    }
+
+    @Test
+    public void testWithRecordSeparatorLF() throws Exception {
+        final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator(LF);
+        assertEquals(String.valueOf(LF), formatWithRecordSeparator.getRecordSeparator());
+    }
+
+    @Test
+    public void testWithRecordSeparatorCRLF() throws Exception {
+        final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator(CRLF);
+        assertEquals(CRLF, formatWithRecordSeparator.getRecordSeparator());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testWithRecordSeparatorIllegal() throws Exception {
+        CSVFormat.DEFAULT.withRecordSeparator('!');
     }
 }
