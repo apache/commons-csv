@@ -921,6 +921,8 @@ public final class CSVFormat implements Serializable {
     /**
      * Sets the record separator of the format to the specified character.
      *
+     * <p><strong>Note:</strong> Currently only CR and LF are supported.</p>
+     *
      * @param recordSeparator
      *            the record separator to use for output.
      *
@@ -932,6 +934,8 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Sets the record separator of the format to the specified String.
+     *
+     * <p><strong>Note:</strong> Currently only CR, LF and CRLF are supported.</p>
      *
      * @param recordSeparator
      *            the record separator to use for output.
