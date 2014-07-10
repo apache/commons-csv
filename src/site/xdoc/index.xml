@@ -56,10 +56,29 @@ try {
 }</source>
 </section>
 
-<section name="Getting the code">
-  <p>There are currently no official downloads, and will not be until version 1.0 is released.</p>
-  <p>The latest code can be checked out from our Subversion repository at <a href="http://svn.apache.org/repos/asf/commons/proper/csv/trunk/">http://svn.apache.org/repos/asf/commons/proper/csv/trunk/</a>. </p>
-  <p>You can build the component using Apache Maven. For example: mvn clean package.</p>
+<!-- ================================================== -->
+<section name="Release Information">
+<p>The latest stable release of csv is 1.0. You may: </p>
+<ul>
+  <li>Download <a href="http://commons.apache.org/csv/download_csv.cgi">1.0</a></li>
+  <li>Read the <a href="release-notes/RELEASE-NOTES-1.0.txt">1.0 release notes</a></li>
+</ul>
+<p>
+  Alternatively you can pull it from the central Maven repositories:
+  <pre>
+    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-csv&lt;/artifactId&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+  </pre>
+</p>
+</section>
+
+<section name="Building from sources">
+  <p>The latest code can be checked out from our Subversion repository at <a href="http://svn.apache.org/repos/asf/commons/proper/csv/trunk/">http://svn.apache.org/repos/asf/commons/proper/csv/trunk/</a>.
+    You can build the component using Apache Maven using <code>mvn clean package</code>.
+  </p>
+  <p>Note that building the website currently does not work when building with JDK 8.
+    This is due to incompatibilities between JDK 8 and the <a href="http://mojo.codehaus.org/findbugs-maven-plugin/">maven-findbugs-plugin</a>.</p>
 </section>
 <!-- ================================================== -->
 <section name="Getting Involved">
