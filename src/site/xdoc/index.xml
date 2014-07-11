@@ -24,38 +24,30 @@ limitations under the License.
 <!-- ================================================== -->
 <section name="Using Commons CSV">
   <p>Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.</p>
-  <p>To parse an Excel CSV file, write:</p>
-  <source>Reader in = new FileReader(&quot;path/to/file.csv&quot;);
-Iterable&lt;CSVRecord&gt; records = CSVFormat.EXCEL.parse(in);
-for (CSVRecord record : records) {
-  String lastName = record.get("Last Name");
-  String firstName = record.get("First Name");
-}</source>
-  <p>Other formats are available, please consult the Javadoc for <a href="apidocs/org/apache/commons/csv/CSVFormat.html">CSVFormat</a> and
-    <a href="apidocs/org/apache/commons/csv/CSVParser.html">CSVParser</a>.
+  <p>The most common CSV formats are predefined in the <a href="apidocs/org/apache/commons/csv/CSVFormat.html">CSVFormat</a> class:
+  <ul>
+    <li><a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a></li>
+    <li>MS Excel</li>
+    <li><a href="http://dev.mysql.com/doc/refman/5.0/en/mysqldump-delimited-text.html">MySQL</a></li>
+    <li><a href="http://en.wikipedia.org/wiki/Tab-separated_values">TDF</a></li>
+  </ul>
   </p>
+  <p>Custom formats can be created using a fluent style API.</p>
 </section>
-<section name="Handling Byte Order Marks">
+<!-- ================================================== -->
+<section name="Documentation">
   <p>
-    To handle files that start with a Byte Order Mark (BOM) like some Excel CSV files, you need an extra step to deal with these optional bytes.
-    You can use the 
-    <a href="https://commons.apache.org/proper/commons-io/apidocs/org/apache/commons/io/input/BOMInputStream.html">BOMInputStream</a> 
-    class from <a href="https://commons.apache.org/proper/commons-io/">Apache Commons IO</a> for example: 
+    The package descriptions in the <a href="javadocs/api-release/index.html">JavaDoc</a> give an overview of the available features
+    and various <a href="project-reports.html">project reports</a> are provided.
   </p>
-  <source>final URL url = ...;
-final Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
-final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
-try {
-  for (final CSVRecord record : parser) {
-    final String string = record.get("SomeColumn");
-    ...
-  }
-} finally {
-  parser.close();
-  reader.close();
-}</source>
+  <p>
+    The JavaDoc API documents for the <a href="javadocs/api-1.0/index.html">current stable release 1.0</a> [Java 5.0+] can be viewed in a web browser.
+  </p>
+  <p>
+    The <a href="source-repository.html">subversion repository</a> can be
+    <a href="http://svn.apache.org/viewvc/commons/proper/csv/trunk/">browsed</a>, or you can browse/contribute via <a href="https://github.com/apache/commons-csv">GitHub</a>.
+  </p>
 </section>
-
 <!-- ================================================== -->
 <section name="Release Information">
 <p>The latest stable release of csv is 1.0. You may: </p>

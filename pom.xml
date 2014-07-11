@@ -98,7 +98,7 @@ CSV files of various types.
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/csv/tags/CSV_1.0</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/csv/tags/CSV_1.0</developerConnection>
-    <url>http://svn.apache.org/viewvc/commons/proper/csv/trunk</url>
+    <url>http://svn.apache.org/viewvc/commons/proper/csv/tags/CSV_1.0</url>
   </scm>
 
   <issueManagement>
@@ -162,6 +162,30 @@ CSV files of various types.
           <configLocation>${basedir}/checkstyle.xml</configLocation>
           <enableRulesSummary>false</enableRulesSummary>
           <headerLocation>${checkstyle.header.file}</headerLocation>
+        </configuration>
+      </plugin>
+
+      <!-- We need to add our test data files to rat exclusions -->
+      <!-- Needed for command-line access, e.g mvn apache-rat:rat and mvn apache-rat:check -->
+      <plugin>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <version>${commons.rat.version}</version>
+        <!-- Should agree with config in reporting section -->
+        <configuration>
+          <excludes>
+            <exclude>src/test/resources/CSVFileParser/bom.csv</exclude>
+            <exclude>src/test/resources/CSVFileParser/test.csv</exclude>
+            <exclude>src/test/resources/CSVFileParser/test_default.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/test_default_comment.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/test_rfc4180.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/test_rfc4180_trim.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV85.csv</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV85_default.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV85_ignoreEmpty.txt</exclude>
+            <exclude>src/test/resources/ferc.gov/contract.txt</exclude>
+            <exclude>src/test/resources/ferc.gov/transaction.txt</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>
@@ -254,6 +278,29 @@ CSV files of various types.
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>javancss-maven-plugin</artifactId>
         <version>2.0</version>
+      </plugin>
+
+      <!-- We need to add our test data files to rat exclusions -->
+      <plugin>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <version>${commons.rat.version}</version>
+        <!-- Should agree with config in build section -->
+        <configuration>
+          <excludes>
+            <exclude>src/test/resources/CSVFileParser/bom.csv</exclude>
+            <exclude>src/test/resources/CSVFileParser/test.csv</exclude>
+            <exclude>src/test/resources/CSVFileParser/test_default.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/test_default_comment.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/test_rfc4180.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/test_rfc4180_trim.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV85.csv</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV85_default.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV85_ignoreEmpty.txt</exclude>
+            <exclude>src/test/resources/ferc.gov/contract.txt</exclude>
+            <exclude>src/test/resources/ferc.gov/transaction.txt</exclude>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
   </reporting>
