@@ -19,4 +19,4 @@ src/test/resources/CSVFileParser/test_rfc4180_trim.txt
 src/test/resources/CSVFileParser/testCSV85.csv
 src/test/resources/CSVFileParser/testCSV85_default.txt
 src/test/resources/CSVFileParser/testCSV85_ignoreEmpty.txt
-This files are used as test data and test result specifications.
+These files are used as test data and test result specifications.
