@@ -29,6 +29,7 @@
     <menu name="Commons CSV">
       <item name="Overview"    href="/index.html"/>
       <item name="Download"    href="/download_csv.cgi"/>
+      <item name="User Guide"  href="/user-guide.html"/>
       <item name="Wiki"        href="http://wiki.apache.org/commons/CSV"/>
     </menu>
 
