@@ -59,10 +59,10 @@ import java.util.Set;
  * </pre>
  *
  * <p>
- * The {@link CSVRecord} provides static methods to parse other input types, for example:
+ * The {@link CSVParser} provides static methods to parse other input types, for example:
  * </p>
  *
- * <pre>CSVParser parser = CSVFormat.parseFile(file, CSVFormat.EXCEL);</pre>
+ * <pre>CSVParser parser = CSVParser.parse(file, StandardCharsets.US_ASCII, CSVFormat.EXCEL);</pre>
  *
  * <h2>Defining formats</h2>
  *
