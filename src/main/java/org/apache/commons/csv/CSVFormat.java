@@ -557,9 +557,9 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns the line separator delimiting output records.
+     * Returns the record separator delimiting output records.
      *
-     * @return the line separator
+     * @return the record separator
      */
     public String getRecordSeparator() {
         return recordSeparator;
@@ -737,13 +737,6 @@ public final class CSVFormat implements Serializable {
 
         if (escape == null && quotePolicy == Quote.NONE) {
             throw new IllegalArgumentException("No quotes mode set but no escape character is set");
-        }
-
-        if(recordSeparator != null &&
-                !(CRLF.equals(recordSeparator) ||
-                        String.valueOf(CR).equals(recordSeparator) ||
-                        String.valueOf(LF).equals(recordSeparator))) {
-            throw new IllegalArgumentException("Record separator can only by CR, LF or CRLF");
         }
     }
 
@@ -965,14 +958,13 @@ public final class CSVFormat implements Serializable {
     /**
      * Sets the record separator of the format to the specified character.
      *
-     * <p><strong>Note:</strong> Currently only CR and LF are supported.</p>
+     * <p><strong>Note:</strong> This setting is only used during printing and does not affect parsing. Parsing currently
+     * only works for inputs with '\n', '\r' and "\r\n"</p>
      *
      * @param recordSeparator
      *            the record separator to use for output.
      *
      * @return A new CSVFormat that is equal to this but with the the specified output record separator
-     * @throws IllegalArgumentException
-     *              if recordSeparator is neither CR nor LF
      */
     public CSVFormat withRecordSeparator(final char recordSeparator) {
         return withRecordSeparator(String.valueOf(recordSeparator));
@@ -981,7 +973,8 @@ public final class CSVFormat implements Serializable {
     /**
      * Sets the record separator of the format to the specified String.
      *
-     * <p><strong>Note:</strong> Currently only CR, LF and CRLF are supported.</p>
+     * <p><strong>Note:</strong> This setting is only used during printing and does not affect parsing. Parsing currently
+     * only works for inputs with '\n', '\r' and "\r\n"</p>
      *
      * @param recordSeparator
      *            the record separator to use for output.

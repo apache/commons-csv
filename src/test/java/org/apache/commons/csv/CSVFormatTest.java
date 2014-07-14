@@ -426,9 +426,4 @@ public class CSVFormatTest {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator(CRLF);
         assertEquals(CRLF, formatWithRecordSeparator.getRecordSeparator());
     }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testWithRecordSeparatorIllegal() throws Exception {
-        CSVFormat.DEFAULT.withRecordSeparator('!');
-    }
 }
