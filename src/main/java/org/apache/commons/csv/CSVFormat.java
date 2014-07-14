@@ -497,7 +497,7 @@ public final class CSVFormat implements Serializable {
      * @return <tt>true</tt> if headers are ignored when parsing the header line, <tt>false</tt> to throw an
      *         {@link IllegalArgumentException}.
      */
-    public boolean getIgnoreEmptyHeaders() {
+    public boolean isIgnoringEmptyHeaders() {
         return ignoreEmptyHeaders;
     }
 
@@ -507,7 +507,7 @@ public final class CSVFormat implements Serializable {
      * @return <tt>true</tt> if empty lines between records are ignored, <tt>false</tt> if they are turned into empty
      *         records.
      */
-    public boolean getIgnoreEmptyLines() {
+    public boolean isIgnoringEmptyLines() {
         return ignoreEmptyLines;
     }
 
@@ -517,7 +517,7 @@ public final class CSVFormat implements Serializable {
      * @return <tt>true</tt> if spaces around values are ignored, <tt>false</tt> if they are treated as part of the
      *         value.
      */
-    public boolean getIgnoreSurroundingSpaces() {
+    public boolean isIgnoringSurroundingSpaces() {
         return ignoreSurroundingSpaces;
     }
 
@@ -570,7 +570,7 @@ public final class CSVFormat implements Serializable {
      *
      * @return whether to skip the header record.
      */
-    public boolean getSkipHeaderRecord() {
+    public boolean isSkippingHeaderRecord() {
         return skipHeaderRecord;
     }
 
@@ -619,7 +619,7 @@ public final class CSVFormat implements Serializable {
      *
      * @return {@code true} if a nullString is defined
      */
-    public boolean isNullHandling() {
+    public boolean isHandlingNull() {
         return nullString != null;
     }
 
@@ -682,7 +682,7 @@ public final class CSVFormat implements Serializable {
             sb.append(' ');
             sb.append("CommentStart=<").append(commentStart).append('>');
         }
-        if (isNullHandling()) {
+        if (isHandlingNull()) {
             sb.append(' ');
             sb.append("NullString=<").append(nullString).append('>');
         }
@@ -690,10 +690,10 @@ public final class CSVFormat implements Serializable {
             sb.append(' ');
             sb.append("RecordSeparator=<").append(recordSeparator).append('>');
         }
-        if (getIgnoreEmptyLines()) {
+        if (isIgnoringEmptyLines()) {
             sb.append(" EmptyLines:ignored");
         }
-        if (getIgnoreSurroundingSpaces()) {
+        if (isIgnoringSurroundingSpaces()) {
             sb.append(" SurroundingSpaces:ignored");
         }
         sb.append(" SkipHeaderRecord:").append(skipHeaderRecord);
