@@ -495,7 +495,7 @@ public final class CSVFormat implements Serializable {
      * Specifies whether empty headers are ignored when parsing the header line.
      *
      * @return <tt>true</tt> if headers are ignored when parsing the header line, <tt>false</tt> to throw an
-     *         {@link IllegalArgumentException}..
+     *         {@link IllegalArgumentException}.
      */
     public boolean getIgnoreEmptyHeaders() {
         return ignoreEmptyHeaders;
