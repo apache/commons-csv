@@ -8,7 +8,7 @@ INTRODUCTION:
 This document contains the release notes for the 1.0 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
 
-CSV requires at least Java 5.0.
+CSV requires at least Java 7.0.
 
 The Apache Commons CSV library provides a simple interface for reading and writing
 CSV files of various types.
