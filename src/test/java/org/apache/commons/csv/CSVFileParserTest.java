@@ -100,7 +100,7 @@ public class CSVFileParserTest {
             } else if ("IgnoreSpaces".equalsIgnoreCase(option_parts[0])) {
                 format = format.withIgnoreSurroundingSpaces(Boolean.parseBoolean(option_parts[1]));
             } else if ("CommentStart".equalsIgnoreCase(option_parts[0])) {
-                format = format.withCommentStart(option_parts[1].charAt(0));
+                format = format.withCommentMarker(option_parts[1].charAt(0));
             } else if ("CheckComments".equalsIgnoreCase(option_parts[0])) {
                 checkComments = true;
             } else {
@@ -144,7 +144,7 @@ public class CSVFileParserTest {
             } else if ("IgnoreSpaces".equalsIgnoreCase(option_parts[0])) {
                 format = format.withIgnoreSurroundingSpaces(Boolean.parseBoolean(option_parts[1]));
             } else if ("CommentStart".equalsIgnoreCase(option_parts[0])) {
-                format = format.withCommentStart(option_parts[1].charAt(0));
+                format = format.withCommentMarker(option_parts[1].charAt(0));
             } else if ("CheckComments".equalsIgnoreCase(option_parts[0])) {
                 checkComments = true;
             } else {

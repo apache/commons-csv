@@ -233,7 +233,7 @@ public class CSVPrinterTest {
     @Test
     public void testMultiLineComment() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentMarker('#'));
         printer.printComment("This is a comment\non multiple lines");
 
         assertEquals("# This is a comment" + recordSeparator + "# on multiple lines" + recordSeparator, sw.toString());
@@ -387,7 +387,7 @@ public class CSVPrinterTest {
     @Test
     public void testSingleLineComment() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentStart('#'));
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentMarker('#'));
         printer.printComment("This is a comment");
 
         assertEquals("# This is a comment" + recordSeparator, sw.toString());

@@ -745,14 +745,14 @@ public final class CSVFormat implements Serializable {
      *
      * Note that the comment start character is only recognized at the start of a line.
      *
-     * @param commentStart
+     * @param commentMarker
      *            the comment start marker
      * @return A new CSVFormat that is equal to this one but with the specified character as the comment start marker
      * @throws IllegalArgumentException
      *             thrown if the specified character is a line break
      */
-    public CSVFormat withCommentStart(final char commentStart) {
-        return withCommentStart(Character.valueOf(commentStart));
+    public CSVFormat withCommentMarker(final char commentMarker) {
+        return withCommentMarker(Character.valueOf(commentMarker));
     }
 
     /**
@@ -760,17 +760,17 @@ public final class CSVFormat implements Serializable {
      *
      * Note that the comment start character is only recognized at the start of a line.
      *
-     * @param commentStart
+     * @param commentMarker
      *            the comment start marker, use {@code null} to disable
      * @return A new CSVFormat that is equal to this one but with the specified character as the comment start marker
      * @throws IllegalArgumentException
      *             thrown if the specified character is a line break
      */
-    public CSVFormat withCommentStart(final Character commentStart) {
-        if (isLineBreak(commentStart)) {
-            throw new IllegalArgumentException("The comment start character cannot be a line break");
+    public CSVFormat withCommentMarker(final Character commentMarker) {
+        if (isLineBreak(commentMarker)) {
+            throw new IllegalArgumentException("The comment start marker character cannot be a line break");
         }
-        return new CSVFormat(delimiter, quoteChar, quotePolicy, commentStart, escape,
+        return new CSVFormat(delimiter, quoteChar, quotePolicy, commentMarker, escape,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 ignoreEmptyHeaders);
     }

@@ -122,7 +122,7 @@ public class LexerTest {
                 "third,line,#no-comment\n"+
                 "# penultimate comment\n"+
                 "# Final comment\n";
-        final CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#');
+        final CSVFormat format = CSVFormat.DEFAULT.withCommentMarker('#');
         final Lexer parser = getLexer(code, format);
 
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "first"));
@@ -158,7 +158,7 @@ public class LexerTest {
                 "\n"+                      // 6b
                 "\n"+                      // 6c
                 "# Final comment\n";       // 7
-        final CSVFormat format = CSVFormat.DEFAULT.withCommentStart('#').withIgnoreEmptyLines(false);
+        final CSVFormat format = CSVFormat.DEFAULT.withCommentMarker('#').withIgnoreEmptyLines(false);
         assertFalse("Should not ignore empty lines", format.isIgnoringEmptyLines());
 
         final Lexer parser = getLexer(code, format);
@@ -279,7 +279,7 @@ public class LexerTest {
         *       ;;
         */
         final String code = "a;'b and '' more\n'\n!comment;;;;\n;;";
-        final CSVFormat format = CSVFormat.DEFAULT.withQuoteChar('\'').withCommentStart('!').withDelimiter(';');
+        final CSVFormat format = CSVFormat.DEFAULT.withQuoteChar('\'').withCommentMarker('!').withDelimiter(';');
         final Lexer parser = getLexer(code, format);
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
         assertThat(parser.nextToken(new Token()), matches(EORECORD, "b and ' more\n"));

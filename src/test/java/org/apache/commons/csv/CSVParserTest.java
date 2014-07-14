@@ -242,7 +242,7 @@ public class CSVParserTest {
     @Test(expected = NoSuchElementException.class)
     public void testClose() throws Exception {
         final Reader in = new StringReader("# comment\na,b,c\n1,2,3\nx,y,z");
-        final CSVParser parser = CSVFormat.DEFAULT.withCommentStart('#').withHeader().parse(in);
+        final CSVParser parser = CSVFormat.DEFAULT.withCommentMarker('#').withHeader().parse(in);
         final Iterator<CSVRecord> records = parser.iterator();
         assertTrue(records.hasNext());
         parser.close();
@@ -288,7 +288,7 @@ public class CSVParserTest {
                 {"\n", " ", "#"},
         };
 
-        format = CSVFormat.DEFAULT.withCommentStart('#');
+        format = CSVFormat.DEFAULT.withCommentMarker('#');
         parser.close();
         parser = CSVParser.parse(code, format);
         records = parser.getRecords();
@@ -671,7 +671,7 @@ public class CSVParserTest {
     public void testHeaderComment() throws Exception {
         final Reader in = new StringReader("# comment\na,b,c\n1,2,3\nx,y,z");
 
-        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withCommentStart('#').withHeader().parse(in).iterator();
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withCommentMarker('#').withHeader().parse(in).iterator();
 
         for (int i = 0; i < 2; i++) {
             assertTrue(records.hasNext());
