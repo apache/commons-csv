@@ -161,28 +161,30 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Standard comma separated format, as for {@link #RFC4180} but allowing empty lines.
-     * <h3>RFC 4180:</h3>
+     *
+     * <p>Settings are:
      * <ul>
-     * <li>withDelimiter(',')</li>
-     * <li>withQuoteChar('"')</li>
-     * <li>withRecordSeparator(CRLF)</li>
+     *   <li>withDelimiter(',')</li>
+     *   <li>withQuoteChar('"')</li>
+     *   <li>withRecordSeparator("\r\n")</li>
+     *   <li>withIgnoreEmptyLines(true)</li>
      * </ul>
-     * <h3>Additional:</h3>
-     * <ul>
-     * <li>withIgnoreEmptyLines(true)</li>
-     * </ul>
+     * </p>
      */
     public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null,
                                                             false, true, CRLF, null, null, false, false);
 
     /**
      * Comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
-     * <h3>RFC 4180:</h3>
+     *
+     * <p>Settings are:
      * <ul>
-     * <li>withDelimiter(',')</li>
-     * <li>withQuoteChar('"')</li>
-     * <li>withRecordSeparator(CRLF)</li>
+     *   <li>withDelimiter(',')</li>
+     *   <li>withQuoteChar('"')</li>
+     *   <li>withRecordSeparator("\r\n")</li>
+     *   <li>withIgnoreEmptyLines(false)</li>
      * </ul>
+     * </p>
      */
     public static final CSVFormat RFC4180 = DEFAULT.withIgnoreEmptyLines(false);
 
@@ -195,32 +197,59 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * <pre>
-     * CSVFormat fmt = CSVFormat.newBuilder(EXCEL).withDelimiter(';');
+     * CSVFormat fmt = CSVFormat.EXCEL.withDelimiter(';');
      * </pre>
      *
      * <p>
      * Settings are:
-     * </p>
      * <ul>
-     * <li>withDelimiter(',')</li>
-     * <li>withQuoteChar('"')</li>
-     * <li>withRecordSeparator(CRLF)</li>
+     *   <li>withDelimiter(',')</li>
+     *   <li>withQuoteChar('"')</li>
+     *   <li>withRecordSeparator("\r\n")</li>
+     *   <li>withIgnoreEmptyLines(false)</li>
      * </ul>
-     * Note: this is currently the same as RFC4180
+     * </p>
+     * <p>
+     * Note: this is currently the same as {@link #RFC4180}.
+     * </p>
      */
     public static final CSVFormat EXCEL = DEFAULT.withIgnoreEmptyLines(false);
 
-    /** Tab-delimited format, with quote; leading and trailing spaces ignored. */
+    /**
+     * Tab-delimited format.
+     *
+     * <p>Settings are:
+     * <ul>
+     *   <li>withDelimiter('\t')</li>
+     *   <li>withQuoteChar('"')</li>
+     *   <li>withRecordSeparator("\r\n")</li>
+     *   <li>withIgnoreSurroundingSpaces(true)</li>
+     * </ul>
+     * </p>
+     */
     public static final CSVFormat TDF =
             DEFAULT
             .withDelimiter(TAB)
             .withIgnoreSurroundingSpaces(true);
 
     /**
-     * Default MySQL format used by the <tt>SELECT INTO OUTFILE</tt> and <tt>LOAD DATA INFILE</tt> operations. This is
-     * a tab-delimited format with a LF character as the line separator. Values are not quoted and special characters
-     * are escaped with '\'.
+     * Default MySQL format used by the <tt>SELECT INTO OUTFILE</tt> and <tt>LOAD DATA INFILE</tt> operations.
      *
+     * <p>
+     * This is a tab-delimited format with a LF character as the line separator. Values are not quoted and special characters
+     * are escaped with '\'.
+     * </p>
+     *
+     * <p>
+     * Settings are:
+     * <ul>
+     *   <li>withDelimiter('\t')</li>
+     *   <li>withQuoteChar(null)</li>
+     *   <li>withRecordSeparator('\n')</li>
+     *   <li>withIgnoreEmptyLines(false)</li>
+     *   <li>withEscape('\\')</li>
+     * </ul>
+     * </p>
      * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html">
      *      http://dev.mysql.com/doc/refman/5.1/en/load-data.html</a>
      */
@@ -259,10 +288,19 @@ public final class CSVFormat implements Serializable {
     /**
      * Creates a new CSV format with the specified delimiter.
      *
+     * <p>Use this method if you want to create a CSVFormat from scratch. All fields but the delimiter will be
+     * initialized with null/false.</p>
+     *
      * @param delimiter
      *            the char used for value separation, must not be a line break character
      * @return a new CSV format.
      * @throws IllegalArgumentException if the delimiter is a line break character
+     *
+     * @see #DEFAULT
+     * @see #RFC4180
+     * @see #MYSQL
+     * @see #EXCEL
+     * @see #TDF
      */
     public static CSVFormat newFormat(final char delimiter) {
         return new CSVFormat(delimiter, null, null, null, null, false, false, null, null, null, false, false);
