@@ -123,7 +123,13 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Returns the number of this record in the parsed CSV file.
      *
+     * <p>
+     * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
+     * the current line number of the parser that created this record.
+     * </p>
+     *
      * @return the number of this record.
+     * @see CSVParser#getCurrentLineNumber() 
      */
     public long getRecordNumber() {
         return recordNumber;
