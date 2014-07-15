@@ -344,7 +344,8 @@ public final class CSVPrinter implements Flushable, Closeable {
      * Prints the given values a single record of delimiter separated values followed by the record separator.
      *
      * <p>
-     * The values will be quoted if needed. Quotes and newLine characters will be escaped.
+     * The values will be quoted if needed. Quotes and newLine characters will be escaped. This method adds the record
+     * separator to the output after printing the record, so there is no need to call {@link #println()}.
      * </p>
      *
      * @param values
@@ -363,7 +364,8 @@ public final class CSVPrinter implements Flushable, Closeable {
      * Prints the given values a single record of delimiter separated values followed by the record separator.
      *
      * <p>
-     * The values will be quoted if needed. Quotes and newLine characters will be escaped.
+     * The values will be quoted if needed. Quotes and newLine characters will be escaped. This method adds the record
+     * separator to the output after printing the record, so there is no need to call {@link #println()}.
      * </p>
      *
      * @param values
