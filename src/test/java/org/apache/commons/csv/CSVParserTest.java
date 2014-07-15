@@ -531,14 +531,6 @@ public class CSVParserTest {
         parser.close();
     }
 
-    @Test
-    public void testGetOneLineCustomCollection() throws IOException {
-        final CSVParser parser = CSVParser.parse(CSV_INPUT_1, CSVFormat.DEFAULT);
-        final CSVRecord record = parser.getRecords(new LinkedList<CSVRecord>()).getFirst();
-        assertArrayEquals(RESULT[0], record.values());
-        parser.close();
-    }
-
     /**
      * Tests reusing a parser to process new string records one at a time as they are being discovered. See [CSV-110].
      *

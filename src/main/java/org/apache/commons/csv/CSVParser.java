@@ -324,26 +324,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             on parse error or input read-failure
      */
     public List<CSVRecord> getRecords() throws IOException {
-        return getRecords(new ArrayList<CSVRecord>());
-    }
-
-    /**
-     * Parses the CSV input according to the given format and adds the content to the collection of {@link CSVRecord
-     * CSVRecords}.
-     *
-     * <p>
-     * The returned content starts at the current parse-position in the stream.
-     * </p>
-     *
-     * @param records
-     *            The collection to add to.
-     * @param <T> the type of collection used.
-     * @return a collection of {@link CSVRecord CSVRecords}, may be empty
-     * @throws IOException
-     *             on parse error or input read-failure
-     */
-    public <T extends Collection<CSVRecord>> T getRecords(final T records) throws IOException {
         CSVRecord rec;
+        List<CSVRecord> records = new ArrayList<>();
         while ((rec = this.nextRecord()) != null) {
             records.add(rec);
         }
