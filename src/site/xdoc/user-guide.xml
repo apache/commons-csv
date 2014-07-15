@@ -27,8 +27,8 @@ limitations under the License.
   <source>Reader in = new FileReader(&quot;path/to/file.csv&quot;);
 Iterable&lt;CSVRecord&gt; records = CSVFormat.EXCEL.parse(in);
 for (CSVRecord record : records) {
-  String lastName = record.get("Last Name");
-  String firstName = record.get("First Name");
+    String lastName = record.get("Last Name");
+    String firstName = record.get("First Name");
 }</source>
 </section>
 <section name="Handling Byte Order Marks">
@@ -42,13 +42,13 @@ for (CSVRecord record : records) {
 final Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
 final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
 try {
-  for (final CSVRecord record : parser) {
-    final String string = record.get("SomeColumn");
-    ...
-  }
+    for (final CSVRecord record : parser) {
+        final String string = record.get("SomeColumn");
+        ...
+    }
 } finally {
-  parser.close();
-  reader.close();
+    parser.close();
+    reader.close();
 }</source>
 </section>
 <!-- ================================================== -->
