@@ -40,7 +40,7 @@ for (CSVRecord record : records) {
   </p>
   <source>final URL url = ...;
 try (
-    final Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
+    final Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), StandardCharsets.UTF_8);
     final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
 ) {
     for (final CSVRecord record : parser) {
