@@ -325,7 +325,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     public List<CSVRecord> getRecords() throws IOException {
         CSVRecord rec;
-        List<CSVRecord> records = new ArrayList<>();
+        // can not use Java 7 diamond notation here, since JavaNCSS will fail, see https://jira.codehaus.org/browse/JAVANCSS-51
+        List<CSVRecord> records = new ArrayList<CSVRecord>();
         while ((rec = this.nextRecord()) != null) {
             records.add(rec);
         }
