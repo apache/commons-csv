@@ -130,8 +130,12 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns true if this record is consistent, false if not. Currently, the only check is matching the record size to
-     * the header size. Some programs can export files that fails this test but still produce parsable files.
+     * Tells whether the record size matches the header size.
+     *
+     * <p>
+     * Returns true if the sizes for this record match and false if not. Some programs can export files that fail this
+     * test but still produce parsable files.
+     * </p>
      *
      * @return true of this record is valid, false if not
      */
