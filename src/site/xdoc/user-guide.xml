@@ -39,16 +39,14 @@ for (CSVRecord record : records) {
     class from <a href="https://commons.apache.org/proper/commons-io/">Apache Commons IO</a> for example: 
   </p>
   <source>final URL url = ...;
-final Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
-final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
-try {
+try (
+    final Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
+    final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
+) {
     for (final CSVRecord record : parser) {
         final String string = record.get("SomeColumn");
         ...
     }
-} finally {
-    parser.close();
-    reader.close();
 }</source>
 </section>
 <!-- ================================================== -->
