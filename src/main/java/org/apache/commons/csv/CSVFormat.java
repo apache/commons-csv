@@ -233,7 +233,7 @@ public final class CSVFormat implements Serializable {
             .withIgnoreSurroundingSpaces(true);
 
     /**
-     * Default MySQL format used by the <tt>SELECT INTO OUTFILE</tt> and <tt>LOAD DATA INFILE</tt> operations.
+     * Default MySQL format used by the {@code SELECT INTO OUTFILE} and {@code LOAD DATA INFILE} operations.
      *
      * <p>
      * This is a tab-delimited format with a LF character as the line separator. Values are not quoted and special characters
@@ -320,9 +320,9 @@ public final class CSVFormat implements Serializable {
      * @param escape
      *            the Character used to escape special characters in values, may be {@code null} to disable
      * @param ignoreSurroundingSpaces
-     *            <tt>true</tt> when whitespaces enclosing values should be ignored
+     *            {@code true} when whitespaces enclosing values should be ignored
      * @param ignoreEmptyLines
-     *            <tt>true</tt> when the parser should skip empty lines
+     *            {@code true} when the parser should skip empty lines
      * @param recordSeparator
      *            the line separator to use for output
      * @param nullString
@@ -494,7 +494,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Specifies whether empty headers are ignored when parsing the header line.
      *
-     * @return <tt>true</tt> if headers are ignored when parsing the header line, <tt>false</tt> to throw an
+     * @return {@code true} if headers are ignored when parsing the header line, {@code false} to throw an
      *         {@link IllegalArgumentException}.
      */
     public boolean isIgnoringEmptyHeaders() {
@@ -504,7 +504,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Specifies whether empty lines between records are ignored when parsing input.
      *
-     * @return <tt>true</tt> if empty lines between records are ignored, <tt>false</tt> if they are turned into empty
+     * @return {@code true} if empty lines between records are ignored, {@code false} if they are turned into empty
      *         records.
      */
     public boolean isIgnoringEmptyLines() {
@@ -514,7 +514,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Specifies whether spaces around values are ignored when parsing input.
      *
-     * @return <tt>true</tt> if spaces around values are ignored, <tt>false</tt> if they are treated as part of the
+     * @return {@code true} if spaces around values are ignored, {@code false} if they are treated as part of the
      *         value.
      */
     public boolean isIgnoringSurroundingSpaces() {
@@ -599,7 +599,7 @@ public final class CSVFormat implements Serializable {
      *
      * Note that the comment introducer character is only recognized at the start of a line.
      *
-     * @return <tt>true</tt> is comments are supported, <tt>false</tt> otherwise
+     * @return {@code true} is comments are supported, {@code false} otherwise
      */
     public boolean isCommentingEnabled() {
         return commentStart != null;
@@ -836,7 +836,7 @@ public final class CSVFormat implements Serializable {
      * CSVFormat format = aformat.withHeader(&quot;name&quot;, &quot;email&quot;, &quot;phone&quot;);</pre>
      *
      * @param header
-     *            the header, <tt>null</tt> if disabled, empty if parsed automatically, user specified otherwise.
+     *            the header, {@code null} if disabled, empty if parsed automatically, user specified otherwise.
      *
      * @return A new CSVFormat that is equal to this but with the specified header
      * @see #withSkipHeaderRecord(boolean)
@@ -851,8 +851,8 @@ public final class CSVFormat implements Serializable {
      * Sets the empty header behavior of the format.
      *
      * @param ignoreEmptyHeaders
-     *            the empty header behavior, <tt>true</tt> to ignore empty headers in the header line,
-     *            <tt>false</tt> to cause an {@link IllegalArgumentException} to be thrown.
+     *            the empty header behavior, {@code true} to ignore empty headers in the header line,
+     *            {@code false} to cause an {@link IllegalArgumentException} to be thrown.
      * @return A new CSVFormat that is equal to this but with the specified empty header behavior.
      */
     public CSVFormat withIgnoreEmptyHeaders(final boolean ignoreEmptyHeaders) {
@@ -865,8 +865,8 @@ public final class CSVFormat implements Serializable {
      * Sets the empty line skipping behavior of the format.
      *
      * @param ignoreEmptyLines
-     *            the empty line skipping behavior, <tt>true</tt> to ignore the empty lines between the records,
-     *            <tt>false</tt> to translate empty lines to empty records.
+     *            the empty line skipping behavior, {@code true} to ignore the empty lines between the records,
+     *            {@code false} to translate empty lines to empty records.
      * @return A new CSVFormat that is equal to this but with the specified empty line skipping behavior.
      */
     public CSVFormat withIgnoreEmptyLines(final boolean ignoreEmptyLines) {
@@ -879,7 +879,7 @@ public final class CSVFormat implements Serializable {
      * Sets the trimming behavior of the format.
      *
      * @param ignoreSurroundingSpaces
-     *            the trimming behavior, <tt>true</tt> to remove the surrounding spaces, <tt>false</tt> to leave the
+     *            the trimming behavior, {@code true} to remove the surrounding spaces, {@code false} to leave the
      *            spaces as is.
      * @return A new CSVFormat that is equal to this but with the specified trimming behavior.
      */

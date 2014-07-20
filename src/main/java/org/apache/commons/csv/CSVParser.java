@@ -439,7 +439,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     /**
      * Parses the next record from the current point in the stream.
      *
-     * @return the record as an array of values, or <tt>null</tt> if the end of the stream has been reached
+     * @return the record as an array of values, or {@code null} if the end of the stream has been reached
      * @throws IOException
      *             on parse error or input read-failure
      */
