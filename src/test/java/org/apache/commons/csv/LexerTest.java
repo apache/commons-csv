@@ -198,7 +198,7 @@ public class LexerTest {
         */
         final String code = "a,\\,,b\\\n\\,,";
         final CSVFormat format = CSVFormat.DEFAULT;
-        assertFalse(format.isEscaping());
+        assertFalse(format.isEscapeCharacterSet());
         final Lexer parser = getLexer(code, format);
 
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
@@ -220,7 +220,7 @@ public class LexerTest {
         */
         final String code = "a,\\,,b\\\\\n\\,,\\\nc,d\\\r\ne";
         final CSVFormat format = formatWithEscaping.withIgnoreEmptyLines(false);
-        assertTrue(format.isEscaping());
+        assertTrue(format.isEscapeCharacterSet());
         final Lexer parser = getLexer(code, format);
 
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
@@ -279,7 +279,7 @@ public class LexerTest {
         *       ;;
         */
         final String code = "a;'b and '' more\n'\n!comment;;;;\n;;";
-        final CSVFormat format = CSVFormat.DEFAULT.withQuoteChar('\'').withCommentMarker('!').withDelimiter(';');
+        final CSVFormat format = CSVFormat.DEFAULT.withQuote('\'').withCommentMarker('!').withDelimiter(';');
         final Lexer parser = getLexer(code, format);
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
         assertThat(parser.nextToken(new Token()), matches(EORECORD, "b and ' more\n"));

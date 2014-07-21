@@ -112,7 +112,7 @@ public class CSVParserTest {
         };
 
 
-        final CSVFormat format = CSVFormat.newFormat(',').withQuoteChar('\'')
+        final CSVFormat format = CSVFormat.newFormat(',').withQuote('\'')
                                .withRecordSeparator(CRLF).withEscape('/').withIgnoreEmptyLines(true);
 
         final CSVParser parser = CSVParser.parse(code, format);
@@ -274,7 +274,7 @@ public class CSVParserTest {
         };
 
         CSVFormat format = CSVFormat.DEFAULT;
-        assertFalse(format.isCommentingEnabled());
+        assertFalse(format.isCommentStartCharacterSet());
 
         CSVParser parser = CSVParser.parse(code, format);
         List<CSVRecord> records = parser.getRecords();

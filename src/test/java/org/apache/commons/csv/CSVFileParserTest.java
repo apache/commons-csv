@@ -90,7 +90,7 @@ public class CSVFileParserTest {
         final String[] split = line.split(" ");
         assertTrue(testName+" require 1 param", split.length >= 1);
          // first line starts with csv data file name
-        CSVFormat format = CSVFormat.newFormat(',').withQuoteChar('"');
+        CSVFormat format = CSVFormat.newFormat(',').withQuote('"');
         boolean checkComments = false;
         for(int i=1; i < split.length; i++) {
             final String option = split[i];
@@ -134,7 +134,7 @@ public class CSVFileParserTest {
         final String[] split = line.split(" ");
         assertTrue(testName + " require 1 param", split.length >= 1);
         // first line starts with csv data file name
-        CSVFormat format = CSVFormat.newFormat(',').withQuoteChar('"');
+        CSVFormat format = CSVFormat.newFormat(',').withQuote('"');
         boolean checkComments = false;
         for (int i = 1; i < split.length; i++) {
             final String option = split[i];

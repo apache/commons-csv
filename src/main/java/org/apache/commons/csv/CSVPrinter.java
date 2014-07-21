@@ -118,10 +118,10 @@ public final class CSVPrinter implements Flushable, Closeable {
         if (!newRecord) {
             out.append(format.getDelimiter());
         }
-        if (format.isQuoting()) {
+        if (format.isQuoteCharacterSet()) {
             // the original object is needed so can check for Number
             printAndQuote(object, value, offset, len);
-        } else if (format.isEscaping()) {
+        } else if (format.isEscapeCharacterSet()) {
             printAndEscape(value, offset, len);
         } else {
             out.append(value, offset, offset + len);
@@ -138,7 +138,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         final int end = offset + len;
 
         final char delim = format.getDelimiter();
-        final char escape = format.getEscape().charValue();
+        final char escape = format.getEscapeCharacter().charValue();
 
         while (pos < end) {
             char c = value.charAt(pos);
@@ -180,7 +180,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         final int end = offset + len;
 
         final char delimChar = format.getDelimiter();
-        final char quoteChar = format.getQuoteChar().charValue();
+        final char quoteChar = format.getQuoteCharacter().charValue();
 
         QuoteMode quoteModePolicy = format.getQuoteMode();
         if (quoteModePolicy == null) {
@@ -297,13 +297,13 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void printComment(final String comment) throws IOException {
-        if (!format.isCommentingEnabled()) {
+        if (!format.isCommentStartCharacterSet()) {
             return;
         }
         if (!newRecord) {
             println();
         }
-        out.append(format.getCommentStart().charValue());
+        out.append(format.getCommentStartCharacter().charValue());
         out.append(SP);
         for (int i = 0; i < comment.length(); i++) {
             final char c = comment.charAt(i);
@@ -315,7 +315,7 @@ public final class CSVPrinter implements Flushable, Closeable {
                 //$FALL-THROUGH$ break intentionally excluded.
             case LF:
                 println();
-                out.append(format.getCommentStart().charValue());
+                out.append(format.getCommentStartCharacter().charValue());
                 out.append(SP);
                 break;
             default:
