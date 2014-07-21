@@ -40,7 +40,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -650,13 +649,13 @@ public class CSVParserTest {
     @Test
     public void testHeadersMissing() throws Exception {
         final Reader in = new StringReader("a,,c,,d\n1,2,3,4\nx,y,z,zz");
-        CSVFormat.DEFAULT.withHeader().withIgnoreEmptyHeaders(true).parse(in).iterator();
+        CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames(true).parse(in).iterator();
     }
 
     @Test
     public void testHeaderMissingWithNull() throws Exception {
         final Reader in = new StringReader("a,,c,,d\n1,2,3,4\nx,y,z,zz");
-        CSVFormat.DEFAULT.withHeader().withNullString("").withIgnoreEmptyHeaders(true).parse(in).iterator();
+        CSVFormat.DEFAULT.withHeader().withNullString("").withAllowMissingColumnNames(true).parse(in).iterator();
     }
 
     @Test
