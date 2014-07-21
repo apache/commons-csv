@@ -352,7 +352,7 @@ public class CSVPrinterTest {
     @Test
     public void testQuoteAll() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuotePolicy(Quote.ALL));
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuoteMode(QuoteMode.ALL));
         printer.printRecord("a", "b\nc", "d");
         assertEquals("\"a\",\"b\nc\",\"d\"" + recordSeparator, sw.toString());
         printer.close();
@@ -361,7 +361,7 @@ public class CSVPrinterTest {
     @Test
     public void testQuoteNonNumeric() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuotePolicy(Quote.NON_NUMERIC));
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuoteMode(QuoteMode.NON_NUMERIC));
         printer.printRecord("a", "b\nc", Integer.valueOf(1));
         assertEquals("\"a\",\"b\nc\",1" + recordSeparator, sw.toString());
         printer.close();
@@ -417,7 +417,7 @@ public class CSVPrinterTest {
     @Test
     public void testDelimeterQuoteNONE() throws IOException {
         final StringWriter sw = new StringWriter();
-        final CSVFormat format = CSVFormat.DEFAULT.withEscape('!').withQuotePolicy(Quote.NONE);
+        final CSVFormat format = CSVFormat.DEFAULT.withEscape('!').withQuoteMode(QuoteMode.NONE);
         final CSVPrinter printer = new CSVPrinter(sw, format);
         printer.print("a,b,c");
         printer.print("xyz");

@@ -182,11 +182,11 @@ public final class CSVPrinter implements Flushable, Closeable {
         final char delimChar = format.getDelimiter();
         final char quoteChar = format.getQuoteChar().charValue();
 
-        Quote quotePolicy = format.getQuotePolicy();
-        if (quotePolicy == null) {
-            quotePolicy = Quote.MINIMAL;
+        QuoteMode quoteModePolicy = format.getQuoteMode();
+        if (quoteModePolicy == null) {
+            quoteModePolicy = QuoteMode.MINIMAL;
         }
-        switch (quotePolicy) {
+        switch (quoteModePolicy) {
         case ALL:
             quote = true;
             break;
@@ -248,7 +248,7 @@ public final class CSVPrinter implements Flushable, Closeable {
             }
             break;
         default:
-            throw new IllegalStateException("Unexpected Quote value: " + quotePolicy);
+            throw new IllegalStateException("Unexpected Quote value: " + quoteModePolicy);
         }
 
         if (!quote) {

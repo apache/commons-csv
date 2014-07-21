@@ -21,7 +21,7 @@ package org.apache.commons.csv;
  *
  * @version $Id$
  */
-public enum Quote {
+public enum QuoteMode {
 
     /**
      * Quotes all fields.

@@ -88,7 +88,7 @@ public class CSVFormatTest {
         final CSVFormat right = CSVFormat.newFormat('\'')
                 .withQuoteChar('"')
                 .withCommentMarker('#')
-                .withQuotePolicy(Quote.ALL);
+                .withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right
                 .withCommentMarker('!');
 
@@ -109,7 +109,7 @@ public class CSVFormatTest {
                 .withQuoteChar('"')
                 .withCommentMarker('#')
                 .withEscape('+')
-                .withQuotePolicy(Quote.ALL);
+                .withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right
                 .withEscape('!');
 
@@ -126,7 +126,7 @@ public class CSVFormatTest {
                 .withIgnoreEmptyLines(true)
                 .withIgnoreSurroundingSpaces(true)
                 .withQuoteChar('"')
-                .withQuotePolicy(Quote.ALL);
+                .withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right
                 .withHeader("Three", "Two", "One");
 
@@ -141,7 +141,7 @@ public class CSVFormatTest {
                 .withIgnoreEmptyLines(true)
                 .withIgnoreSurroundingSpaces(true)
                 .withQuoteChar('"')
-                .withQuotePolicy(Quote.ALL);
+                .withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right
                 .withIgnoreEmptyLines(false);
 
@@ -155,7 +155,7 @@ public class CSVFormatTest {
                 .withEscape('+')
                 .withIgnoreSurroundingSpaces(true)
                 .withQuoteChar('"')
-                .withQuotePolicy(Quote.ALL);
+                .withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right
                 .withIgnoreSurroundingSpaces(false);
 
@@ -174,9 +174,9 @@ public class CSVFormatTest {
     public void testEqualsQuotePolicy() {
         final CSVFormat right = CSVFormat.newFormat('\'')
                 .withQuoteChar('"')
-                .withQuotePolicy(Quote.ALL);
+                .withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right
-                .withQuotePolicy(Quote.MINIMAL);
+                .withQuoteMode(QuoteMode.MINIMAL);
 
         assertNotEquals(right, left);
     }
@@ -190,7 +190,7 @@ public class CSVFormatTest {
                 .withIgnoreEmptyLines(true)
                 .withIgnoreSurroundingSpaces(true)
                 .withQuoteChar('"')
-                .withQuotePolicy(Quote.ALL);
+                .withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right
                 .withRecordSeparator(LF);
 
@@ -206,7 +206,7 @@ public class CSVFormatTest {
                 .withIgnoreEmptyLines(true)
                 .withIgnoreSurroundingSpaces(true)
                 .withQuoteChar('"')
-                .withQuotePolicy(Quote.ALL)
+                .withQuoteMode(QuoteMode.ALL)
                 .withNullString("null");
         final CSVFormat left = right
                 .withNullString("---");
@@ -223,7 +223,7 @@ public class CSVFormatTest {
                 .withIgnoreEmptyLines(true)
                 .withIgnoreSurroundingSpaces(true)
                 .withQuoteChar('"')
-                .withQuotePolicy(Quote.ALL)
+                .withQuoteMode(QuoteMode.ALL)
                 .withNullString("null")
                 .withSkipHeaderRecord(true);
         final CSVFormat left = right
@@ -291,7 +291,7 @@ public class CSVFormatTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testQuotePolicyNoneWithoutEscapeThrowsException() {
-        CSVFormat.newFormat('!').withQuotePolicy(Quote.NONE);
+        CSVFormat.newFormat('!').withQuoteMode(QuoteMode.NONE);
     }
 
     @Test
@@ -301,7 +301,7 @@ public class CSVFormatTest {
         assertEquals(null, RFC4180.getEscape());
         assertFalse(RFC4180.getIgnoreEmptyLines());
         assertEquals(Character.valueOf('"'), RFC4180.getQuoteChar());
-        assertEquals(null, RFC4180.getQuotePolicy());
+        assertEquals(null, RFC4180.getQuoteMode());
         assertEquals("\r\n", RFC4180.getRecordSeparator());
     }
 
@@ -405,8 +405,8 @@ public class CSVFormatTest {
 
     @Test
     public void testWithQuotePolicy() throws Exception {
-        final CSVFormat formatWithQuotePolicy = CSVFormat.DEFAULT.withQuotePolicy(Quote.ALL);
-        assertEquals(Quote.ALL, formatWithQuotePolicy.getQuotePolicy());
+        final CSVFormat formatWithQuotePolicy = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.ALL);
+        assertEquals(QuoteMode.ALL, formatWithQuotePolicy.getQuoteMode());
     }
 
     @Test
