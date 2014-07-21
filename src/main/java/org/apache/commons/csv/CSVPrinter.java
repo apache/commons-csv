@@ -297,13 +297,13 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void printComment(final String comment) throws IOException {
-        if (!format.isCommentStartCharacterSet()) {
+        if (!format.isCommentMarkerSet()) {
             return;
         }
         if (!newRecord) {
             println();
         }
-        out.append(format.getCommentStartCharacter().charValue());
+        out.append(format.getCommentMarker().charValue());
         out.append(SP);
         for (int i = 0; i < comment.length(); i++) {
             final char c = comment.charAt(i);
@@ -315,7 +315,7 @@ public final class CSVPrinter implements Flushable, Closeable {
                 //$FALL-THROUGH$ break intentionally excluded.
             case LF:
                 println();
-                out.append(format.getCommentStartCharacter().charValue());
+                out.append(format.getCommentMarker().charValue());
                 out.append(SP);
                 break;
             default:

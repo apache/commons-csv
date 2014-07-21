@@ -274,7 +274,7 @@ public class CSVParserTest {
         };
 
         CSVFormat format = CSVFormat.DEFAULT;
-        assertFalse(format.isCommentStartCharacterSet());
+        assertFalse(format.isCommentMarkerSet());
 
         CSVParser parser = CSVParser.parse(code, format);
         List<CSVRecord> records = parser.getRecords();

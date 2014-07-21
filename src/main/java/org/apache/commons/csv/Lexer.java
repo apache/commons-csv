@@ -64,7 +64,7 @@ final class Lexer implements Closeable {
         this.delimiter = format.getDelimiter();
         this.escape = mapNullToDisabled(format.getEscapeCharacter());
         this.quoteChar = mapNullToDisabled(format.getQuoteCharacter());
-        this.commentStart = mapNullToDisabled(format.getCommentStartCharacter());
+        this.commentStart = mapNullToDisabled(format.getCommentMarker());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
     }

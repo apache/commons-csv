@@ -296,7 +296,7 @@ public class CSVFormatTest {
 
     @Test
     public void testRFC4180() {
-        assertEquals(null, RFC4180.getCommentStartCharacter());
+        assertEquals(null, RFC4180.getCommentMarker());
         assertEquals(',', RFC4180.getDelimiter());
         assertEquals(null, RFC4180.getEscapeCharacter());
         assertFalse(RFC4180.getIgnoreEmptyLines());
@@ -321,7 +321,7 @@ public class CSVFormatTest {
         assertNotNull(format);
         assertEquals("delimiter", CSVFormat.DEFAULT.getDelimiter(), format.getDelimiter());
         assertEquals("encapsulator", CSVFormat.DEFAULT.getQuoteCharacter(), format.getQuoteCharacter());
-        assertEquals("comment start", CSVFormat.DEFAULT.getCommentStartCharacter(), format.getCommentStartCharacter());
+        assertEquals("comment start", CSVFormat.DEFAULT.getCommentMarker(), format.getCommentMarker());
         assertEquals("record separator", CSVFormat.DEFAULT.getRecordSeparator(), format.getRecordSeparator());
         assertEquals("escape", CSVFormat.DEFAULT.getEscapeCharacter(), format.getEscapeCharacter());
         assertEquals("trim", CSVFormat.DEFAULT.getIgnoreSurroundingSpaces(), format.getIgnoreSurroundingSpaces());
@@ -331,7 +331,7 @@ public class CSVFormatTest {
     @Test
     public void testWithCommentStart() throws Exception {
         final CSVFormat formatWithCommentStart = CSVFormat.DEFAULT.withCommentMarker('#');
-        assertEquals( Character.valueOf('#'), formatWithCommentStart.getCommentStartCharacter());
+        assertEquals( Character.valueOf('#'), formatWithCommentStart.getCommentMarker());
     }
 
     @Test(expected = IllegalArgumentException.class)
