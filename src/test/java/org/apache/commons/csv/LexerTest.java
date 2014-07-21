@@ -159,7 +159,7 @@ public class LexerTest {
                 "\n"+                      // 6c
                 "# Final comment\n";       // 7
         final CSVFormat format = CSVFormat.DEFAULT.withCommentMarker('#').withIgnoreEmptyLines(false);
-        assertFalse("Should not ignore empty lines", format.isIgnoringEmptyLines());
+        assertFalse("Should not ignore empty lines", format.getIgnoreEmptyLines());
 
         final Lexer parser = getLexer(code, format);
 

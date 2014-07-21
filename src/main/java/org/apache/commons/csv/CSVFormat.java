@@ -497,7 +497,7 @@ public final class CSVFormat implements Serializable {
      * @return {@code true} if missing column names are allowed when parsing the header line, {@code false} to throw an
      *         {@link IllegalArgumentException}.
      */
-    public boolean isAllowMissingColumnNames() {
+    public boolean getAllowMissingColumnNames() {
         return allowMissingColumnNames;
     }
 
@@ -507,7 +507,7 @@ public final class CSVFormat implements Serializable {
      * @return {@code true} if empty lines between records are ignored, {@code false} if they are turned into empty
      *         records.
      */
-    public boolean isIgnoringEmptyLines() {
+    public boolean getIgnoreEmptyLines() {
         return ignoreEmptyLines;
     }
 
@@ -517,7 +517,7 @@ public final class CSVFormat implements Serializable {
      * @return {@code true} if spaces around values are ignored, {@code false} if they are treated as part of the
      *         value.
      */
-    public boolean isIgnoringSurroundingSpaces() {
+    public boolean getIgnoreSurroundingSpaces() {
         return ignoreSurroundingSpaces;
     }
 
@@ -570,7 +570,7 @@ public final class CSVFormat implements Serializable {
      *
      * @return whether to skip the header record.
      */
-    public boolean isSkippingHeaderRecord() {
+    public boolean getSkipHeaderRecord() {
         return skipHeaderRecord;
     }
 
@@ -690,10 +690,10 @@ public final class CSVFormat implements Serializable {
             sb.append(' ');
             sb.append("RecordSeparator=<").append(recordSeparator).append('>');
         }
-        if (isIgnoringEmptyLines()) {
+        if (getIgnoreEmptyLines()) {
             sb.append(" EmptyLines:ignored");
         }
-        if (isIgnoringSurroundingSpaces()) {
+        if (getIgnoreSurroundingSpaces()) {
             sb.append(" SurroundingSpaces:ignored");
         }
         sb.append(" SkipHeaderRecord:").append(skipHeaderRecord);

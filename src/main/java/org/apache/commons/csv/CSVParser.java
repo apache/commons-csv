@@ -352,7 +352,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     headerRecord = nextRecord.values();
                 }
             } else {
-                if (this.format.isSkippingHeaderRecord()) {
+                if (this.format.getSkipHeaderRecord()) {
                     this.nextRecord();
                 }
                 headerRecord = formatHeader;
@@ -364,7 +364,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     final String header = headerRecord[i];
                     final boolean containsHeader = hdrMap.containsKey(header);
                     final boolean emptyHeader = header == null || header.trim().isEmpty();
-                    if (containsHeader && (!emptyHeader || (emptyHeader && !this.format.isAllowMissingColumnNames()))) {
+                    if (containsHeader && (!emptyHeader || (emptyHeader && !this.format.getAllowMissingColumnNames()))) {
                         throw new IllegalArgumentException("The header contains a duplicate name: \"" + header +
                                 "\" in " + Arrays.toString(headerRecord));
                     }

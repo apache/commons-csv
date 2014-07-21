@@ -299,7 +299,7 @@ public class CSVFormatTest {
         assertEquals(null, RFC4180.getCommentStart());
         assertEquals(',', RFC4180.getDelimiter());
         assertEquals(null, RFC4180.getEscape());
-        assertFalse(RFC4180.isIgnoringEmptyLines());
+        assertFalse(RFC4180.getIgnoreEmptyLines());
         assertEquals(Character.valueOf('"'), RFC4180.getQuoteChar());
         assertEquals(null, RFC4180.getQuotePolicy());
         assertEquals("\r\n", RFC4180.getRecordSeparator());
@@ -324,8 +324,8 @@ public class CSVFormatTest {
         assertEquals("comment start", CSVFormat.DEFAULT.getCommentStart(), format.getCommentStart());
         assertEquals("record separator", CSVFormat.DEFAULT.getRecordSeparator(), format.getRecordSeparator());
         assertEquals("escape", CSVFormat.DEFAULT.getEscape(), format.getEscape());
-        assertEquals("trim", CSVFormat.DEFAULT.isIgnoringSurroundingSpaces(), format.isIgnoringSurroundingSpaces());
-        assertEquals("empty lines", CSVFormat.DEFAULT.isIgnoringEmptyLines(), format.isIgnoringEmptyLines());
+        assertEquals("trim", CSVFormat.DEFAULT.getIgnoreSurroundingSpaces(), format.getIgnoreSurroundingSpaces());
+        assertEquals("empty lines", CSVFormat.DEFAULT.getIgnoreEmptyLines(), format.getIgnoreEmptyLines());
     }
 
     @Test
@@ -376,14 +376,14 @@ public class CSVFormatTest {
 
     @Test
     public void testWithIgnoreEmptyLines() throws Exception {
-        assertFalse(CSVFormat.DEFAULT.withIgnoreEmptyLines(false).isIgnoringEmptyLines());
-        assertTrue(CSVFormat.DEFAULT.withIgnoreEmptyLines(true).isIgnoringEmptyLines());
+        assertFalse(CSVFormat.DEFAULT.withIgnoreEmptyLines(false).getIgnoreEmptyLines());
+        assertTrue(CSVFormat.DEFAULT.withIgnoreEmptyLines(true).getIgnoreEmptyLines());
     }
 
     @Test
     public void testWithIgnoreSurround() throws Exception {
-        assertFalse(CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(false).isIgnoringSurroundingSpaces());
-        assertTrue(CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true).isIgnoringSurroundingSpaces());
+        assertFalse(CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(false).getIgnoreSurroundingSpaces());
+        assertTrue(CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true).getIgnoreSurroundingSpaces());
     }
 
     @Test
