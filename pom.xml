@@ -130,6 +130,10 @@ CSV files of various types.
 
     <checkstyle.version>2.12.1</checkstyle.version>
     <checkstyle.header.file>${basedir}/LICENSE-header.txt</checkstyle.header.file>
+
+    <!-- Override jacoco version from commons parent 34, since it doesn't work with Java 8.
+      Remove this after commons parent 35 has been released. -->
+    <commons.jacoco.version>0.7.1.201405082137</commons.jacoco.version>
   </properties>
 
   <build>
