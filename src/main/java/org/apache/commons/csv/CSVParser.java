@@ -20,7 +20,6 @@ package org.apache.commons.csv;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -136,7 +135,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Creates a parser for the given {@link File}.
      *
      * <p><strong>Note:</strong> This method internally creates a FileReader using
-     * {@link FileReader#FileReader(java.io.File)} which in turn relies on the default encoding of the JVM that
+     * {@link java.io.FileReader#FileReader(java.io.File)} which in turn relies on the default encoding of the JVM that
      * is executing the code. If this is insufficient create a URL to the file and use
      * {@link #parse(URL, Charset, CSVFormat)}</p>
      *
