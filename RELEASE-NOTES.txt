@@ -34,6 +34,7 @@ o CSV-48:   Predefined format for MYSQL
 FIXED BUGS
 ============
 
+o CSV-125:  No longer works with Java 6
 o CSV-122:  NullPointerException when empty header string and and null string of "".
             Thanks to Mike Lewis.
 o CSV-118:  CSVRecord.toMap() throws NPE on formats with no
