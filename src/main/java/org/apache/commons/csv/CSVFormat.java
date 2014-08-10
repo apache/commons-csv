@@ -236,8 +236,8 @@ public final class CSVFormat implements Serializable {
      * Default MySQL format used by the {@code SELECT INTO OUTFILE} and {@code LOAD DATA INFILE} operations.
      *
      * <p>
-     * This is a tab-delimited format with a LF character as the line separator. Values are not quoted and special characters
-     * are escaped with '\'.
+     * This is a tab-delimited format with a LF character as the line separator. Values are not quoted and special
+     * characters are escaped with '\'.
      * </p>
      *
      * <p>
@@ -958,8 +958,8 @@ public final class CSVFormat implements Serializable {
     /**
      * Sets the record separator of the format to the specified character.
      *
-     * <p><strong>Note:</strong> This setting is only used during printing and does not affect parsing. Parsing currently
-     * only works for inputs with '\n', '\r' and "\r\n"</p>
+     * <p><strong>Note:</strong> This setting is only used during printing and does not affect parsing. Parsing
+     * currently only works for inputs with '\n', '\r' and "\r\n"</p>
      *
      * @param recordSeparator
      *            the record separator to use for output.
@@ -973,8 +973,8 @@ public final class CSVFormat implements Serializable {
     /**
      * Sets the record separator of the format to the specified String.
      *
-     * <p><strong>Note:</strong> This setting is only used during printing and does not affect parsing. Parsing currently
-     * only works for inputs with '\n', '\r' and "\r\n"</p>
+     * <p><strong>Note:</strong> This setting is only used during printing and does not affect parsing. Parsing
+     * currently only works for inputs with '\n', '\r' and "\r\n"</p>
      *
      * @param recordSeparator
      *            the record separator to use for output.

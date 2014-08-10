@@ -427,8 +427,8 @@ public final class CSVPrinter implements Flushable, Closeable {
      * Prints all the objects in the given array handling nested collections/arrays as records.
      *
      * <p>If the given array only contains simple objects, this method will print a single record like
-     * {@link #printRecord(Object...)}. If the given collections contains nested collections/arrays those nested elements
-     * will each be printed as records using {@link #printRecord(Object...)}.</p>
+     * {@link #printRecord(Object...)}. If the given collections contains nested collections/arrays those nested
+     * elements will each be printed as records using {@link #printRecord(Object...)}.</p>
      *
      * <p>Given the following data structure:</p>
      * <pre>

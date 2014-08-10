@@ -129,7 +129,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * </p>
      *
      * @return the number of this record.
-     * @see CSVParser#getCurrentLineNumber() 
+     * @see CSVParser#getCurrentLineNumber()
      */
     public long getRecordNumber() {
         return recordNumber;

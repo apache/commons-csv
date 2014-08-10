@@ -324,7 +324,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     public List<CSVRecord> getRecords() throws IOException {
         CSVRecord rec;
-        // can not use Java 7 diamond notation here, since JavaNCSS will fail, see https://jira.codehaus.org/browse/JAVANCSS-51
         List<CSVRecord> records = new ArrayList<CSVRecord>();
         while ((rec = this.nextRecord()) != null) {
             records.add(rec);
@@ -364,7 +363,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     final String header = headerRecord[i];
                     final boolean containsHeader = hdrMap.containsKey(header);
                     final boolean emptyHeader = header == null || header.trim().isEmpty();
-                    if (containsHeader && (!emptyHeader || (emptyHeader && !this.format.getAllowMissingColumnNames()))) {
+                    if (containsHeader &&
+                            (!emptyHeader || (emptyHeader && !this.format.getAllowMissingColumnNames()))) {
                         throw new IllegalArgumentException("The header contains a duplicate name: \"" + header +
                                 "\" in " + Arrays.toString(headerRecord));
                     }
