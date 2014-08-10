@@ -209,10 +209,9 @@ public final class CSVPrinter implements Flushable, Closeable {
             } else {
                 char c = value.charAt(pos);
 
-                // Hmmm, where did this rule come from?
+                // TODO where did this rule come from?
                 if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || (c > 'z'))) {
                     quote = true;
-                    // } else if (c == ' ' || c == '\f' || c == '\t') {
                 } else if (c <= COMMENT) {
                     // Some other chars at the start of a value caused the parser to fail, so for now
                     // encapsulate if we start in anything less than '#'. We are being conservative
@@ -231,7 +230,6 @@ public final class CSVPrinter implements Flushable, Closeable {
                     if (!quote) {
                         pos = end - 1;
                         c = value.charAt(pos);
-                        // if (c == ' ' || c == '\f' || c == '\t') {
                         // Some other chars at the end caused the parser to fail, so for now
                         // encapsulate if we end in anything less than ' '
                         if (c <= SP) {
