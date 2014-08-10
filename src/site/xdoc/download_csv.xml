@@ -95,7 +95,7 @@ limitations under the License.
       </p>
     </subsection>
     </section>
-    <section name="Apache Commons CSV 1.0 ">
+    <section name="Apache Commons CSV 1.0 (Java 6.0+)">
       <subsection name="Binaries">
         <table>
           <tr>
