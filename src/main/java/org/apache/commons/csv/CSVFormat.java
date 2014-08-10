@@ -162,14 +162,15 @@ public final class CSVFormat implements Serializable {
     /**
      * Standard comma separated format, as for {@link #RFC4180} but allowing empty lines.
      *
-     * <p>Settings are:
+     * <p>
+     * Settings are:
+     * </p>
      * <ul>
      *   <li>withDelimiter(',')</li>
      *   <li>withQuoteChar('"')</li>
      *   <li>withRecordSeparator("\r\n")</li>
      *   <li>withIgnoreEmptyLines(true)</li>
      * </ul>
-     * </p>
      */
     public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null,
                                                             false, true, CRLF, null, null, false, false);
@@ -177,14 +178,15 @@ public final class CSVFormat implements Serializable {
     /**
      * Comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
      *
-     * <p>Settings are:
+     * <p>
+     * Settings are:
+     * </p>
      * <ul>
      *   <li>withDelimiter(',')</li>
      *   <li>withQuoteChar('"')</li>
      *   <li>withRecordSeparator("\r\n")</li>
      *   <li>withIgnoreEmptyLines(false)</li>
      * </ul>
-     * </p>
      */
     public static final CSVFormat RFC4180 = DEFAULT.withIgnoreEmptyLines(false);
 
@@ -202,13 +204,13 @@ public final class CSVFormat implements Serializable {
      *
      * <p>
      * Settings are:
+     * </p>
      * <ul>
      *   <li>withDelimiter(',')</li>
      *   <li>withQuoteChar('"')</li>
      *   <li>withRecordSeparator("\r\n")</li>
      *   <li>withIgnoreEmptyLines(false)</li>
      * </ul>
-     * </p>
      * <p>
      * Note: this is currently the same as {@link #RFC4180}.
      * </p>
@@ -218,14 +220,15 @@ public final class CSVFormat implements Serializable {
     /**
      * Tab-delimited format.
      *
-     * <p>Settings are:
+     * <p>
+     * Settings are:
+     * </p>
      * <ul>
      *   <li>withDelimiter('\t')</li>
      *   <li>withQuoteChar('"')</li>
      *   <li>withRecordSeparator("\r\n")</li>
      *   <li>withIgnoreSurroundingSpaces(true)</li>
      * </ul>
-     * </p>
      */
     public static final CSVFormat TDF =
             DEFAULT
@@ -242,6 +245,7 @@ public final class CSVFormat implements Serializable {
      *
      * <p>
      * Settings are:
+     * </p>
      * <ul>
      *   <li>withDelimiter('\t')</li>
      *   <li>withQuoteChar(null)</li>
@@ -249,7 +253,6 @@ public final class CSVFormat implements Serializable {
      *   <li>withIgnoreEmptyLines(false)</li>
      *   <li>withEscape('\\')</li>
      * </ul>
-     * </p>
      * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html">
      *      http://dev.mysql.com/doc/refman/5.1/en/load-data.html</a>
      */

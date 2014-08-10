@@ -387,21 +387,21 @@ public final class CSVPrinter implements Flushable, Closeable {
      *
      * <p>Given the following data structure:</p>
      * <pre>
-     * <source>
+     * <code>
      * List&lt;String[]&gt; data = ...
      * data.add(new String[]{ "A", "B", "C" });
      * data.add(new String[]{ "1", "2", "3" });
      * data.add(new String[]{ "A1", "B2", "C3" });
-     * </source>
+     * </code>
      * </pre>
      *
      * <p>Calling this method will print:</p>
      * <pre>
-     * <source>
+     * <code>
      * A, B, C
      * 1, 2, 3
      * A1, B2, C3
-     * </source>
+     * </code>
      * </pre>
      *
      * @param values
@@ -430,21 +430,21 @@ public final class CSVPrinter implements Flushable, Closeable {
      *
      * <p>Given the following data structure:</p>
      * <pre>
-     * <source>
+     * <code>
      * String[][] data = new String[3][]
      * data[0] = String[]{ "A", "B", "C" };
      * data[1] = new String[]{ "1", "2", "3" };
      * data[2] = new String[]{ "A1", "B2", "C3" };
-     * </source>
+     * </code>
      * </pre>
      *
      * <p>Calling this method will print:</p>
      * <pre>
-     * <source>
+     * <code>
      * A, B, C
      * 1, 2, 3
      * A1, B2, C3
-     * </source>
+     * </code>
      * </pre>
      *
      * @param values
