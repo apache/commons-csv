@@ -39,7 +39,7 @@
   </properties>
   <body>
 
-    <release version="1.0" date="TBD" description="First release">
+    <release version="1.0" date="2014-08-14" description="First release">
       <action issue="CSV-125" type="fix" dev="britter">No longer works with Java 6</action>
       <action issue="CSV-122" type="fix" dev="britter" due-to="Mike Lewis">NullPointerException when empty header string and and null string of ""</action>
       <action issue="CSV-117" type="update" dev="sebb">Validate format parameters in constructor</action>
