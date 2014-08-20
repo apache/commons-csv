@@ -41,7 +41,7 @@ Code is under the [Apache Licence v2][license].
 
 Donations
 ---------
-You like Apache Commons Lang? Then [donate back to the ASF][donate] to support the development.
+You like Apache Commons CSV? Then [donate back to the ASF][donate] to support the development.
 
 [home]:http://commons.apache.org/csv
 [ml]:http://commons.apache.org/csv/mail-lists.html
