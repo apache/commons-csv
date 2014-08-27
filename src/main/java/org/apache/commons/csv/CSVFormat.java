@@ -206,16 +206,17 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     *   <li>withDelimiter(',')</li>
-     *   <li>withQuoteChar('"')</li>
-     *   <li>withRecordSeparator("\r\n")</li>
-     *   <li>withIgnoreEmptyLines(false)</li>
+     *   <li>{@link #withDelimiter(char) withDelimiter(',')}</li>
+     *   <li>{@link #withQuoteChar(String) withQuoteChar('"')}</li>
+     *   <li>{@link #withRecordSeparator(String) withRecordSeparator("\r\n")}</li>
+     *   <li>{@link #withIgnoreEmptyLines(boolean) withIgnoreEmptyLines(false)}</li>
+     *   <li>{@link #withAllowMissingColumnNames(boolean) withAllowMissingColumnNames(true)}</li>
      * </ul>
      * <p>
-     * Note: this is currently the same as {@link #RFC4180}.
+     * Note: this is currently like {@link #RFC4180} plus {@link #withAllowMissingColumnNames(boolean) withAllowMissingColumnNames(true)}.
      * </p>
      */
-    public static final CSVFormat EXCEL = DEFAULT.withIgnoreEmptyLines(false);
+    public static final CSVFormat EXCEL = DEFAULT.withIgnoreEmptyLines(false).withAllowMissingColumnNames(true);
 
     /**
      * Tab-delimited format.
