@@ -124,3 +124,98 @@ ${project.url}
 
 Have fun!
 -Apache Commons CSV team
+
+-------------------------------------------------------------------------------
+
+                        Apache Commons CSV
+                           Version 1.0
+                          Release Notes
+
+
+INTRODUCTION:
+
+This document contains the release notes for the 1.0 version of Apache Commons CSV.
+Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
+
+CSV requires at least Java 6.0.
+
+The Apache Commons CSV library provides a simple interface for reading and writing
+CSV files of various types.
+
+First release
+
+Changes in this version include:
+
+NEW FEATURES
+==============
+
+o CSV-121:  IllegalArgumentException thrown when the header contains duplicate names when the column names are empty.
+            Thanks to Sebastian Hardt.
+o CSV-120:  CSVFormat#withHeader doesn't work with CSVPrinter Thanks to Sergei Lebedev.
+o CSV-119:  CSVFormat is missing a print(...) method Thanks to Sergei Lebedev.
+o CSV-105:  Add Map conversion API to CSVRecord
+o CSV-52:   Keep track of record number
+o CSV-92:   Need a way to extract parsed headers, e.g. for use in formatting
+            output
+o CSV-65:   Header support
+o CSV-48:   Predefined format for MYSQL
+
+FIXED BUGS
+============
+
+o CSV-125:  No longer works with Java 6
+o CSV-122:  NullPointerException when empty header string and and null string of "".
+            Thanks to Mike Lewis.
+o CSV-118:  CSVRecord.toMap() throws NPE on formats with no
+            headers. Thanks to Enrique Lara.
+o CSV-113:  Check whether ISE/IAE are being used appropriately
+o CSV-114:  CSVFormat constructor should reject a header array with duplicate
+            entries
+o CSV-112:  HeaderMap is inconsistent when it is parsed from an input with
+            duplicate columns names
+o CSV-111:  CSVRecord.toMap() fails if row length shorter than header length
+o CSV-106:  CSVFormat.format allways append null
+o CSV-100:  CSVParser: getHeaderMap throws NPE
+o CSV-53:   CSVRecord does not verify that the length of the header mapping
+            matches the number of values
+o CSV-54:   Confusing semantic of the ignore leading/trailing spaces parameters
+o CSV-34:   CSVFormat describes itself as immutable, but it is not - in
+            particular it is not thread-safe
+o CSV-36:   Endless loops in CSV parser
+o CSV-13:   NullPointerException in CSVPrinter.print()/println()
+o CSV-23:   Excel strategy uses wrong separator
+
+CHANGES
+=========
+
+o CSV-117:  Validate format parameters in constructor
+o CSV-42:   Lots of possible changes Thanks to Bob Smith.
+o CSV-78:   Use Character instead of char for char fields except delimiter
+o CSV-99:   Revert Builder implementation in CSVFormat
+o CSV-93:   Allow the handling of NULL values
+o CSV-68:   Use the Builder pattern for CSVFormat
+o CSV-84:   Clarify comment handling
+o CSV-25:   CSVParser.nextValue() seems pointless
+o CSV-97:   Allow the String value for null to be customized for the CSV
+            printer
+o CSV-88:   Not possible to create a CSVFormat from scratch
+o CSV-94:   Lexer should only use char fields
+o CSV-71:   Add convenience methods to CSVLexer
+o CSV-59:   Is CharBuffer really needed, now that StringBuilder is available?
+o CSV-55:   Replace while(true)-loop in CSVParser.getRecord with do-while-loop
+o CSV-45:   CSVPrinter overhaul
+o CSV-49:   CSVStrategy has modifiable public static variables Thanks to Bob Smith.
+o CSV-46:   Reduce visibility of methods in internal classes
+o CSV-26:   ExtendedBufferedReader does too much
+o CSV-27:   Decide whether to keep the csv.writer subpackage
+
+
+Historical list of changes: http://commons.apache.org/proper/commons-csv/changes-report.html
+
+For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+
+http://commons.apache.org/proper/commons-csv/
+
+Have fun!
+-Apache Commons CSV team
