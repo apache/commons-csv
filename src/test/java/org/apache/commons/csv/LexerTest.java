@@ -59,7 +59,7 @@ public class LexerTest {
     @Test
     public void testSurroundingSpacesAreDeleted() throws IOException {
         final String code = "noSpaces,  leadingSpaces,trailingSpaces  ,  surroundingSpaces  ,  ,,";
-        final Lexer parser = getLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
+        final Lexer parser = getLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces());
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "noSpaces"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "leadingSpaces"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "trailingSpaces"));
@@ -72,7 +72,7 @@ public class LexerTest {
     @Test
     public void testSurroundingTabsAreDeleted() throws IOException {
         final String code = "noTabs,\tleadingTab,trailingTab\t,\tsurroundingTabs\t,\t\t,,";
-        final Lexer parser = getLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
+        final Lexer parser = getLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces());
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "noTabs"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "leadingTab"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "trailingTab"));
@@ -98,7 +98,7 @@ public class LexerTest {
                 "\n"+
                 "\n"+
                 "\n";
-        final CSVFormat format = CSVFormat.DEFAULT.withIgnoreEmptyLines(true);
+        final CSVFormat format = CSVFormat.DEFAULT.withIgnoreEmptyLines();
         final Lexer parser = getLexer(code, format);
 
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "first"));
@@ -241,7 +241,7 @@ public class LexerTest {
         *        a,  " foo " ,b
         */
         final String code = "a,\"foo\",b\na,   \" foo\",b\na,\"foo \"  ,b\na,  \" foo \"  ,b";
-        final Lexer parser = getLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
+        final Lexer parser = getLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces());
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
         assertThat(parser.nextToken(new Token()), matches(TOKEN, "foo"));
         assertThat(parser.nextToken(new Token()), matches(EORECORD, "b"));

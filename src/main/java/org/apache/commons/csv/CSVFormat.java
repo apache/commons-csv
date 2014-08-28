@@ -216,7 +216,7 @@ public final class CSVFormat implements Serializable {
      * Note: this is currently like {@link #RFC4180} plus {@link #withAllowMissingColumnNames(boolean) withAllowMissingColumnNames(true)}.
      * </p>
      */
-    public static final CSVFormat EXCEL = DEFAULT.withIgnoreEmptyLines(false).withAllowMissingColumnNames(true);
+    public static final CSVFormat EXCEL = DEFAULT.withIgnoreEmptyLines(false).withAllowMissingColumnNames();
 
     /**
      * Tab-delimited format.
@@ -234,7 +234,7 @@ public final class CSVFormat implements Serializable {
     public static final CSVFormat TDF =
             DEFAULT
             .withDelimiter(TAB)
-            .withIgnoreSurroundingSpaces(true);
+            .withIgnoreSurroundingSpaces();
 
     /**
      * Default MySQL format used by the {@code SELECT INTO OUTFILE} and {@code LOAD DATA INFILE} operations.
@@ -852,6 +852,17 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Sets the missing column names behavior of the format to {@code true}
+     *
+     * @return A new CSVFormat that is equal to this but with the specified missing column names behavior.
+     * @see #withAllowMissingColumnNames(boolean)
+     * @since 1.1
+     */
+    public CSVFormat withAllowMissingColumnNames() {
+        return this.withAllowMissingColumnNames(true);
+    }
+
+    /**
      * Sets the missing column names behavior of the format.
      *
      * @param allowMissingColumnNames
@@ -866,6 +877,17 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Sets the empty line skipping behavior of the format to {@code true}.
+     *
+     * @return A new CSVFormat that is equal to this but with the specified empty line skipping behavior.
+     * @since {@link #withIgnoreEmptyLines(boolean)}
+     * @since 1.1
+     */
+    public CSVFormat withIgnoreEmptyLines() {
+        return this.withIgnoreEmptyLines(true);
+    }
+
+    /**
      * Sets the empty line skipping behavior of the format.
      *
      * @param ignoreEmptyLines
@@ -877,6 +899,17 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 allowMissingColumnNames);
+    }
+
+    /**
+     * Sets the trimming behavior of the format to {@code true}.
+     *
+     * @return A new CSVFormat that is equal to this but with the specified trimming behavior.
+     * @see #withIgnoreSurroundingSpaces(boolean)
+     * @since 1.1
+     */
+    public CSVFormat withIgnoreSurroundingSpaces() {
+        return this.withIgnoreSurroundingSpaces(true);
     }
 
     /**
@@ -991,6 +1024,21 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
                 allowMissingColumnNames);
+    }
+
+    /**
+     * Sets skipping the header record to {@code true}.
+     *
+     * @param skipHeaderRecord
+     *            whether to skip the header record.
+     *
+     * @return A new CSVFormat that is equal to this but with the the specified skipHeaderRecord setting.
+     * @see #withSkipHeaderRecord(boolean)
+     * @see #withHeader(String...)
+     * @since 1.1
+     */
+    public CSVFormat withSkipHeaderRecord() {
+        return this.withSkipHeaderRecord(true);
     }
 
     /**

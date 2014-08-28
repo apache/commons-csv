@@ -100,7 +100,7 @@ public class CSVParserTest {
                 { "   8   ", "   \"quoted \"\" /\" / string\"   " }, { "9", "   \n   " }, };
 
         final CSVFormat format = CSVFormat.newFormat(',').withQuote('\'').withRecordSeparator(CRLF).withEscape('/')
-                .withIgnoreEmptyLines(true);
+                .withIgnoreEmptyLines();
 
         final CSVParser parser = CSVParser.parse(code, format);
         final List<CSVRecord> records = parser.getRecords();
@@ -127,7 +127,7 @@ public class CSVParserTest {
         };
 
         final CSVFormat format = CSVFormat.newFormat(',').withRecordSeparator(CRLF).withEscape('/')
-                .withIgnoreEmptyLines(true);
+                .withIgnoreEmptyLines();
 
         final CSVParser parser = CSVParser.parse(code, format);
         final List<CSVRecord> records = parser.getRecords();
@@ -299,6 +299,23 @@ public class CSVParserTest {
         }
     }
 
+//    @Test
+//    public void testStartWithEmptyLinesThenHeaders() throws Exception {
+//        final String[] codes = { "\r\n\r\n\r\nhello,\r\n\r\n\r\n", "hello,\n\n\n", "hello,\"\"\r\n\r\n\r\n", "hello,\"\"\n\n\n" };
+//        final String[][] res = { { "hello", "" }, { "" }, // Excel format does not ignore empty lines
+//                { "" } };
+//        for (final String code : codes) {
+//            final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL);
+//            final List<CSVRecord> records = parser.getRecords();
+//            assertEquals(res.length, records.size());
+//            assertTrue(records.size() > 0);
+//            for (int i = 0; i < res.length; i++) {
+//                assertArrayEquals(res[i], records.get(i).values());
+//            }
+//            parser.close();
+//        }
+//    }
+
     @Test
     public void testEndOfFileBehaviorCSV() throws Exception {
         final String[] codes = { "hello,\r\n\r\nworld,\r\n", "hello,\r\n\r\nworld,", "hello,\r\n\r\nworld,\"\"\r\n",
@@ -433,7 +450,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetLine() throws IOException {
-        final CSVParser parser = CSVParser.parse(CSV_INPUT, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
+        final CSVParser parser = CSVParser.parse(CSV_INPUT, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces());
         for (final String[] re : RESULT) {
             assertArrayEquals(re, parser.nextRecord().values());
         }
@@ -507,7 +524,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetRecords() throws IOException {
-        final CSVParser parser = CSVParser.parse(CSV_INPUT, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(true));
+        final CSVParser parser = CSVParser.parse(CSV_INPUT, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces());
         final List<CSVRecord> records = parser.getRecords();
         assertEquals(RESULT.length, records.size());
         assertTrue(records.size() > 0);
@@ -584,13 +601,13 @@ public class CSVParserTest {
     @Test
     public void testHeadersMissing() throws Exception {
         final Reader in = new StringReader("a,,c,,d\n1,2,3,4\nx,y,z,zz");
-        CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames(true).parse(in).iterator();
+        CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames().parse(in).iterator();
     }
 
     @Test
     public void testHeaderMissingWithNull() throws Exception {
         final Reader in = new StringReader("a,,c,,d\n1,2,3,4\nx,y,z,zz");
-        CSVFormat.DEFAULT.withHeader().withNullString("").withAllowMissingColumnNames(true).parse(in).iterator();
+        CSVFormat.DEFAULT.withHeader().withNullString("").withAllowMissingColumnNames().parse(in).iterator();
     }
 
     @Test
@@ -668,7 +685,7 @@ public class CSVParserTest {
     @Test
     public void testMappedButNotSetAsOutlook2007ContactExport() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2\nx,y,z");
-        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("A", "B", "C").withSkipHeaderRecord(true)
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("A", "B", "C").withSkipHeaderRecord()
                 .parse(in).iterator();
         CSVRecord record;
 
@@ -841,7 +858,7 @@ public class CSVParserTest {
     @Test
     public void testSkipSetHeader() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
-        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("a", "b", "c").withSkipHeaderRecord(true)
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("a", "b", "c").withSkipHeaderRecord()
                 .parse(in).iterator();
         final CSVRecord record = records.next();
         assertEquals("1", record.get("a"));
