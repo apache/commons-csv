@@ -167,7 +167,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      * <ul>
      *   <li>withDelimiter(',')</li>
-     *   <li>withQuoteChar('"')</li>
+     *   <li>withQuote('"')</li>
      *   <li>withRecordSeparator("\r\n")</li>
      *   <li>withIgnoreEmptyLines(true)</li>
      * </ul>
@@ -183,7 +183,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      * <ul>
      *   <li>withDelimiter(',')</li>
-     *   <li>withQuoteChar('"')</li>
+     *   <li>withQuote('"')</li>
      *   <li>withRecordSeparator("\r\n")</li>
      *   <li>withIgnoreEmptyLines(false)</li>
      * </ul>
@@ -207,7 +207,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      * <ul>
      *   <li>{@link #withDelimiter(char) withDelimiter(',')}</li>
-     *   <li>{@link #withQuoteChar(String) withQuoteChar('"')}</li>
+     *   <li>{@link #withQuote(String) withQuote('"')}</li>
      *   <li>{@link #withRecordSeparator(String) withRecordSeparator("\r\n")}</li>
      *   <li>{@link #withIgnoreEmptyLines(boolean) withIgnoreEmptyLines(false)}</li>
      *   <li>{@link #withAllowMissingColumnNames(boolean) withAllowMissingColumnNames(true)}</li>
@@ -226,7 +226,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      * <ul>
      *   <li>withDelimiter('\t')</li>
-     *   <li>withQuoteChar('"')</li>
+     *   <li>withQuote('"')</li>
      *   <li>withRecordSeparator("\r\n")</li>
      *   <li>withIgnoreSurroundingSpaces(true)</li>
      * </ul>
@@ -249,7 +249,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      * <ul>
      *   <li>withDelimiter('\t')</li>
-     *   <li>withQuoteChar(null)</li>
+     *   <li>withQuote(null)</li>
      *   <li>withRecordSeparator('\n')</li>
      *   <li>withIgnoreEmptyLines(false)</li>
      *   <li>withEscape('\\')</li>
