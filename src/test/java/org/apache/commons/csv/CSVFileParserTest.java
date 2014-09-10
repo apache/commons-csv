@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -50,12 +51,12 @@ public class CSVFileParserTest {
     private static final File BASE = new File("src/test/resources/CSVFileParser");
 
     private final BufferedReader testData;
+
     private final String testName;
 
-    public CSVFileParserTest(final File file) throws FileNotFoundException
-    {
-       this.testName = file.getName();
-       this.testData = new BufferedReader(new FileReader(file));
+    public CSVFileParserTest(final File file) throws FileNotFoundException {
+        this.testName = file.getName();
+        this.testData = new BufferedReader(new FileReader(file));
     }
 
     private String readTestData() throws IOException {
@@ -67,18 +68,21 @@ public class CSVFileParserTest {
     }
 
     @Parameters
-    public static Collection<Object[]> generateData()
-    {
+    public static Collection<Object[]> generateData() {
         final List<Object[]> list = new ArrayList<Object[]>();
 
         final FilenameFilter filenameFilter = new FilenameFilter() {
+
+            @Override
             public boolean accept(final File dir, final String name) {
                 return name.startsWith("test") && name.endsWith(".txt");
             }
         };
         final File[] files = BASE.listFiles(filenameFilter);
-        for(final File f : files){
-            list.add(new Object[]{f});
+        for (final File f : files) {
+            list.add(new Object[] {
+                f
+            });
         }
         return list;
     }
@@ -88,14 +92,14 @@ public class CSVFileParserTest {
         String line = readTestData();
         assertNotNull("file must contain config line", line);
         final String[] split = line.split(" ");
-        assertTrue(testName+" require 1 param", split.length >= 1);
-         // first line starts with csv data file name
+        assertTrue(testName + " require 1 param", split.length >= 1);
+        // first line starts with csv data file name
         CSVFormat format = CSVFormat.newFormat(',').withQuote('"');
         boolean checkComments = false;
-        for(int i=1; i < split.length; i++) {
+        for (int i = 1; i < split.length; i++) {
             final String option = split[i];
-            final String[] option_parts = option.split("=",2);
-            if ("IgnoreEmpty".equalsIgnoreCase(option_parts[0])){
+            final String[] option_parts = option.split("=", 2);
+            if ("IgnoreEmpty".equalsIgnoreCase(option_parts[0])) {
                 format = format.withIgnoreEmptyLines(Boolean.parseBoolean(option_parts[1]));
             } else if ("IgnoreSpaces".equalsIgnoreCase(option_parts[0])) {
                 format = format.withIgnoreSurroundingSpaces(Boolean.parseBoolean(option_parts[1]));
@@ -104,17 +108,17 @@ public class CSVFileParserTest {
             } else if ("CheckComments".equalsIgnoreCase(option_parts[0])) {
                 checkComments = true;
             } else {
-                fail(testName+" unexpected option: "+option);
+                fail(testName + " unexpected option: " + option);
             }
         }
         line = readTestData(); // get string version of format
-        assertEquals(testName+" Expected format ", line, format.toString());
+        assertEquals(testName + " Expected format ", line, format.toString());
 
         // Now parse the file and compare against the expected results
         // We use a buffered reader internally so no need to create one here.
         final CSVParser parser = CSVParser.parse(new File(BASE, split[0]), Charset.defaultCharset(), format);
-        for(final CSVRecord record : parser) {
-            String parsed = record.toString();
+        for (final CSVRecord record : parser) {
+            String parsed = Arrays.toString(record.values());
             if (checkComments) {
                 final String comment = record.getComment().replace("\n", "\\n");
                 if (comment != null) {
@@ -122,7 +126,7 @@ public class CSVFileParserTest {
                 }
             }
             final int count = record.size();
-            assertEquals(testName, readTestData(), count+":"+parsed);
+            assertEquals(testName, readTestData(), count + ":" + parsed);
         }
         parser.close();
     }
@@ -158,7 +162,7 @@ public class CSVFileParserTest {
         final URL resource = ClassLoader.getSystemResource("CSVFileParser/" + split[0]);
         final CSVParser parser = CSVParser.parse(resource, Charset.forName("UTF-8"), format);
         for (final CSVRecord record : parser) {
-            String parsed = record.toString();
+            String parsed = Arrays.toString(record.values());
             if (checkComments) {
                 final String comment = record.getComment().replace("\n", "\\n");
                 if (comment != null) {

@@ -227,15 +227,18 @@ public final class CSVRecord implements Serializable, Iterable<String> {
         return putIn(new HashMap<String, String>(values.length));
     }
 
+
     /**
-     * Returns a string representation of the contents of this record. The result is constructed by passing the internal
-     * values array to {@link Arrays#toString(Object[])}.
+     * Returns a string representation of the contents of this record. The result is constructed by comment, mapping,
+     * recordNumber and by passing the internal values array to {@link Arrays#toString(Object[])}.
      *
      * @return a String representation of this record.
      */
     @Override
     public String toString() {
-        return Arrays.toString(values);
+        return "CSVRecord [comment=" + comment + ", mapping=" + mapping +
+                ", recordNumber=" + recordNumber + ", values=" +
+                Arrays.toString(values) + "]";
     }
 
     String[] values() {
