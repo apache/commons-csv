@@ -157,6 +157,7 @@ public final class CSVFormat implements Serializable {
     private final String recordSeparator; // for outputs
     private final String nullString; // the string to be used for null values
     private final String[] header; // array of header column names
+    private final String[] headerComments; // array of header comment lines
     private final boolean skipHeaderRecord;
 
     /**
@@ -173,7 +174,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      */
     public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null,
-                                                            false, true, CRLF, null, null, false, false);
+                                                            false, true, CRLF, null, null, null, false, false);
 
     /**
      * Comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
@@ -307,7 +308,7 @@ public final class CSVFormat implements Serializable {
      * @see #TDF
      */
     public static CSVFormat newFormat(final char delimiter) {
-        return new CSVFormat(delimiter, null, null, null, null, false, false, null, null, null, false, false);
+        return new CSVFormat(delimiter, null, null, null, null, false, false, null, null, null, null, false, false);
     }
 
     /**
@@ -331,6 +332,7 @@ public final class CSVFormat implements Serializable {
      *            the line separator to use for output
      * @param nullString
      *            the line separator to use for output
+     * @param toHeaderComments TODO
      * @param header
      *            the header
      * @param skipHeaderRecord TODO
@@ -341,8 +343,8 @@ public final class CSVFormat implements Serializable {
             final QuoteMode quoteMode, final Character commentStart,
             final Character escape, final boolean ignoreSurroundingSpaces,
             final boolean ignoreEmptyLines, final String recordSeparator,
-            final String nullString, final String[] header, final boolean skipHeaderRecord,
-            final boolean allowMissingColumnNames) {
+            final String nullString, final Object[] headerComments, final String[] header,
+            final boolean skipHeaderRecord, final boolean allowMissingColumnNames) {
         if (isLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
@@ -356,6 +358,7 @@ public final class CSVFormat implements Serializable {
         this.ignoreEmptyLines = ignoreEmptyLines;
         this.recordSeparator = recordSeparator;
         this.nullString = nullString;
+        this.headerComments = toStringArray(headerComments);
         if (header == null) {
             this.header = null;
         } else {
@@ -370,6 +373,18 @@ public final class CSVFormat implements Serializable {
         }
         this.skipHeaderRecord = skipHeaderRecord;
         validate();
+    }
+
+    private String[] toStringArray(Object[] values) {
+        if (values == null) {
+            return null;
+        }
+        String[] strings = new String[values.length];
+        for (int i = 0; i < values.length; i++) {
+            Object value = values[i];
+            strings[i] = value == null ? null : value.toString();
+        }
+        return strings;
     }
 
     @Override
@@ -493,6 +508,15 @@ public final class CSVFormat implements Serializable {
      */
     public String[] getHeader() {
         return header != null ? header.clone() : null;
+    }
+
+    /**
+     * Returns a copy of the header comment array.
+     *
+     * @return a copy of the header comment array; {@code null} if disabled.
+     */
+    public String[] getHeaderComments() {
+        return headerComments != null ? headerComments.clone() : null;
     }
 
     /**
@@ -701,6 +725,10 @@ public final class CSVFormat implements Serializable {
             sb.append(" SurroundingSpaces:ignored");
         }
         sb.append(" SkipHeaderRecord:").append(skipHeaderRecord);
+        if (headerComments != null) {
+            sb.append(' ');
+            sb.append("HeaderComments:").append(Arrays.toString(headerComments));
+        }
         if (header != null) {
             sb.append(' ');
             sb.append("Header:").append(Arrays.toString(header));
@@ -775,8 +803,8 @@ public final class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The comment start marker character cannot be a line break");
         }
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
-                allowMissingColumnNames);
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, null, header,
+                skipHeaderRecord, allowMissingColumnNames);
     }
 
     /**
@@ -793,8 +821,8 @@ public final class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
-                allowMissingColumnNames);
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, null, header,
+                skipHeaderRecord, allowMissingColumnNames);
     }
 
     /**
@@ -824,8 +852,8 @@ public final class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The escape character cannot be a line break");
         }
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escape,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
-                allowMissingColumnNames);
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, null, header,
+                skipHeaderRecord, allowMissingColumnNames);
     }
 
     /**
@@ -847,8 +875,27 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withHeader(final String... header) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
-                allowMissingColumnNames);
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, null, header,
+                skipHeaderRecord, allowMissingColumnNames);
+    }
+
+    /**
+     * Sets the header comments of the format. The comments will be printed first, before the headers.
+     *
+     * <pre>
+     * CSVFormat format = aformat.withHeaderComments("Generated by Apache Commons CSV 1.1.", new Date());</pre>
+     *
+     * @param header
+     *            the header, {@code null} if disabled, empty if parsed automatically, user specified otherwise.
+     *
+     * @return A new CSVFormat that is equal to this but with the specified header
+     * @see #withSkipHeaderRecord(boolean)
+     * @since 1.1
+     */
+    public CSVFormat withHeaderComments(final Object... headerComments) {
+        return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
+                skipHeaderRecord, allowMissingColumnNames);
     }
 
     /**
@@ -872,8 +919,8 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withAllowMissingColumnNames(final boolean allowMissingColumnNames) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
-                allowMissingColumnNames);
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, null, header,
+                skipHeaderRecord, allowMissingColumnNames);
     }
 
     /**
@@ -897,8 +944,8 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withIgnoreEmptyLines(final boolean ignoreEmptyLines) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
-                allowMissingColumnNames);
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, null, header,
+                skipHeaderRecord, allowMissingColumnNames);
     }
 
     /**
@@ -922,8 +969,8 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withIgnoreSurroundingSpaces(final boolean ignoreSurroundingSpaces) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
-                allowMissingColumnNames);
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, null, header,
+                skipHeaderRecord, allowMissingColumnNames);
     }
 
     /**
@@ -943,8 +990,8 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withNullString(final String nullString) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
-                allowMissingColumnNames);
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, null, header,
+                skipHeaderRecord, allowMissingColumnNames);
     }
 
     /**
@@ -974,8 +1021,8 @@ public final class CSVFormat implements Serializable {
             throw new IllegalArgumentException("The quoteChar cannot be a line break");
         }
         return new CSVFormat(delimiter, quoteChar, quoteMode, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
-                allowMissingColumnNames);
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, null, header,
+                skipHeaderRecord, allowMissingColumnNames);
     }
 
     /**
@@ -988,8 +1035,8 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withQuoteMode(final QuoteMode quoteModePolicy) {
         return new CSVFormat(delimiter, quoteCharacter, quoteModePolicy, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
-                allowMissingColumnNames);
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, null, header,
+                skipHeaderRecord, allowMissingColumnNames);
     }
 
     /**
@@ -1022,8 +1069,8 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withRecordSeparator(final String recordSeparator) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
-                allowMissingColumnNames);
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, null, header,
+                skipHeaderRecord, allowMissingColumnNames);
     }
 
     /**
@@ -1052,7 +1099,7 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withSkipHeaderRecord(final boolean skipHeaderRecord) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, header, skipHeaderRecord,
-                allowMissingColumnNames);
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, null, header,
+                skipHeaderRecord, allowMissingColumnNames);
     }
 }

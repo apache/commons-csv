@@ -50,13 +50,13 @@ public final class CSVPrinter implements Flushable, Closeable {
      * </p>
      *
      * @param out
-     *        stream to which to print. Must not be null.
+     *            stream to which to print. Must not be null.
      * @param format
-     *        the CSV format. Must not be null.
+     *            the CSV format. Must not be null.
      * @throws IOException
-     *         thrown if the optional header cannot be printed.
+     *             thrown if the optional header cannot be printed.
      * @throws IllegalArgumentException
-     *         thrown if the parameters of the format are inconsistent or if either out or format are null.
+     *             thrown if the parameters of the format are inconsistent or if either out or format are null.
      */
     public CSVPrinter(final Appendable out, final CSVFormat format) throws IOException {
         Assertions.notNull(out, "out");
@@ -66,6 +66,13 @@ public final class CSVPrinter implements Flushable, Closeable {
         this.format = format;
         // TODO: Is it a good idea to do this here instead of on the first call to a print method?
         // It seems a pain to have to track whether the header has already been printed or not.
+        if (format.getHeaderComments() != null) {
+            for (String line : format.getHeaderComments()) {
+                if (line != null) {
+                    this.printComment(line);
+                }
+            }
+        }
         if (format.getHeader() != null) {
             this.printRecord((Object[]) format.getHeader());
         }
@@ -113,8 +120,8 @@ public final class CSVPrinter implements Flushable, Closeable {
         this.print(value, strValue, 0, strValue.length());
     }
 
-    private void print(final Object object, final CharSequence value,
-            final int offset, final int len) throws IOException {
+    private void print(final Object object, final CharSequence value, final int offset, final int len)
+            throws IOException {
         if (!newRecord) {
             out.append(format.getDelimiter());
         }
@@ -172,8 +179,8 @@ public final class CSVPrinter implements Flushable, Closeable {
      * Note: must only be called if quoting is enabled, otherwise will generate NPE
      */
     // the original object is needed so can check for Number
-    private void printAndQuote(final Object object, final CharSequence value,
-            final int offset, final int len) throws IOException {
+    private void printAndQuote(final Object object, final CharSequence value, final int offset, final int len)
+            throws IOException {
         boolean quote = false;
         int start = offset;
         int pos = offset;
@@ -381,11 +388,16 @@ public final class CSVPrinter implements Flushable, Closeable {
     /**
      * Prints all the objects in the given collection handling nested collections/arrays as records.
      *
-     * <p>If the given collection only contains simple objects, this method will print a single record like
+     * <p>
+     * If the given collection only contains simple objects, this method will print a single record like
      * {@link #printRecord(Iterable)}. If the given collections contains nested collections/arrays those nested elements
-     * will each be printed as records using {@link #printRecord(Object...)}.</p>
+     * will each be printed as records using {@link #printRecord(Object...)}.
+     * </p>
      *
-     * <p>Given the following data structure:</p>
+     * <p>
+     * Given the following data structure:
+     * </p>
+     * 
      * <pre>
      * <code>
      * List&lt;String[]&gt; data = ...
@@ -395,7 +407,10 @@ public final class CSVPrinter implements Flushable, Closeable {
      * </code>
      * </pre>
      *
-     * <p>Calling this method will print:</p>
+     * <p>
+     * Calling this method will print:
+     * </p>
+     * 
      * <pre>
      * <code>
      * A, B, C
@@ -424,11 +439,16 @@ public final class CSVPrinter implements Flushable, Closeable {
     /**
      * Prints all the objects in the given array handling nested collections/arrays as records.
      *
-     * <p>If the given array only contains simple objects, this method will print a single record like
+     * <p>
+     * If the given array only contains simple objects, this method will print a single record like
      * {@link #printRecord(Object...)}. If the given collections contains nested collections/arrays those nested
-     * elements will each be printed as records using {@link #printRecord(Object...)}.</p>
+     * elements will each be printed as records using {@link #printRecord(Object...)}.
+     * </p>
      *
-     * <p>Given the following data structure:</p>
+     * <p>
+     * Given the following data structure:
+     * </p>
+     * 
      * <pre>
      * <code>
      * String[][] data = new String[3][]
@@ -438,7 +458,10 @@ public final class CSVPrinter implements Flushable, Closeable {
      * </code>
      * </pre>
      *
-     * <p>Calling this method will print:</p>
+     * <p>
+     * Calling this method will print:
+     * </p>
+     * 
      * <pre>
      * <code>
      * A, B, C
@@ -467,11 +490,12 @@ public final class CSVPrinter implements Flushable, Closeable {
     /**
      * Prints all the objects in the given JDBC result set.
      *
-     * @param resultSet result set
-     *            the values to print.
+     * @param resultSet
+     *            result set the values to print.
      * @throws IOException
      *             If an I/O error occurs
-     * @throws SQLException if a database access error occurs
+     * @throws SQLException
+     *             if a database access error occurs
      */
     public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
         final int columnCount = resultSet.getMetaData().getColumnCount();
