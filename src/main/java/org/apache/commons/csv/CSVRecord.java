@@ -48,8 +48,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /** The values of the record */
     private final String[] values;
 
-    CSVRecord(final String[] values, final Map<String, Integer> mapping,
-            final String comment, final long recordNumber) {
+    CSVRecord(final String[] values, final Map<String, Integer> mapping, final String comment, final long recordNumber) {
         this.recordNumber = recordNumber;
         this.values = values != null ? values : EMPTY_STRING_ARRAY;
         this.mapping = mapping;
@@ -94,27 +93,26 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     public String get(final String name) {
         if (mapping == null) {
             throw new IllegalStateException(
-                    "No header mapping was specified, the record values can't be accessed by name");
+                "No header mapping was specified, the record values can't be accessed by name");
         }
         final Integer index = mapping.get(name);
         if (index == null) {
             throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name,
-                    mapping.keySet()));
+                mapping.keySet()));
         }
         try {
             return values[index.intValue()];
         } catch (final ArrayIndexOutOfBoundsException e) {
             throw new IllegalArgumentException(String.format(
-                    "Index for header '%s' is %d but CSVRecord only has %d values!", name, index,
-                    Integer.valueOf(values.length)));
+                "Index for header '%s' is %d but CSVRecord only has %d values!", name, index,
+                Integer.valueOf(values.length)));
         }
     }
 
     /**
      * Returns the comment for this record, if any.
      *
-     * @return the comment for this record, or null if no comment for this
-     *         record is available.
+     * @return the comment for this record, or null if no comment for this record is available.
      */
     public String getComment() {
         return comment;
@@ -176,6 +174,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *
      * @return an iterator over the values of this record.
      */
+    @Override
     public Iterator<String> iterator() {
         return toList().iterator();
     }
@@ -183,7 +182,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Puts all values of this record into the given Map.
      *
-     * @param map The Map to populate.
+     * @param map
+     *            The Map to populate.
      * @return the given map.
      */
     <M extends Map<String, String>> M putIn(final M map) {
@@ -212,6 +212,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * Converts the values to a List.
      *
      * TODO: Maybe make this public?
+     * 
      * @return a new List
      */
     private List<String> toList() {
@@ -227,7 +228,6 @@ public final class CSVRecord implements Serializable, Iterable<String> {
         return putIn(new HashMap<String, String>(values.length));
     }
 
-
     /**
      * Returns a string representation of the contents of this record. The result is constructed by comment, mapping,
      * recordNumber and by passing the internal values array to {@link Arrays#toString(Object[])}.
@@ -236,14 +236,16 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     @Override
     public String toString() {
-        return "CSVRecord [comment=" + comment + ", mapping=" + mapping +
-                ", recordNumber=" + recordNumber + ", values=" +
-                Arrays.toString(values) + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("CSVRecord [comment=").append(comment);
+        sb.append(", mapping=").append(mapping);
+        sb.append(", recordNumber=").append(recordNumber);
+        sb.append(", values=").append(Arrays.toString(values)).append(']');
+        return sb.toString();
     }
 
     String[] values() {
         return values;
     }
-
 
 }
