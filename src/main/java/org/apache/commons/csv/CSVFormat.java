@@ -345,9 +345,7 @@ public final class CSVFormat implements Serializable {
             final boolean ignoreEmptyLines, final String recordSeparator,
             final String nullString, final Object[] headerComments, final String[] header,
             final boolean skipHeaderRecord, final boolean allowMissingColumnNames) {
-        if (isLineBreak(delimiter)) {
-            throw new IllegalArgumentException("The delimiter cannot be a line break");
-        }
+
         this.delimiter = delimiter;
         this.quoteCharacter = quoteChar;
         this.quoteMode = quoteMode;
@@ -362,13 +360,6 @@ public final class CSVFormat implements Serializable {
         if (header == null) {
             this.header = null;
         } else {
-            final Set<String> dupCheck = new HashSet<String>();
-            for (final String hdr : header) {
-                if (!dupCheck.add(hdr)) {
-                    throw new IllegalArgumentException("The header contains a duplicate entry: '" + hdr + "' in " +
-                            Arrays.toString(header));
-                }
-            }
             this.header = header.clone();
         }
         this.skipHeaderRecord = skipHeaderRecord;
@@ -742,6 +733,19 @@ public final class CSVFormat implements Serializable {
      * @throws IllegalArgumentException
      */
     private void validate() throws IllegalArgumentException {
+
+        if (isLineBreak(delimiter)) {
+            throw new IllegalArgumentException("The delimiter cannot be a line break");
+        }
+
+        final Set<String> dupCheck = new HashSet<String>();
+        for (final String hdr : header) {
+            if (!dupCheck.add(hdr)) {
+                throw new IllegalArgumentException("The header contains a duplicate entry: '" + hdr + "' in " +
+                        Arrays.toString(header));
+            }
+        }
+
         if (quoteCharacter != null && delimiter == quoteCharacter.charValue()) {
             throw new IllegalArgumentException(
                     "The quoteChar character and the delimiter cannot be the same ('" + quoteCharacter + "')");
