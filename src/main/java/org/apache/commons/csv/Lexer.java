@@ -34,7 +34,7 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- *
+ * Lexical analyzer. 
  *
  * @version $Id$
  */
@@ -299,6 +299,15 @@ final class Lexer implements Closeable {
      */
     long getCurrentLineNumber() {
         return reader.getCurrentLineNumber();
+    }
+
+    /**
+     * Returns the current character position
+     *
+     * @return the current character position
+     */
+    long getCharacterPosition() {
+        return reader.getPosition();
     }
 
     // TODO escape handling needs more work
