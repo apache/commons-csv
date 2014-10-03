@@ -164,7 +164,7 @@ final class ExtendedBufferedReader extends BufferedReader {
             for (int i = offset; i < offset + len; i++) {
                 final char ch = buf[i];
                 if (ch == LF) {
-                    if (CR != (i > 0 ? buf[i - 1] : lastChar)) {
+                    if (CR != (i > offset ? buf[i - 1] : lastChar)) {
                         eolCounter++;
                     }
                 } else if (ch == CR) {
