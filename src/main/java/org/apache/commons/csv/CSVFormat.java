@@ -208,7 +208,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      * <ul>
      *   <li>{@link #withDelimiter(char) withDelimiter(',')}</li>
-     *   <li>{@link #withQuote(String) withQuote('"')}</li>
+     *   <li>{@link #withQuote(char) withQuote('"')}</li>
      *   <li>{@link #withRecordSeparator(String) withRecordSeparator("\r\n")}</li>
      *   <li>{@link #withIgnoreEmptyLines(boolean) withIgnoreEmptyLines(false)}</li>
      *   <li>{@link #withAllowMissingColumnNames(boolean) withAllowMissingColumnNames(true)}</li>
@@ -332,7 +332,8 @@ public final class CSVFormat implements Serializable {
      *            the line separator to use for output
      * @param nullString
      *            the line separator to use for output
-     * @param toHeaderComments TODO
+     * @param headerComments
+     *            the comments to be printed by the Printer before the actual CSV data
      * @param header
      *            the header
      * @param skipHeaderRecord TODO
