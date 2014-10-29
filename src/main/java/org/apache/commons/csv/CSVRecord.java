@@ -36,6 +36,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     private static final long serialVersionUID = 1L;
 
+    private final long characterPosition;
+
     /** The accumulated comments (if any) */
     private final String comment;
 
@@ -44,15 +46,16 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     /** The record number. */
     private final long recordNumber;
-
+    
     /** The values of the record */
     private final String[] values;
 
-    CSVRecord(final String[] values, final Map<String, Integer> mapping, final String comment, final long recordNumber) {
+    CSVRecord(final String[] values, final Map<String, Integer> mapping, final String comment, final long recordNumber, long characterPosition) {
         this.recordNumber = recordNumber;
         this.values = values != null ? values : EMPTY_STRING_ARRAY;
         this.mapping = mapping;
         this.comment = comment;
+        this.characterPosition = characterPosition;
     }
 
     /**
@@ -109,6 +112,16 @@ public final class CSVRecord implements Serializable, Iterable<String> {
         }
     }
 
+    /**
+     * Returns the start position of this record as a character position in the source stream. This may or may not
+     * correspond to the byte position depending on the character set.
+     *
+     * @return the position of this record in the source stream.
+     */
+    public long getCharacterPosition() {
+        return characterPosition;
+    }
+    
     /**
      * Returns the comment for this record, if any.
      *

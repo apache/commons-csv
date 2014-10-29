@@ -45,12 +45,12 @@ public class CSVRecordTest {
     @Before
     public void setUp() throws Exception {
         values = new String[] { "A", "B", "C" };
-        record = new CSVRecord(values, null, null, 0);
+        record = new CSVRecord(values, null, null, 0, -1);
         header = new HashMap<String, Integer>();
         header.put("first", Integer.valueOf(0));
         header.put("second", Integer.valueOf(1));
         header.put("third", Integer.valueOf(2));
-        recordWithHeader = new CSVRecord(values, header, null, 0);
+        recordWithHeader = new CSVRecord(values, header, null, 0, -1);
     }
 
     @Test

@@ -299,22 +299,23 @@ public class CSVParserTest {
         }
     }
 
-//    @Test
-//    public void testStartWithEmptyLinesThenHeaders() throws Exception {
-//        final String[] codes = { "\r\n\r\n\r\nhello,\r\n\r\n\r\n", "hello,\n\n\n", "hello,\"\"\r\n\r\n\r\n", "hello,\"\"\n\n\n" };
-//        final String[][] res = { { "hello", "" }, { "" }, // Excel format does not ignore empty lines
-//                { "" } };
-//        for (final String code : codes) {
-//            final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL);
-//            final List<CSVRecord> records = parser.getRecords();
-//            assertEquals(res.length, records.size());
-//            assertTrue(records.size() > 0);
-//            for (int i = 0; i < res.length; i++) {
-//                assertArrayEquals(res[i], records.get(i).values());
-//            }
-//            parser.close();
-//        }
-//    }
+    // @Test
+    // public void testStartWithEmptyLinesThenHeaders() throws Exception {
+    // final String[] codes = { "\r\n\r\n\r\nhello,\r\n\r\n\r\n", "hello,\n\n\n", "hello,\"\"\r\n\r\n\r\n",
+    // "hello,\"\"\n\n\n" };
+    // final String[][] res = { { "hello", "" }, { "" }, // Excel format does not ignore empty lines
+    // { "" } };
+    // for (final String code : codes) {
+    // final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL);
+    // final List<CSVRecord> records = parser.getRecords();
+    // assertEquals(res.length, records.size());
+    // assertTrue(records.size() > 0);
+    // for (int i = 0; i < res.length; i++) {
+    // assertArrayEquals(res[i], records.get(i).values());
+    // }
+    // parser.close();
+    // }
+    // }
 
     @Test
     public void testEndOfFileBehaviorCSV() throws Exception {
@@ -472,6 +473,16 @@ public class CSVParserTest {
     @Test
     public void testGetLineNumberWithLF() throws Exception {
         this.validateLineNumbers(String.valueOf(LF));
+    }
+
+    @Test
+    public void testGetRecordPositionWithCRLF() throws Exception {
+        this.validateRecordPosition(CRLF);
+    }
+
+    @Test
+    public void testGetRecordPositionWithLF() throws Exception {
+        this.validateRecordPosition(String.valueOf(LF));
     }
 
     @Test
@@ -902,4 +913,65 @@ public class CSVParserTest {
         parser.close();
     }
 
+    private void validateRecordPosition(final String lineSeparator) throws IOException {
+        final String nl = lineSeparator; // used as linebreak in values for better distinction
+
+        String code = "a,b,c" + lineSeparator + "1,2,3" + lineSeparator +
+        // to see if recordPosition correctly points to the enclosing quote
+                "'A" + nl + "A','B" + nl + "B',CC" + lineSeparator +
+                // unicode test... not very relevant while operating on strings instead of bytes, but for
+                // completeness...
+                "\u00c4,\u00d6,\u00dc" + lineSeparator + "EOF,EOF,EOF";
+
+        final CSVFormat format = CSVFormat.newFormat(',').withQuote('\'').withRecordSeparator(lineSeparator);
+        CSVParser parser = CSVParser.parse(code, format);
+
+        CSVRecord record;
+        assertEquals(0, parser.getRecordNumber());
+
+        assertNotNull(record = parser.nextRecord());
+        assertEquals(1, record.getRecordNumber());
+        assertEquals(code.indexOf('a'), record.getCharacterPosition());
+
+        assertNotNull(record = parser.nextRecord());
+        assertEquals(2, record.getRecordNumber());
+        assertEquals(code.indexOf('1'), record.getCharacterPosition());
+
+        assertNotNull(record = parser.nextRecord());
+        final long positionRecord3 = record.getCharacterPosition();
+        assertEquals(3, record.getRecordNumber());
+        assertEquals(code.indexOf("'A"), record.getCharacterPosition());
+        assertEquals("A" + lineSeparator + "A", record.get(0));
+        assertEquals("B" + lineSeparator + "B", record.get(1));
+        assertEquals("CC", record.get(2));
+
+        assertNotNull(record = parser.nextRecord());
+        assertEquals(4, record.getRecordNumber());
+        assertEquals(code.indexOf('\u00c4'), record.getCharacterPosition());
+
+        assertNotNull(record = parser.nextRecord());
+        assertEquals(5, record.getRecordNumber());
+        assertEquals(code.indexOf("EOF"), record.getCharacterPosition());
+
+        parser.close();
+
+        // now try to read starting at record 3
+        parser = CSVParser.parse(code.substring((int) positionRecord3), format);
+        parser.setNextRecordNumber(3);
+        parser.setNextCharacterPosition(positionRecord3);
+
+        assertNotNull(record = parser.nextRecord());
+        assertEquals(3, record.getRecordNumber());
+        assertEquals(code.indexOf("'A"), record.getCharacterPosition());
+        assertEquals("A" + lineSeparator + "A", record.get(0));
+        assertEquals("B" + lineSeparator + "B", record.get(1));
+        assertEquals("CC", record.get(2));
+
+        assertNotNull(record = parser.nextRecord());
+        assertEquals(4, record.getRecordNumber());
+        assertEquals(code.indexOf('\u00c4'), record.getCharacterPosition());
+        assertEquals("\u00c4", record.get(0));
+
+        parser.close();
+    }
 }
