@@ -207,14 +207,15 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     *   <li>{@link #withDelimiter(char) withDelimiter(',')}</li>
-     *   <li>{@link #withQuote(char) withQuote('"')}</li>
-     *   <li>{@link #withRecordSeparator(String) withRecordSeparator("\r\n")}</li>
-     *   <li>{@link #withIgnoreEmptyLines(boolean) withIgnoreEmptyLines(false)}</li>
-     *   <li>{@link #withAllowMissingColumnNames(boolean) withAllowMissingColumnNames(true)}</li>
+     * <li>{@link #withDelimiter(char) withDelimiter(',')}</li>
+     * <li>{@link #withQuote(char) withQuote('"')}</li>
+     * <li>{@link #withRecordSeparator(String) withRecordSeparator("\r\n")}</li>
+     * <li>{@link #withIgnoreEmptyLines(boolean) withIgnoreEmptyLines(false)}</li>
+     * <li>{@link #withAllowMissingColumnNames(boolean) withAllowMissingColumnNames(true)}</li>
      * </ul>
      * <p>
-     * Note: this is currently like {@link #RFC4180} plus {@link #withAllowMissingColumnNames(boolean) withAllowMissingColumnNames(true)}.
+     * Note: this is currently like {@link #RFC4180} plus {@link #withAllowMissingColumnNames(boolean)
+     * withAllowMissingColumnNames(true)}.
      * </p>
      */
     public static final CSVFormat EXCEL = DEFAULT.withIgnoreEmptyLines(false).withAllowMissingColumnNames();
