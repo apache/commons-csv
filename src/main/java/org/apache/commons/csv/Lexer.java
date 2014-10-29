@@ -58,7 +58,7 @@ final class Lexer implements Closeable {
     /** The input stream */
     private final ExtendedBufferedReader reader;
 
-    /** INTERNAL API. but ctor needs to be called dynamically by PerformanceTest class */
+    /** INTERNAL API. but ctor needs to be called dynamically by {@link PerformanceTest} class */
     Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
         this.reader = reader;
         this.delimiter = format.getDelimiter();
