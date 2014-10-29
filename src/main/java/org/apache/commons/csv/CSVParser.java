@@ -225,7 +225,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     
     /**
      * Lexer offset when the parser does not start parsing at the beginning of the source. Usually used in combination
-     * with {@link #setNextRecordNumber(long)}
+     * with {@link #recordNumber}.
      */
     private final long characterOffset;
 
