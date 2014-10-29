@@ -34,7 +34,7 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * Lexical analyzer. 
+ * Lexical analyzer.
  *
  * @version $Id$
  */
@@ -74,7 +74,7 @@ final class Lexer implements Closeable {
      * <p>
      * A token corresponds to a term, a record change or an end-of-file indicator.
      * </p>
-     * 
+     *
      * @param token
      *            an existing Token object to reuse. The caller is responsible to initialize the Token.
      * @return the next token found
