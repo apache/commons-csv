@@ -218,13 +218,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     /** A record buffer for getRecord(). Grows as necessary and is reused. */
     private final List<String> record = new ArrayList<String>();
 
+    /**
+     * The next record number to assign.
+     */
     private long recordNumber;
     
     /**
-     * Lexer offset if the parser does not start parsing at the beginning of the source. Usually used in combination
+     * Lexer offset when the parser does not start parsing at the beginning of the source. Usually used in combination
      * with {@link #setNextRecordNumber(long)}
      */
-    private long characterOffset;
+    private final long characterOffset;
 
     private final Token reusableToken = new Token();
 
@@ -246,12 +249,41 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If there is a problem reading the header or skipping the first record
      */
     public CSVParser(final Reader reader, final CSVFormat format) throws IOException {
+        this(reader, format, 0, 1);
+    }
+
+    /**
+     * Customized CSV parser using the given {@link CSVFormat}
+     *
+     * <p>
+     * If you do not read all records from the given {@code reader}, you should call {@link #close()} on the parser,
+     * unless you close the {@code reader}.
+     * </p>
+     *
+     * @param reader
+     *            a Reader containing CSV-formatted input. Must not be null.
+     * @param format
+     *            the CSVFormat used for CSV parsing. Must not be null.
+     * @param characterOffset
+     *            Lexer offset when the parser does not start parsing at the beginning of the source.
+     * @param recordNumber
+     *            The next record number to assign
+     * @throws IllegalArgumentException
+     *             If the parameters of the format are inconsistent or if either reader or format are null.
+     * @throws IOException
+     *             If there is a problem reading the header or skipping the first record
+     * @since 1.1
+     */
+    public CSVParser(final Reader reader, final CSVFormat format, long characterOffset, long recordNumber)
+            throws IOException {
         Assertions.notNull(reader, "reader");
         Assertions.notNull(format, "format");
 
         this.format = format;
         this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
         this.headerMap = this.initializeHeader();
+        this.characterOffset = characterOffset;
+        this.recordNumber = recordNumber - 1;
     }
 
     private void addRecordValue() {
@@ -302,43 +334,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Sets the record number to be assigned to the next record read.
-     * <p>
-     * Use this if the reader is not positioned at the first record when you create the parser. For example, the first
-     * record read might be the 51st record in the source file.
-     * </p>
-     * <p>
-     * If you want the records to also have the correct character position referring to the underlying source, call
-     * {@link #setNextCharacterPosition(long)}.
-     * </p>
-     * 
-     * @param nextRecordNumber
-     *            the next record number
-     * @since 1.1
-     */
-    public void setNextRecordNumber(long nextRecordNumber) {
-        this.recordNumber = nextRecordNumber - 1;
-    }
-    
-    /**
-     * Sets the current position in the source stream regardless of where the parser and lexer start reading.
-     * <p>
-     * For example: We open a file and seek to position 5434 in order to start reading at record 42. In order to have
-     * the parser assign the correct characterPosition to records, we call this method.
-     * </p>
-     * <p>
-     * If you want the records to also have the correct record numbers, call {@link #setNextRecordNumber(long)}
-     * </p>
-     * 
-     * @param position
-     *            the new character position
-     * @since 1.1
-     */
-    public void setNextCharacterPosition(long position) {
-        this.characterOffset = position - lexer.getCharacterPosition();
-    }
-    
-    /**
      * Returns the current record number in the input stream.
      *
      * <p>
@@ -346,7 +341,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * the line number.
      * </p>
      *
-     * @return current line number
+     * @return current record number
      */
     public long getRecordNumber() {
         return this.recordNumber;

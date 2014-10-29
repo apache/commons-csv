@@ -26,6 +26,7 @@ import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 /**
@@ -498,7 +499,15 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             if a database access error occurs
      */
     public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
-        final int columnCount = resultSet.getMetaData().getColumnCount();
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        final int columnCount = metaData.getColumnCount();
+        boolean printHeader = false;
+        if (printHeader) {
+            for (int i = 1; i <= columnCount; i++) {
+                print(metaData.getColumnLabel(i));
+            }
+            println();
+        }
         while (resultSet.next()) {
             for (int i = 1; i <= columnCount; i++) {
                 print(resultSet.getString(i));

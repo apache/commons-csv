@@ -957,9 +957,7 @@ public class CSVParserTest {
         parser.close();
 
         // now try to read starting at record 3
-        parser = CSVParser.parse(code.substring((int) positionRecord3), format);
-        parser.setNextRecordNumber(3);
-        parser.setNextCharacterPosition(positionRecord3);
+        parser = new CSVParser(new StringReader(code.substring((int) positionRecord3)), format, positionRecord3, 3);
 
         assertNotNull(record = parser.nextRecord());
         assertEquals(3, record.getRecordNumber());

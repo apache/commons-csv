@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -219,12 +220,34 @@ public class CSVPrinterTest {
         final Connection connection = DriverManager.getConnection("jdbc:h2:mem:my_test;", "sa", "");
         try {
             final Statement stmt = connection.createStatement();
-            stmt.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
-            stmt.execute("insert into TEST values(1, 'r1')");
-            stmt.execute("insert into TEST values(2, 'r2')");
+            setUpTable(stmt);
             final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
             printer.printRecords(stmt.executeQuery("select ID, NAME from TEST"));
             assertEquals("1,r1" + recordSeparator + "2,r2" + recordSeparator, sw.toString());
+            printer.close();
+        } finally {
+            connection.close();
+        }
+    }
+
+    private void setUpTable(final Statement stmt) throws SQLException {
+        stmt.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
+        stmt.execute("insert into TEST values(1, 'r1')");
+        stmt.execute("insert into TEST values(2, 'r2')");
+    }
+
+    @Test
+    @Ignore
+    public void testJdbcPrinterWithHeaders() throws IOException, ClassNotFoundException, SQLException {
+        final StringWriter sw = new StringWriter();
+        Class.forName("org.h2.Driver");
+        final Connection connection = DriverManager.getConnection("jdbc:h2:mem:my_test;", "sa", "");
+        try {
+            final Statement stmt = connection.createStatement();
+            setUpTable(stmt);
+            final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+            printer.printRecords(stmt.executeQuery("select ID, NAME from TEST"));
+            assertEquals("ID,NAME" + recordSeparator + "1,r1" + recordSeparator + "2,r2" + recordSeparator, sw.toString());
             printer.close();
         } finally {
             connection.close();
