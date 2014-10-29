@@ -67,9 +67,6 @@ limitations under the License.
   <p>The latest code can be checked out from our Subversion repository at <a href="http://svn.apache.org/repos/asf/commons/proper/csv/trunk/">http://svn.apache.org/repos/asf/commons/proper/csv/trunk/</a>.
     You can build the component using Apache Maven using <code>mvn clean package</code>.
   </p>
-  <p>Note that building the website currently does not work when building with JDK 8.
-    This is due to incompatibilities between JDK 8 and the <a href="http://mojo.codehaus.org/findbugs-maven-plugin/">maven-findbugs-plugin</a>
-    and the <a href="http://www.eclemma.org/jacoco/trunk/doc/maven.html">maven-jacoco-plugin</a>.</p>
 </section>
 <!-- ================================================== -->
 <section name="Getting Involved">
