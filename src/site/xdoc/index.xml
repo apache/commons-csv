@@ -37,11 +37,11 @@ limitations under the License.
 <!-- ================================================== -->
 <section name="Documentation">
   <p>
-    The package descriptions in the <a href="javadocs/api-release/index.html">JavaDoc</a> give an overview of the available features
+    The package descriptions in the <a href="javadocs/api-release/index.html">Javadoc</a> give an overview of the available features
     and various <a href="project-reports.html">project reports</a> are provided.
   </p>
   <p>
-    The JavaDoc API documents for the <a href="javadocs/api-1.0/index.html">current stable release 1.0</a> [Java 6.0+] can be viewed in a web browser.
+    The Javadoc API documents for the <a href="javadocs/api-1.0/index.html">current stable release 1.0</a> [Java 6.0+] can be viewed in a web browser.
   </p>
   <p>
     The <a href="source-repository.html">subversion repository</a> can be
