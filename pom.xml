@@ -159,7 +159,6 @@ CSV files of various types.
         <configuration>
           <configLocation>${basedir}/checkstyle.xml</configLocation>
           <enableRulesSummary>false</enableRulesSummary>
-          <headerLocation>${checkstyle.header.file}</headerLocation>
         </configuration>
       </plugin>
 
@@ -199,7 +198,6 @@ CSV files of various types.
         <configuration>
           <configLocation>${basedir}/checkstyle.xml</configLocation>
           <enableRulesSummary>false</enableRulesSummary>
-          <headerLocation>${checkstyle.header.file}</headerLocation>
         </configuration>
         <!-- We need to specify reportSets because 2.9.1 creates two reports -->
         <reportSets>
