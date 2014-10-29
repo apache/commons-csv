@@ -57,11 +57,9 @@ limitations under the License.
 </ul>
 <p>
   Alternatively you can pull it from the central Maven repositories:
-  <pre>
-    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+  <pre>&lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
     &lt;artifactId&gt;commons-csv&lt;/artifactId&gt;
-    &lt;version&gt;1.0&lt;/version&gt;
-  </pre>
+    &lt;version&gt;1.0&lt;/version&gt;</pre>
 </p>
 </section>
 
