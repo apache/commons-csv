@@ -41,10 +41,10 @@ final class ExtendedBufferedReader extends BufferedReader {
     private int lastChar = UNDEFINED;
 
     /** The count of EOLs (CR/LF/CRLF) seen so far */
-    private long eolCounter = 0;
+    private long eolCounter;
 
     /** The position, which is number of characters read so far */
-    private long position = 0;
+    private long position;
 
     private boolean closed;
 
