@@ -299,23 +299,24 @@ public class CSVParserTest {
         }
     }
 
-    // @Test
-    // public void testStartWithEmptyLinesThenHeaders() throws Exception {
-    // final String[] codes = { "\r\n\r\n\r\nhello,\r\n\r\n\r\n", "hello,\n\n\n", "hello,\"\"\r\n\r\n\r\n",
-    // "hello,\"\"\n\n\n" };
-    // final String[][] res = { { "hello", "" }, { "" }, // Excel format does not ignore empty lines
-    // { "" } };
-    // for (final String code : codes) {
-    // final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL);
-    // final List<CSVRecord> records = parser.getRecords();
-    // assertEquals(res.length, records.size());
-    // assertTrue(records.size() > 0);
-    // for (int i = 0; i < res.length; i++) {
-    // assertArrayEquals(res[i], records.get(i).values());
-    // }
-    // parser.close();
-    // }
-    // }
+    @Test
+    @Ignore
+    public void testStartWithEmptyLinesThenHeaders() throws Exception {
+        final String[] codes = {"\r\n\r\n\r\nhello,\r\n\r\n\r\n", "hello,\n\n\n", "hello,\"\"\r\n\r\n\r\n",
+                "hello,\"\"\n\n\n"};
+        final String[][] res = {{"hello", ""}, {""}, // Excel format does not ignore empty lines
+                {""}};
+        for (final String code : codes) {
+            final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL);
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(res.length, records.size());
+            assertTrue(records.size() > 0);
+            for (int i = 0; i < res.length; i++) {
+                assertArrayEquals(res[i], records.get(i).values());
+            }
+            parser.close();
+        }
+    }
 
     @Test
     public void testEndOfFileBehaviorCSV() throws Exception {
