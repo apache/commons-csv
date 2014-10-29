@@ -165,7 +165,7 @@ final class ExtendedBufferedReader extends BufferedReader {
 
     /**
      * Gets the character position in the reader.
-     * 
+     *
      * @return the current position in the reader (counting characters, not bytes since this is a Reader)
      */
     long getPosition() {

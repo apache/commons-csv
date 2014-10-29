@@ -46,7 +46,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     /** The record number. */
     private final long recordNumber;
-    
+
     /** The values of the record */
     private final String[] values;
 
@@ -121,7 +121,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     public long getCharacterPosition() {
         return characterPosition;
     }
-    
+
     /**
      * Returns the comment for this record, if any.
      *
@@ -225,7 +225,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * Converts the values to a List.
      *
      * TODO: Maybe make this public?
-     * 
+     *
      * @return a new List
      */
     private List<String> toList() {

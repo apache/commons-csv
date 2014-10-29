@@ -398,7 +398,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * <p>
      * Given the following data structure:
      * </p>
-     * 
+     *
      * <pre>
      * <code>
      * List&lt;String[]&gt; data = ...
@@ -411,7 +411,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * <p>
      * Calling this method will print:
      * </p>
-     * 
+     *
      * <pre>
      * <code>
      * A, B, C
@@ -449,7 +449,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * <p>
      * Given the following data structure:
      * </p>
-     * 
+     *
      * <pre>
      * <code>
      * String[][] data = new String[3][]
@@ -462,7 +462,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * <p>
      * Calling this method will print:
      * </p>
-     * 
+     *
      * <pre>
      * <code>
      * A, B, C
