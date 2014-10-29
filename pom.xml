@@ -128,6 +128,7 @@ CSV files of various types.
 
     <checkstyle.version>2.13</checkstyle.version>
     <checkstyle.header.file>${basedir}/LICENSE-header.txt</checkstyle.header.file>
+    <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt</checkstyle.resourceExcludes>
   </properties>
 
   <build>
