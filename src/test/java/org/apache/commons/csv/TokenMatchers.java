@@ -30,6 +30,7 @@ final class TokenMatchers {
     public static Matcher<Token> hasType(final Token.Type expectedType) {
         return new TypeSafeDiagnosingMatcher<Token>() {
 
+            @Override
             public void describeTo(final Description description) {
                 description.appendText("token has type ");
                 description.appendValue(expectedType);
@@ -48,6 +49,7 @@ final class TokenMatchers {
     public static Matcher<Token> hasContent(final String expectedContent) {
         return new TypeSafeDiagnosingMatcher<Token>() {
 
+            @Override
             public void describeTo(final Description description) {
                 description.appendText("token has content ");
                 description.appendValue(expectedContent);
@@ -66,6 +68,7 @@ final class TokenMatchers {
     public static Matcher<Token> isReady() {
         return new TypeSafeDiagnosingMatcher<Token>() {
 
+            @Override
             public void describeTo(final Description description) {
                 description.appendText("token is ready ");
             }

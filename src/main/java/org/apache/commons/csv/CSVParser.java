@@ -302,6 +302,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
+    @Override
     public void close() throws IOException {
         if (this.lexer != null) {
             this.lexer.close();
@@ -424,6 +425,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * If the parser is closed a call to {@code next()} will throw a
      * NoSuchElementException.</p>
      */
+    @Override
     public Iterator<CSVRecord> iterator() {
         return new Iterator<CSVRecord>() {
             private CSVRecord current;
@@ -437,6 +439,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 }
             }
 
+            @Override
             public boolean hasNext() {
                 if (CSVParser.this.isClosed()) {
                     return false;
@@ -448,6 +451,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 return this.current != null;
             }
 
+            @Override
             public CSVRecord next() {
                 if (CSVParser.this.isClosed()) {
                     throw new NoSuchElementException("CSVParser has been closed");
@@ -466,6 +470,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 return next;
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }
