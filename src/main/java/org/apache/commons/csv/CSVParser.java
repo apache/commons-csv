@@ -413,6 +413,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         return hdrMap;
     }
 
+    /**
+     * Gets whether this parser is closed.
+     * 
+     * @return whether this parser is closed.
+     */
     public boolean isClosed() {
         return this.lexer.isClosed();
     }
