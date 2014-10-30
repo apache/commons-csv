@@ -154,7 +154,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException {
         Assertions.notNull(file, "file");
         Assertions.notNull(format, "format");
-        // Use the default Charset explicitly
         return new CSVParser(new InputStreamReader(new FileInputStream(file), charset), format);
     }
 
