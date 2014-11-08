@@ -414,7 +414,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     /**
      * Gets whether this parser is closed.
-     * 
+     *
      * @return whether this parser is closed.
      */
     public boolean isClosed() {
