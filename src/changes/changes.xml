@@ -39,6 +39,7 @@
   </properties>
   <body>
     <release version="1.1" date="2014-11-dd" description="Feature and bug fix release">
+      <action issue="CSV-140" type="fix" dev="ggregory" due-to="Damjan Jovanovic">QuoteMode.NON_NUMERIC doesn't work with CSVPrinter.printRecords(ResultSet)</action>
       <action issue="CSV-131" type="add" dev="ggregory" due-to="Holger Stratmann">Save positions of records to enable random access</action>
       <action issue="CSV-130" type="fix" dev="ggregory" due-to="Sergei Lebedev">CSVFormat#withHeader doesn't work well with #printComment, add withHeaderComments(String...)</action>
       <action issue="CSV-128" type="fix" dev="ggregory">CSVFormat.EXCEL should ignore empty header names</action>

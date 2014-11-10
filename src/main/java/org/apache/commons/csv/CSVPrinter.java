@@ -512,7 +512,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         }
         while (resultSet.next()) {
             for (int i = 1; i <= columnCount; i++) {
-                print(resultSet.getString(i));
+                print(resultSet.getObject(i));
             }
             println();
         }
