@@ -48,7 +48,7 @@ CSV files of various types.
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.4.181</version>
+      <version>1.4.182</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
