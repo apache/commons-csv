@@ -51,6 +51,18 @@ try {
     reader.close();
 }</source>
 </section>
+<section name="Printing with headers">
+  <p>
+    To print a CSV file with headers, you specify the headers in the format:
+  </p>
+  <source>final Appendable out = ...;  
+final CSVPrinter printer = CSVFormat.DEFAULT.withHeader("H1", "H2").print(out)</source>
+  <p>
+    To print a CSV file with JDBC column labels, you specify the ResultSet in the format:
+  </p>
+  <source>final ResultSet resultSet = ...;
+final CSVPrinter printer = CSVFormat.DEFAULT.withHeader(resultSet).print(out)</source>
+</section>
 <!-- ================================================== -->
 </body>
 </document>
