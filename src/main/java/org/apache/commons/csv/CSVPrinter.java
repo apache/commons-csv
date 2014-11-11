@@ -501,17 +501,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             if a database access error occurs
      */
     public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
-        ResultSetMetaData metaData = resultSet.getMetaData();
-        final int columnCount = metaData.getColumnCount();
-        // TODO should printing the header be a parameter to this function or an existing CSVFormat option or a new
-        // CSVFormat option.
-        boolean printHeader = false;
-        if (printHeader) {
-            for (int i = 1; i <= columnCount; i++) {
-                print(metaData.getColumnLabel(i));
-            }
-            println();
-        }
+        final int columnCount = resultSet.getMetaData().getColumnCount();
         while (resultSet.next()) {
             for (int i = 1; i <= columnCount; i++) {
                 print(resultSet.getObject(i));

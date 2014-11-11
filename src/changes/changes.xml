@@ -46,6 +46,7 @@
       <action issue="CSV-124" type="update" dev="brentworden" due-to="Kalyan">Improve toString() implementation of CSVRecord</action>
       <action issue="CSV-129" type="add" dev="ggregory">Add CSVFormat#with 0-arg methods matching boolean arg methods</action>
       <action issue="CSV-131" type="add" dev="ggregory" due-to="Holger Stratmann">Save positions of records to enable random access</action>
+      <action issue="CSV-139" type="add" dev="ggregory">CSVPrinter.printRecord(ResultSet) with metadata</action>
     </release>
     <release version="1.0" date="2014-08-14" description="First release">
       <action issue="CSV-125" type="fix" dev="britter">No longer works with Java 6</action>
