@@ -222,8 +222,8 @@ public class CSVPrinterTest {
     public void testJdbcPrinter() throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
         final Connection connection = geH2Connection();
-        setUpTable(connection);
         try {
+            setUpTable(connection);
             final Statement stmt = connection.createStatement();
             final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
             printer.printRecords(stmt.executeQuery("select ID, NAME from TEST"));
@@ -239,8 +239,8 @@ public class CSVPrinterTest {
         final StringWriter sw = new StringWriter();
         Class.forName("org.h2.Driver");
         final Connection connection = geH2Connection();
-        setUpTable(connection);
         try {
+            setUpTable(connection);
             @SuppressWarnings("resource")
             // Closed when the connection is closed.
             final Statement stmt = connection.createStatement();
@@ -262,8 +262,8 @@ public class CSVPrinterTest {
         final StringWriter sw = new StringWriter();
         Class.forName("org.h2.Driver");
         final Connection connection = geH2Connection();
-        setUpTable(connection);
         try {
+            setUpTable(connection);
             @SuppressWarnings("resource")
             // Closed when the connection is closed.
             final Statement stmt = connection.createStatement();
