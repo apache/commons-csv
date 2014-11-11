@@ -50,6 +50,15 @@ try {
     parser.close();
     reader.close();
 }</source>
+  <p>
+    You might find it handy to create something like this:    
+  </p>
+  <source>/**
+ * Creates a reader capable of handling BOMs.
+ */
+public InputStreamReader newReader(final InputStream inputStream) {
+    return new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.UTF_8);
+}</source>
 </section>
 <section name="Printing with headers">
   <p>
