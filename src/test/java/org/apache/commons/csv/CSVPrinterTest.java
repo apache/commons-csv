@@ -222,9 +222,9 @@ public class CSVPrinterTest {
     public void testJdbcPrinter() throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
         final Connection connection = geH2Connection();
+        setUpTable(connection);
         try {
             final Statement stmt = connection.createStatement();
-            setUpTable(stmt);
             final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
             printer.printRecords(stmt.executeQuery("select ID, NAME from TEST"));
             assertEquals("1,r1" + recordSeparator + "2,r2" + recordSeparator, sw.toString());
@@ -239,11 +239,11 @@ public class CSVPrinterTest {
         final StringWriter sw = new StringWriter();
         Class.forName("org.h2.Driver");
         final Connection connection = geH2Connection();
+        setUpTable(connection);
         try {
             @SuppressWarnings("resource")
             // Closed when the connection is closed.
             final Statement stmt = connection.createStatement();
-            setUpTable(stmt);
             @SuppressWarnings("resource")
             // Closed when the connection is closed.
             final ResultSet resultSet = stmt.executeQuery("select ID, NAME from TEST");
@@ -262,11 +262,11 @@ public class CSVPrinterTest {
         final StringWriter sw = new StringWriter();
         Class.forName("org.h2.Driver");
         final Connection connection = geH2Connection();
+        setUpTable(connection);
         try {
             @SuppressWarnings("resource")
             // Closed when the connection is closed.
             final Statement stmt = connection.createStatement();
-            setUpTable(stmt);
             @SuppressWarnings("resource")
             // Closed when the connection is closed.
             final ResultSet resultSet = stmt.executeQuery("select ID, NAME from TEST");
@@ -280,10 +280,15 @@ public class CSVPrinterTest {
         }
     }
 
-    private void setUpTable(final Statement stmt) throws SQLException {
-        stmt.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
-        stmt.execute("insert into TEST values(1, 'r1')");
-        stmt.execute("insert into TEST values(2, 'r2')");
+    private void setUpTable(final Connection connection) throws SQLException {
+        Statement statement = connection.createStatement();
+        try {
+            statement.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
+            statement.execute("insert into TEST values(1, 'r1')");
+            statement.execute("insert into TEST values(2, 'r2')");
+        } finally {
+            statement.close();
+        }
     }
 
     @Test
