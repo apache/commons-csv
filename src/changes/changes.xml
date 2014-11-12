@@ -44,6 +44,7 @@
       <action issue="CSV-128" type="fix" dev="ggregory">CSVFormat.EXCEL should ignore empty header names</action>
       <action issue="CSV-132" type="fix" dev="ggregory" due-to="Sascha Szott">Incorrect Javadoc referencing org.apache.commons.csv.CSVFormat withQuote()</action>
       <action issue="CSV-124" type="update" dev="brentworden" due-to="Kalyan">Improve toString() implementation of CSVRecord</action>
+      <action issue="CSV-134" type="update" dev="ggregory" due-to="wu wen">Unified parameter validation</action>
       <action issue="CSV-129" type="add" dev="ggregory">Add CSVFormat#with 0-arg methods matching boolean arg methods</action>
       <action issue="CSV-131" type="add" dev="ggregory" due-to="Holger Stratmann">Save positions of records to enable random access</action>
       <action issue="CSV-139" type="add" dev="ggregory">CSVPrinter.printRecord(ResultSet) with metadata</action>

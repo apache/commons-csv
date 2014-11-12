@@ -348,9 +348,6 @@ public final class CSVFormat implements Serializable {
             final boolean ignoreEmptyLines, final String recordSeparator, final String nullString,
             final Object[] headerComments, final String[] header, final boolean skipHeaderRecord,
             final boolean allowMissingColumnNames) {
-        if (isLineBreak(delimiter)) {
-            throw new IllegalArgumentException("The delimiter cannot be a line break");
-        }
         this.delimiter = delimiter;
         this.quoteCharacter = quoteChar;
         this.quoteMode = quoteMode;
@@ -362,18 +359,7 @@ public final class CSVFormat implements Serializable {
         this.recordSeparator = recordSeparator;
         this.nullString = nullString;
         this.headerComments = toStringArray(headerComments);
-        if (header == null) {
-            this.header = null;
-        } else {
-            final Set<String> dupCheck = new HashSet<String>();
-            for (final String hdr : header) {
-                if (!dupCheck.add(hdr)) {
-                    throw new IllegalArgumentException("The header contains a duplicate entry: '" + hdr + "' in " +
-                            Arrays.toString(header));
-                }
-            }
-            this.header = header.clone();
-        }
+        this.header = header == null ? null : header.clone();
         this.skipHeaderRecord = skipHeaderRecord;
         validate();
     }
@@ -742,6 +728,10 @@ public final class CSVFormat implements Serializable {
      * @throws IllegalArgumentException
      */
     private void validate() throws IllegalArgumentException {
+        if (isLineBreak(delimiter)) {
+            throw new IllegalArgumentException("The delimiter cannot be a line break");
+        }
+        
         if (quoteCharacter != null && delimiter == quoteCharacter.charValue()) {
             throw new IllegalArgumentException("The quoteChar character and the delimiter cannot be the same ('" +
                     quoteCharacter + "')");
@@ -769,6 +759,17 @@ public final class CSVFormat implements Serializable {
 
         if (escapeCharacter == null && quoteMode == QuoteMode.NONE) {
             throw new IllegalArgumentException("No quotes mode set but no escape character is set");
+        }
+        
+        // validate header
+        if (header != null) {
+            final Set<String> dupCheck = new HashSet<String>();
+            for (final String hdr : header) {
+                if (!dupCheck.add(hdr)) {
+                    throw new IllegalArgumentException("The header contains a duplicate entry: '" + hdr + "' in " +
+                            Arrays.toString(header));
+                }
+            }
         }
     }
 
