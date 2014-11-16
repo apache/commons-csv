@@ -24,7 +24,7 @@ limitations under the License.
   </parent>
   <groupId>org.apache.commons</groupId>
   <artifactId>commons-csv</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1</version>
   <name>Apache Commons CSV</name>
   <url>http://commons.apache.org/proper/commons-csv/</url>
   <description>
@@ -112,7 +112,7 @@ CSV files of various types.
   </distributionManagement>
 
   <properties>
-    <commons.release.version>1.0</commons.release.version>
+    <commons.release.version>1.1</commons.release.version>
     <commons.release.desc>(Java 6.0+)</commons.release.desc>
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC1</commons.rc.version>

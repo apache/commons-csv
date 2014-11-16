@@ -1,4 +1,50 @@
                         Apache Commons CSV
+                           Version 1.1
+                          Release Notes
+
+
+INTRODUCTION:
+
+This document contains the release notes for the 1.1 version of Apache Commons CSV.
+Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
+
+CSV requires at least Java 6.0.
+
+The Apache Commons CSV library provides a simple interface for reading and writing
+CSV files of various types.
+
+This is our second release.
+
+Changes in this version include:
+
+New features:
+o [CSV-129] Add CSVFormat#with 0-arg methods matching boolean arg methods. 
+o [CSV-131] Save positions of records to enable random access. Thanks to Holger Stratmann. 
+o [CSV-139] CSVPrinter.printRecord(ResultSet) with metadata. 
+
+Fixed Bugs:
+o [CSV-140] QuoteMode.NON_NUMERIC doesn't work with CSVPrinter.printRecords(ResultSet). Thanks to Damjan Jovanovic. 
+o [CSV-130] CSVFormat#withHeader doesn't work well with #printComment, add withHeaderComments(String...). Thanks to Sergei Lebedev. 
+o [CSV-128] CSVFormat.EXCEL should ignore empty header names. 
+o [CSV-132] Incorrect Javadoc referencing org.apache.commons.csv.CSVFormat withQuote(). Thanks to Sascha Szott. 
+
+Changes:
+o [CSV-124] Improve toString() implementation of CSVRecord. Thanks to Kalyan. 
+o [CSV-134] Unified parameter validation. Thanks to wu wen. 
+
+Historical list of changes: http://commons.apache.org/proper/commons-csv/changes-report.html
+
+For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+
+http://commons.apache.org/proper/commons-csv/
+
+Have fun!
+-Apache Commons CSV team
+
+-------------------------------------------------------------------------------
+
+                        Apache Commons CSV
                            Version 1.0
                           Release Notes
 
@@ -18,7 +64,7 @@ First release
 Changes in this version include:
 
 NEW FEATURES
-==============
+============
 
 o CSV-121:  IllegalArgumentException thrown when the header contains duplicate names when the column names are empty.
             Thanks to Sebastian Hardt.
@@ -32,7 +78,7 @@ o CSV-65:   Header support
 o CSV-48:   Predefined format for MYSQL
 
 FIXED BUGS
-============
+==========
 
 o CSV-125:  No longer works with Java 6
 o CSV-122:  NullPointerException when empty header string and and null string of "".
@@ -57,7 +103,7 @@ o CSV-13:   NullPointerException in CSVPrinter.print()/println()
 o CSV-23:   Excel strategy uses wrong separator
 
 CHANGES
-=========
+=======
 
 o CSV-117:  Validate format parameters in constructor
 o CSV-42:   Lots of possible changes Thanks to Bob Smith.
