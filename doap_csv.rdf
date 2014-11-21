@@ -42,6 +42,11 @@
         <created>2014-08-14</created>
         <revision>1.0</revision>
       </Version>
+      <Version>
+        <name>commons-csv</name>
+        <created>2014-11-21</created>
+        <revision>1.1</revision>
+      </Version>
     </release>
     <mailing-list rdf:resource="http://commons.apache.org/mail-lists.html"/>
   </Project>
