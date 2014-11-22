@@ -76,7 +76,7 @@ For previous releases, see the <a href="http://archive.apache.org/dist/commons/c
   <pre>&lt;dependency&gt;
     &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
     &lt;artifactId&gt;commons-csv&lt;/artifactId&gt;
-    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;version&gt;1.1&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 </p>
 </section>
