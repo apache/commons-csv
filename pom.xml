@@ -73,6 +73,12 @@ CSV files of various types.
       <organization>The Apache Software Foundation</organization>
     </developer>
     <developer>
+      <name>Emmanuel Bourg</name>
+      <id>ebourg</id>
+      <email>ebourg@apache.org</email>
+      <organization>Apache</organization>
+    </developer>
+    <developer>
       <name>Gary Gregory</name>
       <id>ggregory</id>
       <email>ggregory@apache.org</email>
@@ -354,6 +360,112 @@ CSV files of various types.
                       <arg line="update --set-depth infinity ${dirs}" />
                     </exec>
                   </tasks>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
+
+    <!-- Profile to build and run the benchmarks. Use 'mvn test -Pbenchmark', and add '-Dbenchmark=foo' to run only the foo benchmark -->
+    <profile>
+      <id>benchmark</id>
+      
+      <dependencies>
+        <dependency>
+          <groupId>org.openjdk.jmh</groupId>
+          <artifactId>jmh-core</artifactId>
+          <version>1.5.2</version>
+          <scope>test</scope>
+        </dependency>
+    
+        <dependency>
+          <groupId>org.openjdk.jmh</groupId>
+          <artifactId>jmh-generator-annprocess</artifactId>
+          <version>1.5.2</version>
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>genjava</groupId>
+          <artifactId>gj-csv</artifactId>
+          <version>1.0</version>
+          <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>net.sourceforge.javacsv</groupId>
+            <artifactId>javacsv</artifactId>
+            <version>2.0</version>
+          <scope>test</scope>
+        </dependency>
+    
+        <dependency>
+          <groupId>com.opencsv</groupId>
+          <artifactId>opencsv</artifactId>
+          <version>3.1</version>
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>net.sf.supercsv</groupId>
+          <artifactId>super-csv</artifactId>
+          <version>2.2.1</version>
+        </dependency>
+
+        <!-- Not in Maven Central, download manually from http://kasparov.skife.org/csv/csv-1.0.jar and copy in the base directory -->
+        <dependency>
+          <groupId>org.skife.kasparov</groupId>
+          <artifactId>csv</artifactId>
+          <version>1.0</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/csv-1.0.jar</systemPath>
+        </dependency>
+      </dependencies>
+      
+      <properties>
+        <skipTests>true</skipTests>
+        <benchmark>org.apache</benchmark>
+      </properties>
+      
+      <build>
+        <plugins>
+          <!-- Enable the compilation of the benchmarks -->
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration combine.self="override">
+              <testIncludes>
+                <testInclude>**/*</testInclude>
+              </testIncludes>
+            </configuration>
+          </plugin>
+          
+          <!-- Hook the benchmarks to the test phase -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>benchmark</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <classpathScope>test</classpathScope>
+                  <executable>java</executable>
+                  <arguments>
+                    <argument>-classpath</argument>
+                    <classpath/>
+                    <argument>org.openjdk.jmh.Main</argument>
+                    <argument>-rf</argument>
+                    <argument>json</argument>
+                    <argument>-rff</argument>
+                    <argument>target/jmh-result.json</argument>
+                    <argument>${benchmark}</argument>
+                  </arguments>
                 </configuration>
               </execution>
             </executions>
