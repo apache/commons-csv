@@ -154,6 +154,14 @@ CSV files of various types.
     </pluginManagement>  
     <plugins>
       <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <testExcludes>
+            <testExclude>**/*Benchmark*</testExclude>
+          </testExcludes>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
