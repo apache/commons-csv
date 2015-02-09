@@ -431,6 +431,12 @@ CSV files of various types.
           <scope>system</scope>
           <systemPath>${basedir}/csv-1.0.jar</systemPath>
         </dependency>
+        
+        <dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-lang3</artifactId>
+          <version>3.2.1</version>
+        </dependency>
       </dependencies>
       
       <properties>

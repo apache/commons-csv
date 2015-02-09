@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.generationjava.io.CsvReader;
+import org.apache.commons.lang3.StringUtils;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -39,8 +40,8 @@ import org.supercsv.prefs.CsvPreference;
 @BenchmarkMode(Mode.AverageTime)
 @Fork(value = 1, jvmArgs = "-server")
 @Threads(1)
-@Warmup(iterations = 10)
-@Measurement(iterations = 10)
+@Warmup(iterations = 5)
+@Measurement(iterations = 20)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class CSVBenchmark {
 
@@ -49,12 +50,27 @@ public class CSVBenchmark {
     }
 
     @Benchmark
-    public int baseline(Blackhole bh) throws Exception {
+    public int read(Blackhole bh) throws Exception {
         BufferedReader in = getReader();
         int count = 0;
         String line;
         while ((line = in.readLine()) != null) {
             count++;
+        }
+        
+        bh.consume(count);
+        in.close();
+        return count;
+    }
+
+    @Benchmark
+    public int split(Blackhole bh) throws Exception {
+        BufferedReader in = getReader();
+        int count = 0;
+        String line;
+        while ((line = in.readLine()) != null) {
+            String[] values = StringUtils.split(line, ',');
+            count += values.length;
         }
         
         bh.consume(count);
