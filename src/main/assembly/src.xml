@@ -34,6 +34,9 @@ Licensed to the Apache Software Foundation (ASF) under one or more
     </fileSet>
     <fileSet>
       <directory>src</directory>
+      <excludes>
+        <exclude>**/*Benchmark.java</exclude>
+      </excludes>
     </fileSet>
   </fileSets>
 </assembly>
