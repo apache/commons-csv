@@ -38,7 +38,7 @@ import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;
 
 @BenchmarkMode(Mode.AverageTime)
-@Fork(value = 1, jvmArgs = "-server")
+@Fork(value = 1, jvmArgs = {"-server", "-Xms128M", "-Xmx128M"})
 @Threads(1)
 @Warmup(iterations = 5)
 @Measurement(iterations = 20)
