@@ -17,14 +17,6 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.Constants.BACKSLASH;
-import static org.apache.commons.csv.Constants.COMMA;
-import static org.apache.commons.csv.Constants.CR;
-import static org.apache.commons.csv.Constants.CRLF;
-import static org.apache.commons.csv.Constants.DOUBLE_QUOTE_CHAR;
-import static org.apache.commons.csv.Constants.LF;
-import static org.apache.commons.csv.Constants.TAB;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Serializable;
@@ -34,7 +26,11 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
+
+import static org.apache.commons.csv.Constants.*;
+import static org.apache.commons.csv.FormatProperties.*;
 
 /**
  * Specifies the format of a CSV file and parses input.
@@ -1178,5 +1174,75 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames);
+    }
+
+    /**
+     * Creates format based on Properties file.
+     * All CSVFormat attributes are mapped from the following properties:
+     * <ul>
+     *     <li>org.apache.commons.csv.format.quoteCharacter</li>
+     *     <li>org.apache.commons.csv.format.quoteMode</li>
+     *     <li>org.apache.commons.csv.format.commentMarker</li>
+     *     <li>org.apache.commons.csv.format.escape</li>
+     *     <li>org.apache.commons.csv.format.ignoreSurroundingSpaces</li>
+     *     <li>org.apache.commons.csv.format.ignoreEmptyLines</li>
+     *     <li>org.apache.commons.csv.format.recordSeparator"</li>
+     *     <li>org.apache.commons.csv.format.nullString</li>
+     *     <li>org.apache.commons.csv.format.headerComments</li>
+     *     <li>org.apache.commons.csv.format.header</li>
+     *     <li>org.apache.commons.csv.format.skipHeaderRecord</li>
+     *     <li>org.apache.commons.csv.format.allowMissingColumnNames</li>
+     * </ul>
+     *
+     * @param properties
+     * @return
+     */
+    public static CSVFormat from(Properties properties) {
+        FormatProperties formatProperties = new FormatProperties(properties);
+        Character delimiter = formatProperties.getAsChar(DELIMITER);
+        if (delimiter == null) {
+            throw new IllegalArgumentException("Delimiter is required when creating CSVFormat from Properties file.");
+        }
+
+        return new CSVFormat(
+                delimiter,
+                formatProperties.getAsChar(QUOTE_CHARACTER),
+                formatProperties.getAsQuoteMode(QUOTE_MODE),
+                formatProperties.getAsChar(COMMENT_MARKER),
+                formatProperties.getAsChar(ESCAPE),
+                formatProperties.getAsBoolean(IGNORE_SURROUNDING_SPACES),
+                formatProperties.getAsBoolean(IGNORE_EMPTY_LINES),
+                formatProperties.get(RECORD_SEPARATOR),
+                formatProperties.get(NULL_STRING),
+                formatProperties.getAsArray(HEADER_COMMENTS),
+                formatProperties.getAsArray(HEADER),
+                formatProperties.getAsBoolean(SKIP_HEADER_RECORD),
+                formatProperties.getAsBoolean(ALLOW_MISSING_COLUMN_NAMES));
+    }
+
+    /**
+     * Overrides current attributes' values with Properties file.
+     *
+     * @see #from(java.util.Properties)
+     * @param properties
+     * @return
+     */
+    public CSVFormat withProperties(Properties properties) {
+        FormatProperties formatProperties = new FormatProperties(properties);
+
+        return new CSVFormat(
+                formatProperties.getAsChar(DELIMITER, delimiter),
+                formatProperties.getAsChar(QUOTE_CHARACTER, quoteCharacter),
+                formatProperties.getAsQuoteMode(QUOTE_MODE, quoteMode),
+                formatProperties.getAsChar(COMMENT_MARKER, commentMarker),
+                formatProperties.getAsChar(ESCAPE, escapeCharacter),
+                formatProperties.getAsBoolean(IGNORE_SURROUNDING_SPACES, ignoreSurroundingSpaces),
+                formatProperties.getAsBoolean(IGNORE_EMPTY_LINES, ignoreEmptyLines),
+                formatProperties.get(RECORD_SEPARATOR, recordSeparator),
+                formatProperties.get(NULL_STRING, nullString),
+                formatProperties.getAsArray(HEADER_COMMENTS, headerComments),
+                formatProperties.getAsArray(HEADER, header),
+                formatProperties.getAsBoolean(SKIP_HEADER_RECORD, skipHeaderRecord),
+                formatProperties.getAsBoolean(ALLOW_MISSING_COLUMN_NAMES, allowMissingColumnNames));
     }
 }
