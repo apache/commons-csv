@@ -39,8 +39,10 @@ public final class CSVPrinter implements Flushable, Closeable {
     private final Appendable out;
     private final CSVFormat format;
 
-    /** True if we just began a new record. */
-    private boolean newRecord = true;
+    /** 0 if we just began a new record. */
+    private int newRecord = 0;
+    /** true if first value is empty */
+    private boolean firstEmpty;
 
     /**
      * Creates a printer that will print values to the given stream following the CSVFormat.
@@ -124,7 +126,7 @@ public final class CSVPrinter implements Flushable, Closeable {
 
     private void print(final Object object, final CharSequence value, final int offset, final int len)
             throws IOException {
-        if (!newRecord) {
+        if (newRecord > 0) {
             out.append(format.getDelimiter());
         }
         if (format.isQuoteCharacterSet()) {
@@ -135,7 +137,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         } else {
             out.append(value, offset, offset + len);
         }
-        newRecord = false;
+        newRecord++;
     }
 
     /*
@@ -208,18 +210,16 @@ public final class CSVPrinter implements Flushable, Closeable {
             return;
         case MINIMAL:
             if (len <= 0) {
-                // always quote an empty token that is the first
-                // on the line, as it may be the only thing on the
-                // line. If it were not quoted in that case,
-                // an empty line has no tokens.
-                if (newRecord) {
-                    quote = true;
+                // mark quotes may be required for first empty value
+                if (newRecord == 0) {
+                    firstEmpty = true;
+                    return;
                 }
             } else {
                 char c = value.charAt(pos);
 
                 // TODO where did this rule come from?
-                if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || (c > 'z'))) {
+                if (newRecord == 0 && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || (c > 'z'))) {
                     quote = true;
                 } else if (c <= COMMENT) {
                     // Some other chars at the start of a value caused the parser to fail, so for now
@@ -307,7 +307,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         if (!format.isCommentMarkerSet()) {
             return;
         }
-        if (!newRecord) {
+        if (newRecord > 0) {
             println();
         }
         out.append(format.getCommentMarker().charValue());
@@ -340,11 +340,20 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void println() throws IOException {
+        // if the line only contains an empty value
+        if (newRecord == 1 && firstEmpty
+                && (format.getQuoteMode() == null || format.getQuoteMode() == QuoteMode.MINIMAL)) {
+            final char quoteChar = format.getQuoteCharacter().charValue();
+            out.append(quoteChar);
+            out.append(quoteChar);
+        }
+
         final String recordSeparator = format.getRecordSeparator();
         if (recordSeparator != null) {
             out.append(recordSeparator);
         }
-        newRecord = true;
+        newRecord = 0;
+        firstEmpty = false;
     }
 
     /**

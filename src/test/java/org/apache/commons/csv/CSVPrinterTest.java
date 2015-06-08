@@ -392,6 +392,24 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testPrintFirstEmptyValue() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.printRecord("", "b", "c");
+        assertEquals(",b,c" + recordSeparator, sw.toString());
+        printer.close();
+    }
+
+    @Test
+    public void testPrintOnlyEmptyValue() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.printRecord("");
+        assertEquals("\"\"" + recordSeparator, sw.toString());
+        printer.close();
+    }
+
+    @Test
     public void testParseCustomNullValues() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVFormat format = CSVFormat.DEFAULT.withNullString("NULL");
