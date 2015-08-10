@@ -273,7 +273,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If there is a problem reading the header or skipping the first record
      * @since 1.1
      */
-    public CSVParser(final Reader reader, final CSVFormat format, long characterOffset, long recordNumber)
+    public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber)
             throws IOException {
         Assertions.notNull(reader, "reader");
         Assertions.notNull(format, "format");
@@ -361,7 +361,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     public List<CSVRecord> getRecords() throws IOException {
         CSVRecord rec;
-        List<CSVRecord> records = new ArrayList<CSVRecord>();
+        final List<CSVRecord> records = new ArrayList<CSVRecord>();
         while ((rec = this.nextRecord()) != null) {
             records.add(rec);
         }

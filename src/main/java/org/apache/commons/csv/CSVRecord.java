@@ -51,7 +51,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     private final String[] values;
 
     CSVRecord(final String[] values, final Map<String, Integer> mapping, final String comment, final long recordNumber,
-            long characterPosition) {
+            final long characterPosition) {
         this.recordNumber = recordNumber;
         this.values = values != null ? values : EMPTY_STRING_ARRAY;
         this.mapping = mapping;

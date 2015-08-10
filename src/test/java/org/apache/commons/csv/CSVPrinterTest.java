@@ -281,7 +281,7 @@ public class CSVPrinterTest {
     }
 
     private void setUpTable(final Connection connection) throws SQLException {
-        Statement statement = connection.createStatement();
+        final Statement statement = connection.createStatement();
         try {
             statement.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
             statement.execute("insert into TEST values(1, 'r1')");

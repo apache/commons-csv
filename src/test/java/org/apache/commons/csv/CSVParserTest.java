@@ -395,7 +395,7 @@ public class CSVParserTest {
         final String code = "A,B,C,,\r\na,b,c,d,e\r\n";
         final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL.withHeader());
         try {
-            for (CSVRecord record : parser.getRecords()) {
+            for (final CSVRecord record : parser.getRecords()) {
                 Assert.assertEquals("a", record.get("A"));
                 Assert.assertEquals("b", record.get("B"));
                 Assert.assertEquals("c", record.get("C"));
@@ -917,7 +917,7 @@ public class CSVParserTest {
     private void validateRecordPosition(final String lineSeparator) throws IOException {
         final String nl = lineSeparator; // used as linebreak in values for better distinction
 
-        String code = "a,b,c" + lineSeparator + "1,2,3" + lineSeparator +
+        final String code = "a,b,c" + lineSeparator + "1,2,3" + lineSeparator +
         // to see if recordPosition correctly points to the enclosing quote
                 "'A" + nl + "A','B" + nl + "B',CC" + lineSeparator +
                 // unicode test... not very relevant while operating on strings instead of bytes, but for

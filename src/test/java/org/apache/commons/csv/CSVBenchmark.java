@@ -61,8 +61,8 @@ public class CSVBenchmark {
      */
     @Setup
     public void init() throws IOException {
-        File file = new File("src/test/resources/perf/worldcitiespop.txt.gz");
-        InputStream in = new GZIPInputStream(new FileInputStream(file));
+        final File file = new File("src/test/resources/perf/worldcitiespop.txt.gz");
+        final InputStream in = new GZIPInputStream(new FileInputStream(file));
         this.data = IOUtils.toString(in, "ISO-8859-1");
         in.close();
     }
@@ -72,8 +72,8 @@ public class CSVBenchmark {
     }
 
     @Benchmark
-    public int read(Blackhole bh) throws Exception {
-        BufferedReader in = getReader();
+    public int read(final Blackhole bh) throws Exception {
+        final BufferedReader in = getReader();
         int count = 0;
         String line;
         while ((line = in.readLine()) != null) {
@@ -86,12 +86,12 @@ public class CSVBenchmark {
     }
 
     @Benchmark
-    public int split(Blackhole bh) throws Exception {
-        BufferedReader in = getReader();
+    public int split(final Blackhole bh) throws Exception {
+        final BufferedReader in = getReader();
         int count = 0;
         String line;
         while ((line = in.readLine()) != null) {
-            String[] values = StringUtils.split(line, ',');
+            final String[] values = StringUtils.split(line, ',');
             count += values.length;
         }
         
@@ -101,13 +101,13 @@ public class CSVBenchmark {
     }
 
     @Benchmark
-    public int parseCommonsCSV(Blackhole bh) throws Exception {
-        BufferedReader in = getReader();
+    public int parseCommonsCSV(final Blackhole bh) throws Exception {
+        final BufferedReader in = getReader();
         
-        CSVFormat format = CSVFormat.DEFAULT.withHeader();
+        final CSVFormat format = CSVFormat.DEFAULT.withHeader();
 
         int count = 0;
-        for (CSVRecord record : format.parse(in)) {
+        for (final CSVRecord record : format.parse(in)) {
             count++;
         }
 
@@ -117,10 +117,10 @@ public class CSVBenchmark {
     }
 
     @Benchmark
-    public int parseGenJavaCSV(Blackhole bh) throws Exception {
-        BufferedReader in = getReader();
+    public int parseGenJavaCSV(final Blackhole bh) throws Exception {
+        final BufferedReader in = getReader();
         
-        CsvReader reader = new CsvReader(in);
+        final CsvReader reader = new CsvReader(in);
         reader.setFieldDelimiter(',');
 
         int count = 0;
@@ -135,10 +135,10 @@ public class CSVBenchmark {
     }
 
     @Benchmark
-    public int parseJavaCSV(Blackhole bh) throws Exception {
-        BufferedReader in = getReader();
+    public int parseJavaCSV(final Blackhole bh) throws Exception {
+        final BufferedReader in = getReader();
         
-        com.csvreader.CsvReader reader = new com.csvreader.CsvReader(in, ',');
+        final com.csvreader.CsvReader reader = new com.csvreader.CsvReader(in, ',');
         reader.setRecordDelimiter('\n');
 
         int count = 0;
@@ -152,10 +152,10 @@ public class CSVBenchmark {
     }
 
     @Benchmark
-    public int parseOpenCSV(Blackhole bh) throws Exception {
-        BufferedReader in = getReader();
+    public int parseOpenCSV(final Blackhole bh) throws Exception {
+        final BufferedReader in = getReader();
         
-        com.opencsv.CSVReader reader = new com.opencsv.CSVReader(in, ',');
+        final com.opencsv.CSVReader reader = new com.opencsv.CSVReader(in, ',');
 
         int count = 0;
         while (reader.readNext() != null) {
@@ -168,13 +168,13 @@ public class CSVBenchmark {
     }
 
     @Benchmark
-    public int parseSkifeCSV(Blackhole bh) throws Exception {
-        BufferedReader in = getReader();
+    public int parseSkifeCSV(final Blackhole bh) throws Exception {
+        final BufferedReader in = getReader();
         
-        org.skife.csv.CSVReader reader = new org.skife.csv.SimpleReader();
+        final org.skife.csv.CSVReader reader = new org.skife.csv.SimpleReader();
         reader.setSeperator(',');
         
-        CountingReaderCallback callback = new CountingReaderCallback();
+        final CountingReaderCallback callback = new CountingReaderCallback();
         reader.parse(in, callback);
 
         bh.consume(callback);
@@ -186,16 +186,16 @@ public class CSVBenchmark {
         public int count = 0;
 
         @Override
-        public void onRow(String[] fields) {
+        public void onRow(final String[] fields) {
             count++;
         }
     }
 
     @Benchmark
-    public int parseSuperCSV(Blackhole bh) throws Exception {
-        BufferedReader in = getReader();
+    public int parseSuperCSV(final Blackhole bh) throws Exception {
+        final BufferedReader in = getReader();
         
-        CsvListReader reader = new CsvListReader(in, CsvPreference.STANDARD_PREFERENCE);
+        final CsvListReader reader = new CsvListReader(in, CsvPreference.STANDARD_PREFERENCE);
 
         int count = 0;
         List<String> record = null;
