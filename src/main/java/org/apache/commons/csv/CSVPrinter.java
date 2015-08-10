@@ -103,6 +103,15 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
+     * Gets the target Appendable.
+     *
+     * @return the target Appendable.
+     */
+    public Appendable getOut() {
+        return this.out;
+    }
+
+    /**
      * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
      *
      * @param value
@@ -507,14 +516,5 @@ public final class CSVPrinter implements Flushable, Closeable {
             }
             println();
         }
-    }
-
-    /**
-     * Gets the target Appendable.
-     *
-     * @return the target Appendable.
-     */
-    public Appendable getOut() {
-        return this.out;
     }
 }
