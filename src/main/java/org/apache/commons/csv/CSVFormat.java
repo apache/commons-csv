@@ -147,6 +147,54 @@ import java.util.Set;
  */
 public final class CSVFormat implements Serializable {
 
+    /**
+     * Predefines formats.
+     * 
+     * @since 1.2
+     */
+    public static enum Predefined {
+
+        /**
+         * @see CSVFormat#DEFAULT.
+         */
+        Default(CSVFormat.DEFAULT), 
+
+        /**
+         * @see CSVFormat#EXCEL.
+         */
+        Excel(CSVFormat.EXCEL), 
+
+        /**
+         * @see CSVFormat#MYSQL.
+         */
+        MySQL(CSVFormat.MYSQL), 
+
+        /**
+         * @see CSVFormat#RFC4180.
+         */
+        RFC4180(CSVFormat.RFC4180),
+
+        /**
+         * @see CSVFormat#TDF.
+         */
+        TDF(CSVFormat.TDF);
+
+        private final CSVFormat format;
+
+        private Predefined(CSVFormat format) {
+            this.format = format;
+        }
+        
+        /**
+         * Gets the format.
+         * 
+         * @return the format.
+         */
+        public CSVFormat getFormat() {
+            return format;
+        }
+    };
+    
     private static final long serialVersionUID = 1L;
 
     private final char delimiter;
@@ -175,6 +223,7 @@ public final class CSVFormat implements Serializable {
      * <li>withRecordSeparator("\r\n")</li>
      * <li>withIgnoreEmptyLines(true)</li>
      * </ul>
+     * @see Predefined#Default
      */
     public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true,
             CRLF, null, null, null, false, false);
@@ -191,6 +240,7 @@ public final class CSVFormat implements Serializable {
      * <li>withRecordSeparator("\r\n")</li>
      * <li>withIgnoreEmptyLines(false)</li>
      * </ul>
+     * @see Predefined#RFC4180
      */
     public static final CSVFormat RFC4180 = DEFAULT.withIgnoreEmptyLines(false);
 
@@ -220,6 +270,7 @@ public final class CSVFormat implements Serializable {
      * Note: this is currently like {@link #RFC4180} plus {@link #withAllowMissingColumnNames(boolean)
      * withAllowMissingColumnNames(true)}.
      * </p>
+     * @see Predefined#Excel
      */
     public static final CSVFormat EXCEL = DEFAULT.withIgnoreEmptyLines(false).withAllowMissingColumnNames();
 
@@ -235,6 +286,7 @@ public final class CSVFormat implements Serializable {
      * <li>withRecordSeparator("\r\n")</li>
      * <li>withIgnoreSurroundingSpaces(true)</li>
      * </ul>
+     * @see Predefined#TDF
      */
     public static final CSVFormat TDF = DEFAULT.withDelimiter(TAB).withIgnoreSurroundingSpaces();
 
@@ -257,6 +309,7 @@ public final class CSVFormat implements Serializable {
      * <li>withEscape('\\')</li>
      * </ul>
      *
+     * @see Predefined#MySQL
      * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html">
      *      http://dev.mysql.com/doc/refman/5.1/en/load-data.html</a>
      */
