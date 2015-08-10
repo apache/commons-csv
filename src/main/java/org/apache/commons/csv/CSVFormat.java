@@ -365,6 +365,18 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Gets one of the predefined formats from {@link CSVFormat.Predefined}.
+     * 
+     * @param format
+     *            name
+     * @return one of the predefined formats
+     * @since 1.2
+     */
+    public static CSVFormat valueOf(final String format) {
+        return CSVFormat.Predefined.valueOf(format).getFormat();
+    }
+
+    /**
      * Creates a customized CSV format.
      *
      * @param delimiter

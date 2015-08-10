@@ -27,6 +27,7 @@ public class CSVFormatPredefinedTest {
 
     private void test(final CSVFormat format, final String enumName) {
         Assert.assertEquals(format, CSVFormat.Predefined.valueOf(enumName).getFormat());
+        Assert.assertEquals(format, CSVFormat.valueOf(enumName));
     }
 
     @Test
