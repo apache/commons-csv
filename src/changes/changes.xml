@@ -40,6 +40,7 @@
   <body>
     <release version="1.1.1" date="20??-MM-DD" description="Feature and bug fix release">
       <action issue="CSV-145" type="fix" dev="ggregory" due-to="Frank Ulbricht">CSVFormat.with* methods clear the header comments</action>
+      <action issue="CSV-156" type="fix" dev="ggregory" due-to="Jason Steenstra-Pickens">Incorrect Javadoc on QuoteMode.NONE</action>
     </release>
     <release version="1.1" date="2014-11-16" description="Feature and bug fix release">
       <action issue="CSV-140" type="fix" dev="ggregory" due-to="Damjan Jovanovic">QuoteMode.NON_NUMERIC doesn't work with CSVPrinter.printRecords(ResultSet)</action>

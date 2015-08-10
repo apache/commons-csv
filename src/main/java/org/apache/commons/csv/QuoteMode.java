@@ -40,9 +40,8 @@ public enum QuoteMode {
     NON_NUMERIC,
 
     /**
-     * Never quotes fields. When the delimiter occurs in data, it is preceded by the current escape character. If the
-     * escape character is not set, printing will throw an exception if any characters that require escaping are
-     * encountered.
+     * Never quotes fields. When the delimiter occurs in data, the printer prefixes it with the current escape
+     * character. If the escape character is not set, format validation throws an exception.
      */
     NONE
 }
