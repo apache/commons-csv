@@ -29,7 +29,7 @@ public enum QuoteMode {
     ALL,
 
     /**
-     * Quotes fields which contain special characters such as a delimiter, quote character or any of the characters in
+     * Quotes fields which contain special characters such as a delimiter, quotes character or any of the characters in
      * line separator.
      */
     MINIMAL,
