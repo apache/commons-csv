@@ -155,27 +155,27 @@ public final class CSVFormat implements Serializable {
     public static enum Predefined {
 
         /**
-         * @see CSVFormat#DEFAULT.
+         * @see CSVFormat#DEFAULT
          */
         Default(CSVFormat.DEFAULT), 
 
         /**
-         * @see CSVFormat#EXCEL.
+         * @see CSVFormat#EXCEL
          */
         Excel(CSVFormat.EXCEL), 
 
         /**
-         * @see CSVFormat#MYSQL.
+         * @see CSVFormat#MYSQL
          */
         MySQL(CSVFormat.MYSQL), 
 
         /**
-         * @see CSVFormat#RFC4180.
+         * @see CSVFormat#RFC4180
          */
         RFC4180(CSVFormat.RFC4180),
 
         /**
-         * @see CSVFormat#TDF.
+         * @see CSVFormat#TDF
          */
         TDF(CSVFormat.TDF);
 
