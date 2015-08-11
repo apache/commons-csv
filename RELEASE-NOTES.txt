@@ -29,7 +29,6 @@ o CSV-145:  CSVFormat.with* methods clear the header comments Thanks to Frank Ul
 o CSV-156:  Incorrect Javadoc on QuoteMode.NONE Thanks to Jason Steenstra-Pickens.
 
 
-
 Historical list of changes: http://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
