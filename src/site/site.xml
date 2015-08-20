@@ -40,11 +40,13 @@
       <item name="Team"                  href="/team-list.html"/>
       <item name="Source Repository"     href="/source-repository.html"/>
       <item name="Javadoc trunk"         href="/apidocs/index.html"/>
+      <item name="Javadoc 1.2"           href="/archives/1.2/apidocs/index.html"/>
       <item name="Javadoc 1.1"           href="/archives/1.1/apidocs/index.html"/>
       <item name="Javadoc 1.0"           href="/archives/1.0/apidocs/index.html"/>
     </menu>
 
     <menu name="Site Archives">
+      <item name="CSV 1.2"       href="/archives/1.2/index.html"/>
       <item name="CSV 1.1"       href="/archives/1.1/index.html"/>
       <item name="CSV 1.0"       href="/archives/1.0/index.html"/>
     </menu>

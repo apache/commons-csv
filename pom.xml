@@ -24,7 +24,7 @@ limitations under the License.
   </parent>
   <groupId>org.apache.commons</groupId>
   <artifactId>commons-csv</artifactId>
-  <version>1.2</version>
+  <version>1.2-SNAPSHOT</version>
   <name>Apache Commons CSV</name>
   <url>http://commons.apache.org/proper/commons-csv/</url>
   <description>
@@ -248,7 +248,7 @@ CSV files of various types.
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.2</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
