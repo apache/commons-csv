@@ -25,8 +25,8 @@ o CSV-157:  Add enum CSVFormat.Predefined that contains the default CSVFormat va
 FIXED BUGS
 ============
 
-o CSV-145:  CSVFormat.with* methods clear the header comments Thanks to Frank Ulbricht.
-o CSV-156:  Incorrect Javadoc on QuoteMode.NONE Thanks to Jason Steenstra-Pickens.
+o CSV-145:  CSVFormat.with* methods clear the header comments. Thanks to Frank Ulbricht.
+o CSV-156:  Incorrect Javadoc on QuoteMode.NONE. Thanks to Jason Steenstra-Pickens.
 
 
 Historical list of changes: http://commons.apache.org/proper/commons-csv/changes-report.html
