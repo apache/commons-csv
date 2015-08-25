@@ -63,7 +63,7 @@ Alternatively you can pull it from the central Maven repositories:
 <dependency>
   <groupId>org.apache.commons</groupId>
   <artifactId>commons-csv</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
 </dependency>
 ```
 
