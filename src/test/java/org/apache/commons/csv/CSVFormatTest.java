@@ -17,24 +17,20 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.CSVFormat.RFC4180;
-import static org.apache.commons.csv.Constants.CR;
-import static org.apache.commons.csv.Constants.CRLF;
-import static org.apache.commons.csv.Constants.LF;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.Properties;
 
-import org.junit.Test;
+import static org.apache.commons.csv.CSVFormat.RFC4180;
+import static org.apache.commons.csv.Constants.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -425,5 +421,217 @@ public class CSVFormatTest {
     public void testWithRecordSeparatorCRLF() throws Exception {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator(CRLF);
         assertEquals(CRLF, formatWithRecordSeparator.getRecordSeparator());
+    }
+
+    @Test
+    public void shouldReadDelimiterFromProperties() throws Exception {
+        char expectedCharacter = ']';
+        Properties properties = new Properties();
+        properties.setProperty("org.apache.commons.csv.format.delimiter", String.valueOf(expectedCharacter));
+
+        CSVFormat format = CSVFormat.from(properties);
+
+        assertThat(format.getDelimiter(), is(equalTo(expectedCharacter)));
+
+        format = CSVFormat.DEFAULT.withProperties(properties);
+        assertThat(format.getDelimiter(), is(equalTo(expectedCharacter)));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldFailCreationFromPropertiesForMissingDelimiter() throws Exception {
+        CSVFormat format = CSVFormat.from(new Properties());
+    }
+
+    @Test
+    public void shouldReadQuoteCharacterFromProperties() throws Exception {
+        char expectedCharacter = ']';
+        Properties properties = propertiesWithDefaultDelimiter();
+        properties.setProperty("org.apache.commons.csv.format.quoteCharacter", String.valueOf(expectedCharacter));
+
+        CSVFormat format = CSVFormat.from(properties);
+
+        assertThat(format.getQuoteCharacter(), is(equalTo(expectedCharacter)));
+
+        format = CSVFormat.DEFAULT.withProperties(properties);
+        assertThat(format.getQuoteCharacter(), is(equalTo(expectedCharacter)));
+    }
+
+    @Test
+    public void shouldReadCommentMarkerFromProperties() throws Exception {
+        char expectedCharacter = ']';
+        Properties properties = propertiesWithDefaultDelimiter();
+        properties.setProperty("org.apache.commons.csv.format.commentMarker", String.valueOf(expectedCharacter));
+
+        CSVFormat format = CSVFormat.from(properties);
+
+        assertThat(format.getCommentMarker(), is(equalTo(expectedCharacter)));
+
+        format = CSVFormat.DEFAULT.withProperties(properties);
+        assertThat(format.getCommentMarker(), is(equalTo(expectedCharacter)));
+    }
+
+    @Test
+    public void shouldReadEscapeFromProperties() throws Exception {
+        char expectedCharacter = '\t';
+        Properties properties = propertiesWithDefaultDelimiter();
+        properties.setProperty("org.apache.commons.csv.format.escape", String.valueOf(expectedCharacter));
+
+        CSVFormat format = CSVFormat.from(properties);
+
+        assertThat(format.getEscapeCharacter(), is(equalTo(expectedCharacter)));
+
+        format = CSVFormat.DEFAULT.withProperties(properties);
+        assertThat(format.getEscapeCharacter(), is(equalTo(expectedCharacter)));
+    }
+
+    @Test
+    public void shouldReadIgnoreSurroundingSpacesFromProperties() throws Exception {
+        boolean expectedValue = true;
+        Properties properties = propertiesWithDefaultDelimiter();
+        properties.setProperty("org.apache.commons.csv.format.ignoreSurroundingSpaces", String.valueOf(expectedValue));
+
+        CSVFormat format = CSVFormat.from(properties);
+
+        assertThat(format.getIgnoreSurroundingSpaces(), is(equalTo(expectedValue)));
+
+        format = CSVFormat.DEFAULT.withProperties(properties);
+        assertThat(format.getIgnoreSurroundingSpaces(), is(equalTo(expectedValue)));
+    }
+
+    @Test
+    public void shouldReadAllowMissingColumnNamesFromProperties() throws Exception {
+        boolean expectedValue = true;
+        Properties properties = propertiesWithDefaultDelimiter();
+        properties.setProperty("org.apache.commons.csv.format.allowMissingColumnNames", String.valueOf(expectedValue));
+
+        CSVFormat format = CSVFormat.from(properties);
+
+        assertThat(format.getAllowMissingColumnNames(), is(equalTo(expectedValue)));
+
+        format = CSVFormat.DEFAULT.withProperties(properties);
+        assertThat(format.getAllowMissingColumnNames(), is(equalTo(expectedValue)));
+    }
+
+    @Test
+    public void shouldReadIgnoreEmptyLinesNamesFromProperties() throws Exception {
+        boolean expectedValue = true;
+        Properties properties = propertiesWithDefaultDelimiter();
+        properties.setProperty("org.apache.commons.csv.format.ignoreEmptyLines", String.valueOf(expectedValue));
+
+        CSVFormat format = CSVFormat.from(properties);
+
+        assertThat(format.getIgnoreEmptyLines(), is(equalTo(expectedValue)));
+
+        format = CSVFormat.DEFAULT.withProperties(properties);
+        assertThat(format.getIgnoreEmptyLines(), is(equalTo(expectedValue)));
+    }
+
+    @Test
+    public void shouldReadRecordSeparatorFromProperties() throws Exception {
+        String expectedSeparator = "\n";
+        Properties properties = propertiesWithDefaultDelimiter();
+        properties.setProperty("org.apache.commons.csv.format.recordSeparator", expectedSeparator);
+
+        CSVFormat format = CSVFormat.from(properties);
+
+        assertThat(format.getRecordSeparator(), is(equalTo(expectedSeparator)));
+
+        format = CSVFormat.DEFAULT.withProperties(properties);
+        assertThat(format.getRecordSeparator(), is(equalTo(expectedSeparator)));
+    }
+
+    @Test
+    public void shouldReadNullStringFromProperties() throws Exception {
+        String expectedValue = "<null>";
+        Properties properties = propertiesWithDefaultDelimiter();
+        properties.setProperty("org.apache.commons.csv.format.nullString", expectedValue);
+
+        CSVFormat format = CSVFormat.from(properties);
+
+        assertThat(format.getNullString(), is(equalTo(expectedValue)));
+
+        format = CSVFormat.DEFAULT.withProperties(properties);
+        assertThat(format.getNullString(), is(equalTo(expectedValue)));
+    }
+
+    @Test
+    public void shouldReadHeaderCommentsFromProperties() throws Exception {
+        Object[] expectedValue = {
+                "This",
+                "is",
+                "a",
+                "comment"
+        };
+        Properties properties = propertiesWithDefaultDelimiter();
+        properties.setProperty("org.apache.commons.csv.format.headerComments", asString(expectedValue));
+
+        CSVFormat format = CSVFormat.from(properties);
+
+        assertThat(format.getHeaderComments(), is(equalTo(expectedValue)));
+
+        format = CSVFormat.DEFAULT.withProperties(properties);
+        assertThat(format.getHeaderComments(), is(equalTo(expectedValue)));
+    }
+
+    @Test
+    public void shouldReadHeaderFromProperties() throws Exception {
+        Object[] expectedValue = {
+                "This",
+                "is",
+                "a",
+                "header"
+        };
+        Properties properties = propertiesWithDefaultDelimiter();
+        properties.setProperty("org.apache.commons.csv.format.header", asString(expectedValue));
+
+        CSVFormat format = CSVFormat.from(properties);
+
+        assertThat(format.getHeader(), is(equalTo(expectedValue)));
+
+        format = CSVFormat.DEFAULT.withProperties(properties);
+        assertThat(format.getHeader(), is(equalTo(expectedValue)));
+    }
+
+    @Test
+    public void shouldReadSkipHeaderRecordFromProperties() throws Exception {
+        boolean expectedValue = true;
+        Properties properties = propertiesWithDefaultDelimiter();
+        properties.setProperty("org.apache.commons.csv.format.skipHeaderRecord", String.valueOf(expectedValue));
+
+        CSVFormat format = CSVFormat.from(properties);
+
+        assertThat(format.getSkipHeaderRecord(), is(equalTo(expectedValue)));
+
+        format = CSVFormat.DEFAULT.withProperties(properties);
+        assertThat(format.getSkipHeaderRecord(), is(equalTo(expectedValue)));
+    }
+
+    @Test
+    public void shouldReadQuoteModeFromProperties() throws Exception {
+        QuoteMode expectedValue = QuoteMode.MINIMAL;
+        Properties properties = propertiesWithDefaultDelimiter();
+        properties.setProperty("org.apache.commons.csv.format.quoteMode", String.valueOf(expectedValue));
+
+        CSVFormat format = CSVFormat.from(properties);
+
+        assertThat(format.getQuoteMode(), is(equalTo(expectedValue)));
+
+        format = CSVFormat.DEFAULT.withProperties(properties);
+        assertThat(format.getQuoteMode(), is(equalTo(expectedValue)));
+    }
+
+    Properties propertiesWithDefaultDelimiter() {
+        Properties properties = new Properties();
+        properties.setProperty("org.apache.commons.csv.format.delimiter", String.valueOf(CSVFormat.DEFAULT.getDelimiter()));
+        return properties;
+    }
+
+    String asString(Object[] array) {
+        StringBuilder buffer = new StringBuilder();
+        for (Object o : array) {
+            buffer.append(String.valueOf(o))
+            .append(",");
+        }
+        return buffer.substring(0, buffer.length()-1);
     }
 }
