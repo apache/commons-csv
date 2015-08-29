@@ -30,10 +30,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -374,6 +376,20 @@ public class CSVFormatTest {
         assertFalse(Arrays.equals(formatWithHeader.getHeader(), header));
     }
 
+    @Test
+    public void testJIraCsv154() throws IOException {
+        final String comment = "This is a header comment";
+        CSVFormat format = CSVFormat.EXCEL.withHeader("H1", "H2").withCommentMarker('#')
+                .withHeaderComments(comment);
+        StringBuilder out = new StringBuilder();
+        final CSVPrinter printer = format.print(out);
+        printer.print("A");
+        printer.print("B");
+        printer.close();
+        String s = out.toString();
+        Assert.assertTrue(s, s.contains(comment));
+    }
+    
     @Test
     public void testWithIgnoreEmptyLines() throws Exception {
         assertFalse(CSVFormat.DEFAULT.withIgnoreEmptyLines(false).getIgnoreEmptyLines());
