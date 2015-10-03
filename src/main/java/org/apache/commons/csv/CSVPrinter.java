@@ -73,7 +73,7 @@ public final class CSVPrinter implements Flushable, Closeable {
                 }
             }
         }
-        if (format.getHeader() != null) {
+        if (format.getHeader() != null && !format.getSkipHeaderRecord()) {
             this.printRecord((Object[]) format.getHeader());
         }
     }
