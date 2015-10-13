@@ -33,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.TreeMap;
 
 import static org.apache.commons.csv.Token.Type.*;
 
@@ -378,7 +379,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         Map<String, Integer> hdrMap = null;
         final String[] formatHeader = this.format.getHeader();
         if (formatHeader != null) {
-            hdrMap = new LinkedHashMap<String, Integer>();
+            hdrMap = this.format.getIgnoreHeaderCase()
+                    ? new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER)
+                    : new LinkedHashMap<String, Integer>();
 
             String[] headerRecord = null;
             if (formatHeader.length == 0) {

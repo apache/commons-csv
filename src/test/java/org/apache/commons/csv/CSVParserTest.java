@@ -973,4 +973,15 @@ public class CSVParserTest {
 
         parser.close();
     }
+
+    @Test
+    public void testIgnoreCaseHeaderMapping() throws Exception {
+        final Reader in = new StringReader("1,2,3");
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("One", "TWO", "three").withIgnoreHeaderCase()
+                .parse(in).iterator();
+        final CSVRecord record = records.next();
+        assertEquals("1", record.get("one"));
+        assertEquals("2", record.get("two"));
+        assertEquals("3", record.get("THREE"));
+    }
 }
