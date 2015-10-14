@@ -40,6 +40,7 @@
   <body>
     <release version="1.3" date="2015-MM-DD" description="Feature and bug fix release">
       <action issue="CSV-153" type="update" dev="britter" due-to="Wren">CSVPrinter doesn't skip creation of header record if skipHeaderRecord is set to true</action>
+      <action issue="CSV-159" type="add" dev="ggregory" due-to="Yamil Medina">Add IgnoreCase option for accessing header names</action>
     </release>
     <release version="1.2" date="2015-08-24" description="Feature and bug fix release">
       <action issue="CSV-145" type="fix" dev="ggregory" due-to="Frank Ulbricht">CSVFormat.with* methods clear the header comments</action>
