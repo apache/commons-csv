@@ -866,7 +866,7 @@ public class CSVParserTest {
         assertEquals("2", record.get("b"));
         assertEquals("3", record.get("c"));
     }
-
+    
     @Test
     public void testSkipSetHeader() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
@@ -876,6 +876,28 @@ public class CSVParserTest {
         assertEquals("1", record.get("a"));
         assertEquals("2", record.get("b"));
         assertEquals("3", record.get("c"));
+    }
+
+    @Test
+    public void testSkipSetAltHeaders() throws Exception {
+        final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("X", "Y", "Z").withSkipHeaderRecord()
+                .parse(in).iterator();
+        final CSVRecord record = records.next();
+        assertEquals("1", record.get("X"));
+        assertEquals("2", record.get("Y"));
+        assertEquals("3", record.get("Z"));
+    }
+
+    @Test
+    public void testSkipHeaderOverrideDuplicateHeaders() throws Exception {
+        final Reader in = new StringReader("a,a,a\n1,2,3\nx,y,z");
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("X", "Y", "Z").withSkipHeaderRecord()
+                .parse(in).iterator();
+        final CSVRecord record = records.next();
+        assertEquals("1", record.get("X"));
+        assertEquals("2", record.get("Y"));
+        assertEquals("3", record.get("Z"));
     }
 
     private void validateLineNumbers(final String lineSeparator) throws IOException {
