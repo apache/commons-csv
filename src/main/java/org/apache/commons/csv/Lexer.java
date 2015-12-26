@@ -198,7 +198,7 @@ final class Lexer implements Closeable {
                 break;
             } else if (isEscape(ch)) {
                 final int unescaped = readEscape();
-                if (unescaped == Constants.END_OF_STREAM) { // unexpected char after escape
+                if (unescaped == END_OF_STREAM) { // unexpected char after escape
                     token.content.append((char) ch).append((char) reader.getLastChar());
                 } else {
                     token.content.append((char) unescaped);
@@ -246,7 +246,7 @@ final class Lexer implements Closeable {
 
             if (isEscape(c)) {
                 final int unescaped = readEscape();
-                if (unescaped == Constants.END_OF_STREAM) { // unexpected char after escape
+                if (unescaped == END_OF_STREAM) { // unexpected char after escape
                     token.content.append((char) c).append((char) reader.getLastChar());
                 } else {
                     token.content.append((char) unescaped);
