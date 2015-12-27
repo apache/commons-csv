@@ -162,6 +162,16 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
+     * Checks whether this record is a comment, false otherwise.
+     *
+     * @return true if this record is a comment, false otherwise
+     * @since 1.3
+     */
+    public boolean isComment() {
+        return comment != null;
+    }
+
+    /**
      * Checks whether a given column is mapped, i.e. its name has been defined to the parser.
      *
      * @param name
