@@ -289,11 +289,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private void addRecordValue() {
         final String input = this.reusableToken.content.toString();
         final String nullString = this.format.getNullString();
-        if (nullString == null) {
-            this.record.add(input);
-        } else {
-            this.record.add(input.equalsIgnoreCase(nullString) ? null : input);
-        }
+        this.record.add(input.equals(nullString) ? null : input);
     }
 
     /**
