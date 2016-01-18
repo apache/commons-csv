@@ -41,8 +41,8 @@ final class Utils {
      */
     public static void compare(final String message, final String[][] expected, final List<CSVRecord> actual) {
         Assert.assertEquals(message+"  - outer array size", expected.length, actual.size());
-        for(int i = 0; i < expected.length; i++) {
-            Assert.assertArrayEquals(message+" (entry "+i+")",expected[i], actual.get(i).values());
+        for (int i = 0; i < expected.length; i++) {
+            Assert.assertArrayEquals(message + " (entry " + i + ")", expected[i], actual.get(i).values());
         }
     }
 }
