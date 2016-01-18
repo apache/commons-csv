@@ -29,7 +29,7 @@ public class JiraCsv167Test {
     @Test
     @Ignore("Fails")
     public void parse() throws IOException {
-        File csvData = new File("src/test/resources/csv-167/sample1.csv");
+        final File csvData = new File("src/test/resources/csv-167/sample1.csv");
         CSVFormat format = CSVFormat.DEFAULT;
         //
         format = format.withAllowMissingColumnNames(false);
@@ -46,10 +46,10 @@ public class JiraCsv167Test {
         format = format.withRecordSeparator('\n');
         format = format.withSkipHeaderRecord(false);
         //
-        CSVParser parser = CSVParser.parse(csvData, Charset.defaultCharset(), format);
+        final CSVParser parser = CSVParser.parse(csvData, Charset.defaultCharset(), format);
         int comments = 0;
         int records = 0;
-        for (CSVRecord csvRecord : parser) {
+        for (final CSVRecord csvRecord : parser) {
             if (csvRecord.isComment()) {
                 comments++;
             } else {

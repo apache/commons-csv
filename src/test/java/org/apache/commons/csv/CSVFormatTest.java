@@ -379,26 +379,26 @@ public class CSVFormatTest {
     @Test
     public void testJiraCsv154_withCommentMarker() throws IOException {
         final String comment = "This is a header comment";
-        CSVFormat format = CSVFormat.EXCEL.withHeader("H1", "H2").withCommentMarker('#').withHeaderComments(comment);
-        StringBuilder out = new StringBuilder();
+        final CSVFormat format = CSVFormat.EXCEL.withHeader("H1", "H2").withCommentMarker('#').withHeaderComments(comment);
+        final StringBuilder out = new StringBuilder();
         final CSVPrinter printer = format.print(out);
         printer.print("A");
         printer.print("B");
         printer.close();
-        String s = out.toString();
+        final String s = out.toString();
         Assert.assertTrue(s, s.contains(comment));
     }
 
     @Test
     public void testJiraCsv154_withHeaderComments() throws IOException {
         final String comment = "This is a header comment";
-        CSVFormat format = CSVFormat.EXCEL.withHeader("H1", "H2").withHeaderComments(comment).withCommentMarker('#');
-        StringBuilder out = new StringBuilder();
+        final CSVFormat format = CSVFormat.EXCEL.withHeader("H1", "H2").withHeaderComments(comment).withCommentMarker('#');
+        final StringBuilder out = new StringBuilder();
         final CSVPrinter printer = format.print(out);
         printer.print("A");
         printer.print("B");
         printer.close();
-        String s = out.toString();
+        final String s = out.toString();
         Assert.assertTrue(s, s.contains(comment));
     }
     

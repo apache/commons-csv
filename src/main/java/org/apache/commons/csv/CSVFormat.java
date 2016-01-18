@@ -181,7 +181,7 @@ public final class CSVFormat implements Serializable {
 
         private final CSVFormat format;
 
-        private Predefined(CSVFormat format) {
+        private Predefined(final CSVFormat format) {
             this.format = format;
         }
         
