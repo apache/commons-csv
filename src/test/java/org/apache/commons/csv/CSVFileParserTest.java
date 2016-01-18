@@ -79,10 +79,10 @@ public class CSVFileParserTest {
             }
         };
         final File[] files = BASE.listFiles(filenameFilter);
-        for (final File f : files) {
-            list.add(new Object[] {
-                f
-            });
+        if (files != null) {
+            for (final File f : files) {
+                list.add(new Object[] { f });
+            }
         }
         return list;
     }
