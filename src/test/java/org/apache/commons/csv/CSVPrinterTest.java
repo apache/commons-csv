@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -233,6 +234,7 @@ public class CSVPrinterTest {
     }
 
     @Test
+    @Ignore
     public void testJira135All() throws IOException {
         CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
         StringWriter sw = new StringWriter();
@@ -250,6 +252,7 @@ public class CSVPrinterTest {
     }
     
     @Test
+    @Ignore
     public void testJira135_part3() throws IOException {
         CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
         StringWriter sw = new StringWriter();
@@ -265,6 +268,7 @@ public class CSVPrinterTest {
     }
     
     @Test
+    @Ignore
     public void testJira135_part2() throws IOException {
         CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
         StringWriter sw = new StringWriter();
@@ -280,6 +284,7 @@ public class CSVPrinterTest {
     }
     
     @Test
+    @Ignore
     public void testJira135_part1() throws IOException {
         CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
         StringWriter sw = new StringWriter();
