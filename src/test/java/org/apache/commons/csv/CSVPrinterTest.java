@@ -33,6 +33,7 @@ import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -231,6 +232,68 @@ public class CSVPrinterTest {
         return DriverManager.getConnection("jdbc:h2:mem:my_test;", "sa", "");
     }
 
+    @Test
+    public void testJira135All() throws IOException {
+        CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
+        StringWriter sw = new StringWriter();
+        CSVPrinter printer = new CSVPrinter(sw, format);
+        List<String> list = new LinkedList<String>();
+        list.add("\"");
+        list.add("\n");
+        list.add("\\");
+        printer.printRecord(list);
+        printer.close();
+        final String expected = "\"\\\"\",\"\\n\",\"\\\"" + format.getRecordSeparator();
+        assertEquals(expected, sw.toString());
+        String[] record0 = toFirstRecordValues(expected, format);
+        assertArrayEquals(expectNulls(list.toArray(), format), record0);
+    }
+    
+    @Test
+    public void testJira135_part3() throws IOException {
+        CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
+        StringWriter sw = new StringWriter();
+        CSVPrinter printer = new CSVPrinter(sw, format);
+        List<String> list = new LinkedList<String>();
+        list.add("\\");
+        printer.printRecord(list);
+        printer.close();
+        final String expected = "\"\\\\\"" + format.getRecordSeparator();
+        assertEquals(expected, sw.toString());
+        String[] record0 = toFirstRecordValues(expected, format);
+        assertArrayEquals(expectNulls(list.toArray(), format), record0);
+    }
+    
+    @Test
+    public void testJira135_part2() throws IOException {
+        CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
+        StringWriter sw = new StringWriter();
+        CSVPrinter printer = new CSVPrinter(sw, format);
+        List<String> list = new LinkedList<String>();
+        list.add("\n");
+        printer.printRecord(list);
+        printer.close();
+        final String expected = "\"\\n\"" + format.getRecordSeparator();
+        assertEquals(expected, sw.toString());
+        String[] record0 = toFirstRecordValues(expected, format);
+        assertArrayEquals(expectNulls(list.toArray(), format), record0);
+    }
+    
+    @Test
+    public void testJira135_part1() throws IOException {
+        CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
+        StringWriter sw = new StringWriter();
+        CSVPrinter printer = new CSVPrinter(sw, format);
+        List<String> list = new LinkedList<String>();
+        list.add("\"");
+        printer.printRecord(list);
+        printer.close();
+        final String expected = "\"\\\"\"" + format.getRecordSeparator();
+        assertEquals(expected, sw.toString());
+        String[] record0 = toFirstRecordValues(expected, format);
+        assertArrayEquals(expectNulls(list.toArray(), format), record0);
+    }
+    
     @Test
     public void testJdbcPrinter() throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
