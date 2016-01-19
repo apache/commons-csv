@@ -54,7 +54,7 @@ final class Constants {
     /** Undefined state for the lookahead char */
     static final int UNDEFINED = -2;
 
-    /** According to RFC 4180, line breaks are delimited by CRLF */
+    /** RFC 4180 defines line breaks as CRLF */
     static final String CRLF = "\r\n";
 
     /**
