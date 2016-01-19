@@ -136,7 +136,9 @@ public final class CSVPrinter implements Flushable, Closeable {
         if (!newRecord) {
             out.append(format.getDelimiter());
         }
-        if (format.isQuoteCharacterSet()) {
+        if (object == null) {
+            out.append(value);
+        } else if (format.isQuoteCharacterSet()) {
             // the original object is needed so can check for Number
             printAndQuote(object, value, offset, len);
         } else if (format.isEscapeCharacterSet()) {

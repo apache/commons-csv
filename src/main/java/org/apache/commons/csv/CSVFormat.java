@@ -296,7 +296,7 @@ public final class CSVFormat implements Serializable {
      *
      * <p>
      * This is a tab-delimited format with a LF character as the line separator. Values are not quoted and special
-     * characters are escaped with '\'.
+     * characters are escaped with {@code '\'}. The default NULL string is {@code "\\N"}.
      * </p>
      *
      * <p>
@@ -308,6 +308,7 @@ public final class CSVFormat implements Serializable {
      * <li>withRecordSeparator('\n')</li>
      * <li>withIgnoreEmptyLines(false)</li>
      * <li>withEscape('\\')</li>
+     * <li>withNullString("\\N")</li>
      * </ul>
      *
      * @see Predefined#MySQL
@@ -315,7 +316,7 @@ public final class CSVFormat implements Serializable {
      *      http://dev.mysql.com/doc/refman/5.1/en/load-data.html</a>
      */
     public static final CSVFormat MYSQL = DEFAULT.withDelimiter(TAB).withEscape(BACKSLASH).withIgnoreEmptyLines(false)
-            .withQuote(null).withRecordSeparator(LF);
+            .withQuote(null).withRecordSeparator(LF).withNullString("\\N");
 
     /**
      * Returns true if the given character is a line break character.
