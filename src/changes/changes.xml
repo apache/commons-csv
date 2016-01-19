@@ -44,6 +44,7 @@
       <action issue="CSV-169" type="add" dev="ggregory" due-to="Gary Gregory">The null string should be case-sensitive when reading records</action>
       <action issue="CSV-168" type="fix" dev="ggregory" due-to="Gary Gregory, cornel creanga">CsvFormat.nullString should not be escaped</action>
       <action issue="CSV-170" type="fix" dev="ggregory" due-to="Gary Gregory, cornel creanga">CSVFormat.MYSQL nullString should be "\N"</action>
+      <action issue="CSV-161" type="fix" dev="ggregory" due-to="Gary Gregory, Kristof Meixner, Emmanuel Bourg">Fix Javadoc to say CSVFormat with() methods return a new CSVFormat</action>
     </release>
     <release version="1.2" date="2015-08-24" description="Feature and bug fix release">
       <action issue="CSV-145" type="fix" dev="ggregory" due-to="Frank Ulbricht">CSVFormat.with* methods clear the header comments</action>
