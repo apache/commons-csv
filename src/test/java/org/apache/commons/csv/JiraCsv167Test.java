@@ -16,20 +16,37 @@
  */
 package org.apache.commons.csv;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class JiraCsv167Test {
 
     @Test
-    @Ignore("Fails")
     public void parse() throws IOException {
         final File csvData = new File("src/test/resources/csv-167/sample1.csv");
+        BufferedReader br = new BufferedReader(new FileReader(csvData));
+        String s = null;
+        int totcomment = 0;
+        int totrecs = 0;
+        boolean lastWasComment = false;
+        while((s=br.readLine()) != null) {
+            if (s.startsWith("#")) {
+                if (!lastWasComment) { // comments are merged
+                    totcomment++;
+                }
+                lastWasComment = true;
+            } else {
+                totrecs++;
+                lastWasComment = false;
+            }
+        }
+        br.close();
         CSVFormat format = CSVFormat.DEFAULT;
         //
         format = format.withAllowMissingColumnNames(false);
@@ -50,15 +67,14 @@ public class JiraCsv167Test {
         int comments = 0;
         int records = 0;
         for (final CSVRecord csvRecord : parser) {
+//            System.out.println(csvRecord.isComment() + "[" + csvRecord.toString() + "]");
+            records++;
             if (csvRecord.isComment()) {
                 comments++;
-            } else {
-                records++;
-                // System.out.println("[" + csvRecord.toString() + "]");
             }
         }
         // Comment lines are concatenated, in this example 4 lines become 2 comments.
-        Assert.assertEquals(2, comments);
-        Assert.assertEquals(3, records);
+        Assert.assertEquals(totcomment, comments);
+        Assert.assertEquals(totrecs, records); // records includes the header
     }
 }
