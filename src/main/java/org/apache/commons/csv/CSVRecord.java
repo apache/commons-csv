@@ -162,12 +162,12 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Checks whether this record is a comment, false otherwise.
+     * Checks whether this record has a comment, false otherwise.
      *
-     * @return true if this record is a comment, false otherwise
+     * @return true if this record has a comment, false otherwise
      * @since 1.3
      */
-    public boolean isComment() {
+    public boolean hasComment() {
         return comment != null;
     }
 
