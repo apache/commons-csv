@@ -69,7 +69,7 @@ public class JiraCsv167Test {
         for (final CSVRecord csvRecord : parser) {
 //            System.out.println(csvRecord.isComment() + "[" + csvRecord.toString() + "]");
             records++;
-            if (csvRecord.isComment()) {
+            if (csvRecord.hasComment()) {
                 comments++;
             }
         }
