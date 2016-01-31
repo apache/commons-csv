@@ -125,6 +125,9 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     /**
      * Returns the comment for this record, if any.
+     * Note that comments are attached to the following record.
+     * If there is no following record (i.e. the comment is at EOF)
+     * the comment will be ignored.
      *
      * @return the comment for this record, or null if no comment for this record is available.
      */
@@ -163,6 +166,9 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     /**
      * Checks whether this record has a comment, false otherwise.
+     * Note that comments are attached to the following record.
+     * If there is no following record (i.e. the comment is at EOF)
+     * the comment will be ignored.
      *
      * @return true if this record has a comment, false otherwise
      * @since 1.3
