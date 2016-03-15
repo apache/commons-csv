@@ -337,7 +337,21 @@ public class CSVPrinterTest {
             connection.close();
         }
     }
-
+    @Test
+    public void testJdbcPrinterWithResultSetHeader() throws IOException, ClassNotFoundException, SQLException {
+        final StringWriter sw = new StringWriter();
+        final Connection connection = geH2Connection();
+        try {
+            setUpTable(connection);
+            final Statement stmt = connection.createStatement();
+            final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+            printer.printRecords(stmt.executeQuery("select ID, NAME from TEST"),true);
+            assertEquals("ID,NAME" + recordSeparator + "1,r1" + recordSeparator + "2,r2" + recordSeparator, sw.toString());
+            printer.close();
+        } finally {
+            connection.close();
+        }
+    }
     @Test
     public void testJdbcPrinterWithResultSetMetaData() throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
