@@ -26,6 +26,7 @@ import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 /**
@@ -516,5 +517,23 @@ public final class CSVPrinter implements Flushable, Closeable {
             }
             println();
         }
+    }
+    /**
+     * Prints all the objects with metadata in the given JDBC result set based on the header boolean.
+     *
+     * @param resultSet
+     *            result set the values to print.
+     * @param header
+     *            Boolean value to print header or not.
+     * @throws IOException
+     *             If an I/O error occurs
+     * @throws SQLException
+     *             if a database access error occurs
+     */
+    public void printRecords(final ResultSet resultSet,final boolean header) throws SQLException, IOException {
+        if (header) {
+           format.withHeader(resultSet).print(out);
+        }
+        printRecords(resultSet);
     }
 }
