@@ -26,7 +26,6 @@ import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 /**
