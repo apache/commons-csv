@@ -531,7 +531,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      */
     public void printRecords(final ResultSet resultSet,final boolean header) throws SQLException, IOException {
         if (header) {
-           format.withHeader(resultSet).print(out);
+           printRecord(format.withHeader(resultSet).getHeader());
         }
         printRecords(resultSet);
     }
