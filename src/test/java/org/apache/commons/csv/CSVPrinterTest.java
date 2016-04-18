@@ -89,7 +89,7 @@ public class CSVPrinterTest {
         final CSVParser parser = CSVParser.parse(result, format);
         final List<CSVRecord> parseResult = parser.getRecords();
 
-        String[][] expected = lines.clone();
+        final String[][] expected = lines.clone();
         for (int i = 0; i < expected.length; i++) {
             expected[i] = expectNulls(expected[i], format);
         }
@@ -236,10 +236,10 @@ public class CSVPrinterTest {
     @Test
     @Ignore
     public void testJira135All() throws IOException {
-        CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, format);
-        List<String> list = new LinkedList<String>();
+        final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, format);
+        final List<String> list = new LinkedList<String>();
         list.add("\"");
         list.add("\n");
         list.add("\\");
@@ -247,55 +247,55 @@ public class CSVPrinterTest {
         printer.close();
         final String expected = "\"\\\"\",\"\\n\",\"\\\"" + format.getRecordSeparator();
         assertEquals(expected, sw.toString());
-        String[] record0 = toFirstRecordValues(expected, format);
+        final String[] record0 = toFirstRecordValues(expected, format);
         assertArrayEquals(expectNulls(list.toArray(), format), record0);
     }
     
     @Test
     @Ignore
     public void testJira135_part3() throws IOException {
-        CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, format);
-        List<String> list = new LinkedList<String>();
+        final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, format);
+        final List<String> list = new LinkedList<String>();
         list.add("\\");
         printer.printRecord(list);
         printer.close();
         final String expected = "\"\\\\\"" + format.getRecordSeparator();
         assertEquals(expected, sw.toString());
-        String[] record0 = toFirstRecordValues(expected, format);
+        final String[] record0 = toFirstRecordValues(expected, format);
         assertArrayEquals(expectNulls(list.toArray(), format), record0);
     }
     
     @Test
     @Ignore
     public void testJira135_part2() throws IOException {
-        CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, format);
-        List<String> list = new LinkedList<String>();
+        final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, format);
+        final List<String> list = new LinkedList<String>();
         list.add("\n");
         printer.printRecord(list);
         printer.close();
         final String expected = "\"\\n\"" + format.getRecordSeparator();
         assertEquals(expected, sw.toString());
-        String[] record0 = toFirstRecordValues(expected, format);
+        final String[] record0 = toFirstRecordValues(expected, format);
         assertArrayEquals(expectNulls(list.toArray(), format), record0);
     }
     
     @Test
     @Ignore
     public void testJira135_part1() throws IOException {
-        CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
-        StringWriter sw = new StringWriter();
-        CSVPrinter printer = new CSVPrinter(sw, format);
-        List<String> list = new LinkedList<String>();
+        final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
+        final StringWriter sw = new StringWriter();
+        final CSVPrinter printer = new CSVPrinter(sw, format);
+        final List<String> list = new LinkedList<String>();
         list.add("\"");
         printer.printRecord(list);
         printer.close();
         final String expected = "\"\\\"\"" + format.getRecordSeparator();
         assertEquals(expected, sw.toString());
-        String[] record0 = toFirstRecordValues(expected, format);
+        final String[] record0 = toFirstRecordValues(expected, format);
         assertArrayEquals(expectNulls(list.toArray(), format), record0);
     }
     
@@ -493,8 +493,8 @@ public class CSVPrinterTest {
      * Converts an input CSV array into expected output values WRT NULLs. NULL strings are converted to null values
      * because the parser will convert these strings to null.
      */
-    private <T> T[] expectNulls(T[] original, CSVFormat csvFormat) {
-        T[] fixed = original.clone();
+    private <T> T[] expectNulls(final T[] original, final CSVFormat csvFormat) {
+        final T[] fixed = original.clone();
         for (int i = 0; i < fixed.length; i++) {
             if (ObjectUtils.equals(csvFormat.getNullString(), fixed[i])) {
                 fixed[i] = null;
@@ -503,7 +503,7 @@ public class CSVPrinterTest {
         return fixed;
     }
 
-    private String[] toFirstRecordValues(final String expected, CSVFormat format) throws IOException {
+    private String[] toFirstRecordValues(final String expected, final CSVFormat format) throws IOException {
         return CSVParser.parse(expected, format).getRecords().get(0).values();
     }
 

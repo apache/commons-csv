@@ -30,7 +30,7 @@ public class JiraCsv167Test {
     @Test
     public void parse() throws IOException {
         final File csvData = new File("src/test/resources/csv-167/sample1.csv");
-        BufferedReader br = new BufferedReader(new FileReader(csvData));
+        final BufferedReader br = new BufferedReader(new FileReader(csvData));
         String s = null;
         int totcomment = 0;
         int totrecs = 0;
