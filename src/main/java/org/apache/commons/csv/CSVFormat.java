@@ -241,6 +241,7 @@ public final class CSVFormat implements Serializable {
      * @see Predefined#Excel
      */
     public static final CSVFormat EXCEL = DEFAULT.withIgnoreEmptyLines(false).withAllowMissingColumnNames();
+
     /**
      * Default MySQL format used by the {@code SELECT INTO OUTFILE} and {@code LOAD DATA INFILE} operations.
      *
@@ -267,6 +268,7 @@ public final class CSVFormat implements Serializable {
      */
     public static final CSVFormat MYSQL = DEFAULT.withDelimiter(TAB).withEscape(BACKSLASH).withIgnoreEmptyLines(false)
             .withQuote(null).withRecordSeparator(LF).withNullString("\\N");
+    
     /**
      * Comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
      *
@@ -282,7 +284,9 @@ public final class CSVFormat implements Serializable {
      * @see Predefined#RFC4180
      */
     public static final CSVFormat RFC4180 = DEFAULT.withIgnoreEmptyLines(false);
+    
     private static final long serialVersionUID = 1L;
+    
     /**
      * Tab-delimited format.
      *
@@ -298,6 +302,7 @@ public final class CSVFormat implements Serializable {
      * @see Predefined#TDF
      */
     public static final CSVFormat TDF = DEFAULT.withDelimiter(TAB).withIgnoreSurroundingSpaces();
+    
     /**
      * Returns true if the given character is a line break character.
      *
@@ -309,6 +314,7 @@ public final class CSVFormat implements Serializable {
     private static boolean isLineBreak(final char c) {
         return c == LF || c == CR;
     }
+    
     /**
      * Returns true if the given character is a line break character.
      *
@@ -320,6 +326,7 @@ public final class CSVFormat implements Serializable {
     private static boolean isLineBreak(final Character c) {
         return c != null && isLineBreak(c.charValue());
     }
+    
     /**
      * Creates a new CSV format with the specified delimiter.
      *
@@ -343,6 +350,7 @@ public final class CSVFormat implements Serializable {
     public static CSVFormat newFormat(final char delimiter) {
         return new CSVFormat(delimiter, null, null, null, null, false, false, null, null, null, null, false, false, false);
     }
+    
     /**
      * Gets one of the predefined formats from {@link CSVFormat.Predefined}.
      * 
@@ -354,10 +362,15 @@ public final class CSVFormat implements Serializable {
     public static CSVFormat valueOf(final String format) {
         return CSVFormat.Predefined.valueOf(format).getFormat();
     }
+    
     private final boolean allowMissingColumnNames;
+    
     private final Character commentMarker; // null if commenting is disabled
+    
     private final char delimiter;
+    
     private final Character escapeCharacter; // null if escaping is disabled
+    
     private final String[] header; // array of header column names
 
     private final String[] headerComments; // array of header comment lines
