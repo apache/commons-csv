@@ -66,6 +66,8 @@ final class Constants {
      */
     static final String PARAGRAPH_SEPARATOR = "\u2029";
 
+    static final String PIPE = "|";
+
     /** ASCII record separator */
     static final char RS = 30;
 
