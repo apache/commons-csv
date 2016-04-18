@@ -286,10 +286,14 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         this.recordNumber = recordNumber - 1;
     }
 
-    private void addRecordValue() {
+    private void addRecordValue(boolean lastRecord) {
         final String input = this.reusableToken.content.toString();
+        final String inputClean = this.format.getTrim() ? input.trim() : input;
+        if (lastRecord && inputClean.isEmpty() && this.format.getTrailingDelimiter()) {
+            return;
+        }
         final String nullString = this.format.getNullString();
-        this.record.add(input.equals(nullString) ? null : input);
+        this.record.add(inputClean.equals(nullString) ? null : inputClean);
     }
 
     /**
@@ -497,14 +501,14 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             this.lexer.nextToken(this.reusableToken);
             switch (this.reusableToken.type) {
             case TOKEN:
-                this.addRecordValue();
+                this.addRecordValue(false);
                 break;
             case EORECORD:
-                this.addRecordValue();
+                this.addRecordValue(true);
                 break;
             case EOF:
                 if (this.reusableToken.isReady) {
-                    this.addRecordValue();
+                    this.addRecordValue(true);
                 }
                 break;
             case INVALID:

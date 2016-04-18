@@ -911,6 +911,30 @@ public class CSVParserTest {
         }
     }
 
+    @Test
+    public void testTrailingDelimiter() throws Exception {
+        final Reader in = new StringReader("a,a,a,\n\"1\",\"2\",\"3\",\nx,y,z,");
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("X", "Y", "Z").withSkipHeaderRecord().withTrailingDelimiter()
+                .parse(in).iterator();
+        final CSVRecord record = records.next();
+        assertEquals("1", record.get("X"));
+        assertEquals("2", record.get("Y"));
+        assertEquals("3", record.get("Z"));
+        Assert.assertEquals(3, record.size());
+    }
+
+    @Test
+    public void testTrim() throws Exception {
+        final Reader in = new StringReader("a,a,a\n\" 1 \",\" 2 \",\" 3 \"\nx,y,z");
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("X", "Y", "Z").withSkipHeaderRecord().withTrim()
+                .parse(in).iterator();
+        final CSVRecord record = records.next();
+        assertEquals("1", record.get("X"));
+        assertEquals("2", record.get("Y"));
+        assertEquals("3", record.get("Z"));
+        Assert.assertEquals(3, record.size());
+    }
+
     private void validateLineNumbers(final String lineSeparator) throws IOException {
         final CSVParser parser = CSVParser.parse("a" + lineSeparator + "b" + lineSeparator + "c",
                 CSVFormat.DEFAULT.withRecordSeparator(lineSeparator));

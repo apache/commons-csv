@@ -43,9 +43,12 @@
       <action issue="CSV-153" type="update" dev="britter" due-to="Wren">CSVPrinter doesn't skip creation of header record if skipHeaderRecord is set to true</action>
       <action issue="CSV-159" type="add" dev="ggregory" due-to="Yamil Medina">Add IgnoreCase option for accessing header names</action>
       <action issue="CSV-169" type="add" dev="ggregory" due-to="Gary Gregory">The null string should be case-sensitive when reading records</action>
-      <action issue="CSV-168" type="fix" dev="ggregory" due-to="Gary Gregory, cornel creanga">CsvFormat.nullString should not be escaped</action>
+      <action issue="CSV-168" type="fix" dev="ggregory" due-to="Gary Gregory, cornel creanga">CSVFormat.nullString should not be escaped</action>
       <action issue="CSV-170" type="fix" dev="ggregory" due-to="Gary Gregory, cornel creanga">CSVFormat.MYSQL nullString should be "\N"</action>
       <action issue="CSV-161" type="fix" dev="ggregory" due-to="Gary Gregory, Kristof Meixner, Emmanuel Bourg">Fix Javadoc to say CSVFormat with() methods return a new CSVFormat</action>
+      <action issue="CSV-175" type="add" dev="ggregory" due-to="Gary Gregory, Chris Jones">Support for ignoring trailing delimiter.</action>
+      <action issue="CSV-177" type="add" dev="ggregory" due-to="Gary Gregory">Support trimming leading and trailing blanks.</action>
+      <action issue="CSV-178" type="add" dev="ggregory" due-to="Gary Gregory">Create default formats for Informix UNLOAD and UNLOAD CSV.</action>
     </release>
     <release version="1.2" date="2015-08-24" description="Feature and bug fix release">
       <action issue="CSV-145" type="fix" dev="ggregory" due-to="Frank Ulbricht">CSVFormat.with* methods clear the header comments</action>

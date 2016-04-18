@@ -128,6 +128,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         } else {
             strValue = value.toString();
         }
+        strValue = format.getTrim() ? strValue.trim() : strValue;
         this.print(value, strValue, 0, strValue.length());
     }
 
@@ -351,6 +352,9 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void println() throws IOException {
+        if (format.getTrailingDelimiter()) {
+            out.append(format.getDelimiter());            
+        }
         final String recordSeparator = format.getRecordSeparator();
         if (recordSeparator != null) {
             out.append(recordSeparator);
