@@ -153,7 +153,7 @@ public final class CSVFormat implements Serializable {
      *
      * @since 1.2
      */
-    public static enum Predefined {
+    public enum Predefined {
 
         /**
          * @see CSVFormat#DEFAULT
@@ -194,7 +194,7 @@ public final class CSVFormat implements Serializable {
 
         private final CSVFormat format;
 
-        private Predefined(final CSVFormat format) {
+        Predefined(final CSVFormat format) {
             this.format = format;
         }
 
@@ -206,7 +206,7 @@ public final class CSVFormat implements Serializable {
         public CSVFormat getFormat() {
             return format;
         }
-    };
+    }
 
     /**
      * Standard comma separated format, as for {@link #RFC4180} but allowing empty lines.
