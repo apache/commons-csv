@@ -1075,6 +1075,25 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Returns a new {@code CSVFormat} using the first record as header.
+     * 
+     * <p>
+     * Calling this method is equivalent to calling:
+     * </p>
+     * <pre>
+     * CSVFormat format = aFormat.withHeader().withSkipHeaderRecord();
+     * </pre>
+     *
+     * @return A new CSVFormat that is equal to this but using the first record as header.
+     * @see #withSkipHeaderRecord(boolean)
+     * @see #withHeader(String...)
+     * @since 1.3
+     */
+    public CSVFormat withFirstRecordAsHeader() {
+        return withHeader().withSkipHeaderRecord();
+    }
+
+    /**
      * Returns a new {@code CSVFormat} with the header of the format set from the result set metadata. The header can
      * either be parsed automatically from the input file with:
      *

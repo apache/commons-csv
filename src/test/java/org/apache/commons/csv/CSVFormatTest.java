@@ -436,6 +436,13 @@ public class CSVFormatTest {
         assertEquals(CRLF, formatWithRecordSeparator.getRecordSeparator());
     }
 
+    @Test
+    public void testWithFirstRecordAsHeader() throws Exception {
+        final CSVFormat formatWithFirstRecordAsHeader = CSVFormat.DEFAULT.withFirstRecordAsHeader();
+        assertTrue(formatWithFirstRecordAsHeader.getSkipHeaderRecord());
+        assertTrue(formatWithFirstRecordAsHeader.getHeader().length == 0);
+    }
+
     public enum Header {
         Name, Email, Phone
     }
