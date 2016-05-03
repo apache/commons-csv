@@ -1191,6 +1191,7 @@ public final class CSVFormat implements Serializable {
      * @return A new CSVFormat that is equal to this but with the specified header
      * @see #withHeader(String...)
      * @see #withSkipHeaderRecord(boolean)
+     * @since 1.3
      */
     public CSVFormat withHeader(final Class<? extends Enum<?>> headerEnum) {
         String[] header = null;
