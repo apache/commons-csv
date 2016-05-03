@@ -21,12 +21,7 @@ import static org.apache.commons.csv.CSVFormat.RFC4180;
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.LF;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -377,6 +372,18 @@ public class CSVFormatTest {
     }
 
     @Test
+    public void testWithHeaderEnum() throws Exception {
+        final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(Header.class);
+        assertArrayEquals(new String[]{ "Name", "Email", "Phone" }, formatWithHeader.getHeader());
+    }
+
+    @Test
+    public void testWithEmptyEnum() throws Exception {
+        final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(EmptyEnum.class);
+        Assert.assertTrue(formatWithHeader.getHeader().length == 0);
+    }
+
+    @Test
     public void testJiraCsv154_withCommentMarker() throws IOException {
         final String comment = "This is a header comment";
         final CSVFormat format = CSVFormat.EXCEL.withHeader("H1", "H2").withCommentMarker('#').withHeaderComments(comment);
@@ -453,5 +460,12 @@ public class CSVFormatTest {
     public void testWithRecordSeparatorCRLF() throws Exception {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator(CRLF);
         assertEquals(CRLF, formatWithRecordSeparator.getRecordSeparator());
+    }
+
+    public enum Header {
+        Name, Email, Phone
+    }
+
+    public enum EmptyEnum {
     }
 }

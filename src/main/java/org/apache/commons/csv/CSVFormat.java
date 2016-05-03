@@ -1174,6 +1174,39 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Returns a new {@code CSVFormat} with the header of the format defined by the enum class:
+     *
+     * <pre>
+     * public enum Header {
+     *     Name, Email, Phone
+     * }
+     *
+     * CSVFormat format = aformat.withHeader(Header.class);
+     * </pre>
+     * <p>
+     * The header is also used by the {@link CSVPrinter}..
+     * </p>
+     *
+     * @param headerEnum
+     *              the enum defining the header, {@code null} if disabled, empty if parsed automatically, user specified otherwise.
+     *
+     * @return A new CSVFormat that is equal to this but with the specified header
+     * @see #withHeader(String...)
+     * @see #withSkipHeaderRecord(boolean)
+     */
+    public CSVFormat withHeader(final Class<? extends Enum<?>> headerEnum) {
+        String[] header = null;
+        if (headerEnum != null) {
+            Enum<?>[] enumValues = headerEnum.getEnumConstants();
+            header = new String[enumValues.length];
+            for (int i = 0; i < enumValues.length; i++) {
+                header[i] = enumValues[i].name();
+            }
+        }
+        return withHeader(header);
+    }
+
+    /**
      * Returns a new {@code CSVFormat} with the header comments of the format set to the given values. The comments will
      * be printed first, before the headers. This setting is ignored by the parser.
      *
