@@ -369,10 +369,6 @@ public class CSVFormatTest {
         final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
         assertArrayEquals(header, formatWithHeader.getHeader());
         assertNotSame(header, formatWithHeader.getHeader());
-        header[0] = "A";
-        header[1] = "B";
-        header[2] = "C";
-        assertFalse(Arrays.equals(formatWithHeader.getHeader(), header));
     }
 
     @Test
