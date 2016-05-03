@@ -150,7 +150,7 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Predefines formats.
-     * 
+     *
      * @since 1.2
      */
     public static enum Predefined {
@@ -200,7 +200,7 @@ public final class CSVFormat implements Serializable {
 
         /**
          * Gets the format.
-         * 
+         *
          * @return the format.
          */
         public CSVFormat getFormat() {
@@ -220,7 +220,7 @@ public final class CSVFormat implements Serializable {
      * <li>withRecordSeparator("\r\n")</li>
      * <li>withIgnoreEmptyLines(true)</li>
      * </ul>
-     * 
+     *
      * @see Predefined#Default
      */
     public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF,
@@ -252,7 +252,7 @@ public final class CSVFormat implements Serializable {
      * Note: this is currently like {@link #RFC4180} plus {@link #withAllowMissingColumnNames(boolean)
      * withAllowMissingColumnNames(true)}.
      * </p>
-     * 
+     *
      * @see Predefined#Excel
      */
     public static final CSVFormat EXCEL = DEFAULT.withIgnoreEmptyLines(false).withAllowMissingColumnNames();
@@ -349,7 +349,7 @@ public final class CSVFormat implements Serializable {
      * <li>withRecordSeparator("\r\n")</li>
      * <li>withIgnoreEmptyLines(false)</li>
      * </ul>
-     * 
+     *
      * @see Predefined#RFC4180
      */
     public static final CSVFormat RFC4180 = DEFAULT.withIgnoreEmptyLines(false);
@@ -368,7 +368,7 @@ public final class CSVFormat implements Serializable {
      * <li>withRecordSeparator("\r\n")</li>
      * <li>withIgnoreSurroundingSpaces(true)</li>
      * </ul>
-     * 
+     *
      * @see Predefined#TDF
      */
     public static final CSVFormat TDF = DEFAULT.withDelimiter(TAB).withIgnoreSurroundingSpaces();
@@ -424,7 +424,7 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Gets one of the predefined formats from {@link CSVFormat.Predefined}.
-     * 
+     *
      * @param format
      *            name
      * @return one of the predefined formats
@@ -523,7 +523,7 @@ public final class CSVFormat implements Serializable {
         this.skipHeaderRecord = skipHeaderRecord;
         this.ignoreHeaderCase = ignoreHeaderCase;
         this.trailingDelimiter = trailingDelimiter;
-        this.trim = trim;        
+        this.trim = trim;
         validate();
     }
 
