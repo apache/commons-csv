@@ -1414,7 +1414,7 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Returns a new {@code CSVFormat} to add a trailing delimiter.
-     *     *
+     *
      * @return A new CSVFormat that is equal to this but with the trailing delimiter setting.
      */
     public CSVFormat withTrailingDelimiter() {
@@ -1424,7 +1424,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Returns a new {@code CSVFormat} with whether to add a trailing delimiter.
      *
-     * @param trim
+     * @param trailingDelimiter
      *            whether to add a trailing delimiter.
      *
      * @return A new CSVFormat that is equal to this but with the specified trailing delimiter setting.
