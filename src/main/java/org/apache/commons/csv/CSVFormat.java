@@ -1139,9 +1139,7 @@ public final class CSVFormat implements Serializable {
                 labels[i] = metaData.getColumnLabel(i + 1);
             }
         }
-        return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, labels,
-                skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter);
+        return withHeader(labels);
     }
 
     /**
