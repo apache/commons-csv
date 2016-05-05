@@ -1076,7 +1076,7 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Returns a new {@code CSVFormat} using the first record as header.
-     * 
+     *
      * <p>
      * Calling this method is equivalent to calling:
      * </p>

@@ -19,7 +19,7 @@ package org.apache.commons.csv;
 
 /**
  * Utility class for input parameter validation.
- * 
+ *
  * TODO Replace usage with {@link Objects} when we switch to Java 7.
  *
  * @version $Id$

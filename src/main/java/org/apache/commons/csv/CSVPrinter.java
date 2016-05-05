@@ -353,7 +353,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      */
     public void println() throws IOException {
         if (format.getTrailingDelimiter()) {
-            out.append(format.getDelimiter());            
+            out.append(format.getDelimiter());
         }
         final String recordSeparator = format.getRecordSeparator();
         if (recordSeparator != null) {
