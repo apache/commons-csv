@@ -507,7 +507,8 @@ public final class CSVFormat implements Serializable {
             final Character commentStart, final Character escape, final boolean ignoreSurroundingSpaces,
             final boolean ignoreEmptyLines, final String recordSeparator, final String nullString,
             final Object[] headerComments, final String[] header, final boolean skipHeaderRecord,
-            final boolean allowMissingColumnNames, final boolean ignoreHeaderCase, boolean trim, boolean trailingDelimiter) {
+            final boolean allowMissingColumnNames, final boolean ignoreHeaderCase, boolean trim,
+            boolean trailingDelimiter) {
         this.delimiter = delimiter;
         this.quoteCharacter = quoteChar;
         this.quoteMode = quoteMode;
@@ -1205,7 +1206,8 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * @param headerEnum
-     *              the enum defining the header, {@code null} if disabled, empty if parsed automatically, user specified otherwise.
+     *              the enum defining the header, {@code null} if disabled, empty if parsed automatically, user
+     *              specified otherwise.
      *
      * @return A new CSVFormat that is equal to this but with the specified header
      * @see #withHeader(String...)
