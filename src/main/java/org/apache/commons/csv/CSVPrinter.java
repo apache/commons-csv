@@ -231,7 +231,7 @@ public final class CSVPrinter implements Flushable, Closeable {
                 char c = value.charAt(pos);
 
                 // TODO where did this rule come from?
-                if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || (c > 'z'))) {
+                if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
                     quote = true;
                 } else if (c <= COMMENT) {
                     // Some other chars at the start of a value caused the parser to fail, so for now
