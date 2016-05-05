@@ -16,29 +16,53 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <document>
- <properties>
-  <title>User Guide</title>
-  <author email="dev@commons.apache.org">Commons Documentation Team</author>
- </properties>
-<body>
-<!-- ================================================== -->
-<section name="Parsing an Excel CSV File">
-  <p>To parse an Excel CSV file, write:</p>
-  <source>Reader in = new FileReader(&quot;path/to/file.csv&quot;);
+  <properties>
+    <title>User Guide</title>
+    <author email="dev@commons.apache.org">Commons Documentation Team</author>
+  </properties>
+  <body>
+    <!-- ================================================== -->
+
+    <h1>Apache Commons CSV User Guide</h1>
+
+    <macro name="toc">
+    </macro>
+
+    <section name="Parsing files">
+
+      Parsing files with Apache Commons CSV is relatively straight forward.
+      The CSVFormat class provides some commonly used CSV variants:
+      
+      <dl>
+        <dt>RFC-4180</dt><dd>The format defined by <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a></dd>
+        <dt>MYSQL</dt><dd>The format used by MySQL data bases</dd>
+        <dt>TDF</dt><dd>A tab delimited format</dd>
+        <dt>EXCEL</dt><dd>The format used by Excel</dd>
+      </dl>
+
+      <subsection name="Example: Parsing an Excel CSV File">
+        <p>To parse an Excel CSV file, write:</p>
+        <source>Reader in = new FileReader(&quot;path/to/file.csv&quot;);
 Iterable&lt;CSVRecord&gt; records = CSVFormat.EXCEL.parse(in);
 for (CSVRecord record : records) {
     String lastName = record.get("Last Name");
     String firstName = record.get("First Name");
-}</source>
-</section>
-<section name="Handling Byte Order Marks">
-  <p>
-    To handle files that start with a Byte Order Mark (BOM) like some Excel CSV files, you need an extra step to deal with these optional bytes.
-    You can use the 
-    <a href="https://commons.apache.org/proper/commons-io/apidocs/org/apache/commons/io/input/BOMInputStream.html">BOMInputStream</a> 
-    class from <a href="https://commons.apache.org/proper/commons-io/">Apache Commons IO</a> for example: 
-  </p>
-  <source>final URL url = ...;
+}
+        </source>
+      </subsection>
+      <subsection name="Handling Byte Order Marks">
+        <p>
+          To handle files that start with a Byte Order Mark (BOM) like some Excel CSV files, you need an extra step to
+          deal with these optional bytes.
+          You can use the
+          <a href="https://commons.apache.org/proper/commons-io/apidocs/org/apache/commons/io/input/BOMInputStream.html">
+            BOMInputStream
+          </a>
+          class from
+          <a href="https://commons.apache.org/proper/commons-io/">Apache Commons IO</a>
+          for example:
+        </p>
+        <source>final URL url = ...;
 final Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
 final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
 try {
@@ -49,29 +73,98 @@ try {
 } finally {
     parser.close();
     reader.close();
-}</source>
-  <p>
-    You might find it handy to create something like this:    
-  </p>
-  <source>/**
- * Creates a reader capable of handling BOMs.
- */
+}
+        </source>
+        <p>
+          You might find it handy to create something like this:
+        </p>
+        <source>/**
+* Creates a reader capable of handling BOMs.
+*/
 public InputStreamReader newReader(final InputStream inputStream) {
     return new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.UTF_8);
-}</source>
-</section>
-<section name="Printing with headers">
-  <p>
-    To print a CSV file with headers, you specify the headers in the format:
-  </p>
-  <source>final Appendable out = ...;  
-final CSVPrinter printer = CSVFormat.DEFAULT.withHeader("H1", "H2").print(out)</source>
-  <p>
-    To print a CSV file with JDBC column labels, you specify the ResultSet in the format:
-  </p>
-  <source>final ResultSet resultSet = ...;
-final CSVPrinter printer = CSVFormat.DEFAULT.withHeader(resultSet).print(out)</source>
-</section>
-<!-- ================================================== -->
-</body>
+}
+        </source>
+      </subsection>
+    </section>
+
+    <section name="Working with headers">
+
+      Apache Commons CSV provides several ways to access record values.
+      The simplest way is to access values by their index in the record.
+      However, columns in CSV files often have a name, for example: ID, CustomerNo, Birthday, etc.
+      The CSVFormat class provides an API for specifing these <i>header</i> names and CSVRecord on
+      the other hand has methods to access values by their corresponding header name.
+
+      <subsection name="Accessing column values by index">
+        To access a record value by index, no special configuration of the CSVFormat is necessary:
+        <source>Reader in = new FileReader(&quot;path/to/file.csv&quot;);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.parse(in);
+for (CSVRecord record : records) {
+    String columnOne = record.get(0);
+    String columnTwo = record.get(1);
+}
+        </source>
+      </subsection>
+      <subsection name="Defining a header manually">
+        Indices may not be the most intuitive way to access record values. For this reason it is possible to
+        assign names to each column in the file:
+        <source>Reader in = new FileReader(&quot;path/to/file.csv&quot;);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.withHeader("ID", "CustomerNo", "Name").parse(in);
+for (CSVRecord record : records) {
+    String id = record.get("ID");
+    String customerNo = record.get("CustomerNo");
+    String name = record.get("Name");
+}
+        </source>
+        Note that column values can still be accessed using their index.
+      </subsection>
+      <subsection name="Using an enum to define a header">
+        Using String values all over the code to reference columns can be error prone. For this reason,
+        it is possible to define an enum to specify header names. Note that the enum constant names are
+        used to access column values. This may lead to enums constant names which do not follow the Java
+        coding standard of defining constants in upper case with underscores:
+        <source>public enum Headers {
+    ID, CustomerNo, Name
+}
+Reader in = new FileReader(&quot;path/to/file.csv&quot;);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.withHeader(Headers.class).parse(in);
+for (CSVRecord record : records) {
+    String id = record.get(Headers.ID);
+    String customerNo = record.get(Headers.CustomerNo);
+    String name = record.get(Headers.Name);
+}
+        </source>
+        Again it is possible to access values by their index and by using a String (for example "CustomerNo").
+      </subsection>
+      <subsection name="Header auto detection">
+        Some CSV files define header names in their first record. If configured, Apache Commons CSV can parse
+        the header names from the first record:
+        <source>Reader in = new FileReader(&quot;path/to/file.csv&quot;);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.withFirstRowAsHeader().parse(in);
+for (CSVRecord record : records) {
+    String id = record.get("ID");
+    String customerNo = record.get("CustomerNo");
+    String name = record.get("Name");
+}
+        </source>
+        This will use the values from the first record as header names and skip the first record when iterating.
+      </subsection>
+      <subsection name="Printing with headers">
+        <p>
+          To print a CSV file with headers, you specify the headers in the format:
+        </p>
+        <source>final Appendable out = ...;
+          final CSVPrinter printer = CSVFormat.DEFAULT.withHeader("H1", "H2").print(out)
+        </source>
+        <p>
+          To print a CSV file with JDBC column labels, you specify the ResultSet in the format:
+        </p>
+        <source>final ResultSet resultSet = ...;
+          final CSVPrinter printer = CSVFormat.DEFAULT.withHeader(resultSet).print(out)
+        </source>
+      </subsection>
+    </section>
+    <!-- ================================================== -->
+  </body>
 </document>
