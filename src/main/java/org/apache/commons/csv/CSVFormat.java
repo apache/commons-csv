@@ -507,8 +507,8 @@ public final class CSVFormat implements Serializable {
             final Character commentStart, final Character escape, final boolean ignoreSurroundingSpaces,
             final boolean ignoreEmptyLines, final String recordSeparator, final String nullString,
             final Object[] headerComments, final String[] header, final boolean skipHeaderRecord,
-            final boolean allowMissingColumnNames, final boolean ignoreHeaderCase, boolean trim,
-            boolean trailingDelimiter) {
+            final boolean allowMissingColumnNames, final boolean ignoreHeaderCase, final boolean trim,
+            final boolean trailingDelimiter) {
         this.delimiter = delimiter;
         this.quoteCharacter = quoteChar;
         this.quoteMode = quoteMode;
