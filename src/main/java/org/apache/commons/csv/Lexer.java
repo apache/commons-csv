@@ -110,7 +110,7 @@ final class Lexer implements Closeable {
         }
 
         // did we reach eof during the last iteration already ? EOF
-        if (isEndOfFile(lastChar) || (!isDelimiter(lastChar) && isEndOfFile(c))) {
+        if (isEndOfFile(lastChar) || !isDelimiter(lastChar) && isEndOfFile(c)) {
             token.type = EOF;
             // don't set token.isReady here because no content
             return token;

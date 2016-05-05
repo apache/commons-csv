@@ -58,7 +58,7 @@ final class ExtendedBufferedReader extends BufferedReader {
     @Override
     public int read() throws IOException {
         final int current = super.read();
-        if (current == CR || (current == LF && lastChar != CR)) {
+        if (current == CR || current == LF && lastChar != CR) {
             eolCounter++;
         }
         lastChar = current;
