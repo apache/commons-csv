@@ -17,10 +17,10 @@
 package org.apache.commons.csv.bugs;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -33,8 +33,7 @@ public class JiraCsv167Test {
 
     @Test
     public void parse() throws IOException {
-        final File csvData = new File("src/test/resources/csv-167/sample1.csv");
-        final BufferedReader br = new BufferedReader(new FileReader(csvData));
+        final BufferedReader br = new BufferedReader(getTestInput());
         String s = null;
         int totcomment = 0;
         int totrecs = 0;
@@ -67,11 +66,10 @@ public class JiraCsv167Test {
         format = format.withRecordSeparator('\n');
         format = format.withSkipHeaderRecord(false);
         //
-        final CSVParser parser = CSVParser.parse(csvData, Charset.defaultCharset(), format);
+        final CSVParser parser = format.parse(getTestInput());
         int comments = 0;
         int records = 0;
         for (final CSVRecord csvRecord : parser) {
-//            System.out.println(csvRecord.isComment() + "[" + csvRecord.toString() + "]");
             records++;
             if (csvRecord.hasComment()) {
                 comments++;
@@ -80,5 +78,10 @@ public class JiraCsv167Test {
         // Comment lines are concatenated, in this example 4 lines become 2 comments.
         Assert.assertEquals(totcomment, comments);
         Assert.assertEquals(totrecs, records); // records includes the header
+    }
+
+    private Reader getTestInput() {
+        final InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("csv-167/sample1.csv");
+        return new InputStreamReader(is);
     }
 }
