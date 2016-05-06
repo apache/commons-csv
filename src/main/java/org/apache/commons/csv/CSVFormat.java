@@ -1455,21 +1455,6 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with whether to trim leading and trailing blanks.
-     *
-     * @param trim
-     *            whether to trim leading and trailing blanks.
-     *
-     * @return A new CSVFormat that is equal to this but with the specified trim setting.
-     * @since 1.3
-     */
-    public CSVFormat withTrim(final boolean trim) {
-        return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
-                skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter);
-    }
-
-    /**
      * Returns a new {@code CSVFormat} to add a trailing delimiter.
      *
      * @return A new CSVFormat that is equal to this but with the trailing delimiter setting.
@@ -1502,5 +1487,20 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withTrim() {
         return withTrim(true);
+    }
+
+    /**
+     * Returns a new {@code CSVFormat} with whether to trim leading and trailing blanks.
+     *
+     * @param trim
+     *            whether to trim leading and trailing blanks.
+     *
+     * @return A new CSVFormat that is equal to this but with the specified trim setting.
+     * @since 1.3
+     */
+    public CSVFormat withTrim(final boolean trim) {
+        return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
+                skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter);
     }
 }
