@@ -684,6 +684,7 @@ public final class CSVFormat implements Serializable {
      * Specifies whether header names will be accessed ignoring case.
      *
      * @return {@code true} if header names cases are ignored, {@code false} if they are case sensitive.
+     * @since 1.3
      */
     public boolean getIgnoreHeaderCase() {
         return ignoreHeaderCase;
@@ -752,6 +753,7 @@ public final class CSVFormat implements Serializable {
      * Returns whether to add a trailing delimiter.
      *
      * @return whether to add a trailing delimiter.
+     * @since 1.3
      */
     public boolean getTrailingDelimiter() {
         return trailingDelimiter;
@@ -1277,7 +1279,7 @@ public final class CSVFormat implements Serializable {
      *
      * @return A new CSVFormat that will ignore case header name.
      * @see #withIgnoreHeaderCase(boolean)
-     * @since ?
+     * @since 1.3
      */
     public CSVFormat withIgnoreHeaderCase() {
         return this.withIgnoreHeaderCase(true);
@@ -1290,6 +1292,7 @@ public final class CSVFormat implements Serializable {
      *            the case mapping behavior, {@code true} to access name/values, {@code false} to leave the mapping as
      *            is.
      * @return A new CSVFormat that will ignore case header name if specified as {@code true}
+     * @since 1.3
      */
     public CSVFormat withIgnoreHeaderCase(final boolean ignoreHeaderCase) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
@@ -1458,6 +1461,7 @@ public final class CSVFormat implements Serializable {
      *            whether to trim leading and trailing blanks.
      *
      * @return A new CSVFormat that is equal to this but with the specified trim setting.
+     * @since 1.3
      */
     public CSVFormat withTrim(final boolean trim) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
@@ -1469,6 +1473,7 @@ public final class CSVFormat implements Serializable {
      * Returns a new {@code CSVFormat} to add a trailing delimiter.
      *
      * @return A new CSVFormat that is equal to this but with the trailing delimiter setting.
+     * @since 1.3
      */
     public CSVFormat withTrailingDelimiter() {
         return withTrailingDelimiter(true);
@@ -1481,6 +1486,7 @@ public final class CSVFormat implements Serializable {
      *            whether to add a trailing delimiter.
      *
      * @return A new CSVFormat that is equal to this but with the specified trailing delimiter setting.
+     * @since 1.3
      */
     public CSVFormat withTrailingDelimiter(final boolean trailingDelimiter) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
@@ -1492,6 +1498,7 @@ public final class CSVFormat implements Serializable {
      * Returns a new {@code CSVFormat} to trim leading and trailing blanks.
      *
      * @return A new CSVFormat that is equal to this but with the trim setting on.
+     * @since 1.3
      */
     public CSVFormat withTrim() {
         return withTrim(true);
