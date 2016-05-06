@@ -1,4 +1,53 @@
                         Apache Commons CSV
+                           Version 1.3
+                          Release Notes
+
+
+INTRODUCTION:
+
+This document contains the release notes for the 1.3 version of Apache Commons CSV.
+Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
+
+CSV requires at least Java 6.
+
+The Apache Commons CSV library provides a simple interface for reading and writing
+CSV files of various types.
+
+Feature and bug fix release.
+
+Changes in this version include:
+
+NEW FEATURES
+==============
+
+o CSV-179:  Add shortcut method for using first record as header to CSVFormat.
+o CSV-180:  Add withHeader(Class? extends Enum>) to CSVFormat.
+o CSV-159:  Add IgnoreCase option for accessing header names. Thanks to Yamil Medina.
+o CSV-169:  The null string should be case-sensitive when reading records. Thanks to Gary Gregory.
+o CSV-175:  Support for ignoring trailing delimiter. Thanks to Gary Gregory, Chris Jones.
+o CSV-177:  Support trimming leading and trailing blanks. Thanks to Gary Gregory.
+o CSV-178:  Create default formats for Informix UNLOAD and UNLOAD CSV. Thanks to Gary Gregory.
+
+FIXED BUGS
+============
+
+o CSV-168:  CSVFormat.nullString should not be escaped. Thanks to Gary Gregory, cornel creanga.
+o CSV-170:  CSVFormat.MYSQL nullString should be "\N". Thanks to Gary Gregory, cornel creanga.
+o CSV-161:  Fix Javadoc to say CSVFormat with() methods return a new CSVFormat. Thanks to Gary Gregory, Kristof Meixner, Emmanuel Bourg.
+
+CHANGES
+============
+
+o CSV-167:  Comment line hides next record; update Javadoc to make behaviour clear. Thanks to Rene.
+o CSV-153:  CSVPrinter doesn't skip creation of header record if skipHeaderRecord is set to true. Thanks to Wren.
+
+
+Have fun!
+-Apache Commons CSV team
+
+------------------------------------------------------------------------------
+
+                        Apache Commons CSV
                            Version 1.2
                           Release Notes
 
