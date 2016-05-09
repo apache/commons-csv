@@ -121,15 +121,33 @@ public final class CSVPrinter implements Flushable, Closeable {
      */
     public void print(final Object value) throws IOException {
         // null values are considered empty
-        String strValue;
+        // Only call CharSequence.toString() if you have to, helps GC-free use cases. 
+        CharSequence charSequence;
         if (value == null) {
             final String nullString = format.getNullString();
-            strValue = nullString == null ? Constants.EMPTY : nullString;
+            charSequence = nullString == null ? Constants.EMPTY : nullString;
         } else {
-            strValue = value.toString();
+            charSequence = value instanceof CharSequence ? (CharSequence) value : value.toString();
         }
-        strValue = format.getTrim() ? strValue.trim() : strValue;
-        this.print(value, strValue, 0, strValue.length());
+        charSequence = format.getTrim() ? trim(charSequence) : charSequence;
+        this.print(value, charSequence, 0, charSequence.length());
+    }
+
+    private CharSequence trim(final CharSequence charSequence) {
+        if (charSequence instanceof String) {
+            return ((String) charSequence).trim();
+        }
+        final int count = charSequence.length();
+        int len = count;
+        int pos = 0;
+
+        while ((pos < len) && (charSequence.charAt(pos) <= ' ')) {
+            pos++;
+        }
+        while ((pos < len) && (charSequence.charAt(len - 1) <= ' ')) {
+            len--;
+        }
+        return (pos > 0) || (len < count) ? charSequence.subSequence(pos, len) : charSequence;
     }
 
     private void print(final Object object, final CharSequence value, final int offset, final int len)
