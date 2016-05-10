@@ -1097,8 +1097,11 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the header of the format defined by the enum class:
+     * Returns a new {@code CSVFormat} with the header of the format defined by the enum class.
      *
+     * <p>
+     * Example:
+     * </p>
      * <pre>
      * public enum Header {
      *     Name, Email, Phone
