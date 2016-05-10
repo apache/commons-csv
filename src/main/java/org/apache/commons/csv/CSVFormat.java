@@ -1110,7 +1110,7 @@ public final class CSVFormat implements Serializable {
      * CSVFormat format = aformat.withHeader(Header.class);
      * </pre>
      * <p>
-     * The header is also used by the {@link CSVPrinter}..
+     * The header is also used by the {@link CSVPrinter}.
      * </p>
      *
      * @param headerEnum
@@ -1148,7 +1148,7 @@ public final class CSVFormat implements Serializable {
      * CSVFormat format = aformat.withHeader(resultSet);
      * </pre>
      * <p>
-     * The header is also used by the {@link CSVPrinter}..
+     * The header is also used by the {@link CSVPrinter}.
      * </p>
      *
      * @param resultSet
@@ -1178,7 +1178,7 @@ public final class CSVFormat implements Serializable {
      * CSVFormat format = aformat.withHeader(metaData);
      * </pre>
      * <p>
-     * The header is also used by the {@link CSVPrinter}..
+     * The header is also used by the {@link CSVPrinter}.
      * </p>
      *
      * @param metaData
@@ -1216,7 +1216,7 @@ public final class CSVFormat implements Serializable {
      * CSVFormat format = aformat.withHeader(&quot;name&quot;, &quot;email&quot;, &quot;phone&quot;);
      * </pre>
      * <p>
-     * The header is also used by the {@link CSVPrinter}..
+     * The header is also used by the {@link CSVPrinter}.
      * </p>
      *
      * @param header
