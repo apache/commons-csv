@@ -1164,13 +1164,13 @@ public final class CSVFormat implements Serializable {
         int len = count;
         int pos = 0;
 
-        while ((pos < len) && (charSequence.charAt(pos) <= ' ')) {
+        while (pos < len && charSequence.charAt(pos) <= ' ') {
             pos++;
         }
-        while ((pos < len) && (charSequence.charAt(len - 1) <= ' ')) {
+        while (pos < len && charSequence.charAt(len - 1) <= ' ') {
             len--;
         }
-        return (pos > 0) || (len < count) ? charSequence.subSequence(pos, len) : charSequence;
+        return pos > 0 || len < count ? charSequence.subSequence(pos, len) : charSequence;
     }
 
     /**
