@@ -17,7 +17,6 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.Constants.COMMENT;
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.SP;
@@ -120,202 +119,8 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void print(final Object value) throws IOException {
-        // null values are considered empty
-        // Only call CharSequence.toString() if you have to, helps GC-free use cases. 
-        CharSequence charSequence;
-        if (value == null) {
-            final String nullString = format.getNullString();
-            charSequence = nullString == null ? Constants.EMPTY : nullString;
-        } else {
-            charSequence = value instanceof CharSequence ? (CharSequence) value : value.toString();
-        }
-        charSequence = format.getTrim() ? trim(charSequence) : charSequence;
-        this.print(value, charSequence, 0, charSequence.length());
-    }
-
-    private CharSequence trim(final CharSequence charSequence) {
-        if (charSequence instanceof String) {
-            return ((String) charSequence).trim();
-        }
-        final int count = charSequence.length();
-        int len = count;
-        int pos = 0;
-
-        while ((pos < len) && (charSequence.charAt(pos) <= ' ')) {
-            pos++;
-        }
-        while ((pos < len) && (charSequence.charAt(len - 1) <= ' ')) {
-            len--;
-        }
-        return (pos > 0) || (len < count) ? charSequence.subSequence(pos, len) : charSequence;
-    }
-
-    private void print(final Object object, final CharSequence value, final int offset, final int len)
-            throws IOException {
-        if (!newRecord) {
-            out.append(format.getDelimiter());
-        }
-        if (object == null) {
-            out.append(value);
-        } else if (format.isQuoteCharacterSet()) {
-            // the original object is needed so can check for Number
-            printAndQuote(object, value, offset, len);
-        } else if (format.isEscapeCharacterSet()) {
-            printAndEscape(value, offset, len);
-        } else {
-            out.append(value, offset, offset + len);
-        }
+        format.print(value, out, newRecord);
         newRecord = false;
-    }
-
-    /*
-     * Note: must only be called if escaping is enabled, otherwise will generate NPE
-     */
-    private void printAndEscape(final CharSequence value, final int offset, final int len) throws IOException {
-        int start = offset;
-        int pos = offset;
-        final int end = offset + len;
-
-        final char delim = format.getDelimiter();
-        final char escape = format.getEscapeCharacter().charValue();
-
-        while (pos < end) {
-            char c = value.charAt(pos);
-            if (c == CR || c == LF || c == delim || c == escape) {
-                // write out segment up until this char
-                if (pos > start) {
-                    out.append(value, start, pos);
-                }
-                if (c == LF) {
-                    c = 'n';
-                } else if (c == CR) {
-                    c = 'r';
-                }
-
-                out.append(escape);
-                out.append(c);
-
-                start = pos + 1; // start on the current char after this one
-            }
-
-            pos++;
-        }
-
-        // write last segment
-        if (pos > start) {
-            out.append(value, start, pos);
-        }
-    }
-
-    /*
-     * Note: must only be called if quoting is enabled, otherwise will generate NPE
-     */
-    // the original object is needed so can check for Number
-    private void printAndQuote(final Object object, final CharSequence value, final int offset, final int len)
-            throws IOException {
-        boolean quote = false;
-        int start = offset;
-        int pos = offset;
-        final int end = offset + len;
-
-        final char delimChar = format.getDelimiter();
-        final char quoteChar = format.getQuoteCharacter().charValue();
-
-        QuoteMode quoteModePolicy = format.getQuoteMode();
-        if (quoteModePolicy == null) {
-            quoteModePolicy = QuoteMode.MINIMAL;
-        }
-        switch (quoteModePolicy) {
-        case ALL:
-            quote = true;
-            break;
-        case NON_NUMERIC:
-            quote = !(object instanceof Number);
-            break;
-        case NONE:
-            // Use the existing escaping code
-            printAndEscape(value, offset, len);
-            return;
-        case MINIMAL:
-            if (len <= 0) {
-                // always quote an empty token that is the first
-                // on the line, as it may be the only thing on the
-                // line. If it were not quoted in that case,
-                // an empty line has no tokens.
-                if (newRecord) {
-                    quote = true;
-                }
-            } else {
-                char c = value.charAt(pos);
-
-                // TODO where did this rule come from?
-                if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
-                    quote = true;
-                } else if (c <= COMMENT) {
-                    // Some other chars at the start of a value caused the parser to fail, so for now
-                    // encapsulate if we start in anything less than '#'. We are being conservative
-                    // by including the default comment char too.
-                    quote = true;
-                } else {
-                    while (pos < end) {
-                        c = value.charAt(pos);
-                        if (c == LF || c == CR || c == quoteChar || c == delimChar) {
-                            quote = true;
-                            break;
-                        }
-                        pos++;
-                    }
-
-                    if (!quote) {
-                        pos = end - 1;
-                        c = value.charAt(pos);
-                        // Some other chars at the end caused the parser to fail, so for now
-                        // encapsulate if we end in anything less than ' '
-                        if (c <= SP) {
-                            quote = true;
-                        }
-                    }
-                }
-            }
-
-            if (!quote) {
-                // no encapsulation needed - write out the original value
-                out.append(value, start, end);
-                return;
-            }
-            break;
-        default:
-            throw new IllegalStateException("Unexpected Quote value: " + quoteModePolicy);
-        }
-
-        if (!quote) {
-            // no encapsulation needed - write out the original value
-            out.append(value, start, end);
-            return;
-        }
-
-        // we hit something that needed encapsulation
-        out.append(quoteChar);
-
-        // Pick up where we left off: pos should be positioned on the first character that caused
-        // the need for encapsulation.
-        while (pos < end) {
-            final char c = value.charAt(pos);
-            if (c == quoteChar) {
-                // write out the chunk up until this point
-
-                // add 1 to the length to write out the encapsulator also
-                out.append(value, start, pos + 1);
-                // put the next starting position on the encapsulator so we will
-                // write it out again with the next string (effectively doubling it)
-                start = pos;
-            }
-            pos++;
-        }
-
-        // write the last segment
-        out.append(value, start, pos);
-        out.append(quoteChar);
     }
 
     /**
@@ -370,13 +175,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void println() throws IOException {
-        if (format.getTrailingDelimiter()) {
-            out.append(format.getDelimiter());
-        }
-        final String recordSeparator = format.getRecordSeparator();
-        if (recordSeparator != null) {
-            out.append(recordSeparator);
-        }
+        format.println(out);
         newRecord = true;
     }
 
@@ -414,10 +213,8 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void printRecord(final Object... values) throws IOException {
-        for (final Object value : values) {
-            print(value);
-        }
-        println();
+        format.printRecord(out, values);
+        newRecord = true;
     }
 
     /**
