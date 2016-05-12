@@ -1382,7 +1382,7 @@ public final class CSVFormat implements Serializable {
     public CSVFormat withHeader(final Class<? extends Enum<?>> headerEnum) {
         String[] header = null;
         if (headerEnum != null) {
-            Enum<?>[] enumValues = headerEnum.getEnumConstants();
+            final Enum<?>[] enumValues = headerEnum.getEnumConstants();
             header = new String[enumValues.length];
             for (int i = 0; i < enumValues.length; i++) {
                 header[i] = enumValues[i].name();
