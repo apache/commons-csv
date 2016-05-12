@@ -668,7 +668,7 @@ public class CSVPrinterTest {
     }
 
     @Test
-    public void testMySqlNullStringDefault() throws IOException {
+    public void testMySqlNullStringDefault() {
         assertEquals("\\N", CSVFormat.MYSQL.getNullString());
     }
 
