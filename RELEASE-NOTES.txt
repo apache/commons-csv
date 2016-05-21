@@ -1,4 +1,38 @@
                         Apache Commons CSV
+                           Version 1.4
+                          Release Notes
+
+INTRODUCTION:
+
+This document contains the release notes for the 1.4 version of Apache Commons CSV.
+Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
+
+CSV requires at least Java 6.
+
+The Apache Commons CSV library provides a simple interface for reading and writing
+CSV files of various types.
+
+Feature and bug fix release.
+
+Changes in this version include:
+
+NEW FEATURES
+==============
+
+o CSV-182: Allow some printing operations directly from CSVFormat.  Issue: CSV-182. Thanks to Gary Gregory. 
+
+CHANGES
+============
+
+o CSV-181: Make CSVPrinter.print(Object) GC-free.  Issue: CSV-181. Thanks to Gary Gregory. 
+
+
+Have fun!
+-Apache Commons CSV team
+
+------------------------------------------------------------------------------
+
+                        Apache Commons CSV
                            Version 1.3
                           Release Notes
 
