@@ -43,9 +43,6 @@
 Apache Commons CSV
 ===================
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/)
-[![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
-
 The Apache Commons CSV library provides a simple interface for reading and writing
 CSV files of various types.
 
@@ -53,7 +50,7 @@ Documentation
 -------------
 
 More information can be found on the [homepage](https://commons.apache.org/proper/commons-csv).
-The [JavaDoc](https://commons.apache.org/proper/commons-csv/archives/1.1/apidocs/index.html) can be browsed.
+The [JavaDoc](https://commons.apache.org/proper/commons-csv/javadocs/api-release) can be browsed.
 Questions related to the usage of Apache Commons CSV should be posted to the [user mailing list][ml].
 
 Where can I get the latest release?
