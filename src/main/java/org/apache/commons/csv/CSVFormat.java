@@ -864,15 +864,15 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed. Useful when
-     * one wants to avoid creating CSVPrinters.
+     * Prints the {@code value} as the next value on the line to {@code out}. The value will be escaped or encapsulated
+     * as needed. Useful when one wants to avoid creating CSVPrinters.
      *
      * @param value
-     *            value to be output.
+     *            value to output.
      * @param out
      *            where to print the value
      * @param newRecord
-     *            is this a new record
+     *            if this a new record
      * @throws IOException
      *             If an I/O error occurs
      * @since 1.4
@@ -1063,7 +1063,6 @@ public final class CSVFormat implements Serializable {
      *
      * @param out
      *            where to write
-     *
      * @throws IOException
      *             If an I/O error occurs
      * @since 1.4
@@ -1078,14 +1077,16 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Prints the given values a single record of delimiter separated values followed by the record separator.
+     * Prints the given {@code values} to {@code out} as a single record of delimiter separated values followed by the
+     * record separator.
      *
      * <p>
-     * The values will be quoted if needed. Quotes and newLine characters will be escaped. This method adds the record
+     * The values will be quoted if needed. Quotes and new-line characters will be escaped. This method adds the record
      * separator to the output after printing the record, so there is no need to call {@link #println(Appendable)}.
      * </p>
      *
-     * @param out where to write
+     * @param out
+     *            where to write
      * @param values
      *            values to output.
      * @throws IOException
