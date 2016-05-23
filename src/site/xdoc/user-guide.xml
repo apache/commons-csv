@@ -18,7 +18,7 @@ limitations under the License.
 <document>
   <properties>
     <title>User Guide</title>
-    <author email="dev@commons.apache.org">Commons Documentation Team</author>
+    <author email="dev@commons.apache.org">Apache Commons Documentation Team</author>
   </properties>
   <body>
     <!-- ================================================== -->
@@ -35,8 +35,8 @@ limitations under the License.
       
       <dl>
         <dt>EXCEL</dt><dd>The Microsoft Excel CSV format.</dd>
-        <dt>INFORMIX_UNLOAD</dt><dd>Informix CSV UNLOAD format used by the <code>UNLOAD TO file_name</code> operation.</dd>
-        <dt>INFORMIX_UNLOAD_CSV</dt><dd>Informix CSV UNLOAD format used by the <code>UNLOAD TO file_name</code> operation (escaping is disabled.)</dd>
+        <dt>INFORMIX_UNLOAD</dt><dd>Informix <a href="http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">UNLOAD</a> format used by the <code>UNLOAD TO file_name</code> operation.</dd>
+        <dt>INFORMIX_UNLOAD_CSV</dt><dd>Informix <a href="http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">CSV UNLOAD</a> format used by the <code>UNLOAD TO file_name</code> operation (escaping is disabled.)</dd>
         <dt>MYSQL</dt><dd>The Oracle MySQL CSV format.</dd>
         <dt>RFC-4180</dt><dd>The RFC-4180 format defined by <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a></dd>
         <dt>TDF</dt><dd>A tab delimited format</dd>

@@ -27,6 +27,8 @@ limitations under the License.
   <p>The most common CSV formats are predefined in the <a href="apidocs/org/apache/commons/csv/CSVFormat.html">CSVFormat</a> class:
   <ul>
     <li>Microsoft Excel</li>
+    <li><a href="http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">Informix UNLOAD</a></li>
+    <li><a href="http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">Informix UNLOAD CSV</a></li>
     <li><a href="http://dev.mysql.com/doc/refman/5.0/en/mysqldump-delimited-text.html">MySQL</a></li>
     <li><a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a></li>
     <li><a href="http://en.wikipedia.org/wiki/Tab-separated_values">TDF</a></li>
