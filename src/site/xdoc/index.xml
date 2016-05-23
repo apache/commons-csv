@@ -26,9 +26,9 @@ limitations under the License.
   <p>Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.</p>
   <p>The most common CSV formats are predefined in the <a href="apidocs/org/apache/commons/csv/CSVFormat.html">CSVFormat</a> class:
   <ul>
-    <li><a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a></li>
     <li>MS Excel</li>
     <li><a href="http://dev.mysql.com/doc/refman/5.0/en/mysqldump-delimited-text.html">MySQL</a></li>
+    <li><a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a></li>
     <li><a href="http://en.wikipedia.org/wiki/Tab-separated_values">TDF</a></li>
   </ul>
   </p>
