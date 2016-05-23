@@ -34,9 +34,9 @@ limitations under the License.
       The CSVFormat class provides some commonly used CSV variants:
       
       <dl>
-        <dt>EXCEL</dt><dd>The format used by Excel</dd>
-        <dt>MYSQL</dt><dd>The format used by MySQL data bases</dd>
-        <dt>RFC-4180</dt><dd>The format defined by <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a></dd>
+        <dt>EXCEL</dt><dd>The Microsoft Excel CSV format.</dd>
+        <dt>MYSQL</dt><dd>The Oracle MySQL CSV format.</dd>
+        <dt>RFC-4180</dt><dd>The RFC-4180 format defined by <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a></dd>
         <dt>TDF</dt><dd>A tab delimited format</dd>
       </dl>
 
