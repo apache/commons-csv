@@ -22,7 +22,7 @@ limitations under the License.
  </properties>
 <body>
 <!-- ================================================== -->
-<section name="Using Commons CSV">
+<section name="Using Apache Commons CSV">
   <p>Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.</p>
   <p>The most common CSV formats are predefined in the <a href="apidocs/org/apache/commons/csv/CSVFormat.html">CSVFormat</a> class:
   <ul>
