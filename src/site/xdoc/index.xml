@@ -46,6 +46,7 @@ The Javadoc API documents are available online:
 </p>
 <ul>
   <li><a href="apidocs/index.html">Javadoc trunk</a></li>
+  <li><a href="archives/1.4/apidocs/index.html">Javadoc 1.4</a></li>
   <li><a href="archives/1.3/apidocs/index.html">Javadoc 1.3</a></li>
   <li><a href="archives/1.2/apidocs/index.html">Javadoc 1.2</a></li>
   <li><a href="archives/1.1/apidocs/index.html">Javadoc 1.1</a></li>
@@ -59,7 +60,8 @@ The <a href="source-repository.html">subversion repository</a> can be
 <!-- ================================================== -->
 <section name="Releases">
 <ul>
-  <li><a href="http://commons.apache.org/csv/download_csv.cgi">Apache Commons CSV 1.3 (mirrors)</a> requires Java 1.6</li>
+  <li><a href="http://commons.apache.org/csv/download_csv.cgi">Apache Commons CSV 1.4 (mirrors)</a> requires Java 1.6</li>
+  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.3 (archives)</a> requires Java 1.6</li>
   <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.2 (archives)</a> requires Java 1.6</li>
   <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.1 (archives)</a> requires Java 1.6</li>
   <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.0 (archives)</a> requires Java 1.6</li>
