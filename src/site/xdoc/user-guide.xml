@@ -35,6 +35,8 @@ limitations under the License.
       
       <dl>
         <dt>EXCEL</dt><dd>The Microsoft Excel CSV format.</dd>
+        <dt>INFORMIX_UNLOAD</dt><dd>Informix CSV UNLOAD format used by the <code>UNLOAD TO file_name</code> operation.</dd>
+        <dt>INFORMIX_UNLOAD_CSV</dt><dd>Informix CSV UNLOAD format used by the <code>UNLOAD TO file_name</code> operation (escaping is disabled.)</dd>
         <dt>MYSQL</dt><dd>The Oracle MySQL CSV format.</dd>
         <dt>RFC-4180</dt><dd>The RFC-4180 format defined by <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a></dd>
         <dt>TDF</dt><dd>A tab delimited format</dd>
