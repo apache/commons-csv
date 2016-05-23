@@ -4,12 +4,6 @@ Copyright 2005-2016 The Apache Software Foundation
 This product includes software developed at
 The Apache Software Foundation (http://www.apache.org/).
 
-src/main/resources/contract.txt
-This file was downloaded from http://www.ferc.gov/docs-filing/eqr/soft-tools/sample-csv/contract.txt and contains neither copyright notice nor license.
-
-src/main/resources/transaction.txt
-This file was downloaded from http://www.ferc.gov/docs-filing/eqr/soft-tools/sample-csv/transaction.txt and contains neither copyright notice nor license.
-
 src/test/resources/CSVFileParser/bom.csv
 src/test/resources/CSVFileParser/test.csv
 src/test/resources/CSVFileParser/test_default.txt

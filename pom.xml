@@ -206,6 +206,7 @@ CSV files of various types.
         <!-- Should agree with config in reporting section -->
         <configuration>
           <excludes>
+            <!-- These files are used as test data and test result specifications. -->
             <exclude>src/test/resources/csv-167/sample1.csv</exclude>
             <exclude>src/test/resources/CSVFileParser/bom.csv</exclude>
             <exclude>src/test/resources/CSVFileParser/test.csv</exclude>
