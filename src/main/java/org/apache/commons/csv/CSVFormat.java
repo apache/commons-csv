@@ -287,7 +287,7 @@ public final class CSVFormat implements Serializable {
             .withQuote(DOUBLE_QUOTE_CHAR).withRecordSeparator(LF);
 
     /**
-     * Default Informix CSV UNLOAD format used by the {@code UNLOAD TO file_name} operation.
+     * Default Informix CSV UNLOAD format used by the {@code UNLOAD TO file_name} operation (escaping is disabled.)
      *
      * <p>
      * This is a comma-delimited format with a LF character as the line separator. Values are not quoted and special
