@@ -3,14 +3,3 @@ Copyright 2005-2016 The Apache Software Foundation
 
 This product includes software developed at
 The Apache Software Foundation (http://www.apache.org/).
-
-src/test/resources/CSVFileParser/bom.csv
-src/test/resources/CSVFileParser/test.csv
-src/test/resources/CSVFileParser/test_default.txt
-src/test/resources/CSVFileParser/test_default_comment.txt
-src/test/resources/CSVFileParser/test_rfc4180.txt
-src/test/resources/CSVFileParser/test_rfc4180_trim.txt
-src/test/resources/CSVFileParser/testCSV85.csv
-src/test/resources/CSVFileParser/testCSV85_default.txt
-src/test/resources/CSVFileParser/testCSV85_ignoreEmpty.txt
-These files are used as test data and test result specifications.
