@@ -27,6 +27,7 @@ CHANGES
 =========
 
 o CSV-181:  Make CSVPrinter.print(Object) GC-free. Thanks to Gary Gregory.
+o CSV-183:  Drop ferc.gov tests.  
 
 
 Historical list of changes: http://commons.apache.org/proper/commons-csv/changes-report.html
