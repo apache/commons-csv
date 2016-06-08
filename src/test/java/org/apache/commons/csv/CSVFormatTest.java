@@ -172,6 +172,22 @@ public class CSVFormatTest {
     }
 
     @Test
+    public void testEqualsLeftNoQuoteRightQuote() {
+    	final CSVFormat left = CSVFormat.newFormat(',').withQuote(null);
+    	final CSVFormat right = left.withQuote('#');
+    	
+    	assertNotEquals(left, right);
+    }
+
+    @Test
+    public void testEqualsNoQuotes() {
+    	final CSVFormat left = CSVFormat.newFormat(',').withQuote(null);
+    	final CSVFormat right = left.withQuote(null);
+
+    	assertEquals(left, right);
+    }
+
+    @Test
     public void testEqualsQuotePolicy() {
         final CSVFormat right = CSVFormat.newFormat('\'')
                 .withQuote('"')
