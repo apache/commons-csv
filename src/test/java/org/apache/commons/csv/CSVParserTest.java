@@ -393,7 +393,7 @@ public class CSVParserTest {
 
     @Test
     public void testForEach() throws Exception {
-        final List<CSVRecord> records = new ArrayList<CSVRecord>();
+        final List<CSVRecord> records = new ArrayList<>();
 
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
 

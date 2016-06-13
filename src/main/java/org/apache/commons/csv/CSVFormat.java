@@ -1215,7 +1215,7 @@ public final class CSVFormat implements Serializable {
 
         // validate header
         if (header != null) {
-            final Set<String> dupCheck = new HashSet<String>();
+            final Set<String> dupCheck = new HashSet<>();
             for (final String hdr : header) {
                 if (!dupCheck.add(hdr)) {
                     throw new IllegalArgumentException(

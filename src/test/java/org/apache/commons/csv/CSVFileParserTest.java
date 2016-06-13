@@ -69,7 +69,7 @@ public class CSVFileParserTest {
 
     @Parameters
     public static Collection<Object[]> generateData() {
-        final List<Object[]> list = new ArrayList<Object[]>();
+        final List<Object[]> list = new ArrayList<>();
 
         final FilenameFilter filenameFilter = new FilenameFilter() {
 

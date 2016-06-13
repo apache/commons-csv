@@ -216,7 +216,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private final Lexer lexer;
 
     /** A record buffer for getRecord(). Grows as necessary and is reused. */
-    private final List<String> record = new ArrayList<String>();
+    private final List<String> record = new ArrayList<>();
 
     /**
      * The next record number to assign.
@@ -331,7 +331,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @return a copy of the header map that iterates in column order.
      */
     public Map<String, Integer> getHeaderMap() {
-        return this.headerMap == null ? null : new LinkedHashMap<String, Integer>(this.headerMap);
+        return this.headerMap == null ? null : new LinkedHashMap<>(this.headerMap);
     }
 
     /**
@@ -362,7 +362,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     public List<CSVRecord> getRecords() throws IOException {
         CSVRecord rec;
-        final List<CSVRecord> records = new ArrayList<CSVRecord>();
+        final List<CSVRecord> records = new ArrayList<>();
         while ((rec = this.nextRecord()) != null) {
             records.add(rec);
         }

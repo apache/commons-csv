@@ -46,7 +46,7 @@ public class CSVRecordTest {
     public void setUp() throws Exception {
         values = new String[] { "A", "B", "C" };
         record = new CSVRecord(values, null, null, 0, -1);
-        header = new HashMap<String, Integer>();
+        header = new HashMap<>();
         header.put("first", Integer.valueOf(0));
         header.put("second", Integer.valueOf(1));
         header.put("third", Integer.valueOf(2));
@@ -132,7 +132,7 @@ public class CSVRecordTest {
 
     @Test
     public void testPutInMap() {
-        final Map<String, String> map = new ConcurrentHashMap<String, String>();
+        final Map<String, String> map = new ConcurrentHashMap<>();
         this.recordWithHeader.putIn(map);
         this.validateMap(map, false);
         // Test that we can compile with assigment to the same map as the param.
@@ -148,7 +148,7 @@ public class CSVRecordTest {
         map.remove("OldColumn");
         map.put("ZColumn", "NewValue");
         // check:
-        final ArrayList<String> list = new ArrayList<String>(map.values());
+        final ArrayList<String> list = new ArrayList<>(map.values());
         Collections.sort(list);
         printer.printRecord(list);
         Assert.assertEquals("A,B,C,NewValue" + CSVFormat.DEFAULT.getRecordSeparator(), printer.getOut().toString());

@@ -495,7 +495,7 @@ public class CSVPrinterTest {
         final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, format);
-        final List<String> list = new LinkedList<String>();
+        final List<String> list = new LinkedList<>();
         list.add("\"");
         printer.printRecord(list);
         printer.close();
@@ -511,7 +511,7 @@ public class CSVPrinterTest {
         final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, format);
-        final List<String> list = new LinkedList<String>();
+        final List<String> list = new LinkedList<>();
         list.add("\n");
         printer.printRecord(list);
         printer.close();
@@ -527,7 +527,7 @@ public class CSVPrinterTest {
         final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, format);
-        final List<String> list = new LinkedList<String>();
+        final List<String> list = new LinkedList<>();
         list.add("\\");
         printer.printRecord(list);
         printer.close();
@@ -543,7 +543,7 @@ public class CSVPrinterTest {
         final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote('"').withEscape('\\');
         final StringWriter sw = new StringWriter();
         final CSVPrinter printer = new CSVPrinter(sw, format);
-        final List<String> list = new LinkedList<String>();
+        final List<String> list = new LinkedList<>();
         list.add("\"");
         list.add("\n");
         list.add("\\");
