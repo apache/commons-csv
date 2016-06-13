@@ -237,7 +237,7 @@ public class CSVParserTest {
         final String[][] res_comments = { { "a", "b#" }, { "\n", " ", "#" }, };
 
         try (final CSVParser parser = CSVParser.parse(code, format)) {
-            List<CSVRecord> records = parser.getRecords();
+            final List<CSVRecord> records = parser.getRecords();
             assertTrue(records.size() > 0);
 
             Utils.compare("Failed to parse without comments", res, records);
@@ -245,7 +245,7 @@ public class CSVParserTest {
             format = CSVFormat.DEFAULT.withCommentMarker('#');
         }
         try (final CSVParser parser = CSVParser.parse(code, format)) {
-            List<CSVRecord> records = parser.getRecords();
+            final List<CSVRecord> records = parser.getRecords();
 
             Utils.compare("Failed to parse with comments", res_comments, records);
         }
