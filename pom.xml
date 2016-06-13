@@ -124,7 +124,7 @@ CSV files of various types.
   </distributionManagement>
 
   <properties>
-    <commons.release.version>1.3</commons.release.version>
+    <commons.release.version>1.5</commons.release.version>
     <commons.release.desc>(Java 6.0+)</commons.release.desc>
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC1</commons.rc.version>
