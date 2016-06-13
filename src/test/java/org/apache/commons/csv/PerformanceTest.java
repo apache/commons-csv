@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.io.IOUtils;
@@ -73,11 +74,11 @@ public class PerformanceTest {
             System.out.println(String.format("Found test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
         } else {
             System.out.println("Decompressing test fixture " + BIG_FILE + "...");
-            final InputStream input = new GZIPInputStream(new FileInputStream("src/test/resources/perf/worldcitiespop.txt.gz"));
-            final OutputStream output = new FileOutputStream(BIG_FILE);
-            IOUtils.copy(input, output);
-            input.close();
-            output.close();
+            try (final InputStream input = new GZIPInputStream(
+                    new FileInputStream("src/test/resources/perf/worldcitiespop.txt.gz"));
+                    final OutputStream output = new FileOutputStream(BIG_FILE)) {
+                IOUtils.copy(input, output);
+            }
             System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
         }
         final int argc = args.length;
@@ -121,7 +122,7 @@ public class PerformanceTest {
         }
     }
 
-    private static BufferedReader getReader() throws IOException {
+    private static BufferedReader createReader() throws IOException {
         return new BufferedReader(new FileReader(BIG_FILE));
     }
 
@@ -155,15 +156,17 @@ public class PerformanceTest {
     }
 
     private static void testReadBigFile(final boolean split) throws Exception {
-       for (int i = 0; i < max; i++) {
-           final BufferedReader in = getReader();
-           final long t0 = System.currentTimeMillis();
-           final Stats s = readAll(in, split);
-           in.close();
-           show(split?"file+split":"file", s, t0);
-       }
-       show();
-   }
+        for (int i = 0; i < max; i++) {
+            final long startMillis;
+            final Stats stats;
+            try (final BufferedReader in = createReader()) {
+                startMillis = System.currentTimeMillis();
+                stats = readAll(in, split);
+            }
+            show(split ? "file+split" : "file", stats, startMillis);
+        }
+        show();
+    }
 
    private static Stats readAll(final BufferedReader in, final boolean split) throws IOException {
        int count = 0;
@@ -176,55 +179,58 @@ public class PerformanceTest {
        return new Stats(count, fields);
    }
 
-   private static void testExtendedBuffer(final boolean makeString) throws Exception {
-       for (int i = 0; i < max; i++) {
-           final ExtendedBufferedReader in = new ExtendedBufferedReader(getReader());
-           final long t0 = System.currentTimeMillis();
-           int read;
-           int fields = 0;
-           int lines = 0;
-           if (makeString) {
-               StringBuilder sb = new StringBuilder();
-               while((read=in.read()) != -1) {
-                   sb.append((char)read);
-                   if (read == ',') { // count delimiters
-                       sb.toString();
-                       sb = new StringBuilder();
-                       fields++;
-                   } else if (read == '\n') {
-                       sb.toString();
-                       sb = new StringBuilder();
-                       lines++;
-                   }
-               }
-           } else {
-               while((read=in.read()) != -1) {
-                   if (read == ',') { // count delimiters
-                       fields++;
-                   } else if (read == '\n') {
-                       lines++;
-                   }
-               }
-           }
-           fields += lines; // EOL is a delimiter too
-           in.close();
-           show("Extended"+(makeString?" toString":""), new Stats(lines, fields), t0);
-       }
-       show();
-   }
+    private static void testExtendedBuffer(final boolean makeString) throws Exception {
+        for (int i = 0; i < max; i++) {
+            int fields = 0;
+            int lines = 0;
+            final long startMillis;
+            try (final ExtendedBufferedReader in = new ExtendedBufferedReader(createReader())) {
+                startMillis = System.currentTimeMillis();
+                int read;
+                if (makeString) {
+                    StringBuilder sb = new StringBuilder();
+                    while ((read = in.read()) != -1) {
+                        sb.append((char) read);
+                        if (read == ',') { // count delimiters
+                            sb.toString();
+                            sb = new StringBuilder();
+                            fields++;
+                        } else if (read == '\n') {
+                            sb.toString();
+                            sb = new StringBuilder();
+                            lines++;
+                        }
+                    }
+                } else {
+                    while ((read = in.read()) != -1) {
+                        if (read == ',') { // count delimiters
+                            fields++;
+                        } else if (read == '\n') {
+                            lines++;
+                        }
+                    }
+                }
+                fields += lines; // EOL is a delimiter too
+            }
+            show("Extended" + (makeString ? " toString" : ""), new Stats(lines, fields), startMillis);
+        }
+        show();
+    }
 
-   private static void testParseCommonsCSV() throws Exception {
-       for (int i = 0; i < max; i++) {
-           final BufferedReader reader = getReader();
-           final CSVParser parser = new CSVParser(reader, format);
-           final long t0 = System.currentTimeMillis();
-           final Stats s = iterate(parser);
-           reader.close();
-           show("CSV", s, t0);
-           parser.close();
-       }
-       show();
-   }
+    private static void testParseCommonsCSV() throws Exception {
+        for (int i = 0; i < max; i++) {
+            final long startMillis;
+            final Stats stats;
+            try (final BufferedReader reader = createReader()) {
+                try (final CSVParser parser = new CSVParser(reader, format)) {
+                    startMillis = System.currentTimeMillis();
+                    stats = iterate(parser);
+                }
+                show("CSV", stats, startMillis);
+            }
+        }
+        show();
+    }
 
 
    private static Constructor<Lexer> getLexerCtor(final String clazz) throws Exception {
@@ -233,53 +239,59 @@ public class PerformanceTest {
        return lexer.getConstructor(new Class<?>[]{CSVFormat.class, ExtendedBufferedReader.class});
    }
 
-   private static void testCSVLexer(final boolean newToken, final String test) throws Exception {
-       Token token = new Token();
-       String dynamic = "";
-       for (int i = 0; i < max; i++) {
-           final ExtendedBufferedReader input = new ExtendedBufferedReader(getReader());
-           Lexer lexer = null;
-           if (test.startsWith("CSVLexer")) {
-               dynamic="!";
-               lexer = getLexerCtor(test).newInstance(new Object[]{format, input});
-           } else {
-               lexer = new Lexer(format, input);
-           }
-           int count = 0;
-           int fields = 0;
-           final long t0 = System.currentTimeMillis();
-           do {
-               if (newToken) {
-                   token = new Token();
-               } else {
-                   token.reset();
-               }
-               lexer.nextToken(token);
-               switch(token.type) {
-               case EOF:
-                   break;
-               case EORECORD:
-                   fields++;
-                   count++;
-                   break;
-               case INVALID:
-                   throw new IOException("invalid parse sequence <"+token.content.toString()+">");
-               case TOKEN:
-                   fields++;
-                   break;
-                case COMMENT: // not really expecting these
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected Token type: " + token.type);
-              }
+    private static void testCSVLexer(final boolean newToken, final String test) throws Exception {
+        Token token = new Token();
+        String dynamic = "";
+        for (int i = 0; i < max; i++) {
+            final String simpleName;
+            final Stats stats;
+            final long startMillis;
+            try (final ExtendedBufferedReader input = new ExtendedBufferedReader(createReader());
+                    Lexer lexer = createTestCSVLexer(test, input)) {
+                if (test.startsWith("CSVLexer")) {
+                    dynamic = "!";
+                }
+                simpleName = lexer.getClass().getSimpleName();
+                int count = 0;
+                int fields = 0;
+                startMillis = System.currentTimeMillis();
+                do {
+                    if (newToken) {
+                        token = new Token();
+                    } else {
+                        token.reset();
+                    }
+                    lexer.nextToken(token);
+                    switch (token.type) {
+                    case EOF:
+                        break;
+                    case EORECORD:
+                        fields++;
+                        count++;
+                        break;
+                    case INVALID:
+                        throw new IOException("invalid parse sequence <" + token.content.toString() + ">");
+                    case TOKEN:
+                        fields++;
+                        break;
+                    case COMMENT: // not really expecting these
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected Token type: " + token.type);
+                    }
+                } while (!token.type.equals(Token.Type.EOF));
+                stats = new Stats(count, fields);
+            }
+            show(simpleName + dynamic + " " + (newToken ? "new" : "reset"), stats, startMillis);
+        }
+        show();
+    }
 
-           } while (!token.type.equals(Token.Type.EOF));
-           final Stats s = new Stats(count, fields);
-           input.close();
-           show(lexer.getClass().getSimpleName()+dynamic+" "+(newToken ? "new" : "reset"), s, t0);
-       }
-       show();
-   }
+    private static Lexer createTestCSVLexer(final String test, final ExtendedBufferedReader input)
+            throws InstantiationException, IllegalAccessException, InvocationTargetException, Exception {
+        return test.startsWith("CSVLexer") ? getLexerCtor(test)
+                .newInstance(new Object[] { format, input }) : new Lexer(format, input);
+    }
 
    private static Stats iterate(final Iterable<CSVRecord> it) {
        int count = 0;

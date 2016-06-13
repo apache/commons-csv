@@ -116,19 +116,19 @@ public class CSVFileParserTest {
 
         // Now parse the file and compare against the expected results
         // We use a buffered reader internally so no need to create one here.
-        final CSVParser parser = CSVParser.parse(new File(BASE, split[0]), Charset.defaultCharset(), format);
-        for (final CSVRecord record : parser) {
-            String parsed = Arrays.toString(record.values());
-            if (checkComments) {
-                final String comment = record.getComment().replace("\n", "\\n");
-                if (comment != null) {
-                    parsed += "#" + comment;
+        try (final CSVParser parser = CSVParser.parse(new File(BASE, split[0]), Charset.defaultCharset(), format)) {
+            for (final CSVRecord record : parser) {
+                String parsed = Arrays.toString(record.values());
+                if (checkComments) {
+                    final String comment = record.getComment().replace("\n", "\\n");
+                    if (comment != null) {
+                        parsed += "#" + comment;
+                    }
                 }
+                final int count = record.size();
+                assertEquals(testName, readTestData(), count + ":" + parsed);
             }
-            final int count = record.size();
-            assertEquals(testName, readTestData(), count + ":" + parsed);
         }
-        parser.close();
     }
 
     @Test
@@ -160,18 +160,18 @@ public class CSVFileParserTest {
 
         // Now parse the file and compare against the expected results
         final URL resource = ClassLoader.getSystemResource("CSVFileParser/" + split[0]);
-        final CSVParser parser = CSVParser.parse(resource, Charset.forName("UTF-8"), format);
-        for (final CSVRecord record : parser) {
-            String parsed = Arrays.toString(record.values());
-            if (checkComments) {
-                final String comment = record.getComment().replace("\n", "\\n");
-                if (comment != null) {
-                    parsed += "#" + comment;
+        try (final CSVParser parser = CSVParser.parse(resource, Charset.forName("UTF-8"), format)) {
+            for (final CSVRecord record : parser) {
+                String parsed = Arrays.toString(record.values());
+                if (checkComments) {
+                    final String comment = record.getComment().replace("\n", "\\n");
+                    if (comment != null) {
+                        parsed += "#" + comment;
+                    }
                 }
+                final int count = record.size();
+                assertEquals(testName, readTestData(), count + ":" + parsed);
             }
-            final int count = record.size();
-            assertEquals(testName, readTestData(), count + ":" + parsed);
         }
-        parser.close();
     }
 }

@@ -29,12 +29,13 @@ public class JiraCsv164Test {
     @Test
     public void testJiraCsv154_withCommentMarker() throws IOException {
         final String comment = "This is a header comment";
-        final CSVFormat format = CSVFormat.EXCEL.withHeader("H1", "H2").withCommentMarker('#').withHeaderComments(comment);
+        final CSVFormat format = CSVFormat.EXCEL.withHeader("H1", "H2").withCommentMarker('#')
+                .withHeaderComments(comment);
         final StringBuilder out = new StringBuilder();
-        final CSVPrinter printer = format.print(out);
-        printer.print("A");
-        printer.print("B");
-        printer.close();
+        try (final CSVPrinter printer = format.print(out)) {
+            printer.print("A");
+            printer.print("B");
+        }
         final String s = out.toString();
         assertTrue(s, s.contains(comment));
     }
@@ -42,12 +43,13 @@ public class JiraCsv164Test {
     @Test
     public void testJiraCsv154_withHeaderComments() throws IOException {
         final String comment = "This is a header comment";
-        final CSVFormat format = CSVFormat.EXCEL.withHeader("H1", "H2").withHeaderComments(comment).withCommentMarker('#');
+        final CSVFormat format = CSVFormat.EXCEL.withHeader("H1", "H2").withHeaderComments(comment)
+                .withCommentMarker('#');
         final StringBuilder out = new StringBuilder();
-        final CSVPrinter printer = format.print(out);
-        printer.print("A");
-        printer.print("B");
-        printer.close();
+        try (final CSVPrinter printer = format.print(out)) {
+            printer.print("A");
+            printer.print("B");
+        }
         final String s = out.toString();
         assertTrue(s, s.contains(comment));
     }

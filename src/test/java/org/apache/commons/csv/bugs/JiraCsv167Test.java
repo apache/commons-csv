@@ -33,23 +33,23 @@ public class JiraCsv167Test {
 
     @Test
     public void parse() throws IOException {
-        final BufferedReader br = new BufferedReader(getTestInput());
-        String s = null;
         int totcomment = 0;
         int totrecs = 0;
-        boolean lastWasComment = false;
-        while((s=br.readLine()) != null) {
-            if (s.startsWith("#")) {
-                if (!lastWasComment) { // comments are merged
-                    totcomment++;
+        try (final BufferedReader br = new BufferedReader(getTestInput())) {
+            String s = null;
+            boolean lastWasComment = false;
+            while ((s = br.readLine()) != null) {
+                if (s.startsWith("#")) {
+                    if (!lastWasComment) { // comments are merged
+                        totcomment++;
+                    }
+                    lastWasComment = true;
+                } else {
+                    totrecs++;
+                    lastWasComment = false;
                 }
-                lastWasComment = true;
-            } else {
-                totrecs++;
-                lastWasComment = false;
             }
         }
-        br.close();
         CSVFormat format = CSVFormat.DEFAULT;
         //
         format = format.withAllowMissingColumnNames(false);
@@ -66,13 +66,14 @@ public class JiraCsv167Test {
         format = format.withRecordSeparator('\n');
         format = format.withSkipHeaderRecord(false);
         //
-        final CSVParser parser = format.parse(getTestInput());
         int comments = 0;
         int records = 0;
-        for (final CSVRecord csvRecord : parser) {
-            records++;
-            if (csvRecord.hasComment()) {
-                comments++;
+        try (final CSVParser parser = format.parse(getTestInput())) {
+            for (final CSVRecord csvRecord : parser) {
+                records++;
+                if (csvRecord.hasComment()) {
+                    comments++;
+                }
             }
         }
         // Comment lines are concatenated, in this example 4 lines become 2 comments.

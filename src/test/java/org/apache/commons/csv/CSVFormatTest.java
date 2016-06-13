@@ -327,10 +327,10 @@ public class CSVFormatTest {
     public void testSerialization() throws Exception {
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        final ObjectOutputStream oos = new ObjectOutputStream(out);
-        oos.writeObject(CSVFormat.DEFAULT);
-        oos.flush();
-        oos.close();
+        try (final ObjectOutputStream oos = new ObjectOutputStream(out)) {
+            oos.writeObject(CSVFormat.DEFAULT);
+            oos.flush();
+        }
 
         final ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(out.toByteArray()));
         final CSVFormat format = (CSVFormat) in.readObject();

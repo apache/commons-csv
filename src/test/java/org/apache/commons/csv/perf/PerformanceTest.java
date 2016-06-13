@@ -56,15 +56,15 @@ public class PerformanceTest {
             return;
         }
         System.out.println("Decompressing test fixture " + BIG_FILE + "...");
-        final InputStream input = new GZIPInputStream(new FileInputStream("src/test/resources/perf/worldcitiespop.txt.gz"));
-        final OutputStream output = new FileOutputStream(BIG_FILE);
-        IOUtils.copy(input, output);
-        System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
-        input.close();
-        output.close();
+        try (final InputStream input = new GZIPInputStream(
+                new FileInputStream("src/test/resources/perf/worldcitiespop.txt.gz"));
+                final OutputStream output = new FileOutputStream(BIG_FILE)) {
+            IOUtils.copy(input, output);
+            System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
+        }
     }
 
-    private BufferedReader getBufferedReader() throws IOException {
+    private BufferedReader createBufferedReader() throws IOException {
         return new BufferedReader(new FileReader(BIG_FILE));
     }
 
@@ -96,7 +96,7 @@ public class PerformanceTest {
 
     public long testParseBigFile(final boolean traverseColumns) throws Exception {
         final long startMillis = System.currentTimeMillis();
-        final long count = this.parse(this.getBufferedReader(), traverseColumns);
+        final long count = this.parse(this.createBufferedReader(), traverseColumns);
         final long totalMillis = System.currentTimeMillis() - startMillis;
         this.println(String.format("File parsed in %,d milliseconds with Commons CSV: %,d lines.", totalMillis, count));
         return totalMillis;
@@ -115,13 +115,12 @@ public class PerformanceTest {
     public void testReadBigFile() throws Exception {
         long bestTime = Long.MAX_VALUE;
         for (int i = 0; i < this.max; i++) {
-            final BufferedReader in = this.getBufferedReader();
-            final long startMillis = System.currentTimeMillis();
-            long count = 0;
-            try {
+            final long startMillis;
+            long count;
+            try (final BufferedReader in = this.createBufferedReader()) {
+                startMillis = System.currentTimeMillis();
+                count = 0;
                 count = this.readAll(in);
-            } finally {
-                in.close();
             }
             final long totalMillis = System.currentTimeMillis() - startMillis;
             bestTime = Math.min(totalMillis, bestTime);

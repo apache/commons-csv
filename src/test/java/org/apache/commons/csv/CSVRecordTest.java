@@ -143,16 +143,16 @@ public class CSVRecordTest {
     @Test
     public void testRemoveAndAddColumns() throws IOException {
         // do:
-        final CSVPrinter printer = new CSVPrinter(new StringBuilder(), CSVFormat.DEFAULT);
-        final Map<String, String> map = recordWithHeader.toMap();
-        map.remove("OldColumn");
-        map.put("ZColumn", "NewValue");
-        // check:
-        final ArrayList<String> list = new ArrayList<>(map.values());
-        Collections.sort(list);
-        printer.printRecord(list);
-        Assert.assertEquals("A,B,C,NewValue" + CSVFormat.DEFAULT.getRecordSeparator(), printer.getOut().toString());
-        printer.close();
+        try (final CSVPrinter printer = new CSVPrinter(new StringBuilder(), CSVFormat.DEFAULT)) {
+            final Map<String, String> map = recordWithHeader.toMap();
+            map.remove("OldColumn");
+            map.put("ZColumn", "NewValue");
+            // check:
+            final ArrayList<String> list = new ArrayList<>(map.values());
+            Collections.sort(list);
+            printer.printRecord(list);
+            Assert.assertEquals("A,B,C,NewValue" + CSVFormat.DEFAULT.getRecordSeparator(), printer.getOut().toString());
+        }
     }
 
     @Test
@@ -163,18 +163,20 @@ public class CSVRecordTest {
 
     @Test
     public void testToMapWithShortRecord() throws Exception {
-       final CSVParser parser =  CSVParser.parse("a,b", CSVFormat.DEFAULT.withHeader("A", "B", "C"));
-       final CSVRecord shortRec = parser.iterator().next();
-       shortRec.toMap();
+        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
+            final CSVRecord shortRec = parser.iterator().next();
+            shortRec.toMap();
+        }
     }
 
     @Test
     public void testToMapWithNoHeader() throws Exception {
-       final CSVParser parser =  CSVParser.parse("a,b", CSVFormat.newFormat(','));
-       final CSVRecord shortRec = parser.iterator().next();
-       final Map<String, String> map = shortRec.toMap();
-       assertNotNull("Map is not null.", map);
-       assertTrue("Map is empty.", map.isEmpty());
+        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.newFormat(','))) {
+            final CSVRecord shortRec = parser.iterator().next();
+            final Map<String, String> map = shortRec.toMap();
+            assertNotNull("Map is not null.", map);
+            assertTrue("Map is empty.", map.isEmpty());
+        }
     }
 
     private void validateMap(final Map<String, String> map, final boolean allowsNulls) {
