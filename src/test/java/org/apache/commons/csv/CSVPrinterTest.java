@@ -35,9 +35,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -111,7 +111,7 @@ public class CSVPrinterTest {
     private <T> T[] expectNulls(final T[] original, final CSVFormat csvFormat) {
         final T[] fixed = original.clone();
         for (int i = 0; i < fixed.length; i++) {
-            if (ObjectUtils.equals(csvFormat.getNullString(), fixed[i])) {
+            if (Objects.equals(csvFormat.getNullString(), fixed[i])) {
                 fixed[i] = null;
             }
         }
