@@ -22,9 +22,12 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -38,6 +41,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -725,6 +729,24 @@ public class CSVPrinterTest {
             printer.printRecord("a", "b\\c");
             assertEquals("a,b\\c" + recordSeparator, sw.toString());
         }
+    }
+
+    @Test
+    public void testPrintToFileWithDefaultCharset() throws IOException {
+        File file = File.createTempFile(getClass().getName(), ".csv");
+        try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, Charset.defaultCharset())) {
+            printer.printRecord("a", "b\\c");
+        }
+        assertEquals("a,b\\c" + recordSeparator, FileUtils.readFileToString(file, Charset.defaultCharset()));
+    }
+
+    @Test
+    public void testPrintToFileWithCharsetUtf16Be() throws IOException {
+        File file = File.createTempFile(getClass().getName(), ".csv");
+        try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, StandardCharsets.UTF_16BE)) {
+            printer.printRecord("a", "b\\c");
+        }
+        assertEquals("a,b\\c" + recordSeparator, FileUtils.readFileToString(file, StandardCharsets.UTF_16BE));
     }
 
     @Test

@@ -28,10 +28,14 @@ import static org.apache.commons.csv.Constants.PIPE;
 import static org.apache.commons.csv.Constants.SP;
 import static org.apache.commons.csv.Constants.TAB;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -861,6 +865,27 @@ public final class CSVFormat implements Serializable {
      */
     public CSVPrinter print(final Appendable out) throws IOException {
         return new CSVPrinter(out, this);
+    }
+
+    /**
+     * Prints to the specified output.
+     *
+     * <p>
+     * See also {@link CSVPrinter}.
+     * </p>
+     *
+     * @param out
+     *            the output
+     * @param charset 
+     *            A charset
+     * @return a printer to an output
+     * @throws IOException
+     *             thrown if the optional header cannot be printed.
+     * @since 1.5
+     */
+    public CSVPrinter print(final File out, Charset charset) throws IOException {
+        // The FileWriter will be closed when close() is called.
+        return new CSVPrinter(new OutputStreamWriter(new FileOutputStream(out), charset), this);
     }
 
     /**
