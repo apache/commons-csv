@@ -885,7 +885,7 @@ public final class CSVFormat implements Serializable {
      * @since 1.5
      */
     public CSVPrinter print(final File out, Charset charset) throws IOException {
-        // The FileWriter will be closed when close() is called.
+        // The writer will be closed when close() is called.
         return new CSVPrinter(new OutputStreamWriter(new FileOutputStream(out), charset), this);
     }
 
