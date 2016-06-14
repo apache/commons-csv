@@ -36,6 +36,7 @@ import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -886,6 +887,26 @@ public final class CSVFormat implements Serializable {
     public CSVPrinter print(final File out, Charset charset) throws IOException {
         // The FileWriter will be closed when close() is called.
         return new CSVPrinter(new OutputStreamWriter(new FileOutputStream(out), charset), this);
+    }
+
+    /**
+     * Prints to the specified output.
+     *
+     * <p>
+     * See also {@link CSVPrinter}.
+     * </p>
+     *
+     * @param out
+     *            the output
+     * @param charset 
+     *            A charset
+     * @return a printer to an output
+     * @throws IOException
+     *             thrown if the optional header cannot be printed.
+     * @since 1.5
+     */
+    public CSVPrinter print(final Path out, Charset charset) throws IOException {
+        return print(out.toFile(), charset);
     }
 
     /**

@@ -41,6 +41,7 @@
     <release version="1.5" date="2016-MM-DD" description="Bug fix release">
       <action issue="CSV-187" type="update" dev="ggregory" due-to="Gary Gregory">Update platform requirement from Java 6 to 7.</action>
       <action issue="CSV-???" type="add" dev="ggregory" due-to="Gary Gregory">Add convenience API CSVFormat.print(File, Charset)</action>
+      <action issue="CSV-???" type="add" dev="ggregory" due-to="Gary Gregory">Add convenience API CSVFormat.print(Path, Charset)</action>
     </release>
     <release version="1.4" date="2016-05-28" description="Feature and bug fix release">
       <action issue="CSV-181" type="update" dev="ggregory" due-to="Gary Gregory">Make CSVPrinter.print(Object) GC-free.</action>

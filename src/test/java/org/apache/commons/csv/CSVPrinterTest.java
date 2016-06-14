@@ -28,6 +28,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -735,6 +736,15 @@ public class CSVPrinterTest {
     public void testPrintToFileWithDefaultCharset() throws IOException {
         File file = File.createTempFile(getClass().getName(), ".csv");
         try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, Charset.defaultCharset())) {
+            printer.printRecord("a", "b\\c");
+        }
+        assertEquals("a,b\\c" + recordSeparator, FileUtils.readFileToString(file, Charset.defaultCharset()));
+    }
+
+    @Test
+    public void testPrintToPathWithDefaultCharset() throws IOException {
+        File file = File.createTempFile(getClass().getName(), ".csv");
+        try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file.toPath(), Charset.defaultCharset())) {
             printer.printRecord("a", "b\\c");
         }
         assertEquals("a,b\\c" + recordSeparator, FileUtils.readFileToString(file, Charset.defaultCharset()));
