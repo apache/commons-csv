@@ -105,9 +105,9 @@ CSV files of various types.
   </contributors>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/csv/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/csv/trunk</developerConnection>
-    <url>http://svn.apache.org/viewvc/commons/proper/csv/trunk</url>
+    <connection>scm:git:http://git-wip-us.apache.org/repos/asf/commons-csv.git</connection>
+    <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/commons-csv.git</developerConnection>
+    <url>https://git-wip-us.apache.org/repos/asf?p=commons-csv.git</url>
   </scm>
 
   <issueManagement>
@@ -157,7 +157,7 @@ CSV files of various types.
           </configuration>
         </plugin>
       </plugins>
-    </pluginManagement>  
+    </pluginManagement>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -385,12 +385,12 @@ CSV files of various types.
         </plugins>
       </build>
     </profile>
-    
+
 
     <!-- Profile to build and run the benchmarks. Use 'mvn test -Pbenchmark', and add '-Dbenchmark=foo' to run only the foo benchmark -->
     <profile>
       <id>benchmark</id>
-      
+
       <dependencies>
         <dependency>
           <groupId>org.openjdk.jmh</groupId>
@@ -398,7 +398,7 @@ CSV files of various types.
           <version>1.5.2</version>
           <scope>test</scope>
         </dependency>
-    
+
         <dependency>
           <groupId>org.openjdk.jmh</groupId>
           <artifactId>jmh-generator-annprocess</artifactId>
@@ -412,14 +412,14 @@ CSV files of various types.
           <version>1.0</version>
           <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>net.sourceforge.javacsv</groupId>
             <artifactId>javacsv</artifactId>
             <version>2.0</version>
           <scope>test</scope>
         </dependency>
-    
+
         <dependency>
           <groupId>com.opencsv</groupId>
           <artifactId>opencsv</artifactId>
@@ -440,19 +440,19 @@ CSV files of various types.
           <artifactId>csv</artifactId>
           <version>1.0</version>
         </dependency>
-        
+
         <dependency>
           <groupId>org.apache.commons</groupId>
           <artifactId>commons-lang3</artifactId>
           <version>3.4</version>
         </dependency>
       </dependencies>
-      
+
       <properties>
         <skipTests>true</skipTests>
         <benchmark>org.apache</benchmark>
       </properties>
-      
+
       <build>
         <plugins>
           <!-- Enable the compilation of the benchmarks -->
@@ -464,7 +464,7 @@ CSV files of various types.
               </testIncludes>
             </configuration>
           </plugin>
-          
+
           <!-- Hook the benchmarks to the test phase -->
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
