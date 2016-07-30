@@ -38,6 +38,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -59,6 +60,10 @@ import org.junit.Test;
  * @version $Id$
  */
 public class CSVParserTest {
+
+    private static final Charset UTF_8 = StandardCharsets.UTF_8;
+
+    private static final String UTF_8_NAME = UTF_8.name();
 
     private static final String CSV_INPUT = "a,b,c,d\n" + " a , b , 1 2 \n" + "\"foo baar\", b,\n"
             // + " \"foo\n,,\n\"\",,\n\\\"\",d,e\n";
@@ -167,7 +172,7 @@ public class CSVParserTest {
     @Ignore("CSV-107")
     public void testBOM() throws IOException {
         final URL url = ClassLoader.getSystemClassLoader().getResource("CSVFileParser/bom.csv");
-        try (final CSVParser parser = CSVParser.parse(url, Charset.forName("UTF-8"), CSVFormat.EXCEL.withHeader())) {
+        try (final CSVParser parser = CSVParser.parse(url, Charset.forName(UTF_8_NAME), CSVFormat.EXCEL.withHeader())) {
             for (final CSVRecord record : parser) {
                 final String string = record.get("Date");
                 Assert.assertNotNull(string);
@@ -178,7 +183,7 @@ public class CSVParserTest {
 
     @Test
     public void testBOMInputStream_ParserWithReader() throws IOException {
-        try (final Reader reader = new InputStreamReader(createBOMInputStream("CSVFileParser/bom.csv"), "UTF-8");
+        try (final Reader reader = new InputStreamReader(createBOMInputStream("CSVFileParser/bom.csv"), UTF_8_NAME);
                 final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader())) {
             for (final CSVRecord record : parser) {
                 final String string = record.get("Date");
@@ -190,7 +195,7 @@ public class CSVParserTest {
 
     @Test
     public void testBOMInputStream_parseWithReader() throws IOException {
-        try (final Reader reader = new InputStreamReader(createBOMInputStream("CSVFileParser/bom.csv"), "UTF-8");
+        try (final Reader reader = new InputStreamReader(createBOMInputStream("CSVFileParser/bom.csv"), UTF_8_NAME);
                 final CSVParser parser = CSVParser.parse(reader, CSVFormat.EXCEL.withHeader())) {
             for (final CSVRecord record : parser) {
                 final String string = record.get("Date");
@@ -203,7 +208,7 @@ public class CSVParserTest {
     @Test
     public void testBOMInputStream_ParserWithInputStream() throws IOException {
         try (final BOMInputStream inputStream = createBOMInputStream("CSVFileParser/bom.csv");
-                final CSVParser parser = CSVParser.parse(inputStream, "UTF-8", CSVFormat.EXCEL.withHeader())) {
+                final CSVParser parser = CSVParser.parse(inputStream, UTF_8, CSVFormat.EXCEL.withHeader())) {
             for (final CSVRecord record : parser) {
                 final String string = record.get("Date");
                 Assert.assertNotNull(string);
