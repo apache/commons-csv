@@ -17,13 +17,17 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Token.Type.TOKEN;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -34,8 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
-
-import static org.apache.commons.csv.Token.Type.*;
 
 /**
  * Parses CSV files according to the specified format.
@@ -131,6 +133,62 @@ import static org.apache.commons.csv.Token.Type.*;
  * @see <a href="package-summary.html">package documentation for more details</a>
  */
 public final class CSVParser implements Iterable<CSVRecord>, Closeable {
+
+    /**
+     * Customized CSV parser using the given {@link CSVFormat}
+     *
+     * <p>
+     * If you do not read all records from the given {@code reader}, you should
+     * call {@link #close()} on the parser, unless you close the {@code reader}.
+     * </p>
+     *
+     * @param reader
+     *            a Reader containing CSV-formatted input. Must not be null.
+     * @param charsetName
+     *            The name of a supported {@link java.nio.charset.Charset
+     *            </code>charset<code>}
+     * @param format
+     *            the CSVFormat used for CSV parsing. Must not be null.
+     * @throws IllegalArgumentException
+     *             If the parameters of the format are inconsistent or if either
+     *             reader or format are null.
+     * @throws  UnsupportedEncodingException
+     *             If the named charset is not supported
+     * @throws IOException
+     *             If there is a problem reading the header or skipping the
+     *             first record
+     * @since 1.5
+     */
+    @SuppressWarnings("resource")
+    public static CSVParser parse(final InputStream inputStream, final String charset, final CSVFormat format) throws IOException {
+        Assertions.notNull(inputStream, "inputStream");
+        Assertions.notNull(format, "format");
+        return parse(new InputStreamReader(inputStream, charset), format);
+    }
+
+    /**
+     * Customized CSV parser using the given {@link CSVFormat}
+     *
+     * <p>
+     * If you do not read all records from the given {@code reader}, you should
+     * call {@link #close()} on the parser, unless you close the {@code reader}.
+     * </p>
+     *
+     * @param reader
+     *            a Reader containing CSV-formatted input. Must not be null.
+     * @param format
+     *            the CSVFormat used for CSV parsing. Must not be null.
+     * @throws IllegalArgumentException
+     *             If the parameters of the format are inconsistent or if either
+     *             reader or format are null.
+     * @throws IOException
+     *             If there is a problem reading the header or skipping the
+     *             first record
+     * @since 1.5
+     */
+    public static CSVParser parse(Reader reader, final CSVFormat format) throws IOException {
+        return new CSVParser(reader, format);
+    }
 
     /**
      * Creates a parser for the given {@link File}.
