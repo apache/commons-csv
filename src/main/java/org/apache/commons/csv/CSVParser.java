@@ -135,7 +135,7 @@ import java.util.TreeMap;
 public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     /**
-     * Customized CSV parser using the given {@link CSVFormat}
+     * Creates a CSV parser using the given {@link CSVFormat}.
      *
      * <p>
      * If you do not read all records from the given {@code reader}, you should
@@ -167,7 +167,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Customized CSV parser using the given {@link CSVFormat}
+     * Creates a CSV parser using the given {@link CSVFormat}
      *
      * <p>
      * If you do not read all records from the given {@code reader}, you should
