@@ -860,8 +860,8 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * @param out
-     *            the output
-     * @return a printer to an output
+     *            the output.
+     * @return a printer to an output.
      * @throws IOException
      *             thrown if the optional header cannot be printed.
      */
@@ -877,10 +877,10 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * @param out
-     *            the output
-     * @param charset 
-     *            A charset
-     * @return a printer to an output
+     *            the output.
+     * @param charset
+     *            A charset.
+     * @return a printer to an output.
      * @throws IOException
      *             thrown if the optional header cannot be printed.
      * @since 1.5
@@ -899,10 +899,10 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * @param out
-     *            the output
+     *            the output.
      * @param charset 
-     *            A charset
-     * @return a printer to an output
+     *            A charset.
+     * @return a printer to an output.
      * @throws IOException
      *             thrown if the optional header cannot be printed.
      * @since 1.5
@@ -918,11 +918,11 @@ public final class CSVFormat implements Serializable {
      * @param value
      *            value to output.
      * @param out
-     *            where to print the value
+     *            where to print the value.
      * @param newRecord
-     *            if this a new record
+     *            if this a new record.
      * @throws IOException
-     *             If an I/O error occurs
+     *             If an I/O error occurs.
      * @since 1.4
      */
     public void print(final Object value, final Appendable out, final boolean newRecord) throws IOException {
@@ -1134,11 +1134,11 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * @param out
-     *            where to write
+     *            where to write.
      * @param values
      *            values to output.
      * @throws IOException
-     *             If an I/O error occurs
+     *             If an I/O error occurs.
      * @since 1.4
      */
     public void printRecord(final Appendable out, final Object... values) throws IOException {
