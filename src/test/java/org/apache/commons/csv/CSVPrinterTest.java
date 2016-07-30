@@ -732,33 +732,6 @@ public class CSVPrinterTest {
     }
 
     @Test
-    public void testPrintToFileWithDefaultCharset() throws IOException {
-        File file = File.createTempFile(getClass().getName(), ".csv");
-        try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, Charset.defaultCharset())) {
-            printer.printRecord("a", "b\\c");
-        }
-        assertEquals("a,b\\c" + recordSeparator, FileUtils.readFileToString(file, Charset.defaultCharset()));
-    }
-
-    @Test
-    public void testPrintToPathWithDefaultCharset() throws IOException {
-        File file = File.createTempFile(getClass().getName(), ".csv");
-        try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file.toPath(), Charset.defaultCharset())) {
-            printer.printRecord("a", "b\\c");
-        }
-        assertEquals("a,b\\c" + recordSeparator, FileUtils.readFileToString(file, Charset.defaultCharset()));
-    }
-
-    @Test
-    public void testPrintToFileWithCharsetUtf16Be() throws IOException {
-        File file = File.createTempFile(getClass().getName(), ".csv");
-        try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, StandardCharsets.UTF_16BE)) {
-            printer.printRecord("a", "b\\c");
-        }
-        assertEquals("a,b\\c" + recordSeparator, FileUtils.readFileToString(file, StandardCharsets.UTF_16BE));
-    }
-
-    @Test
     public void testPrintCustomNullValues() throws IOException {
         final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withNullString("NULL"))) {
@@ -837,6 +810,33 @@ public class CSVPrinterTest {
             printer.printRecord("a", null, "b");
             assertEquals("a,,b" + recordSeparator, sw.toString());
         }
+    }
+
+    @Test
+    public void testPrintToFileWithCharsetUtf16Be() throws IOException {
+        File file = File.createTempFile(getClass().getName(), ".csv");
+        try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, StandardCharsets.UTF_16BE)) {
+            printer.printRecord("a", "b\\c");
+        }
+        assertEquals("a,b\\c" + recordSeparator, FileUtils.readFileToString(file, StandardCharsets.UTF_16BE));
+    }
+
+    @Test
+    public void testPrintToFileWithDefaultCharset() throws IOException {
+        File file = File.createTempFile(getClass().getName(), ".csv");
+        try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, Charset.defaultCharset())) {
+            printer.printRecord("a", "b\\c");
+        }
+        assertEquals("a,b\\c" + recordSeparator, FileUtils.readFileToString(file, Charset.defaultCharset()));
+    }
+
+    @Test
+    public void testPrintToPathWithDefaultCharset() throws IOException {
+        File file = File.createTempFile(getClass().getName(), ".csv");
+        try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file.toPath(), Charset.defaultCharset())) {
+            printer.printRecord("a", "b\\c");
+        }
+        assertEquals("a,b\\c" + recordSeparator, FileUtils.readFileToString(file, Charset.defaultCharset()));
     }
 
     @Test
@@ -926,6 +926,24 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testTrailingDelimiterOnTwoColumns() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withTrailingDelimiter())) {
+            printer.printRecord("A", "B");
+            assertEquals("A,B,\r\n", sw.toString());
+        }
+    }
+
+    @Test
+    public void testTrimOffOneColumn() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withTrim(false))) {
+            printer.print(" A ");
+            assertEquals("\" A \"", sw.toString());
+        }
+    }
+
+    @Test
     public void testTrimOnOneColumn() throws IOException {
         final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withTrim())) {
@@ -941,24 +959,6 @@ public class CSVPrinterTest {
             printer.print(" A ");
             printer.print(" B ");
             assertEquals("A,B", sw.toString());
-        }
-    }
-
-    @Test
-    public void testTrailingDelimiterOnTwoColumns() throws IOException {
-        final StringWriter sw = new StringWriter();
-        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withTrailingDelimiter())) {
-            printer.printRecord("A", "B");
-            assertEquals("A,B,\r\n", sw.toString());
-        }
-    }
-
-    @Test
-    public void testTrimOffOneColumn() throws IOException {
-        final StringWriter sw = new StringWriter();
-        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withTrim(false))) {
-            printer.print(" A ");
-            assertEquals("\" A \"", sw.toString());
         }
     }
 
