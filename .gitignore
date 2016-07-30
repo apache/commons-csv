@@ -8,3 +8,6 @@ pom.xml.next
 release.properties
 
 
+/.classpath
+/.project
+/.settings/
