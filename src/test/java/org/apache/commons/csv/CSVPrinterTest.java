@@ -813,6 +813,15 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testPrintOnePositiveInteger() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuoteMode(QuoteMode.MINIMAL))) {
+            printer.print(Integer.MAX_VALUE);
+            assertEquals(String.valueOf(Integer.MAX_VALUE), sw.toString());
+        }
+    }
+
+    @Test
     public void testPrintToFileWithCharsetUtf16Be() throws IOException {
         File file = File.createTempFile(getClass().getName(), ".csv");
         try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, StandardCharsets.UTF_16BE)) {
