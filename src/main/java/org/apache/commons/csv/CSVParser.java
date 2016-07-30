@@ -135,6 +135,32 @@ import java.util.TreeMap;
 public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     /**
+     * Creates a parser for the given {@link File}.
+     *
+     * <p><strong>Note:</strong> This method internally creates a FileReader using
+     * {@link java.io.FileReader#FileReader(java.io.File)} which in turn relies on the default encoding of the JVM that
+     * is executing the code. If this is insufficient create a URL to the file and use
+     * {@link #parse(URL, Charset, CSVFormat)}</p>
+     *
+     * @param file
+     *            a CSV file. Must not be null.
+     * @param charset
+     *            A charset
+     * @param format
+     *            the CSVFormat used for CSV parsing. Must not be null.
+     * @return a new parser
+     * @throws IllegalArgumentException
+     *             If the parameters of the format are inconsistent or if either file or format are null.
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException {
+        Assertions.notNull(file, "file");
+        Assertions.notNull(format, "format");
+        return new CSVParser(new InputStreamReader(new FileInputStream(file), charset), format);
+    }
+
+    /**
      * Creates a CSV parser using the given {@link CSVFormat}.
      *
      * <p>
@@ -188,32 +214,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     public static CSVParser parse(Reader reader, final CSVFormat format) throws IOException {
         return new CSVParser(reader, format);
-    }
-
-    /**
-     * Creates a parser for the given {@link File}.
-     *
-     * <p><strong>Note:</strong> This method internally creates a FileReader using
-     * {@link java.io.FileReader#FileReader(java.io.File)} which in turn relies on the default encoding of the JVM that
-     * is executing the code. If this is insufficient create a URL to the file and use
-     * {@link #parse(URL, Charset, CSVFormat)}</p>
-     *
-     * @param file
-     *            a CSV file. Must not be null.
-     * @param charset
-     *            A charset
-     * @param format
-     *            the CSVFormat used for CSV parsing. Must not be null.
-     * @return a new parser
-     * @throws IllegalArgumentException
-     *             If the parameters of the format are inconsistent or if either file or format are null.
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException {
-        Assertions.notNull(file, "file");
-        Assertions.notNull(format, "format");
-        return new CSVParser(new InputStreamReader(new FileInputStream(file), charset), format);
     }
 
     /**
