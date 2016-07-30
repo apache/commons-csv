@@ -179,8 +179,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either
      *             reader or format are null.
-     * @throws UnsupportedEncodingException
-     *             If the named charset is not supported
      * @throws IOException
      *             If there is a problem reading the header or skipping the
      *             first record
