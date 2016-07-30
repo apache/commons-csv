@@ -155,6 +155,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
+    @SuppressWarnings("resource")
     public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException {
         Assertions.notNull(file, "file");
         Assertions.notNull(format, "format");
@@ -360,6 +361,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If there is a problem reading the header or skipping the first record
      * @since 1.1
      */
+    @SuppressWarnings("resource")
     public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber)
             throws IOException {
         Assertions.notNull(reader, "reader");
