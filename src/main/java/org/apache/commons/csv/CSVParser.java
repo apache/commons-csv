@@ -172,9 +172,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *
      * @param reader
      *            a Reader containing CSV-formatted input. Must not be null.
-     * @param charsetName
-     *            The name of a supported {@link java.nio.charset.Charset
-     *            </code>charset<code>}
+     * @param charset
+     *            a Charset.
      * @param format
      *            the CSVFormat used for CSV parsing. Must not be null.
      * @throws IllegalArgumentException
