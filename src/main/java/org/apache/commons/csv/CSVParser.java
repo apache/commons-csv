@@ -30,6 +30,7 @@ import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -190,6 +191,33 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         Assertions.notNull(inputStream, "inputStream");
         Assertions.notNull(format, "format");
         return parse(new InputStreamReader(inputStream, charset), format);
+    }
+
+    /**
+     * Creates a parser for the given {@link File}.
+     *
+     * <p><strong>Note:</strong> This method internally creates a FileReader using
+     * {@link java.io.FileReader#FileReader(java.io.File)} which in turn relies on the default encoding of the JVM that
+     * is executing the code. If this is insufficient create a URL to the file and use
+     * {@link #parse(URL, Charset, CSVFormat)}</p>
+     *
+     * @param path
+     *            a CSV file. Must not be null.
+     * @param charset
+     *            A charset
+     * @param format
+     *            the CSVFormat used for CSV parsing. Must not be null.
+     * @return a new parser
+     * @throws IllegalArgumentException
+     *             If the parameters of the format are inconsistent or if either file or format are null.
+     * @throws IOException
+     *             If an I/O error occurs
+     * @since 1.5
+     */
+    public static CSVParser parse(final Path path, final Charset charset, final CSVFormat format) throws IOException {
+        Assertions.notNull(path, "path");
+        Assertions.notNull(format, "format");
+        return parse(path.toFile(), charset, format);
     }
 
     /**
