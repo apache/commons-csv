@@ -1035,8 +1035,8 @@ public final class CSVFormat implements Serializable {
             } else {
                 char c = value.charAt(pos);
 
-                // TODO where did this rule come from?
-                if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
+                // RFC4180 (https://tools.ietf.org/html/rfc4180) TEXTDATA =  %x20-21 / %x23-2B / %x2D-7E
+                if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
                     quote = true;
                 } else if (c <= COMMENT) {
                     // Some other chars at the start of a value caused the parser to fail, so for now
