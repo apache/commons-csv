@@ -53,6 +53,7 @@ import org.junit.Test;
  */
 public class CSVPrinterTest {
 
+    private static final char EURO_CH = '\u20AC';
     private static final char DQUOTE_CHAR = '"';
     private static final char BACKSLASH_CH = '\\';
     private static final char QUOTE_CH = '\'';
@@ -803,6 +804,15 @@ public class CSVPrinterTest {
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT)) {
             printer.printRecord("a", "b");
             assertEquals("a,b" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
+    public void testRfc4180QuoteSingleChar() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180)) {
+            printer.printRecord(EURO_CH, "Deux");
+            assertEquals("\"" + EURO_CH + "\",Deux" + recordSeparator, sw.toString());
         }
     }
 
