@@ -322,7 +322,6 @@ public class CSVPrinterTest {
             printer.print("\\\\");
         }
         assertEquals("'\\\\'", sw.toString());
-
     }
 
     @Test
