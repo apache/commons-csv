@@ -143,7 +143,7 @@ for (CSVRecord record : records) {
         Some CSV files define header names in their first record. If configured, Apache Commons CSV can parse
         the header names from the first record:
         <source>Reader in = new FileReader(&quot;path/to/file.csv&quot;);
-Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.withFirstRowAsHeader().parse(in);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
 for (CSVRecord record : records) {
     String id = record.get("ID");
     String customerNo = record.get("CustomerNo");
