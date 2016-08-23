@@ -30,6 +30,7 @@ import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -205,7 +206,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public static CSVParser parse(final Path path, final Charset charset, final CSVFormat format) throws IOException {
         Assertions.notNull(path, "path");
         Assertions.notNull(format, "format");
-        return parse(path.toFile(), charset, format);
+        return parse(Files.newBufferedReader(path, charset), format);
     }
 
     /**
