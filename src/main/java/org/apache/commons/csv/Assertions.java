@@ -17,6 +17,8 @@
 
 package org.apache.commons.csv;
 
+import java.util.Objects;
+
 /**
  * Utility class for input parameter validation.
  *
