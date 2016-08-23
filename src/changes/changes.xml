@@ -39,6 +39,7 @@
   </properties>
   <body>
     <release version="1.5" date="2016-MM-DD" description="Bug fix release">
+      <action issue="CSV-194" type="fix" dev="ggregory" due-to="Marc Prud'hommeaux">Fix outdated comments about FileReader in CSVParser #13</action>
       <action issue="CSV-193" type="fix" dev="ggregory" due-to="Matthias Wiehl">Fix incorrect method name 'withFirstRowAsHeader' in user guide.</action>
       <action issue="CSV-171" type="fix" dev="ggregory" due-to="Gary Gregory, Michael Graessle, Adrian Bridgett">Negative numeric values in the first column are always quoted in minimal mode.</action>
       <action issue="CSV-187" type="update" dev="ggregory" due-to="Gary Gregory">Update platform requirement from Java 6 to 7.</action>
