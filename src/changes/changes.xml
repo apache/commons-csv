@@ -43,6 +43,7 @@
       <action issue="CSV-193" type="fix" dev="ggregory" due-to="Matthias Wiehl">Fix incorrect method name 'withFirstRowAsHeader' in user guide.</action>
       <action issue="CSV-171" type="fix" dev="ggregory" due-to="Gary Gregory, Michael Graessle, Adrian Bridgett">Negative numeric values in the first column are always quoted in minimal mode.</action>
       <action issue="CSV-187" type="update" dev="ggregory" due-to="Gary Gregory">Update platform requirement from Java 6 to 7.</action>
+      <action issue="CSV-201" type="update" dev="ggregory" due-to="Benedikt Ritter, Gary Gregory">Do not use RuntimeException in CSVParser.iterator().new Iterator() {...}.getNextRecord()</action>
       <action issue="CSV-189" type="add" dev="ggregory" due-to="Peter Holzwarth, Gary Gregory">CSVParser: Add factory method accepting InputStream.</action>
       <action issue="CSV-190" type="add" dev="ggregory" due-to="Gary Gregory">Add convenience API CSVFormat.print(File, Charset)</action>
       <action issue="CSV-191" type="add" dev="ggregory" due-to="Gary Gregory">Add convenience API CSVFormat.print(Path, Charset)</action>

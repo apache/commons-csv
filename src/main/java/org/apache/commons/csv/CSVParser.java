@@ -501,10 +501,14 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     /**
      * Returns an iterator on the records.
      *
-     * <p>IOExceptions occurring during the iteration are wrapped in a
-     * RuntimeException.
-     * If the parser is closed a call to {@code next()} will throw a
-     * NoSuchElementException.</p>
+     * <p>
+     * An {@link IOException} caught during the iteration are re-thrown as an
+     * {@link IllegalStateException}.
+     * </p>
+     * <p>
+     * If the parser is closed a call to {@link Iterator#next()} will throw a
+     * {@link NoSuchElementException}.
+     * </p>
      */
     @Override
     public Iterator<CSVRecord> iterator() {
@@ -515,8 +519,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 try {
                     return CSVParser.this.nextRecord();
                 } catch (final IOException e) {
-                    // TODO: This is not great, throw an ISE instead?
-                    throw new RuntimeException(e);
+                    throw new IllegalStateException(
+                            e.getClass().getSimpleName() + " reading next record: " + e.toString(), e);
                 }
             }
 
