@@ -46,6 +46,11 @@ Apache Commons CSV
 The Apache Commons CSV library provides a simple interface for reading and writing
 CSV files of various types.
 
+[![Build Status](https://travis-ci.org/apache/commons-csv.svg?branch=master)](https://travis-ci.org/apache/commons-csv)
+[![Coverage Status](https://coveralls.io/repos/apache/commons-csv/badge.svg?branch=master)](https://coveralls.io/r/apache/commons-csv)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/)
+[![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+
 Documentation
 -------------
 
