@@ -30,15 +30,17 @@ import org.junit.Test;
 public class JiraCsv198Test {
 
     private static final CSVFormat CSV_FORMAT = CSVFormat.EXCEL.withDelimiter('^').withFirstRecordAsHeader();
-    
+
     @Test
     public void test() throws UnsupportedEncodingException, IOException {
         InputStream pointsOfReference = getClass().getResourceAsStream("/CSV-198/optd_por_public.csv");
         Assert.assertNotNull(pointsOfReference);
-        CSVParser parser = CSV_FORMAT.parse(new InputStreamReader(pointsOfReference, "UTF-8"));
-        for (CSVRecord record : parser) {
-            String locationType = record.get("location_type");
-            Assert.assertNotNull(locationType);
+        try (@SuppressWarnings("resource")
+        CSVParser parser = CSV_FORMAT.parse(new InputStreamReader(pointsOfReference, "UTF-8"))) {
+            for (CSVRecord record : parser) {
+                String locationType = record.get("location_type");
+                Assert.assertNotNull(locationType);
+            }
         }
     }
 
