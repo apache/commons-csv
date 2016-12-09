@@ -43,6 +43,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -900,7 +901,7 @@ public final class CSVFormat implements Serializable {
      *
      * @param out
      *            the output.
-     * @param charset 
+     * @param charset
      *            A charset.
      * @return a printer to an output.
      * @throws IOException
@@ -926,6 +927,10 @@ public final class CSVFormat implements Serializable {
      * @since 1.4
      */
     public void print(final Object value, final Appendable out, final boolean newRecord) throws IOException {
+        print(value, out, newRecord, false);
+    }
+
+    private void print(final Object value, final Appendable out, final boolean newRecord, final boolean hasMoreValues) throws IOException {
         // null values are considered empty
         // Only call CharSequence.toString() if you have to, helps GC-free use cases.
         CharSequence charSequence;
@@ -935,11 +940,11 @@ public final class CSVFormat implements Serializable {
             charSequence = value instanceof CharSequence ? (CharSequence) value : value.toString();
         }
         charSequence = getTrim() ? trim(charSequence) : charSequence;
-        this.print(value, charSequence, 0, charSequence.length(), out, newRecord);
+        this.print(value, charSequence, 0, charSequence.length(), out, newRecord, hasMoreValues);
     }
 
     private void print(final Object object, final CharSequence value, final int offset, final int len,
-            final Appendable out, final boolean newRecord) throws IOException {
+            final Appendable out, final boolean newRecord, final boolean hasMoreValues) throws IOException {
         if (!newRecord) {
             out.append(getDelimiter());
         }
@@ -947,7 +952,7 @@ public final class CSVFormat implements Serializable {
             out.append(value);
         } else if (isQuoteCharacterSet()) {
             // the original object is needed so can check for Number
-            printAndQuote(object, value, offset, len, out, newRecord);
+            printAndQuote(object, value, offset, len, out, newRecord, hasMoreValues);
         } else if (isEscapeCharacterSet()) {
             printAndEscape(value, offset, len, out);
         } else {
@@ -1000,7 +1005,7 @@ public final class CSVFormat implements Serializable {
      */
     // the original object is needed so can check for Number
     private void printAndQuote(final Object object, final CharSequence value, final int offset, final int len,
-            final Appendable out, final boolean newRecord) throws IOException {
+            final Appendable out, final boolean newRecord, final boolean hasMoreValues) throws IOException {
         boolean quote = false;
         int start = offset;
         int pos = offset;
@@ -1030,7 +1035,7 @@ public final class CSVFormat implements Serializable {
                 // on the line, as it may be the only thing on the
                 // line. If it were not quoted in that case,
                 // an empty line has no tokens.
-                if (newRecord) {
+                if (newRecord && !hasMoreValues) {
                     quote = true;
                 }
             } else {
@@ -1143,7 +1148,32 @@ public final class CSVFormat implements Serializable {
      */
     public void printRecord(final Appendable out, final Object... values) throws IOException {
         for (int i = 0; i < values.length; i++) {
-            print(values[i], out, i == 0);
+            print(values[i], out, i == 0, i < values.length - 1);
+        }
+        println(out);
+    }
+
+    /**
+     * Prints the given {@code values} to {@code out} as a single record of delimiter separated values followed by the
+     * record separator.
+     *
+     * <p>
+     * The values will be quoted if needed. Quotes and new-line characters will be escaped. This method adds the record
+     * separator to the output after printing the record, so there is no need to call {@link #println(Appendable)}.
+     * </p>
+     *
+     * @param out
+     *            where to write.
+     * @param values
+     *            values to output.
+     * @throws IOException
+     *             If an I/O error occurs.
+     * @since 1.5
+     */
+    public void printRecord(final Appendable out, final Iterable<?> values) throws IOException {
+        boolean firstValue = true;
+        for (final Iterator<?> it = values.iterator(); it.hasNext(); firstValue = false) {
+            print(it.next(), out, firstValue, it.hasNext());
         }
         println(out);
     }

@@ -26,6 +26,7 @@ import java.io.Flushable;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 
 /**
  * Prints values in a CSV format.
@@ -193,10 +194,8 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void printRecord(final Iterable<?> values) throws IOException {
-        for (final Object value : values) {
-            print(value);
-        }
-        println();
+        format.printRecord(out, values);
+        newRecord = true;
     }
 
     /**
@@ -257,13 +256,24 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void printRecords(final Iterable<?> values) throws IOException {
-        for (final Object value : values) {
-            if (value instanceof Object[]) {
-                this.printRecord((Object[]) value);
-            } else if (value instanceof Iterable) {
-                this.printRecord((Iterable<?>) value);
-            } else {
-                this.printRecord(value);
+        final Iterator<?> it = values.iterator();
+        if (it.hasNext()) {
+            final Object firstValue = it.next();
+
+            // When printing a single record, use printRecord(Iterable) to handle first value correctly
+            if (!(firstValue instanceof Object[]) && !(firstValue instanceof Iterable)) {
+                this.printRecord(values);
+                return;
+            }
+
+            for (final Object value : values) {
+                if (value instanceof Object[]) {
+                    this.printRecord((Object[]) value);
+                } else if (value instanceof Iterable) {
+                    this.printRecord((Iterable<?>) value);
+                } else {
+                    this.printRecord(value);
+                }
             }
         }
     }
@@ -308,6 +318,12 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void printRecords(final Object... values) throws IOException {
+        // When printing a single record, use printRecord(Object...) to handle first value correctly
+        if (values.length > 0 && !(values[0] instanceof Object[]) && !(values[0] instanceof Iterable)) {
+            this.printRecord(values);
+            return;
+        }
+
         for (final Object value : values) {
             if (value instanceof Object[]) {
                 this.printRecord((Object[]) value);
@@ -331,11 +347,13 @@ public final class CSVPrinter implements Flushable, Closeable {
      */
     public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
         final int columnCount = resultSet.getMetaData().getColumnCount();
+        final Object[] values = new Object[columnCount];
         while (resultSet.next()) {
             for (int i = 1; i <= columnCount; i++) {
-                print(resultSet.getObject(i));
+                values[i - 1] = resultSet.getObject(i);
             }
-            println();
+            // use printRecord(Object...) to handle first value correctly
+            this.printRecord(values);
         }
     }
 }

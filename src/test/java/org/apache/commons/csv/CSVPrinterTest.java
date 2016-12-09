@@ -519,6 +519,91 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testExcelPrintAllArrayOfArraysWithFirstEmptyValue1() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
+            printer.printRecords((Object[]) new String[][] { { "", "r1c2" } });
+            assertEquals(",r1c2" + recordSeparator, sw.toString());
+        }
+    }
+    @Test
+    public void testExcelPrintAllArrayOfArraysWithFirstEmptyValue2() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
+            printer.printRecords((Object[]) new String[][] { { "" } });
+            assertEquals("\"\"" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
+    public void testExcelPrintAllArrayOfListsWithFirstEmptyValue1() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
+            printer.printRecords(
+                    (Object[]) new List[] { Arrays.asList("", "r1c2") });
+            assertEquals(",r1c2" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
+    public void testExcelPrintAllArrayOfListsWithFirstEmptyValue2() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
+            printer.printRecords(
+                    (Object[]) new List[] { Arrays.asList("") });
+            assertEquals("\"\"" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
+    public void testExcelPrintAllIterableOfListsWithFirstEmptyValue1() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
+            printer.printRecords(
+                    Arrays.asList(new List[] { Arrays.asList("", "r1c2") }));
+            assertEquals(",r1c2" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
+    public void testExcelPrintAllIterableOfArraysWithFirstEmptyValue2() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
+            printer.printRecords(Arrays.asList(new String[][] { { "" } }));
+            assertEquals("\"\"" + recordSeparator, sw.toString());
+        }
+    }
+
+
+    @Test
+    public void testJdbcPrinterWithFirstEmptyValue1() throws IOException, ClassNotFoundException, SQLException {
+        final StringWriter sw = new StringWriter();
+        Class.forName("org.h2.Driver");
+        try (final Connection connection = geH2Connection();) {
+            try (final Statement stmt = connection.createStatement();
+                    final ResultSet resultSet = stmt.executeQuery("select '' AS EMPTYVALUE, 1 AS ID from DUAL");
+                    final CSVPrinter printer = CSVFormat.DEFAULT.withHeader(resultSet).print(sw)) {
+                printer.printRecords(resultSet);
+            }
+        }
+        assertEquals("EMPTYVALUE,ID" + recordSeparator + ",1" + recordSeparator, sw.toString());
+    }
+
+    @Test
+    public void testJdbcPrinterWithFirstEmptyValue2() throws IOException, ClassNotFoundException, SQLException {
+        final StringWriter sw = new StringWriter();
+        Class.forName("org.h2.Driver");
+        try (final Connection connection = geH2Connection();) {
+            try (final Statement stmt = connection.createStatement();
+                    final ResultSet resultSet = stmt.executeQuery("select '' AS EMPTYVALUE from DUAL");
+                    final CSVPrinter printer = CSVFormat.DEFAULT.withHeader(resultSet).print(sw)) {
+                printer.printRecords(resultSet);
+            }
+        }
+        assertEquals("EMPTYVALUE" + recordSeparator + "\"\"" + recordSeparator, sw.toString());
+    }
+
+    @Test
     public void testJdbcPrinterWithResultSetMetaData() throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
         Class.forName("org.h2.Driver");
