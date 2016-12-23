@@ -870,6 +870,22 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Prints to the {@link System#out}.
+     *
+     * <p>
+     * See also {@link CSVPrinter}.
+     * </p>
+     *
+     * @return a printer to {@link System#out}.
+     * @throws IOException
+     *             thrown if the optional header cannot be printed.
+     * @since 1.5
+     */
+    public CSVPrinter printer() throws IOException {
+        return new CSVPrinter(System.out, this);
+    }
+
+    /**
      * Prints to the specified output.
      *
      * <p>
