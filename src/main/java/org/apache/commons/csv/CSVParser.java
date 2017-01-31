@@ -367,8 +367,25 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         if (lastRecord && inputClean.isEmpty() && this.format.getTrailingDelimiter()) {
             return;
         }
-        final String nullString = this.format.getNullString();
-        this.record.add(inputClean.equals(nullString) ? null : inputClean);
+        this.record.add(isNull(inputClean) ? null : inputClean);
+    }
+
+    private boolean isNull(final String input) {
+        Assertions.notNull(input, "input");
+
+        if (input.equals(this.format.getNullString())) {
+            return true;
+        }
+
+        if (!this.format.getMissingColumnValuesAreNull()) {
+            return false; // MUST keep backward compatibility
+        }
+
+        if (this.reusableToken.isQuoted) {
+            return false; // distinguish quoted strings from null
+        }
+
+        return input.isEmpty();
     }
 
     /**

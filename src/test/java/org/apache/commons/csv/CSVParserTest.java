@@ -961,6 +961,47 @@ public class CSVParserTest {
         Assert.assertEquals(3, record.size());
     }
 
+    @Test
+    public void testMissingColumnValuesAreNull() throws Exception {
+        final String code = ",,\"\",";
+
+        // check backward compatibility
+        try (final CSVParser parser = CSVParser.parse(code, CSVFormat.DEFAULT)) {
+            final CSVRecord record = parser.iterator().next();
+
+            assertNotNull(record.get(0));
+            assertNotNull(record.get(1));
+            assertNotNull(record.get(2));
+            assertNotNull(record.get(3));
+            Assert.assertEquals(4, record.size());
+        }
+
+        // check withMissingColumnValuesAreNull
+        try (final CSVParser parser = CSVParser.parse(code, CSVFormat.DEFAULT
+                .withMissingColumnValuesAreNull())) {
+            final CSVRecord record = parser.iterator().next();
+
+            assertNull(record.get(0));
+            assertNull(record.get(1));
+            assertNotNull(record.get(2));
+            assertNull(record.get(3));
+            Assert.assertEquals(4, record.size());
+        }
+
+        // check combination of withNullString and withMissingColumnValuesAreNull
+        try (final CSVParser parser = CSVParser.parse(code, CSVFormat.DEFAULT
+                .withNullString("")
+                .withMissingColumnValuesAreNull())) {
+            final CSVRecord record = parser.iterator().next();
+
+            assertNull(record.get(0));
+            assertNull(record.get(1));
+            assertNull(record.get(2));
+            assertNull(record.get(3));
+            Assert.assertEquals(4, record.size());
+        }
+    }
+
     private void validateLineNumbers(final String lineSeparator) throws IOException {
         try (final CSVParser parser = CSVParser.parse("a" + lineSeparator + "b" + lineSeparator + "c",
                 CSVFormat.DEFAULT.withRecordSeparator(lineSeparator))) {
