@@ -27,7 +27,9 @@ import static org.apache.commons.csv.Token.Type.EOF;
 import static org.apache.commons.csv.Token.Type.EORECORD;
 import static org.apache.commons.csv.Token.Type.TOKEN;
 import static org.apache.commons.csv.TokenMatchers.hasContent;
+import static org.apache.commons.csv.TokenMatchers.isQuoted;
 import static org.apache.commons.csv.TokenMatchers.matches;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -387,6 +389,19 @@ public class LexerTest {
         final String code = "escaping at EOF is evil\\";
         try (final Lexer lexer = createLexer(code, formatWithEscaping)) {
             lexer.nextToken(new Token());
+        }
+    }
+
+    @Test
+    public void testQuotedToken() throws Exception {
+        final String code = ",,\"\",";
+
+        try (final Lexer lexer = createLexer(code, CSVFormat.DEFAULT)) {
+            assertThat(lexer.nextToken(new Token()), not(isQuoted()));
+            assertThat(lexer.nextToken(new Token()), not(isQuoted()));
+            assertThat(lexer.nextToken(new Token()), isQuoted());
+            assertThat(lexer.nextToken(new Token()), not(isQuoted()));
+            assertThat(lexer.nextToken(new Token()), matches(EOF, ""));
         }
     }
 }

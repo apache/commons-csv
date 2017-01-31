@@ -150,6 +150,7 @@ final class Lexer implements Closeable {
             } else if (isQuoteChar(c)) {
                 // consume encapsulated token
                 parseEncapsulatedToken(token);
+                token.isQuoted = true;
             } else if (isEndOfFile(c)) {
                 // end of file return EOF()
                 // noop: token.content.append("");
