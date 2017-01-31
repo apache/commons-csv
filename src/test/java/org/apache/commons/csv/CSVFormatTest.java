@@ -459,6 +459,12 @@ public class CSVFormatTest {
         assertTrue(formatWithFirstRecordAsHeader.getHeader().length == 0);
     }
 
+    @Test
+    public void testWithMissingColumnValuesAreNull() {
+        final CSVFormat format = CSVFormat.DEFAULT.withMissingColumnValuesAreNull();
+        assertTrue(format.getMissingColumnValuesAreNull());
+    }
+
     public enum Header {
         Name, Email, Phone
     }
