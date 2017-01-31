@@ -82,6 +82,23 @@ final class TokenMatchers {
         };
     }
 
+    public static Matcher<Token> isQuoted() {
+        return new TypeSafeDiagnosingMatcher<Token>() {
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText("token is quoted ");
+            }
+
+            @Override
+            protected boolean matchesSafely(final Token item,
+                    final Description mismatchDescription) {
+                mismatchDescription.appendText("token is not quoted ");
+                return item.isQuoted;
+            }
+        };
+    }
+
     public static Matcher<Token> matches(final Token.Type expectedType, final String expectedContent) {
         return allOf(hasType(expectedType), hasContent(expectedContent));
     }

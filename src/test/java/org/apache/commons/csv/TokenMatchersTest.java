@@ -19,6 +19,7 @@ package org.apache.commons.csv;
 import static org.apache.commons.csv.TokenMatchers.hasContent;
 import static org.apache.commons.csv.TokenMatchers.hasType;
 import static org.apache.commons.csv.TokenMatchers.isReady;
+import static org.apache.commons.csv.TokenMatchers.isQuoted;
 import static org.apache.commons.csv.TokenMatchers.matches;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -35,6 +36,7 @@ public class TokenMatchersTest {
         token = new Token();
         token.type = Token.Type.TOKEN;
         token.isReady = true;
+        token.isQuoted = true;
         token.content.append("content");
     }
 
@@ -57,6 +59,13 @@ public class TokenMatchersTest {
         assertTrue(isReady().matches(token));
         token.isReady = false;
         assertFalse(isReady().matches(token));
+    }
+
+    @Test
+    public void testIsQuoted() {
+        assertTrue(isQuoted().matches(token));
+        token.isQuoted = false;
+        assertFalse(isQuoted().matches(token));
     }
 
     @Test
