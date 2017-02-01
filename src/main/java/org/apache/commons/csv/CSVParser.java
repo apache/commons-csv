@@ -165,8 +165,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * call {@link #close()} on the parser, unless you close the {@code reader}.
      * </p>
      *
-     * @param reader
-     *            a Reader containing CSV-formatted input. Must not be null.
+     * @param inputStream
+     *            an InputStream containing CSV-formatted input. Must not be null.
      * @param charset
      *            a Charset.
      * @param format
