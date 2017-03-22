@@ -53,7 +53,7 @@ public class JiraCsv203Test {
     }
 
     @Test
-    public void testQuoteModeNoneNumeric() throws Exception {
+    public void testQuoteModeNonNumeric() throws Exception {
         CSVFormat format = CSVFormat.EXCEL
                 .withNullString("N/A")
                 .withIgnoreSurroundingSpaces(true)
@@ -64,5 +64,34 @@ public class JiraCsv203Test {
         printer.printRecord(new Object[] { null, "Hello", null, "World" });
 
         Assert.assertEquals("N/A,\"Hello\",N/A,\"World\"\r\n", buffer.toString());
+    }
+
+    @Test
+    public void testWithoutNullString() throws Exception {
+        CSVFormat format = CSVFormat.EXCEL
+                //.withNullString("N/A")
+                .withIgnoreSurroundingSpaces(true)
+                .withQuoteMode(QuoteMode.ALL);
+
+        StringBuffer buffer = new StringBuffer();
+        CSVPrinter printer = new CSVPrinter(buffer, format);
+        printer.printRecord(new Object[] { null, "Hello", null, "World" });
+
+        Assert.assertEquals(",\"Hello\",,\"World\"\r\n", buffer.toString());
+    }
+
+    @Test
+    public void testWithEmptyValues() throws Exception {
+        CSVFormat format = CSVFormat.EXCEL
+                .withNullString("N/A")
+                .withIgnoreSurroundingSpaces(true)
+                .withQuoteMode(QuoteMode.ALL);
+
+        StringBuffer buffer = new StringBuffer();
+        CSVPrinter printer = new CSVPrinter(buffer, format);
+        printer.printRecord(new Object[] { "", "Hello", "", "World" });
+        //printer.printRecord(new Object[] { null, "Hello", null, "World" });
+
+        Assert.assertEquals("\"\",\"Hello\",\"\",\"World\"\r\n", buffer.toString());
     }
 }
