@@ -946,7 +946,16 @@ public final class CSVFormat implements Serializable {
         // Only call CharSequence.toString() if you have to, helps GC-free use cases.
         CharSequence charSequence;
         if (value == null) {
-            charSequence = nullString == null ? Constants.EMPTY : nullString;
+            // https://issues.apache.org/jira/browse/CSV-203
+            if (null == nullString) {
+                charSequence = Constants.EMPTY;
+            } else {
+                if (QuoteMode.ALL == quoteMode) {
+                    charSequence = quoteCharacter + nullString + quoteCharacter;
+                } else {
+                    charSequence = nullString;
+                }
+            }
         } else {
             charSequence = value instanceof CharSequence ? (CharSequence) value : value.toString();
         }
@@ -1031,6 +1040,7 @@ public final class CSVFormat implements Serializable {
         }
         switch (quoteModePolicy) {
         case ALL:
+        case ALL_NON_NULL:
             quote = true;
             break;
         case NON_NUMERIC:
