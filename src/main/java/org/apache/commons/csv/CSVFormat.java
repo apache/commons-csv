@@ -362,7 +362,8 @@ public final class CSVFormat implements Serializable {
     		.withIgnoreEmptyLines(false)
             .withQuote(null)
             .withRecordSeparator(LF)
-            .withNullString("\\N");
+            .withNullString("\\N")
+    		.withQuoteMode(QuoteMode.ALL_NON_NULL);
     // @formatter:off
 
     /**
