@@ -1040,6 +1040,7 @@ public final class CSVFormat implements Serializable {
         }
         switch (quoteModePolicy) {
         case ALL:
+        case ALL_NON_NULL:
             quote = true;
             break;
         case NON_NUMERIC:

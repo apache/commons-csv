@@ -26,6 +26,20 @@ public class JiraCsv203Test {
     }
 
     @Test
+    public void testQuoteModeAllNonNull() throws Exception {
+        CSVFormat format = CSVFormat.EXCEL
+                .withNullString("N/A")
+                .withIgnoreSurroundingSpaces(true)
+                .withQuoteMode(QuoteMode.ALL_NON_NULL);
+
+        StringBuffer buffer = new StringBuffer();
+        CSVPrinter printer = new CSVPrinter(buffer, format);
+        printer.printRecord(new Object[] { null, "Hello", null, "World" });
+
+        Assert.assertEquals("N/A,\"Hello\",N/A,\"World\"\r\n", buffer.toString());
+    }
+
+    @Test
     public void testWithoutQuoteMode() throws Exception {
         CSVFormat format = CSVFormat.EXCEL
                 .withNullString("N/A")

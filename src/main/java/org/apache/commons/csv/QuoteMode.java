@@ -29,6 +29,11 @@ public enum QuoteMode {
     ALL,
 
     /**
+     * Quotes all non-null fields.
+     */
+    ALL_NON_NULL,
+
+    /**
      * Quotes fields which contain special characters such as a delimiter, quotes character or any of the characters in
      * line separator.
      */
