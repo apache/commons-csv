@@ -349,6 +349,7 @@ public final class CSVFormat implements Serializable {
      * <li>withIgnoreEmptyLines(false)</li>
      * <li>withEscape('\\')</li>
      * <li>withNullString("\\N")</li>
+     * <li>withQuoteMode(QuoteMode.ALL_NON_NULL)</li>
      * </ul>
      *
      * @see Predefined#MySQL
