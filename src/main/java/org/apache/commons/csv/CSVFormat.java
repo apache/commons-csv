@@ -20,6 +20,7 @@ package org.apache.commons.csv;
 import static org.apache.commons.csv.Constants.BACKSLASH;
 import static org.apache.commons.csv.Constants.COMMA;
 import static org.apache.commons.csv.Constants.COMMENT;
+import static org.apache.commons.csv.Constants.EMPTY;
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.DOUBLE_QUOTE_CHAR;
@@ -189,6 +190,17 @@ public final class CSVFormat implements Serializable {
          * @see CSVFormat#MYSQL
          */
         MySQL(CSVFormat.MYSQL),
+
+        /**
+         * @see CSVFormat#POSTGRESQL_CSV
+         * @since 1.5
+         */
+        PostgreSQLCsv(CSVFormat.POSTGRESQL_CSV),
+
+        /**
+         * @see CSVFormat#POSTGRESQL_CSV
+         */
+        PostgreSQLText(CSVFormat.POSTGRESQL_TEXT),
 
         /**
          * @see CSVFormat#RFC4180
@@ -362,6 +374,80 @@ public final class CSVFormat implements Serializable {
     		.withEscape(BACKSLASH)
     		.withIgnoreEmptyLines(false)
             .withQuote(null)
+            .withRecordSeparator(LF)
+            .withNullString("\\N")
+    		.withQuoteMode(QuoteMode.ALL_NON_NULL);
+    // @formatter:off
+
+    /**
+     * Default PostgreSQL CSV format used by the {@code COPY} operation.
+     *
+     * <p>
+     * This is a comma-delimited format with a LF character as the line separator. Values are double quoted and special
+     * characters are escaped with {@code '"'}. The default NULL string is {@code ""}.
+     * </p>
+     *
+     * <p>
+     * Settings are:
+     * </p>
+     * <ul>
+     * <li>withDelimiter(',')</li>
+     * <li>withQuote('"')</li>
+     * <li>withRecordSeparator('\n')</li>
+     * <li>withIgnoreEmptyLines(false)</li>
+     * <li>withEscape('\\')</li>
+     * <li>withNullString("")</li>
+     * <li>withQuoteMode(QuoteMode.ALL_NON_NULL)</li>
+     * </ul>
+     *
+     * @see Predefined#MySQL
+     * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html"> http://dev.mysql.com/doc/refman/5.1/en/load
+     *      -data.html</a>
+     * @since 1.5
+     */
+    // @formatter:off
+    public static final CSVFormat POSTGRESQL_CSV = DEFAULT
+    		.withDelimiter(COMMA)
+    		.withEscape(DOUBLE_QUOTE_CHAR)
+    		.withIgnoreEmptyLines(false)
+            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withRecordSeparator(LF)
+            .withNullString(EMPTY)
+    		.withQuoteMode(QuoteMode.ALL_NON_NULL);
+    // @formatter:off
+
+    /**
+     * Default PostgreSQL text format used by the {@code COPY} operation.
+     *
+     * <p>
+     * This is a tab-delimited format with a LF character as the line separator. Values are double quoted and special
+     * characters are escaped with {@code '"'}. The default NULL string is {@code "\\N"}.
+     * </p>
+     *
+     * <p>
+     * Settings are:
+     * </p>
+     * <ul>
+     * <li>withDelimiter('\t')</li>
+     * <li>withQuote('"')</li>
+     * <li>withRecordSeparator('\n')</li>
+     * <li>withIgnoreEmptyLines(false)</li>
+     * <li>withEscape('\\')</li>
+     * <li>withNullString("\\N")</li>
+     * <li>withQuoteMode(QuoteMode.ALL_NON_NULL)</li>
+     * </ul>
+     *
+     * @see Predefined#MySQL
+     * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html"> http://dev.mysql.com/doc/refman/5.1/en/load
+     *      -data.html</a>
+     * @since 1.5
+     */
+    // @formatter:off
+    public static final CSVFormat POSTGRESQL_TEXT = DEFAULT
+    		.withDelimiter(TAB)
+    		.withEscape(DOUBLE_QUOTE_CHAR)
+    		.withIgnoreEmptyLines(false)
+            .withQuote(DOUBLE_QUOTE_CHAR)
             .withRecordSeparator(LF)
             .withNullString("\\N")
     		.withQuoteMode(QuoteMode.ALL_NON_NULL);

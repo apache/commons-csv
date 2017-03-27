@@ -50,6 +50,7 @@
       <action issue="CSV-191" type="add" dev="ggregory" due-to="Gary Gregory">Add convenience API CSVFormat.print(Path, Charset)</action>
       <action issue="CSV-192" type="add" dev="ggregory" due-to="Gary Gregory">Add convenience API CSVParser.parse(Path, Charset, CSVFormat)</action>
       <action issue="CSV-205" type="add" dev="ggregory" due-to="Gary Gregory">Add convenience API CSVFormat#printer() to print to System.out</action>
+      <action issue="CSV-207" type="add" dev="ggregory" due-to="Gary Gregory">Provide a CSV Format for printing PostgreSQL CSV and Text formats.</action>
     </release>
     <release version="1.4" date="2016-05-28" description="Feature and bug fix release">
       <action issue="CSV-181" type="update" dev="ggregory" due-to="Gary Gregory">Make CSVPrinter.print(Object) GC-free.</action>

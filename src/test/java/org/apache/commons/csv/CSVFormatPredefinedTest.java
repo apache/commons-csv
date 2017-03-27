@@ -46,6 +46,16 @@ public class CSVFormatPredefinedTest {
     }
 
     @Test
+    public void testPostgreSqlCsv() {
+        test(CSVFormat.POSTGRESQL_CSV, "PostgreSQLCsv");
+    }
+
+    @Test
+    public void testPostgreSqlText() {
+        test(CSVFormat.POSTGRESQL_TEXT, "PostgreSQLText");
+    }
+
+    @Test
     public void testRFC4180() {
         test(CSVFormat.RFC4180, "RFC4180");
     }
