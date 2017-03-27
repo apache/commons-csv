@@ -263,7 +263,11 @@ public final class CSVFormat implements Serializable {
      *
      * @see Predefined#Excel
      */
-    public static final CSVFormat EXCEL = DEFAULT.withIgnoreEmptyLines(false).withAllowMissingColumnNames();
+    // @formatter:off
+    public static final CSVFormat EXCEL = DEFAULT
+    		.withIgnoreEmptyLines(false)
+    		.withAllowMissingColumnNames();
+    // @formatter:on
 
     /**
      * Default Informix CSV UNLOAD format used by the {@code UNLOAD TO file_name} operation.
@@ -289,8 +293,13 @@ public final class CSVFormat implements Serializable {
      *      http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm</a>
      * @since 1.3
      */
-    public static final CSVFormat INFORMIX_UNLOAD = DEFAULT.withDelimiter(PIPE).withEscape(BACKSLASH)
-            .withQuote(DOUBLE_QUOTE_CHAR).withRecordSeparator(LF);
+    // @formatter:off
+    public static final CSVFormat INFORMIX_UNLOAD = DEFAULT
+    		.withDelimiter(PIPE)
+    		.withEscape(BACKSLASH)
+            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withRecordSeparator(LF);
+    // @formatter:on
 
     /**
      * Default Informix CSV UNLOAD format used by the {@code UNLOAD TO file_name} operation (escaping is disabled.)
@@ -315,8 +324,12 @@ public final class CSVFormat implements Serializable {
      *      http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm</a>
      * @since 1.3
      */
-    public static final CSVFormat INFORMIX_UNLOAD_CSV = DEFAULT.withDelimiter(COMMA).withQuote(DOUBLE_QUOTE_CHAR)
+    // @formatter:off
+    public static final CSVFormat INFORMIX_UNLOAD_CSV = DEFAULT
+    		.withDelimiter(COMMA)
+    		.withQuote(DOUBLE_QUOTE_CHAR)
             .withRecordSeparator(LF);
+    // @formatter:on
 
     /**
      * Default MySQL format used by the {@code SELECT INTO OUTFILE} and {@code LOAD DATA INFILE} operations.
@@ -342,8 +355,15 @@ public final class CSVFormat implements Serializable {
      * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html"> http://dev.mysql.com/doc/refman/5.1/en/load
      *      -data.html</a>
      */
-    public static final CSVFormat MYSQL = DEFAULT.withDelimiter(TAB).withEscape(BACKSLASH).withIgnoreEmptyLines(false)
-            .withQuote(null).withRecordSeparator(LF).withNullString("\\N");
+    // @formatter:off
+    public static final CSVFormat MYSQL = DEFAULT
+    		.withDelimiter(TAB)
+    		.withEscape(BACKSLASH)
+    		.withIgnoreEmptyLines(false)
+            .withQuote(null)
+            .withRecordSeparator(LF)
+            .withNullString("\\N");
+    // @formatter:off
 
     /**
      * Comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
@@ -379,7 +399,11 @@ public final class CSVFormat implements Serializable {
      *
      * @see Predefined#TDF
      */
-    public static final CSVFormat TDF = DEFAULT.withDelimiter(TAB).withIgnoreSurroundingSpaces();
+    // @formatter:off
+    public static final CSVFormat TDF = DEFAULT
+    		.withDelimiter(TAB)
+    		.withIgnoreSurroundingSpaces();
+    // @formatter:on
 
     /**
      * Returns true if the given character is a line break character.
