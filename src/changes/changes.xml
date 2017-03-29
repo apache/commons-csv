@@ -38,7 +38,8 @@
     <title>Release Notes</title>
   </properties>
   <body>
-    <release version="1.5" date="2016-MM-DD" description="Bug fix release">
+    <release version="1.5" date="2017-MM-DD" description="Bug fix release">
+      <action issue="CSV-203" type="fix" dev="ggregory" due-to="Richard Wheeldon, Kai Paroth">withNullString value is printed without quotes when QuoteMode.ALL is specified; add QuoteMode.ALL_NON_NULL. PR #17.</action>
       <action issue="CSV-194" type="fix" dev="ggregory" due-to="Marc Prud'hommeaux">Fix outdated comments about FileReader in CSVParser #13</action>
       <action issue="CSV-193" type="fix" dev="ggregory" due-to="Matthias Wiehl">Fix incorrect method name 'withFirstRowAsHeader' in user guide.</action>
       <action issue="CSV-171" type="fix" dev="ggregory" due-to="Gary Gregory, Michael Graessle, Adrian Bridgett">Negative numeric values in the first column are always quoted in minimal mode.</action>
@@ -49,6 +50,7 @@
       <action issue="CSV-191" type="add" dev="ggregory" due-to="Gary Gregory">Add convenience API CSVFormat.print(Path, Charset)</action>
       <action issue="CSV-192" type="add" dev="ggregory" due-to="Gary Gregory">Add convenience API CSVParser.parse(Path, Charset, CSVFormat)</action>
       <action issue="CSV-205" type="add" dev="ggregory" due-to="Gary Gregory">Add convenience API CSVFormat#printer() to print to System.out</action>
+      <action issue="CSV-207" type="add" dev="ggregory" due-to="Gary Gregory">Provide a CSV Format for printing PostgreSQL CSV and Text formats.</action>
     </release>
     <release version="1.4" date="2016-05-28" description="Feature and bug fix release">
       <action issue="CSV-181" type="update" dev="ggregory" due-to="Gary Gregory">Make CSVPrinter.print(Object) GC-free.</action>
