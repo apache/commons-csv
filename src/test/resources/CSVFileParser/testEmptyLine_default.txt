@@ -1,0 +1,6 @@
+testEmptyLine.csv CommentStart=# IgnoreEmpty=true IgnoreSpaces=true
+Delimiter=<,> QuoteChar=<"> CommentStart=<#> EmptyLines:ignored SurroundingSpaces:ignored SkipHeaderRecord:false
+0:[]
+0:[]
+0:[]
+0:[]
