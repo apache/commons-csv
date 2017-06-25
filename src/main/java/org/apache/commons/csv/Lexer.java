@@ -87,6 +87,14 @@ final class Lexer implements Closeable {
 
         // read the next char and set eol
         int c = reader.read();
+
+        if (ignoreSurroundingSpaces) {
+            while (c == ' ' || c == '\t') {
+                c = reader.read();
+            }
+        }
+
+        
         /*
          * Note: The following call will swallow LF if c == CR. But we don't need to know if the last char was CR or LF
          * - they are equivalent here.
