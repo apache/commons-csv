@@ -89,7 +89,7 @@ final class Lexer implements Closeable {
         int c = reader.read();
 
         if (ignoreSurroundingSpaces) {
-            while (c == ' ' || c == '\t') {
+            while ((delimiter != ' ' && c == ' ') || (delimiter != '\t' && c == '\t')) {
                 c = reader.read();
             }
         }
