@@ -17,34 +17,22 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.Constants.CR;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-
 import org.apache.commons.io.FileUtils;
+import org.h2.value.Value;
+import org.h2.value.ValueArray;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.sql.*;
+import java.util.*;
+import java.util.Date;
+
+import static org.apache.commons.csv.Constants.CR;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -1269,4 +1257,52 @@ public class CSVPrinterTest {
     private String[] toFirstRecordValues(final String expected, final CSVFormat format) throws IOException {
         return CSVParser.parse(expected, format).getRecords().get(0).values();
     }
+
+
+    @Test
+    public void testPrintRecordsTakingResultSet() throws IOException, SQLException {
+
+        CSVFormat cSVFormat = CSVFormat.MYSQL;
+        CSVPrinter cSVPrinter = cSVFormat.printer();
+        Value[] valueArray = new Value[0];
+        ValueArray valueArrayTwo = ValueArray.get(valueArray);
+        ResultSet resultSet = valueArrayTwo.getResultSet();
+        cSVPrinter.printRecords(resultSet);
+
+        assertEquals(0, resultSet.getRow());
+
+    }
+
+
+    @Test
+    public void testPrintRecordsTakingObjectArray() throws IOException {
+
+        CSVFormat cSVFormat = CSVFormat.INFORMIX_UNLOAD;
+        CharArrayWriter charArrayWriter = new CharArrayWriter(0);
+        CSVPrinter cSVPrinter = cSVFormat.print((Appendable) charArrayWriter);
+        HashSet<BatchUpdateException> hashSet = new HashSet<BatchUpdateException>();
+        Object[] objectArray = new Object[6];
+        objectArray[3] =  hashSet;
+        cSVPrinter.printRecords(objectArray);
+
+        assertEquals(6, charArrayWriter.size());
+        assertEquals("\n\n\n\n\n\n", charArrayWriter.toString());
+
+    }
+
+
+    @Test
+    public void testPrintRecordsTakingIterable() throws IOException {
+
+        CSVFormat cSVFormat = CSVFormat.POSTGRESQL_TEXT;
+        CSVPrinter cSVPrinter = cSVFormat.printer();
+        Vector<CSVFormatTest.EmptyEnum> vector = new Vector<CSVFormatTest.EmptyEnum>();
+        vector.setSize(23);
+        cSVPrinter.printRecords(vector);
+
+        assertEquals(23, vector.capacity());
+
+    }
+
+
 }
