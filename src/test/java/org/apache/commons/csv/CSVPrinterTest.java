@@ -22,12 +22,14 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -35,13 +37,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
+import org.h2.value.Value;
+import org.h2.value.ValueArray;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -1269,4 +1275,42 @@ public class CSVPrinterTest {
     private String[] toFirstRecordValues(final String expected, final CSVFormat format) throws IOException {
         return CSVParser.parse(expected, format).getRecords().get(0).values();
     }
+
+    @Test
+    public void testPrintRecordsWithResultSetOneRow() throws IOException, SQLException {
+        try (CSVPrinter csvPrinter = CSVFormat.MYSQL.printer()) {
+            Value[] valueArray = new Value[0];
+            ValueArray valueArrayTwo = ValueArray.get(valueArray);
+            try (ResultSet resultSet = valueArrayTwo.getResultSet()) {
+                csvPrinter.printRecords(resultSet);
+                assertEquals(0, resultSet.getRow());
+            }
+        }
+    }
+
+    @Test
+    public void testPrintRecordsWithObjectArray() throws IOException {
+        CharArrayWriter charArrayWriter = new CharArrayWriter(0);
+        try (CSVPrinter csvPrinter = CSVFormat.INFORMIX_UNLOAD.print(charArrayWriter)) {
+            HashSet<BatchUpdateException> hashSet = new HashSet<>();
+            Object[] objectArray = new Object[6];
+            objectArray[3] = hashSet;
+            csvPrinter.printRecords(objectArray);
+        }
+        assertEquals(6, charArrayWriter.size());
+        assertEquals("\n\n\n\n\n\n", charArrayWriter.toString());
+    }
+
+
+    @Test
+    public void testPrintRecordsWithEmptyVector() throws IOException {
+        try (CSVPrinter csvPrinter = CSVFormat.POSTGRESQL_TEXT.printer()) {
+            Vector<CSVFormatTest.EmptyEnum> vector = new Vector<>();
+            int expectedCapacity = 23;
+            vector.setSize(expectedCapacity);
+            csvPrinter.printRecords(vector);
+            assertEquals(expectedCapacity, vector.capacity());
+        }
+    }
+
 }
