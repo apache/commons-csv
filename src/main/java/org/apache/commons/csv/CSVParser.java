@@ -161,8 +161,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Creates a CSV parser using the given {@link CSVFormat}.
      *
      * <p>
-     * If you do not read all records from the given {@code reader}, you should
-     * call {@link #close()} on the parser, unless you close the {@code reader}.
+     * If you do not read all records from the given {@code reader}, you should call {@link #close()} on the parser,
+     * unless you close the {@code reader}.
      * </p>
      *
      * @param inputStream
@@ -171,12 +171,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *            a Charset.
      * @param format
      *            the CSVFormat used for CSV parsing. Must not be null.
+     * @return a new CSVParser configured with the given reader and format.
      * @throws IllegalArgumentException
-     *             If the parameters of the format are inconsistent or if either
-     *             reader or format are null.
+     *             If the parameters of the format are inconsistent or if either reader or format are null.
      * @throws IOException
-     *             If there is a problem reading the header or skipping the
-     *             first record
+     *             If there is a problem reading the header or skipping the first record
      * @since 1.5
      */
     @SuppressWarnings("resource")
@@ -212,20 +211,19 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Creates a CSV parser using the given {@link CSVFormat}
      *
      * <p>
-     * If you do not read all records from the given {@code reader}, you should
-     * call {@link #close()} on the parser, unless you close the {@code reader}.
+     * If you do not read all records from the given {@code reader}, you should call {@link #close()} on the parser,
+     * unless you close the {@code reader}.
      * </p>
      *
      * @param reader
      *            a Reader containing CSV-formatted input. Must not be null.
      * @param format
      *            the CSVFormat used for CSV parsing. Must not be null.
+     * @return a new CSVParser configured with the given reader and format.
      * @throws IllegalArgumentException
-     *             If the parameters of the format are inconsistent or if either
-     *             reader or format are null.
+     *             If the parameters of the format are inconsistent or if either reader or format are null.
      * @throws IOException
-     *             If there is a problem reading the header or skipping the
-     *             first record
+     *             If there is a problem reading the header or skipping the first record
      * @since 1.5
      */
     public static CSVParser parse(Reader reader, final CSVFormat format) throws IOException {
