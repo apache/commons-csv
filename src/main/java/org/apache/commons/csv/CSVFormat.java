@@ -1060,7 +1060,7 @@ public final class CSVFormat implements Serializable {
         if (value == null) {
             // https://issues.apache.org/jira/browse/CSV-203
             if (null == nullString) {
-                charSequence = Constants.EMPTY;
+                charSequence = EMPTY;
             } else {
                 if (QuoteMode.ALL == quoteMode) {
                     charSequence = quoteCharacter + nullString + quoteCharacter;
