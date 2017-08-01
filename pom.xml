@@ -149,6 +149,7 @@ CSV files of various types.
   </properties>
 
   <build>
+    <defaultGoal>clean verify apache-rat:check clirr:check javadoc:javadoc</defaultGoal>
     <pluginManagement>
       <plugins>
         <plugin>

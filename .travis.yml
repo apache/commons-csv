@@ -16,6 +16,9 @@
 language: java
 sudo: false
 
+script:
+  - mvn
+
 jdk:
   - openjdk7
   - oraclejdk8
