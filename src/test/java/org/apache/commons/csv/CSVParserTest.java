@@ -234,6 +234,24 @@ public class CSVParserTest {
             assertEquals(4, records.size());
         }
     }
+    @Test
+    public void testLineEndingsCacheWindows() throws IOException {
+        final String code = "foo\r\nbaar,\r\nhello,world\r\n,kanu";
+        final CSVParser parser = CSVParser.parse(code, CSVFormat.DEFAULT);
+        final List<CSVRecord> records = parser.getRecords();
+        assertEquals(4, records.size());
+        assertEquals("\r\n",parser.getLineEndingFromLexer());
+        parser.close();
+    }
+    @Test
+    public void testLineEndingsCacheLinux() throws IOException {
+        final String code = "foo\nbaar,\nhello,world\n,kanu";
+        final CSVParser parser = CSVParser.parse(code, CSVFormat.DEFAULT);
+        final List<CSVRecord> records = parser.getRecords();
+        assertEquals(4, records.size());
+        assertEquals("\n",parser.getLineEndingFromLexer());
+        parser.close();
+    }
 
     @Test(expected = NoSuchElementException.class)
     public void testClose() throws Exception {

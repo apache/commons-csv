@@ -358,7 +358,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         this.characterOffset = characterOffset;
         this.recordNumber = recordNumber - 1;
     }
-
+    /**
+    * Return the line ending information cached in the internal Lexer object
+     * <p>
+     *   Once you have parsed atleast one line then the internal lexer object would have cached the line ending
+     *   value. This is useful for modifying and writing back files.
+     * </p>
+    */
+    public String getLineEndingFromLexer(){
+        return lexer.getLineEnding();
+    }
     private void addRecordValue(final boolean lastRecord) {
         final String input = this.reusableToken.content.toString();
         final String inputClean = this.format.getTrim() ? input.trim() : input;
