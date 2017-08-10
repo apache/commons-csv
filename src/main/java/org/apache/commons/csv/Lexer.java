@@ -55,6 +55,8 @@ final class Lexer implements Closeable {
     private final boolean ignoreSurroundingSpaces;
     private final boolean ignoreEmptyLines;
 
+    private final Character recordSeparatorForInput;
+
     /** The input stream */
     private final ExtendedBufferedReader reader;
 
@@ -66,6 +68,7 @@ final class Lexer implements Closeable {
         this.commentStart = mapNullToDisabled(format.getCommentMarker());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
+        this.recordSeparatorForInput=format.getRecordSeparatorForInput();
     }
 
     /**
@@ -370,12 +373,16 @@ final class Lexer implements Closeable {
      * @return true if the given or next character is a line-terminator
      */
     boolean readEndOfLine(int ch) throws IOException {
-        // check if we have \r\n...
-        if (ch == CR && reader.lookAhead() == LF) {
-            // note: does not change ch outside of this method!
-            ch = reader.read();
+        if (recordSeparatorForInput == null){
+            // check if we have \r\n...
+            if (ch == CR && reader.lookAhead() == LF) {
+                // note: does not change ch outside of this method!
+                ch = reader.read();
+            }
+            return ch == LF || ch == CR;
+        }else{
+            return ch == recordSeparatorForInput.charValue();
         }
-        return ch == LF || ch == CR;
     }
 
     boolean isClosed() {
