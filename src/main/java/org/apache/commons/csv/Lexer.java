@@ -57,6 +57,14 @@ final class Lexer implements Closeable {
 
     /** The input stream */
     private final ExtendedBufferedReader reader;
+    private String lineEnding;
+    private boolean isLESet = false;
+    public String getLineEnding(){
+        return lineEnding;
+    }
+    private void setLineEnding(String input){
+        lineEnding = input;
+    }
 
     Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
         this.reader = reader;
@@ -374,7 +382,18 @@ final class Lexer implements Closeable {
         if (ch == CR && reader.lookAhead() == LF) {
             // note: does not change ch outside of this method!
             ch = reader.read();
+            //save the CRLF state here
+            if(!isLESet) {
+                setLineEnding(Constants.CRLF);
+                isLESet = true;
+            }
         }
+        //save LF state here.
+        if(!isLESet && ch == LF) {
+            setLineEnding(Character.toString(Constants.LF));
+            isLESet = true;
+        }
+
         return ch == LF || ch == CR;
     }
 
