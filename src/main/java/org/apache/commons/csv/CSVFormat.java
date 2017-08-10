@@ -1245,7 +1245,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Outputs the record separator.
+     * Outputs the trailing delimiter (if set) followed by the record separator (if set).
      *
      * @param out
      *            where to write
