@@ -31,7 +31,7 @@ import org.junit.Test;
 
 /**
  * Tests https://issues.apache.org/jira/browse/CSV-213
- * 
+ *
  * This is normal behavior with the current architecture: The iterator() API presents an object that is backed by data
  * in the CSVParser as the parser is streaming over the file. The CSVParser is like a forward-only stream. When you
  * create a new Iterator you are only created a new view on the same position in the parser's stream. For the behavior

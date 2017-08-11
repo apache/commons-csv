@@ -80,7 +80,7 @@ public class CSVParserTest {
         final URL url = ClassLoader.getSystemClassLoader().getResource(resource);
         return new BOMInputStream(url.openStream());
     }
-    
+
     @Test
     public void testBackslashEscaping() throws IOException {
 
@@ -234,7 +234,7 @@ public class CSVParserTest {
             assertEquals(4, records.size());
         }
     }
-    
+
     @Test
     public void testFirstEndOfLineCrLf() throws IOException {
         final String data = "foo\r\nbaar,\r\nhello,world\r\n,kanu";
@@ -244,7 +244,7 @@ public class CSVParserTest {
             assertEquals("\r\n", parser.getFirstEndOfLine());
         }
     }
-    
+
     @Test
     public void testFirstEndOfLineLf() throws IOException {
         final String data = "foo\nbaar,\nhello,world\n,kanu";

@@ -398,9 +398,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     /**
      * Gets the first end-of-line string encountered.
-     * 
+     *
      * @return the first end-of-line string
-     * @since 1.5  
+     * @since 1.5
      */
     public String getFirstEndOfLine() {
         return lexer.getFirstEol();

@@ -65,7 +65,7 @@ final class Lexer implements Closeable {
     String getFirstEol(){
         return firstEol;
     }
-    
+
     Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
         this.reader = reader;
         this.delimiter = format.getDelimiter();
