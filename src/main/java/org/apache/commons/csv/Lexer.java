@@ -40,6 +40,9 @@ import java.io.IOException;
  */
 final class Lexer implements Closeable {
 
+    private static final String CR_STRING = Character.toString(Constants.CR);
+    private static final String LF_STRING = Character.toString(Constants.LF);
+
     /**
      * Constant char to use for disabling comments, escapes and encapsulation. The value -2 is used because it
      * won't be confused with an EOF signal (-1), and because the Unicode value {@code FFFE} would be encoded as two
@@ -57,7 +60,12 @@ final class Lexer implements Closeable {
 
     /** The input stream */
     private final ExtendedBufferedReader reader;
+    private String firstEol;
 
+    String getFirstEol(){
+        return firstEol;
+    }
+    
     Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
         this.reader = reader;
         this.delimiter = format.getDelimiter();
@@ -374,7 +382,20 @@ final class Lexer implements Closeable {
         if (ch == CR && reader.lookAhead() == LF) {
             // note: does not change ch outside of this method!
             ch = reader.read();
+            // Save the EOL state
+            if (firstEol == null) {
+                this.firstEol = Constants.CRLF;
+            }
         }
+        // save EOL state here.
+        if (firstEol == null) {
+            if (ch == LF) {
+                this.firstEol = LF_STRING;
+            } else if (ch == CR) {
+                this.firstEol = CR_STRING;
+            }
+        }
+
         return ch == LF || ch == CR;
     }
 

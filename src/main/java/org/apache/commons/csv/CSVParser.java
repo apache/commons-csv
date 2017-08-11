@@ -397,6 +397,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
+     * Gets the first end-of-line string encountered.
+     * 
+     * @return the first end-of-line string
+     * @since 1.5  
+     */
+    public String getFirstEndOfLine() {
+        return lexer.getFirstEol();
+    }
+
+    /**
      * Returns a copy of the header map that iterates in column order.
      * <p>
      * The map keys are column names. The map values are 0-based indices.
