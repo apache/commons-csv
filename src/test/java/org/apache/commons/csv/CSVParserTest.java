@@ -80,7 +80,7 @@ public class CSVParserTest {
         final URL url = ClassLoader.getSystemClassLoader().getResource(resource);
         return new BOMInputStream(url.openStream());
     }
-    
+
     @Test
     public void testBackslashEscaping() throws IOException {
 
@@ -251,6 +251,36 @@ public class CSVParserTest {
         assertEquals(4, records.size());
         assertEquals("\n",parser.getLineEndingFromLexer());
         parser.close();
+    }
+
+    @Test
+    public void testFirstEndOfLineCrLf() throws IOException {
+        final String data = "foo\r\nbaar,\r\nhello,world\r\n,kanu";
+        try (final CSVParser parser = CSVParser.parse(data, CSVFormat.DEFAULT)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(4, records.size());
+            assertEquals("\r\n", parser.getFirstEndOfLine());
+        }
+    }
+
+    @Test
+    public void testFirstEndOfLineLf() throws IOException {
+        final String data = "foo\nbaar,\nhello,world\n,kanu";
+        try (final CSVParser parser = CSVParser.parse(data, CSVFormat.DEFAULT)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(4, records.size());
+            assertEquals("\n", parser.getFirstEndOfLine());
+        }
+    }
+
+    @Test
+    public void testFirstEndOfLineCr() throws IOException {
+        final String data = "foo\rbaar,\rhello,world\r,kanu";
+        try (final CSVParser parser = CSVParser.parse(data, CSVFormat.DEFAULT)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(4, records.size());
+            assertEquals("\r", parser.getFirstEndOfLine());
+        }
     }
 
     @Test(expected = NoSuchElementException.class)

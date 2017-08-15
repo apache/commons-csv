@@ -177,7 +177,7 @@ public class CSVFormatTest {
     public void testEqualsLeftNoQuoteRightQuote() {
     	final CSVFormat left = CSVFormat.newFormat(',').withQuote(null);
     	final CSVFormat right = left.withQuote('#');
-    	
+
     	assertNotEquals(left, right);
     }
 

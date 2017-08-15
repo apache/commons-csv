@@ -1028,7 +1028,7 @@ public final class CSVFormat implements Serializable {
      *
      * @param out
      *            the output.
-     * @param charset 
+     * @param charset
      *            A charset.
      * @return a printer to an output.
      * @throws IOException
