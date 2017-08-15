@@ -84,7 +84,6 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *            a column index (0-based)
      * @param value
      *            a string value to replace the current data
-     * @return nothing
      *
      * @throws ImmutableRecordCantBeSetException incase it's called on an immutable instance.
      */
