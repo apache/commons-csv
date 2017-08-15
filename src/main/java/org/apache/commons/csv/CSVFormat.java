@@ -152,8 +152,6 @@ import java.util.Set;
  * <p>
  * This class is immutable.
  * </p>
- *
- * @version $Id$
  */
 public final class CSVFormat implements Serializable {
 

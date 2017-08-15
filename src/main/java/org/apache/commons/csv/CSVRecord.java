@@ -27,8 +27,6 @@ import java.util.Map.Entry;
 
 /**
  * A CSV record parsed from a CSV file.
- *
- * @version $Id$
  */
 public final class CSVRecord implements Serializable, Iterable<String> {
 

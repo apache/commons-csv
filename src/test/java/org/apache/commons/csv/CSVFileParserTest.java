@@ -42,8 +42,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Parse tests using test files
- *
- * @version $Id$
  */
 @RunWith(Parameterized.class)
 public class CSVFileParserTest {

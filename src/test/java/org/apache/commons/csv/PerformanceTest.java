@@ -35,8 +35,6 @@ import org.apache.commons.io.IOUtils;
  * Basic test harness.
  *
  * Requires test file to be downloaded separately.
- *
- * @version $Id$
  */
 @SuppressWarnings("boxing")
 public class PerformanceTest {

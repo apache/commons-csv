@@ -29,8 +29,6 @@ import java.sql.SQLException;
 
 /**
  * Prints values in a CSV format.
- *
- * @version $Id$
  */
 public final class CSVPrinter implements Flushable, Closeable {
 

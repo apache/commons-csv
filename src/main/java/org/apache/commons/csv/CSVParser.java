@@ -129,8 +129,6 @@ import java.util.TreeMap;
  * Internal parser state is completely covered by the format and the reader-state.
  * </p>
  *
- * @version $Id$
- *
  * @see <a href="package-summary.html">package documentation for more details</a>
  */
 public final class CSVParser implements Iterable<CSVRecord>, Closeable {

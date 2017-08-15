@@ -20,7 +20,6 @@ package org.apache.commons.csv;
 import org.junit.Test;
 
 /**
- * @version $Id$
  */
 public class AssertionsTest {
 

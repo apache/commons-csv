@@ -35,8 +35,6 @@ import java.io.IOException;
 
 /**
  * Lexical analyzer.
- *
- * @version $Id$
  */
 final class Lexer implements Closeable {
 

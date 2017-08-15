@@ -19,8 +19,6 @@ package org.apache.commons.csv;
 
 /**
  * Constants for this package.
- *
- * @version $Id$
  */
 final class Constants {
 

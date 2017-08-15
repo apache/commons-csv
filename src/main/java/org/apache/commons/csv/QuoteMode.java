@@ -19,7 +19,6 @@ package org.apache.commons.csv;
 /**
  * Defines quote behavior when printing.
  *
- * @version $Id$
  */
 public enum QuoteMode {
 

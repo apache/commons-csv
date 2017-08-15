@@ -32,8 +32,6 @@ import java.io.Reader;
  * In particular the reader supports a look-ahead option, which allows you to see the next char returned by
  * {@link #read()}. This reader also tracks how many characters have been read with {@link #getPosition()}.
  * </p>
- *
- * @version $Id$
  */
 final class ExtendedBufferedReader extends BufferedReader {
 
