@@ -286,7 +286,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private final Lexer lexer;
 
     /** A record buffer for getRecord(). Grows as necessary and is reused. */
-    private final List<String> record = new ArrayList<>();
+    private final List<String> recordList = new ArrayList<>();
 
     /**
      * The next record number to assign.
@@ -364,7 +364,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             return;
         }
         final String nullString = this.format.getNullString();
-        this.record.add(inputClean.equals(nullString) ? null : inputClean);
+        this.recordList.add(inputClean.equals(nullString) ? null : inputClean);
     }
 
     /**
@@ -577,7 +577,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     CSVRecord nextRecord() throws IOException {
         CSVRecord result = null;
-        this.record.clear();
+        this.recordList.clear();
         StringBuilder sb = null;
         final long startCharPosition = lexer.getCharacterPosition() + this.characterOffset;
         do {
@@ -611,10 +611,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             }
         } while (this.reusableToken.type == TOKEN);
 
-        if (!this.record.isEmpty()) {
+        if (!this.recordList.isEmpty()) {
             this.recordNumber++;
             final String comment = sb == null ? null : sb.toString();
-            result = new CSVRecord(this.record.toArray(new String[this.record.size()]), this.headerMap, comment,
+            result = new CSVRecord(this.recordList.toArray(new String[this.recordList.size()]), this.headerMap, comment,
                     this.recordNumber, startCharPosition);
         }
         return result;
