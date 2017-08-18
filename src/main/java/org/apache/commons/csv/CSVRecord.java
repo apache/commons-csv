@@ -28,7 +28,7 @@ import java.util.Map.Entry;
 /**
  * A CSV record parsed from a CSV file.
  */
-public final class CSVRecord implements Serializable, Iterable<String> {
+public class CSVRecord implements Serializable, Iterable<String> {
 
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
@@ -95,20 +95,26 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     public String get(final String name) {
         if (mapping == null) {
             throw new IllegalStateException(
-                "No header mapping was specified, the record values can't be accessed by name");
+                    "No header mapping was specified, the record values can't be accessed by name");
         }
-        final Integer index = mapping.get(name);
-        if (index == null) {
-            throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name,
-                mapping.keySet()));
-        }
+        final int intIndex = getIndex(name);
         try {
-            return values[index.intValue()];
+            return values[intIndex];
         } catch (final ArrayIndexOutOfBoundsException e) {
-            throw new IllegalArgumentException(String.format(
-                "Index for header '%s' is %d but CSVRecord only has %d values!", name, index,
-                Integer.valueOf(values.length)));
+            throw new IllegalArgumentException(
+                    String.format("Index for header '%s' is %d but CSVRecord only has %d values!", name, intIndex,
+                            Integer.valueOf(values.length)));
         }
+    }
+
+    int getIndex(final String name) {
+        final Integer integerIndex = mapping.get(name);
+        if (integerIndex == null) {
+            throw new IllegalArgumentException(
+                    String.format("Mapping for %s not found, expected one of %s", name, mapping.keySet()));
+        }
+        int intIndex = integerIndex.intValue();
+        return intIndex;
     }
 
     /**
@@ -207,6 +213,14 @@ public final class CSVRecord implements Serializable, Iterable<String> {
         return toList().iterator();
     }
 
+    void put(final int index, String value) {
+        values[index] = value;
+    }
+
+    void put(final String name, String value) {
+        values[getIndex(name)] = value;
+    }
+    
     /**
      * Puts all values of this record into the given Map.
      *

@@ -38,19 +38,32 @@ public class CSVRecordTest {
 
     private enum EnumFixture { UNKNOWN_COLUMN }
 
-    private String[] values;
-    private CSVRecord record, recordWithHeader;
-    private Map<String, Integer> header;
+    protected String[] values;
+    protected CSVRecord record, recordWithHeader;
+    protected Map<String, Integer> header;
 
     @Before
     public void setUp() throws Exception {
         values = new String[] { "A", "B", "C" };
-        record = new CSVRecord(values, null, null, 0, -1);
+        record = newRecord();
         header = new HashMap<>();
         header.put("first", Integer.valueOf(0));
         header.put("second", Integer.valueOf(1));
         header.put("third", Integer.valueOf(2));
-        recordWithHeader = new CSVRecord(values, header, null, 0, -1);
+        recordWithHeader = newRecordWithHeader();
+        validate(recordWithHeader);
+    }
+
+    protected CSVRecord newRecord() {
+        return new CSVRecord(values, null, null, 0, -1);
+    }
+
+    protected void validate(final CSVRecord anyRecord) {
+        Assert.assertEquals(CSVRecord.class, anyRecord.getClass());
+    }
+
+    protected CSVRecord newRecordWithHeader() {
+        return new CSVRecord(values, header, null, 0, -1);
     }
 
     @Test
@@ -143,7 +156,7 @@ public class CSVRecordTest {
     @Test
     public void testRemoveAndAddColumns() throws IOException {
         // do:
-        try (final CSVPrinter printer = new CSVPrinter(new StringBuilder(), CSVFormat.DEFAULT)) {
+        try (final CSVPrinter printer = new CSVPrinter(new StringBuilder(), createDefaultFormat())) {
             final Map<String, String> map = recordWithHeader.toMap();
             map.remove("OldColumn");
             map.put("ZColumn", "NewValue");
@@ -151,8 +164,12 @@ public class CSVRecordTest {
             final ArrayList<String> list = new ArrayList<>(map.values());
             Collections.sort(list);
             printer.printRecord(list);
-            Assert.assertEquals("A,B,C,NewValue" + CSVFormat.DEFAULT.getRecordSeparator(), printer.getOut().toString());
+            Assert.assertEquals("A,B,C,NewValue" + createDefaultFormat().getRecordSeparator(), printer.getOut().toString());
         }
+    }
+
+    protected CSVFormat createDefaultFormat() {
+        return CSVFormat.DEFAULT;
     }
 
     @Test
@@ -163,20 +180,26 @@ public class CSVRecordTest {
 
     @Test
     public void testToMapWithShortRecord() throws Exception {
-        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
+        try (final CSVParser parser = CSVParser.parse("a,b", createDefaultFormat().withHeader("A", "B", "C"))) {
             final CSVRecord shortRec = parser.iterator().next();
+            validate(shortRec);
             shortRec.toMap();
         }
     }
 
     @Test
     public void testToMapWithNoHeader() throws Exception {
-        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.newFormat(','))) {
+        try (final CSVParser parser = CSVParser.parse("a,b", createCommaFormat())) {
             final CSVRecord shortRec = parser.iterator().next();
+            validate(shortRec);
             final Map<String, String> map = shortRec.toMap();
             assertNotNull("Map is not null.", map);
             assertTrue("Map is empty.", map.isEmpty());
         }
+    }
+
+    protected CSVFormat createCommaFormat() {
+        return CSVFormat.newFormat(',');
     }
 
     private void validateMap(final Map<String, String> map, final boolean allowsNulls) {

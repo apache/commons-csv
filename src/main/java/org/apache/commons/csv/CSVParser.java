@@ -300,7 +300,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private final long characterOffset;
 
     private final Token reusableToken = new Token();
-
+    
     /**
      * Customized CSV parser using the given {@link CSVFormat}
      *
@@ -614,8 +614,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         if (!this.recordList.isEmpty()) {
             this.recordNumber++;
             final String comment = sb == null ? null : sb.toString();
-            result = new CSVRecord(this.recordList.toArray(new String[this.recordList.size()]), this.headerMap, comment,
-                    this.recordNumber, startCharPosition);
+            String[] array = this.recordList.toArray(new String[this.recordList.size()]);
+            result = format.isMutableRecords()
+                    ? new CSVMutableRecord(array, this.headerMap, comment, this.recordNumber, startCharPosition)
+                    : new CSVRecord(array, this.headerMap, comment, this.recordNumber, startCharPosition);
         }
         return result;
     }
