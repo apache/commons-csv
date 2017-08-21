@@ -1788,7 +1788,7 @@ public final class CSVFormat implements Serializable {
      * @param mutableRecords
      *            whether to generate CSVRecord or CSVMutableRecord
      *
-     * @return A new CSVFormat that is equal to this but with the specified null conversion string.
+     * @return A new CSVFormat that is equal to this but with setting to generate CSVRecord or CSVMutableRecord.
      */
     public CSVFormat withMutableRecords(final boolean mutableRecords) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
