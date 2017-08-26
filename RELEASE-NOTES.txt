@@ -1,4 +1,61 @@
                         Apache Commons CSV
+                            Version 1.5
+                           Release Notes
+
+
+INTRODUCTION:
+
+This document contains the release notes for the 1.5 version of Apache Commons CSV.
+Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
+
+CSV requires at least Java 7.
+
+The Apache Commons CSV library provides a simple interface for reading and writing
+CSV files of various types.
+
+Feature and bug fix release
+
+Changes in this version include:
+
+NEW FEATURES
+==============
+
+o CSV-189:  CSVParser: Add factory method accepting InputStream. Thanks to Peter Holzwarth, Gary Gregory.
+o CSV-190:  Add convenience API CSVFormat.print(File, Charset). Thanks to Gary Gregory.
+o CSV-191:  Add convenience API CSVFormat.print(Path, Charset). Thanks to Gary Gregory.
+o CSV-192:  Add convenience API CSVParser.parse(Path, Charset, CSVFormat). Thanks to Gary Gregory.
+o CSV-205:  Add convenience API CSVFormat#printer() to print to System.out. Thanks to Gary Gregory.
+o CSV-207:  Provide a CSV Format for printing PostgreSQL CSV and Text formats. Thanks to Gary Gregory.
+o CSV-214:  Adding a placeholder in the Lexer and CSV parser to store the end-of-line string. Thanks to Nitin Mahendru, Gary Gregory.
+
+FIXED BUGS
+============
+
+o CSV-203:  withNullString value is printed without quotes when QuoteMode.ALL is specified; add QuoteMode.ALL_NON_NULL. PR #17. Thanks to Richard Wheeldon, Kai Paroth.
+o CSV-194:  Fix outdated comments about FileReader in CSVParser #13. Thanks to Marc Prud'hommeaux.
+o CSV-193:  Fix incorrect method name 'withFirstRowAsHeader' in user guide. Thanks to Matthias Wiehl.
+o CSV-171:  Negative numeric values in the first column are always quoted in minimal mode. Thanks to Gary Gregory, Michael Graessle, Adrian Bridgett.
+
+CHANGES
+=========
+
+o CSV-187: Update platform requirement from Java 6 to 7. Thanks to Gary Gregory.
+o CSV-201: Do not use RuntimeException in CSVParser.iterator().new Iterator() {...}.getNextRecord(). Thanks to Benedikt Ritter, Gary Gregory.
+
+
+Historical list of changes: http://commons.apache.org/proper/commons-csv/changes-report.html
+
+For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+
+http://commons.apache.org/proper/commons-csv/
+
+Have fun!
+-Apache Commons CSV team
+
+------------------------------------------------------------------------------
+
+                        Apache Commons CSV
                             Version 1.4
                            Release Notes
 
