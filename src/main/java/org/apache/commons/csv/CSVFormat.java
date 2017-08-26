@@ -275,8 +275,8 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat EXCEL = DEFAULT
-    		.withIgnoreEmptyLines(false)
-    		.withAllowMissingColumnNames();
+            .withIgnoreEmptyLines(false)
+            .withAllowMissingColumnNames();
     // @formatter:on
 
     /**
@@ -305,8 +305,8 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat INFORMIX_UNLOAD = DEFAULT
-    		.withDelimiter(PIPE)
-    		.withEscape(BACKSLASH)
+            .withDelimiter(PIPE)
+            .withEscape(BACKSLASH)
             .withQuote(DOUBLE_QUOTE_CHAR)
             .withRecordSeparator(LF);
     // @formatter:on
@@ -336,8 +336,8 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat INFORMIX_UNLOAD_CSV = DEFAULT
-    		.withDelimiter(COMMA)
-    		.withQuote(DOUBLE_QUOTE_CHAR)
+            .withDelimiter(COMMA)
+            .withQuote(DOUBLE_QUOTE_CHAR)
             .withRecordSeparator(LF);
     // @formatter:on
 
@@ -368,13 +368,13 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat MYSQL = DEFAULT
-    		.withDelimiter(TAB)
-    		.withEscape(BACKSLASH)
-    		.withIgnoreEmptyLines(false)
+            .withDelimiter(TAB)
+            .withEscape(BACKSLASH)
+            .withIgnoreEmptyLines(false)
             .withQuote(null)
             .withRecordSeparator(LF)
             .withNullString("\\N")
-    		.withQuoteMode(QuoteMode.ALL_NON_NULL);
+            .withQuoteMode(QuoteMode.ALL_NON_NULL);
     // @formatter:off
 
     /**
@@ -405,13 +405,13 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat POSTGRESQL_CSV = DEFAULT
-    		.withDelimiter(COMMA)
-    		.withEscape(DOUBLE_QUOTE_CHAR)
-    		.withIgnoreEmptyLines(false)
+            .withDelimiter(COMMA)
+            .withEscape(DOUBLE_QUOTE_CHAR)
+            .withIgnoreEmptyLines(false)
             .withQuote(DOUBLE_QUOTE_CHAR)
             .withRecordSeparator(LF)
             .withNullString(EMPTY)
-    		.withQuoteMode(QuoteMode.ALL_NON_NULL);
+            .withQuoteMode(QuoteMode.ALL_NON_NULL);
     // @formatter:off
 
     /**
@@ -442,13 +442,13 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat POSTGRESQL_TEXT = DEFAULT
-    		.withDelimiter(TAB)
-    		.withEscape(DOUBLE_QUOTE_CHAR)
-    		.withIgnoreEmptyLines(false)
+            .withDelimiter(TAB)
+            .withEscape(DOUBLE_QUOTE_CHAR)
+            .withIgnoreEmptyLines(false)
             .withQuote(DOUBLE_QUOTE_CHAR)
             .withRecordSeparator(LF)
             .withNullString("\\N")
-    		.withQuoteMode(QuoteMode.ALL_NON_NULL);
+            .withQuoteMode(QuoteMode.ALL_NON_NULL);
     // @formatter:off
 
     /**
@@ -487,8 +487,8 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat TDF = DEFAULT
-    		.withDelimiter(TAB)
-    		.withIgnoreSurroundingSpaces();
+            .withDelimiter(TAB)
+            .withIgnoreSurroundingSpaces();
     // @formatter:on
 
     /**
