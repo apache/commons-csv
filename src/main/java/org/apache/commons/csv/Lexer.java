@@ -316,6 +316,15 @@ final class Lexer implements Closeable {
         return reader.getPosition();
     }
 
+    /**
+     * Returns the number of bytes read
+     *
+     * @return the number of bytes read
+     */
+    long getBytesRead() {
+        return reader.getBytesRead();
+    }
+
     // TODO escape handling needs more work
     /**
      * Handle an escape sequence.

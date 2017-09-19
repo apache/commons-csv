@@ -348,11 +348,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     @SuppressWarnings("resource")
     public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber)
             throws IOException {
+        this(reader, format, characterOffset, recordNumber, null);
+    }
+
+    public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset,
+            final long recordNumber, String encoding) throws IOException {
         Assertions.notNull(reader, "reader");
         Assertions.notNull(format, "format");
 
         this.format = format;
-        this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
+        this.lexer = new Lexer(format, new ExtendedBufferedReader(reader, encoding));
         this.headerMap = this.initializeHeader();
         this.characterOffset = characterOffset;
         this.recordNumber = recordNumber - 1;
@@ -581,6 +586,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         this.recordList.clear();
         StringBuilder sb = null;
         final long startCharPosition = lexer.getCharacterPosition() + this.characterOffset;
+        final long startCharByte = lexer.getBytesRead() + this.characterOffset;
         do {
             this.reusableToken.reset();
             this.lexer.nextToken(this.reusableToken);
@@ -616,7 +622,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             this.recordNumber++;
             final String comment = sb == null ? null : sb.toString();
             result = new CSVRecord(this.recordList.toArray(new String[this.recordList.size()]), this.headerMap, comment,
-                    this.recordNumber, startCharPosition);
+                    this.recordNumber, startCharPosition, startCharByte);
         }
         return result;
     }

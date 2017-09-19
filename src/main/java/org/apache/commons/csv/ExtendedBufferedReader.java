@@ -24,7 +24,11 @@ import static org.apache.commons.csv.Constants.UNDEFINED;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.CharsetEncoder;
+import java.nio.charset.Charset;
+import java.nio.CharBuffer;
 
 /**
  * A special buffered reader which supports sophisticated read access.
@@ -46,11 +50,24 @@ final class ExtendedBufferedReader extends BufferedReader {
 
     private boolean closed;
 
+    /** The number of bytes read so far */
+    private long bytesRead;
+
+    /** Encoder used to calculate the bytes of characters */
+    CharsetEncoder encoder;
+
     /**
      * Created extended buffered reader using default buffer-size
      */
     ExtendedBufferedReader(final Reader reader) {
         super(reader);
+    }
+    
+    ExtendedBufferedReader(final Reader reader, String encoding) {
+        super(reader);
+        if (encoding != null) {
+            encoder = Charset.forName(encoding).newEncoder();
+        }
     }
 
     @Override
@@ -61,6 +78,9 @@ final class ExtendedBufferedReader extends BufferedReader {
         }
         lastChar = current;
         this.position++;
+        if (encoder != null) {
+            this.bytesRead += encoder.encode(CharBuffer.wrap(new char[] { (char)current })).limit();
+        }
         return lastChar;
     }
 
@@ -168,6 +188,15 @@ final class ExtendedBufferedReader extends BufferedReader {
      */
     long getPosition() {
         return this.position;
+    }
+
+    /**
+     * Gets the number of bytes read by the reader.
+     *
+     * @return the number of bytes read by the read
+     */
+    long getBytesRead() {
+        return this.bytesRead;
     }
 
     public boolean isClosed() {

@@ -560,6 +560,42 @@ public class CSVParserTest {
     public void testGetRecordPositionWithLF() throws Exception {
         this.validateRecordPosition(String.valueOf(LF));
     }
+    
+    @Test
+    public void testGetRecordBytesRead() throws Exception {
+        String code = "id,date,val5,val4\n"
+                + "11111111111111,'4017-09-01',きちんと節分近くには咲いてる～,v4\n"
+                + "22222222222222,'4017-01-01',おはよう私の友人～,v4\n"
+                + "33333333333333,'4017-01-01',きる自然の力ってすごいな～,v4\n";
+        final CSVFormat format = CSVFormat.newFormat(',').withQuote('\'');
+        CSVParser parser = new CSVParser(new StringReader(code), format, 0L, 1L, "UTF-8");
+
+        CSVRecord record;
+        assertEquals(0, parser.getRecordNumber());
+
+        assertNotNull(record = parser.nextRecord());
+        assertEquals(1, record.getRecordNumber());
+        assertEquals(code.indexOf('i'), record.getCharacterByte());
+        assertEquals(code.indexOf('i'), record.getCharacterPosition());
+
+        assertNotNull(record = parser.nextRecord());
+        assertEquals(2, record.getRecordNumber());
+        assertEquals(code.indexOf('1'), record.getCharacterByte());
+        assertEquals(code.indexOf('1'), record.getCharacterPosition());
+
+        assertNotNull(record = parser.nextRecord());
+        assertEquals(3, record.getRecordNumber());
+        assertEquals(code.indexOf('2'), record.getCharacterPosition());
+        assertEquals(code.indexOf('2'), record.getCharacterPosition());
+
+        assertNotNull(record = parser.nextRecord());
+        assertEquals(4, record.getRecordNumber());
+        assertEquals(code.indexOf('3'), record.getCharacterPosition());
+        assertEquals(code.indexOf('3'), record.getCharacterPosition());
+
+        parser.close();
+
+    }
 
     @Test
     public void testGetRecords() throws IOException {
