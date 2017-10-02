@@ -146,6 +146,9 @@ CSV files of various types.
     <checkstyle.version>2.17</checkstyle.version>
     <checkstyle.header.file>${basedir}/LICENSE-header.txt</checkstyle.header.file>
     <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt</checkstyle.resourceExcludes>
+
+    <!-- Override jacoco version for java 9 compatibility -->
+    <commons.jacoco.version>0.7.9</commons.jacoco.version>
   </properties>
 
   <build>
@@ -505,6 +508,19 @@ CSV files of various types.
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+     <profile>
+      <id>java9</id>
+      <activation>
+        <jdk>9</jdk>
+      </activation>
+      <properties>
+        <!-- versions below 3.0.0 do not work with java 9 -->
+        <commons.javadoc.version>3.0.0-M1</commons.javadoc.version>
+        <!-- coverall version 4.3.0 does not work with java 9, see https://github.com/trautonen/coveralls-maven-plugin/issues/112 -->
+        <coveralls.skip>true</coveralls.skip>
+      </properties>
     </profile>
   </profiles>
 
