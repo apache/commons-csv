@@ -21,12 +21,17 @@ import static org.apache.commons.csv.Constants.CR;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.sql.BatchUpdateException;
@@ -1309,6 +1314,56 @@ public class CSVPrinterTest {
             csvPrinter.printRecords(vector);
             assertEquals(expectedCapacity, vector.capacity());
         }
+    }
+
+    @Test
+    public void testCloseWithFlushOn() throws IOException {
+        Writer writer = mock(Writer.class);
+        CSVFormat csvFormat = CSVFormat.DEFAULT;
+        CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
+        csvPrinter.close(true);
+        verify(writer, times(1)).flush();
+    }
+
+    @Test
+    public void testCloseWithFlushOff() throws IOException {
+        Writer writer = mock(Writer.class);
+        CSVFormat csvFormat = CSVFormat.DEFAULT;
+        CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
+        csvPrinter.close(false);
+        verify(writer, never()).flush();
+        verify(writer, times(1)).close();
+    }
+
+    @Test
+    public void testCloseBackwardCompatibility() throws IOException {
+        Writer writer = mock(Writer.class);
+        CSVFormat csvFormat = CSVFormat.DEFAULT;
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+        }
+        verify(writer, never()).flush();
+        verify(writer, times(1)).close();
+    }
+
+    @Test
+    public void testCloseWithCsvFormatAutoFlushOn() throws IOException {
+        System.out.println("start method");
+        Writer writer = mock(Writer.class);
+        CSVFormat csvFormat = CSVFormat.DEFAULT.withAutoFlush(true);
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+        }
+        verify(writer, times(1)).flush();
+        verify(writer, times(1)).close();
+    }
+
+    @Test
+    public void testCloseWithCsvFormatAutoFlushOff() throws IOException {
+        Writer writer = mock(Writer.class);
+        CSVFormat csvFormat = CSVFormat.DEFAULT.withAutoFlush(false);
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+        }
+        verify(writer, never()).flush();
+        verify(writer, times(1)).close();
     }
 
 }
