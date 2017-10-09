@@ -38,6 +38,8 @@
     <title>Release Notes</title>
   </properties>
   <body>
+    <release version="1.6" date="2017-MM-DD" description="Feature and bug fix release">
+    </release>
     <release version="1.5" date="2017-09-03" description="Feature and bug fix release">
       <action issue="CSV-203" type="fix" dev="ggregory" due-to="Richard Wheeldon, Kai Paroth">withNullString value is printed without quotes when QuoteMode.ALL is specified; add QuoteMode.ALL_NON_NULL. PR #17.</action>
       <action issue="CSV-194" type="fix" dev="ggregory" due-to="Marc Prud'hommeaux">Fix outdated comments about FileReader in CSVParser #13</action>
