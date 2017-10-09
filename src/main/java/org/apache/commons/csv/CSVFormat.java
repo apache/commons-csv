@@ -630,7 +630,7 @@ public final class CSVFormat implements Serializable {
                       final boolean ignoreEmptyLines, final String recordSeparator, final String nullString,
                       final Object[] headerComments, final String[] header, final boolean skipHeaderRecord,
                       final boolean allowMissingColumnNames, final boolean ignoreHeaderCase, final boolean trim,
-                      final boolean trailingDelimiter, boolean autoFlush) {
+                      final boolean trailingDelimiter, final boolean autoFlush) {
         this.delimiter = delimiter;
         this.quoteCharacter = quoteChar;
         this.quoteMode = quoteMode;
@@ -1026,7 +1026,7 @@ public final class CSVFormat implements Serializable {
      * @since 1.5
      */
     @SuppressWarnings("resource")
-    public CSVPrinter print(final File out, Charset charset) throws IOException {
+    public CSVPrinter print(final File out, final Charset charset) throws IOException {
         // The writer will be closed when close() is called.
         return new CSVPrinter(new OutputStreamWriter(new FileOutputStream(out), charset), this);
     }
@@ -1047,7 +1047,7 @@ public final class CSVFormat implements Serializable {
      *             thrown if the optional header cannot be printed.
      * @since 1.5
      */
-    public CSVPrinter print(final Path out, Charset charset) throws IOException {
+    public CSVPrinter print(final Path out, final Charset charset) throws IOException {
         return print(Files.newBufferedWriter(out, charset));
     }
 

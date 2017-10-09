@@ -41,7 +41,7 @@ import org.junit.Test;
 @Ignore
 public class JiraCsv213Test {
 
-    private void createEndChannel(File csvFile) {
+    private void createEndChannel(final File csvFile) {
         // @formatter:off
         final CSVFormat csvFormat =
                 CSVFormat.DEFAULT
@@ -56,11 +56,11 @@ public class JiraCsv213Test {
                 System.out.println(parser.getCurrentLineNumber());
                 System.out.println(parser.getRecordNumber());
                 // get only first record we don't need other's
-                CSVRecord firstRecord = parser.iterator().next(); // this fails
+                final CSVRecord firstRecord = parser.iterator().next(); // this fails
 
                 return;
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException("Error while adding end channel to csv", e);
         }
 

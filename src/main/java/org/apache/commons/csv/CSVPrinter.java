@@ -92,7 +92,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      * @since 1.6
      */
-    public void close(boolean flush) throws IOException {
+    public void close(final boolean flush) throws IOException {
         if (flush || format.getAutoFlush()) {
             if (out instanceof Flushable) {
                 ((Flushable) out).flush();

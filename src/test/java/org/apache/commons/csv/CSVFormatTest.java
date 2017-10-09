@@ -462,8 +462,8 @@ public class CSVFormatTest {
     @Test
     public void testToStringAndWithCommentMarkerTakingCharacter() {
 
-        CSVFormat.Predefined cSVFormat_Predefined = CSVFormat.Predefined.Default;
-        CSVFormat cSVFormat = cSVFormat_Predefined.getFormat();
+        final CSVFormat.Predefined cSVFormat_Predefined = CSVFormat.Predefined.Default;
+        final CSVFormat cSVFormat = cSVFormat_Predefined.getFormat();
 
         assertNull(cSVFormat.getEscapeCharacter());
         assertTrue(cSVFormat.isQuoteCharacterSet());
@@ -492,9 +492,9 @@ public class CSVFormatTest {
         assertTrue(cSVFormat.getIgnoreEmptyLines());
         assertEquals('\"', (char)cSVFormat.getQuoteCharacter());
 
-        Character character = Character.valueOf('n');
+        final Character character = Character.valueOf('n');
 
-        CSVFormat cSVFormatTwo = cSVFormat.withCommentMarker(character);
+        final CSVFormat cSVFormatTwo = cSVFormat.withCommentMarker(character);
 
         assertNull(cSVFormat.getEscapeCharacter());
         assertTrue(cSVFormat.isQuoteCharacterSet());
@@ -625,7 +625,7 @@ public class CSVFormatTest {
     @Test
     public void testNewFormat() {
 
-        CSVFormat cSVFormat = CSVFormat.newFormat('X');
+        final CSVFormat cSVFormat = CSVFormat.newFormat('X');
 
         assertFalse(cSVFormat.getSkipHeaderRecord());
         assertFalse(cSVFormat.isEscapeCharacterSet());
@@ -687,7 +687,7 @@ public class CSVFormatTest {
     @Test
     public void testWithHeaderComments() {
 
-        CSVFormat cSVFormat = CSVFormat.DEFAULT;
+        final CSVFormat cSVFormat = CSVFormat.DEFAULT;
 
         assertEquals('\"', (char)cSVFormat.getQuoteCharacter());
         assertFalse(cSVFormat.isCommentMarkerSet());
@@ -716,8 +716,8 @@ public class CSVFormatTest {
         assertFalse(cSVFormat.getIgnoreSurroundingSpaces());
         assertNull(cSVFormat.getEscapeCharacter());
 
-        Object[] objectArray = new Object[8];
-        CSVFormat cSVFormatTwo = cSVFormat.withHeaderComments(objectArray);
+        final Object[] objectArray = new Object[8];
+        final CSVFormat cSVFormatTwo = cSVFormat.withHeaderComments(objectArray);
 
         assertEquals('\"', (char)cSVFormat.getQuoteCharacter());
         assertFalse(cSVFormat.isCommentMarkerSet());
@@ -778,7 +778,7 @@ public class CSVFormatTest {
 
         assertTrue(cSVFormatTwo.equals(cSVFormat));
 
-        String string = cSVFormatTwo.format(objectArray);
+        final String string = cSVFormatTwo.format(objectArray);
 
         assertEquals('\"', (char)cSVFormat.getQuoteCharacter());
         assertFalse(cSVFormat.isCommentMarkerSet());
@@ -849,12 +849,12 @@ public class CSVFormatTest {
     @Test  //I assume this to be a defect.
     public void testFormatThrowsNullPointerException() {
 
-        CSVFormat cSVFormat = CSVFormat.MYSQL;
+        final CSVFormat cSVFormat = CSVFormat.MYSQL;
 
         try {
             cSVFormat.format(null);
             fail("Expecting exception: NullPointerException");
-        } catch(NullPointerException e) {
+        } catch(final NullPointerException e) {
             assertEquals(CSVFormat.class.getName(), e.getStackTrace()[0].getClassName());
         }
 
@@ -864,8 +864,8 @@ public class CSVFormatTest {
     @Test
     public void testEqualsOne() {
 
-        CSVFormat cSVFormatOne = CSVFormat.INFORMIX_UNLOAD;
-        CSVFormat cSVFormatTwo = CSVFormat.MYSQL;
+        final CSVFormat cSVFormatOne = CSVFormat.INFORMIX_UNLOAD;
+        final CSVFormat cSVFormatTwo = CSVFormat.MYSQL;
 
 
         assertEquals('\\', (char)cSVFormatOne.getEscapeCharacter());
@@ -994,7 +994,7 @@ public class CSVFormatTest {
     @Test
     public void testEqualsWithNull() {
 
-        CSVFormat cSVFormat = CSVFormat.POSTGRESQL_TEXT;
+        final CSVFormat cSVFormat = CSVFormat.POSTGRESQL_TEXT;
 
         assertEquals('\"', (char)cSVFormat.getEscapeCharacter());
         assertFalse(cSVFormat.getIgnoreSurroundingSpaces());
@@ -1058,8 +1058,8 @@ public class CSVFormatTest {
     @Test
     public void testToString() {
 
-        CSVFormat cSVFormat = CSVFormat.POSTGRESQL_TEXT;
-        String string = cSVFormat.INFORMIX_UNLOAD.toString();
+        final CSVFormat cSVFormat = CSVFormat.POSTGRESQL_TEXT;
+        final String string = cSVFormat.INFORMIX_UNLOAD.toString();
 
         assertEquals("Delimiter=<|> Escape=<\\> QuoteChar=<\"> RecordSeparator=<\n> EmptyLines:ignored SkipHeaderRecord:false", string);
 
@@ -1069,8 +1069,8 @@ public class CSVFormatTest {
     @Test
     public void testHashCodeAndWithIgnoreHeaderCase() {
 
-        CSVFormat cSVFormat = CSVFormat.INFORMIX_UNLOAD_CSV;
-        CSVFormat cSVFormatTwo = cSVFormat.withIgnoreHeaderCase();
+        final CSVFormat cSVFormat = CSVFormat.INFORMIX_UNLOAD_CSV;
+        final CSVFormat cSVFormatTwo = cSVFormat.withIgnoreHeaderCase();
         cSVFormatTwo.hashCode();
 
         assertTrue(cSVFormatTwo.getIgnoreHeaderCase());
