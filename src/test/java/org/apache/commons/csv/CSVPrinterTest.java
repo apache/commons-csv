@@ -1347,7 +1347,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testCloseWithCsvFormatAutoFlushOn() throws IOException {
-        System.out.println("start method");
+        // System.out.println("start method");
         Writer writer = mock(Writer.class);
         CSVFormat csvFormat = CSVFormat.DEFAULT.withAutoFlush(true);
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
