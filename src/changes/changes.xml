@@ -39,6 +39,7 @@
   </properties>
   <body>
     <release version="1.6" date="2017-MM-DD" description="Feature and bug fix release">
+      <action issue="CSV-217" type="add" dev="ggregory" due-to="Korolyov Alexei">Add autoFlush option for CsvPrinter. PR #24.</action>
     </release>
     <release version="1.5" date="2017-09-03" description="Feature and bug fix release">
       <action issue="CSV-203" type="fix" dev="ggregory" due-to="Richard Wheeldon, Kai Paroth">withNullString value is printed without quotes when QuoteMode.ALL is specified; add QuoteMode.ALL_NON_NULL. PR #17.</action>

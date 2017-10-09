@@ -81,6 +81,23 @@ public final class CSVPrinter implements Flushable, Closeable {
 
     @Override
     public void close() throws IOException {
+        close(false);
+    }
+
+    /**
+     * Closes the underlying stream with an optional flush first.
+     * @param flush whether to flush before the actual close.
+     * 
+     * @throws IOException
+     *             If an I/O error occurs
+     * @since 1.6
+     */
+    public void close(boolean flush) throws IOException {
+        if (flush || format.getAutoFlush()) {
+            if (out instanceof Flushable) {
+                ((Flushable) out).flush();
+            }
+        }
         if (out instanceof Closeable) {
             ((Closeable) out).close();
         }
