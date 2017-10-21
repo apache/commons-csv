@@ -1859,7 +1859,7 @@ public final class CSVFormat implements Serializable {
      * @param recordSeparator
      *            the record separator to use for output.
      *
-     * @return A new CSVFormat that is equal to this but with the the specified output record separator
+     * @return A new CSVFormat that is equal to this but with the specified output record separator
      */
     public CSVFormat withRecordSeparator(final char recordSeparator) {
         return withRecordSeparator(String.valueOf(recordSeparator));
@@ -1876,7 +1876,7 @@ public final class CSVFormat implements Serializable {
      * @param recordSeparator
      *            the record separator to use for output.
      *
-     * @return A new CSVFormat that is equal to this but with the the specified output record separator
+     * @return A new CSVFormat that is equal to this but with the specified output record separator
      * @throws IllegalArgumentException
      *             if recordSeparator is none of CR, LF or CRLF
      */
