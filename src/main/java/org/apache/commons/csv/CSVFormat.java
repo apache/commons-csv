@@ -749,6 +749,16 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Returns whether to flush on close.
+     *
+     * @return whether to flush on close.
+     * @since 1.6
+     */
+    public boolean getAutoFlush() {
+        return autoFlush;
+    }
+
+    /**
      * Returns the character marking the start of a line comment.
      *
      * @return the comment start marker, may be {@code null}
@@ -891,16 +901,6 @@ public final class CSVFormat implements Serializable {
         return trim;
     }
 
-    /**
-     * Returns whether to flush on close.
-     *
-     * @return whether to flush on close.
-     * @since 1.6
-     */
-    public boolean getAutoFlush() {
-        return autoFlush;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -994,22 +994,6 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Prints to the {@link System#out}.
-     *
-     * <p>
-     * See also {@link CSVPrinter}.
-     * </p>
-     *
-     * @return a printer to {@link System#out}.
-     * @throws IOException
-     *             thrown if the optional header cannot be printed.
-     * @since 1.5
-     */
-    public CSVPrinter printer() throws IOException {
-        return new CSVPrinter(System.out, this);
-    }
-
-    /**
      * Prints to the specified output.
      *
      * <p>
@@ -1029,26 +1013,6 @@ public final class CSVFormat implements Serializable {
     public CSVPrinter print(final File out, final Charset charset) throws IOException {
         // The writer will be closed when close() is called.
         return new CSVPrinter(new OutputStreamWriter(new FileOutputStream(out), charset), this);
-    }
-
-    /**
-     * Prints to the specified output.
-     *
-     * <p>
-     * See also {@link CSVPrinter}.
-     * </p>
-     *
-     * @param out
-     *            the output.
-     * @param charset
-     *            A charset.
-     * @return a printer to an output.
-     * @throws IOException
-     *             thrown if the optional header cannot be printed.
-     * @since 1.5
-     */
-    public CSVPrinter print(final Path out, final Charset charset) throws IOException {
-        return print(Files.newBufferedWriter(out, charset));
     }
 
     /**
@@ -1102,6 +1066,26 @@ public final class CSVFormat implements Serializable {
         } else {
             out.append(value, offset, offset + len);
         }
+    }
+
+    /**
+     * Prints to the specified output.
+     *
+     * <p>
+     * See also {@link CSVPrinter}.
+     * </p>
+     *
+     * @param out
+     *            the output.
+     * @param charset
+     *            A charset.
+     * @return a printer to an output.
+     * @throws IOException
+     *             thrown if the optional header cannot be printed.
+     * @since 1.5
+     */
+    public CSVPrinter print(final Path out, final Charset charset) throws IOException {
+        return print(Files.newBufferedWriter(out, charset));
     }
 
     /*
@@ -1251,6 +1235,22 @@ public final class CSVFormat implements Serializable {
         // write the last segment
         out.append(value, start, pos);
         out.append(quoteChar);
+    }
+
+    /**
+     * Prints to the {@link System#out}.
+     *
+     * <p>
+     * See also {@link CSVPrinter}.
+     * </p>
+     *
+     * @return a printer to {@link System#out}.
+     * @throws IOException
+     *             thrown if the optional header cannot be printed.
+     * @since 1.5
+     */
+    public CSVPrinter printer() throws IOException {
+        return new CSVPrinter(System.out, this);
     }
 
     /**
@@ -1443,6 +1443,21 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush);
+    }
+
+    /**
+     * Returns a new {@code CSVFormat} with whether to flush on close.
+     *
+     * @param autoFlush
+     *            whether to flush on close.
+     *
+     * @return A new CSVFormat that is equal to this but with the specified autoFlush setting.
+     * @since 1.6
+     */
+    public CSVFormat withAutoFlush(final boolean autoFlush) {
+        return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
+            ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
+            skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush);
     }
 
     /**
@@ -1958,20 +1973,5 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush);
-    }
-
-    /**
-     * Returns a new {@code CSVFormat} with whether to flush on close.
-     *
-     * @param autoFlush
-     *            whether to flush on close.
-     *
-     * @return A new CSVFormat that is equal to this but with the specified autoFlush setting.
-     * @since 1.6
-     */
-    public CSVFormat withAutoFlush(final boolean autoFlush) {
-        return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-            ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
-            skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush);
     }
 }
