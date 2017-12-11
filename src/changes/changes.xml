@@ -42,6 +42,7 @@
       <action issue="CSV-217" type="add" dev="ggregory" due-to="Korolyov Alexei">Add autoFlush option for CsvPrinter. PR #24.</action>
       <action issue="CSV-219" type="fix" dev="ggregory" due-to="Zhang Hongda">The behavior of quote char using is not similar as Excel does when the first string contains CJK char(s).</action>
       <action issue="CSV-172" type="fix" dev="ggregory" due-to="Andrew Pennebaker">Don't quote cells just because they have UTF-8 encoded characters.</action>
+      <action issue="CSV-220" type="add" dev="ggregory" due-to="Gary Gregory">Add API org.apache.commons.csv.CSVFormat.withSystemRecordSeparator().</action>
     </release>
     <release version="1.5" date="2017-09-03" description="Feature and bug fix release">
       <action issue="CSV-203" type="fix" dev="ggregory" due-to="Richard Wheeldon, Kai Paroth">withNullString value is printed without quotes when QuoteMode.ALL is specified; add QuoteMode.ALL_NON_NULL. PR #17.</action>

@@ -1926,6 +1926,22 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Returns a new {@code CSVFormat} with the record separator of the format set to the operating system's line
+     * separator string, typically CR+LF on Windows and LF on Linux.
+     *
+     * <p>
+     * <strong>Note:</strong> This setting is only used during printing and does not affect parsing. Parsing currently
+     * only works for inputs with '\n', '\r' and "\r\n"
+     * </p>
+     *
+     * @return A new CSVFormat that is equal to this but with the operating system's line separator stringr
+     * @since 1.6
+     */
+    public CSVFormat withSystemRecordSeparator() {
+        return withRecordSeparator(System.getProperty("line.separator"));
+    }
+
+    /**
      * Returns a new {@code CSVFormat} to add a trailing delimiter.
      *
      * @return A new CSVFormat that is equal to this but with the trailing delimiter setting.

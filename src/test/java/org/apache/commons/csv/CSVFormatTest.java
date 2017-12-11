@@ -640,7 +640,7 @@ public class CSVFormatTest {
     public void testToString() {
 
         final CSVFormat cSVFormat = CSVFormat.POSTGRESQL_TEXT;
-        final String string = cSVFormat.INFORMIX_UNLOAD.toString();
+        final String string = CSVFormat.INFORMIX_UNLOAD.toString();
 
         assertEquals("Delimiter=<|> Escape=<\\> QuoteChar=<\"> RecordSeparator=<\n> EmptyLines:ignored SkipHeaderRecord:false", string);
 
@@ -1088,6 +1088,12 @@ public class CSVFormatTest {
     public void testWithRecordSeparatorLF() throws Exception {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator(LF);
         assertEquals(String.valueOf(LF), formatWithRecordSeparator.getRecordSeparator());
+    }
+
+    @Test
+    public void testWithSystemRecordSeparator() throws Exception {
+        final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withSystemRecordSeparator();
+        assertEquals(System.getProperty("line.separator"), formatWithRecordSeparator.getRecordSeparator());
     }
 
 }
