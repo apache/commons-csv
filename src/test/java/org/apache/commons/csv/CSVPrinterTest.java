@@ -1033,11 +1033,20 @@ public class CSVPrinterTest {
     }
 
     @Test
-    public void testRfc4180QuoteSingleChar() throws IOException {
+    public void testDontQuoteEuroFirstChar() throws IOException {
         final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180)) {
             printer.printRecord(EURO_CH, "Deux");
-            assertEquals("\"" + EURO_CH + "\",Deux" + recordSeparator, sw.toString());
+            assertEquals(EURO_CH + ",Deux" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
+    public void testQuoteCommaFirstChar() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180)) {
+            printer.printRecord(",");
+            assertEquals("\",\"" + recordSeparator, sw.toString());
         }
     }
 
