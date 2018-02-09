@@ -199,7 +199,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
     public final CSVRecord immutable() {
     	if (isMutable()) {
 	    	// Subclass is probably CSVMutableRecord, freeze values
-	    	String[] frozenValue = Arrays.copyOf(values, values.length);
+		String[] frozenValue = values.clone();
 	    	return new CSVRecord(frozenValue, mapping, comment, recordNumber, characterPosition);
     	} else {
     		return this;    		
@@ -260,7 +260,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
     	if (isMutable()) {
     		return this;
     	}
-		String[] newValues = Arrays.copyOf(values, values.length);
+		String[] newValues = values.clone();
     	return new CSVMutableRecord(newValues, mapping, comment, recordNumber, characterPosition);
 	}    
 
