@@ -19,7 +19,9 @@ package org.apache.commons.csv;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -187,6 +189,62 @@ public class CSVRecordTest {
         }
     }
 
+    @Test
+    public void isMutable() { 
+    	assertFalse(record.isMutable());
+    	assertFalse(recordWithHeader.isMutable());
+    }
+    
+    @Test
+    public void testMutable() throws Exception {
+    	CSVRecord mutable = record.mutable();
+    	assertTrue(mutable.isMutable());
+    	if (record.isMutable()) { 
+    		assertSame(record, mutable);
+    	} else {    	
+    		assertNotSame(record, mutable);
+    	}    	
+    }
+    
+    @Test
+    public void testImmutable() throws Exception {
+    	CSVRecord immutable = record.immutable();
+    	assertFalse(immutable.isMutable());
+    	assertSame(immutable, immutable.immutable());
+    	assertNotSame(immutable, immutable.mutable());
+    	if (record.isMutable()) { 
+    		assertNotSame(record, immutable);
+    	} else {    	
+    		assertSame(record, immutable);
+    	}
+    }
+    
+    @Test
+    public void testWithValue() throws Exception {
+    	assertEquals("A", record.get(0));
+    	CSVRecord newR = record.withValue(0, "X");
+    	assertEquals("X", newR.get(0));    	
+    	if (record.isMutable()) {
+    		assertSame(record, newR);
+    	} else {
+    		// unchanged
+    		assertEquals("A", record.get(0));
+    	}
+    }
+    
+    @Test
+    public void testWithValueName() throws Exception {
+    	assertEquals("B", recordWithHeader.get("second"));
+    	CSVRecord newR = recordWithHeader.withValue("second", "Y");
+    	assertEquals("Y", newR.get("second"));    	
+    	if (record.isMutable()) {
+    		assertSame(recordWithHeader, newR);
+    	} else {
+    		// unchanged
+    		assertEquals("B", recordWithHeader.get("second"));
+    	}
+    }
+    
     @Test
     public void testToMapWithNoHeader() throws Exception {
         try (final CSVParser parser = CSVParser.parse("a,b", createCommaFormat())) {

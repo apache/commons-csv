@@ -1,8 +1,18 @@
 package org.apache.commons.csv;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
+import org.junit.Test;
 
 public class CSVMutableRecordTest extends CSVRecordTest {
+
+	@Override
+    @Test
+    public void isMutable() { 
+    	assertTrue(record.isMutable());
+    	assertTrue(recordWithHeader.isMutable());
+    }
 
     @Override
     protected CSVFormat createCommaFormat() {
