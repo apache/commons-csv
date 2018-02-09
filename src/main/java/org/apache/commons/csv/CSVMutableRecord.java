@@ -19,7 +19,19 @@ package org.apache.commons.csv;
 
 import java.util.Map;
 
-public final class CSVMutableRecord extends CSVRecord {
+/**
+ * A mutable version of CSVRecord
+ * <p>
+ * As mutation is generally done within the parent {@link CSVRecord}, this 
+ * package-private class just includes more efficient versions of 
+ * mutator functions, bypassing the need to make copies 
+ * (except in {@link #immutable()}).
+ * <p>
+ * To enable generating CSVMutableRecord by default, set 
+ * {@link CSVFormat#withMutableRecords(boolean)} to <code>true</code>.
+ *
+ */
+final class CSVMutableRecord extends CSVRecord {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,13 +41,25 @@ public final class CSVMutableRecord extends CSVRecord {
     }
 
     @Override
-    public void put(int index, String value) {
-        super.put(index, value);
+    public CSVMutableRecord withValue(int index, String value) {
+    	super.put(index, value);
+    	return this;
     }
-
+    
     @Override
-    public void put(String name, String value) {
-        super.put(name, value);
+    public CSVMutableRecord withValue(String name, String value) {
+    	super.put(name, value);
+    	return this;
     }
-
+    
+    @Override
+    public CSVRecord withComment(String comment) {
+    	this.comment = comment;
+    	return this;
+    }    
+    
+    @Override
+    boolean isMutable() {
+    	return true;
+    }
 }

@@ -36,8 +36,11 @@ public class CSVRecord implements Serializable, Iterable<String> {
 
     private final long characterPosition;
 
-    /** The accumulated comments (if any) */
-    private final String comment;
+    /** The accumulated comments (if any)
+     *
+     * package-private so it can be mutated by {@link CSVMutableRecord}
+     */
+    String comment;
 
     /** The column name to index mapping. */
     private final Map<String, Integer> mapping;
@@ -182,6 +185,28 @@ public class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
+     * Return an immutable CSVRecord.
+     * <p>
+     * Immutable records have fixed values and are thus thread-safe. 
+     * <p>
+     * If this record is already immutable, it will be returned directly, 
+     * otherwise a copy of its current values will be made. 
+     * <p>
+     * Use {@link #mutable()} or {@link #withValue(int, String)} to get a mutable CSVRecord. 
+     * 
+     * @return Am immutable CSVRecord
+     */    
+    public CSVRecord immutable() {
+    	if (isMutable()) {
+	    	// Subclass is probably CSVMutableRecord, freeze values
+	    	String[] frozenValue = Arrays.copyOf(values, values.length);
+	    	return new CSVRecord(frozenValue, mapping, comment, recordNumber, characterPosition);
+    	} else {
+    		return this;    		
+    	}
+    }    
+    
+    /**
      * Checks whether a given column is mapped, i.e. its name has been defined to the parser.
      *
      * @param name
@@ -191,7 +216,11 @@ public class CSVRecord implements Serializable, Iterable<String> {
     public boolean isMapped(final String name) {
         return mapping != null && mapping.containsKey(name);
     }
-
+    
+    boolean isMutable() { 
+    	return false;
+    }
+    
     /**
      * Checks whether a given columns is mapped and has a value.
      *
@@ -212,6 +241,28 @@ public class CSVRecord implements Serializable, Iterable<String> {
     public Iterator<String> iterator() {
         return toList().iterator();
     }
+    
+    /**
+     * Return a mutable CSVRecord.
+     * <p>
+     * Mutable records have more efficient implementations of 
+     * {@link #withValue(int, String)} and {@link #withValue(String, String)}
+     * for when multiple modifications are to be done on the same record.
+     * <p>
+     * If this record is already mutable, it will be returned directly, otherwise
+     * a copy of its values will be made for the new mutable record. 
+     * <p>
+     * Use {@link #immutable()} to freeze a mutable CSVRecord. 
+     * 
+     * @return A mutable CSVRecord
+     */
+    public CSVRecord mutable() {
+    	if (isMutable()) {
+    		return this;
+    	}
+		String[] newValues = Arrays.copyOf(values, values.length);
+    	return new CSVMutableRecord(newValues, mapping, comment, recordNumber, characterPosition);
+	}    
 
     void put(final int index, String value) {
         values[index] = value;
@@ -285,6 +336,53 @@ public class CSVRecord implements Serializable, Iterable<String> {
 
     String[] values() {
         return values;
+    }
+    
+    /**
+     * Return a CSVRecord with the given column value set.
+     * 
+     * @param name
+     *            the name of the column to set.
+     * @param value
+     * 			  The new value to set
+     * @throws IllegalStateException
+     *             if no header mapping was provided
+     * @throws IllegalArgumentException
+     *             if {@code name} is not mapped or if the record is inconsistent
+     * @return A mutated CSVRecord
+     */
+    public CSVRecord withValue(String name, String value) {    	
+    	CSVRecord r = mutable();
+    	r.put(name,  value);
+    	return r;
+    }
+
+    /**
+     * Return a CSVRecord with the given column value set.
+     * 
+     * @param index
+     *            the column to be retrieved.
+     * @param value
+     * 			  The new value to set
+     * @return A mutated CSVRecord
+     */    
+    public CSVRecord withValue(int index, String value) {
+    	CSVRecord r = mutable();
+    	r.put(index,  value);
+    	return r;
+    }
+    
+    /**
+     * Return a CSVRecord with the given comment set.
+     * 
+     * @param comment
+     * 			the comment to set, or <code>null</code> for no comment.
+     * @return A mutated CSVRecord
+     */
+    public CSVRecord withComment(String comment) {
+    	CSVRecord r = mutable();
+    	r.comment = comment;
+    	return r;
     }
 
 }
