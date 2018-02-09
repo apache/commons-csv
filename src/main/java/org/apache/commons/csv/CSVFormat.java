@@ -626,7 +626,7 @@ public final class CSVFormat implements Serializable {
      * @param autoFlush
      * 	TODO
      * @param mutableRecords
-     * 	           if {@code true}, return {@link CSVMutableRecord} 
+     * 	           if {@code true}, {@link CSVRecord}s are {@link CSVRecord#mutable()} by default, otherwise immutable 
      * 
      * @throws IllegalArgumentException
      *             if the delimiter is a line break character
@@ -1808,16 +1808,16 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with whether to generate CSVRecord or CSVMutableRecord.
+     * Returns a new {@code CSVFormat} with mutable or immutable records by default.
      * <ul>
-     * <li><strong>Reading:</strong> Whether to generate CSVRecord or CSVMutableRecord.</li>
+     * <li><strong>Reading:</strong> Mutable by default.</li>
      * <li><strong>Writing:</strong> No effect.</li>
      * </ul>
      *
      * @param mutableRecords
-     *            whether to generate CSVRecord or CSVMutableRecord
+     *            If true, parsed @link CSVRecord}s are {@link CSVRecord#mutable()}, otherwise {@link CSVRecord#immutable()}.
      *
-     * @return A new CSVFormat that is equal to this but with setting to generate CSVRecord or CSVMutableRecord.
+     * @return A new CSVFormat that is equal to this but with setting to generate mutable/immutable records.
      */
     public CSVFormat withMutableRecords(final boolean mutableRecords) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
