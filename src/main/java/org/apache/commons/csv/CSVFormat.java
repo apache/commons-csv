@@ -623,9 +623,10 @@ public final class CSVFormat implements Serializable {
      *            TODO
      * @param trailingDelimiter
      *            TODO
-     * @param mutableRecords TODO
      * @param autoFlush
      * 	TODO
+     * @param mutableRecords
+     * 	           if {@code true}, return {@link CSVMutableRecord} 
      * 
      * @throws IllegalArgumentException
      *             if the delimiter is a line break character
