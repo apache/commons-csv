@@ -177,7 +177,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @since 1.5
      */
     @SuppressWarnings("resource")
-    public static CSVParser parse(final InputStream inputStream, final Charset charset, final CSVFormat format) throws IOException {
+    public static CSVParser parse(final InputStream inputStream, final Charset charset, final CSVFormat format)
+            throws IOException {
         Assertions.notNull(inputStream, "inputStream");
         Assertions.notNull(format, "format");
         return parse(new InputStreamReader(inputStream, charset), format);
@@ -224,7 +225,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If there is a problem reading the header or skipping the first record
      * @since 1.5
      */
-    public static CSVParser parse(Reader reader, final CSVFormat format) throws IOException {
+    public static CSVParser parse(final Reader reader, final CSVFormat format) throws IOException {
         return new CSVParser(reader, format);
     }
 

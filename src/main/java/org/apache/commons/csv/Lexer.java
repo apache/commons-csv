@@ -326,7 +326,7 @@ final class Lexer implements Closeable {
      * @return the unescaped character (as an int) or {@link Constants#END_OF_STREAM} if char following the escape is
      *      invalid.
      * @throws IOException if there is a problem reading the stream or the end of stream is detected:
-     *      the escape character is not allowed at end of strem
+     *      the escape character is not allowed at end of stream
      */
     int readEscape() throws IOException {
         // the escape char has just been read (normally a backslash)

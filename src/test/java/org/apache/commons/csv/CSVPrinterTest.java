@@ -21,12 +21,17 @@ import static org.apache.commons.csv.Constants.CR;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.sql.BatchUpdateException;
@@ -299,7 +304,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testEscapeBackslash1() throws IOException {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuote(QUOTE_CH))) {
             printer.print("\\");
         }
@@ -308,7 +313,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testEscapeBackslash2() throws IOException {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuote(QUOTE_CH))) {
             printer.print("\\\r");
         }
@@ -317,7 +322,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testEscapeBackslash3() throws IOException {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuote(QUOTE_CH))) {
             printer.print("X\\\r");
         }
@@ -326,7 +331,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testEscapeBackslash4() throws IOException {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuote(QUOTE_CH))) {
             printer.print("\\\\");
         }
@@ -335,7 +340,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testEscapeBackslash5() throws IOException {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuote(QUOTE_CH))) {
             printer.print("\\\\");
         }
@@ -344,7 +349,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testEscapeNull1() throws IOException {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape(null))) {
             printer.print("\\");
         }
@@ -353,7 +358,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testEscapeNull2() throws IOException {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape(null))) {
             printer.print("\\\r");
         }
@@ -362,7 +367,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testEscapeNull3() throws IOException {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape(null))) {
             printer.print("X\\\r");
         }
@@ -371,7 +376,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testEscapeNull4() throws IOException {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape(null))) {
             printer.print("\\\\");
         }
@@ -380,7 +385,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testEscapeNull5() throws IOException {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape(null))) {
             printer.print("\\\\");
         }
@@ -1028,11 +1033,20 @@ public class CSVPrinterTest {
     }
 
     @Test
-    public void testRfc4180QuoteSingleChar() throws IOException {
+    public void testDontQuoteEuroFirstChar() throws IOException {
         final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180)) {
             printer.printRecord(EURO_CH, "Deux");
-            assertEquals("\"" + EURO_CH + "\",Deux" + recordSeparator, sw.toString());
+            assertEquals(EURO_CH + ",Deux" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
+    public void testQuoteCommaFirstChar() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.RFC4180)) {
+            printer.printRecord(",");
+            assertEquals("\",\"" + recordSeparator, sw.toString());
         }
     }
 
@@ -1110,7 +1124,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintToFileWithCharsetUtf16Be() throws IOException {
-        File file = File.createTempFile(getClass().getName(), ".csv");
+        final File file = File.createTempFile(getClass().getName(), ".csv");
         try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, StandardCharsets.UTF_16BE)) {
             printer.printRecord("a", "b\\c");
         }
@@ -1119,7 +1133,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintToFileWithDefaultCharset() throws IOException {
-        File file = File.createTempFile(getClass().getName(), ".csv");
+        final File file = File.createTempFile(getClass().getName(), ".csv");
         try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, Charset.defaultCharset())) {
             printer.printRecord("a", "b\\c");
         }
@@ -1128,7 +1142,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintToPathWithDefaultCharset() throws IOException {
-        File file = File.createTempFile(getClass().getName(), ".csv");
+        final File file = File.createTempFile(getClass().getName(), ".csv");
         try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file.toPath(), Charset.defaultCharset())) {
             printer.printRecord("a", "b\\c");
         }
@@ -1277,8 +1291,8 @@ public class CSVPrinterTest {
     @Test
     public void testPrintRecordsWithResultSetOneRow() throws IOException, SQLException {
         try (CSVPrinter csvPrinter = CSVFormat.MYSQL.printer()) {
-            Value[] valueArray = new Value[0];
-            ValueArray valueArrayTwo = ValueArray.get(valueArray);
+            final Value[] valueArray = new Value[0];
+            final ValueArray valueArrayTwo = ValueArray.get(valueArray);
             try (ResultSet resultSet = valueArrayTwo.getResultSet()) {
                 csvPrinter.printRecords(resultSet);
                 assertEquals(0, resultSet.getRow());
@@ -1288,10 +1302,10 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintRecordsWithObjectArray() throws IOException {
-        CharArrayWriter charArrayWriter = new CharArrayWriter(0);
+        final CharArrayWriter charArrayWriter = new CharArrayWriter(0);
         try (CSVPrinter csvPrinter = CSVFormat.INFORMIX_UNLOAD.print(charArrayWriter)) {
-            HashSet<BatchUpdateException> hashSet = new HashSet<>();
-            Object[] objectArray = new Object[6];
+            final HashSet<BatchUpdateException> hashSet = new HashSet<>();
+            final Object[] objectArray = new Object[6];
             objectArray[3] = hashSet;
             csvPrinter.printRecords(objectArray);
         }
@@ -1303,12 +1317,62 @@ public class CSVPrinterTest {
     @Test
     public void testPrintRecordsWithEmptyVector() throws IOException {
         try (CSVPrinter csvPrinter = CSVFormat.POSTGRESQL_TEXT.printer()) {
-            Vector<CSVFormatTest.EmptyEnum> vector = new Vector<>();
-            int expectedCapacity = 23;
+            final Vector<CSVFormatTest.EmptyEnum> vector = new Vector<>();
+            final int expectedCapacity = 23;
             vector.setSize(expectedCapacity);
             csvPrinter.printRecords(vector);
             assertEquals(expectedCapacity, vector.capacity());
         }
+    }
+
+    @Test
+    public void testCloseWithFlushOn() throws IOException {
+        final Writer writer = mock(Writer.class);
+        final CSVFormat csvFormat = CSVFormat.DEFAULT;
+        final CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
+        csvPrinter.close(true);
+        verify(writer, times(1)).flush();
+    }
+
+    @Test
+    public void testCloseWithFlushOff() throws IOException {
+        final Writer writer = mock(Writer.class);
+        final CSVFormat csvFormat = CSVFormat.DEFAULT;
+        final CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
+        csvPrinter.close(false);
+        verify(writer, never()).flush();
+        verify(writer, times(1)).close();
+    }
+
+    @Test
+    public void testCloseBackwardCompatibility() throws IOException {
+        final Writer writer = mock(Writer.class);
+        final CSVFormat csvFormat = CSVFormat.DEFAULT;
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+        }
+        verify(writer, never()).flush();
+        verify(writer, times(1)).close();
+    }
+
+    @Test
+    public void testCloseWithCsvFormatAutoFlushOn() throws IOException {
+        // System.out.println("start method");
+        final Writer writer = mock(Writer.class);
+        final CSVFormat csvFormat = CSVFormat.DEFAULT.withAutoFlush(true);
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+        }
+        verify(writer, times(1)).flush();
+        verify(writer, times(1)).close();
+    }
+
+    @Test
+    public void testCloseWithCsvFormatAutoFlushOff() throws IOException {
+        final Writer writer = mock(Writer.class);
+        final CSVFormat csvFormat = CSVFormat.DEFAULT.withAutoFlush(false);
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+        }
+        verify(writer, never()).flush();
+        verify(writer, times(1)).close();
     }
 
 }

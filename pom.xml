@@ -20,10 +20,10 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>42</version>
+    <version>43</version>
   </parent>
   <artifactId>commons-csv</artifactId>
-  <version>1.5-SNAPSHOT</version>
+  <version>1.6-SNAPSHOT</version>
   <name>Apache Commons CSV</name>
   <url>http://commons.apache.org/proper/commons-csv/</url>
   <description>
@@ -39,15 +39,21 @@ CSV files of various types.
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.10.19</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.5</version>
+      <version>2.6</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.6</version>
+      <version>3.7</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -128,7 +134,7 @@ CSV files of various types.
   </distributionManagement>
 
   <properties>
-    <commons.release.version>1.5</commons.release.version>
+    <commons.release.version>1.6</commons.release.version>
     <commons.release.desc>(Java 7+)</commons.release.desc>
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC1</commons.rc.version>
@@ -265,7 +271,6 @@ CSV files of various types.
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
-        <version>3.0.4</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -331,6 +336,8 @@ CSV files of various types.
         <configuration>
           <excludes>
             <exclude>src/test/resources/csv-167/sample1.csv</exclude>
+            <exclude>src/test/resources/CSV-198/optd_por_public.csv</exclude>
+            <exclude>src/test/resources/CSV-213/999751170.patch.csv</exclude>
             <exclude>src/test/resources/CSVFileParser/bom.csv</exclude>
             <exclude>src/test/resources/CSVFileParser/test.csv</exclude>
             <exclude>src/test/resources/CSVFileParser/test_default.txt</exclude>
@@ -503,6 +510,17 @@ CSV files of various types.
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+     <profile>
+      <id>java9</id>
+      <activation>
+        <jdk>9</jdk>
+      </activation>
+      <properties>
+        <!-- coverall version 4.3.0 does not work with java 9, see https://github.com/trautonen/coveralls-maven-plugin/issues/112 -->
+        <coveralls.skip>true</coveralls.skip>
+      </properties>
     </profile>
   </profiles>
 

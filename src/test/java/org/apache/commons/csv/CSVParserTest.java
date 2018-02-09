@@ -74,7 +74,7 @@ public class CSVParserTest {
     private static final String[][] RESULT = { { "a", "b", "c", "d" }, { "a", "b", "1 2" }, { "foo baar", "b", "" },
             { "foo\n,,\n\",,\n\"", "d", "e" } };
 
-    private BOMInputStream createBOMInputStream(String resource) throws IOException {
+    private BOMInputStream createBOMInputStream(final String resource) throws IOException {
         final URL url = ClassLoader.getSystemClassLoader().getResource(resource);
         return new BOMInputStream(url.openStream());
     }
