@@ -41,25 +41,19 @@ final class CSVMutableRecord extends CSVRecord {
     }
 
     @Override
-    public CSVMutableRecord withValue(int index, String value) {
-    	super.put(index, value);
+    public final CSVMutableRecord withValue(int index, String value) {
+    	put(index, value);
     	return this;
     }
     
     @Override
-    public CSVMutableRecord withValue(String name, String value) {
-    	super.put(name, value);
+    public final CSVMutableRecord withValue(String name, String value) {
+    	put(name, value);
     	return this;
     }
     
     @Override
-    public CSVRecord withComment(String comment) {
-    	this.comment = comment;
-    	return this;
-    }    
-    
-    @Override
-    boolean isMutable() {
+    final boolean isMutable() {
     	return true;
     }
 }

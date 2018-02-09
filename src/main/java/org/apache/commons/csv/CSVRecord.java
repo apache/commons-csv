@@ -38,9 +38,9 @@ public class CSVRecord implements Serializable, Iterable<String> {
 
     /** The accumulated comments (if any)
      *
-     * package-private so it can be mutated by {@link CSVMutableRecord}
+     * non-final so it can be mutated by {@link CSVMutableRecord}
      */
-    String comment;
+    private String comment;
 
     /** The column name to index mapping. */
     private final Map<String, Integer> mapping;
@@ -67,7 +67,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *            an enum
      * @return the String at the given enum String
      */
-    public String get(final Enum<?> e) {
+    public final String get(final Enum<?> e) {
         return get(e.toString());
     }
 
@@ -78,7 +78,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *            a column index (0-based)
      * @return the String at the given index
      */
-    public String get(final int i) {
+    public final String get(final int i) {
         return values[i];
     }
 
@@ -95,7 +95,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      * @see #isConsistent()
      * @see CSVFormat#withNullString(String)
      */
-    public String get(final String name) {
+    public final String get(final String name) {
         if (mapping == null) {
             throw new IllegalStateException(
                     "No header mapping was specified, the record values can't be accessed by name");
@@ -110,7 +110,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
         }
     }
 
-    int getIndex(final String name) {
+    final int getIndex(final String name) {
         final Integer integerIndex = mapping.get(name);
         if (integerIndex == null) {
             throw new IllegalArgumentException(
@@ -126,7 +126,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *
      * @return the position of this record in the source stream.
      */
-    public long getCharacterPosition() {
+    public final long getCharacterPosition() {
         return characterPosition;
     }
 
@@ -138,7 +138,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *
      * @return the comment for this record, or null if no comment for this record is available.
      */
-    public String getComment() {
+    public final String getComment() {
         return comment;
     }
 
@@ -153,7 +153,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      * @return the number of this record.
      * @see CSVParser#getCurrentLineNumber()
      */
-    public long getRecordNumber() {
+    public final long getRecordNumber() {
         return recordNumber;
     }
 
@@ -167,7 +167,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *
      * @return true of this record is valid, false if not
      */
-    public boolean isConsistent() {
+    public final boolean isConsistent() {
         return mapping == null || mapping.size() == values.length;
     }
 
@@ -180,7 +180,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      * @return true if this record has a comment, false otherwise
      * @since 1.3
      */
-    public boolean hasComment() {
+    public final boolean hasComment() {
         return comment != null;
     }
 
@@ -196,7 +196,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      * 
      * @return Am immutable CSVRecord
      */    
-    public CSVRecord immutable() {
+    public final CSVRecord immutable() {
     	if (isMutable()) {
 	    	// Subclass is probably CSVMutableRecord, freeze values
 	    	String[] frozenValue = Arrays.copyOf(values, values.length);
@@ -213,7 +213,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *            the name of the column to be retrieved.
      * @return whether a given column is mapped.
      */
-    public boolean isMapped(final String name) {
+    public final boolean isMapped(final String name) {
         return mapping != null && mapping.containsKey(name);
     }
     
@@ -228,7 +228,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *            the name of the column to be retrieved.
      * @return whether a given columns is mapped and has a value
      */
-    public boolean isSet(final String name) {
+    public final boolean isSet(final String name) {
         return isMapped(name) && mapping.get(name).intValue() < values.length;
     }
 
@@ -238,7 +238,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      * @return an iterator over the values of this record.
      */
     @Override
-    public Iterator<String> iterator() {
+    public final Iterator<String> iterator() {
         return toList().iterator();
     }
     
@@ -256,7 +256,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      * 
      * @return A mutable CSVRecord
      */
-    public CSVRecord mutable() {
+    public final CSVRecord mutable() {
     	if (isMutable()) {
     		return this;
     	}
@@ -264,11 +264,11 @@ public class CSVRecord implements Serializable, Iterable<String> {
     	return new CSVMutableRecord(newValues, mapping, comment, recordNumber, characterPosition);
 	}    
 
-    void put(final int index, String value) {
+    final void put(final int index, String value) {
         values[index] = value;
     }
 
-    void put(final String name, String value) {
+    final void put(final String name, String value) {
         values[getIndex(name)] = value;
     }
     
@@ -279,7 +279,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *            The Map to populate.
      * @return the given map.
      */
-    <M extends Map<String, String>> M putIn(final M map) {
+    final <M extends Map<String, String>> M putIn(final M map) {
         if (mapping == null) {
             return map;
         }
@@ -297,7 +297,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *
      * @return the number of values.
      */
-    public int size() {
+    public final int size() {
         return values.length;
     }
 
@@ -317,7 +317,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      *
      * @return A new Map. The map is empty if the record has no headers.
      */
-    public Map<String, String> toMap() {
+    public final Map<String, String> toMap() {
         return putIn(new HashMap<String, String>(values.length));
     }
 
@@ -328,13 +328,13 @@ public class CSVRecord implements Serializable, Iterable<String> {
      * @return a String representation of this record.
      */
     @Override
-    public String toString() {
+    public final String toString() {
         return "CSVRecord [comment=" + comment + ", mapping=" + mapping +
                 ", recordNumber=" + recordNumber + ", values=" +
                 Arrays.toString(values) + "]";
     }
 
-    String[] values() {
+    final String[] values() {
         return values;
     }
     
@@ -379,7 +379,7 @@ public class CSVRecord implements Serializable, Iterable<String> {
      * 			the comment to set, or <code>null</code> for no comment.
      * @return A mutated CSVRecord
      */
-    public CSVRecord withComment(String comment) {
+    public final CSVRecord withComment(String comment) {
     	CSVRecord r = mutable();
     	r.comment = comment;
     	return r;
