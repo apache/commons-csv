@@ -28,7 +28,7 @@ import java.util.Map.Entry;
 /**
  * A CSV record parsed from a CSV file.
  */
-public final class CSVRecord implements Serializable, Iterable<String> {
+public class CSVRecord implements Serializable, Iterable<String> {
 
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
@@ -36,8 +36,11 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     private final long characterPosition;
 
-    /** The accumulated comments (if any) */
-    private final String comment;
+    /** The accumulated comments (if any)
+     *
+     * non-final so it can be mutated by {@link CSVMutableRecord}
+     */
+    private String comment;
 
     /** The column name to index mapping. */
     private final Map<String, Integer> mapping;
@@ -64,7 +67,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *            an enum
      * @return the String at the given enum String
      */
-    public String get(final Enum<?> e) {
+    public final String get(final Enum<?> e) {
         return get(e.toString());
     }
 
@@ -75,7 +78,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *            a column index (0-based)
      * @return the String at the given index
      */
-    public String get(final int i) {
+    public final String get(final int i) {
         return values[i];
     }
 
@@ -92,23 +95,29 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @see #isConsistent()
      * @see CSVFormat#withNullString(String)
      */
-    public String get(final String name) {
+    public final String get(final String name) {
         if (mapping == null) {
             throw new IllegalStateException(
-                "No header mapping was specified, the record values can't be accessed by name");
+                    "No header mapping was specified, the record values can't be accessed by name");
         }
-        final Integer index = mapping.get(name);
-        if (index == null) {
-            throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name,
-                mapping.keySet()));
-        }
+        final int intIndex = getIndex(name);
         try {
-            return values[index.intValue()];
+            return values[intIndex];
         } catch (final ArrayIndexOutOfBoundsException e) {
-            throw new IllegalArgumentException(String.format(
-                "Index for header '%s' is %d but CSVRecord only has %d values!", name, index,
-                Integer.valueOf(values.length)));
+            throw new IllegalArgumentException(
+                    String.format("Index for header '%s' is %d but CSVRecord only has %d values!", name, intIndex,
+                            Integer.valueOf(values.length)));
         }
+    }
+
+    final int getIndex(final String name) {
+        final Integer integerIndex = mapping.get(name);
+        if (integerIndex == null) {
+            throw new IllegalArgumentException(
+                    String.format("Mapping for %s not found, expected one of %s", name, mapping.keySet()));
+        }
+        int intIndex = integerIndex.intValue();
+        return intIndex;
     }
 
     /**
@@ -117,7 +126,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *
      * @return the position of this record in the source stream.
      */
-    public long getCharacterPosition() {
+    public final long getCharacterPosition() {
         return characterPosition;
     }
 
@@ -129,7 +138,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *
      * @return the comment for this record, or null if no comment for this record is available.
      */
-    public String getComment() {
+    public final String getComment() {
         return comment;
     }
 
@@ -144,7 +153,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return the number of this record.
      * @see CSVParser#getCurrentLineNumber()
      */
-    public long getRecordNumber() {
+    public final long getRecordNumber() {
         return recordNumber;
     }
 
@@ -158,7 +167,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *
      * @return true of this record is valid, false if not
      */
-    public boolean isConsistent() {
+    public final boolean isConsistent() {
         return mapping == null || mapping.size() == values.length;
     }
 
@@ -171,10 +180,36 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return true if this record has a comment, false otherwise
      * @since 1.3
      */
-    public boolean hasComment() {
+    public final boolean hasComment() {
         return comment != null;
     }
 
+    /**
+     * Return an immutable CSVRecord.
+     * <p>
+     * Immutable records have fixed values and are thus thread-safe. 
+     * <p>
+     * If this record is already immutable, it will be returned directly, 
+     * otherwise a copy of its current values will be made. 
+     * <p>
+     * Use {@link #mutable()} or {@link #withValue(int, String)} to get a mutable CSVRecord. 
+     * 
+     * @return Am immutable CSVRecord
+     */    
+    public final CSVRecord immutable() {
+    	if (isMutable()) {
+	    	// Subclass is probably CSVMutableRecord, freeze values
+		//
+		// Note: Normally we should not use .clone() as it has many 
+		// issues and pitfalls - here we have an array of immutable Strings
+		// so it's OK.
+		String[] frozenValue = values.clone();
+	    	return new CSVRecord(frozenValue, mapping, comment, recordNumber, characterPosition);
+    	} else {
+    		return this;    		
+    	}
+    }    
+    
     /**
      * Checks whether a given column is mapped, i.e. its name has been defined to the parser.
      *
@@ -182,10 +217,14 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *            the name of the column to be retrieved.
      * @return whether a given column is mapped.
      */
-    public boolean isMapped(final String name) {
+    public final boolean isMapped(final String name) {
         return mapping != null && mapping.containsKey(name);
     }
-
+    
+    boolean isMutable() { 
+    	return false;
+    }
+    
     /**
      * Checks whether a given columns is mapped and has a value.
      *
@@ -193,7 +232,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *            the name of the column to be retrieved.
      * @return whether a given columns is mapped and has a value
      */
-    public boolean isSet(final String name) {
+    public final boolean isSet(final String name) {
         return isMapped(name) && mapping.get(name).intValue() < values.length;
     }
 
@@ -203,10 +242,43 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return an iterator over the values of this record.
      */
     @Override
-    public Iterator<String> iterator() {
+    public final Iterator<String> iterator() {
         return toList().iterator();
     }
+    
+    /**
+     * Return a mutable CSVRecord.
+     * <p>
+     * Mutable records have more efficient implementations of 
+     * {@link #withValue(int, String)} and {@link #withValue(String, String)}
+     * for when multiple modifications are to be done on the same record.
+     * <p>
+     * If this record is already mutable, it will be returned directly, otherwise
+     * a copy of its values will be made for the new mutable record. 
+     * <p>
+     * Use {@link #immutable()} to freeze a mutable CSVRecord. 
+     * 
+     * @return A mutable CSVRecord
+     */
+    public final CSVRecord mutable() {
+    	if (isMutable()) {
+    		return this;
+    	}
+	// Note: Normally we should not use .clone() as it has many 
+	// issues and pitfalls - here we have an array of immutable Strings
+	// so it's OK.
+	String[] newValues = values.clone();
+    	return new CSVMutableRecord(newValues, mapping, comment, recordNumber, characterPosition);
+	}    
 
+    final void put(final int index, String value) {
+        values[index] = value;
+    }
+
+    final void put(final String name, String value) {
+        values[getIndex(name)] = value;
+    }
+    
     /**
      * Puts all values of this record into the given Map.
      *
@@ -214,7 +286,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *            The Map to populate.
      * @return the given map.
      */
-    <M extends Map<String, String>> M putIn(final M map) {
+    final <M extends Map<String, String>> M putIn(final M map) {
         if (mapping == null) {
             return map;
         }
@@ -232,7 +304,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *
      * @return the number of values.
      */
-    public int size() {
+    public final int size() {
         return values.length;
     }
 
@@ -252,7 +324,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *
      * @return A new Map. The map is empty if the record has no headers.
      */
-    public Map<String, String> toMap() {
+    public final Map<String, String> toMap() {
         return putIn(new HashMap<String, String>(values.length));
     }
 
@@ -263,14 +335,61 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return a String representation of this record.
      */
     @Override
-    public String toString() {
+    public final String toString() {
         return "CSVRecord [comment=" + comment + ", mapping=" + mapping +
                 ", recordNumber=" + recordNumber + ", values=" +
                 Arrays.toString(values) + "]";
     }
 
-    String[] values() {
+    final String[] values() {
         return values;
+    }
+    
+    /**
+     * Return a CSVRecord with the given column value set.
+     * 
+     * @param name
+     *            the name of the column to set.
+     * @param value
+     * 			  The new value to set
+     * @throws IllegalStateException
+     *             if no header mapping was provided
+     * @throws IllegalArgumentException
+     *             if {@code name} is not mapped or if the record is inconsistent
+     * @return A mutated CSVRecord
+     */
+    public CSVRecord withValue(String name, String value) {    	
+    	CSVRecord r = mutable();
+    	r.put(name,  value);
+    	return r;
+    }
+
+    /**
+     * Return a CSVRecord with the given column value set.
+     * 
+     * @param index
+     *            the column to be retrieved.
+     * @param value
+     * 			  The new value to set
+     * @return A mutated CSVRecord
+     */    
+    public CSVRecord withValue(int index, String value) {
+    	CSVRecord r = mutable();
+    	r.put(index,  value);
+    	return r;
+    }
+    
+    /**
+     * Return a CSVRecord with the given comment set.
+     * 
+     * @param comment
+     * 			the comment to set, or <code>null</code> for no comment.
+     * @return A mutated CSVRecord
+     */
+    public final CSVRecord withComment(String comment) {
+    	CSVRecord r = mutable();
+    	r.comment = comment;
+    	return r;
     }
 
 }
