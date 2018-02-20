@@ -648,6 +648,7 @@ public final class CSVFormat implements Serializable {
         this.recordSeparator = recordSeparator;
         this.nullString = nullString;
         this.headerComments = toStringArray(headerComments);
+	// Note: .clone() is generally not-OK, but this is safe as Strings are immutable
         this.header = header == null ? null : header.clone();
         this.skipHeaderRecord = skipHeaderRecord;
         this.ignoreHeaderCase = ignoreHeaderCase;
@@ -798,6 +799,7 @@ public final class CSVFormat implements Serializable {
      * @return a copy of the header array; {@code null} if disabled, the empty array if to be read from the file
      */
     public String[] getHeader() {
+	// Note: .clone() is generally not-OK, but this is safe as Strings are immutable
         return header != null ? header.clone() : null;
     }
 
