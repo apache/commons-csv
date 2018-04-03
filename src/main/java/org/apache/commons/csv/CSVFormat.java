@@ -268,7 +268,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      * <p>
      * Note: this is currently like {@link #RFC4180} plus {@link #withAllowMissingColumnNames(boolean)
-     * withAllowMissingColumnNames(true)}.
+     * withAllowMissingColumnNames(true)} and {@link #withIgnoreEmptyLines(boolean) withIgnoreEmptyLines(false)}.
      * </p>
      *
      * @see Predefined#Excel
