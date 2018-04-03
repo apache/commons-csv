@@ -190,6 +190,11 @@ public final class CSVFormat implements Serializable {
         MySQL(CSVFormat.MYSQL),
 
         /**
+         * @see CSVFormat#ORACLE
+         */
+        Oracle(CSVFormat.ORACLE),
+
+        /**
          * @see CSVFormat#POSTGRESQL_CSV
          * @since 1.5
          */
@@ -227,7 +232,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Standard comma separated format, as for {@link #RFC4180} but allowing empty lines.
+     * Standard Comma Separated Value format, as for {@link #RFC4180} but allowing empty lines.
      *
      * <p>
      * Settings are:
@@ -378,6 +383,44 @@ public final class CSVFormat implements Serializable {
     // @formatter:off
 
     /**
+     * Default Oracle format used by the SQL*Loader utility.
+     *
+     * <p>
+     * This is a comma-delimited format with the system line separator character as the record separator. Values are double quoted when needed and special
+     * characters are escaped with {@code '"'}. The default NULL string is {@code ""}. Values are trimmed.
+     * </p>
+     *
+     * <p>
+     * Settings are:
+     * </p>
+     * <ul>
+     * <li>withDelimiter(',') // default is {@code FIELDS TERMINATED BY ','}</li>
+     * <li>withQuote('"')  // default is {@code OPTIONALLY ENCLOSED BY '"'}</li>
+     * <li>withSystemRecordSeparator()</li>
+     * <li>withTrim()</li>
+     * <li>withIgnoreEmptyLines(false)</li>
+     * <li>withEscape('\\')</li>
+     * <li>withNullString("\\N")</li>
+     * <li>withQuoteMode(QuoteMode.MINIMAL)</li>
+     * </ul>
+     *
+     * @see Predefined#Oracle
+     * @see <a href="https://docs.oracle.com/database/121/SUTIL/GUID-D1762699-8154-40F6-90DE-EFB8EB6A9AB0.htm#SUTIL4217">https://docs.oracle.com/database/121/SUTIL/GUID-D1762699-8154-40F6-90DE-EFB8EB6A9AB0.htm#SUTIL4217</a>
+     * @since 1.6
+     */
+    // @formatter:off
+    public static final CSVFormat ORACLE = DEFAULT
+            .withDelimiter(COMMA)
+            .withEscape(BACKSLASH)
+            .withIgnoreEmptyLines(false)
+            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withNullString("\\N")
+            .withTrim()
+            .withSystemRecordSeparator()
+            .withQuoteMode(QuoteMode.MINIMAL);
+    // @formatter:off
+
+    /**
      * Default PostgreSQL CSV format used by the {@code COPY} operation.
      *
      * <p>
@@ -399,7 +442,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#MySQL
-     * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html"> http://dev.mysql.com/doc/refman/5.1/en/load
+     * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html"> https://www.postgresql.org/docs/current/static/sql-copy.html
      *      -data.html</a>
      * @since 1.5
      */
@@ -436,8 +479,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#MySQL
-     * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html"> http://dev.mysql.com/doc/refman/5.1/en/load
-     *      -data.html</a>
+     * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html"> https://www.postgresql.org/docs/current/static/sql-copy.html</a>
      * @since 1.5
      */
     // @formatter:off
@@ -1934,7 +1976,7 @@ public final class CSVFormat implements Serializable {
      * only works for inputs with '\n', '\r' and "\r\n"
      * </p>
      *
-     * @return A new CSVFormat that is equal to this but with the operating system's line separator stringr
+     * @return A new CSVFormat that is equal to this but with the operating system's line separator string.
      * @since 1.6
      */
     public CSVFormat withSystemRecordSeparator() {

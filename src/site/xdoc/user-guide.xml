@@ -34,12 +34,16 @@ limitations under the License.
       The CSVFormat class provides some commonly used CSV variants:
       
       <dl>
-        <dt>EXCEL</dt><dd>The Microsoft Excel CSV format.</dd>
-        <dt>INFORMIX_UNLOAD</dt><dd>Informix <a href="http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">UNLOAD</a> format used by the <code>UNLOAD TO file_name</code> operation.</dd>
-        <dt>INFORMIX_UNLOAD_CSV</dt><dd>Informix <a href="http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">CSV UNLOAD</a> format used by the <code>UNLOAD TO file_name</code> operation (escaping is disabled.)</dd>
-        <dt>MYSQL</dt><dd>The Oracle MySQL CSV format.</dd>
-        <dt>RFC-4180</dt><dd>The RFC-4180 format defined by <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a></dd>
-        <dt>TDF</dt><dd>A tab delimited format</dd>
+        <dr><a href="http://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#DEFAULT">DEFAULT</a></dr><dd>Standard Comma Separated Value format, as for RFC4180 but allowing empty lines.</dd>
+        <dt><a href="http://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#EXCEL">EXCEL</a></dt><dd>The Microsoft Excel CSV format.</dd>
+        <dt><a href="http://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#INFORMIX_UNLOAD">INFORMIX_UNLOAD</a></dt><dd>Informix <a href="http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">UNLOAD</a> format used by the <code>UNLOAD TO file_name</code> operation.</dd>
+        <dt><a href="http://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#INFORMIX_UNLOAD_CSV">INFORMIX_UNLOAD_CSV</a></dt><dd>Informix <a href="http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">CSV UNLOAD</a> format used by the <code>UNLOAD TO file_name</code> operation (escaping is disabled.)</dd>
+        <dt><a href="http://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#MYSQL">MYSQL</a></dt><dd>The MySQL CSV format.</dd>
+        <dt><a href="http://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#ORACLE">ORACLE</a></dt><dd>Default Oracle format used by the SQL*Loader utility.</dd>
+        <dt><a href="http://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#POSTGRESSQL_CSV">POSTGRESSQL_CSV</a></dt><dd>Default PostgreSQL CSV format used by the COPY operation.</dd>
+        <dt><a href="http://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#POSTGRESSQL_TEXT">POSTGRESSQL_TEXT</a></dt><dd>Default PostgreSQL text format used by the COPY operation.</dd>
+        <dt><a href="http://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#RFC4180">RFC-4180</a></dt><dd>The RFC-4180 format defined by <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>.</dd>
+        <dt><a href="http://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#TDF">TDF</a></dt><dd>A tab delimited format.</dd>
       </dl>
 
       <subsection name="Example: Parsing an Excel CSV File">

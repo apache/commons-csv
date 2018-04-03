@@ -46,6 +46,11 @@ public class CSVFormatPredefinedTest {
     }
 
     @Test
+    public void testOracle() {
+        test(CSVFormat.ORACLE, "Oracle");
+    }
+
+    @Test
     public void testPostgreSqlCsv() {
         test(CSVFormat.POSTGRESQL_CSV, "PostgreSQLCsv");
     }
