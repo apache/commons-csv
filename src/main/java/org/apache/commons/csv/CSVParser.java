@@ -286,6 +286,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     private final Lexer lexer;
 
+    private final CSVRecordIterator csvRecordIterator;
+    
     /** A record buffer for getRecord(). Grows as necessary and is reused. */
     private final List<String> recordList = new ArrayList<>();
 
@@ -353,6 +355,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
         this.format = format;
         this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
+        this.csvRecordIterator = new CSVRecordIterator();
         this.headerMap = this.initializeHeader();
         this.characterOffset = characterOffset;
         this.recordNumber = recordNumber - 1;
@@ -519,55 +522,57 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     @Override
     public Iterator<CSVRecord> iterator() {
-        return new Iterator<CSVRecord>() {
-            private CSVRecord current;
-
-            private CSVRecord getNextRecord() {
-                try {
-                    return CSVParser.this.nextRecord();
-                } catch (final IOException e) {
-                    throw new IllegalStateException(
-                            e.getClass().getSimpleName() + " reading next record: " + e.toString(), e);
-                }
-            }
-
-            @Override
-            public boolean hasNext() {
-                if (CSVParser.this.isClosed()) {
-                    return false;
-                }
-                if (this.current == null) {
-                    this.current = this.getNextRecord();
-                }
-
-                return this.current != null;
-            }
-
-            @Override
-            public CSVRecord next() {
-                if (CSVParser.this.isClosed()) {
-                    throw new NoSuchElementException("CSVParser has been closed");
-                }
-                CSVRecord next = this.current;
-                this.current = null;
-
-                if (next == null) {
-                    // hasNext() wasn't called before
-                    next = this.getNextRecord();
-                    if (next == null) {
-                        throw new NoSuchElementException("No more CSV records available");
-                    }
-                }
-
-                return next;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
+        return csvRecordIterator;
     }
+    
+    class CSVRecordIterator implements Iterator<CSVRecord> {
+        private CSVRecord current;
+  
+        private CSVRecord getNextRecord() {
+            try {
+                return CSVParser.this.nextRecord();
+            } catch (final IOException e) {
+                throw new IllegalStateException(
+                        e.getClass().getSimpleName() + " reading next record: " + e.toString(), e);
+            }
+        }
+  
+        @Override
+        public boolean hasNext() {
+            if (CSVParser.this.isClosed()) {
+                return false;
+            }
+            if (this.current == null) {
+                this.current = this.getNextRecord();
+            }
+  
+            return this.current != null;
+        }
+  
+        @Override
+        public CSVRecord next() {
+            if (CSVParser.this.isClosed()) {
+                throw new NoSuchElementException("CSVParser has been closed");
+            }
+            CSVRecord next = this.current;
+            this.current = null;
+  
+            if (next == null) {
+                // hasNext() wasn't called before
+                next = this.getNextRecord();
+                if (next == null) {
+                    throw new NoSuchElementException("No more CSV records available");
+                }
+            }
+  
+            return next;
+        }
+  
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    };
 
     /**
      * Parses the next record from the current point in the stream.
