@@ -32,6 +32,8 @@ import static org.apache.commons.csv.Token.Type.TOKEN;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Lexical analyzer.
@@ -60,6 +62,8 @@ final class Lexer implements Closeable {
     private final ExtendedBufferedReader reader;
     private String firstEol;
 
+    private final Set<Character> ignoreCharacterSet;
+
     String getFirstEol(){
         return firstEol;
     }
@@ -72,6 +76,7 @@ final class Lexer implements Closeable {
         this.commentStart = mapNullToDisabled(format.getCommentMarker());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
+        this.ignoreCharacterSet = format.getIgnoreCharacterSet();
     }
 
     /**
@@ -137,6 +142,9 @@ final class Lexer implements Closeable {
 
         // important: make sure a new char gets consumed in each iteration
         while (token.type == INVALID) {
+            if (isIgnoredCharacter(c)){
+                continue;
+            }
             // ignore whitespaces at beginning of a token
             if (ignoreSurroundingSpaces) {
                 while (isWhitespace(c) && !eol) {
@@ -192,6 +200,10 @@ final class Lexer implements Closeable {
     private Token parseSimpleToken(final Token token, int ch) throws IOException {
         // Faster to use while(true)+break than while(token.type == INVALID)
         while (true) {
+            if (isIgnoredCharacter(ch)){
+                ch = reader.read(); // continue
+                continue;
+            }
             if (readEndOfLine(ch)) {
                 token.type = EORECORD;
                 break;
@@ -266,7 +278,9 @@ final class Lexer implements Closeable {
                     // token finish mark (encapsulator) reached: ignore whitespace till delimiter
                     while (true) {
                         c = reader.read();
-                        if (isDelimiter(c)) {
+                        if (isIgnoredCharacter(c)){
+                            continue;
+                        } else if (isDelimiter(c)) {
                             token.type = TOKEN;
                             return token;
                         } else if (isEndOfFile(c)) {
@@ -446,6 +460,21 @@ final class Lexer implements Closeable {
                ch == escape ||
                ch == quoteChar ||
                ch == commentStart;
+    }
+
+    /**
+     * @return true if character is to be ignored
+     */
+    boolean isIgnoredCharacter(final int ch) {
+        Iterator<Character> it = ignoreCharacterSet.iterator();
+
+        while(it.hasNext()){
+            Character test = it.next();
+            if (test == ch) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
