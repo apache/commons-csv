@@ -396,12 +396,29 @@ public class LexerTest {
         ignoredCharacters.add('\u0001');
         ignoredCharacters.add('\u0002');
         ignoredCharacters.add('\u007F');
-        final String code = "SOH-Character\u0001,STX-Character\u0002,DEL-Character\u007F,";
+        final String code = "SOH-Character\u0001,STX-\u0002Character,\u007FDEL-Character,";
 
         try (final Lexer parser = createLexer(code, CSVFormat.DEFAULT.withIgnoreCharacterSet(ignoredCharacters))) {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "SOH-Character"));
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "STX-Character"));
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "DEL-Character"));
+            assertThat(parser.nextToken(new Token()), matches(EOF, ""));
+        }
+    }
+
+    @Test
+    public void testIgnoreEncapsulatedCharaters() throws IOException {
+        Set<Character> ignoredCharacters = new HashSet<>();
+        ignoredCharacters.add('\u0001');
+        ignoredCharacters.add('\u0002');
+        ignoredCharacters.add('\u007F');
+        final String code = "\"SOH-Character\"\u0001,\"STX-\u0002Character\",\u007F\"DEL-Character\",";
+
+        try (final Lexer parser = createLexer(code, CSVFormat.DEFAULT.withIgnoreCharacterSet(ignoredCharacters))) {
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "SOH-Character"));
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "STX-Character"));
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "DEL-Character"));
+            assertThat(parser.nextToken(new Token()), matches(EOF, ""));
         }
     }
 }

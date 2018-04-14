@@ -143,6 +143,7 @@ final class Lexer implements Closeable {
         // important: make sure a new char gets consumed in each iteration
         while (token.type == INVALID) {
             if (isIgnoredCharacter(c)){
+                c = reader.read();
                 continue;
             }
             // ignore whitespaces at beginning of a token
@@ -262,6 +263,9 @@ final class Lexer implements Closeable {
         while (true) {
             c = reader.read();
 
+            if (isIgnoredCharacter(c)) {
+                continue;
+            }
             if (isEscape(c)) {
                 final int unescaped = readEscape();
                 if (unescaped == END_OF_STREAM) { // unexpected char after escape
@@ -278,9 +282,10 @@ final class Lexer implements Closeable {
                     // token finish mark (encapsulator) reached: ignore whitespace till delimiter
                     while (true) {
                         c = reader.read();
-                        if (isIgnoredCharacter(c)){
+                        if (isIgnoredCharacter(c)) {
                             continue;
-                        } else if (isDelimiter(c)) {
+                        }
+                        if (isDelimiter(c)) {
                             token.type = TOKEN;
                             return token;
                         } else if (isEndOfFile(c)) {
