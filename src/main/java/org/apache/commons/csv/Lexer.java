@@ -298,7 +298,7 @@ final class Lexer implements Closeable {
                         } else if (!isWhitespace(c)) {
                             // error invalid char between token and next delimiter
                             throw new IOException("(line " + getCurrentLineNumber() +
-                                    ") invalid char between encapsulated token and delimiter");
+                                    " position " + ") invalid char between encapsulated token and delimiter");
                         }
                     }
                 }
@@ -471,12 +471,14 @@ final class Lexer implements Closeable {
      * @return true if character is to be ignored
      */
     boolean isIgnoredCharacter(final int ch) {
-        Iterator<Character> it = ignoreCharacterSet.iterator();
+        if (ignoreCharacterSet != null) {
+            Iterator<Character> it = ignoreCharacterSet.iterator();
 
-        while(it.hasNext()){
-            Character test = it.next();
-            if (test == ch) {
-                return true;
+            while(it.hasNext()){
+                Character test = it.next();
+                if (test == ch) {
+                    return true;
+                }
             }
         }
         return false;
