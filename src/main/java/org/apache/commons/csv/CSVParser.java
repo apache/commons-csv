@@ -99,7 +99,7 @@ import java.util.TreeMap;
  *
  * <p>
  * If the predefined formats don't match the format at hands, custom formats can be defined. More information about
- * customising CSVFormats is available in {@link CSVFormat CSVFormat JavaDoc}.
+ * customising CSVFormats is available in {@link CSVFormat CSVFormat Javadoc}.
  * </p>
  *
  * <h2>Parsing into memory</h2>
