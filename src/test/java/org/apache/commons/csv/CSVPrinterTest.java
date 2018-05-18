@@ -1187,7 +1187,7 @@ public class CSVPrinterTest {
     public void testRandomOracle() throws Exception {
         doRandom(CSVFormat.ORACLE, ITERATIONS_FOR_RANDOM_TEST);
     }
-    
+
     @Test
     @Ignore
     public void testRandomPostgreSqlCsv() throws Exception {
