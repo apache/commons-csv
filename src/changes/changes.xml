@@ -45,6 +45,7 @@
       <action issue="CSV-220" type="add" dev="ggregory" due-to="Gary Gregory">Add API org.apache.commons.csv.CSVFormat.withSystemRecordSeparator().</action>
       <action issue="CSV-223" type="fix" dev="ggregory" due-to="Samuel Martin">Inconsistency between Javadoc of CSVFormat DEFAULT EXCEL.</action>
       <action issue="CSV-209" type="fix" dev="ggregory" due-to="Gary Gregory">Create CSVFormat.ORACLE preset.</action>
+      <action issue="CSV-224" type="fix" dev="ggregory" due-to="David Warshaw">Some Multi Iterator Parsing Peek Sequences Incorrectly Consume Elements.</action>
     </release>
     <release version="1.5" date="2017-09-03" description="Feature and bug fix release">
       <action issue="CSV-203" type="fix" dev="ggregory" due-to="Richard Wheeldon, Kai Paroth">withNullString value is printed without quotes when QuoteMode.ALL is specified; add QuoteMode.ALL_NON_NULL. PR #17.</action>
