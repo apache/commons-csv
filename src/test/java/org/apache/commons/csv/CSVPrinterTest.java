@@ -1352,33 +1352,34 @@ public class CSVPrinterTest {
 
     @Test
     public void testCloseBackwardCompatibility() throws IOException {
-        final Writer writer = mock(Writer.class);
-        final CSVFormat csvFormat = CSVFormat.DEFAULT;
-        try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
-        }
-        verify(writer, never()).flush();
-        verify(writer, times(1)).close();
-    }
+        try (final Writer writer = mock(Writer.class)) {
+            final CSVFormat csvFormat = CSVFormat.DEFAULT;
+            try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+            }
+            verify(writer, never()).flush();
+            verify(writer, times(1)).close();
+        }}
 
     @Test
     public void testCloseWithCsvFormatAutoFlushOn() throws IOException {
         // System.out.println("start method");
-        final Writer writer = mock(Writer.class);
-        final CSVFormat csvFormat = CSVFormat.DEFAULT.withAutoFlush(true);
-        try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
-        }
-        verify(writer, times(1)).flush();
-        verify(writer, times(1)).close();
-    }
+        try (final Writer writer = mock(Writer.class)) {
+            final CSVFormat csvFormat = CSVFormat.DEFAULT.withAutoFlush(true);
+            try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+            }
+            verify(writer, times(1)).flush();
+            verify(writer, times(1)).close();
+        }}
 
     @Test
     public void testCloseWithCsvFormatAutoFlushOff() throws IOException {
-        final Writer writer = mock(Writer.class);
-        final CSVFormat csvFormat = CSVFormat.DEFAULT.withAutoFlush(false);
-        try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+        try (final Writer writer = mock(Writer.class)) {
+            final CSVFormat csvFormat = CSVFormat.DEFAULT.withAutoFlush(false);
+            try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+            }
+            verify(writer, never()).flush();
+            verify(writer, times(1)).close();
         }
-        verify(writer, never()).flush();
-        verify(writer, times(1)).close();
     }
 
 }
