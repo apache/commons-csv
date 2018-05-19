@@ -1103,7 +1103,7 @@ public class CSVParserTest {
             assertEquals(String.valueOf(recordNumber), record.get(0));
         }
     }
-    
+
     private void validateLineNumbers(final String lineSeparator) throws IOException {
         try (final CSVParser parser = CSVParser.parse("a" + lineSeparator + "b" + lineSeparator + "c",
                 CSVFormat.DEFAULT.withRecordSeparator(lineSeparator))) {
