@@ -21,12 +21,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.io.IOUtils;
@@ -55,55 +59,62 @@ public class PerformanceTest {
         "os.name",                       // Operating system name
         "os.arch",                       // Operating system architecture
         "os.version",                    // Operating system version
-
     };
 
-    private static int max = 10;
+    private static int max = 11; // skip first test
 
     private static int num = 0; // number of elapsed times recorded
     private static long[] elapsedTimes = new long[max];
 
     private static final CSVFormat format = CSVFormat.EXCEL;
 
-    private static final File BIG_FILE = new File(System.getProperty("java.io.tmpdir"), "worldcitiespop.txt");
+    private static final File BIG_FILE = new File("src/test/resources/perf/worldcitiespop.txt");
 
     public static void main(final String [] args) throws Exception {
         if (BIG_FILE.exists()) {
-            System.out.println(String.format("Found test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
+            System.out.printf("Found test fixture %s: %,d bytes.%n", BIG_FILE, BIG_FILE.length());
         } else {
-            System.out.println("Decompressing test fixture " + BIG_FILE + "...");
-            try (final InputStream input = new GZIPInputStream(
-                    new FileInputStream("src/test/resources/perf/worldcitiespop.txt.gz"));
+            final File compressedFile = new File(BIG_FILE.getParentFile(), BIG_FILE.getName() + ".gz");
+            System.out.printf("Decompressing test fixture %s...%n", compressedFile);
+            long bytesOut = 0L;
+            try (final InputStream input = new GZIPInputStream(new FileInputStream(compressedFile));
                     final OutputStream output = new FileOutputStream(BIG_FILE)) {
-                IOUtils.copy(input, output);
+                bytesOut = IOUtils.copy(input, output);
             }
-            System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
+            System.out.printf("Decompressed test fixture %s: %,d bytes to: %s: %,d bytes.%n", compressedFile, compressedFile.length(), BIG_FILE, bytesOut);
         }
         final int argc = args.length;
-        String tests[];
         if (argc > 0) {
-            max=Integer.parseInt(args[0]);
+            max = Integer.parseInt(args[0]);
         }
+
+        String tests[];
         if (argc > 1) {
-            tests = new String[argc-1];
+            tests = new String[argc - 1];
             for (int i = 1; i < argc; i++) {
-                tests[i-1]=args[i];
+                tests[i - 1] = args[i];
             }
         } else {
-            tests=new String[]{"file", "split", "extb", "exts", "csv", "lexreset", "lexnew"};
+            tests = new String[] { "file", "split", "extb", "exts", "csv", "csv-path", "csv-path-db", "csv-url", "lexreset", "lexnew" };
         }
-        for(final String p : PROPS) {
-            System.out.println(p+"="+System.getProperty(p));
+        for (final String p : PROPS) {
+            System.out.printf("%s=%s%n", p, System.getProperty(p));
         }
-        System.out.println("Max count: "+max+"\n");
+        System.out.printf("Max count: %d%n%n", max);
 
-        for(final String test : tests) {
+        for (final String test : tests) {
             if ("file".equals(test)) {
                 testReadBigFile(false);
             } else if ("split".equals(test)) {
                 testReadBigFile(true);
             } else if ("csv".equals(test)) {
                 testParseCommonsCSV();
+            } else if ("csv-path".equals(test)) {
+                testParsePath();
+            } else if ("csv-path-db".equals(test)) {
+                testParsePathDoubleBuffering();
+            } else if ("csv-url".equals(test)) {
+                testParseURL();
             } else if ("lexreset".equals(test)) {
                 testCSVLexer(false, test);
             } else if ("lexnew".equals(test)) {
@@ -115,13 +126,13 @@ public class PerformanceTest {
             } else if ("exts".equals(test)) {
                 testExtendedBuffer(true);
             } else {
-                System.out.println("Invalid test name: "+test);
+                System.out.printf("Invalid test name: %s%n", test);
             }
         }
     }
 
-    private static BufferedReader createReader() throws IOException {
-        return new BufferedReader(new FileReader(BIG_FILE));
+    private static Reader createReader() throws IOException {
+        return new InputStreamReader(new FileInputStream(BIG_FILE), StandardCharsets.ISO_8859_1);
     }
 
     // Container for basic statistics
@@ -129,35 +140,36 @@ public class PerformanceTest {
         final int count;
         final int fields;
         Stats(final int c, final int f) {
-            count=c;
-            fields=f;
+            count = c;
+            fields = f;
         }
     }
 
     // Display end stats; store elapsed for average
     private static void show(final String msg, final Stats s, final long start) {
         final long elapsed = System.currentTimeMillis() - start;
-        System.out.printf("%-20s: %5dms " + s.count + " lines "+ s.fields + " fields%n",msg,elapsed);
-        elapsedTimes[num++]=elapsed;
+        System.out.printf("%-20s: %5dms %d lines %d fields%n", msg, elapsed, s.count, s.fields);
+        elapsedTimes[num] = elapsed;
+        num++;
     }
 
     // calculate and show average
     private static void show(){
-        long tot = 0;
         if (num > 1) {
-            for(int i=1; i < num; i++) { // skip first test
+            long tot = 0;
+            for (int i = 1; i < num; i++) { // skip first test
                 tot += elapsedTimes[i];
             }
-            System.out.printf("%-20s: %5dms%n%n", "Average(not first)", tot/(num-1));
+            System.out.printf("%-20s: %5dms%n%n", "Average(not first)", tot / (num - 1));
         }
-        num=0; // ready for next set
+        num = 0; // ready for next set
     }
 
     private static void testReadBigFile(final boolean split) throws Exception {
         for (int i = 0; i < max; i++) {
             final long startMillis;
             final Stats stats;
-            try (final BufferedReader in = createReader()) {
+            try (final BufferedReader in = new BufferedReader(createReader())) {
                 startMillis = System.currentTimeMillis();
                 stats = readAll(in, split);
             }
@@ -166,16 +178,16 @@ public class PerformanceTest {
         show();
     }
 
-   private static Stats readAll(final BufferedReader in, final boolean split) throws IOException {
-       int count = 0;
-       int fields = 0;
-       String record;
-       while ((record=in.readLine()) != null) {
-           count++;
-           fields+= split ? record.split(",").length : 1;
-       }
-       return new Stats(count, fields);
-   }
+    private static Stats readAll(final BufferedReader in, final boolean split) throws IOException {
+        int count = 0;
+        int fields = 0;
+        String record;
+        while ((record = in.readLine()) != null) {
+            count++;
+            fields += split ? record.split(",").length : 1;
+        }
+        return new Stats(count, fields);
+    }
 
     private static void testExtendedBuffer(final boolean makeString) throws Exception {
         for (int i = 0; i < max; i++) {
@@ -215,27 +227,61 @@ public class PerformanceTest {
         show();
     }
 
-    private static void testParseCommonsCSV() throws Exception {
+    private static void testParser(final String msg, final CSVParserFactory fac) throws Exception {
         for (int i = 0; i < max; i++) {
             final long startMillis;
             final Stats stats;
-            try (final BufferedReader reader = createReader()) {
-                try (final CSVParser parser = new CSVParser(reader, format)) {
-                    startMillis = System.currentTimeMillis();
-                    stats = iterate(parser);
-                }
-                show("CSV", stats, startMillis);
+            try (final CSVParser parser = fac.createParser()) {
+                startMillis = System.currentTimeMillis();
+                stats = iterate(parser);
             }
+            show(msg, stats, startMillis);
         }
         show();
     }
 
+    private static interface CSVParserFactory {
+        public CSVParser createParser() throws IOException;
+    }
 
-   private static Constructor<Lexer> getLexerCtor(final String clazz) throws Exception {
-       @SuppressWarnings("unchecked")
-       final Class<Lexer> lexer = (Class<Lexer>) Class.forName("org.apache.commons.csv." + clazz);
-       return lexer.getConstructor(new Class<?>[]{CSVFormat.class, ExtendedBufferedReader.class});
-   }
+    private static void testParseCommonsCSV() throws Exception {
+        testParser("CSV", new CSVParserFactory() {
+            public CSVParser createParser() throws IOException {
+                return new CSVParser(createReader(), format);
+            }
+        });
+    }
+
+    private static void testParsePath() throws Exception {
+        testParser("CSV-PATH", new CSVParserFactory() {
+            public CSVParser createParser() throws IOException {
+                return CSVParser.parse(Files.newInputStream(Paths.get(BIG_FILE.toURI())), StandardCharsets.ISO_8859_1, format);
+            }
+        });
+    }
+
+    private static void testParsePathDoubleBuffering() throws Exception {
+        testParser("CSV-PATH-DB", new CSVParserFactory() {
+            public CSVParser createParser() throws IOException {
+                return CSVParser.parse(Files.newBufferedReader(Paths.get(BIG_FILE.toURI()), StandardCharsets.ISO_8859_1), format);
+            }
+        });
+    }
+
+    private static void testParseURL() throws Exception {
+        testParser("CSV-URL", new CSVParserFactory() {
+            public CSVParser createParser() throws IOException {
+                //NOTE: URL will always return a BufferedInputStream.
+                return CSVParser.parse(BIG_FILE.toURI().toURL(), StandardCharsets.ISO_8859_1, format);
+            }
+        });
+    }
+
+    private static Constructor<Lexer> getLexerCtor(final String clazz) throws Exception {
+        @SuppressWarnings("unchecked")
+        final Class<Lexer> lexer = (Class<Lexer>) Class.forName("org.apache.commons.csv." + clazz);
+        return lexer.getConstructor(new Class<?>[]{CSVFormat.class, ExtendedBufferedReader.class});
+    }
 
     private static void testCSVLexer(final boolean newToken, final String test) throws Exception {
         Token token = new Token();
@@ -245,7 +291,7 @@ public class PerformanceTest {
             final Stats stats;
             final long startMillis;
             try (final ExtendedBufferedReader input = new ExtendedBufferedReader(createReader());
-                    Lexer lexer = createTestCSVLexer(test, input)) {
+                    final Lexer lexer = createTestCSVLexer(test, input)) {
                 if (test.startsWith("CSVLexer")) {
                     dynamic = "!";
                 }
@@ -291,14 +337,14 @@ public class PerformanceTest {
                 .newInstance(new Object[] { format, input }) : new Lexer(format, input);
     }
 
-   private static Stats iterate(final Iterable<CSVRecord> it) {
-       int count = 0;
-       int fields = 0;
-       for (final CSVRecord record : it) {
-           count++;
-           fields+=record.size();
-       }
-       return new Stats(count, fields);
-   }
+    private static Stats iterate(final Iterable<CSVRecord> it) {
+        int count = 0;
+        int fields = 0;
+        for (final CSVRecord record : it) {
+            count++;
+            fields += record.size();
+        }
+        return new Stats(count, fields);
+    }
 
 }

@@ -39,6 +39,9 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -810,24 +813,78 @@ public class CSVParserTest {
         }
     }
 
+    @Test
+    public void testParse() throws Exception {
+        final ClassLoader loader = ClassLoader.getSystemClassLoader();
+        final URL url = loader.getResource("CSVFileParser/test.csv");
+        final CSVFormat format = CSVFormat.DEFAULT.withHeader("A", "B", "C", "D");
+        final Charset charset = StandardCharsets.UTF_8;
+
+        try(final CSVParser parser = CSVParser.parse(new InputStreamReader(url.openStream(), charset), format)) {
+            parseFully(parser);
+        }
+        try(final CSVParser parser = CSVParser.parse(new String(Files.readAllBytes(Paths.get(url.toURI())), charset), format)) {
+            parseFully(parser);
+        }
+        try(final CSVParser parser = CSVParser.parse(new File(url.toURI()), charset, format)) {
+            parseFully(parser);
+        }
+        try(final CSVParser parser = CSVParser.parse(url.openStream(), charset, format)) {
+            parseFully(parser);
+        }
+        try(final CSVParser parser = CSVParser.parse(Paths.get(url.toURI()), charset, format)) {
+            parseFully(parser);
+        }
+        try(final CSVParser parser = CSVParser.parse(url, charset, format)) {
+            parseFully(parser);
+        }
+        try(final CSVParser parser = new CSVParser(new InputStreamReader(url.openStream(), charset), format)) {
+            parseFully(parser);
+        }
+        try(final CSVParser parser = new CSVParser(new InputStreamReader(url.openStream(), charset), format, /*characterOffset=*/0, /*recordNumber=*/1)) {
+            parseFully(parser);
+        }
+    }
+
+    private void parseFully(final CSVParser parser) {
+        for (final Iterator<CSVRecord> records = parser.iterator(); records.hasNext(); ) {
+            records.next();
+        }
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testParseFileNullFormat() throws Exception {
-        CSVParser.parse(new File(""), Charset.defaultCharset(), null);
+        try (final CSVParser parser = CSVParser.parse(new File("CSVFileParser/test.csv"), Charset.defaultCharset(), null)) {
+            Assert.fail("This test should have thrown an exception.");
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseNullFileFormat() throws Exception {
-        CSVParser.parse((File) null, Charset.defaultCharset(), CSVFormat.DEFAULT);
+        try (final CSVParser parser = CSVParser.parse((File) null, Charset.defaultCharset(), CSVFormat.DEFAULT)) {
+            Assert.fail("This test should have thrown an exception.");
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseNullPathFormat() throws Exception {
+        try (final CSVParser parser = CSVParser.parse((Path) null, Charset.defaultCharset(), CSVFormat.DEFAULT)) {
+            Assert.fail("This test should have thrown an exception.");
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseNullStringFormat() throws Exception {
-        CSVParser.parse((String) null, CSVFormat.DEFAULT);
+        try (final CSVParser parser = CSVParser.parse((String) null, CSVFormat.DEFAULT)) {
+            Assert.fail("This test should have thrown an exception.");
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseNullUrlCharsetFormat() throws Exception {
-        CSVParser.parse((File) null, Charset.defaultCharset(), CSVFormat.DEFAULT);
+        try (final CSVParser parser = CSVParser.parse((URL) null, Charset.defaultCharset(), CSVFormat.DEFAULT)) {
+            Assert.fail("This test should have thrown an exception.");
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -839,7 +896,9 @@ public class CSVParserTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseStringNullFormat() throws Exception {
-        CSVParser.parse("csv data", null);
+        try (final CSVParser parser = CSVParser.parse("csv data", (CSVFormat) null)) {
+            Assert.fail("This test should have thrown an exception.");
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
