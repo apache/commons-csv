@@ -287,7 +287,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private final Lexer lexer;
 
     private final CSVRecordIterator csvRecordIterator;
-    
+
     /** A record buffer for getRecord(). Grows as necessary and is reused. */
     private final List<String> recordList = new ArrayList<>();
 
@@ -524,10 +524,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public Iterator<CSVRecord> iterator() {
         return csvRecordIterator;
     }
-    
+
     class CSVRecordIterator implements Iterator<CSVRecord> {
         private CSVRecord current;
-  
+
         private CSVRecord getNextRecord() {
             try {
                 return CSVParser.this.nextRecord();
@@ -536,7 +536,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                         e.getClass().getSimpleName() + " reading next record: " + e.toString(), e);
             }
         }
-  
+
         @Override
         public boolean hasNext() {
             if (CSVParser.this.isClosed()) {
@@ -545,10 +545,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             if (this.current == null) {
                 this.current = this.getNextRecord();
             }
-  
+
             return this.current != null;
         }
-  
+
         @Override
         public CSVRecord next() {
             if (CSVParser.this.isClosed()) {
@@ -556,7 +556,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             }
             CSVRecord next = this.current;
             this.current = null;
-  
+
             if (next == null) {
                 // hasNext() wasn't called before
                 next = this.getNextRecord();
@@ -564,10 +564,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     throw new NoSuchElementException("No more CSV records available");
                 }
             }
-  
+
             return next;
         }
-  
+
         @Override
         public void remove() {
             throw new UnsupportedOperationException();
