@@ -24,12 +24,13 @@ import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -54,7 +55,7 @@ public class CSVFileParserTest {
 
     public CSVFileParserTest(final File file) throws FileNotFoundException {
         this.testName = file.getName();
-        this.testData = new BufferedReader(new FileReader(file));
+        this.testData = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
     }
 
     private String readTestData() throws IOException {
@@ -67,16 +68,15 @@ public class CSVFileParserTest {
 
     @Parameters
     public static Collection<Object[]> generateData() {
-        final List<Object[]> list = new ArrayList<>();
-
         final FilenameFilter filenameFilter = new FilenameFilter() {
-
             @Override
             public boolean accept(final File dir, final String name) {
                 return name.startsWith("test") && name.endsWith(".txt");
             }
         };
         final File[] files = BASE.listFiles(filenameFilter);
+
+        final List<Object[]> list = new ArrayList<>();
         if (files != null) {
             for (final File f : files) {
                 list.add(new Object[] { f });
@@ -114,7 +114,7 @@ public class CSVFileParserTest {
 
         // Now parse the file and compare against the expected results
         // We use a buffered reader internally so no need to create one here.
-        try (final CSVParser parser = CSVParser.parse(new File(BASE, split[0]), Charset.defaultCharset(), format)) {
+        try (final CSVParser parser = CSVParser.parse(new File(BASE, split[0]), StandardCharsets.UTF_8, format)) {
             for (final CSVRecord record : parser) {
                 String parsed = Arrays.toString(record.values());
                 if (checkComments) {
@@ -158,7 +158,7 @@ public class CSVFileParserTest {
 
         // Now parse the file and compare against the expected results
         final URL resource = ClassLoader.getSystemResource("CSVFileParser/" + split[0]);
-        try (final CSVParser parser = CSVParser.parse(resource, Charset.forName("UTF-8"), format)) {
+        try (final CSVParser parser = CSVParser.parse(resource, StandardCharsets.UTF_8, format)) {
             for (final CSVRecord record : parser) {
                 String parsed = Arrays.toString(record.values());
                 if (checkComments) {

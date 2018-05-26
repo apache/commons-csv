@@ -218,11 +218,13 @@ CSV files of various types.
         <!-- Should agree with config in reporting section -->
         <configuration>
           <excludes>
+            <!-- <exclude>src/test/resources/**/*</exclude> -->
             <!-- These files are used as test data and test result specifications. -->
             <exclude>src/test/resources/csv-167/sample1.csv</exclude>
             <exclude>src/test/resources/CSV-198/optd_por_public.csv</exclude>
             <exclude>src/test/resources/CSV-213/999751170.patch.csv</exclude>
             <exclude>src/test/resources/CSVFileParser/bom.csv</exclude>
+            <exclude>src/test/resources/CSVFileParser/cstest.csv</exclude>
             <exclude>src/test/resources/CSVFileParser/test.csv</exclude>
             <exclude>src/test/resources/CSVFileParser/test_default.txt</exclude>
             <exclude>src/test/resources/CSVFileParser/test_default_comment.txt</exclude>
@@ -335,10 +337,12 @@ CSV files of various types.
         <!-- Should agree with config in build section -->
         <configuration>
           <excludes>
+            <!-- <exclude>src/test/resources/**/*</exclude> -->
             <exclude>src/test/resources/csv-167/sample1.csv</exclude>
             <exclude>src/test/resources/CSV-198/optd_por_public.csv</exclude>
             <exclude>src/test/resources/CSV-213/999751170.patch.csv</exclude>
             <exclude>src/test/resources/CSVFileParser/bom.csv</exclude>
+            <exclude>src/test/resources/CSVFileParser/cstest.csv</exclude>
             <exclude>src/test/resources/CSVFileParser/test.csv</exclude>
             <exclude>src/test/resources/CSVFileParser/test_default.txt</exclude>
             <exclude>src/test/resources/CSVFileParser/test_default_comment.txt</exclude>

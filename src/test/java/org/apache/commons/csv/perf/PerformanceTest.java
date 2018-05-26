@@ -22,11 +22,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.csv.CSVFormat;
@@ -62,8 +63,8 @@ public class PerformanceTest {
         }
     }
 
-    private BufferedReader createBufferedReader() throws IOException {
-        return new BufferedReader(new FileReader(BIG_FILE));
+    private Reader createReader() throws IOException {
+        return new InputStreamReader(new FileInputStream(BIG_FILE), StandardCharsets.ISO_8859_1);
     }
 
     private long parse(final Reader in, final boolean traverseColumns) throws IOException {
@@ -94,7 +95,7 @@ public class PerformanceTest {
 
     public long testParseBigFile(final boolean traverseColumns) throws Exception {
         final long startMillis = System.currentTimeMillis();
-        final long count = this.parse(this.createBufferedReader(), traverseColumns);
+        final long count = this.parse(this.createReader(), traverseColumns);
         final long totalMillis = System.currentTimeMillis() - startMillis;
         this.println(String.format("File parsed in %,d milliseconds with Commons CSV: %,d lines.", totalMillis, count));
         return totalMillis;
@@ -114,10 +115,9 @@ public class PerformanceTest {
         long bestTime = Long.MAX_VALUE;
         for (int i = 0; i < this.max; i++) {
             final long startMillis;
-            long count;
-            try (final BufferedReader in = this.createBufferedReader()) {
+            final long count;
+            try (final BufferedReader in = new BufferedReader(this.createReader())) {
                 startMillis = System.currentTimeMillis();
-                count = 0;
                 count = this.readAll(in);
             }
             final long totalMillis = System.currentTimeMillis() - startMillis;

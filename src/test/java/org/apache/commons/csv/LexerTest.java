@@ -35,6 +35,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.io.StringReader;
 
+import org.apache.commons.io.ByteOrderMark;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -385,6 +387,18 @@ public class LexerTest {
         final String code = "escaping at EOF is evil\\";
         try (final Lexer lexer = createLexer(code, formatWithEscaping)) {
             lexer.nextToken(new Token());
+        }
+    }
+
+    @Test(/*CSV-107*/)
+    public void testBOM() throws Exception {
+        final String data = String.valueOf(ByteOrderMark.UTF_BOM);
+        final String expected = String.valueOf(ByteOrderMark.UTF_BOM); // BOM is returned as content.
+        //final String expected = ""; // BOM is silently consumed (if the lexer ever supports it).
+        try (final Lexer lexer = createLexer(data, formatWithEscaping)) {
+            Token t = lexer.nextToken(new Token());
+            //System.out.printf("type: %s, rawcontent: %s hexcontent: %s%n", t.type, t.content, t.content.length() > 0 ? Integer.toHexString(t.content.charAt(0)) : "");
+            assertThat(t, matches(EOF, expected));
         }
     }
 }

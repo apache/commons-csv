@@ -53,8 +53,8 @@ public class JiraCsv213Test {
         try (CSVParser parser = csvFormat
                 .parse(new InputStreamReader(new FileInputStream(csvFile), StandardCharsets.UTF_8))) {
             if (parser.iterator().hasNext()) {
-                System.out.println(parser.getCurrentLineNumber());
-                System.out.println(parser.getRecordNumber());
+                //System.out.println(parser.getCurrentLineNumber());
+                //System.out.println(parser.getRecordNumber());
                 // get only first record we don't need other's
                 final CSVRecord firstRecord = parser.iterator().next(); // this fails
 

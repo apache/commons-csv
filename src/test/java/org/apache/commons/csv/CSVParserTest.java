@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.input.BOMInputStream;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -62,10 +63,6 @@ import org.junit.Test;
  */
 public class CSVParserTest {
 
-    private static final Charset UTF_8 = StandardCharsets.UTF_8;
-
-    private static final String UTF_8_NAME = UTF_8.name();
-
     private static final String CSV_INPUT = "a,b,c,d\n" + " a , b , 1 2 \n" + "\"foo baar\", b,\n"
             // + " \"foo\n,,\n\"\",,\n\\\"\",d,e\n";
             + "   \"foo\n,,\n\"\",,\n\"\"\",d,e\n"; // changed to use standard CSV escaping
@@ -77,14 +74,8 @@ public class CSVParserTest {
     private static final String[][] RESULT = { { "a", "b", "c", "d" }, { "a", "b", "1 2" }, { "foo baar", "b", "" },
             { "foo\n,,\n\",,\n\"", "d", "e" } };
 
-    private BOMInputStream createBOMInputStream(final String resource) throws IOException {
-        final URL url = ClassLoader.getSystemClassLoader().getResource(resource);
-        return new BOMInputStream(url.openStream());
-    }
-
     @Test
     public void testBackslashEscaping() throws IOException {
-
         // To avoid confusion over the need for escaping chars in java code,
         // We will test with a forward slash as the escape char, and a single
         // quote as the encapsulator.
@@ -123,7 +114,6 @@ public class CSVParserTest {
 
     @Test
     public void testBackslashEscaping2() throws IOException {
-
         // To avoid confusion over the need for escaping chars in java code,
         // We will test with a forward slash as the escape char, and a single
         // quote as the encapsulator.
@@ -156,7 +146,7 @@ public class CSVParserTest {
         final String[][] res = { { "one", "two", "three" }, { "on\\\"e", "two" }, { "on\"e", "two" },
                 { "one", "tw\"o" }, { "one", "t\\,wo" }, // backslash in quotes only escapes a delimiter (",")
                 { "one", "two", "th,ree" }, { "a\\\\" }, // backslash in quotes only escapes a delimiter (",")
-                { "a\\", "b" }, // a backslash must be returnd
+                { "a\\", "b" }, // a backslash must be returned
                 { "a\\\\,b" } // backslash in quotes only escapes a delimiter (",")
         };
         try (final CSVParser parser = CSVParser.parse(code, CSVFormat.DEFAULT)) {
@@ -173,35 +163,29 @@ public class CSVParserTest {
     @Ignore("CSV-107")
     public void testBOM() throws IOException {
         final URL url = ClassLoader.getSystemClassLoader().getResource("CSVFileParser/bom.csv");
-        try (final CSVParser parser = CSVParser.parse(url, Charset.forName(UTF_8_NAME), CSVFormat.EXCEL.withHeader())) {
+        try (final CSVParser parser = CSVParser.parse(url, StandardCharsets.UTF_8, CSVFormat.EXCEL.withHeader())) {
             for (final CSVRecord record : parser) {
-                final String string = record.get("Date");
-                Assert.assertNotNull(string);
-                // System.out.println("date: " + record.get("Date"));
+                Assert.assertNotNull(record.get("Date"));
             }
         }
     }
 
     @Test
     public void testBOMInputStream_ParserWithReader() throws IOException {
-        try (final Reader reader = new InputStreamReader(createBOMInputStream("CSVFileParser/bom.csv"), UTF_8_NAME);
+        try (final Reader reader = new InputStreamReader(createBOMInputStream("CSVFileParser/bom.csv"), StandardCharsets.UTF_8);
                 final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader())) {
             for (final CSVRecord record : parser) {
-                final String string = record.get("Date");
-                Assert.assertNotNull(string);
-                // System.out.println("date: " + record.get("Date"));
+                Assert.assertNotNull(record.get("Date"));
             }
         }
     }
 
     @Test
     public void testBOMInputStream_parseWithReader() throws IOException {
-        try (final Reader reader = new InputStreamReader(createBOMInputStream("CSVFileParser/bom.csv"), UTF_8_NAME);
+        try (final Reader reader = new InputStreamReader(createBOMInputStream("CSVFileParser/bom.csv"), StandardCharsets.UTF_8);
                 final CSVParser parser = CSVParser.parse(reader, CSVFormat.EXCEL.withHeader())) {
             for (final CSVRecord record : parser) {
-                final String string = record.get("Date");
-                Assert.assertNotNull(string);
-                // System.out.println("date: " + record.get("Date"));
+                Assert.assertNotNull(record.get("Date"));
             }
         }
     }
@@ -209,12 +193,29 @@ public class CSVParserTest {
     @Test
     public void testBOMInputStream_ParserWithInputStream() throws IOException {
         try (final BOMInputStream inputStream = createBOMInputStream("CSVFileParser/bom.csv");
-                final CSVParser parser = CSVParser.parse(inputStream, UTF_8, CSVFormat.EXCEL.withHeader())) {
+                final CSVParser parser = CSVParser.parse(inputStream, StandardCharsets.UTF_8, CSVFormat.EXCEL.withHeader())) {
             for (final CSVRecord record : parser) {
-                final String string = record.get("Date");
-                Assert.assertNotNull(string);
-                // System.out.println("date: " + record.get("Date"));
+                Assert.assertNotNull(record.get("Date"));
             }
+        }
+    }
+
+    private BOMInputStream createBOMInputStream(final String resource) throws IOException {
+        final URL url = ClassLoader.getSystemClassLoader().getResource(resource);
+        return new BOMInputStream(url.openStream());
+    }
+
+    @Test(/*CSV-107*/)
+    public void testBOMString() throws IOException {
+        final String bomstr = String.valueOf(ByteOrderMark.UTF_BOM);
+        try (final CSVParser parser = CSVParser.parse(bomstr, CSVFormat.DEFAULT)) {
+            final List<CSVRecord> records = parser.getRecords();
+            Assert.assertEquals(1,      records.size());
+            Assert.assertEquals(bomstr, records.get(0).get(0)); // BOM is returned as content.
+            Assert.assertEquals(0,      parser.getCurrentLineNumber());
+            //NOTE: These are the expected results when the lexer consumes the BOM.
+            //Assert.assertEquals(0, records.size());
+            //Assert.assertEquals(0, parser.getCurrentLineNumber());
         }
     }
 
@@ -682,6 +683,13 @@ public class CSVParserTest {
     }
 
     @Test
+    public void testNoHeaderMap() throws Exception {
+        try (final CSVParser parser = CSVParser.parse("a,b,c\n1,2,3\nx,y,z", CSVFormat.DEFAULT)) {
+            Assert.assertNull(parser.getHeaderMap());
+        }
+    }
+
+    @Test
     public void testIgnoreEmptyLines() throws IOException {
         final String code = "\nfoo,baar\n\r\n,\n\n,world\r\n\n";
         // String code = "world\r\n\n";
@@ -792,27 +800,6 @@ public class CSVParserTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testNewCSVParserNullReaderFormat() throws Exception {
-        try (final CSVParser parser = new CSVParser(null, CSVFormat.DEFAULT)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testNewCSVParserReaderNullFormat() throws Exception {
-        try (final CSVParser parser = new CSVParser(new StringReader(""), null)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
-    }
-
-    @Test
-    public void testNoHeaderMap() throws Exception {
-        try (final CSVParser parser = CSVParser.parse("a,b,c\n1,2,3\nx,y,z", CSVFormat.DEFAULT)) {
-            Assert.assertNull(parser.getHeaderMap());
-        }
-    }
-
     @Test
     public void testParse() throws Exception {
         final ClassLoader loader = ClassLoader.getSystemClassLoader();
@@ -820,28 +807,28 @@ public class CSVParserTest {
         final CSVFormat format = CSVFormat.DEFAULT.withHeader("A", "B", "C", "D");
         final Charset charset = StandardCharsets.UTF_8;
 
-        try(final CSVParser parser = CSVParser.parse(new InputStreamReader(url.openStream(), charset), format)) {
+        try (final CSVParser parser = CSVParser.parse(new InputStreamReader(url.openStream(), charset), format)) {
             parseFully(parser);
         }
-        try(final CSVParser parser = CSVParser.parse(new String(Files.readAllBytes(Paths.get(url.toURI())), charset), format)) {
+        try (final CSVParser parser = CSVParser.parse(new String(Files.readAllBytes(Paths.get(url.toURI())), charset), format)) {
             parseFully(parser);
         }
-        try(final CSVParser parser = CSVParser.parse(new File(url.toURI()), charset, format)) {
+        try (final CSVParser parser = CSVParser.parse(new File(url.toURI()), charset, format)) {
             parseFully(parser);
         }
-        try(final CSVParser parser = CSVParser.parse(url.openStream(), charset, format)) {
+        try (final CSVParser parser = CSVParser.parse(url.openStream(), charset, format)) {
             parseFully(parser);
         }
-        try(final CSVParser parser = CSVParser.parse(Paths.get(url.toURI()), charset, format)) {
+        try (final CSVParser parser = CSVParser.parse(Paths.get(url.toURI()), charset, format)) {
             parseFully(parser);
         }
-        try(final CSVParser parser = CSVParser.parse(url, charset, format)) {
+        try (final CSVParser parser = CSVParser.parse(url, charset, format)) {
             parseFully(parser);
         }
-        try(final CSVParser parser = new CSVParser(new InputStreamReader(url.openStream(), charset), format)) {
+        try (final CSVParser parser = new CSVParser(new InputStreamReader(url.openStream(), charset), format)) {
             parseFully(parser);
         }
-        try(final CSVParser parser = new CSVParser(new InputStreamReader(url.openStream(), charset), format, /*characterOffset=*/0, /*recordNumber=*/1)) {
+        try (final CSVParser parser = new CSVParser(new InputStreamReader(url.openStream(), charset), format, /*characterOffset=*/0, /*recordNumber=*/1)) {
             parseFully(parser);
         }
     }
@@ -854,21 +841,22 @@ public class CSVParserTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseFileNullFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse(new File("CSVFileParser/test.csv"), Charset.defaultCharset(), null)) {
+        final File file = new File(ClassLoader.getSystemClassLoader().getResource("CSVFileParser/test.csv").toURI());
+        try (final CSVParser parser = CSVParser.parse(file, StandardCharsets.UTF_8, null)) {
             Assert.fail("This test should have thrown an exception.");
         }
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseNullFileFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse((File) null, Charset.defaultCharset(), CSVFormat.DEFAULT)) {
+        try (final CSVParser parser = CSVParser.parse((File) null, StandardCharsets.UTF_8, CSVFormat.DEFAULT)) {
             Assert.fail("This test should have thrown an exception.");
         }
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseNullPathFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse((Path) null, Charset.defaultCharset(), CSVFormat.DEFAULT)) {
+        try (final CSVParser parser = CSVParser.parse((Path) null, StandardCharsets.UTF_8, CSVFormat.DEFAULT)) {
             Assert.fail("This test should have thrown an exception.");
         }
     }
@@ -882,7 +870,7 @@ public class CSVParserTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseNullUrlCharsetFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse((URL) null, Charset.defaultCharset(), CSVFormat.DEFAULT)) {
+        try (final CSVParser parser = CSVParser.parse((URL) null, StandardCharsets.UTF_8, CSVFormat.DEFAULT)) {
             Assert.fail("This test should have thrown an exception.");
         }
     }
@@ -896,14 +884,30 @@ public class CSVParserTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseStringNullFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse("csv data", (CSVFormat) null)) {
+        final URL url = ClassLoader.getSystemClassLoader().getResource("CSVFileParser/test.csv");
+        final String data = new String(Files.readAllBytes(Paths.get(url.toURI())), StandardCharsets.UTF_8);
+        try (final CSVParser parser = CSVParser.parse(data, (CSVFormat) null)) {
             Assert.fail("This test should have thrown an exception.");
         }
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseUrlCharsetNullFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse(new URL("http://commons.apache.org"), Charset.defaultCharset(), null)) {
+        try (final CSVParser parser = CSVParser.parse(new URL("http://commons.apache.org"), StandardCharsets.UTF_8, null)) {
+            Assert.fail("This test should have thrown an exception.");
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNewCSVParserNullReaderFormat() throws Exception {
+        try (final CSVParser parser = new CSVParser(null, CSVFormat.DEFAULT)) {
+            Assert.fail("This test should have thrown an exception.");
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNewCSVParserReaderNullFormat() throws Exception {
+        try (final CSVParser parser = new CSVParser(new StringReader(""), null)) {
             Assert.fail("This test should have thrown an exception.");
         }
     }

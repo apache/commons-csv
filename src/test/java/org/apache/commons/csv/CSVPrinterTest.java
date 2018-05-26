@@ -1015,6 +1015,14 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testPrintSystemOut() throws IOException {
+        try (final CSVPrinter printer = CSVFormat.DEFAULT.withEscape('\u0000').withQuoteMode(QuoteMode.NONE).printer()) {
+            printer.print("###### This line was intentionally printed to System.out ######");
+            printer.println();
+        }
+    }
+
+    @Test
     public void testPrintCustomNullValues() throws IOException {
         final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withNullString("NULL"))) {
@@ -1296,7 +1304,8 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintRecordsWithResultSetOneRow() throws IOException, SQLException {
-        try (CSVPrinter csvPrinter = CSVFormat.MYSQL.printer()) {
+        final CharArrayWriter writer = new CharArrayWriter();
+        try (CSVPrinter csvPrinter = CSVFormat.MYSQL.print(writer)) {
             final Value[] valueArray = new Value[0];
             final ValueArray valueArrayTwo = ValueArray.get(valueArray);
             try (ResultSet resultSet = valueArrayTwo.getResultSet()) {
@@ -1319,11 +1328,11 @@ public class CSVPrinterTest {
         assertEquals("\n\n\n\n\n\n", charArrayWriter.toString());
     }
 
-
     @Test
     public void testPrintRecordsWithEmptyVector() throws IOException {
-        try (CSVPrinter csvPrinter = CSVFormat.POSTGRESQL_TEXT.printer()) {
-            final Vector<CSVFormatTest.EmptyEnum> vector = new Vector<>();
+        final CharArrayWriter writer = new CharArrayWriter(0);
+        try (CSVPrinter csvPrinter = CSVFormat.POSTGRESQL_TEXT.print(writer)) {
+            final Vector<String> vector = new Vector<>();
             final int expectedCapacity = 23;
             vector.setSize(expectedCapacity);
             csvPrinter.printRecords(vector);
