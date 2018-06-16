@@ -1943,7 +1943,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Returns a new {@code CSVFormat} with skipping the header record set to {@code true}.
      *
-     * @return A new CSVFormat that is equal to this but with the the specified skipHeaderRecord setting.
+     * @return A new CSVFormat that is equal to this but with the specified skipHeaderRecord setting.
      * @see #withSkipHeaderRecord(boolean)
      * @see #withHeader(String...)
      * @since 1.1
@@ -1958,7 +1958,7 @@ public final class CSVFormat implements Serializable {
      * @param skipHeaderRecord
      *            whether to skip the header record.
      *
-     * @return A new CSVFormat that is equal to this but with the the specified skipHeaderRecord setting.
+     * @return A new CSVFormat that is equal to this but with the specified skipHeaderRecord setting.
      * @see #withHeader(String...)
      */
     public CSVFormat withSkipHeaderRecord(final boolean skipHeaderRecord) {
