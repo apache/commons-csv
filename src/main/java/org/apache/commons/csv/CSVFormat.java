@@ -386,8 +386,9 @@ public final class CSVFormat implements Serializable {
      * Default Oracle format used by the SQL*Loader utility.
      *
      * <p>
-     * This is a comma-delimited format with the system line separator character as the record separator. Values are double quoted when needed and special
-     * characters are escaped with {@code '"'}. The default NULL string is {@code ""}. Values are trimmed.
+     * This is a comma-delimited format with the system line separator character as the record separator.Values are
+     * double quoted when needed and special characters are escaped with {@code '"'}. The default NULL string is
+     * {@code ""}. Values are trimmed.
      * </p>
      *
      * <p>
@@ -405,7 +406,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#Oracle
-     * @see <a href="https://docs.oracle.com/database/121/SUTIL/GUID-D1762699-8154-40F6-90DE-EFB8EB6A9AB0.htm#SUTIL4217">https://docs.oracle.com/database/121/SUTIL/GUID-D1762699-8154-40F6-90DE-EFB8EB6A9AB0.htm#SUTIL4217</a>
+     * @see <a href="https://s.apache.org/CGXG">Oracle CSV Format Specification</a>
      * @since 1.6
      */
     // @formatter:off
@@ -442,8 +443,8 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#MySQL
-     * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html"> https://www.postgresql.org/docs/current/static/sql-copy.html
-     *      -data.html</a>
+     * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL COPY command
+     *          documentation</a>
      * @since 1.5
      */
     // @formatter:off
@@ -479,7 +480,8 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#MySQL
-     * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html"> https://www.postgresql.org/docs/current/static/sql-copy.html</a>
+     * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL COPY command
+     *          documentation</a>
      * @since 1.5
      */
     // @formatter:off
