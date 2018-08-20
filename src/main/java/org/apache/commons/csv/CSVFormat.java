@@ -58,8 +58,13 @@ import java.util.Set;
  * <ul>
  * <li>{@link #DEFAULT}</li>
  * <li>{@link #EXCEL}</li>
+ * <li>{@link #INFORMIX_UNLOAD}</li>
+ * <li>{@link #INFORMIX_UNLOAD_CSV}</li>
  * <li>{@link #MYSQL}</li>
  * <li>{@link #RFC4180}</li>
+ * <li>{@link #ORACLE}</li>
+ * <li>{@link #POSTGRESQL_CSV}</li>
+ * <li>{@link #POSTGRESQL_TEXT}</li>
  * <li>{@link #TDF}</li>
  * </ul>
  *
