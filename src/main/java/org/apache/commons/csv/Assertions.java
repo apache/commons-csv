@@ -30,7 +30,7 @@ final class Assertions {
         // can not be instantiated
     }
 
-    public static void notNull(final Object parameter, final String parameterName) {
+    static void notNull(final Object parameter, final String parameterName) {
         if (parameter == null) {
             throw new IllegalArgumentException("Parameter '" + parameterName + "' must not be null!");
         }
