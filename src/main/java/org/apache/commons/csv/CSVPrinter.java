@@ -26,6 +26,7 @@ import java.io.Flushable;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 /**
  * Prints values in a CSV format.
@@ -321,15 +322,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void printRecords(final Object... values) throws IOException {
-        for (final Object value : values) {
-            if (value instanceof Object[]) {
-                this.printRecord((Object[]) value);
-            } else if (value instanceof Iterable) {
-                this.printRecord((Iterable<?>) value);
-            } else {
-                this.printRecord(value);
-            }
-        }
+        printRecords(Arrays.asList(values));
     }
 
     /**
