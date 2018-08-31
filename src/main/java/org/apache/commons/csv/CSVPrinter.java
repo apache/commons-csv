@@ -64,7 +64,6 @@ import java.util.Arrays;
  *
  * 2,mary,Mary,Meyer,1985-03-29
  * </pre>
- * <p></p>
  */
 public final class CSVPrinter implements Flushable, Closeable {
 
