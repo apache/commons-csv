@@ -155,6 +155,8 @@ CSV files of various types.
 
     <!-- Fix for COMMONSSITE-124 remove once commons-parent 48 has been released -->
     <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commons/content/proper/${project.artifactId}</commons.scmPubUrl>
+    <!-- Fix for COMMONSSITE-125 remove once commons-parent 48 has been released -->
+    <commons.osgi.symbolicName>org.apache.commons.${commons.componentid}</commons.osgi.symbolicName>
   </properties>
 
   <build>
