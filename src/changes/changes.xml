@@ -38,7 +38,7 @@
     <title>Release Notes</title>
   </properties>
   <body>
-    <release version="1.6" date="2018-MM-DD" description="Feature and bug fix release">
+    <release version="1.6" date="2018-09-22" description="Feature and bug fix release">
       <action issue="CSV-231" type="update" dev="britter">Add more documentation to CSVPrinter.</action>
       <action issue="CSV-217" type="add" dev="ggregory" due-to="Korolyov Alexei">Add autoFlush option for CsvPrinter. PR #24.</action>
       <action issue="CSV-219" type="fix" dev="ggregory" due-to="Zhang Hongda">The behavior of quote char using is not similar as Excel does when the first string contains CJK char(s).</action>
