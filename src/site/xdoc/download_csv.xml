@@ -102,7 +102,7 @@ limitations under the License.
         It is essential that you
         <a href="https://www.apache.org/info/verification.html">verify the integrity</a>
         of downloaded files, preferably using the <code>PGP</code> signature (<code>*.asc</code> files);
-        failing that using the <code>MD5</code> hash (<code>*.md5</code> checksum files).
+        failing that using the <code>SHA-512</code> hash (<code>*.sha512</code> checksum files).
       </p>
       <p>
         The <a href="https://www.apache.org/dist/commons/KEYS">KEYS</a>
@@ -111,32 +111,32 @@ limitations under the License.
       </p>
     </subsection>
     </section>
-    <section name="Apache Commons CSV 1.5 (Java 7+)">
+    <section name="Apache Commons CSV 1.6 (Java 7+)">
       <subsection name="Binaries">
         <table>
           <tr>
-              <td><a href="[preferred]/commons/csv/binaries/commons-csv-1.5-bin.tar.gz">commons-csv-1.5-bin.tar.gz</a></td>
-              <td><a href="https://www.apache.org/dist/commons/csv/binaries/commons-csv-1.5-bin.tar.gz.md5">md5</a></td>
-              <td><a href="https://www.apache.org/dist/commons/csv/binaries/commons-csv-1.5-bin.tar.gz.asc">pgp</a></td>
+              <td><a href="[preferred]/commons/csv/binaries/commons-csv-1.6-bin.tar.gz">commons-csv-1.6-bin.tar.gz</a></td>
+              <td><a href="https://www.apache.org/dist/commons/csv/binaries/commons-csv-1.6-bin.tar.gz.sha512">sha512</a></td>
+              <td><a href="https://www.apache.org/dist/commons/csv/binaries/commons-csv-1.6-bin.tar.gz.asc">pgp</a></td>
           </tr>
           <tr>
-              <td><a href="[preferred]/commons/csv/binaries/commons-csv-1.5-bin.zip">commons-csv-1.5-bin.zip</a></td>
-              <td><a href="https://www.apache.org/dist/commons/csv/binaries/commons-csv-1.5-bin.zip.md5">md5</a></td>
-              <td><a href="https://www.apache.org/dist/commons/csv/binaries/commons-csv-1.5-bin.zip.asc">pgp</a></td>
+              <td><a href="[preferred]/commons/csv/binaries/commons-csv-1.6-bin.zip">commons-csv-1.6-bin.zip</a></td>
+              <td><a href="https://www.apache.org/dist/commons/csv/binaries/commons-csv-1.6-bin.zip.sha512">sha512</a></td>
+              <td><a href="https://www.apache.org/dist/commons/csv/binaries/commons-csv-1.6-bin.zip.asc">pgp</a></td>
           </tr>
         </table>
       </subsection>
       <subsection name="Source">
         <table>
           <tr>
-              <td><a href="[preferred]/commons/csv/source/commons-csv-1.5-src.tar.gz">commons-csv-1.5-src.tar.gz</a></td>
-              <td><a href="https://www.apache.org/dist/commons/csv/source/commons-csv-1.5-src.tar.gz.md5">md5</a></td>
-              <td><a href="https://www.apache.org/dist/commons/csv/source/commons-csv-1.5-src.tar.gz.asc">pgp</a></td>
+              <td><a href="[preferred]/commons/csv/source/commons-csv-1.6-src.tar.gz">commons-csv-1.6-src.tar.gz</a></td>
+              <td><a href="https://www.apache.org/dist/commons/csv/source/commons-csv-1.6-src.tar.gz.sha512">sha512</a></td>
+              <td><a href="https://www.apache.org/dist/commons/csv/source/commons-csv-1.6-src.tar.gz.asc">pgp</a></td>
           </tr>
           <tr>
-              <td><a href="[preferred]/commons/csv/source/commons-csv-1.5-src.zip">commons-csv-1.5-src.zip</a></td>
-              <td><a href="https://www.apache.org/dist/commons/csv/source/commons-csv-1.5-src.zip.md5">md5</a></td>
-              <td><a href="https://www.apache.org/dist/commons/csv/source/commons-csv-1.5-src.zip.asc">pgp</a></td>
+              <td><a href="[preferred]/commons/csv/source/commons-csv-1.6-src.zip">commons-csv-1.6-src.zip</a></td>
+              <td><a href="https://www.apache.org/dist/commons/csv/source/commons-csv-1.6-src.zip.sha512">sha512</a></td>
+              <td><a href="https://www.apache.org/dist/commons/csv/source/commons-csv-1.6-src.zip.asc">pgp</a></td>
           </tr>
         </table>
       </subsection>
