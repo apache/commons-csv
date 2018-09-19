@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>43</version>
+    <version>47</version>
   </parent>
   <artifactId>commons-csv</artifactId>
   <version>1.6-SNAPSHOT</version>
@@ -152,6 +152,9 @@ CSV files of various types.
     <checkstyle.version>2.17</checkstyle.version>
     <checkstyle.header.file>${basedir}/LICENSE-header.txt</checkstyle.header.file>
     <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt</checkstyle.resourceExcludes>
+
+    <!-- Fix for COMMONSSITE-124 remove once commons-parent 48 has been released -->
+    <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commons/content/proper/${project.artifactId}</commons.scmPubUrl>
   </properties>
 
   <build>
