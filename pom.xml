@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>43</version>
+    <version>47</version>
   </parent>
   <artifactId>commons-csv</artifactId>
   <version>1.6-SNAPSHOT</version>
@@ -152,6 +152,11 @@ CSV files of various types.
     <checkstyle.version>2.17</checkstyle.version>
     <checkstyle.header.file>${basedir}/LICENSE-header.txt</checkstyle.header.file>
     <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt</checkstyle.resourceExcludes>
+
+    <!-- Fix for COMMONSSITE-124 remove once commons-parent 48 has been released -->
+    <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commons/content/proper/${project.artifactId}</commons.scmPubUrl>
+    <!-- Fix for COMMONSSITE-125 remove once commons-parent 48 has been released -->
+    <commons.osgi.symbolicName>org.apache.commons.${commons.componentid}</commons.osgi.symbolicName>
   </properties>
 
   <build>
@@ -235,6 +240,45 @@ CSV files of various types.
             <exclude>src/test/resources/ferc.gov/contract.txt</exclude>
             <exclude>src/test/resources/ferc.gov/transaction.txt</exclude>
           </excludes>
+        </configuration>
+      </plugin>
+
+      <!--
+        calculate checksums of release artifacts for Apache dist area
+      -->
+      <plugin>
+        <groupId>net.nicoulaj.maven.plugins</groupId>
+        <artifactId>checksum-maven-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <id>generate.checksums</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>files</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <algorithms>
+            <algorithm>SHA-512</algorithm>
+          </algorithms>
+          <csvSummary>false</csvSummary>
+          <fileSets>
+            <fileSet>
+              <directory>${project.build.directory}</directory>
+              <includes>
+                <include>${project.artifactId}-${project.version}-src.zip</include>
+                <include>
+                  ${project.artifactId}-${project.version}-src.tar.gz
+                </include>
+                <include>${project.artifactId}-${project.version}-bin.zip</include>
+                <include>
+                  ${project.artifactId}-${project.version}-bin.tar.gz
+                </include>
+              </includes>
+            </fileSet>
+          </fileSets>
         </configuration>
       </plugin>
     </plugins>
