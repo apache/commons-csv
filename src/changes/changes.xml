@@ -38,6 +38,8 @@
     <title>Release Notes</title>
   </properties>
   <body>
+    <release version="1.7" date="tba" description="Feature and bug fix release">
+    </release>
     <release version="1.6" date="2018-09-22" description="Feature and bug fix release">
       <action issue="CSV-231" type="update" dev="britter">Add more documentation to CSVPrinter.</action>
       <action issue="CSV-217" type="add" dev="ggregory" due-to="Korolyov Alexei">Add autoFlush option for CsvPrinter. PR #24.</action>
