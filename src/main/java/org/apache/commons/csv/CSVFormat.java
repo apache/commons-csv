@@ -442,7 +442,7 @@ public final class CSVFormat implements Serializable {
      * <li>withQuote('"')</li>
      * <li>withRecordSeparator('\n')</li>
      * <li>withIgnoreEmptyLines(false)</li>
-     * <li>withEscape('\\')</li>
+     * <li>withEscape('"')</li>
      * <li>withNullString("")</li>
      * <li>withQuoteMode(QuoteMode.ALL_NON_NULL)</li>
      * </ul>
@@ -455,7 +455,7 @@ public final class CSVFormat implements Serializable {
     // @formatter:off
     public static final CSVFormat POSTGRESQL_CSV = DEFAULT
             .withDelimiter(COMMA)
-            .withEscape(BACKSLASH)
+            .withEscape(DOUBLE_QUOTE_CHAR)
             .withIgnoreEmptyLines(false)
             .withQuote(DOUBLE_QUOTE_CHAR)
             .withRecordSeparator(LF)
