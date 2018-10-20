@@ -390,7 +390,7 @@ public class CSVFormatTest {
 
         final CSVFormat cSVFormat = CSVFormat.POSTGRESQL_TEXT;
 
-        assertEquals('\"', (char)cSVFormat.getEscapeCharacter());
+        assertEquals('\\', (char)cSVFormat.getEscapeCharacter());
         assertFalse(cSVFormat.getIgnoreSurroundingSpaces());
 
         assertFalse(cSVFormat.getTrailingDelimiter());
@@ -417,7 +417,7 @@ public class CSVFormatTest {
         assertEquals('\"', (char)cSVFormat.getQuoteCharacter());
         assertTrue(cSVFormat.isNullStringSet());
 
-        assertEquals('\"', (char)cSVFormat.getEscapeCharacter());
+        assertEquals('\\', (char)cSVFormat.getEscapeCharacter());
         assertFalse(cSVFormat.getIgnoreSurroundingSpaces());
 
         assertFalse(cSVFormat.getTrailingDelimiter());
