@@ -438,13 +438,13 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     * <li>withDelimiter(',')</li>
-     * <li>withQuote('"')</li>
-     * <li>withRecordSeparator('\n')</li>
-     * <li>withIgnoreEmptyLines(false)</li>
-     * <li>withEscape('\\')</li>
-     * <li>withNullString("")</li>
-     * <li>withQuoteMode(QuoteMode.ALL_NON_NULL)</li>
+     * <li>{@code withDelimiter(',')}</li>
+     * <li>{@code withEscape('"')}</li>
+     * <li>{@code withIgnoreEmptyLines(false)}</li>
+     * <li>{@code withQuote('"')}</li>
+     * <li>{@code withRecordSeparator('\n')}</li>
+     * <li>{@code withNullString("")}</li>
+     * <li>{@code withQuoteMode(QuoteMode.ALL_NON_NULL)}</li>
      * </ul>
      *
      * @see Predefined#MySQL
