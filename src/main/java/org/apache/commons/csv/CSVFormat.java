@@ -243,10 +243,10 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     * <li>withDelimiter(',')</li>
-     * <li>withQuote('"')</li>
-     * <li>withRecordSeparator("\r\n")</li>
-     * <li>withIgnoreEmptyLines(true)</li>
+     * <li>{@code withDelimiter(',')}</li>
+     * <li>{@code withQuote('"')}</li>
+     * <li>{@code withRecordSeparator("\r\n")}</li>
+     * <li>{@code withIgnoreEmptyLines(true)}</li>
      * </ul>
      *
      * @see Predefined#Default
@@ -270,11 +270,11 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     * <li>{@link #withDelimiter(char) withDelimiter(',')}</li>
-     * <li>{@link #withQuote(char) withQuote('"')}</li>
-     * <li>{@link #withRecordSeparator(String) withRecordSeparator("\r\n")}</li>
-     * <li>{@link #withIgnoreEmptyLines(boolean) withIgnoreEmptyLines(false)}</li>
-     * <li>{@link #withAllowMissingColumnNames(boolean) withAllowMissingColumnNames(true)}</li>
+     * <li>{@code {@link #withDelimiter(char) withDelimiter(',')}}</li>
+     * <li>{@code {@link #withQuote(char) withQuote('"')}}</li>
+     * <li>{@code {@link #withRecordSeparator(String) withRecordSeparator("\r\n")}}</li>
+     * <li>{@code {@link #withIgnoreEmptyLines(boolean) withIgnoreEmptyLines(false)}}</li>
+     * <li>{@code {@link #withAllowMissingColumnNames(boolean) withAllowMissingColumnNames(true)}}</li>
      * </ul>
      * <p>
      * Note: This is currently like {@link #RFC4180} plus {@link #withAllowMissingColumnNames(boolean)
@@ -301,10 +301,10 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     * <li>withDelimiter(',')</li>
-     * <li>withQuote("\"")</li>
-     * <li>withRecordSeparator('\n')</li>
-     * <li>withEscape('\\')</li>
+     * <li>{@code withDelimiter(',')}</li>
+     * <li>{@code withEscape('\\')}</li>
+     * <li>{@code withQuote("\"")}</li>
+     * <li>{@code withRecordSeparator('\n')}</li>
      * </ul>
      *
      * @see Predefined#MySQL
@@ -333,9 +333,9 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     * <li>withDelimiter(',')</li>
-     * <li>withQuote("\"")</li>
-     * <li>withRecordSeparator('\n')</li>
+     * <li>{@code withDelimiter(',')}</li>
+     * <li>{@code withQuote("\"")}</li>
+     * <li>{@code withRecordSeparator('\n')}</li>
      * </ul>
      *
      * @see Predefined#MySQL
@@ -363,13 +363,13 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     * <li>withDelimiter('\t')</li>
-     * <li>withQuote(null)</li>
-     * <li>withRecordSeparator('\n')</li>
-     * <li>withIgnoreEmptyLines(false)</li>
-     * <li>withEscape('\\')</li>
-     * <li>withNullString("\\N")</li>
-     * <li>withQuoteMode(QuoteMode.ALL_NON_NULL)</li>
+     * <li>{@code withDelimiter('\t')}</li>
+     * <li>{@code withEscape('\\')}</li>
+     * <li>{@code withIgnoreEmptyLines(false)}</li>
+     * <li>{@code withQuote(null)}</li>
+     * <li>{@code withRecordSeparator('\n')}</li>
+     * <li>{@code withNullString("\\N")}</li>
+     * <li>{@code withQuoteMode(QuoteMode.ALL_NON_NULL)}</li>
      * </ul>
      *
      * @see Predefined#MySQL
@@ -400,14 +400,14 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     * <li>withDelimiter(',') // default is {@code FIELDS TERMINATED BY ','}</li>
-     * <li>withQuote('"')  // default is {@code OPTIONALLY ENCLOSED BY '"'}</li>
-     * <li>withSystemRecordSeparator()</li>
-     * <li>withTrim()</li>
-     * <li>withIgnoreEmptyLines(false)</li>
-     * <li>withEscape('\\')</li>
-     * <li>withNullString("\\N")</li>
-     * <li>withQuoteMode(QuoteMode.MINIMAL)</li>
+     * <li>{@code withDelimiter(',') // default is {@code FIELDS TERMINATED BY ','}}</li>
+     * <li>{@code withEscape('\\')}</li>
+     * <li>{@code withIgnoreEmptyLines(false)}</li>
+     * <li>{@code withQuote('"')  // default is {@code OPTIONALLY ENCLOSED BY '"'}}</li>
+     * <li>{@code withNullString("\\N")}</li>
+     * <li>{@code withTrim()}</li>
+     * <li>{@code withSystemRecordSeparator()}</li>
+     * <li>{@code withQuoteMode(QuoteMode.MINIMAL)}</li>
      * </ul>
      *
      * @see Predefined#Oracle
@@ -475,13 +475,13 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     * <li>withDelimiter('\t')</li>
-     * <li>withEscape('\\')</li>
-     * <li>withIgnoreEmptyLines(false)</li>
-     * <li>withQuote('"')</li>
-     * <li>withRecordSeparator('\n')</li>
-     * <li>withNullString("\\N")</li>
-     * <li>withQuoteMode(QuoteMode.ALL_NON_NULL)</li>
+     * <li>{@code withDelimiter('\t')}</li>
+     * <li>{@code withEscape('\\')}</li>
+     * <li>{@code withIgnoreEmptyLines(false)}</li>
+     * <li>{@code withQuote('"')}</li>
+     * <li>{@code withRecordSeparator('\n')}</li>
+     * <li>{@code withNullString("\\N")}</li>
+     * <li>{@code withQuoteMode(QuoteMode.ALL_NON_NULL)}</li>
      * </ul>
      *
      * @see Predefined#MySQL
@@ -507,10 +507,10 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     * <li>withDelimiter(',')</li>
-     * <li>withQuote('"')</li>
-     * <li>withRecordSeparator("\r\n")</li>
-     * <li>withIgnoreEmptyLines(false)</li>
+     * <li>{@code withDelimiter(',')}</li>
+     * <li>{@code withQuote('"')}</li>
+     * <li>{@code withRecordSeparator("\r\n")}</li>
+     * <li>{@code withIgnoreEmptyLines(false)}</li>
      * </ul>
      *
      * @see Predefined#RFC4180
@@ -526,10 +526,10 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     * <li>withDelimiter('\t')</li>
-     * <li>withQuote('"')</li>
-     * <li>withRecordSeparator("\r\n")</li>
-     * <li>withIgnoreSurroundingSpaces(true)</li>
+     * <li>{@code withDelimiter('\t')}</li>
+     * <li>{@code withQuote('"')}</li>
+     * <li>{@code withRecordSeparator("\r\n")}</li>
+     * <li>{@code withIgnoreSurroundingSpaces(true)}</li>
      * </ul>
      *
      * @see Predefined#TDF
