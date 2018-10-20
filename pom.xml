@@ -244,44 +244,6 @@ CSV files of various types.
         </configuration>
       </plugin>
 
-      <!--
-        calculate checksums of release artifacts for Apache dist area
-      -->
-      <plugin>
-        <groupId>net.nicoulaj.maven.plugins</groupId>
-        <artifactId>checksum-maven-plugin</artifactId>
-        <version>1.7</version>
-        <executions>
-          <execution>
-            <id>generate.checksums</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>files</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <algorithms>
-            <algorithm>SHA-512</algorithm>
-          </algorithms>
-          <csvSummary>false</csvSummary>
-          <fileSets>
-            <fileSet>
-              <directory>${project.build.directory}</directory>
-              <includes>
-                <include>${project.artifactId}-${project.version}-src.zip</include>
-                <include>
-                  ${project.artifactId}-${project.version}-src.tar.gz
-                </include>
-                <include>${project.artifactId}-${project.version}-bin.zip</include>
-                <include>
-                  ${project.artifactId}-${project.version}-bin.tar.gz
-                </include>
-              </includes>
-            </fileSet>
-          </fileSets>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
