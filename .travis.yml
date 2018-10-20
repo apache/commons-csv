@@ -14,10 +14,6 @@
 # limitations under the License.
 
 language: java
-sudo: false
-
-script:
-  - mvn
 
 jdk:
   - openjdk7
@@ -25,4 +21,5 @@ jdk:
   - oraclejdk9
 
 after_success:
-  - mvn -B -V -Ptravis-jacoco clean test jacoco:report coveralls:report
+  - mvn -B -V clean test jacoco:report coveralls:report -Ptravis-jacoco
+  
