@@ -56,6 +56,16 @@ public class CSVFormatPredefinedTest {
     }
 
     @Test
+    public void testMongoDbCsv() {
+        test(CSVFormat.MONGODB_CSV, "MongoDBCsv");
+    }
+
+    @Test
+    public void testMongoDbTsv() {
+        test(CSVFormat.MONGODB_TSV, "MongoDBTsv");
+    }
+
+    @Test
     public void testPostgreSqlText() {
         test(CSVFormat.POSTGRESQL_TEXT, "PostgreSQLText");
     }

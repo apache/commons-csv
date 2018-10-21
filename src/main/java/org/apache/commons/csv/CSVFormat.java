@@ -190,6 +190,18 @@ public final class CSVFormat implements Serializable {
         InformixUnloadCsv(CSVFormat.INFORMIX_UNLOAD_CSV),
 
         /**
+         * @see CSVFormat#MONGODB_CSV
+         * @since 1.7
+         */
+        MongoDBCsv(CSVFormat.MONGODB_CSV),
+
+        /**
+         * @see CSVFormat#MONGODB_TSV
+         * @since 1.7
+         */
+        MongoDBTsv(CSVFormat.MONGODB_TSV),
+
+        /**
          * @see CSVFormat#MYSQL
          */
         MySQL(CSVFormat.MYSQL),
@@ -351,6 +363,78 @@ public final class CSVFormat implements Serializable {
             .withRecordSeparator(LF);
     // @formatter:on
 
+    /**
+     * Default MongoDB CSV format used by the {@code mongoexport} operation.
+     * <p>
+     * <b>Parsing is not supported yet.</b>
+     * </p>
+     *
+     * <p>
+     * This is a comma-delimited format. Values are double quoted only if needed and special characters are escaped with
+     * {@code '"'}. A header line with field names is expected.
+     * </p>
+     *
+     * <p>
+     * Settings are:
+     * </p>
+     * <ul>
+     * <li>{@code withDelimiter(',')}</li>
+     * <li>{@code withEscape('"')}</li>
+     * <li>{@code withQuote('"')}</li>
+     * <li>{@code withQuoteMode(QuoteMode.ALL_NON_NULL)}</li>
+     * <li>{@code withSkipHeaderRecord(false)}</li>
+     * </ul>
+     *
+     * @see Predefined#MongoDBCsv
+     * @see <a href="https://docs.mongodb.com/manual/reference/program/mongoexport/">MongoDB mongoexport command
+     *      documentation</a>
+     * @since 1.7
+     */
+    // @formatter:off
+    public static final CSVFormat MONGODB_CSV = DEFAULT
+            .withDelimiter(COMMA)
+            .withEscape(DOUBLE_QUOTE_CHAR)
+            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withQuoteMode(QuoteMode.MINIMAL)
+            .withSkipHeaderRecord(false);
+    // @formatter:off
+    
+    /**
+     * Default MongoDB TSV format used by the {@code mongoexport} operation.
+     * <p>
+     * <b>Parsing is not supported yet.</b>
+     * </p>
+     *
+     * <p>
+     * This is a tab-delimited format. Values are double quoted only if needed and special
+     * characters are escaped with {@code '"'}. A header line with field names is expected.
+     * </p>
+     *
+     * <p>
+     * Settings are:
+     * </p>
+     * <ul>
+     * <li>{@code withDelimiter('\t')}</li>
+     * <li>{@code withEscape('"')}</li>
+     * <li>{@code withQuote('"')}</li>
+     * <li>{@code withQuoteMode(QuoteMode.ALL_NON_NULL)}</li>
+     * <li>{@code withSkipHeaderRecord(false)}</li>
+     * </ul>
+     *
+     * @see Predefined#MongoDBCsv
+     * @see <a href="https://docs.mongodb.com/manual/reference/program/mongoexport/">MongoDB mongoexport command
+     *          documentation</a>
+     * @since 1.7
+     */
+    // @formatter:off
+    public static final CSVFormat MONGODB_TSV = DEFAULT
+            .withDelimiter(TAB)
+            .withEscape(DOUBLE_QUOTE_CHAR)
+            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withQuoteMode(QuoteMode.MINIMAL)
+            .withSkipHeaderRecord(false);
+    // @formatter:off
+    
     /**
      * Default MySQL format used by the {@code SELECT INTO OUTFILE} and {@code LOAD DATA INFILE} operations.
      *

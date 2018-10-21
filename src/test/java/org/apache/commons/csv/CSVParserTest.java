@@ -774,18 +774,36 @@ public class CSVParserTest {
     }
 
     @Test
-    // TODO this may lead to strange behavior, throw an exception if iterator() has already been called?
-    public void testMultipleIterators() throws Exception {
-        try (final CSVParser parser = CSVParser.parse("a,b,c" + CR + "d,e,f", CSVFormat.DEFAULT)) {
+    @Ignore
+    public void testMongoDbCsv() throws Exception {
+        try (final CSVParser parser = CSVParser.parse("\"a a\",b,c" + LF + "d,e,f", CSVFormat.MONGODB_CSV)) {
             final Iterator<CSVRecord> itr1 = parser.iterator();
             final Iterator<CSVRecord> itr2 = parser.iterator();
+
+            final CSVRecord first = itr1.next();
+            assertEquals("a a", first.get(0));
+            assertEquals("b", first.get(1));
+            assertEquals("c", first.get(2));
+
+            final CSVRecord second = itr2.next();
+            assertEquals("d", second.get(0));
+            assertEquals("e", second.get(1));
+            assertEquals("f", second.get(2));
+        }
+    }
+    
+    @Test
+    // TODO this may lead to strange behavior, throw an exception if iterator() has already been called?
+    public void testMultipleIterators() throws Exception {
+        try (final CSVParser parser = CSVParser.parse("a,b,c" + CRLF + "d,e,f", CSVFormat.DEFAULT)) {
+            final Iterator<CSVRecord> itr1 = parser.iterator();
 
             final CSVRecord first = itr1.next();
             assertEquals("a", first.get(0));
             assertEquals("b", first.get(1));
             assertEquals("c", first.get(2));
 
-            final CSVRecord second = itr2.next();
+            final CSVRecord second = itr1.next();
             assertEquals("d", second.get(0));
             assertEquals("e", second.get(1));
             assertEquals("f", second.get(2));
