@@ -41,6 +41,7 @@
     <release version="1.7" date="tba" description="Feature and bug fix release">
       <action issue="CSV-233" type="add" dev="ggregory" due-to="Gary Gregory">Add predefined CSVFormats for printing MongoDB CSV and TSV.</action>
       <action issue="CSV-208" type="fix" dev="ggregory" due-to="Jurrie Overgoor">Fix escape character for POSTGRESQL_TEXT and POSTGRESQL_CSV formats.</action>
+      <action issue="CSV-232" type="fix" dev="ggregory" due-to="Jurrie Overgoor, Gary Gregory">Site link "Source Repository" does not work.</action>
     </release>
     <release version="1.6" date="2018-09-22" description="Feature and bug fix release">
       <action issue="CSV-231" type="update" dev="britter">Add more documentation to CSVPrinter.</action>
