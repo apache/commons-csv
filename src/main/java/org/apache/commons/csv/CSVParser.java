@@ -33,12 +33,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Parses CSV files according to the specified format.
@@ -282,7 +285,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private final CSVFormat format;
 
     /** A mapping of column names to column indices */
-    private final Map<String, Integer> headerMap;
+    private final Map<String, Set<Integer>> headerMap;
 
     private final Lexer lexer;
 
@@ -414,9 +417,52 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * The map keys are column names. The map values are 0-based indices.
      * </p>
      * @return a copy of the header map that iterates in column order.
+     * @throws IllegalStateException if the format is not supported unique header entries
      */
     public Map<String, Integer> getHeaderMap() {
-        return this.headerMap == null ? null : new LinkedHashMap<>(this.headerMap);
+        if (!this.format.getIgnoreDuplicateHeaderEntries()) {
+            if (this.headerMap != null) {
+                final LinkedHashMap<String, Integer> headerMap = new LinkedHashMap<>();
+                for (final Map.Entry<String, Set<Integer>> entry : this.headerMap.entrySet()) {
+                    headerMap.put(entry.getKey(), entry.getValue().iterator().next());
+                }
+                return headerMap;
+            } else {
+                return null;
+            }
+        } else {
+            throw new IllegalStateException("The current parser format is not supported unique header entries. To "
+                    + "support this functionality need to exclude the ignore duplicate header entries from CSV format");
+        }
+    }
+
+    /**
+     * Returns a copy of the header map that complies with the ordering of unique columns.
+     * Each unique column contains the set of one element that indicates the column index.
+     * Duplicate column contains the ordered set of column indices. For example:
+     * <p>
+     * <tt>original header -> [A, B, C, B]
+     * <br>duplicate header map -> {A}:[0], {B}:[1, 3], {C}:[2]</tt>
+     *
+     * @return a copy of the header map that complies with the ordering of unique columns.
+     * @throws IllegalStateException if the format is not supported duplicate header entries
+     * @since 1.7
+     */
+    public Map<String, Set<Integer>> getDuplicateHeaderMap() {
+        if (this.format.getIgnoreDuplicateHeaderEntries()) {
+            if (this.headerMap != null) {
+                final Map<String, Set<Integer>> headerMap = new LinkedHashMap<>();
+                for (final Map.Entry<String, Set<Integer>> entry : this.headerMap.entrySet()) {
+                    headerMap.put(entry.getKey(), new TreeSet<>(entry.getValue()));
+                }
+                return headerMap;
+            } else {
+                return null;
+            }
+        } else {
+            throw new IllegalStateException("The current parser format is not supported duplicate header entries. "
+                    + "To support this functionality set up CSV format with ignore duplicate header entries");
+        }
     }
 
     /**
@@ -460,13 +506,13 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @return null if the format has no header.
      * @throws IOException if there is a problem reading the header or skipping the first record
      */
-    private Map<String, Integer> initializeHeader() throws IOException {
-        Map<String, Integer> hdrMap = null;
+    private Map<String, Set<Integer>> initializeHeader() throws IOException {
+        Map<String, Set<Integer>> hdrMap = null;
         final String[] formatHeader = this.format.getHeader();
         if (formatHeader != null) {
             hdrMap = this.format.getIgnoreHeaderCase() ?
-                    new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER) :
-                    new LinkedHashMap<String, Integer>();
+                    new TreeMap<String, Set<Integer>>(String.CASE_INSENSITIVE_ORDER) :
+                    new LinkedHashMap<String, Set<Integer>>();
 
             String[] headerRecord = null;
             if (formatHeader.length == 0) {
@@ -488,11 +534,17 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     final String header = headerRecord[i];
                     final boolean containsHeader = hdrMap.containsKey(header);
                     final boolean emptyHeader = header == null || header.trim().isEmpty();
-                    if (containsHeader && (!emptyHeader || !this.format.getAllowMissingColumnNames())) {
+                    if (containsHeader && (!emptyHeader || !this.format.getAllowMissingColumnNames())
+                            && !this.format.getIgnoreDuplicateHeaderEntries()) {
                         throw new IllegalArgumentException("The header contains a duplicate name: \"" + header +
                                 "\" in " + Arrays.toString(headerRecord));
                     }
-                    hdrMap.put(header, Integer.valueOf(i));
+                    final Set<Integer> headerIndexes = hdrMap.get(header);
+                    if (headerIndexes == null) {
+                        hdrMap.put(header, new TreeSet<>(Collections.singleton(i)));
+                    } else {
+                        headerIndexes.add(i);
+                    }
                 }
             }
         }
