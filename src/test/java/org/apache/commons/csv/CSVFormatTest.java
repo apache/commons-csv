@@ -1096,4 +1096,10 @@ public class CSVFormatTest {
         assertEquals(System.getProperty("line.separator"), formatWithRecordSeparator.getRecordSeparator());
     }
 
+    @Test
+    public void testWithIgnoreDuplicateColumnHeaders() throws Exception {
+        assertFalse(CSVFormat.DEFAULT.withIgnoreDuplicateHeaderEntries(false).getIgnoreDuplicateHeaderEntries());
+        assertTrue(CSVFormat.DEFAULT.withIgnoreDuplicateHeaderEntries().getIgnoreDuplicateHeaderEntries());
+    }
+
 }

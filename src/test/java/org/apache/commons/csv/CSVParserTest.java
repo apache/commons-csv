@@ -43,10 +43,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.io.input.BOMInputStream;
 import org.junit.Assert;
@@ -481,6 +484,60 @@ public class CSVParserTest {
             }
 
             assertFalse(records.hasNext());
+        }
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testGetHeaderMapWithIgnoreDuplicate() throws Exception {
+        try (final CSVParser parser = CSVParser.parse("a,b,c\n1,2,3\nx,y,z",
+                CSVFormat.DEFAULT.withHeader("A", "B", "C").withIgnoreDuplicateHeaderEntries())) {
+            parser.getHeaderMap();
+        }
+    }
+
+    @Test
+    public void testGetDuplicateHeaderMap() throws Exception {
+        try (final CSVParser parser = CSVParser.parse("a,b,c,d\n1,2,3,4\nw,x,y,z",
+                CSVFormat.DEFAULT.withIgnoreDuplicateHeaderEntries().withHeader("A", "B", "C", "B"))) {
+            final Map<String, Set<Integer>> headerMap = parser.getDuplicateHeaderMap();
+            final Iterator<String> columnNames = headerMap.keySet().iterator();
+            // Unique headers are iterated in column order.
+            Assert.assertEquals("A", columnNames.next());
+            Assert.assertEquals("B", columnNames.next());
+            Assert.assertEquals("C", columnNames.next());
+            Assert.assertFalse(columnNames.hasNext());
+            Assert.assertEquals(headerMap.get("B"), new TreeSet<>(Arrays.asList(1, 3)));
+            Assert.assertEquals(1, headerMap.get("A").size());
+            Assert.assertEquals(1, headerMap.get("C").size());
+            final Iterator<CSVRecord> records = parser.iterator();
+
+            // Parse to make sure getDuplicateHeaderMap did not have a side-effect.
+            for (int i = 0; i < 3; i++) {
+                assertTrue(records.hasNext());
+                final CSVRecord record = records.next();
+                assertEquals(record.get(0), record.get("A"));
+                assertEquals(record.get(1), record.get("B"));
+                assertEquals(record.get(2), record.get("C"));
+                assertEquals(record.get(3), record.get("B", 1));
+            }
+
+            assertFalse(records.hasNext());
+        }
+    }
+
+    @Test
+    public void testGetDuplicateHeaderMapWithoutHeader() throws IOException {
+        try (final CSVParser parser = CSVParser.parse("a,b,c\n1,2,3\nx,y,z",
+                CSVFormat.DEFAULT.withIgnoreDuplicateHeaderEntries())) {
+            Assert.assertNull(parser.getDuplicateHeaderMap());
+        }
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testGetDuplicateHeaderMapWithoutIgnoreDuplicate() throws IOException {
+        try (final CSVParser parser = CSVParser.parse("a,b,c\n1,2,3\nx,y,z",
+                CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
+            parser.getDuplicateHeaderMap();
         }
     }
 

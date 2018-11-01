@@ -19,11 +19,13 @@ package org.apache.commons.csv;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * A CSV record parsed from a CSV file.
@@ -40,7 +42,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     private final String comment;
 
     /** The column name to index mapping. */
-    private final Map<String, Integer> mapping;
+    private final Map<String, Set<Integer>> mapping;
 
     /** The record number. */
     private final long recordNumber;
@@ -48,8 +50,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /** The values of the record */
     private final String[] values;
 
-    CSVRecord(final String[] values, final Map<String, Integer> mapping, final String comment, final long recordNumber,
-            final long characterPosition) {
+    CSVRecord(final String[] values, final Map<String, Set<Integer>> mapping, final String comment, final long recordNumber,
+              final long characterPosition) {
         this.recordNumber = recordNumber;
         this.values = values != null ? values : EMPTY_STRING_ARRAY;
         this.mapping = mapping;
@@ -89,26 +91,81 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *             if no header mapping was provided
      * @throws IllegalArgumentException
      *             if {@code name} is not mapped or if the record is inconsistent
+     * @see #get(String, int)
      * @see #isConsistent()
      * @see CSVFormat#withNullString(String)
      */
     public String get(final String name) {
+        return this.get(name, 0);
+    }
+
+    /**
+     * Returns a value by name and order.
+     *
+     * @param name the name of the (duplicate) column to be retrieved.
+     * @param order the order of duplicate column
+     * @return the column value, maybe null depending on {@link CSVFormat#getNullString()}.
+     * @throws IllegalStateException
+     *             if no header mapping was provided
+     * @throws IllegalArgumentException
+     *             if {@code name} is not mapped or an order not exists, or if the record is inconsistent
+     * @since 1.7
+     */
+    public String get(final String name, final int order) {
         if (mapping == null) {
             throw new IllegalStateException(
-                "No header mapping was specified, the record values can't be accessed by name");
+                    "No header mapping was specified, the record values can't be accessed by name");
         }
-        final Integer index = mapping.get(name);
+        Integer index = null;
+        int orderPointer = 0;
+        final Set<Integer> indexes = mapping.get(name);
+        if (indexes != null) {
+            final Iterator<Integer> iterator = indexes.iterator();
+            while (iterator.hasNext() && orderPointer <= order) {
+                index = iterator.next();
+                orderPointer++;
+            }
+        }
         if (index == null) {
             throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name,
-                mapping.keySet()));
+                    mapping.keySet()));
+        }
+        if (orderPointer <= order) {
+            throw new IllegalArgumentException(String.format(
+                    "Order for duplicate header '%s' is %d but CSVRecord only has %d headers with same name!",
+                    name, order, orderPointer));
         }
         try {
             return values[index.intValue()];
         } catch (final ArrayIndexOutOfBoundsException e) {
             throw new IllegalArgumentException(String.format(
-                "Index for header '%s' is %d but CSVRecord only has %d values!", name, index,
-                Integer.valueOf(values.length)));
+                    "Index for header '%s' is %d but CSVRecord only has %d values!", name, index,
+                    Integer.valueOf(values.length)));
         }
+    }
+
+    /**
+     * Returns a duplicate number by column name.
+     *
+     * @param name the name of the column.
+     * @return the <tt>1</tt> if the column has no duplicates otherwise returns the number of duplicates
+     * @throws IllegalStateException
+     *             if no header mapping was provided
+     * @throws IllegalArgumentException
+     *             if {@code name} is not mapped
+     * @since 1.7
+     */
+    public int getDuplicatesNumber(final String name) {
+        if (mapping == null) {
+            throw new IllegalStateException(
+                    "No header mapping was specified, the record values can't be accessed by name");
+        }
+        final Set<Integer> indexes = mapping.get(name);
+        if (indexes == null) {
+            throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name,
+                    mapping.keySet()));
+        }
+        return indexes.size();
     }
 
     /**
@@ -194,7 +251,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return whether a given columns is mapped and has a value
      */
     public boolean isSet(final String name) {
-        return isMapped(name) && mapping.get(name).intValue() < values.length;
+        return isMapped(name) && mapping.get(name).iterator().next() < values.length;
     }
 
     /**
@@ -218,8 +275,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
         if (mapping == null) {
             return map;
         }
-        for (final Entry<String, Integer> entry : mapping.entrySet()) {
-            final int col = entry.getValue().intValue();
+        for (final Entry<String, Set<Integer>> entry : mapping.entrySet()) {
+            final int col = entry.getValue().iterator().next();
             if (col < values.length) {
                 map.put(entry.getKey(), values[col]);
             }

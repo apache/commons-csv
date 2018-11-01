@@ -24,10 +24,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Assert;
@@ -39,18 +42,22 @@ public class CSVRecordTest {
     private enum EnumFixture { UNKNOWN_COLUMN }
 
     private String[] values;
-    private CSVRecord record, recordWithHeader;
-    private Map<String, Integer> header;
+    private CSVRecord record, recordWithHeader, recordWithDuplicateHeader;
+    private Map<String, Set<Integer>> header;
 
     @Before
     public void setUp() throws Exception {
         values = new String[] { "A", "B", "C" };
         record = new CSVRecord(values, null, null, 0, -1);
         header = new HashMap<>();
-        header.put("first", Integer.valueOf(0));
-        header.put("second", Integer.valueOf(1));
-        header.put("third", Integer.valueOf(2));
+        header.put("first", Collections.singleton(0));
+        header.put("second", Collections.singleton(1));
+        header.put("third", Collections.singleton(2));
         recordWithHeader = new CSVRecord(values, header, null, 0, -1);
+        final Map<String, Set<Integer>> duplicateHeader = new HashMap<>();
+        duplicateHeader.put("first", new TreeSet<>(Arrays.asList(0, 2)));
+        duplicateHeader.put("second", Collections.singleton(1));
+        recordWithDuplicateHeader = new CSVRecord(values, duplicateHeader, null, 0, -1);
     }
 
     @Test
@@ -67,10 +74,53 @@ public class CSVRecordTest {
         assertEquals(values[2], recordWithHeader.get("third"));
     }
 
+    @Test
+    public void testGetByOrderString() {
+        assertEquals(values[0], recordWithDuplicateHeader.get("first", 0));
+        assertEquals(values[1], recordWithDuplicateHeader.get("second"));
+        assertEquals(values[2], recordWithDuplicateHeader.get("first", 1));
+    }
+
+    @Test
+    public void testGetDuplicatesNumber() {
+        assertEquals(2, recordWithDuplicateHeader.getDuplicatesNumber("first"));
+        assertEquals(1, recordWithDuplicateHeader.getDuplicatesNumber("second"));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testGetStringInconsistentRecord() {
-        header.put("fourth", Integer.valueOf(4));
+        header.put("fourth", Collections.singleton(4));
         recordWithHeader.get("fourth");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetStringNotExistsOrder() {
+        recordWithDuplicateHeader.get("first", 3);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetStringNegativeOrder() {
+        recordWithDuplicateHeader.get("first", -1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetByOrderStringUnmappedName() {
+        recordWithDuplicateHeader.get("fifth", 1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetDuplicatesUnmappedName() {
+        recordWithDuplicateHeader.getDuplicatesNumber("fifth");
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void getByOrderStringNoHeader() {
+        record.get("first", 1);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testGetDuplicatesNoHeader() {
+        record.getDuplicatesNumber("first");
     }
 
     @Test(expected = IllegalStateException.class)
@@ -103,7 +153,7 @@ public class CSVRecordTest {
         assertTrue(record.isConsistent());
         assertTrue(recordWithHeader.isConsistent());
 
-        header.put("fourth", Integer.valueOf(4));
+        header.put("fourth", Collections.singleton(4));
         assertFalse(recordWithHeader.isConsistent());
     }
 
