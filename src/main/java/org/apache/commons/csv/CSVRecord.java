@@ -18,6 +18,7 @@
 package org.apache.commons.csv;
 
 import java.io.Serializable;
+import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,7 +29,7 @@ import java.util.Map.Entry;
 /**
  * A CSV record parsed from a CSV file.
  */
-public final class CSVRecord implements Serializable, Iterable<String> {
+public final class CSVRecord extends AbstractList<String> implements Serializable {
 
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
@@ -75,6 +76,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *            a column index (0-based)
      * @return the String at the given index
      */
+    @Override
     public String get(final int i) {
         return values[i];
     }
@@ -198,16 +200,6 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns an iterator over the values of this record.
-     *
-     * @return an iterator over the values of this record.
-     */
-    @Override
-    public Iterator<String> iterator() {
-        return toList().iterator();
-    }
-
-    /**
      * Puts all values of this record into the given Map.
      *
      * @param map
@@ -232,19 +224,9 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *
      * @return the number of values.
      */
+    @Override
     public int size() {
         return values.length;
-    }
-
-    /**
-     * Converts the values to a List.
-     *
-     * TODO: Maybe make this public?
-     *
-     * @return a new List
-     */
-    private List<String> toList() {
-        return Arrays.asList(values);
     }
 
     /**

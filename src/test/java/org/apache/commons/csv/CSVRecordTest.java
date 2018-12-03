@@ -36,7 +36,7 @@ import org.junit.Test;
 
 public class CSVRecordTest {
 
-    private enum EnumFixture { UNKNOWN_COLUMN }
+    private enum EnumFixture { first, second, third, UNKNOWN_COLUMN }
 
     private String[] values;
     private CSVRecord record, recordWithHeader;
@@ -65,6 +65,13 @@ public class CSVRecordTest {
         assertEquals(values[0], recordWithHeader.get("first"));
         assertEquals(values[1], recordWithHeader.get("second"));
         assertEquals(values[2], recordWithHeader.get("third"));
+    }
+
+    @Test
+    public void testGetEnum() {
+        assertEquals(values[0], recordWithHeader.get(EnumFixture.first));
+        assertEquals(values[1], recordWithHeader.get(EnumFixture.second));
+        assertEquals(values[2], recordWithHeader.get(EnumFixture.third));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -193,4 +200,8 @@ public class CSVRecordTest {
         assertEquals(null, map.get("fourth"));
     }
 
+    @Test
+    public void testToString() {
+        assertEquals("CSVRecord [comment=null, mapping=null, recordNumber=0, values=[A, B, C]]", record.toString());
+    }
 }
