@@ -39,7 +39,6 @@ import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Clob;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -1179,22 +1178,7 @@ public final class CSVFormat implements Serializable {
                 }
             }
         } else {
-        	if (value instanceof Clob) {
-        		Clob clob = (Clob) value;
-        		try (Reader reader = clob.getCharacterStream()) {
-        			long length = clob.length();
-        			if (length > Integer.MAX_VALUE) {
-        				throw new IOException("Clob length exceeds max int value");
-        			}
-        			char[] cbuf = new char[(int) length];
-        			reader.read(cbuf);
-        			charSequence = new String(cbuf);
-        		} catch (SQLException sqle) {
-        			throw new IOException("Failed to read clob", sqle);
-        		}
-        	} else {
-        		charSequence = value instanceof CharSequence ? (CharSequence) value : value.toString();
-        	}
+       		charSequence = value instanceof CharSequence ? (CharSequence) value : value.toString();
         }
         charSequence = getTrim() ? trim(charSequence) : charSequence;
         this.print(value, charSequence, 0, charSequence.length(), out, newRecord);
