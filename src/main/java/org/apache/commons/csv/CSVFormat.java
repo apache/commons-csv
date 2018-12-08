@@ -1178,7 +1178,7 @@ public final class CSVFormat implements Serializable {
                 }
             }
         } else {
-       		charSequence = value instanceof CharSequence ? (CharSequence) value : value.toString();
+       	    charSequence = value instanceof CharSequence ? (CharSequence) value : value.toString();
         }
         charSequence = getTrim() ? trim(charSequence) : charSequence;
         this.print(value, charSequence, 0, charSequence.length(), out, newRecord);

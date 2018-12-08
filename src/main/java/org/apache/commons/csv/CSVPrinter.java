@@ -381,19 +381,19 @@ public final class CSVPrinter implements Flushable, Closeable {
         final int columnCount = resultSet.getMetaData().getColumnCount();
         while (resultSet.next()) {
             for (int i = 1; i <= columnCount; i++) {
-            	Object obj = resultSet.getObject(i);
-            	if (obj instanceof Clob) {
-            		Clob clob = (Clob) obj;
-            		try (Reader reader = clob.getCharacterStream()) {
-            			long length = clob.length();
-            			if (length > Integer.MAX_VALUE) {
-            				throw new IOException("Clob length exceeds max int value");
-            			}
-            			char[] cbuf = new char[(int) length];
-            			reader.read(cbuf);
-            			obj = new String(cbuf);
-            		}
-            	}
+                Object obj = resultSet.getObject(i);
+                if (obj instanceof Clob) {
+                    Clob clob = (Clob) obj;
+                    try (Reader reader = clob.getCharacterStream()) {
+                        long length = clob.length();
+                        if (length > Integer.MAX_VALUE) {
+                            throw new IOException("Clob length exceeds max int value");
+                        }
+                        char[] cbuf = new char[(int) length];
+                        reader.read(cbuf);
+                        obj = new String(cbuf);
+                    }
+                }
                 print(obj);
             }
             println();
