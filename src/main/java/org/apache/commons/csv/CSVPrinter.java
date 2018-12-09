@@ -24,6 +24,7 @@ import static org.apache.commons.csv.Constants.SP;
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
+import java.sql.Clob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -379,7 +380,8 @@ public final class CSVPrinter implements Flushable, Closeable {
         final int columnCount = resultSet.getMetaData().getColumnCount();
         while (resultSet.next()) {
             for (int i = 1; i <= columnCount; i++) {
-                print(resultSet.getObject(i));
+                final Object object = resultSet.getObject(i);
+                print(object instanceof Clob ? ((Clob) object).getCharacterStream() : object);
             }
             println();
         }

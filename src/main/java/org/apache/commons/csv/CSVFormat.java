@@ -20,10 +20,10 @@ package org.apache.commons.csv;
 import static org.apache.commons.csv.Constants.BACKSLASH;
 import static org.apache.commons.csv.Constants.COMMA;
 import static org.apache.commons.csv.Constants.COMMENT;
-import static org.apache.commons.csv.Constants.EMPTY;
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.DOUBLE_QUOTE_CHAR;
+import static org.apache.commons.csv.Constants.EMPTY;
 import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.PIPE;
 import static org.apache.commons.csv.Constants.SP;
@@ -36,6 +36,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -398,7 +399,7 @@ public final class CSVFormat implements Serializable {
             .withQuoteMode(QuoteMode.MINIMAL)
             .withSkipHeaderRecord(false);
     // @formatter:off
-    
+
     /**
      * Default MongoDB TSV format used by the {@code mongoexport} operation.
      * <p>
@@ -434,7 +435,7 @@ public final class CSVFormat implements Serializable {
             .withQuoteMode(QuoteMode.MINIMAL)
             .withSkipHeaderRecord(false);
     // @formatter:off
-    
+
     /**
      * Default MySQL format used by the {@code SELECT INTO OUTFILE} and {@code LOAD DATA INFILE} operations.
      *
@@ -707,6 +708,8 @@ public final class CSVFormat implements Serializable {
 
     private final Character quoteCharacter; // null if quoting is disabled
 
+    private final String quotedNullString;
+
     private final QuoteMode quoteMode;
 
     private final String recordSeparator; // for outputs
@@ -759,11 +762,11 @@ public final class CSVFormat implements Serializable {
      *             if the delimiter is a line break character
      */
     private CSVFormat(final char delimiter, final Character quoteChar, final QuoteMode quoteMode,
-                      final Character commentStart, final Character escape, final boolean ignoreSurroundingSpaces,
-                      final boolean ignoreEmptyLines, final String recordSeparator, final String nullString,
-                      final Object[] headerComments, final String[] header, final boolean skipHeaderRecord,
-                      final boolean allowMissingColumnNames, final boolean ignoreHeaderCase, final boolean trim,
-                      final boolean trailingDelimiter, final boolean autoFlush) {
+            final Character commentStart, final Character escape, final boolean ignoreSurroundingSpaces,
+            final boolean ignoreEmptyLines, final String recordSeparator, final String nullString,
+            final Object[] headerComments, final String[] header, final boolean skipHeaderRecord,
+            final boolean allowMissingColumnNames, final boolean ignoreHeaderCase, final boolean trim,
+            final boolean trailingDelimiter, final boolean autoFlush) {
         this.delimiter = delimiter;
         this.quoteCharacter = quoteChar;
         this.quoteMode = quoteMode;
@@ -781,6 +784,7 @@ public final class CSVFormat implements Serializable {
         this.trailingDelimiter = trailingDelimiter;
         this.trim = trim;
         this.autoFlush = autoFlush;
+        this.quotedNullString = quoteCharacter + nullString + quoteCharacter;
         validate();
     }
 
@@ -1172,20 +1176,29 @@ public final class CSVFormat implements Serializable {
                 charSequence = EMPTY;
             } else {
                 if (QuoteMode.ALL == quoteMode) {
-                    charSequence = quoteCharacter + nullString + quoteCharacter;
+                    charSequence = quotedNullString;
                 } else {
                     charSequence = nullString;
                 }
             }
         } else {
-            charSequence = value instanceof CharSequence ? (CharSequence) value : value.toString();
+            if (value instanceof CharSequence) {
+                charSequence = (CharSequence) value;
+            } else if (value instanceof Reader) {
+                print((Reader) value, out, newRecord);
+                return;
+            } else {
+                charSequence = value.toString();
+            }
         }
         charSequence = getTrim() ? trim(charSequence) : charSequence;
-        this.print(value, charSequence, 0, charSequence.length(), out, newRecord);
+        print(value, charSequence, out, newRecord);
     }
 
-    private void print(final Object object, final CharSequence value, final int offset, final int len,
-            final Appendable out, final boolean newRecord) throws IOException {
+    private void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord)
+            throws IOException {
+        final int offset = 0;
+        final int len = value.length();
         if (!newRecord) {
             out.append(getDelimiter());
         }
@@ -1193,11 +1206,11 @@ public final class CSVFormat implements Serializable {
             out.append(value);
         } else if (isQuoteCharacterSet()) {
             // the original object is needed so can check for Number
-            printAndQuote(object, value, offset, len, out, newRecord);
+            printWithQuotes(object, value, out, newRecord);
         } else if (isEscapeCharacterSet()) {
-            printAndEscape(value, offset, len, out);
+            printWithEscapes(value, out);
         } else {
-            out.append(value, offset, offset + len);
+            out.append(value, offset, len);
         }
     }
 
@@ -1221,14 +1234,90 @@ public final class CSVFormat implements Serializable {
         return print(Files.newBufferedWriter(out, charset));
     }
 
+    private void print(final Reader reader, final Appendable out, final boolean newRecord) throws IOException {
+        // Reader is never null
+        if (!newRecord) {
+            out.append(getDelimiter());
+        }
+        if (isQuoteCharacterSet()) {
+            // the original object is needed so can check for Number
+            printWithQuotes(reader, out, newRecord);
+        } else if (isEscapeCharacterSet()) {
+            printWithEscapes(reader, out);
+        } else if (out instanceof Writer) {
+            IOUtils.copyLarge(reader, (Writer) out);
+        } else {
+            IOUtils.copy(reader, out);
+        }
+
+    }
+
+    /**
+     * Prints to the {@link System#out}.
+     *
+     * <p>
+     * See also {@link CSVPrinter}.
+     * </p>
+     *
+     * @return a printer to {@link System#out}.
+     * @throws IOException
+     *             thrown if the optional header cannot be printed.
+     * @since 1.5
+     */
+    public CSVPrinter printer() throws IOException {
+        return new CSVPrinter(System.out, this);
+    }
+
+    /**
+     * Outputs the trailing delimiter (if set) followed by the record separator (if set).
+     *
+     * @param out
+     *            where to write
+     * @throws IOException
+     *             If an I/O error occurs
+     * @since 1.4
+     */
+    public void println(final Appendable out) throws IOException {
+        if (getTrailingDelimiter()) {
+            out.append(getDelimiter());
+        }
+        if (recordSeparator != null) {
+            out.append(recordSeparator);
+        }
+    }
+
+    /**
+     * Prints the given {@code values} to {@code out} as a single record of delimiter separated values followed by the
+     * record separator.
+     *
+     * <p>
+     * The values will be quoted if needed. Quotes and new-line characters will be escaped. This method adds the record
+     * separator to the output after printing the record, so there is no need to call {@link #println(Appendable)}.
+     * </p>
+     *
+     * @param out
+     *            where to write.
+     * @param values
+     *            values to output.
+     * @throws IOException
+     *             If an I/O error occurs.
+     * @since 1.4
+     */
+    public void printRecord(final Appendable out, final Object... values) throws IOException {
+        for (int i = 0; i < values.length; i++) {
+            print(values[i], out, i == 0);
+        }
+        println(out);
+    }
+
     /*
      * Note: must only be called if escaping is enabled, otherwise will generate NPE
      */
-    private void printAndEscape(final CharSequence value, final int offset, final int len, final Appendable out)
-            throws IOException {
-        int start = offset;
-        int pos = offset;
-        final int end = offset + len;
+    private void printWithEscapes(final CharSequence value, final Appendable out) throws IOException {
+        int start = 0;
+        int pos = 0;
+        final int len = value.length();
+        final int end = len;
 
         final char delim = getDelimiter();
         final char escape = getEscapeCharacter().charValue();
@@ -1251,7 +1340,6 @@ public final class CSVFormat implements Serializable {
 
                 start = pos + 1; // start on the current char after this one
             }
-
             pos++;
         }
 
@@ -1261,16 +1349,54 @@ public final class CSVFormat implements Serializable {
         }
     }
 
+    private void printWithEscapes(final Reader reader, final Appendable out) throws IOException {
+        int start = 0;
+        int pos = 0;
+
+        final char delim = getDelimiter();
+        final char escape = getEscapeCharacter().charValue();
+        final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
+
+        int c;
+        while (-1 != (c = reader.read())) {
+            builder.append((char) c);
+            if (c == CR || c == LF || c == delim || c == escape) {
+                // write out segment up until this char
+                if (pos > start) {
+                    out.append(builder.substring(start, pos));
+                    builder.setLength(0);
+                }
+                if (c == LF) {
+                    c = 'n';
+                } else if (c == CR) {
+                    c = 'r';
+                }
+
+                out.append(escape);
+                out.append((char) c);
+
+                start = pos + 1; // start on the current char after this one
+            }
+            pos++;
+        }
+
+        // write last segment
+        if (pos > start) {
+            out.append(builder.substring(start, pos));
+        }
+    }
+
     /*
      * Note: must only be called if quoting is enabled, otherwise will generate NPE
      */
     // the original object is needed so can check for Number
-    private void printAndQuote(final Object object, final CharSequence value, final int offset, final int len,
-            final Appendable out, final boolean newRecord) throws IOException {
+    private void printWithQuotes(final Object object, final CharSequence value, final Appendable out,
+            final boolean newRecord) throws IOException {
         boolean quote = false;
-        int start = offset;
-        int pos = offset;
-        final int end = offset + len;
+        int start = 0;
+        int pos = 0;
+        final int len = value.length();
+        final int end = len;
 
         final char delimChar = getDelimiter();
         final char quoteChar = getQuoteCharacter().charValue();
@@ -1289,7 +1415,7 @@ public final class CSVFormat implements Serializable {
             break;
         case NONE:
             // Use the existing escaping code
-            printAndEscape(value, offset, len, out);
+            printWithEscapes(value, out);
             return;
         case MINIMAL:
             if (len <= 0) {
@@ -1371,61 +1497,21 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Prints to the {@link System#out}.
+     * Always use quotes unless QuoteMode is NONE, so we not have to look ahead.
      *
-     * <p>
-     * See also {@link CSVPrinter}.
-     * </p>
-     *
-     * @return a printer to {@link System#out}.
      * @throws IOException
-     *             thrown if the optional header cannot be printed.
-     * @since 1.5
      */
-    public CSVPrinter printer() throws IOException {
-        return new CSVPrinter(System.out, this);
-    }
+    private void printWithQuotes(final Reader reader, final Appendable out, final boolean newRecord) throws IOException {
+        final char quoteChar = getQuoteCharacter().charValue();
 
-    /**
-     * Outputs the trailing delimiter (if set) followed by the record separator (if set).
-     *
-     * @param out
-     *            where to write
-     * @throws IOException
-     *             If an I/O error occurs
-     * @since 1.4
-     */
-    public void println(final Appendable out) throws IOException {
-        if (getTrailingDelimiter()) {
-            out.append(getDelimiter());
+        if (getQuoteMode() == QuoteMode.NONE) {
+            printWithEscapes(reader, out);
+            return;
         }
-        if (recordSeparator != null) {
-            out.append(recordSeparator);
-        }
-    }
 
-    /**
-     * Prints the given {@code values} to {@code out} as a single record of delimiter separated values followed by the
-     * record separator.
-     *
-     * <p>
-     * The values will be quoted if needed. Quotes and new-line characters will be escaped. This method adds the record
-     * separator to the output after printing the record, so there is no need to call {@link #println(Appendable)}.
-     * </p>
-     *
-     * @param out
-     *            where to write.
-     * @param values
-     *            values to output.
-     * @throws IOException
-     *             If an I/O error occurs.
-     * @since 1.4
-     */
-    public void printRecord(final Appendable out, final Object... values) throws IOException {
-        for (int i = 0; i < values.length; i++) {
-            print(values[i], out, i == 0);
-        }
-        println(out);
+        out.append(quoteChar);
+        IOUtils.copy(reader, out);
+        out.append(quoteChar);
     }
 
     @Override
@@ -1589,8 +1675,8 @@ public final class CSVFormat implements Serializable {
      */
     public CSVFormat withAutoFlush(final boolean autoFlush) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-            ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
-            skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush);
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
+                skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush);
     }
 
     /**
@@ -1703,6 +1789,7 @@ public final class CSVFormat implements Serializable {
      * <p>
      * Example:
      * </p>
+     *
      * <pre>
      * public enum Header {
      *     Name, Email, Phone

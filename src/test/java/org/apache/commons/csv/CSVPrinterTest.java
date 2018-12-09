@@ -51,6 +51,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.h2.value.Value;
 import org.h2.value.ValueArray;
 import org.junit.Assert;
@@ -82,6 +83,7 @@ public class CSVPrinterTest {
     }
 
     private final String recordSeparator = CSVFormat.DEFAULT.getRecordSeparator();
+    private String longText2; 
 
     private void doOneRandom(final CSVFormat format) throws Exception {
         final Random r = new Random();
@@ -216,9 +218,10 @@ public class CSVPrinterTest {
 
     private void setUpTable(final Connection connection) throws SQLException {
         try (final Statement statement = connection.createStatement()) {
-            statement.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
-            statement.execute("insert into TEST values(1, 'r1')");
-            statement.execute("insert into TEST values(2, 'r2')");
+            statement.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255), TEXT CLOB)");
+            statement.execute("insert into TEST values(1, 'r1', 'long text 1')");
+            longText2 = StringUtils.repeat('a', (IOUtils.DEFAULT_BUFFER_SIZE * 2) + 1);
+            statement.execute("insert into TEST values(2, 'r2', '" + longText2 + "')");
         }
     }
 
@@ -566,10 +569,11 @@ public class CSVPrinterTest {
             setUpTable(connection);
             try (final Statement stmt = connection.createStatement();
                     final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT)) {
-                printer.printRecords(stmt.executeQuery("select ID, NAME from TEST"));
+                printer.printRecords(stmt.executeQuery("select ID, NAME, TEXT from TEST"));
             }
         }
-        assertEquals("1,r1" + recordSeparator + "2,r2" + recordSeparator, sw.toString());
+        assertEquals("1,r1,\"long text 1\"" + recordSeparator + "2,r2,\"" + longText2 + "\"" + recordSeparator,
+                sw.toString());
     }
 
     @Test
@@ -579,12 +583,13 @@ public class CSVPrinterTest {
         try (final Connection connection = geH2Connection();) {
             setUpTable(connection);
             try (final Statement stmt = connection.createStatement();
-                    final ResultSet resultSet = stmt.executeQuery("select ID, NAME from TEST");
+                    final ResultSet resultSet = stmt.executeQuery("select ID, NAME, TEXT from TEST");
                     final CSVPrinter printer = CSVFormat.DEFAULT.withHeader(resultSet).print(sw)) {
                 printer.printRecords(resultSet);
             }
         }
-        assertEquals("ID,NAME" + recordSeparator + "1,r1" + recordSeparator + "2,r2" + recordSeparator, sw.toString());
+        assertEquals("ID,NAME,TEXT" + recordSeparator + "1,r1,\"long text 1\"" + recordSeparator + "2,r2,\"" + longText2
+                + "\"" + recordSeparator, sw.toString());
     }
 
     @Test
@@ -594,11 +599,11 @@ public class CSVPrinterTest {
         try (final Connection connection = geH2Connection()) {
             setUpTable(connection);
             try (final Statement stmt = connection.createStatement();
-                    final ResultSet resultSet = stmt.executeQuery("select ID, NAME from TEST");
+                    final ResultSet resultSet = stmt.executeQuery("select ID, NAME, TEXT from TEST");
                     final CSVPrinter printer = CSVFormat.DEFAULT.withHeader(resultSet.getMetaData()).print(sw)) {
                 printer.printRecords(resultSet);
-                assertEquals("ID,NAME" + recordSeparator + "1,r1" + recordSeparator + "2,r2" + recordSeparator,
-                        sw.toString());
+                assertEquals("ID,NAME,TEXT" + recordSeparator + "1,r1,\"long text 1\"" + recordSeparator + "2,r2,\""
+                        + longText2 + "\"" + recordSeparator, sw.toString());
             }
         }
     }
