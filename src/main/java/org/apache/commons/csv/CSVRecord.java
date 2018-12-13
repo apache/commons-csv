@@ -28,6 +28,10 @@ import java.util.Map.Entry;
 
 /**
  * A CSV record parsed from a CSV file.
+ *
+ * <p>The class implements {@link List} interface but does not allow
+ * modifications, i.e. all destructive operations (such as {@link List#add} or
+ * even {@link List#set}) throw {@link UnsupportedOperationException}.
  */
 public final class CSVRecord extends AbstractList<String> implements Serializable {
 
