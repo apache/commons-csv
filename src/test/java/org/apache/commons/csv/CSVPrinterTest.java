@@ -219,8 +219,11 @@ public class CSVPrinterTest {
         try (final Statement statement = connection.createStatement()) {
             statement.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255), TEXT CLOB)");
             statement.execute("insert into TEST values(1, 'r1', 'long text 1')");
-            longText2 = StringUtils.repeat('a', (IOUtils.DEFAULT_BUFFER_SIZE * 2) + 1);
+            longText2 = StringUtils.repeat('a', IOUtils.DEFAULT_BUFFER_SIZE - 4);
+            longText2 += "\"\r\n\"a\"";
+            longText2 += StringUtils.repeat('a', IOUtils.DEFAULT_BUFFER_SIZE - 1);
             statement.execute("insert into TEST values(2, 'r2', '" + longText2 + "')");
+            longText2 = longText2.replace("\"","\"\"");
         }
     }
 
