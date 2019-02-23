@@ -52,6 +52,7 @@ import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.h2.tools.SimpleResultSet;
 import org.h2.value.Value;
 import org.h2.value.ValueArray;
 import org.junit.Assert;
@@ -1259,9 +1260,7 @@ public class CSVPrinterTest {
     @Test
     public void testPrintRecordsWithResultSetOneRow() throws IOException, SQLException {
         try (CSVPrinter csvPrinter = CSVFormat.MYSQL.printer()) {
-            final Value[] valueArray = new Value[0];
-            final ValueArray valueArrayTwo = ValueArray.get(valueArray);
-            try (ResultSet resultSet = valueArrayTwo.getResultSet()) {
+            try (ResultSet resultSet = new SimpleResultSet()) {
                 csvPrinter.printRecords(resultSet);
                 assertEquals(0, resultSet.getRow());
             }
