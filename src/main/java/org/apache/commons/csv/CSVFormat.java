@@ -1501,7 +1501,8 @@ public final class CSVFormat implements Serializable {
      *
      * @throws IOException
      */
-    private void printWithQuotes(final Reader reader, final Appendable out, final boolean newRecord) throws IOException {
+    private void printWithQuotes(final Reader reader, final Appendable out, final boolean newRecord)
+            throws IOException {
         final char quoteChar = getQuoteCharacter().charValue();
 
         if (getQuoteMode() == QuoteMode.NONE) {
