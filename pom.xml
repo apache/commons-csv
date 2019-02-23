@@ -220,7 +220,6 @@ CSV files of various types.
       <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
-        <version>${commons.rat.version}</version>
         <!-- Should agree with config in reporting section -->
         <configuration>
           <excludes>
