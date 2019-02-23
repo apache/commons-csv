@@ -135,7 +135,7 @@ CSV files of various types.
 
   <properties>
     <commons.release.version>1.6</commons.release.version>
-    <commons.release.desc>(Java 8+)</commons.release.desc>
+    <commons.release.desc>(Java 7+)</commons.release.desc>
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC1</commons.rc.version>
     <commons.componentid>csv</commons.componentid>
@@ -143,8 +143,8 @@ CSV files of various types.
     <commons.jira.id>CSV</commons.jira.id>
     <commons.jira.pid>12313222</commons.jira.pid>
     <project.inceptionYear>2005</project.inceptionYear>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
     <!-- Ensure copies work OK (can be removed later when this is in parent POM) -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
