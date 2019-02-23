@@ -572,7 +572,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         public void remove() {
             throw new UnsupportedOperationException();
         }
-    };
+    }
 
     /**
      * Parses the next record from the current point in the stream.
