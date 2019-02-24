@@ -465,8 +465,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         final String[] formatHeader = this.format.getHeader();
         if (formatHeader != null) {
             hdrMap = this.format.getIgnoreHeaderCase() ?
-                    new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER) :
-                    new LinkedHashMap<String, Integer>();
+                    new TreeMap<>(String.CASE_INSENSITIVE_ORDER) :
+                    new LinkedHashMap<>();
 
             String[] headerRecord = null;
             if (formatHeader.length == 0) {
