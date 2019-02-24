@@ -43,6 +43,7 @@
       <action issue="CSV-208" type="fix" dev="ggregory" due-to="Jurrie Overgoor">Fix escape character for POSTGRESQL_TEXT and POSTGRESQL_CSV formats.</action>
       <action issue="CSV-232" type="fix" dev="ggregory" due-to="Jurrie Overgoor, Gary Gregory">Site link "Source Repository" does not work.</action>
       <action issue="CSV-234" type="add" dev="ggregory" due-to="Roberto Benedetti, Gary Gregory">Add support for java.sql.Clob.</action>
+      <action issue="CSV-237" type="update" dev="ggregory" due-to="Gary Gregory">Update to Java 8.</action>
     </release>
     <release version="1.6" date="2018-09-22" description="Feature and bug fix release">
       <action issue="CSV-231" type="update" dev="britter">Add more documentation to CSVPrinter.</action>
