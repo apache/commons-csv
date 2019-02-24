@@ -35,9 +35,9 @@ public class JiraCsv203Test {
                 .withQuoteMode(QuoteMode.ALL);
 
         final StringBuffer buffer = new StringBuffer();
-        final CSVPrinter printer = new CSVPrinter(buffer, format);
-        printer.printRecord(new Object[] { null, "Hello", null, "World" });
-
+        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+            printer.printRecord(new Object[] { null, "Hello", null, "World" });
+        }
         Assert.assertEquals("\"N/A\",\"Hello\",\"N/A\",\"World\"\r\n", buffer.toString());
     }
 
@@ -49,9 +49,9 @@ public class JiraCsv203Test {
                 .withQuoteMode(QuoteMode.ALL_NON_NULL);
 
         final StringBuffer buffer = new StringBuffer();
-        final CSVPrinter printer = new CSVPrinter(buffer, format);
-        printer.printRecord(new Object[] { null, "Hello", null, "World" });
-
+        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+            printer.printRecord(new Object[] { null, "Hello", null, "World" });
+        }
         Assert.assertEquals("N/A,\"Hello\",N/A,\"World\"\r\n", buffer.toString());
     }
 
@@ -62,9 +62,9 @@ public class JiraCsv203Test {
                 .withIgnoreSurroundingSpaces(true);
 
         final StringBuffer buffer = new StringBuffer();
-        final CSVPrinter printer = new CSVPrinter(buffer, format);
-        printer.printRecord(new Object[] { null, "Hello", null, "World" });
-
+        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+            printer.printRecord(new Object[] { null, "Hello", null, "World" });
+        }
         Assert.assertEquals("N/A,Hello,N/A,World\r\n", buffer.toString());
     }
 
@@ -76,9 +76,9 @@ public class JiraCsv203Test {
                 .withQuoteMode(QuoteMode.MINIMAL);
 
         final StringBuffer buffer = new StringBuffer();
-        final CSVPrinter printer = new CSVPrinter(buffer, format);
-        printer.printRecord(new Object[] { null, "Hello", null, "World" });
-
+        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+            printer.printRecord(new Object[] { null, "Hello", null, "World" });
+        }
         Assert.assertEquals("N/A,Hello,N/A,World\r\n", buffer.toString());
     }
 
@@ -90,9 +90,9 @@ public class JiraCsv203Test {
                 .withQuoteMode(QuoteMode.NON_NUMERIC);
 
         final StringBuffer buffer = new StringBuffer();
-        final CSVPrinter printer = new CSVPrinter(buffer, format);
-        printer.printRecord(new Object[] { null, "Hello", null, "World" });
-
+        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+            printer.printRecord(new Object[] { null, "Hello", null, "World" });
+        }
         Assert.assertEquals("N/A,\"Hello\",N/A,\"World\"\r\n", buffer.toString());
     }
 
@@ -104,9 +104,9 @@ public class JiraCsv203Test {
                 .withQuoteMode(QuoteMode.ALL);
 
         final StringBuffer buffer = new StringBuffer();
-        final CSVPrinter printer = new CSVPrinter(buffer, format);
-        printer.printRecord(new Object[] { null, "Hello", null, "World" });
-
+        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+            printer.printRecord(new Object[] { null, "Hello", null, "World" });
+        }
         Assert.assertEquals(",\"Hello\",,\"World\"\r\n", buffer.toString());
     }
 
@@ -118,10 +118,10 @@ public class JiraCsv203Test {
                 .withQuoteMode(QuoteMode.ALL);
 
         final StringBuffer buffer = new StringBuffer();
-        final CSVPrinter printer = new CSVPrinter(buffer, format);
-        printer.printRecord(new Object[] { "", "Hello", "", "World" });
-        //printer.printRecord(new Object[] { null, "Hello", null, "World" });
-
+        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+            printer.printRecord(new Object[] { "", "Hello", "", "World" });
+            //printer.printRecord(new Object[] { null, "Hello", null, "World" });
+        }
         Assert.assertEquals("\"\",\"Hello\",\"\",\"World\"\r\n", buffer.toString());
     }
 }
