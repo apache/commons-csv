@@ -36,7 +36,6 @@ import org.junit.Test;
  * in the CSVParser as the parser is streaming over the file. The CSVParser is like a forward-only stream. When you
  * create a new Iterator you are only created a new view on the same position in the parser's stream. For the behavior
  * you want, you need to open a new CSVParser.
- *
  */
 @Ignore
 public class JiraCsv213Test {
@@ -61,7 +60,7 @@ public class JiraCsv213Test {
                 return;
             }
         } catch (final IOException e) {
-            throw new RuntimeException("Error while adding end channel to csv", e);
+            throw new IllegalStateException("Error while adding end channel to csv", e);
         }
 
         return;
