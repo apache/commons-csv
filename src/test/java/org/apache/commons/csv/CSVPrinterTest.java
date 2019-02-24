@@ -53,8 +53,6 @@ import java.util.Vector;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.h2.tools.SimpleResultSet;
-import org.h2.value.Value;
-import org.h2.value.ValueArray;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -260,21 +258,25 @@ public class CSVPrinterTest {
 
     @Test
     public void testCloseWithFlushOff() throws IOException {
-        final Writer writer = mock(Writer.class);
-        final CSVFormat csvFormat = CSVFormat.DEFAULT;
-        final CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
-        csvPrinter.close(false);
-        verify(writer, never()).flush();
-        verify(writer, times(1)).close();
+        try (final Writer writer = mock(Writer.class)) {
+            final CSVFormat csvFormat = CSVFormat.DEFAULT;
+            @SuppressWarnings("resource")
+            final CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
+            csvPrinter.close(false);
+            verify(writer, never()).flush();
+            verify(writer, times(1)).close();
+        }
     }
 
     @Test
     public void testCloseWithFlushOn() throws IOException {
-        final Writer writer = mock(Writer.class);
-        final CSVFormat csvFormat = CSVFormat.DEFAULT;
-        final CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
-        csvPrinter.close(true);
-        verify(writer, times(1)).flush();
+        try (final Writer writer = mock(Writer.class)) {
+            final CSVFormat csvFormat = CSVFormat.DEFAULT;
+            @SuppressWarnings("resource")
+            final CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
+            csvPrinter.close(true);
+            verify(writer, times(1)).flush();
+        }
     }
 
     @Test
