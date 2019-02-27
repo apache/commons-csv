@@ -1240,8 +1240,7 @@ public final class CSVFormat implements Serializable {
             out.append(getDelimiter());
         }
         if (isQuoteCharacterSet()) {
-            // the original object is needed so can check for Number
-            printWithQuotes(reader, out, newRecord);
+            printWithQuotes(reader, out);
         } else if (isEscapeCharacterSet()) {
             printWithEscapes(reader, out);
         } else if (out instanceof Writer) {
@@ -1501,18 +1500,43 @@ public final class CSVFormat implements Serializable {
      *
      * @throws IOException
      */
-    private void printWithQuotes(final Reader reader, final Appendable out, final boolean newRecord)
-            throws IOException {
-        final char quoteChar = getQuoteCharacter().charValue();
+    private void printWithQuotes(final Reader reader, final Appendable out) throws IOException {
 
         if (getQuoteMode() == QuoteMode.NONE) {
             printWithEscapes(reader, out);
             return;
         }
 
-        out.append(quoteChar);
-        IOUtils.copy(reader, out);
-        out.append(quoteChar);
+        int pos = 0;
+
+        final char quote = getQuoteCharacter().charValue();
+        final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
+
+        out.append(quote);
+
+        int c;
+        while (-1 != (c = reader.read())) {
+            builder.append((char) c);
+            if (c == quote) {
+                // write out segment up until this char
+                if (pos > 0) {
+                    out.append(builder.substring(0, pos));
+                    builder.setLength(0);
+                    pos = -1;
+                }
+
+                out.append(quote);
+                out.append((char) c);
+            }
+            pos++;
+        }
+
+        // write last segment
+        if (pos > 0) {
+            out.append(builder.substring(0, pos));
+        }
+
+        out.append(quote);
     }
 
     @Override
