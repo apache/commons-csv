@@ -97,7 +97,7 @@
       <action issue="CSV-156" type="fix" dev="ggregory" due-to="Jason Steenstra-Pickens">Incorrect Javadoc on QuoteMode.NONE</action>
       <action issue="CSV-157" type="add" dev="ggregory">Add enum CSVFormat.Predefined that contains the default CSVFormat values.</action>
     </release>
-    <release version="1.1" date="2014-11-16" description="Feature and bug fix release">
+    <release version="1.1" date="2014-11-16" description="Feature and bug fix release (Java 6)">
       <action issue="CSV-140" type="fix" dev="ggregory" due-to="Damjan Jovanovic">QuoteMode.NON_NUMERIC doesn't work with CSVPrinter.printRecords(ResultSet)</action>
       <action issue="CSV-130" type="fix" dev="ggregory" due-to="Sergei Lebedev">CSVFormat#withHeader doesn't work well with #printComment, add withHeaderComments(String...)</action>
       <action issue="CSV-128" type="fix" dev="ggregory">CSVFormat.EXCEL should ignore empty header names</action>
