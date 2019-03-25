@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>47</version>
+    <version>48</version>
   </parent>
   <artifactId>commons-csv</artifactId>
   <version>1.7-SNAPSHOT</version>
@@ -138,6 +138,7 @@ CSV files of various types.
     <commons.release.desc>(Java 8)</commons.release.desc>
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC1</commons.rc.version>
+    <commons.bc.version>1.6</commons.bc.version>
     <commons.componentid>csv</commons.componentid>
     <commons.module.name>org.apache.commons.csv</commons.module.name>
     <commons.jira.id>CSV</commons.jira.id>
@@ -154,10 +155,7 @@ CSV files of various types.
     <checkstyle.header.file>${basedir}/LICENSE-header.txt</checkstyle.header.file>
     <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt</checkstyle.resourceExcludes>
 
-    <!-- Fix for COMMONSSITE-124 remove once commons-parent 48 has been released -->
-    <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commons/content/proper/${project.artifactId}</commons.scmPubUrl>
-    <!-- Fix for COMMONSSITE-125 remove once commons-parent 48 has been released -->
-    <commons.osgi.symbolicName>org.apache.commons.${commons.componentid}</commons.osgi.symbolicName>
+    <japicmp.skip>false</japicmp.skip>
   </properties>
 
   <build>
