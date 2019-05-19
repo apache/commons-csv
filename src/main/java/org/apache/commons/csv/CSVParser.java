@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * Parses CSV files according to the specified format.
@@ -132,6 +133,61 @@ import java.util.TreeMap;
  * @see <a href="package-summary.html">package documentation for more details</a>
  */
 public final class CSVParser implements Iterable<CSVRecord>, Closeable {
+
+    class CSVRecordIterator implements Iterator<CSVRecord> {
+        private CSVRecord current;
+
+        private CSVRecord getNextRecord() {
+            try {
+                return CSVParser.this.nextRecord();
+            } catch (final IOException e) {
+                throw new IllegalStateException(
+                        e.getClass().getSimpleName() + " reading next record: " + e.toString(), e);
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            if (CSVParser.this.isClosed()) {
+                return false;
+            }
+            if (this.current == null) {
+                this.current = this.getNextRecord();
+            }
+
+            return this.current != null;
+        }
+
+        @Override
+        public CSVRecord next() {
+            if (CSVParser.this.isClosed()) {
+                throw new NoSuchElementException("CSVParser has been closed");
+            }
+            CSVRecord next = this.current;
+            this.current = null;
+
+            if (next == null) {
+                // hasNext() wasn't called before
+                next = this.getNextRecord();
+                if (next == null) {
+                    throw new NoSuchElementException("No more CSV records available");
+                }
+            }
+
+            return next;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    static List<String> createHeaderNames(final Map<String, Integer> headerMap) {
+        return headerMap == null ? null
+            : headerMap.entrySet().stream().sorted(Map.Entry.comparingByValue()).map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
 
     /**
      * Creates a parser for the given {@link File}.
@@ -229,6 +285,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         return new CSVParser(reader, format);
     }
 
+    // the following objects are shared to reduce garbage
+
     /**
      * Creates a parser for the given {@link String}.
      *
@@ -277,12 +335,13 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         return new CSVParser(new InputStreamReader(url.openStream(), charset), format);
     }
 
-    // the following objects are shared to reduce garbage
-
     private final CSVFormat format;
 
     /** A mapping of column names to column indices */
     private final Map<String, Integer> headerMap;
+
+    /** Preserve the column order to avoid re-computing it. */
+    private final List<String> headerNames;
 
     private final Lexer lexer;
 
@@ -349,14 +408,15 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     @SuppressWarnings("resource")
     public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber)
-            throws IOException {
+        throws IOException {
         Assertions.notNull(reader, "reader");
         Assertions.notNull(format, "format");
 
         this.format = format;
         this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
         this.csvRecordIterator = new CSVRecordIterator();
-        this.headerMap = this.createHeaderMap();
+        this.headerMap = createHeaderMap(); // 1st
+        this.headerNames = createHeaderNames(this.headerMap); // 2nd
         this.characterOffset = characterOffset;
         this.recordNumber = recordNumber - 1;
     }
@@ -382,76 +442,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         if (this.lexer != null) {
             this.lexer.close();
         }
-    }
-
-    /**
-     * Returns the current line number in the input stream.
-     *
-     * <p>
-     * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
-     * the record number.
-     * </p>
-     *
-     * @return current line number
-     */
-    public long getCurrentLineNumber() {
-        return this.lexer.getCurrentLineNumber();
-    }
-
-    /**
-     * Gets the first end-of-line string encountered.
-     *
-     * @return the first end-of-line string
-     * @since 1.5
-     */
-    public String getFirstEndOfLine() {
-        return lexer.getFirstEol();
-    }
-
-    /**
-     * Returns a copy of the header map that iterates in column order.
-     * <p>
-     * The map keys are column names. The map values are 0-based indices.
-     * </p>
-     * @return a copy of the header map that iterates in column order.
-     */
-    public Map<String, Integer> getHeaderMap() {
-        return this.headerMap == null ? null : new LinkedHashMap<>(this.headerMap);
-    }
-
-    /**
-     * Returns the current record number in the input stream.
-     *
-     * <p>
-     * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
-     * the line number.
-     * </p>
-     *
-     * @return current record number
-     */
-    public long getRecordNumber() {
-        return this.recordNumber;
-    }
-
-    /**
-     * Parses the CSV input according to the given format and returns the content as a list of
-     * {@link CSVRecord CSVRecords}.
-     *
-     * <p>
-     * The returned content starts at the current parse-position in the stream.
-     * </p>
-     *
-     * @return list of {@link CSVRecord CSVRecords}, may be empty
-     * @throws IOException
-     *             on parse error or input read-failure
-     */
-    public List<CSVRecord> getRecords() throws IOException {
-        CSVRecord rec;
-        final List<CSVRecord> records = new ArrayList<>();
-        while ((rec = this.nextRecord()) != null) {
-            records.add(rec);
-        }
-        return records;
     }
 
     /**
@@ -502,6 +492,76 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
+     * Returns the current line number in the input stream.
+     *
+     * <p>
+     * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
+     * the record number.
+     * </p>
+     *
+     * @return current line number
+     */
+    public long getCurrentLineNumber() {
+        return this.lexer.getCurrentLineNumber();
+    }
+
+    /**
+     * Gets the first end-of-line string encountered.
+     *
+     * @return the first end-of-line string
+     * @since 1.5
+     */
+    public String getFirstEndOfLine() {
+        return lexer.getFirstEol();
+    }
+
+    /**
+     * Returns a copy of the header map.
+     * <p>
+     * The map keys are column names. The map values are 0-based indices.
+     * </p>
+     * @return a copy of the header map.
+     */
+    public Map<String, Integer> getHeaderMap() {
+        return this.headerMap == null ? null : new LinkedHashMap<>(this.headerMap);
+    }
+
+    /**
+     * Returns the current record number in the input stream.
+     *
+     * <p>
+     * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
+     * the line number.
+     * </p>
+     *
+     * @return current record number
+     */
+    public long getRecordNumber() {
+        return this.recordNumber;
+    }
+
+    /**
+     * Parses the CSV input according to the given format and returns the content as a list of
+     * {@link CSVRecord CSVRecords}.
+     *
+     * <p>
+     * The returned content starts at the current parse-position in the stream.
+     * </p>
+     *
+     * @return list of {@link CSVRecord CSVRecords}, may be empty
+     * @throws IOException
+     *             on parse error or input read-failure
+     */
+    public List<CSVRecord> getRecords() throws IOException {
+        CSVRecord rec;
+        final List<CSVRecord> records = new ArrayList<>();
+        while ((rec = this.nextRecord()) != null) {
+            records.add(rec);
+        }
+        return records;
+    }
+
+    /**
      * Gets whether this parser is closed.
      *
      * @return whether this parser is closed.
@@ -525,55 +585,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     @Override
     public Iterator<CSVRecord> iterator() {
         return csvRecordIterator;
-    }
-
-    class CSVRecordIterator implements Iterator<CSVRecord> {
-        private CSVRecord current;
-
-        private CSVRecord getNextRecord() {
-            try {
-                return CSVParser.this.nextRecord();
-            } catch (final IOException e) {
-                throw new IllegalStateException(
-                        e.getClass().getSimpleName() + " reading next record: " + e.toString(), e);
-            }
-        }
-
-        @Override
-        public boolean hasNext() {
-            if (CSVParser.this.isClosed()) {
-                return false;
-            }
-            if (this.current == null) {
-                this.current = this.getNextRecord();
-            }
-
-            return this.current != null;
-        }
-
-        @Override
-        public CSVRecord next() {
-            if (CSVParser.this.isClosed()) {
-                throw new NoSuchElementException("CSVParser has been closed");
-            }
-            CSVRecord next = this.current;
-            this.current = null;
-
-            if (next == null) {
-                // hasNext() wasn't called before
-                next = this.getNextRecord();
-                if (next == null) {
-                    throw new NoSuchElementException("No more CSV records available");
-                }
-            }
-
-            return next;
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
     }
 
     /**
@@ -622,8 +633,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         if (!this.recordList.isEmpty()) {
             this.recordNumber++;
             final String comment = sb == null ? null : sb.toString();
-            result = new CSVRecord(this.recordList.toArray(new String[this.recordList.size()]), this.headerMap, comment,
-                    this.recordNumber, startCharPosition);
+            result = new CSVRecord(this.recordList.toArray(new String[this.recordList.size()]), this.headerMap,
+                this.headerNames, comment, this.recordNumber, startCharPosition);
         }
         return result;
     }

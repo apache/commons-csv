@@ -45,6 +45,7 @@
       <action issue="CSV-234" type="add" dev="ggregory" due-to="Roberto Benedetti, Gary Gregory">Add support for java.sql.Clob.</action>
       <action issue="CSV-237" type="update" dev="ggregory" due-to="Gary Gregory">Update to Java 8.</action>
       <action issue="CSV-238" type="fix" dev="ggregory" due-to="Stephen Olander-Waters">Escape quotes in CLOBs #39.</action>
+      <action issue="CSV-239" type="add" dev="ggregory" due-to="Gary Gregory, Dave Moten">Cannot get headers in column order from CSVRecord.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from H2 1.4.198 to 1.4.199.</action>
     </release>
     <release version="1.6" date="2018-09-22" description="Feature and bug fix release (Java 7)">

@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,17 +41,17 @@ public class CSVRecordTest {
 
     private String[] values;
     private CSVRecord record, recordWithHeader;
-    private Map<String, Integer> header;
+    private Map<String, Integer> headerMap;
 
     @Before
     public void setUp() throws Exception {
         values = new String[] { "A", "B", "C" };
-        record = new CSVRecord(values, null, null, 0, -1);
-        header = new HashMap<>();
-        header.put("first", Integer.valueOf(0));
-        header.put("second", Integer.valueOf(1));
-        header.put("third", Integer.valueOf(2));
-        recordWithHeader = new CSVRecord(values, header, null, 0, -1);
+        record = new CSVRecord(values, null, null, null, 0, -1);
+        headerMap = new HashMap<>();
+        headerMap.put("first", Integer.valueOf(0));
+        headerMap.put("second", Integer.valueOf(1));
+        headerMap.put("third", Integer.valueOf(2));
+        recordWithHeader = new CSVRecord(values, headerMap, CSVParser.createHeaderNames(headerMap), null, 0, -1);
     }
 
     @Test
@@ -69,7 +70,7 @@ public class CSVRecordTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetStringInconsistentRecord() {
-        header.put("fourth", Integer.valueOf(4));
+        headerMap.put("fourth", Integer.valueOf(4));
         recordWithHeader.get("fourth");
     }
 
@@ -103,7 +104,7 @@ public class CSVRecordTest {
         assertTrue(record.isConsistent());
         assertTrue(recordWithHeader.isConsistent());
 
-        header.put("fourth", Integer.valueOf(4));
+        headerMap.put("fourth", Integer.valueOf(4));
         assertFalse(recordWithHeader.isConsistent());
     }
 
@@ -159,6 +160,18 @@ public class CSVRecordTest {
     public void testToMap() {
         final Map<String, String> map = this.recordWithHeader.toMap();
         this.validateMap(map, true);
+    }
+
+    @Test
+    public void testGetHeaderNames() {
+        final Map<String, String> nameValueMap = this.recordWithHeader.toMap();
+        final List<String> headerNames = this.recordWithHeader.getHeaderNames();
+        Assert.assertEquals(nameValueMap.size(), headerNames.size());
+        for (int i = 0; i < headerNames.size(); i++) {
+            String name = headerNames.get(i);
+            Assert.assertEquals(i, this.recordWithHeader.getIndex(name).intValue());
+            Assert.assertEquals(name, this.recordWithHeader.getName(i));
+        }
     }
 
     @Test

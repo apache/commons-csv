@@ -18,9 +18,10 @@
 package org.apache.commons.csv;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -40,7 +41,10 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     private final String comment;
 
     /** The column name to index mapping. */
-    private final Map<String, Integer> mapping;
+    private final Map<String, Integer> headerMap;
+
+    /** The column order to avoid re-computing it. */
+    private final List<String> headerNames;
 
     /** The record number. */
     private final long recordNumber;
@@ -48,11 +52,12 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /** The values of the record */
     private final String[] values;
 
-    CSVRecord(final String[] values, final Map<String, Integer> mapping, final String comment, final long recordNumber,
-            final long characterPosition) {
+    CSVRecord(final String[] values, final Map<String, Integer> headerMap, List<String> headerNames, final String comment,
+            final long recordNumber, final long characterPosition) {
         this.recordNumber = recordNumber;
         this.values = values != null ? values : EMPTY_STRING_ARRAY;
-        this.mapping = mapping;
+        this.headerMap = headerMap;
+        this.headerNames = headerNames;
         this.comment = comment;
         this.characterPosition = characterPosition;
     }
@@ -93,14 +98,10 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @see CSVFormat#withNullString(String)
      */
     public String get(final String name) {
-        if (mapping == null) {
-            throw new IllegalStateException(
-                "No header mapping was specified, the record values can't be accessed by name");
-        }
-        final Integer index = mapping.get(name);
+        final Integer index = getIndex(name);
         if (index == null) {
             throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name,
-                mapping.keySet()));
+                headerMap.keySet()));
         }
         try {
             return values[index.intValue()];
@@ -134,6 +135,32 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
+     * Returns a copy of the header names that iterates in column order.
+     * 
+     * @return a copy of the header names that iterates in column order.
+     * @since 1.7
+     */
+    public List<String> getHeaderNames() {
+        return new ArrayList<>(headerNames);
+    }
+
+    Integer getIndex(final String name) {
+        if (headerMap == null) {
+            throw new IllegalStateException(
+                "No header mapping was specified, the record values can't be accessed by name");
+        }
+        return headerMap.get(name);
+    }
+
+    String getName(final int index) {
+        if (headerMap == null) {
+            throw new IllegalStateException(
+                "No header mapping was specified, the record values can't be accessed by name");
+        }
+        return headerNames.get(index);
+    }
+
+    /**
      * Returns the number of this record in the parsed CSV file.
      *
      * <p>
@@ -146,20 +173,6 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     public long getRecordNumber() {
         return recordNumber;
-    }
-
-    /**
-     * Tells whether the record size matches the header size.
-     *
-     * <p>
-     * Returns true if the sizes for this record match and false if not. Some programs can export files that fail this
-     * test but still produce parsable files.
-     * </p>
-     *
-     * @return true of this record is valid, false if not
-     */
-    public boolean isConsistent() {
-        return mapping == null || mapping.size() == values.length;
     }
 
     /**
@@ -176,6 +189,20 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
+     * Tells whether the record size matches the header size.
+     *
+     * <p>
+     * Returns true if the sizes for this record match and false if not. Some programs can export files that fail this
+     * test but still produce parsable files.
+     * </p>
+     *
+     * @return true of this record is valid, false if not
+     */
+    public boolean isConsistent() {
+        return headerMap == null || headerMap.size() == values.length;
+    }
+
+    /**
      * Checks whether a given column is mapped, i.e. its name has been defined to the parser.
      *
      * @param name
@@ -183,7 +210,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return whether a given column is mapped.
      */
     public boolean isMapped(final String name) {
-        return mapping != null && mapping.containsKey(name);
+        return headerMap != null && headerMap.containsKey(name);
     }
 
     /**
@@ -194,7 +221,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return whether a given columns is mapped and has a value
      */
     public boolean isSet(final String name) {
-        return isMapped(name) && mapping.get(name).intValue() < values.length;
+        return isMapped(name) && headerMap.get(name).intValue() < values.length;
     }
 
     /**
@@ -215,10 +242,10 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return the given map.
      */
     <M extends Map<String, String>> M putIn(final M map) {
-        if (mapping == null) {
+        if (headerMap == null) {
             return map;
         }
-        for (final Entry<String, Integer> entry : mapping.entrySet()) {
+        for (final Entry<String, Integer> entry : headerMap.entrySet()) {
             final int col = entry.getValue().intValue();
             if (col < values.length) {
                 map.put(entry.getKey(), values[col]);
@@ -253,7 +280,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return A new Map. The map is empty if the record has no headers.
      */
     public Map<String, String> toMap() {
-        return putIn(new HashMap<String, String>(values.length));
+        return putIn(new LinkedHashMap<String, String>(values.length));
     }
 
     /**
@@ -264,7 +291,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     @Override
     public String toString() {
-        return "CSVRecord [comment=" + comment + ", mapping=" + mapping +
+        return "CSVRecord [comment=" + comment + ", mapping=" + headerMap +
                 ", recordNumber=" + recordNumber + ", values=" +
                 Arrays.toString(values) + "]";
     }
