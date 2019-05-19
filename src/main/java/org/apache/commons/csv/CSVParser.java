@@ -466,7 +466,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         if (formatHeader != null) {
             hdrMap = this.format.getIgnoreHeaderCase() ?
                     new TreeMap<>(String.CASE_INSENSITIVE_ORDER) :
-                    new LinkedHashMap<>();
+                    new TreeMap<>();
 
             String[] headerRecord = null;
             if (formatHeader.length == 0) {
@@ -486,13 +486,15 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             if (headerRecord != null) {
                 for (int i = 0; i < headerRecord.length; i++) {
                     final String header = headerRecord[i];
-                    final boolean containsHeader = hdrMap.containsKey(header);
+                    final boolean containsHeader = header == null ? false : hdrMap.containsKey(header);
                     final boolean emptyHeader = header == null || header.trim().isEmpty();
                     if (containsHeader && (!emptyHeader || !this.format.getAllowMissingColumnNames())) {
-                        throw new IllegalArgumentException("The header contains a duplicate name: \"" + header +
-                                "\" in " + Arrays.toString(headerRecord));
+                        throw new IllegalArgumentException("The header contains a duplicate name: \"" + header
+                                + "\" in " + Arrays.toString(headerRecord));
                     }
-                    hdrMap.put(header, Integer.valueOf(i));
+                    if (header != null) {
+                        hdrMap.put(header, Integer.valueOf(i));
+                    }
                 }
             }
         }
