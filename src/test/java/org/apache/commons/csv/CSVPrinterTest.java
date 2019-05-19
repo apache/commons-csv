@@ -82,7 +82,7 @@ public class CSVPrinterTest {
     }
 
     private final String recordSeparator = CSVFormat.DEFAULT.getRecordSeparator();
-    private String longText2; 
+    private String longText2;
 
     private void doOneRandom(final CSVFormat format) throws Exception {
         final Random r = new Random();

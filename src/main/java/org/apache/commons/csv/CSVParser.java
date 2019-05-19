@@ -340,7 +340,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     /** A mapping of column names to column indices */
     private final Map<String, Integer> headerMap;
 
-    /** Preserve the column order to avoid re-computing it. */
+    /** The column order to avoid re-computing it. */
     private final List<String> headerNames;
 
     private final Lexer lexer;
@@ -444,6 +444,12 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         }
     }
 
+    private Map<String, Integer> createEmptyHeaderMap() {
+        return this.format.getIgnoreHeaderCase() ?
+                new TreeMap<>(String.CASE_INSENSITIVE_ORDER) :
+                new TreeMap<>();
+    }
+
     /**
      * Creates the name to index mapping if the format defines a header.
      *
@@ -454,10 +460,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         Map<String, Integer> hdrMap = null;
         final String[] formatHeader = this.format.getHeader();
         if (formatHeader != null) {
-            hdrMap = this.format.getIgnoreHeaderCase() ?
-                    new TreeMap<>(String.CASE_INSENSITIVE_ORDER) :
-                    new TreeMap<>();
-
+            hdrMap = createEmptyHeaderMap();
             String[] headerRecord = null;
             if (formatHeader.length == 0) {
                 // read the header from the first line of the file
@@ -523,7 +526,31 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @return a copy of the header map.
      */
     public Map<String, Integer> getHeaderMap() {
-        return this.headerMap == null ? null : new LinkedHashMap<>(this.headerMap);
+        if (this.headerMap == null) {
+            return null;
+        }
+        final Map<String, Integer> map = createEmptyHeaderMap();
+        map.putAll(this.headerMap);
+        return map;
+    }
+
+    /**
+     * Returns the header map.
+     *
+     * @return the header map.
+     */
+    Map<String, Integer> getHeaderMapRaw() {
+        return this.headerMap;
+    }
+
+    /**
+     * Returns a copy of the header names that iterates in column order.
+     *
+     * @return a copy of the header names that iterates in column order.
+     * @since 1.7
+     */
+    public List<String> getHeaderNames() {
+        return new ArrayList<>(headerNames);
     }
 
     /**
@@ -633,8 +660,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         if (!this.recordList.isEmpty()) {
             this.recordNumber++;
             final String comment = sb == null ? null : sb.toString();
-            result = new CSVRecord(this.recordList.toArray(new String[this.recordList.size()]), this.headerMap,
-                this.headerNames, comment, this.recordNumber, startCharPosition);
+            result = new CSVRecord(this, this.recordList.toArray(new String[this.recordList.size()]),
+                comment, this.recordNumber, startCharPosition);
         }
         return result;
     }

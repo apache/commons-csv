@@ -246,6 +246,7 @@ public class PerformanceTest {
 
     private static void testParseCommonsCSV() throws Exception {
         testParser("CSV", new CSVParserFactory() {
+            @Override
             public CSVParser createParser() throws IOException {
                 return new CSVParser(createReader(), format);
             }
@@ -254,6 +255,7 @@ public class PerformanceTest {
 
     private static void testParsePath() throws Exception {
         testParser("CSV-PATH", new CSVParserFactory() {
+            @Override
             public CSVParser createParser() throws IOException {
                 return CSVParser.parse(Files.newInputStream(Paths.get(BIG_FILE.toURI())), StandardCharsets.ISO_8859_1, format);
             }
@@ -262,6 +264,7 @@ public class PerformanceTest {
 
     private static void testParsePathDoubleBuffering() throws Exception {
         testParser("CSV-PATH-DB", new CSVParserFactory() {
+            @Override
             public CSVParser createParser() throws IOException {
                 return CSVParser.parse(Files.newBufferedReader(Paths.get(BIG_FILE.toURI()), StandardCharsets.ISO_8859_1), format);
             }
@@ -270,6 +273,7 @@ public class PerformanceTest {
 
     private static void testParseURL() throws Exception {
         testParser("CSV-URL", new CSVParserFactory() {
+            @Override
             public CSVParser createParser() throws IOException {
                 //NOTE: URL will always return a BufferedInputStream.
                 return CSVParser.parse(BIG_FILE.toURI().toURL(), StandardCharsets.ISO_8859_1, format);

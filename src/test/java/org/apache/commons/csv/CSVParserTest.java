@@ -491,6 +491,20 @@ public class CSVParserTest {
     }
 
     @Test
+    public void testGetHeaderNames() throws IOException {
+        try (final CSVParser parser = CSVParser.parse("a,b,c\n1,2,3\nx,y,z",
+            CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
+            final Map<String, Integer> nameIndexMap = parser.getHeaderMap();
+            final List<String> headerNames = parser.getHeaderNames();
+            Assert.assertEquals(nameIndexMap.size(), headerNames.size());
+            for (int i = 0; i < headerNames.size(); i++) {
+                final String name = headerNames.get(i);
+                Assert.assertEquals(i, nameIndexMap.get(name).intValue());
+            }
+        }
+    }
+
+    @Test
     public void testGetLine() throws IOException {
         try (final CSVParser parser = CSVParser.parse(CSV_INPUT, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces())) {
             for (final String[] re : RESULT) {
@@ -678,9 +692,9 @@ public class CSVParserTest {
 
     @Test
     public void testIgnoreCaseHeaderMapping() throws Exception {
-        final Reader in = new StringReader("1,2,3");
+        final Reader reader = new StringReader("1,2,3");
         final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("One", "TWO", "three").withIgnoreHeaderCase()
-                .parse(in).iterator();
+                .parse(reader).iterator();
         final CSVRecord record = records.next();
         assertEquals("1", record.get("one"));
         assertEquals("2", record.get("two"));
@@ -742,10 +756,10 @@ public class CSVParserTest {
         // Iterator hasNext() shouldn't break sequence
         CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(fiveRows));
         int recordNumber = 0;
-        Iterator<CSVRecord> iter = parser.iterator();
+        final Iterator<CSVRecord> iter = parser.iterator();
         recordNumber = 0;
         while (iter.hasNext()) {
-            CSVRecord record = iter.next();
+            final CSVRecord record = iter.next();
             recordNumber++;
             assertEquals(String.valueOf(recordNumber), record.get(0));
             if (recordNumber >= 2) {
@@ -754,7 +768,7 @@ public class CSVParserTest {
         }
         iter.hasNext();
         while (iter.hasNext()) {
-            CSVRecord record = iter.next();
+            final CSVRecord record = iter.next();
             recordNumber++;
             assertEquals(String.valueOf(recordNumber), record.get(0));
         }
@@ -762,14 +776,14 @@ public class CSVParserTest {
         // Consecutive enhanced for loops shouldn't break sequence
         parser = CSVFormat.DEFAULT.parse(new StringReader(fiveRows));
         recordNumber = 0;
-        for (CSVRecord record : parser) {
+        for (final CSVRecord record : parser) {
             recordNumber++;
             assertEquals(String.valueOf(recordNumber), record.get(0));
             if (recordNumber >= 2) {
                 break;
             }
         }
-        for (CSVRecord record : parser) {
+        for (final CSVRecord record : parser) {
             recordNumber++;
             assertEquals(String.valueOf(recordNumber), record.get(0));
         }
@@ -777,7 +791,7 @@ public class CSVParserTest {
         // Consecutive enhanced for loops with hasNext() peeking shouldn't break sequence
         parser = CSVFormat.DEFAULT.parse(new StringReader(fiveRows));
         recordNumber = 0;
-        for (CSVRecord record : parser) {
+        for (final CSVRecord record : parser) {
             recordNumber++;
             assertEquals(String.valueOf(recordNumber), record.get(0));
             if (recordNumber >= 2) {
@@ -785,7 +799,7 @@ public class CSVParserTest {
             }
         }
         parser.iterator().hasNext();
-        for (CSVRecord record : parser) {
+        for (final CSVRecord record : parser) {
             recordNumber++;
             assertEquals(String.valueOf(recordNumber), record.get(0));
         }
@@ -799,7 +813,7 @@ public class CSVParserTest {
             assertEquals(4, records.size());
         }
     }
-    
+
     @Test
     public void testMappedButNotSetAsOutlook2007ContactExport() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2\nx,y,z");
