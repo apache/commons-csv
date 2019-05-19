@@ -356,7 +356,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         this.format = format;
         this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
         this.csvRecordIterator = new CSVRecordIterator();
-        this.headerMap = this.initializeHeader();
+        this.headerMap = this.createHeaderMap();
         this.characterOffset = characterOffset;
         this.recordNumber = recordNumber - 1;
     }
@@ -455,12 +455,12 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Initializes the name to index mapping if the format defines a header.
+     * Creates the name to index mapping if the format defines a header.
      *
      * @return null if the format has no header.
      * @throws IOException if there is a problem reading the header or skipping the first record
      */
-    private Map<String, Integer> initializeHeader() throws IOException {
+    private Map<String, Integer> createHeaderMap() throws IOException {
         Map<String, Integer> hdrMap = null;
         final String[] formatHeader = this.format.getHeader();
         if (formatHeader != null) {
