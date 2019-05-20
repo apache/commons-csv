@@ -496,10 +496,26 @@ public class CSVParserTest {
             CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
             final Map<String, Integer> nameIndexMap = parser.getHeaderMap();
             final List<String> headerNames = parser.getHeaderNames();
+            Assert.assertNotNull(headerNames);
             Assert.assertEquals(nameIndexMap.size(), headerNames.size());
             for (int i = 0; i < headerNames.size(); i++) {
                 final String name = headerNames.get(i);
                 Assert.assertEquals(i, nameIndexMap.get(name).intValue());
+            }
+        }
+    }
+
+    @Test
+    public void testGetHeaderNamesReadOnly() throws IOException {
+        try (final CSVParser parser = CSVParser.parse("a,b,c\n1,2,3\nx,y,z",
+            CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
+            final List<String> headerNames = parser.getHeaderNames();
+            Assert.assertNotNull(headerNames);
+            try {
+                headerNames.add("This is a read-only list.");
+                fail();
+            } catch (UnsupportedOperationException e) {
+                // Yes.
             }
         }
     }
