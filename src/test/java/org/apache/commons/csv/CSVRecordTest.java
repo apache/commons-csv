@@ -108,7 +108,7 @@ public class CSVRecordTest {
     public void testIsConsistent() {
         assertTrue(record.isConsistent());
         assertTrue(recordWithHeader.isConsistent());
-        final Map<String, Integer> map = recordWithHeader.getCSVParser().getHeaderMap();
+        final Map<String, Integer> map = recordWithHeader.getParser().getHeaderMap();
         map.put("fourth", Integer.valueOf(4));
         // We are working on a copy of the map, so the record should still be OK.
         assertTrue(recordWithHeader.isConsistent());

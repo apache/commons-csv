@@ -79,10 +79,6 @@ public final class CSVRecord implements Serializable, Iterable<String> {
         return values[i];
     }
 
-    private Map<String, Integer> getHeaderMapRaw() {
-        return parser.getHeaderMapRaw();
-    }
-
     /**
      * Returns a value by name.
      *
@@ -138,13 +134,17 @@ public final class CSVRecord implements Serializable, Iterable<String> {
         return comment;
     }
 
+    private Map<String, Integer> getHeaderMapRaw() {
+        return parser.getHeaderMapRaw();
+    }
+
     /**
      * Returns the parser.
      *
      * @return the parser.
      * @since 1.7
      */
-    public CSVParser getCSVParser() {
+    public CSVParser getParser() {
         return parser;
     }
 
