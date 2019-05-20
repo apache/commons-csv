@@ -275,6 +275,7 @@ CSV files of various types.
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
+        <version>${commons.findbugs.version}</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
