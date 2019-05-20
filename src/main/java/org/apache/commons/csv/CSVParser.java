@@ -33,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -183,9 +184,13 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     static List<String> createHeaderNames(final Map<String, Integer> headerMap) {
+        // @formatter:off
         return headerMap == null ? null
-            : headerMap.entrySet().stream().sorted(Map.Entry.comparingByValue()).map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+            : headerMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+        // @formatter:on
     }
 
     /**
@@ -543,13 +548,13 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Returns a copy of the header names that iterates in column order.
+     * Returns a read-only list of header names that iterates in column order.
      *
-     * @return a copy of the header names that iterates in column order.
+     * @return read-only list of header names that iterates in column order.
      * @since 1.7
      */
     public List<String> getHeaderNames() {
-        return new ArrayList<>(headerNames);
+        return headerNames;
     }
 
     /**
