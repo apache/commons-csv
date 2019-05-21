@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -441,7 +442,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private Map<String, Integer> createEmptyHeaderMap() {
         return this.format.getIgnoreHeaderCase() ?
                 new TreeMap<>(String.CASE_INSENSITIVE_ORDER) :
-                new TreeMap<>();
+                new LinkedHashMap<>();
     }
 
     /**
