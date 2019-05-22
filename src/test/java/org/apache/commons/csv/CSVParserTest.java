@@ -310,7 +310,7 @@ public class CSVParserTest {
             assertTrue(parser.getHeaderNames().isEmpty());
         }
     }
-
+    
     @Test
     public void testEmptyFile() throws Exception {
         try (final CSVParser parser = CSVParser.parse("", CSVFormat.DEFAULT)) {

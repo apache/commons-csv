@@ -265,7 +265,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Copies this record into a new Map. The new map is not connect
+     * Copies this record into a new Map of header name to record value.
      *
      * @return A new Map. The map is empty if the record has no headers.
      */

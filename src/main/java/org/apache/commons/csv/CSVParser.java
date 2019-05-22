@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * Parses CSV files according to the specified format.
@@ -506,9 +507,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             }
         } 
         if (headerNames == null) {
-        	headerNames = Collections.emptyList();
+        	headerNames = Collections.emptyList(); //immutable
+        } else {
+        	headerNames = Collections.unmodifiableList(headerNames);
         }
-        return new Headers(hdrMap, Collections.unmodifiableList(headerNames));
+        return new Headers(hdrMap, headerNames);
     }
 
     /**
