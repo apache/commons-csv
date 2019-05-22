@@ -294,15 +294,15 @@ public class CSVParserTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testDuplicateHeadersNotAllowed() throws Exception {
-        CSVParser.parse("a,b,a\n1,2,3\nx,y,z", CSVFormat.DEFAULT.withHeader(new String[] {})
-        		.withAllowDuplicateHeaderNames(false));
+        CSVParser.parse("a,b,a\n1,2,3\nx,y,z",
+                CSVFormat.DEFAULT.withHeader(new String[] {}).withAllowDuplicateHeaderNames(false));
     }
 
     @Test
     public void testDuplicateHeadersAllowedByDefault() throws Exception {
         CSVParser.parse("a,b,a\n1,2,3\nx,y,z", CSVFormat.DEFAULT.withHeader(new String[] {}));
     }
-    
+
     @Test
     public void testEmptyFileHeaderParsing() throws Exception {
         try (final CSVParser parser = CSVParser.parse("", CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
@@ -1169,9 +1169,8 @@ public class CSVParserTest {
     
     @Test
     public void testRepeatedHeadersAreReturnedInCSVRecordHeaderNames() throws IOException {
-    	final Reader in = new StringReader("header1,header2,header1\n1,2,3\n4,5,6");
-        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader()
-                .withTrim().parse(in).iterator();
+        final Reader in = new StringReader("header1,header2,header1\n1,2,3\n4,5,6");
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().withTrim().parse(in).iterator();
         final CSVRecord record = records.next();
         assertEquals(Arrays.asList("header1", "header2", "header1"), record.getParser().getHeaderNames());
     }

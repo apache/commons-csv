@@ -447,13 +447,13 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     private static final class Headers {
-    	final Map<String,Integer> headerMap;
-    	final List<String> headerNames;
+        final Map<String, Integer> headerMap;
+        final List<String> headerNames;
 
-    	Headers(Map<String, Integer> headerMap, List<String> headerNames) {
-			this.headerMap = headerMap;
-			this.headerNames = headerNames;
-		}
+        Headers(Map<String, Integer> headerMap, List<String> headerNames) {
+            this.headerMap = headerMap;
+            this.headerNames = headerNames;
+        }
     }
     
     /**
@@ -481,7 +481,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 }
                 headerRecord = formatHeader;
             }
-            
+
             // build the name to index mappings
             if (headerRecord != null) {
                 for (int i = 0; i < headerRecord.length; i++) {
