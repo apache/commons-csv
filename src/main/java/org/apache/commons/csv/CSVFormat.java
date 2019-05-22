@@ -2269,7 +2269,7 @@ public final class CSVFormat implements Serializable {
     	return withAllowDuplicateHeaderNames(true);
     }
     
-	public boolean getAllowDuplicateHeaderNames() {
+    public boolean getAllowDuplicateHeaderNames() {
 		return allowDuplicateHeaderNames;
 	}
 }

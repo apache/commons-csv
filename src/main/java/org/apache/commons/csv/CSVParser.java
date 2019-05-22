@@ -410,7 +410,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         this.format = format;
         this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
         this.csvRecordIterator = new CSVRecordIterator();
-        Headers headers = createHeaderMapAndHeaderNames();
+        Headers headers = createHeaders();
         this.headerMap = headers.headerMap;
         this.headerNames = headers.headerNames;
         this.characterOffset = characterOffset;
@@ -446,8 +446,18 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 new LinkedHashMap<>();
     }
 
+    /**
+     * Header information based on name and position.
+     */
     private static final class Headers {
+        /**
+         * Header column positions (0-based)
+         */
         final Map<String, Integer> headerMap;
+        
+        /**
+         * Header names in column order
+         */
         final List<String> headerNames;
 
         Headers(Map<String, Integer> headerMap, List<String> headerNames) {
@@ -462,7 +472,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @return null if the format has no header.
      * @throws IOException if there is a problem reading the header or skipping the first record
      */
-    private Headers createHeaderMapAndHeaderNames() throws IOException {
+    private Headers createHeaders() throws IOException {
         Map<String, Integer> hdrMap = null;
         List<String> headerNames = null;
         final String[] formatHeader = this.format.getHeader();
@@ -490,9 +500,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     final boolean emptyHeader = header == null || header.trim().isEmpty();
                     if (containsHeader) {
                         if (!emptyHeader && !this.format.getAllowDuplicateHeaderNames()) {
-                            throw new IllegalArgumentException("The header contains a duplicate name: \"" + header
-                                    + "\" in " + Arrays.toString(headerRecord)
-                                    + ". If this is valid then use CSVFormat.withAllowDuplicateHeaderNames().");
+                            throw new IllegalArgumentException(
+                                    String.format("The header contains a duplicate name: \"%s\" in %s."
+                                        + " If this is valid then use CSVFormat.withAllowDuplicateHeaderNames().", 
+                                        header, Arrays.toString(headerRecord)));
                         }
                         if (emptyHeader && !this.format.getAllowMissingColumnNames()) {
                             throw new IllegalArgumentException(
@@ -502,7 +513,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     if (header != null) {
                         hdrMap.put(header, Integer.valueOf(i));
                         if (headerNames == null) {
-                        	headerNames = new ArrayList<>();
+                        	headerNames = new ArrayList<>(headerRecord.length);
                         }
                         headerNames.add(header);
                     }
