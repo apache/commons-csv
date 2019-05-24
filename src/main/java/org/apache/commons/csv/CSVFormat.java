@@ -723,7 +723,7 @@ public final class CSVFormat implements Serializable {
     private final boolean trim;
 
     private final boolean autoFlush;
-    
+
     private final boolean allowDuplicateHeaderNames;
 
     /**
@@ -1691,7 +1691,7 @@ public final class CSVFormat implements Serializable {
     public CSVFormat withAllowMissingColumnNames(final boolean allowMissingColumnNames) {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
-                skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush, 
+                skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
                 allowDuplicateHeaderNames);
     }
 
@@ -2257,8 +2257,8 @@ public final class CSVFormat implements Serializable {
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
                 allowDuplicateHeaderNames);
     }
-    
-    public CSVFormat withAllowDuplicateHeaderNames(boolean allowDuplicateHeaderNames) {
+
+    public CSVFormat withAllowDuplicateHeaderNames(final boolean allowDuplicateHeaderNames) {
     	return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
@@ -2268,7 +2268,7 @@ public final class CSVFormat implements Serializable {
     public CSVFormat withAllowDuplicateHeaderNames() {
     	return withAllowDuplicateHeaderNames(true);
     }
-    
+
     public boolean getAllowDuplicateHeaderNames() {
 		return allowDuplicateHeaderNames;
 	}

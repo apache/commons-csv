@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 /**
  * Parses CSV files according to the specified format.
@@ -410,7 +409,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         this.format = format;
         this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
         this.csvRecordIterator = new CSVRecordIterator();
-        Headers headers = createHeaders();
+        final Headers headers = createHeaders();
         this.headerMap = headers.headerMap;
         this.headerNames = headers.headerNames;
         this.characterOffset = characterOffset;
@@ -454,18 +453,18 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          * Header column positions (0-based)
          */
         final Map<String, Integer> headerMap;
-        
+
         /**
          * Header names in column order
          */
         final List<String> headerNames;
 
-        Headers(Map<String, Integer> headerMap, List<String> headerNames) {
+        Headers(final Map<String, Integer> headerMap, final List<String> headerNames) {
             this.headerMap = headerMap;
             this.headerNames = headerNames;
         }
     }
-    
+
     /**
      * Creates the name to index mapping if the format defines a header.
      *
@@ -502,7 +501,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                         if (!emptyHeader && !this.format.getAllowDuplicateHeaderNames()) {
                             throw new IllegalArgumentException(
                                     String.format("The header contains a duplicate name: \"%s\" in %s."
-                                        + " If this is valid then use CSVFormat.withAllowDuplicateHeaderNames().", 
+                                        + " If this is valid then use CSVFormat.withAllowDuplicateHeaderNames().",
                                         header, Arrays.toString(headerRecord)));
                         }
                         if (emptyHeader && !this.format.getAllowMissingColumnNames()) {
@@ -519,7 +518,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     }
                 }
             }
-        } 
+        }
         if (headerNames == null) {
         	headerNames = Collections.emptyList(); //immutable
         } else {

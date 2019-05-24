@@ -45,6 +45,7 @@ import org.junit.Test;
 public class CSVFormatTest {
 
     public enum EmptyEnum {
+        // empty enum.
     }
 
     public enum Header {

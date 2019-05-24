@@ -232,6 +232,7 @@ public class CSVPrinterTest {
         try (final Writer writer = mock(Writer.class)) {
             final CSVFormat csvFormat = CSVFormat.DEFAULT;
             try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+                // empty
             }
             verify(writer, never()).flush();
             verify(writer, times(1)).close();
@@ -242,6 +243,7 @@ public class CSVPrinterTest {
         try (final Writer writer = mock(Writer.class)) {
             final CSVFormat csvFormat = CSVFormat.DEFAULT.withAutoFlush(false);
             try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+                // empty
             }
             verify(writer, never()).flush();
             verify(writer, times(1)).close();
@@ -254,6 +256,7 @@ public class CSVPrinterTest {
         try (final Writer writer = mock(Writer.class)) {
             final CSVFormat csvFormat = CSVFormat.DEFAULT.withAutoFlush(true);
             try (CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+                // empty
             }
             verify(writer, times(1)).flush();
             verify(writer, times(1)).close();

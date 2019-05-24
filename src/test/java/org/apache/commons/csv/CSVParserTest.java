@@ -84,8 +84,8 @@ public class CSVParserTest {
     }
 
     private void parseFully(final CSVParser parser) {
-        for (final Iterator<CSVRecord> records = parser.iterator(); records.hasNext(); ) {
-            records.next();
+        for (final CSVRecord csvRecord : parser) {
+            Assert.assertNotNull(csvRecord);
         }
     }
 
@@ -310,7 +310,7 @@ public class CSVParserTest {
             assertTrue(parser.getHeaderNames().isEmpty());
         }
     }
-    
+
     @Test
     public void testEmptyFile() throws Exception {
         try (final CSVParser parser = CSVParser.parse("", CSVFormat.DEFAULT)) {
@@ -423,6 +423,7 @@ public class CSVParserTest {
 
     /**
      * Tests an exported Excel worksheet with a header row and rows that have more columns than the headers
+     * @throws Exception 
      */
     @Test
     public void testExcelHeaderCountLessThanData() throws Exception {
@@ -529,7 +530,7 @@ public class CSVParserTest {
             try {
                 headerNames.add("This is a read-only list.");
                 fail();
-            } catch (UnsupportedOperationException e) {
+            } catch (final UnsupportedOperationException e) {
                 // Yes.
             }
         }
@@ -785,54 +786,57 @@ public class CSVParserTest {
         final String fiveRows = "1\n2\n3\n4\n5\n";
 
         // Iterator hasNext() shouldn't break sequence
-        CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(fiveRows));
-        int recordNumber = 0;
-        final Iterator<CSVRecord> iter = parser.iterator();
-        recordNumber = 0;
-        while (iter.hasNext()) {
-            final CSVRecord record = iter.next();
-            recordNumber++;
-            assertEquals(String.valueOf(recordNumber), record.get(0));
-            if (recordNumber >= 2) {
-                break;
+        try (CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(fiveRows))) {
+            int recordNumber = 0;
+            final Iterator<CSVRecord> iter = parser.iterator();
+            recordNumber = 0;
+            while (iter.hasNext()) {
+                final CSVRecord record = iter.next();
+                recordNumber++;
+                assertEquals(String.valueOf(recordNumber), record.get(0));
+                if (recordNumber >= 2) {
+                    break;
+                }
             }
-        }
-        iter.hasNext();
-        while (iter.hasNext()) {
-            final CSVRecord record = iter.next();
-            recordNumber++;
-            assertEquals(String.valueOf(recordNumber), record.get(0));
+            iter.hasNext();
+            while (iter.hasNext()) {
+                final CSVRecord record = iter.next();
+                recordNumber++;
+                assertEquals(String.valueOf(recordNumber), record.get(0));
+            }
         }
 
         // Consecutive enhanced for loops shouldn't break sequence
-        parser = CSVFormat.DEFAULT.parse(new StringReader(fiveRows));
-        recordNumber = 0;
-        for (final CSVRecord record : parser) {
-            recordNumber++;
-            assertEquals(String.valueOf(recordNumber), record.get(0));
-            if (recordNumber >= 2) {
-                break;
+        try (CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(fiveRows))) {
+            int recordNumber = 0;
+            for (final CSVRecord record : parser) {
+                recordNumber++;
+                assertEquals(String.valueOf(recordNumber), record.get(0));
+                if (recordNumber >= 2) {
+                    break;
+                }
             }
-        }
-        for (final CSVRecord record : parser) {
-            recordNumber++;
-            assertEquals(String.valueOf(recordNumber), record.get(0));
+            for (final CSVRecord record : parser) {
+                recordNumber++;
+                assertEquals(String.valueOf(recordNumber), record.get(0));
+            }
         }
 
         // Consecutive enhanced for loops with hasNext() peeking shouldn't break sequence
-        parser = CSVFormat.DEFAULT.parse(new StringReader(fiveRows));
-        recordNumber = 0;
-        for (final CSVRecord record : parser) {
-            recordNumber++;
-            assertEquals(String.valueOf(recordNumber), record.get(0));
-            if (recordNumber >= 2) {
-                break;
+        try (CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(fiveRows))) {
+            int recordNumber = 0;
+            for (final CSVRecord record : parser) {
+                recordNumber++;
+                assertEquals(String.valueOf(recordNumber), record.get(0));
+                if (recordNumber >= 2) {
+                    break;
+                }
             }
-        }
-        parser.iterator().hasNext();
-        for (final CSVRecord record : parser) {
-            recordNumber++;
-            assertEquals(String.valueOf(recordNumber), record.get(0));
+            parser.iterator().hasNext();
+            for (final CSVRecord record : parser) {
+                recordNumber++;
+                assertEquals(String.valueOf(recordNumber), record.get(0));
+            }
         }
     }
 
@@ -1166,7 +1170,7 @@ public class CSVParserTest {
         assertEquals("3", record.get("Z"));
         Assert.assertEquals(3, record.size());
     }
-    
+
     @Test
     public void testRepeatedHeadersAreReturnedInCSVRecordHeaderNames() throws IOException {
         final Reader in = new StringReader("header1,header2,header1\n1,2,3\n4,5,6");
