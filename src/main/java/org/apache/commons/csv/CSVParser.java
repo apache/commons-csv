@@ -410,8 +410,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         this.format = format;
         this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
         this.csvRecordIterator = new CSVRecordIterator();
-        this.headerMap = createHeaderMap(); // 1st
-        this.headerNames = createHeaderNames(this.headerMap); // 2nd
+        Headers headers = createHeaders();
+        this.headerMap = headers.headerMap;
+        this.headerNames = headers.headerNames;
         this.characterOffset = characterOffset;
         this.recordNumber = recordNumber - 1;
     }
@@ -446,13 +447,34 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
+     * Header information based on name and position.
+     */
+    private static final class Headers {
+        /**
+         * Header column positions (0-based)
+         */
+        final Map<String, Integer> headerMap;
+        
+        /**
+         * Header names in column order
+         */
+        final List<String> headerNames;
+
+        Headers(Map<String, Integer> headerMap, List<String> headerNames) {
+            this.headerMap = headerMap;
+            this.headerNames = headerNames;
+        }
+    }
+    
+    /**
      * Creates the name to index mapping if the format defines a header.
      *
      * @return null if the format has no header.
      * @throws IOException if there is a problem reading the header or skipping the first record
      */
-    private Map<String, Integer> createHeaderMap() throws IOException {
+    private Headers createHeaders() throws IOException {
         Map<String, Integer> hdrMap = null;
+        List<String> headerNames = null;
         final String[] formatHeader = this.format.getHeader();
         if (formatHeader != null) {
             hdrMap = createEmptyHeaderMap();
@@ -476,27 +498,34 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     final String header = headerRecord[i];
                     final boolean containsHeader = header == null ? false : hdrMap.containsKey(header);
                     final boolean emptyHeader = header == null || header.trim().isEmpty();
-                    if (containsHeader && (!emptyHeader || !this.format.getAllowMissingColumnNames())) {
-                        throw new IllegalArgumentException("The header contains a duplicate name: \"" + header
-                                + "\" in " + Arrays.toString(headerRecord));
+                    if (containsHeader) {
+                        if (!emptyHeader && !this.format.getAllowDuplicateHeaderNames()) {
+                            throw new IllegalArgumentException(
+                                    String.format("The header contains a duplicate name: \"%s\" in %s."
+                                        + " If this is valid then use CSVFormat.withAllowDuplicateHeaderNames().", 
+                                        header, Arrays.toString(headerRecord)));
+                        }
+                        if (emptyHeader && !this.format.getAllowMissingColumnNames()) {
+                            throw new IllegalArgumentException(
+                                    "A header name is missing in " + Arrays.toString(headerRecord));
+                        }
                     }
                     if (header != null) {
                         hdrMap.put(header, Integer.valueOf(i));
+                        if (headerNames == null) {
+                        	headerNames = new ArrayList<>(headerRecord.length);
+                        }
+                        headerNames.add(header);
                     }
                 }
             }
+        } 
+        if (headerNames == null) {
+        	headerNames = Collections.emptyList(); //immutable
+        } else {
+        	headerNames = Collections.unmodifiableList(headerNames);
         }
-        return hdrMap;
-    }
-
-    private List<String> createHeaderNames(final Map<String, Integer> headerMap) {
-        // @formatter:off
-        return headerMap == null ? null
-            : headerMap.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey)
-                .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
-        // @formatter:on
+        return new Headers(hdrMap, headerNames);
     }
 
     /**

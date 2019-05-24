@@ -43,6 +43,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -292,10 +293,24 @@ public class CSVParserTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testDuplicateHeaders() throws Exception {
+    public void testDuplicateHeadersNotAllowed() throws Exception {
+        CSVParser.parse("a,b,a\n1,2,3\nx,y,z",
+                CSVFormat.DEFAULT.withHeader(new String[] {}).withAllowDuplicateHeaderNames(false));
+    }
+
+    @Test
+    public void testDuplicateHeadersAllowedByDefault() throws Exception {
         CSVParser.parse("a,b,a\n1,2,3\nx,y,z", CSVFormat.DEFAULT.withHeader(new String[] {}));
     }
 
+    @Test
+    public void testEmptyFileHeaderParsing() throws Exception {
+        try (final CSVParser parser = CSVParser.parse("", CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
+            assertNull(parser.nextRecord());
+            assertTrue(parser.getHeaderNames().isEmpty());
+        }
+    }
+    
     @Test
     public void testEmptyFile() throws Exception {
         try (final CSVParser parser = CSVParser.parse("", CSVFormat.DEFAULT)) {
@@ -1150,6 +1165,14 @@ public class CSVParserTest {
         assertEquals("2", record.get("Y"));
         assertEquals("3", record.get("Z"));
         Assert.assertEquals(3, record.size());
+    }
+    
+    @Test
+    public void testRepeatedHeadersAreReturnedInCSVRecordHeaderNames() throws IOException {
+        final Reader in = new StringReader("header1,header2,header1\n1,2,3\n4,5,6");
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().withTrim().parse(in).iterator();
+        final CSVRecord record = records.next();
+        assertEquals(Arrays.asList("header1", "header2", "header1"), record.getParser().getHeaderNames());
     }
 
     private void validateLineNumbers(final String lineSeparator) throws IOException {
