@@ -688,7 +688,11 @@ public final class CSVFormat implements Serializable {
         return CSVFormat.Predefined.valueOf(format).getFormat();
     }
 
+    private final boolean allowDuplicateHeaderNames;
+
     private final boolean allowMissingColumnNames;
+
+    private final boolean autoFlush;
 
     private final Character commentMarker; // null if commenting is disabled
 
@@ -721,10 +725,6 @@ public final class CSVFormat implements Serializable {
     private final boolean trailingDelimiter;
 
     private final boolean trim;
-
-    private final boolean autoFlush;
-
-    private final boolean allowDuplicateHeaderNames;
 
     /**
      * Creates a customized CSV format.
@@ -879,6 +879,10 @@ public final class CSVFormat implements Serializable {
             throw new IllegalStateException(e);
         }
     }
+
+    public boolean getAllowDuplicateHeaderNames() {
+		return allowDuplicateHeaderNames;
+	}
 
     /**
      * Specifies whether missing column names are allowed when parsing the header line.
@@ -1669,6 +1673,17 @@ public final class CSVFormat implements Serializable {
         }
     }
 
+    public CSVFormat withAllowDuplicateHeaderNames() {
+    	return withAllowDuplicateHeaderNames(true);
+    }
+
+    public CSVFormat withAllowDuplicateHeaderNames(final boolean allowDuplicateHeaderNames) {
+    	return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
+                skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
+                allowDuplicateHeaderNames);
+    }
+
     /**
      * Returns a new {@code CSVFormat} with the missing column names behavior of the format set to {@code true}
      *
@@ -2257,19 +2272,4 @@ public final class CSVFormat implements Serializable {
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
                 allowDuplicateHeaderNames);
     }
-
-    public CSVFormat withAllowDuplicateHeaderNames(final boolean allowDuplicateHeaderNames) {
-    	return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
-                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
-                skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
-    }
-
-    public CSVFormat withAllowDuplicateHeaderNames() {
-    	return withAllowDuplicateHeaderNames(true);
-    }
-
-    public boolean getAllowDuplicateHeaderNames() {
-		return allowDuplicateHeaderNames;
-	}
 }
