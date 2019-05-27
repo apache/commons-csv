@@ -29,6 +29,7 @@ import static org.mockito.Mockito.verify;
 import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -51,6 +52,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.h2.tools.SimpleResultSet;
 import org.junit.Assert;
@@ -1243,12 +1245,18 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintRecordsWithEmptyVector() throws IOException {
-        try (CSVPrinter csvPrinter = CSVFormat.POSTGRESQL_TEXT.printer()) {
-            final Vector<CSVFormatTest.EmptyEnum> vector = new Vector<>();
-            final int expectedCapacity = 23;
-            vector.setSize(expectedCapacity);
-            csvPrinter.printRecords(vector);
-            assertEquals(expectedCapacity, vector.capacity());
+        final PrintStream out = System.out;
+        try {
+            System.setOut(new PrintStream(NullOutputStream.NULL_OUTPUT_STREAM));
+            try (CSVPrinter csvPrinter = CSVFormat.POSTGRESQL_TEXT.printer()) {
+                final Vector<CSVFormatTest.EmptyEnum> vector = new Vector<>();
+                final int expectedCapacity = 23;
+                vector.setSize(expectedCapacity);
+                csvPrinter.printRecords(vector);
+                assertEquals(expectedCapacity, vector.capacity());
+            }
+        } finally {
+            System.setOut(out);
         }
     }
 
