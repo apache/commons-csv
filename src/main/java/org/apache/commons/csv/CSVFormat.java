@@ -880,6 +880,11 @@ public final class CSVFormat implements Serializable {
         }
     }
 
+    /**
+     * Returns true if and only if duplicate names are allowed in the headers.
+     * 
+     * @return whether duplicate header names are allowed
+     */
     public boolean getAllowDuplicateHeaderNames() {
 		return allowDuplicateHeaderNames;
 	}
@@ -1673,10 +1678,20 @@ public final class CSVFormat implements Serializable {
         }
     }
 
+    /**
+     * Returns a new {@code CSVFormat} that allows duplicate header names.
+     * 
+     * @return a new {@code CSVFormat} that allows duplicate header names
+     */
     public CSVFormat withAllowDuplicateHeaderNames() {
     	return withAllowDuplicateHeaderNames(true);
     }
 
+    /**
+     * Returns a new {@code CSVFormat} with duplicate header names behaviour set to the given value.
+     * 
+     * @return a new {@code CSVFormat} with duplicate header names behaviour set to the given value
+     */
     public CSVFormat withAllowDuplicateHeaderNames(final boolean allowDuplicateHeaderNames) {
     	return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
