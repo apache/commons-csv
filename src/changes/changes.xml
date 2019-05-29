@@ -83,7 +83,7 @@
     <release version="1.3" date="2016-05-09" description="Feature and bug fix release (Java 6)">
       <action issue="CSV-179" type="add" dev="britter">Add shortcut method for using first record as header to CSVFormat</action>
       <action issue="CSV-180" type="add" dev="britter">Add withHeader(Class&lt;? extends Enum&gt;) to CSVFormat</action>
-      <action issue="CSV-167" type="update" dev="sebb" due-to="Rene">Comment line hides next record; update Javadoc to make behaviour clear</action>
+      <action issue="CSV-167" type="update" dev="sebb" due-to="Rene">Comment line hides next record; update Javadoc to make behavior clear</action>
       <action issue="CSV-153" type="update" dev="britter" due-to="Wren">CSVPrinter doesn't skip creation of header record if skipHeaderRecord is set to true</action>
       <action issue="CSV-159" type="add" dev="ggregory" due-to="Yamil Medina">Add IgnoreCase option for accessing header names</action>
       <action issue="CSV-169" type="add" dev="ggregory" due-to="Gary Gregory">The null string should be case-sensitive when reading records</action>

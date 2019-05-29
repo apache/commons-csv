@@ -319,7 +319,7 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testEmptyLineBehaviourCSV() throws Exception {
+    public void testEmptyLineBehaviorCSV() throws Exception {
         final String[] codes = { "hello,\r\n\r\n\r\n", "hello,\n\n\n", "hello,\"\"\r\n\r\n\r\n", "hello,\"\"\n\n\n" };
         final String[][] res = { { "hello", "" } // CSV format ignores empty lines
         };
@@ -336,7 +336,7 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testEmptyLineBehaviourExcel() throws Exception {
+    public void testEmptyLineBehaviorExcel() throws Exception {
         final String[] codes = { "hello,\r\n\r\n\r\n", "hello,\n\n\n", "hello,\"\"\r\n\r\n\r\n", "hello,\"\"\n\n\n" };
         final String[][] res = { { "hello", "" }, { "" }, // Excel format does not ignore empty lines
                 { "" } };
@@ -372,7 +372,7 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testEndOfFileBehaviourExcel() throws Exception {
+    public void testEndOfFileBehaviorExcel() throws Exception {
         final String[] codes = { "hello,\r\n\r\nworld,\r\n", "hello,\r\n\r\nworld,", "hello,\r\n\r\nworld,\"\"\r\n",
                 "hello,\r\n\r\nworld,\"\"", "hello,\r\n\r\nworld,\n", "hello,\r\n\r\nworld,",
                 "hello,\r\n\r\nworld,\"\"\n", "hello,\r\n\r\nworld,\"\"" };

@@ -193,7 +193,7 @@ o CSV-161:  Fix Javadoc to say CSVFormat with() methods return a new CSVFormat. 
 CHANGES
 ============
 
-o CSV-167:  Comment line hides next record; update Javadoc to make behaviour clear. Thanks to Rene.
+o CSV-167:  Comment line hides next record; update Javadoc to make behavior clear. Thanks to Rene.
 o CSV-153:  CSVPrinter doesn't skip creation of header record if skipHeaderRecord is set to true. Thanks to Wren.
 
 
