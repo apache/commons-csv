@@ -281,8 +281,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     @Override
     public String toString() {
-        return "CSVRecord [comment='" + comment + "', recordNumber=" + recordNumber + ", values="
-            + Arrays.toString(values) + "]";
+        return "CSVRecord [comment='" + comment + "', recordNumber=" + recordNumber + ", values=" + 
+            Arrays.toString(values) + "]";
     }
 
     String[] values() {

@@ -423,7 +423,7 @@ public class CSVParserTest {
 
     /**
      * Tests an exported Excel worksheet with a header row and rows that have more columns than the headers
-     * @throws Exception 
+     * @throws Exception
      */
     @Test
     public void testExcelHeaderCountLessThanData() throws Exception {

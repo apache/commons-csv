@@ -882,13 +882,13 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Returns true if and only if duplicate names are allowed in the headers.
-     * 
+     *
      * @return whether duplicate header names are allowed
      * @since 1.7
      */
     public boolean getAllowDuplicateHeaderNames() {
-		return allowDuplicateHeaderNames;
-	}
+        return allowDuplicateHeaderNames;
+    }
 
     /**
      * Specifies whether missing column names are allowed when parsing the header line.
@@ -1681,7 +1681,7 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Returns a new {@code CSVFormat} that allows duplicate header names.
-     * 
+     *
      * @return a new {@code CSVFormat} that allows duplicate header names
      * @since 1.7
      */
@@ -1691,7 +1691,7 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Returns a new {@code CSVFormat} with duplicate header names behavior set to the given value.
-     * 
+     *
      * @param allowDuplicateHeaderNames the duplicate header names behavior, true to allow, false to disallow.
      * @return a new {@code CSVFormat} with duplicate header names behavior set to the given value.
      * @since 1.7

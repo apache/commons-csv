@@ -38,7 +38,7 @@
     <title>Release Notes</title>
   </properties>
   <body>
-    <release version="1.7" date="2019-MM-DD" description="Feature and bug fix release (Java 8)">
+    <release version="1.7" date="2019-06-01" description="Feature and bug fix release (Java 8)">
       <action issue="CSV-233" type="add" dev="ggregory" due-to="Gary Gregory">Add predefined CSVFormats for printing MongoDB CSV and TSV.</action>
       <action issue="CSV-208" type="fix" dev="ggregory" due-to="Jurrie Overgoor">Fix escape character for POSTGRESQL_TEXT and POSTGRESQL_CSV formats.</action>
       <action issue="CSV-232" type="fix" dev="ggregory" due-to="Jurrie Overgoor, Gary Gregory">Site link "Source Repository" does not work.</action>

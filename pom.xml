@@ -156,24 +156,14 @@ CSV files of various types.
     <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt</checkstyle.resourceExcludes>
 
     <japicmp.skip>false</japicmp.skip>
+    
+    <commons.release.isDistModule>true</commons.release.isDistModule>
+    <commons.releaseManagerName>Gary Gregory</commons.releaseManagerName>    
+    <commons.releaseManagerKey>86fdc7e2a11262cb</commons.releaseManagerKey>
   </properties>
 
   <build>
     <defaultGoal>clean verify apache-rat:check clirr:check javadoc:javadoc</defaultGoal>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-scm-publish-plugin</artifactId>
-          <version>1.1</version>
-          <configuration>
-            <ignorePathsToDelete>
-              <ignorePathToDelete>archives/**</ignorePathToDelete>
-            </ignorePathsToDelete>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

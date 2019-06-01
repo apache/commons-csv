@@ -51,13 +51,13 @@ The Javadoc API documents are available online:
 </p>
 <ul>
   <li><a href="apidocs/index.html">Javadoc trunk</a></li>
-  <li><a href="archives/1.6/apidocs/index.html">Javadoc 1.6</a></li>
-  <li><a href="archives/1.5/apidocs/index.html">Javadoc 1.5</a></li>
-  <li><a href="archives/1.4/apidocs/index.html">Javadoc 1.4</a></li>
-  <li><a href="archives/1.3/apidocs/index.html">Javadoc 1.3</a></li>
-  <li><a href="archives/1.2/apidocs/index.html">Javadoc 1.2</a></li>
-  <li><a href="archives/1.1/apidocs/index.html">Javadoc 1.1</a></li>
-  <li><a href="archives/1.0/apidocs/index.html">Javadoc 1.0</a></li>
+  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.6">Javadoc 1.6</a></li>
+  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.5">Javadoc 1.5</a></li>
+  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.4">Javadoc 1.4</a></li>
+  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.3">Javadoc 1.3</a></li>
+  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.2">Javadoc 1.2</a></li>
+  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.1">Javadoc 1.1</a></li>
+  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.0">Javadoc 1.0</a></li>
 </ul>
 <p>
 The <a href="source-repository.html">git repository</a> can be
@@ -67,13 +67,14 @@ The <a href="source-repository.html">git repository</a> can be
 <!-- ================================================== -->
 <section name="Releases">
 <ul>
-  <li><a href="http://commons.apache.org/csv/download_csv.cgi">Apache Commons CSV 1.6 (mirrors)</a> requires Java 1.7</li>
-  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.5 (archives)</a> requires Java 1.7</li>
-  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.4 (archives)</a> requires Java 1.6</li>
-  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.3 (archives)</a> requires Java 1.6</li>
-  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.2 (archives)</a> requires Java 1.6</li>
-  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.1 (archives)</a> requires Java 1.6</li>
-  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.0 (archives)</a> requires Java 1.6</li>
+  <li><a href="http://commons.apache.org/csv/download_csv.cgi">Apache Commons CSV 1.7 (mirrors)</a> requires Java 8</li>
+  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.6 (archives)</a> requires Java 7</li>
+  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.5 (archives)</a> requires Java 7</li>
+  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.4 (archives)</a> requires Java 6</li>
+  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.3 (archives)</a> requires Java 6</li>
+  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.2 (archives)</a> requires Java 6</li>
+  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.1 (archives)</a> requires Java 6</li>
+  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.0 (archives)</a> requires Java 6</li>
 </ul>
 <p>
 See the
@@ -91,7 +92,7 @@ For previous releases, see the <a href="http://archive.apache.org/dist/commons/c
   <pre>&lt;dependency&gt;
     &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
     &lt;artifactId&gt;commons-csv&lt;/artifactId&gt;
-    &lt;version&gt;1.6&lt;/version&gt;
+    &lt;version&gt;1.7&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 </p>
 <p>
