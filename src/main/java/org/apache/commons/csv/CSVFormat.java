@@ -1683,6 +1683,7 @@ public final class CSVFormat implements Serializable {
      * Returns a new {@code CSVFormat} that allows duplicate header names.
      * 
      * @return a new {@code CSVFormat} that allows duplicate header names
+     * @since 1.7
      */
     public CSVFormat withAllowDuplicateHeaderNames() {
     	return withAllowDuplicateHeaderNames(true);
