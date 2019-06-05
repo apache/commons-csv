@@ -72,8 +72,18 @@ public class CSVFormatTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testDuplicateHeaderElementsThrowsException() {
+        CSVFormat.DEFAULT.withHeader("A", "A").withAllowDuplicateHeaderNames(false);
+    }
+
+    @Test
     public void testDuplicateHeaderElements() {
-        CSVFormat.DEFAULT.withHeader("A", "A");
+        String[] header = {"A", "A"};
+
+        CSVFormat format = CSVFormat.DEFAULT.withHeader(header);
+
+        assertEquals(2, format.getHeader().length);
+        assertEquals(header, format.getHeader());
     }
 
     @Test
