@@ -1668,7 +1668,7 @@ public final class CSVFormat implements Serializable {
         }
 
         // validate header
-        if (header != null) {
+        if (header != null && !allowDuplicateHeaderNames) {
             final Set<String> dupCheck = new HashSet<>();
             for (final String hdr : header) {
                 if (!dupCheck.add(hdr)) {
