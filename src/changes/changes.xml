@@ -35,7 +35,7 @@
 
 <document>
   <properties>
-    <title>Release Notes</title>
+    <title>Apache Commons CSV Release Notes</title>
   </properties>
   <body>
     <release version="1.8" date="2019-MM-DD" description="Feature and bug fix release (Java 8)">
