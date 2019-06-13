@@ -495,7 +495,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             if (headerRecord != null) {
                 for (int i = 0; i < headerRecord.length; i++) {
                     final String header = headerRecord[i];
-                    final boolean containsHeader = header == null ? false : hdrMap.containsKey(header);
+                    final boolean containsHeader = header != null && hdrMap.containsKey(header);
                     final boolean emptyHeader = header == null || header.trim().isEmpty();
                     if (containsHeader) {
                         if (!emptyHeader && !this.format.getAllowDuplicateHeaderNames()) {
