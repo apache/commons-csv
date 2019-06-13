@@ -520,9 +520,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             }
         }
         if (headerNames == null) {
-        	headerNames = Collections.emptyList(); //immutable
+            headerNames = Collections.emptyList(); //immutable
         } else {
-        	headerNames = Collections.unmodifiableList(headerNames);
+            headerNames = Collections.unmodifiableList(headerNames);
         }
         return new Headers(hdrMap, headerNames);
     }
