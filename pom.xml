@@ -202,6 +202,17 @@ CSV files of various types.
           <enableRulesSummary>false</enableRulesSummary>
         </configuration>
       </plugin>
+      <!-- Allow findbugs to be run interactively; keep in sync with report config below -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>${commons.findbugs.version}</version>
+        <configuration>
+          <threshold>Normal</threshold>
+          <effort>Default</effort>
+          <excludeFilterFile>${basedir}/src/main/resources/findbugs/findbugs-exclude-filter.xml</excludeFilterFile>
+        </configuration>
+      </plugin>
 
       <!-- We need to add our test data files to rat exclusions -->
       <!-- Needed for command-line access, e.g mvn apache-rat:rat and mvn apache-rat:check -->
@@ -266,6 +277,11 @@ CSV files of various types.
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
         <version>${commons.findbugs.version}</version>
+        <configuration>
+          <threshold>Normal</threshold>
+          <effort>Default</effort>
+          <excludeFilterFile>${basedir}/src/main/resources/findbugs/findbugs-exclude-filter.xml</excludeFilterFile>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
