@@ -153,7 +153,7 @@ CSV files of various types.
 
     <checkstyle.version>3.0.0</checkstyle.version>
     <checkstyle.header.file>${basedir}/LICENSE-header.txt</checkstyle.header.file>
-    <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt</checkstyle.resourceExcludes>
+    <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt, **/maven-archiver/pom.properties</checkstyle.resourceExcludes>
 
     <japicmp.skip>false</japicmp.skip>
     
