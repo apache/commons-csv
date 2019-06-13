@@ -30,6 +30,7 @@ import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -1471,4 +1472,31 @@ public class CSVPrinterTest {
         return CSVParser.parse(expected, format).getRecords().get(0).values();
     }
 
+    @Test
+    public void testPrintReaderWithoutQuoteToWriter() throws IOException {
+        // Test to target the use of IOUtils::copyLarge.
+        // Requires the format to have no quote or escape character,
+        // value to be a java.io.Reader and the output to be a java.io.Writer.
+        final StringWriter sw = new StringWriter();
+        final String content = "testValue";
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuote(null))) {
+            final StringReader value = new StringReader(content);
+            printer.print(value);
+        }
+        assertEquals(content, sw.toString());
+    }
+
+    @Test
+    public void testPrintReaderWithoutQuoteToAppendable() throws IOException {
+        // Test to target the use of IOUtils::copy.
+        // Requires the format to have no quote or escape character,
+        // value to be a java.io.Reader and the output to not be a java.io.Writer.
+        final StringBuilder sb = new StringBuilder();
+        final String content = "testValue";
+        try (final CSVPrinter printer = new CSVPrinter(sb, CSVFormat.DEFAULT.withQuote(null))) {
+            final StringReader value = new StringReader(content);
+            printer.print(value);
+        }
+        assertEquals(content, sb.toString());
+    }
 }
