@@ -892,7 +892,7 @@ public final class CSVFormat implements Serializable {
      */
     public String format(final Object... values) {
         final StringWriter out = new StringWriter();
-        try (final CSVPrinter csvPrinter = new CSVPrinter(out, this)) {
+        try (CSVPrinter csvPrinter = new CSVPrinter(out, this)) {
             csvPrinter.printRecord(values);
             return out.toString().trim();
         } catch (final IOException e) {
