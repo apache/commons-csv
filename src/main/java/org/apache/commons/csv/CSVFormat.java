@@ -809,6 +809,24 @@ public final class CSVFormat implements Serializable {
         if (delimiter != other.delimiter) {
             return false;
         }
+        if (trailingDelimiter != other.trailingDelimiter) {
+            return false;
+        }
+        if (autoFlush != other.autoFlush) {
+            return false;
+        }
+        if (trim != other.trim) {
+            return false;
+        }
+        if (allowMissingColumnNames != other.allowMissingColumnNames) {
+            return false;
+        }
+        if (allowDuplicateHeaderNames != other.allowDuplicateHeaderNames) {
+            return false;
+        }
+        if (ignoreHeaderCase != other.ignoreHeaderCase) {
+            return false;
+        }
         if (quoteMode != other.quoteMode) {
             return false;
         }
@@ -857,6 +875,9 @@ public final class CSVFormat implements Serializable {
                 return false;
             }
         } else if (!recordSeparator.equals(other.recordSeparator)) {
+            return false;
+        }
+        if (!Arrays.equals(headerComments, other.headerComments)) {
             return false;
         }
         return true;

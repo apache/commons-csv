@@ -34,6 +34,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
 import org.junit.Assert;
@@ -1108,4 +1110,58 @@ public class CSVFormatTest {
         assertEquals(System.getProperty("line.separator"), formatWithRecordSeparator.getRecordSeparator());
     }
 
+    private void assertNotEquals(String name, String type, Object left, Object right) {
+        if (left.equals(right) || right.equals(left)) {
+            System.out.println("Should not be equal for " + name + "(" + type + ")");
+        }
+    }
+
+    @Test
+    public void testEqualsHash() throws Exception {
+        Method[] methods = CSVFormat.class.getDeclaredMethods();
+        for (Method method : methods) {
+            if (Modifier.isPublic(method.getModifiers())) {
+               final String name = method.getName();
+               if (name.startsWith("with")) {
+                   for (Class<?> cls : method.getParameterTypes()) {
+                       final String type = cls.getCanonicalName();
+                       if ("boolean".equals(type)) {
+                           final Object defTrue = method.invoke(CSVFormat.DEFAULT, new Object[] {Boolean.TRUE});
+                           final Object defFalse = method.invoke(CSVFormat.DEFAULT, new Object[] {Boolean.FALSE});
+                           assertNotEquals(name, type ,defTrue, defFalse);
+                       } else if ("char".equals(type)){
+                           final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {'a'});
+                           final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {'b'});
+                           assertNotEquals(name, type, a, b);
+                       } else if ("java.lang.Character".equals(type)){
+                           final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {null});
+                           final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {new Character('d')});
+                           assertNotEquals(name, type, a, b);
+                       } else if ("java.lang.String".equals(type)){
+                           final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {null});
+                           final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {"e"});
+                           assertNotEquals(name, type, a, b);
+                       } else if ("java.lang.String[]".equals(type)){
+                           final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {new String[] {null, null}});
+                           final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {new String[] {"f", "g"}});
+                           assertNotEquals(name, type, a, b);
+                       } else if ("org.apache.commons.csv.QuoteMode".equals(type)){
+                           final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {QuoteMode.MINIMAL});
+                           final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {QuoteMode.ALL});
+                           assertNotEquals(name, type, a, b);
+                       } else if ("java.lang.Object[]".equals(type)){
+                           final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {new Object[] {null, null}});
+                           final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {new Object[] {new Object(), new Object()}});
+                           assertNotEquals(name, type, a, b);
+                       } else if ("withHeader".equals(name)){ // covered above by String[]
+                           // ignored
+                       } else {
+                           fail("Unhandled method: "+name + "(" + type + ")");
+                       }
+                   }
+               }
+            }
+         }   
+    }
+    
 }
