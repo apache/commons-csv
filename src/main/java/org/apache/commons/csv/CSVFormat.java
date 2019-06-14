@@ -1089,8 +1089,14 @@ public final class CSVFormat implements Serializable {
         result = prime * result + (ignoreHeaderCase ? 1231 : 1237);
         result = prime * result + (ignoreEmptyLines ? 1231 : 1237);
         result = prime * result + (skipHeaderRecord ? 1231 : 1237);
+        result = prime * result + (allowDuplicateHeaderNames ? 1231 : 1237);
+        result = prime * result + (trim ? 1231 : 1237);
+        result = prime * result + (autoFlush ? 1231 : 1237);
+        result = prime * result + (trailingDelimiter ? 1231 : 1237);
+        result = prime * result + (allowMissingColumnNames ? 1231 : 1237);
         result = prime * result + ((recordSeparator == null) ? 0 : recordSeparator.hashCode());
         result = prime * result + Arrays.hashCode(header);
+        result = prime * result + Arrays.hashCode(headerComments);
         return result;
     }
 

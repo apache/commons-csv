@@ -1112,7 +1112,10 @@ public class CSVFormatTest {
 
     private void assertNotEquals(String name, String type, Object left, Object right) {
         if (left.equals(right) || right.equals(left)) {
-            System.out.println("Should not be equal for " + name + "(" + type + ")");
+            fail("Objects must not compare equal for " + name + "(" + type + ")");
+        }
+        if (left.hashCode() == right.hashCode()) {
+            fail("Hash code not be equal for " + name + "(" + type + ")");            
         }
     }
 
