@@ -201,6 +201,7 @@ CSV files of various types.
         <configuration>
           <configLocation>${basedir}/checkstyle.xml</configLocation>
           <enableRulesSummary>false</enableRulesSummary>
+          <suppressionsLocation>${basedir}/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
         </configuration>
       </plugin>
       <!-- Allow findbugs to be run interactively; keep in sync with report config below -->
@@ -270,6 +271,7 @@ CSV files of various types.
         <configuration>
           <configLocation>${basedir}/checkstyle.xml</configLocation>
           <enableRulesSummary>false</enableRulesSummary>
+          <suppressionsLocation>${basedir}/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
         </configuration>
         <!-- We need to specify reportSets because 2.9.1 creates two reports -->
         <reportSets>
