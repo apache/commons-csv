@@ -2092,9 +2092,9 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the trimming behavior of the format set to {@code true}.
+     * Returns a new {@code CSVFormat} with the parser trimming behavior of the format set to {@code true}.
      *
-     * @return A new CSVFormat that is equal to this but with the specified trimming behavior.
+     * @return A new CSVFormat that is equal to this but with the specified parser trimming behavior.
      * @see #withIgnoreSurroundingSpaces(boolean)
      * @since 1.1
      */
@@ -2103,10 +2103,10 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the trimming behavior of the format set to the given value.
+     * Returns a new {@code CSVFormat} with the parser trimming behavior of the format set to the given value.
      *
      * @param ignoreSurroundingSpaces
-     *            the trimming behavior, {@code true} to remove the surrounding spaces, {@code false} to leave the
+     *            the parser trimming behavior, {@code true} to remove the surrounding spaces, {@code false} to leave the
      *            spaces as is.
      * @return A new CSVFormat that is equal to this but with the specified trimming behavior.
      */
@@ -2294,7 +2294,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} to trim leading and trailing blanks.
+     * Returns a new {@code CSVFormat} to trim leading and trailing blanks when printing.
      *
      * @return A new CSVFormat that is equal to this but with the trim setting on.
      * @since 1.3
@@ -2304,10 +2304,10 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with whether to trim leading and trailing blanks.
+     * Returns a new {@code CSVFormat} with whether to trim leading and trailing blanks when printing.
      *
      * @param trim
-     *            whether to trim leading and trailing blanks.
+     *            whether to trim leading and trailing blanks when printing.
      *
      * @return A new CSVFormat that is equal to this but with the specified trim setting.
      * @since 1.3
