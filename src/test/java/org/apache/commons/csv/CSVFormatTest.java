@@ -1115,7 +1115,7 @@ public class CSVFormatTest {
             fail("Objects must not compare equal for " + name + "(" + type + ")");
         }
         if (left.hashCode() == right.hashCode()) {
-            fail("Hash code not be equal for " + name + "(" + type + ")");            
+            fail("Hash code should not be equal for " + name + "(" + type + ")");            
         }
     }
 
