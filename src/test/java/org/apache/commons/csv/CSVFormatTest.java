@@ -520,7 +520,7 @@ public class CSVFormatTest {
         assertTrue(cSVFormatTwo.getIgnoreHeaderCase());
         assertFalse(cSVFormatTwo.getTrailingDelimiter());
 
-        assertTrue(cSVFormatTwo.equals(cSVFormat));
+        assertTrue(cSVFormatTwo.equals(cSVFormat)); // TODO this fails since CSV-242 was applied. Why should they compare equal?
         assertFalse(cSVFormatTwo.getAllowMissingColumnNames());
 
         assertFalse(cSVFormatTwo.getTrim());
@@ -969,7 +969,7 @@ public class CSVFormatTest {
         assertNotSame(cSVFormat, cSVFormatTwo);
         assertNotSame(cSVFormatTwo, cSVFormat);
 
-        assertTrue(cSVFormatTwo.equals(cSVFormat));
+        assertTrue(cSVFormatTwo.equals(cSVFormat)); // TODO this fails since CSV-242 was applied. Why should the formats compare equal?
 
         final String string = cSVFormatTwo.format(objectArray);
 
