@@ -42,7 +42,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- *
+ * Tests {@link CSVFormat}.
  */
 public class CSVFormatTest {
 
