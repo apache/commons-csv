@@ -892,7 +892,7 @@ public final class CSVFormat implements Serializable {
      */
     public String format(final Object... values) {
         final StringWriter out = new StringWriter();
-        try (final CSVPrinter csvPrinter = new CSVPrinter(out, this)) {
+        try (CSVPrinter csvPrinter = new CSVPrinter(out, this)) {
             csvPrinter.printRecord(values);
             return out.toString().trim();
         } catch (final IOException e) {
@@ -1713,7 +1713,7 @@ public final class CSVFormat implements Serializable {
      * @since 1.7
      */
     public CSVFormat withAllowDuplicateHeaderNames() {
-    	return withAllowDuplicateHeaderNames(true);
+        return withAllowDuplicateHeaderNames(true);
     }
 
     /**
@@ -1724,7 +1724,7 @@ public final class CSVFormat implements Serializable {
      * @since 1.7
      */
     public CSVFormat withAllowDuplicateHeaderNames(final boolean allowDuplicateHeaderNames) {
-    	return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
+        return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
                 allowDuplicateHeaderNames);

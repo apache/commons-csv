@@ -1471,4 +1471,45 @@ public class CSVPrinterTest {
         return CSVParser.parse(expected, format).getRecords().get(0).values();
     }
 
+    /**
+     * Test to target the use of {@link IOUtils#copyLarge(java.io.Reader, Writer)} which directly
+     * buffers the value from the Reader to the Writer.
+     *
+     * <p>Requires the format to have no quote or escape character, value to be a
+     * {@link java.io.Reader Reader} and the output <i>MUST</i> be a
+     * {@link java.io.Writer Writer}.</p>
+     *
+     * @throws IOException Not expected to happen
+     */
+    @Test
+    public void testPrintReaderWithoutQuoteToWriter() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final String content = "testValue";
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuote(null))) {
+            final StringReader value = new StringReader(content);
+            printer.print(value);
+        }
+        assertEquals(content, sw.toString());
+    }
+
+    /**
+     * Test to target the use of {@link IOUtils#copy(java.io.Reader, Appendable)} which directly
+     * buffers the value from the Reader to the Appendable.
+     *
+     * <p>Requires the format to have no quote or escape character, value to be a
+     * {@link java.io.Reader Reader} and the output <i>MUST NOT</i> be a
+     * {@link java.io.Writer Writer} but some other Appendable.</p>
+     *
+     * @throws IOException Not expected to happen
+     */
+    @Test
+    public void testPrintReaderWithoutQuoteToAppendable() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        final String content = "testValue";
+        try (final CSVPrinter printer = new CSVPrinter(sb, CSVFormat.DEFAULT.withQuote(null))) {
+            final StringReader value = new StringReader(content);
+            printer.print(value);
+        }
+        assertEquals(content, sb.toString());
+    }
 }
