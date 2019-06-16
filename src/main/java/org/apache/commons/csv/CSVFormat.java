@@ -1595,6 +1595,10 @@ public final class CSVFormat implements Serializable {
             sb.append(' ');
             sb.append("QuoteChar=<").append(quoteCharacter).append('>');
         }
+        if (quoteMode != null) {
+            sb.append(' ');
+            sb.append("QuoteMode=<").append(quoteMode).append('>');            
+        }
         if (isCommentMarkerSet()) {
             sb.append(' ');
             sb.append("CommentStart=<").append(commentMarker).append('>');
