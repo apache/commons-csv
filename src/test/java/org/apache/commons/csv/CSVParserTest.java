@@ -1179,6 +1179,18 @@ public class CSVParserTest {
         assertEquals(Arrays.asList("header1", "header2", "header1"), record.getParser().getHeaderNames());
     }
 
+    @Test
+    public void testCSV235() throws IOException {
+        final String dqString = "\"aaa\",\"b\"\"bb\",\"ccc\""; // "aaa","b""bb","ccc"
+        final Iterator<CSVRecord> records = CSVFormat.RFC4180.parse(new StringReader(dqString)).iterator();
+        final CSVRecord record = records.next();
+        assertFalse(records.hasNext());
+        Assert.assertEquals(3, record.size());
+        assertEquals("aaa", record.get(0));
+        assertEquals("b\"bb", record.get(1));
+        assertEquals("ccc", record.get(2));
+    }
+
     private void validateLineNumbers(final String lineSeparator) throws IOException {
         try (final CSVParser parser = CSVParser.parse("a" + lineSeparator + "b" + lineSeparator + "c",
                 CSVFormat.DEFAULT.withRecordSeparator(lineSeparator))) {
