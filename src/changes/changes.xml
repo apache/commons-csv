@@ -39,6 +39,7 @@
   </properties>
   <body>
     <release version="1.8" date="2019-MM-DD" description="Feature and bug fix release (Java 8)">
+      <action issue="CSV-135" type="fix" dev="sebb" due-to="Mateusz Zakarczemny">Char escape doesn't work properly with quoting</action>
       <action issue="CSV-244" type="fix" dev="sebb">Test case failures following CSVFormat#equals() update.</action>
       <action issue="CSV-243" type="fix" dev="sebb">CSVFormat withTrim() and withIgnoreSurroundingSpaces() need better docs.</action>
       <action issue="CSV-242" type="fix" dev="sebb">CSVFormat equals() and hashCode() don't use all fields.</action>
