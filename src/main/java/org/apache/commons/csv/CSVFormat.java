@@ -1067,6 +1067,8 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Returns whether to trim leading and trailing blanks.
+     * This is used by {@link #print(Object, Appendable, boolean)}
+     * Also by {@link CSVParser#addRecordValue(boolean)}
      *
      * @return whether to trim leading and trailing blanks.
      */
@@ -1197,7 +1199,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Prints the {@code value} as the next value on the line to {@code out}. The value will be escaped or encapsulated
      * as needed. Useful when one wants to avoid creating CSVPrinters.
-     *
+     * Trims the value if {@link #getTrim()} is true
      * @param value
      *            value to output.
      * @param out
@@ -2294,7 +2296,8 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} to trim leading and trailing blanks when printing.
+     * Returns a new {@code CSVFormat} to trim leading and trailing blanks.
+     * See {@link #getTrim()} for details of where this is used.
      *
      * @return A new CSVFormat that is equal to this but with the trim setting on.
      * @since 1.3
@@ -2304,10 +2307,11 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with whether to trim leading and trailing blanks when printing.
+     * Returns a new {@code CSVFormat} with whether to trim leading and trailing blanks.
+     * See {@link #getTrim()} for details of where this is used.
      *
      * @param trim
-     *            whether to trim leading and trailing blanks when printing.
+     *            whether to trim leading and trailing blanks.
      *
      * @return A new CSVFormat that is equal to this but with the specified trim setting.
      * @since 1.3
