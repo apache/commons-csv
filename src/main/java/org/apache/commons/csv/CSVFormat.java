@@ -1443,6 +1443,10 @@ public final class CSVFormat implements Serializable {
 
         final char delimChar = getDelimiter();
         final char quoteChar = getQuoteCharacter().charValue();
+        // If escape char not specified, default to the quote char
+        // This avoids having to keep checking whether there is an escape character
+        // at the cost of checking against quote twice
+        final char escapeChar = isEscapeCharacterSet() ? getEscapeCharacter().charValue() : quoteChar;
 
         QuoteMode quoteModePolicy = getQuoteMode();
         if (quoteModePolicy == null) {
@@ -1480,7 +1484,7 @@ public final class CSVFormat implements Serializable {
                 } else {
                     while (pos < end) {
                         c = value.charAt(pos);
-                        if (c == LF || c == CR || c == quoteChar || c == delimChar) {
+                        if (c == LF || c == CR || c == quoteChar || c == delimChar || c == escapeChar) {
                             quote = true;
                             break;
                         }
@@ -1522,14 +1526,11 @@ public final class CSVFormat implements Serializable {
         // the need for encapsulation.
         while (pos < end) {
             final char c = value.charAt(pos);
-            if (c == quoteChar) {
+            if (c == quoteChar || c == escapeChar) {
                 // write out the chunk up until this point
-
-                // add 1 to the length to write out the encapsulator also
-                out.append(value, start, pos + 1);
-                // put the next starting position on the encapsulator so we will
-                // write it out again with the next string (effectively doubling it)
-                start = pos;
+                out.append(value, start, pos);
+                out.append(escapeChar); // now output the escape
+                start = pos; // and restart with the matched char
             }
             pos++;
         }

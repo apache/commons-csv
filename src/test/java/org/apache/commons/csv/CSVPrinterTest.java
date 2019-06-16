@@ -1512,4 +1512,26 @@ public class CSVPrinterTest {
         }
         assertEquals(content, sb.toString());
     }
+
+    private void tryFormat(List<String> l, Character quote, Character escape, String expected) throws IOException {
+        CSVFormat format = CSVFormat.DEFAULT.withQuote(quote).withEscape(escape).withRecordSeparator(null);
+        Appendable out = new StringBuilder();
+        CSVPrinter printer = new CSVPrinter(out, format);
+        printer.printRecord(l);
+        printer.close();
+        assertEquals(expected, out.toString());
+    }
+
+    @Test
+    public void testCSV135() throws IOException {
+        List<String> l = new LinkedList<String>();
+        l.add("\"\"");   // ""
+        l.add("\\\\");   // \\
+        l.add("\\\"\\"); // \"\
+        tryFormat(l, null, null, "\"\",\\\\,\\\"\\"); // "",\\,\"\ (unchanged)
+        tryFormat(l, '"',  null, "\"\"\"\"\"\",\\\\,\"\\\"\"\\\"");              // """""",\\,"\""\" (quoted, and embedded DQ doubled)
+        tryFormat(l, null, '\\', "\"\",\\\\\\\\,\\\\\"\\\\");                    // "",\\\\,\\"\\ (escapes escaped, not quoted)
+        tryFormat(l, '"',  '\\', "\"\\\"\\\"\",\"\\\\\\\\\",\"\\\\\\\"\\\\\"");  // "\"\"","\\\\","\\\"\\" (quoted, and embedded DQ & escape escaped)
+        tryFormat(l, '"',  '"',  "\"\"\"\"\"\",\\\\,\"\\\"\"\\\"");              // """""",\\,"\""\" (quoted, embedded DQ escaped)
+    }
 }
