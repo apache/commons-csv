@@ -1051,6 +1051,12 @@ public class CSVFormatTest {
         assertFalse(CSVFormat.DEFAULT.withIgnoreEmptyLines(false).getIgnoreEmptyLines());
         assertTrue(CSVFormat.DEFAULT.withIgnoreEmptyLines().getIgnoreEmptyLines());
     }
+    
+    @Test
+    public void testWithIgnoreQuotesInToken() throws Exception {
+        assertFalse(CSVFormat.DEFAULT.withIgnoreQuotesInToken(false).getIgnoreQuotesInToken());
+        assertTrue(CSVFormat.DEFAULT.withIgnoreQuotesInToken().getIgnoreQuotesInToken());
+    }
 
 
     @Test
