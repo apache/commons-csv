@@ -25,7 +25,7 @@
   <artifactId>commons-csv</artifactId>
   <version>1.8-SNAPSHOT</version>
   <name>Apache Commons CSV</name>
-  <url>http://commons.apache.org/proper/commons-csv/</url>
+  <url>https://commons.apache.org/proper/commons-csv/</url>
   <description>
 The Apache Commons CSV library provides a simple interface for reading and writing
 CSV files of various types.

@@ -1012,7 +1012,7 @@ public class CSVParserTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testParserUrlNullCharsetFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse(new URL("http://commons.apache.org"), null, CSVFormat.DEFAULT)) {
+        try (final CSVParser parser = CSVParser.parse(new URL("https://commons.apache.org"), null, CSVFormat.DEFAULT)) {
             Assert.fail("This test should have thrown an exception.");
         }
     }
@@ -1026,7 +1026,7 @@ public class CSVParserTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseUrlCharsetNullFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse(new URL("http://commons.apache.org"), Charset.defaultCharset(), null)) {
+        try (final CSVParser parser = CSVParser.parse(new URL("https://commons.apache.org"), Charset.defaultCharset(), null)) {
             Assert.fail("This test should have thrown an exception.");
         }
     }

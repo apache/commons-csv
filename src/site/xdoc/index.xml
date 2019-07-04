@@ -67,7 +67,7 @@ The <a href="source-repository.html">git repository</a> can be
 <!-- ================================================== -->
 <section name="Releases">
 <ul>
-  <li><a href="http://commons.apache.org/csv/download_csv.cgi">Apache Commons CSV 1.7 (mirrors)</a> requires Java 8</li>
+  <li><a href="https://commons.apache.org/csv/download_csv.cgi">Apache Commons CSV 1.7 (mirrors)</a> requires Java 8</li>
   <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.6 (archives)</a> requires Java 7</li>
   <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.5 (archives)</a> requires Java 7</li>
   <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.4 (archives)</a> requires Java 6</li>
@@ -78,7 +78,7 @@ The <a href="source-repository.html">git repository</a> can be
 </ul>
 <p>
 See the
-<a href="http://commons.apache.org/csv/download_csv.cgi">Download Page</a>
+<a href="https://commons.apache.org/csv/download_csv.cgi">Download Page</a>
 for the latest releases.<br />
 </p>
 <p>

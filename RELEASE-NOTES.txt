@@ -36,14 +36,14 @@ o CSV-237:  Update to Java 8. Thanks to Gary Gregory.
 o           Update tests from H2 1.4.198 to 1.4.199. Thanks to Gary Gregory.
 
 
-Historical list of changes: http://commons.apache.org/proper/commons-csv/changes-report.html
+Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
 patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
 
-http://commons.apache.org/proper/commons-csv/
+https://commons.apache.org/proper/commons-csv/
 
-Download it from http://commons.apache.org/proper/commons-csv/download_csv.cgi
+Download it from https://commons.apache.org/proper/commons-csv/download_csv.cgi
 
 Have fun!
 -Apache Commons CSV team
@@ -150,12 +150,12 @@ o CSV-187: Update platform requirement from Java 6 to 7. Thanks to Gary Gregory.
 o CSV-201: Do not use RuntimeException in CSVParser.iterator().new Iterator() {...}.getNextRecord(). Thanks to Benedikt Ritter, Gary Gregory.
 
 
-Historical list of changes: http://commons.apache.org/proper/commons-csv/changes-report.html
+Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
 patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
 
-http://commons.apache.org/proper/commons-csv/
+https://commons.apache.org/proper/commons-csv/
 
 Have fun!
 -Apache Commons CSV team
@@ -194,12 +194,12 @@ o CSV-181:  Make CSVPrinter.print(Object) GC-free. Thanks to Gary Gregory.
 o CSV-183:  Drop ferc.gov tests.  
 
 
-Historical list of changes: http://commons.apache.org/proper/commons-csv/changes-report.html
+Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
 patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
 
-http://commons.apache.org/proper/commons-csv/
+https://commons.apache.org/proper/commons-csv/
 
 Have fun!
 -Apache Commons CSV team
@@ -286,12 +286,12 @@ o CSV-145:  CSVFormat.with* methods clear the header comments. Thanks to Frank U
 o CSV-156:  Incorrect Javadoc on QuoteMode.NONE. Thanks to Jason Steenstra-Pickens.
 
 
-Historical list of changes: http://commons.apache.org/proper/commons-csv/changes-report.html
+Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
 patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
 
-http://commons.apache.org/proper/commons-csv/
+https://commons.apache.org/proper/commons-csv/
 
 Have fun!
 -Apache Commons CSV team
@@ -332,12 +332,12 @@ Changes:
 o [CSV-124] Improve toString() implementation of CSVRecord. Thanks to Kalyan. 
 o [CSV-134] Unified parameter validation. Thanks to wu wen. 
 
-Historical list of changes: http://commons.apache.org/proper/commons-csv/changes-report.html
+Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
 patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
 
-http://commons.apache.org/proper/commons-csv/
+https://commons.apache.org/proper/commons-csv/
 
 Have fun!
 -Apache Commons CSV team
@@ -427,12 +427,12 @@ o CSV-26:   ExtendedBufferedReader does too much
 o CSV-27:   Decide whether to keep the csv.writer subpackage
 
 
-Historical list of changes: http://commons.apache.org/proper/commons-csv/changes-report.html
+Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
 patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
 
-http://commons.apache.org/proper/commons-csv/
+https://commons.apache.org/proper/commons-csv/
 
 Have fun!
 -Apache Commons CSV team
