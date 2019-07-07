@@ -68,13 +68,13 @@ The <a href="source-repository.html">git repository</a> can be
 <section name="Releases">
 <ul>
   <li><a href="https://commons.apache.org/csv/download_csv.cgi">Apache Commons CSV 1.7 (mirrors)</a> requires Java 8</li>
-  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.6 (archives)</a> requires Java 7</li>
-  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.5 (archives)</a> requires Java 7</li>
-  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.4 (archives)</a> requires Java 6</li>
-  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.3 (archives)</a> requires Java 6</li>
-  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.2 (archives)</a> requires Java 6</li>
-  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.1 (archives)</a> requires Java 6</li>
-  <li><a href="http://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.0 (archives)</a> requires Java 6</li>
+  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.6 (archives)</a> requires Java 7</li>
+  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.5 (archives)</a> requires Java 7</li>
+  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.4 (archives)</a> requires Java 6</li>
+  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.3 (archives)</a> requires Java 6</li>
+  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.2 (archives)</a> requires Java 6</li>
+  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.1 (archives)</a> requires Java 6</li>
+  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.0 (archives)</a> requires Java 6</li>
 </ul>
 <p>
 See the
@@ -85,7 +85,7 @@ for the latest releases.<br />
 <a href="changes-report.html">Change reports</a> are also available.
 </p>
 <p>
-For previous releases, see the <a href="http://archive.apache.org/dist/commons/csv/">Apache Archive</a>
+For previous releases, see the <a href="https://archive.apache.org/dist/commons/csv/">Apache Archive</a>
 </p>
 <p>
   Alternatively, you can pull it from a Maven repository:
