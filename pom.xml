@@ -122,7 +122,7 @@ CSV files of various types.
 
   <issueManagement>
     <system>jira</system>
-    <url>http://issues.apache.org/jira/browse/CSV</url>
+    <url>https://issues.apache.org/jira/browse/CSV</url>
   </issueManagement>
 
   <distributionManagement>
