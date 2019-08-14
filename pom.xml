@@ -469,6 +469,7 @@ CSV files of various types.
           <groupId>net.sf.supercsv</groupId>
           <artifactId>super-csv</artifactId>
           <version>2.2.1</version>
+          <scope>test</scope>
         </dependency>
 
         <!-- Not in Maven Central, download manually from http://kasparov.skife.org/csv/csv-1.0.jar and install with:
