@@ -115,9 +115,9 @@ CSV files of various types.
   </contributors>
 
   <scm>
-    <connection>scm:git:http://git-wip-us.apache.org/repos/asf/commons-csv.git</connection>
-    <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/commons-csv.git</developerConnection>
-    <url>https://git-wip-us.apache.org/repos/asf?p=commons-csv.git</url>
+    <connection>scm:git:http://gitbox.apache.org/repos/asf/commons-csv.git</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/commons-csv.git</developerConnection>
+    <url>https://gitbox.apache.org/repos/asf?p=commons-csv.git</url>
   </scm>
 
   <issueManagement>
