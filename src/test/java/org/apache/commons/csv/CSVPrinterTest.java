@@ -288,6 +288,19 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testCSV135() throws IOException {
+        List<String> l = new LinkedList<String>();
+        l.add("\"\"");   // ""
+        l.add("\\\\");   // \\
+        l.add("\\\"\\"); // \"\
+        tryFormat(l, null, null, "\"\",\\\\,\\\"\\"); // "",\\,\"\ (unchanged)
+        tryFormat(l, '"',  null, "\"\"\"\"\"\",\\\\,\"\\\"\"\\\"");              // """""",\\,"\""\" (quoted, and embedded DQ doubled)
+        tryFormat(l, null, '\\', "\"\",\\\\\\\\,\\\\\"\\\\");                    // "",\\\\,\\"\\ (escapes escaped, not quoted)
+        tryFormat(l, '"',  '\\', "\"\\\"\\\"\",\"\\\\\\\\\",\"\\\\\\\"\\\\\"");  // "\"\"","\\\\","\\\"\\" (quoted, and embedded DQ & escape escaped)
+        tryFormat(l, '"',  '"',  "\"\"\"\"\"\",\\\\,\"\\\"\"\\\"");              // """""",\\,"\""\" (quoted, embedded DQ escaped)
+    }
+
+    @Test
     public void testDelimeterQuoted() throws IOException {
         final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuote('\''))) {
@@ -722,6 +735,15 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testMongoDbTsvBasic() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.MONGODB_TSV)) {
+            printer.printRecord("a", "b");
+            assertEquals("a\tb" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
     public void testMongoDbTsvCommaInValue() throws IOException {
         final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.MONGODB_TSV)) {
@@ -736,15 +758,6 @@ public class CSVPrinterTest {
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.MONGODB_TSV)) {
             printer.printRecord("a\tb", "c");
             assertEquals("\"a\tb\"\tc" + recordSeparator, sw.toString());
-        }
-    }
-
-    @Test
-    public void testMongoDbTsvBasic() throws IOException {
-        final StringWriter sw = new StringWriter();
-        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.MONGODB_TSV)) {
-            printer.printRecord("a", "b");
-            assertEquals("a\tb" + recordSeparator, sw.toString());
         }
     }
 
@@ -1243,6 +1256,48 @@ public class CSVPrinterTest {
         }
     }
 
+    /**
+     * Test to target the use of {@link IOUtils#copy(java.io.Reader, Appendable)} which directly
+     * buffers the value from the Reader to the Appendable.
+     *
+     * <p>Requires the format to have no quote or escape character, value to be a
+     * {@link java.io.Reader Reader} and the output <i>MUST NOT</i> be a
+     * {@link java.io.Writer Writer} but some other Appendable.</p>
+     *
+     * @throws IOException Not expected to happen
+     */
+    @Test
+    public void testPrintReaderWithoutQuoteToAppendable() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        final String content = "testValue";
+        try (final CSVPrinter printer = new CSVPrinter(sb, CSVFormat.DEFAULT.withQuote(null))) {
+            final StringReader value = new StringReader(content);
+            printer.print(value);
+        }
+        assertEquals(content, sb.toString());
+    }
+
+    /**
+     * Test to target the use of {@link IOUtils#copyLarge(java.io.Reader, Writer)} which directly
+     * buffers the value from the Reader to the Writer.
+     *
+     * <p>Requires the format to have no quote or escape character, value to be a
+     * {@link java.io.Reader Reader} and the output <i>MUST</i> be a
+     * {@link java.io.Writer Writer}.</p>
+     *
+     * @throws IOException Not expected to happen
+     */
+    @Test
+    public void testPrintReaderWithoutQuoteToWriter() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final String content = "testValue";
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuote(null))) {
+            final StringReader value = new StringReader(content);
+            printer.print(value);
+        }
+        assertEquals(content, sw.toString());
+    }
+
     @Test
     public void testPrintRecordsWithEmptyVector() throws IOException {
         final PrintStream out = System.out;
@@ -1386,6 +1441,7 @@ public class CSVPrinterTest {
         doRandom(CSVFormat.TDF, ITERATIONS_FOR_RANDOM_TEST);
     }
 
+
     @Test
     public void testSingleLineComment() throws IOException {
         final StringWriter sw = new StringWriter();
@@ -1416,7 +1472,6 @@ public class CSVPrinterTest {
             assertEquals("C1,C2,C3\r\na,b,c\r\nx,y,z\r\n", sw.toString());
         }
     }
-
 
     @Test
     public void testSkipHeaderRecordTrue() throws IOException {
@@ -1471,48 +1526,6 @@ public class CSVPrinterTest {
         return CSVParser.parse(expected, format).getRecords().get(0).values();
     }
 
-    /**
-     * Test to target the use of {@link IOUtils#copyLarge(java.io.Reader, Writer)} which directly
-     * buffers the value from the Reader to the Writer.
-     *
-     * <p>Requires the format to have no quote or escape character, value to be a
-     * {@link java.io.Reader Reader} and the output <i>MUST</i> be a
-     * {@link java.io.Writer Writer}.</p>
-     *
-     * @throws IOException Not expected to happen
-     */
-    @Test
-    public void testPrintReaderWithoutQuoteToWriter() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final String content = "testValue";
-        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuote(null))) {
-            final StringReader value = new StringReader(content);
-            printer.print(value);
-        }
-        assertEquals(content, sw.toString());
-    }
-
-    /**
-     * Test to target the use of {@link IOUtils#copy(java.io.Reader, Appendable)} which directly
-     * buffers the value from the Reader to the Appendable.
-     *
-     * <p>Requires the format to have no quote or escape character, value to be a
-     * {@link java.io.Reader Reader} and the output <i>MUST NOT</i> be a
-     * {@link java.io.Writer Writer} but some other Appendable.</p>
-     *
-     * @throws IOException Not expected to happen
-     */
-    @Test
-    public void testPrintReaderWithoutQuoteToAppendable() throws IOException {
-        final StringBuilder sb = new StringBuilder();
-        final String content = "testValue";
-        try (final CSVPrinter printer = new CSVPrinter(sb, CSVFormat.DEFAULT.withQuote(null))) {
-            final StringReader value = new StringReader(content);
-            printer.print(value);
-        }
-        assertEquals(content, sb.toString());
-    }
-
     private void tryFormat(List<String> l, Character quote, Character escape, String expected) throws IOException {
         CSVFormat format = CSVFormat.DEFAULT.withQuote(quote).withEscape(escape).withRecordSeparator(null);
         Appendable out = new StringBuilder();
@@ -1520,18 +1533,5 @@ public class CSVPrinterTest {
         printer.printRecord(l);
         printer.close();
         assertEquals(expected, out.toString());
-    }
-
-    @Test
-    public void testCSV135() throws IOException {
-        List<String> l = new LinkedList<String>();
-        l.add("\"\"");   // ""
-        l.add("\\\\");   // \\
-        l.add("\\\"\\"); // \"\
-        tryFormat(l, null, null, "\"\",\\\\,\\\"\\"); // "",\\,\"\ (unchanged)
-        tryFormat(l, '"',  null, "\"\"\"\"\"\",\\\\,\"\\\"\"\\\"");              // """""",\\,"\""\" (quoted, and embedded DQ doubled)
-        tryFormat(l, null, '\\', "\"\",\\\\\\\\,\\\\\"\\\\");                    // "",\\\\,\\"\\ (escapes escaped, not quoted)
-        tryFormat(l, '"',  '\\', "\"\\\"\\\"\",\"\\\\\\\\\",\"\\\\\\\"\\\\\"");  // "\"\"","\\\\","\\\"\\" (quoted, and embedded DQ & escape escaped)
-        tryFormat(l, '"',  '"',  "\"\"\"\"\"\",\\\\,\"\\\"\"\\\"");              // """""",\\,"\""\" (quoted, embedded DQ escaped)
     }
 }
