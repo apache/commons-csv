@@ -586,6 +586,11 @@ public class CSVFormatTest {
     }
 
     @Test
+    public void testJiraCsv236() {
+        CSVFormat.DEFAULT.withAllowDuplicateHeaderNames().withHeader("CC","VV","VV");
+    }
+
+    @Test
     public void testNewFormat() {
 
         final CSVFormat csvFormat = CSVFormat.newFormat('X');
