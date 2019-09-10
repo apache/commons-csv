@@ -139,7 +139,7 @@ CSV files of various types.
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC1</commons.rc.version>
     <commons.bc.version>1.6</commons.bc.version>
-    <commons.componentid>commons-csv</commons.componentid>
+    <commons.componentid>csv</commons.componentid>
     <commons.module.name>org.apache.commons.csv</commons.module.name>
     <commons.jira.id>CSV</commons.jira.id>
     <commons.jira.pid>12313222</commons.jira.pid>
