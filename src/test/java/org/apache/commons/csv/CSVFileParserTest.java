@@ -69,13 +69,7 @@ public class CSVFileParserTest {
     public static Collection<Object[]> generateData() {
         final List<Object[]> list = new ArrayList<>();
 
-        final FilenameFilter fileNameFilter = new FilenameFilter() {
-
-            @Override
-            public boolean accept(final File dir, final String name) {
-                return name.startsWith("test") && name.endsWith(".txt");
-            }
-        };
+        final FilenameFilter fileNameFilter = (dir, name) -> name.startsWith("test") && name.endsWith(".txt");
         final File[] files = BASE.listFiles(fileNameFilter);
         if (files != null) {
             for (final File f : files) {
