@@ -29,7 +29,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class JiraCvs249 {
+public class JiraCvs249Test {
 
     @Test
     public void testJiraCsv249() throws IOException {
