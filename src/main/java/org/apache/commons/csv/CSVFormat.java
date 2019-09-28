@@ -266,7 +266,7 @@ public final class CSVFormat implements Serializable {
      * @see Predefined#Default
      */
     public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF,
-            null, null, null, false, false, false, false, false, false, true);
+            null, null, null, false, false, false, false, false, false, true, false);
 
     /**
      * Excel file format (using a comma as the value delimiter). Note that the actual value delimiter used by Excel is
@@ -673,7 +673,7 @@ public final class CSVFormat implements Serializable {
      */
     public static CSVFormat newFormat(final char delimiter) {
         return new CSVFormat(delimiter, null, null, null, null, false, false, null, null, null, null, false, false,
-                false, false, false, false, true);
+                false, false, false, false, true, false);
     }
 
     /**
@@ -709,6 +709,8 @@ public final class CSVFormat implements Serializable {
     private final boolean ignoreHeaderCase; // should ignore header names case
 
     private final boolean ignoreSurroundingSpaces; // Should leading/trailing spaces be ignored around values?
+    
+    private final boolean ignoreQuotesInToken; //should ignore quotes in the token
 
     private final String nullString; // the string to be used for null values
 
@@ -762,6 +764,8 @@ public final class CSVFormat implements Serializable {
      * @param trailingDelimiter
      *            TODO
      * @param autoFlush
+     * @param ignoreQuotesInToken
+     * 			the quotes within a string token will be ignored
      * @throws IllegalArgumentException
      *             if the delimiter is a line break character
      */
@@ -770,7 +774,8 @@ public final class CSVFormat implements Serializable {
             final boolean ignoreEmptyLines, final String recordSeparator, final String nullString,
             final Object[] headerComments, final String[] header, final boolean skipHeaderRecord,
             final boolean allowMissingColumnNames, final boolean ignoreHeaderCase, final boolean trim,
-            final boolean trailingDelimiter, final boolean autoFlush, final boolean allowDuplicateHeaderNames) {
+            final boolean trailingDelimiter, final boolean autoFlush, final boolean allowDuplicateHeaderNames,
+            final boolean ignoreQuotesInToken) {
         this.delimiter = delimiter;
         this.quoteCharacter = quoteChar;
         this.quoteMode = quoteMode;
@@ -790,6 +795,7 @@ public final class CSVFormat implements Serializable {
         this.autoFlush = autoFlush;
         this.quotedNullString = quoteCharacter + nullString + quoteCharacter;
         this.allowDuplicateHeaderNames = allowDuplicateHeaderNames;
+        this.ignoreQuotesInToken = ignoreQuotesInToken;
         validate();
     }
 
@@ -862,6 +868,9 @@ public final class CSVFormat implements Serializable {
             return false;
         }
         if (ignoreSurroundingSpaces != other.ignoreSurroundingSpaces) {
+            return false;
+        }
+        if (ignoreQuotesInToken != other.ignoreQuotesInToken) {
             return false;
         }
         if (ignoreEmptyLines != other.ignoreEmptyLines) {
@@ -1004,6 +1013,16 @@ public final class CSVFormat implements Serializable {
     public boolean getIgnoreSurroundingSpaces() {
         return ignoreSurroundingSpaces;
     }
+    
+    /**
+     * Specifies whether quotes in token are ignored when parsing input.
+     *
+     * @return {@code true} to allow quotes anywhwere in the string, 
+     *            {@code false} to ensure quotes come in the beginning and end of string only.
+     */
+    public boolean getIgnoreQuotesInToken() {
+        return ignoreQuotesInToken;
+    }
 
     /**
      * Gets the String to convert to and from {@code null}.
@@ -1088,6 +1107,7 @@ public final class CSVFormat implements Serializable {
         result = prime * result + ((escapeCharacter == null) ? 0 : escapeCharacter.hashCode());
         result = prime * result + ((nullString == null) ? 0 : nullString.hashCode());
         result = prime * result + (ignoreSurroundingSpaces ? 1231 : 1237);
+        result = prime * result + (ignoreQuotesInToken ? 1231 : 1237);
         result = prime * result + (ignoreHeaderCase ? 1231 : 1237);
         result = prime * result + (ignoreEmptyLines ? 1231 : 1237);
         result = prime * result + (skipHeaderRecord ? 1231 : 1237);
@@ -1618,6 +1638,9 @@ public final class CSVFormat implements Serializable {
         if (getIgnoreSurroundingSpaces()) {
             sb.append(" SurroundingSpaces:ignored");
         }
+        if (getIgnoreQuotesInToken()) {
+            sb.append(" QuotesInToken:ignored");
+        }
         if (getIgnoreHeaderCase()) {
             sb.append(" IgnoreHeaderCase:ignored");
         }
@@ -1734,7 +1757,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -1760,7 +1783,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -1776,7 +1799,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -1812,7 +1835,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -1831,7 +1854,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -1863,7 +1886,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escape, ignoreSurroundingSpaces,
                 ignoreEmptyLines, recordSeparator, nullString, headerComments, header, skipHeaderRecord,
                 allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -2020,7 +2043,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -2042,7 +2065,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -2068,7 +2091,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -2095,7 +2118,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -2121,9 +2144,35 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
+    }
+    
+    /**
+     * Returns a new {@code CSVFormat} with the parser allowing quotes anywhere in the string {@code true}.
+     *
+     * @return A new CSVFormat that is equal to this but with quotes allowed anywhere in the string.
+     * @see #withIgnoreQuotesInToken(boolean)
+     * @since 1.9
+     */
+    public CSVFormat withIgnoreQuotesInToken() {
+        return this.withIgnoreQuotesInToken(true);
     }
 
+    /**
+     * Returns a new {@code CSVFormat} with the parser with quotes anywhere in the string set to the given value.
+     *
+     * @param ignoreQuotesInToken
+     *            parser with quotes anywhere in the string, {@code true} to allow quotes anywhwere in the string, 
+     *            {@code false} to ensure quotes come in the beginning and end of string only
+     * @return A new CSVFormat that is equal to this but with quotes allowed anywhere in the string.
+     */
+    public CSVFormat withIgnoreQuotesInToken(final boolean ignoreQuotesInToken) {
+        return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
+                ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
+                skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
+    }
+    
     /**
      * Returns a new {@code CSVFormat} with conversions to and from null for strings on input and output.
      * <ul>
@@ -2141,7 +2190,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -2173,7 +2222,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteChar, quoteMode, commentMarker, escapeCharacter, ignoreSurroundingSpaces,
                 ignoreEmptyLines, recordSeparator, nullString, headerComments, header, skipHeaderRecord,
                 allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -2188,7 +2237,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteModePolicy, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -2227,7 +2276,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -2255,7 +2304,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -2297,7 +2346,7 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames, ignoreQuotesInToken);
     }
 
     /**
@@ -2325,6 +2374,6 @@ public final class CSVFormat implements Serializable {
         return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,
                 ignoreSurroundingSpaces, ignoreEmptyLines, recordSeparator, nullString, headerComments, header,
                 skipHeaderRecord, allowMissingColumnNames, ignoreHeaderCase, trim, trailingDelimiter, autoFlush,
-                allowDuplicateHeaderNames);
+                allowDuplicateHeaderNames,ignoreQuotesInToken);
     }
 }

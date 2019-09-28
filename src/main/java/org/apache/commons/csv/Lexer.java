@@ -55,6 +55,7 @@ final class Lexer implements Closeable {
 
     private final boolean ignoreSurroundingSpaces;
     private final boolean ignoreEmptyLines;
+    private final boolean ignoreQuotesInToken;
 
     /** The input stream */
     private final ExtendedBufferedReader reader;
@@ -72,6 +73,7 @@ final class Lexer implements Closeable {
         this.commentStart = mapNullToDisabled(format.getCommentMarker());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
+        this.ignoreQuotesInToken = format.getIgnoreQuotesInToken();
     }
 
     /**
@@ -276,6 +278,8 @@ final class Lexer implements Closeable {
                         } else if (readEndOfLine(c)) {
                             token.type = EORECORD;
                             return token;
+                        } else if(ignoreQuotesInToken) {
+                        	token.content.append((char)c);
                         } else if (!isWhitespace(c)) {
                             // error invalid char between token and next delimiter
                             throw new IOException("(line " + getCurrentLineNumber() +

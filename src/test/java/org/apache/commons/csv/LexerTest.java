@@ -31,12 +31,15 @@ import static org.apache.commons.csv.TokenMatchers.matches;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.StringReader;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.internal.runners.statements.Fail;
 
 /**
  *
@@ -66,6 +69,30 @@ public class LexerTest {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, ""));
             assertThat(parser.nextToken(new Token()), matches(TOKEN, ""));
             assertThat(parser.nextToken(new Token()), matches(EOF, ""));
+        }
+    }
+    
+    @Test
+    public void testIgnoreQuotesInTokenTrue() throws IOException {
+        final String code = "abc,\"xyz\" 123 bar,3,11961034,\"First author,  Second Author\"";
+        try (final Lexer parser = createLexer(code, CSVFormat.DEFAULT.withIgnoreQuotesInToken())) {
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "abc"));
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "xyz 123 bar"));
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "3"));
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "11961034"));
+            assertThat(parser.nextToken(new Token()), matches(EOF, "First author,  Second Author"));
+        }
+    }
+    
+    @Test
+    public void testIgnoreQuotesInTokenFalse() throws IOException {
+        final String code = "abc,\"xyz\" 123 bar,3,11961034,\"First author,  Second Author\"";
+        try (final Lexer parser = createLexer(code, CSVFormat.DEFAULT)) {
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "abc"));
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "xyz 123 bar"));
+            fail();
+        } catch (IOException e) {
+        	assertTrue(e.getMessage().equals("(line 1) invalid char between encapsulated token and delimiter"));
         }
     }
 
