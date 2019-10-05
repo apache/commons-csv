@@ -32,8 +32,8 @@ import java.util.zip.GZIPInputStream;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests performance.
@@ -47,7 +47,7 @@ public class PerformanceTest {
 
     private static final File BIG_FILE = new File(System.getProperty("java.io.tmpdir"), "worldcitiespop.txt");
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() throws FileNotFoundException, IOException {
         if (BIG_FILE.exists()) {
             System.out.println(String.format("Found test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));

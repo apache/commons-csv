@@ -20,17 +20,17 @@ import static org.apache.commons.csv.TokenMatchers.hasContent;
 import static org.apache.commons.csv.TokenMatchers.hasType;
 import static org.apache.commons.csv.TokenMatchers.isReady;
 import static org.apache.commons.csv.TokenMatchers.matches;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TokenMatchersTest {
 
     private Token token;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         token = new Token();
         token.type = Token.Type.TOKEN;

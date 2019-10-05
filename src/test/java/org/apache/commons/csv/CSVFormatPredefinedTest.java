@@ -17,8 +17,9 @@
 
 package org.apache.commons.csv;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests {@link CSVFormat.Predefined}.
@@ -26,8 +27,8 @@ import org.junit.Test;
 public class CSVFormatPredefinedTest {
 
     private void test(final CSVFormat format, final String enumName) {
-        Assert.assertEquals(format, CSVFormat.Predefined.valueOf(enumName).getFormat());
-        Assert.assertEquals(format, CSVFormat.valueOf(enumName));
+        assertEquals(format, CSVFormat.Predefined.valueOf(enumName).getFormat());
+        assertEquals(format, CSVFormat.valueOf(enumName));
     }
 
     @Test

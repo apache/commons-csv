@@ -28,15 +28,16 @@ import static org.apache.commons.csv.Token.Type.EORECORD;
 import static org.apache.commons.csv.Token.Type.TOKEN;
 import static org.apache.commons.csv.TokenMatchers.hasContent;
 import static org.apache.commons.csv.TokenMatchers.matches;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.io.StringReader;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -45,7 +46,7 @@ public class LexerTest {
 
     private CSVFormat formatWithEscaping;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         formatWithEscaping = CSVFormat.DEFAULT.withEscape('\\');
     }
@@ -142,7 +143,7 @@ public class LexerTest {
                 "\n" + // 6c
                 "# Final comment\n"; // 7
         final CSVFormat format = CSVFormat.DEFAULT.withCommentMarker('#').withIgnoreEmptyLines(false);
-        assertFalse("Should not ignore empty lines", format.getIgnoreEmptyLines());
+        assertFalse(format.getIgnoreEmptyLines(), "Should not ignore empty lines");
 
         try (final Lexer parser = createLexer(code, format)) {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "1"));
@@ -381,11 +382,11 @@ public class LexerTest {
         }
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void testEscapingAtEOF() throws Exception {
         final String code = "escaping at EOF is evil\\";
         try (final Lexer lexer = createLexer(code, formatWithEscaping)) {
-            lexer.nextToken(new Token());
+            assertThrows(IOException.class, () -> lexer.nextToken(new Token()));
         }
     }
 }

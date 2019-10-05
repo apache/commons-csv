@@ -20,13 +20,14 @@ package org.apache.commons.csv;
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.LF;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,9 +51,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.apache.commons.io.input.BOMInputStream;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * CSVParserTest
@@ -85,7 +85,7 @@ public class CSVParserTest {
 
     private void parseFully(final CSVParser parser) {
         for (final CSVRecord csvRecord : parser) {
-            Assert.assertNotNull(csvRecord);
+            assertNotNull(csvRecord);
         }
     }
 
@@ -156,7 +156,7 @@ public class CSVParserTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testBackslashEscapingOld() throws IOException {
         final String code = "one,two,three\n" + "on\\\"e,two\n" + "on\"e,two\n" + "one,\"tw\\\"o\"\n" +
                 "one,\"t\\,wo\"\n" + "one,two,\"th,ree\"\n" + "\"a\\\\\"\n" + "a\\,b\n" + "\"a\\\\,b\"";
@@ -177,13 +177,13 @@ public class CSVParserTest {
     }
 
     @Test
-    @Ignore("CSV-107")
+    @Disabled("CSV-107")
     public void testBOM() throws IOException {
         final URL url = ClassLoader.getSystemClassLoader().getResource("CSVFileParser/bom.csv");
         try (final CSVParser parser = CSVParser.parse(url, Charset.forName(UTF_8_NAME), CSVFormat.EXCEL.withHeader())) {
             for (final CSVRecord record : parser) {
                 final String string = record.get("Date");
-                Assert.assertNotNull(string);
+                assertNotNull(string);
                 // System.out.println("date: " + record.get("Date"));
             }
         }
@@ -195,7 +195,7 @@ public class CSVParserTest {
                 final CSVParser parser = CSVParser.parse(inputStream, UTF_8, CSVFormat.EXCEL.withHeader())) {
             for (final CSVRecord record : parser) {
                 final String string = record.get("Date");
-                Assert.assertNotNull(string);
+                assertNotNull(string);
                 // System.out.println("date: " + record.get("Date"));
             }
         }
@@ -207,7 +207,7 @@ public class CSVParserTest {
                 final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader())) {
             for (final CSVRecord record : parser) {
                 final String string = record.get("Date");
-                Assert.assertNotNull(string);
+                assertNotNull(string);
                 // System.out.println("date: " + record.get("Date"));
             }
         }
@@ -219,7 +219,7 @@ public class CSVParserTest {
                 final CSVParser parser = CSVParser.parse(reader, CSVFormat.EXCEL.withHeader())) {
             for (final CSVRecord record : parser) {
                 final String string = record.get("Date");
-                Assert.assertNotNull(string);
+                assertNotNull(string);
                 // System.out.println("date: " + record.get("Date"));
             }
         }
@@ -243,7 +243,7 @@ public class CSVParserTest {
         }
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void testClose() throws Exception {
         final Reader in = new StringReader("# comment\na,b,c\n1,2,3\nx,y,z");
         final Iterator<CSVRecord> records;
@@ -252,7 +252,7 @@ public class CSVParserTest {
             assertTrue(records.hasNext());
         }
         assertFalse(records.hasNext());
-        records.next();
+        assertThrows(NoSuchElementException.class, records::next);
     }
 
     @Test
@@ -292,10 +292,12 @@ public class CSVParserTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testDuplicateHeadersNotAllowed() throws Exception {
-        CSVParser.parse("a,b,a\n1,2,3\nx,y,z",
-                CSVFormat.DEFAULT.withHeader(new String[] {}).withAllowDuplicateHeaderNames(false));
+    @Test
+    public void testDuplicateHeadersNotAllowed() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> CSVParser.parse("a,b,a\n1,2,3\nx,y,z",
+                        CSVFormat.DEFAULT.withHeader(new String[] {}).withAllowDuplicateHeaderNames(false)));
     }
 
     @Test
@@ -430,9 +432,9 @@ public class CSVParserTest {
         final String code = "A,B,C,,\r\na,b,c,d,e\r\n";
         try (final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL.withHeader())) {
             for (final CSVRecord record : parser.getRecords()) {
-                Assert.assertEquals("a", record.get("A"));
-                Assert.assertEquals("b", record.get("B"));
-                Assert.assertEquals("c", record.get("C"));
+                assertEquals("a", record.get("A"));
+                assertEquals("b", record.get("B"));
+                assertEquals("c", record.get("C"));
             }
         }
     }
@@ -488,9 +490,9 @@ public class CSVParserTest {
             final Map<String, Integer> headerMap = parser.getHeaderMap();
             final Iterator<String> columnNames = headerMap.keySet().iterator();
             // Headers are iterated in column order.
-            Assert.assertEquals("A", columnNames.next());
-            Assert.assertEquals("B", columnNames.next());
-            Assert.assertEquals("C", columnNames.next());
+            assertEquals("A", columnNames.next());
+            assertEquals("B", columnNames.next());
+            assertEquals("C", columnNames.next());
             final Iterator<CSVRecord> records = parser.iterator();
 
             // Parse to make sure getHeaderMap did not have a side-effect.
@@ -512,11 +514,11 @@ public class CSVParserTest {
             CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
             final Map<String, Integer> nameIndexMap = parser.getHeaderMap();
             final List<String> headerNames = parser.getHeaderNames();
-            Assert.assertNotNull(headerNames);
-            Assert.assertEquals(nameIndexMap.size(), headerNames.size());
+            assertNotNull(headerNames);
+            assertEquals(nameIndexMap.size(), headerNames.size());
             for (int i = 0; i < headerNames.size(); i++) {
                 final String name = headerNames.get(i);
-                Assert.assertEquals(i, nameIndexMap.get(name).intValue());
+                assertEquals(i, nameIndexMap.get(name).intValue());
             }
         }
     }
@@ -526,7 +528,7 @@ public class CSVParserTest {
         try (final CSVParser parser = CSVParser.parse("a,b,c\n1,2,3\nx,y,z",
             CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
             final List<String> headerNames = parser.getHeaderNames();
-            Assert.assertNotNull(headerNames);
+            assertNotNull(headerNames);
             try {
                 headerNames.add("This is a read-only list.");
                 fail();
@@ -716,10 +718,10 @@ public class CSVParserTest {
         CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames().parse(in).iterator();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testHeadersMissingException() throws Exception {
+    @Test
+    public void testHeadersMissingException() {
         final Reader in = new StringReader("a,,c,,d\n1,2,3,4\nx,y,z,zz");
-        CSVFormat.DEFAULT.withHeader().parse(in).iterator();
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withHeader().parse(in).iterator());
     }
 
     @Test
@@ -744,12 +746,9 @@ public class CSVParserTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testInvalidFormat() throws Exception {
-        final CSVFormat invalidFormat = CSVFormat.DEFAULT.withDelimiter(CR);
-        try (final CSVParser parser = new CSVParser(null, invalidFormat)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testInvalidFormat() {
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter(CR));
     }
 
     @Test
@@ -885,7 +884,7 @@ public class CSVParserTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testMongoDbCsv() throws Exception {
         try (final CSVParser parser = CSVParser.parse("\"a a\",b,c" + LF + "d,e,f", CSVFormat.MONGODB_CSV)) {
             final Iterator<CSVRecord> itr1 = parser.iterator();
@@ -921,24 +920,20 @@ public class CSVParserTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testNewCSVParserNullReaderFormat() throws Exception {
-        try (final CSVParser parser = new CSVParser(null, CSVFormat.DEFAULT)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testNewCSVParserNullReaderFormat() {
+        assertThrows(IllegalArgumentException.class, () -> new CSVParser(null, CSVFormat.DEFAULT));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testNewCSVParserReaderNullFormat() throws Exception {
-        try (final CSVParser parser = new CSVParser(new StringReader(""), null)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testNewCSVParserReaderNullFormat() {
+        assertThrows(IllegalArgumentException.class, () -> new CSVParser(new StringReader(""), null));
     }
 
     @Test
     public void testNoHeaderMap() throws Exception {
         try (final CSVParser parser = CSVParser.parse("a,b,c\n1,2,3\nx,y,z", CSVFormat.DEFAULT)) {
-            Assert.assertNull(parser.getHeaderMap());
+            assertNull(parser.getHeaderMap());
         }
     }
 
@@ -975,60 +970,56 @@ public class CSVParserTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testParseFileNullFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse(new File("CSVFileParser/test.csv"), Charset.defaultCharset(), null)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testParseFileNullFormat() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> CSVParser.parse(new File("CSVFileParser/test.csv"), Charset.defaultCharset(), null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testParseNullFileFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse((File) null, Charset.defaultCharset(), CSVFormat.DEFAULT)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testParseNullFileFormat() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> CSVParser.parse((File) null, Charset.defaultCharset(), CSVFormat.DEFAULT));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testParseNullPathFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse((Path) null, Charset.defaultCharset(), CSVFormat.DEFAULT)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testParseNullPathFormat() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> CSVParser.parse((Path) null, Charset.defaultCharset(), CSVFormat.DEFAULT));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testParseNullStringFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse((String) null, CSVFormat.DEFAULT)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testParseNullStringFormat() {
+        assertThrows(IllegalArgumentException.class, () -> CSVParser.parse((String) null, CSVFormat.DEFAULT));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testParseNullUrlCharsetFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse((URL) null, Charset.defaultCharset(), CSVFormat.DEFAULT)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testParseNullUrlCharsetFormat() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> CSVParser.parse((URL) null, Charset.defaultCharset(), CSVFormat.DEFAULT));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testParserUrlNullCharsetFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse(new URL("https://commons.apache.org"), null, CSVFormat.DEFAULT)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testParserUrlNullCharsetFormat() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> CSVParser.parse(new URL("https://commons.apache.org"), null, CSVFormat.DEFAULT));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testParseStringNullFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse("csv data", (CSVFormat) null)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testParseStringNullFormat() {
+        assertThrows(IllegalArgumentException.class, () -> CSVParser.parse("csv data", (CSVFormat) null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testParseUrlCharsetNullFormat() throws Exception {
-        try (final CSVParser parser = CSVParser.parse(new URL("https://commons.apache.org"), Charset.defaultCharset(), null)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testParseUrlCharsetNullFormat() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> CSVParser.parse(new URL("https://commons.apache.org"), Charset.defaultCharset(), null));
     }
 
     @Test
@@ -1129,7 +1120,7 @@ public class CSVParserTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testStartWithEmptyLinesThenHeaders() throws Exception {
         final String[] codes = { "\r\n\r\n\r\nhello,\r\n\r\n\r\n", "hello,\n\n\n", "hello,\"\"\r\n\r\n\r\n",
                 "hello,\"\"\n\n\n" };
@@ -1156,7 +1147,7 @@ public class CSVParserTest {
         assertEquals("1", record.get("X"));
         assertEquals("2", record.get("Y"));
         assertEquals("3", record.get("Z"));
-        Assert.assertEquals(3, record.size());
+        assertEquals(3, record.size());
     }
 
     @Test
@@ -1168,7 +1159,7 @@ public class CSVParserTest {
         assertEquals("1", record.get("X"));
         assertEquals("2", record.get("Y"));
         assertEquals("3", record.get("Z"));
-        Assert.assertEquals(3, record.size());
+        assertEquals(3, record.size());
     }
 
     @Test
@@ -1185,7 +1176,7 @@ public class CSVParserTest {
         final Iterator<CSVRecord> records = CSVFormat.RFC4180.parse(new StringReader(dqString)).iterator();
         final CSVRecord record = records.next();
         assertFalse(records.hasNext());
-        Assert.assertEquals(3, record.size());
+        assertEquals(3, record.size());
         assertEquals("aaa", record.get(0));
         assertEquals("b\"bb", record.get(1));
         assertEquals("ccc", record.get(2));

@@ -17,6 +17,8 @@
 
 package org.apache.commons.csv.issues;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -26,8 +28,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JiraCvs249Test {
 
@@ -48,8 +49,8 @@ public class JiraCvs249Test {
         }
 
         records.forEach(record -> {
-            Assert.assertEquals("foo \\", record.get(0));
-            Assert.assertEquals("bar", record.get(1));
+            assertEquals("foo \\", record.get(0));
+            assertEquals("bar", record.get(1));
         });
 
     }

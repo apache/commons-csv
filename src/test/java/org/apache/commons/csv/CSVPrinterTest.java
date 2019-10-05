@@ -18,9 +18,10 @@
 package org.apache.commons.csv;
 
 import static org.apache.commons.csv.Constants.CR;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -55,9 +56,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.h2.tools.SimpleResultSet;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -578,12 +578,9 @@ public class CSVPrinterTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testInvalidFormat() throws Exception {
-        final CSVFormat invalidFormat = CSVFormat.DEFAULT.withDelimiter(CR);
-        try (final CSVPrinter printer = new CSVPrinter(new StringWriter(), invalidFormat)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testInvalidFormat() {
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter(CR));
     }
 
     @Test
@@ -633,7 +630,7 @@ public class CSVPrinterTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testJira135_part1() throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote(DQUOTE_CHAR).withEscape(BACKSLASH_CH);
         final StringWriter sw = new StringWriter();
@@ -649,7 +646,7 @@ public class CSVPrinterTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testJira135_part2() throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote(DQUOTE_CHAR).withEscape(BACKSLASH_CH);
         final StringWriter sw = new StringWriter();
@@ -665,7 +662,7 @@ public class CSVPrinterTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testJira135_part3() throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote(DQUOTE_CHAR).withEscape(BACKSLASH_CH);
         final StringWriter sw = new StringWriter();
@@ -681,7 +678,7 @@ public class CSVPrinterTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testJira135All() throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote(DQUOTE_CHAR).withEscape(BACKSLASH_CH);
         final StringWriter sw = new StringWriter();
@@ -879,18 +876,14 @@ public class CSVPrinterTest {
         assertEquals("\\N", CSVFormat.MYSQL.getNullString());
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testNewCsvPrinterAppendableNullFormat() throws Exception {
-        try (final CSVPrinter printer = new CSVPrinter(new StringWriter(), null)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testNewCsvPrinterAppendableNullFormat() {
+        assertThrows(IllegalArgumentException.class, () -> new CSVPrinter(new StringWriter(), null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testNewCsvPrinterNullAppendableFormat() throws Exception {
-        try (final CSVPrinter printer = new CSVPrinter(null, CSVFormat.DEFAULT)) {
-            Assert.fail("This test should have thrown an exception.");
-        }
+    @Test
+    public void testNewCsvPrinterNullAppendableFormat() {
+        assertThrows(IllegalArgumentException.class, () -> new CSVPrinter(null, CSVFormat.DEFAULT));
     }
 
     @Test
@@ -942,7 +935,7 @@ public class CSVPrinterTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testPostgreSqlCsvNullOutput() throws IOException {
         Object[] s = new String[] { "NULL", null };
         CSVFormat format = CSVFormat.POSTGRESQL_CSV.withQuote(DQUOTE_CHAR).withNullString("NULL").withQuoteMode(QuoteMode.ALL_NON_NULL);
@@ -1045,7 +1038,7 @@ public class CSVPrinterTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testPostgreSqlCsvTextOutput() throws IOException {
         Object[] s = new String[] { "NULL", null };
         CSVFormat format = CSVFormat.POSTGRESQL_TEXT.withQuote(DQUOTE_CHAR).withNullString("NULL").withQuoteMode(QuoteMode.ALL_NON_NULL);
@@ -1403,7 +1396,7 @@ public class CSVPrinterTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testRandomMongoDbCsv() throws Exception {
         doRandom(CSVFormat.MONGODB_CSV, ITERATIONS_FOR_RANDOM_TEST);
     }
@@ -1414,19 +1407,19 @@ public class CSVPrinterTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testRandomOracle() throws Exception {
         doRandom(CSVFormat.ORACLE, ITERATIONS_FOR_RANDOM_TEST);
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testRandomPostgreSqlCsv() throws Exception {
         doRandom(CSVFormat.POSTGRESQL_CSV, ITERATIONS_FOR_RANDOM_TEST);
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testRandomPostgreSqlText() throws Exception {
         doRandom(CSVFormat.POSTGRESQL_TEXT, ITERATIONS_FOR_RANDOM_TEST);
     }
