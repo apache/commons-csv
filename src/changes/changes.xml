@@ -45,6 +45,7 @@
       <action issue="CSV-242" type="fix" dev="sebb">CSVFormat equals() and hashCode() don't use all fields.</action>
       <action issue="CSV-241" type="fix" dev="ggregory" due-to="LuckyIlam, Gary Gregory">CSVFormat#valiadte() does not account for allowDuplicateHeaderNames #43.</action>
       <action issue="CSV-245" type="fix" dev="Alex Herbert">Post 1.7 release fixes.</action>
+      <action issue="CSV-252" type="fix" dev="Allon Mureinik">Upgrade test framework to JUnit 5 Jupiter #49.</action>
       <action                 type="fix" dev="Alex Herbert">Use test scope for supercsv #48.</action>
     </release>
     <release version="1.7" date="2019-06-01" description="Feature and bug fix release (Java 8)">
