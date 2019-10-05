@@ -16,13 +16,13 @@
  */
 package org.apache.commons.csv.issues;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JiraCsv164Test {
 
@@ -37,7 +37,7 @@ public class JiraCsv164Test {
             printer.print("B");
         }
         final String s = out.toString();
-        assertTrue(s, s.contains(comment));
+        assertTrue(s.contains(comment), s);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class JiraCsv164Test {
             printer.print("B");
         }
         final String s = out.toString();
-        assertTrue(s, s.contains(comment));
+        assertTrue(s.contains(comment), s);
     }
 
 }

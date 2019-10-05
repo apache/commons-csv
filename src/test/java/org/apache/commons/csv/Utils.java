@@ -18,8 +18,8 @@
 
 package org.apache.commons.csv;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
@@ -39,9 +39,9 @@ final class Utils {
      * @param actual the List of {@link CSVRecord} entries, each containing an array of values
      */
     public static void compare(final String message, final String[][] expected, final List<CSVRecord> actual) {
-        assertEquals(message+"  - outer array size", expected.length, actual.size());
+        assertEquals(expected.length, actual.size(), message + "  - outer array size");
         for (int i = 0; i < expected.length; i++) {
-            assertArrayEquals(message + " (entry " + i + ")", expected[i], actual.get(i).values());
+            assertArrayEquals(expected[i], actual.get(i).values(), message + " (entry " + i + ")");
         }
     }
 }

@@ -16,12 +16,12 @@
  */
 package org.apache.commons.csv.issues;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * JIRA: <a href="https://issues.apache.org/jira/browse/CSV-203">withNullString value is printed without quotes when QuoteMode.ALL is specified</a>

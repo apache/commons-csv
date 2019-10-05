@@ -16,11 +16,12 @@
  */
 package org.apache.commons.csv;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -31,8 +32,8 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class CSVRecordTest {
 
@@ -44,7 +45,7 @@ public class CSVRecordTest {
     private CSVRecord record, recordWithHeader;
     private Map<String, Integer> headerMap;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         values = new String[] { "A", "B", "C" };
         final String rowData = StringUtils.join(values, ',');
@@ -72,35 +73,35 @@ public class CSVRecordTest {
         assertEquals(values[2], recordWithHeader.get("third"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetStringInconsistentRecord() {
         headerMap.put("fourth", Integer.valueOf(4));
-        recordWithHeader.get("fourth");
+        assertThrows(IllegalArgumentException.class, () -> recordWithHeader.get("fourth"));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testGetStringNoHeader() {
-        record.get("first");
+        assertThrows(IllegalStateException.class, () -> record.get("first"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetUnmappedEnum() {
-        assertNull(recordWithHeader.get(EnumFixture.UNKNOWN_COLUMN));
+        assertThrows(IllegalArgumentException.class, () -> recordWithHeader.get(EnumFixture.UNKNOWN_COLUMN));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetUnmappedName() {
-        assertNull(recordWithHeader.get("fourth"));
+        assertThrows(IllegalArgumentException.class, () -> assertNull(recordWithHeader.get("fourth")));
     }
 
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    @Test
     public void testGetUnmappedNegativeInt() {
-        assertNull(recordWithHeader.get(Integer.MIN_VALUE));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> recordWithHeader.get(Integer.MIN_VALUE));
     }
 
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    @Test
     public void testGetUnmappedPositiveInt() {
-        assertNull(recordWithHeader.get(Integer.MAX_VALUE));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> recordWithHeader.get(Integer.MAX_VALUE));
     }
 
     @Test
@@ -192,8 +193,8 @@ public class CSVRecordTest {
         try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.newFormat(','))) {
             final CSVRecord shortRec = parser.iterator().next();
             final Map<String, String> map = shortRec.toMap();
-            assertNotNull("Map is not null.", map);
-            assertTrue("Map is empty.", map.isEmpty());
+            assertNotNull(map, "Map is not null.");
+            assertTrue(map.isEmpty(), "Map is empty.");
         }
     }
 

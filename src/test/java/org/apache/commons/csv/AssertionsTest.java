@@ -17,7 +17,9 @@
 
 package org.apache.commons.csv;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
 
 /**
  */
@@ -28,8 +30,8 @@ public class AssertionsTest {
         Assertions.notNull(new Object(), "object");
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testNotNullNull() throws Exception {
-        Assertions.notNull(null, "object");
+    @Test
+    public void testNotNullNull() {
+        assertThrows(IllegalArgumentException.class, () -> Assertions.notNull(null, "object"));
     }
 }
