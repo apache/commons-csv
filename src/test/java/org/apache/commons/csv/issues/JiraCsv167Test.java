@@ -16,6 +16,8 @@
  */
 package org.apache.commons.csv.issues;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +28,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.csv.QuoteMode;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class JiraCsv167Test {
@@ -77,8 +78,8 @@ public class JiraCsv167Test {
             }
         }
         // Comment lines are concatenated, in this example 4 lines become 2 comments.
-        Assert.assertEquals(totcomment, comments);
-        Assert.assertEquals(totrecs, records); // records includes the header
+        assertEquals(totcomment, comments);
+        assertEquals(totrecs, records); // records includes the header
     }
 
     private Reader getTestInput() {

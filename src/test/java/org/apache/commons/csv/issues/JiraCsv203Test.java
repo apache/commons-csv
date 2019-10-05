@@ -16,10 +16,11 @@
  */
 package org.apache.commons.csv.issues;
 
+import static org.junit.Assert.assertEquals;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -38,7 +39,7 @@ public class JiraCsv203Test {
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(new Object[] { null, "Hello", null, "World" });
         }
-        Assert.assertEquals("\"N/A\",\"Hello\",\"N/A\",\"World\"\r\n", buffer.toString());
+        assertEquals("\"N/A\",\"Hello\",\"N/A\",\"World\"\r\n", buffer.toString());
     }
 
     @Test
@@ -52,7 +53,7 @@ public class JiraCsv203Test {
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(new Object[] { null, "Hello", null, "World" });
         }
-        Assert.assertEquals("N/A,\"Hello\",N/A,\"World\"\r\n", buffer.toString());
+        assertEquals("N/A,\"Hello\",N/A,\"World\"\r\n", buffer.toString());
     }
 
     @Test
@@ -65,7 +66,7 @@ public class JiraCsv203Test {
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(new Object[] { null, "Hello", null, "World" });
         }
-        Assert.assertEquals("N/A,Hello,N/A,World\r\n", buffer.toString());
+        assertEquals("N/A,Hello,N/A,World\r\n", buffer.toString());
     }
 
     @Test
@@ -79,7 +80,7 @@ public class JiraCsv203Test {
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(new Object[] { null, "Hello", null, "World" });
         }
-        Assert.assertEquals("N/A,Hello,N/A,World\r\n", buffer.toString());
+        assertEquals("N/A,Hello,N/A,World\r\n", buffer.toString());
     }
 
     @Test
@@ -93,7 +94,7 @@ public class JiraCsv203Test {
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(new Object[] { null, "Hello", null, "World" });
         }
-        Assert.assertEquals("N/A,\"Hello\",N/A,\"World\"\r\n", buffer.toString());
+        assertEquals("N/A,\"Hello\",N/A,\"World\"\r\n", buffer.toString());
     }
 
     @Test
@@ -107,7 +108,7 @@ public class JiraCsv203Test {
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(new Object[] { null, "Hello", null, "World" });
         }
-        Assert.assertEquals(",\"Hello\",,\"World\"\r\n", buffer.toString());
+        assertEquals(",\"Hello\",,\"World\"\r\n", buffer.toString());
     }
 
     @Test
@@ -122,6 +123,6 @@ public class JiraCsv203Test {
             printer.printRecord(new Object[] { "", "Hello", "", "World" });
             //printer.printRecord(new Object[] { null, "Hello", null, "World" });
         }
-        Assert.assertEquals("\"\",\"Hello\",\"\",\"World\"\r\n", buffer.toString());
+        assertEquals("\"\",\"Hello\",\"\",\"World\"\r\n", buffer.toString());
     }
 }

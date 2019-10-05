@@ -31,7 +31,6 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -170,7 +169,7 @@ public class CSVRecordTest {
             final ArrayList<String> list = new ArrayList<>(map.values());
             Collections.sort(list);
             printer.printRecord(list);
-            Assert.assertEquals("A,B,C,NewValue" + CSVFormat.DEFAULT.getRecordSeparator(), printer.getOut().toString());
+            assertEquals("A,B,C,NewValue" + CSVFormat.DEFAULT.getRecordSeparator(), printer.getOut().toString());
         }
     }
 

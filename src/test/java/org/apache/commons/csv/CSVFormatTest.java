@@ -38,7 +38,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -910,7 +909,7 @@ public class CSVFormatTest {
     @Test
     public void testWithEmptyEnum() throws Exception {
         final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(EmptyEnum.class);
-        Assert.assertTrue(formatWithHeader.getHeader().length == 0);
+        assertTrue(formatWithHeader.getHeader().length == 0);
     }
 
     @Test

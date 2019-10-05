@@ -21,6 +21,7 @@ import static org.apache.commons.csv.Constants.CR;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -55,7 +56,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.h2.tools.SimpleResultSet;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -582,7 +582,7 @@ public class CSVPrinterTest {
     public void testInvalidFormat() throws Exception {
         final CSVFormat invalidFormat = CSVFormat.DEFAULT.withDelimiter(CR);
         try (final CSVPrinter printer = new CSVPrinter(new StringWriter(), invalidFormat)) {
-            Assert.fail("This test should have thrown an exception.");
+            fail("This test should have thrown an exception.");
         }
     }
 
@@ -882,14 +882,14 @@ public class CSVPrinterTest {
     @Test(expected = IllegalArgumentException.class)
     public void testNewCsvPrinterAppendableNullFormat() throws Exception {
         try (final CSVPrinter printer = new CSVPrinter(new StringWriter(), null)) {
-            Assert.fail("This test should have thrown an exception.");
+            fail("This test should have thrown an exception.");
         }
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNewCsvPrinterNullAppendableFormat() throws Exception {
         try (final CSVPrinter printer = new CSVPrinter(null, CSVFormat.DEFAULT)) {
-            Assert.fail("This test should have thrown an exception.");
+            fail("This test should have thrown an exception.");
         }
     }
 
