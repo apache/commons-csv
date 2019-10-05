@@ -17,7 +17,6 @@
 
 package org.apache.commons.csv;
 
-import static junit.framework.TestCase.assertNull;
 import static org.apache.commons.csv.CSVFormat.RFC4180;
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.CRLF;
@@ -27,6 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
