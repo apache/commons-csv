@@ -34,11 +34,8 @@ public class JiraCvs249Test {
 
     @Test
     public void testJiraCsv249() throws IOException {
-
         final CSVFormat csvFormat = CSVFormat.DEFAULT.withEscape('\\');
-
         final StringWriter stringWriter = new StringWriter();
-
         try (CSVPrinter printer = new CSVPrinter(stringWriter, csvFormat)) {
             printer.printRecord("foo \\", "bar");
         }
@@ -47,7 +44,6 @@ public class JiraCvs249Test {
         try (CSVParser parser = new CSVParser(stringReader, csvFormat)) {
             records = parser.getRecords();
         }
-
         records.forEach(record -> {
             assertEquals("foo \\", record.get(0));
             assertEquals("bar", record.get(1));
