@@ -550,13 +550,8 @@ public class CSVFormatTest {
 
         final CSVFormat csvFormat = CSVFormat.MYSQL;
 
-        try {
-            csvFormat.format((Object[]) null);
-            fail("Expecting exception: NullPointerException");
-        } catch(final NullPointerException e) {
-            assertEquals(CSVFormat.class.getName(), e.getStackTrace()[0].getClassName());
-        }
-
+        NullPointerException e = assertThrows(NullPointerException.class, () -> csvFormat.format((Object[]) null));
+        assertEquals(CSVFormat.class.getName(), e.getStackTrace()[0].getClassName());
     }
 
     @Test
