@@ -67,7 +67,7 @@ public class CSVBenchmark {
         in.close();
     }
 
-    private BufferedReader getReader() throws IOException {
+    private BufferedReader getReader() {
         return new BufferedReader(new StringReader(data));
     }
 

@@ -560,7 +560,7 @@ public class CSVFormatTest {
     }
 
     @Test
-    public void testGetHeader() throws Exception {
+    public void testGetHeader() {
         final String[] header = new String[]{"one", "two", "three"};
         final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
         // getHeader() makes a copy of the header array.
@@ -893,7 +893,7 @@ public class CSVFormatTest {
     }
 
     @Test
-    public void testWithCommentStart() throws Exception {
+    public void testWithCommentStart() {
         final CSVFormat formatWithCommentStart = CSVFormat.DEFAULT.withCommentMarker('#');
         assertEquals( Character.valueOf('#'), formatWithCommentStart.getCommentMarker());
     }
@@ -904,7 +904,7 @@ public class CSVFormatTest {
     }
 
     @Test
-    public void testWithDelimiter() throws Exception {
+    public void testWithDelimiter() {
         final CSVFormat formatWithDelimiter = CSVFormat.DEFAULT.withDelimiter('!');
         assertEquals('!', formatWithDelimiter.getDelimiter());
     }
@@ -915,13 +915,13 @@ public class CSVFormatTest {
     }
 
     @Test
-    public void testWithEmptyEnum() throws Exception {
+    public void testWithEmptyEnum() {
         final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(EmptyEnum.class);
         assertTrue(formatWithHeader.getHeader().length == 0);
     }
 
     @Test
-    public void testWithEscape() throws Exception {
+    public void testWithEscape() {
         final CSVFormat formatWithEscape = CSVFormat.DEFAULT.withEscape('&');
         assertEquals(Character.valueOf('&'), formatWithEscape.getEscapeCharacter());
     }
@@ -932,14 +932,14 @@ public class CSVFormatTest {
     }
 
     @Test
-    public void testWithFirstRecordAsHeader() throws Exception {
+    public void testWithFirstRecordAsHeader() {
         final CSVFormat formatWithFirstRecordAsHeader = CSVFormat.DEFAULT.withFirstRecordAsHeader();
         assertTrue(formatWithFirstRecordAsHeader.getSkipHeaderRecord());
         assertTrue(formatWithFirstRecordAsHeader.getHeader().length == 0);
     }
 
     @Test
-    public void testWithHeader() throws Exception {
+    public void testWithHeader() {
         final String[] header = new String[]{"one", "two", "three"};
         // withHeader() makes a copy of the header array.
         final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
@@ -1111,35 +1111,35 @@ public class CSVFormatTest {
 
 
     @Test
-    public void testWithHeaderEnum() throws Exception {
+    public void testWithHeaderEnum() {
         final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(Header.class);
         assertArrayEquals(new String[]{ "Name", "Email", "Phone" }, formatWithHeader.getHeader());
     }
 
 
     @Test
-    public void testWithIgnoreEmptyLines() throws Exception {
+    public void testWithIgnoreEmptyLines() {
         assertFalse(CSVFormat.DEFAULT.withIgnoreEmptyLines(false).getIgnoreEmptyLines());
         assertTrue(CSVFormat.DEFAULT.withIgnoreEmptyLines().getIgnoreEmptyLines());
     }
 
 
     @Test
-    public void testWithIgnoreSurround() throws Exception {
+    public void testWithIgnoreSurround() {
         assertFalse(CSVFormat.DEFAULT.withIgnoreSurroundingSpaces(false).getIgnoreSurroundingSpaces());
         assertTrue(CSVFormat.DEFAULT.withIgnoreSurroundingSpaces().getIgnoreSurroundingSpaces());
     }
 
 
     @Test
-    public void testWithNullString() throws Exception {
+    public void testWithNullString() {
         final CSVFormat formatWithNullString = CSVFormat.DEFAULT.withNullString("null");
         assertEquals("null", formatWithNullString.getNullString());
     }
 
 
     @Test
-    public void testWithQuoteChar() throws Exception {
+    public void testWithQuoteChar() {
         final CSVFormat formatWithQuoteChar = CSVFormat.DEFAULT.withQuote('"');
         assertEquals(Character.valueOf('"'), formatWithQuoteChar.getQuoteCharacter());
     }
@@ -1151,31 +1151,31 @@ public class CSVFormatTest {
     }
 
     @Test
-    public void testWithQuotePolicy() throws Exception {
+    public void testWithQuotePolicy() {
         final CSVFormat formatWithQuotePolicy = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.ALL);
         assertEquals(QuoteMode.ALL, formatWithQuotePolicy.getQuoteMode());
     }
 
     @Test
-    public void testWithRecordSeparatorCR() throws Exception {
+    public void testWithRecordSeparatorCR() {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator(CR);
         assertEquals(String.valueOf(CR), formatWithRecordSeparator.getRecordSeparator());
     }
 
     @Test
-    public void testWithRecordSeparatorCRLF() throws Exception {
+    public void testWithRecordSeparatorCRLF() {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator(CRLF);
         assertEquals(CRLF, formatWithRecordSeparator.getRecordSeparator());
     }
 
     @Test
-    public void testWithRecordSeparatorLF() throws Exception {
+    public void testWithRecordSeparatorLF() {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator(LF);
         assertEquals(String.valueOf(LF), formatWithRecordSeparator.getRecordSeparator());
     }
 
     @Test
-    public void testWithSystemRecordSeparator() throws Exception {
+    public void testWithSystemRecordSeparator() {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withSystemRecordSeparator();
         assertEquals(System.getProperty("line.separator"), formatWithRecordSeparator.getRecordSeparator());
     }
