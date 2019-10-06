@@ -27,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -529,12 +528,7 @@ public class CSVParserTest {
             CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
             final List<String> headerNames = parser.getHeaderNames();
             assertNotNull(headerNames);
-            try {
-                headerNames.add("This is a read-only list.");
-                fail();
-            } catch (final UnsupportedOperationException e) {
-                // Yes.
-            }
+            assertThrows(UnsupportedOperationException.class, () -> headerNames.add("This is a read-only list."));
         }
     }
 
@@ -758,12 +752,7 @@ public class CSVParserTest {
         final Iterator<CSVRecord> iterator = CSVFormat.DEFAULT.parse(in).iterator();
 
         assertTrue(iterator.hasNext());
-        try {
-            iterator.remove();
-            fail("expected UnsupportedOperationException");
-        } catch (final UnsupportedOperationException expected) {
-            // expected
-        }
+        assertThrows(UnsupportedOperationException.class, iterator::remove);
         assertArrayEquals(new String[] { "a", "b", "c" }, iterator.next().values());
         assertArrayEquals(new String[] { "1", "2", "3" }, iterator.next().values());
         assertTrue(iterator.hasNext());
@@ -772,12 +761,7 @@ public class CSVParserTest {
         assertArrayEquals(new String[] { "x", "y", "z" }, iterator.next().values());
         assertFalse(iterator.hasNext());
 
-        try {
-            iterator.next();
-            fail("NoSuchElementException expected");
-        } catch (final NoSuchElementException e) {
-            // expected
-        }
+        assertThrows(NoSuchElementException.class, iterator::next);
     }
 
     @Test

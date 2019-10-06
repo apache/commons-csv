@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 public class AssertionsTest {
 
     @Test
-    public void testNotNull() throws Exception {
+    public void testNotNull() {
         Assertions.notNull(new Object(), "object");
     }
 
