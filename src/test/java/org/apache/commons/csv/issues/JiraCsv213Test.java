@@ -52,18 +52,16 @@ public class JiraCsv213Test {
         try (CSVParser parser = csvFormat
                 .parse(new InputStreamReader(new FileInputStream(csvFile), StandardCharsets.UTF_8))) {
             if (parser.iterator().hasNext()) {
-                System.out.println(parser.getCurrentLineNumber());
-                System.out.println(parser.getRecordNumber());
+                // System.out.println(parser.getCurrentLineNumber());
+                // System.out.println(parser.getRecordNumber());
                 // get only first record we don't need other's
-                final CSVRecord firstRecord = parser.iterator().next(); // this fails
+                parser.iterator().next(); // this fails
 
                 return;
             }
         } catch (final IOException e) {
-            throw new IllegalStateException("Error while adding end channel to csv", e);
+            throw new IllegalStateException("Error while adding end channel to CSV", e);
         }
-
-        return;
     }
 
     @Test
