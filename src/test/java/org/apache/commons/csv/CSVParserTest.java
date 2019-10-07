@@ -688,7 +688,7 @@ public class CSVParserTest {
     public void testHeaderMissing() throws Exception {
         final Reader in = new StringReader("a,,c\n1,2,3\nx,y,z");
 
-        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader().parse(in).iterator();
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames().parse(in).iterator();
 
         for (int i = 0; i < 2; i++) {
             assertTrue(records.hasNext());
@@ -702,20 +702,26 @@ public class CSVParserTest {
 
     @Test
     public void testHeaderMissingWithNull() throws Exception {
-        final Reader in = new StringReader("a,,c,,d\n1,2,3,4\nx,y,z,zz");
+        final Reader in = new StringReader("a,,c,,e\n1,2,3,4,5\nv,w,x,y,z");
         CSVFormat.DEFAULT.withHeader().withNullString("").withAllowMissingColumnNames().parse(in).iterator();
     }
 
     @Test
     public void testHeadersMissing() throws Exception {
-        final Reader in = new StringReader("a,,c,,d\n1,2,3,4\nx,y,z,zz");
+        final Reader in = new StringReader("a,,c,,e\n1,2,3,4,5\nv,w,x,y,z");
         CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames().parse(in).iterator();
     }
 
     @Test
     public void testHeadersMissingException() {
-        final Reader in = new StringReader("a,,c,,d\n1,2,3,4\nx,y,z,zz");
+        final Reader in = new StringReader("a,,c,,e\n1,2,3,4,5\nv,w,x,y,z");
         assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withHeader().parse(in).iterator());
+    }
+
+    @Test
+    public void testHeadersMissingOneColumnException() throws Exception {
+       final Reader in = new StringReader("a,,c,d,e\n1,2,3,4,5\nv,w,x,y,z");
+       assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withHeader().parse(in).iterator());
     }
 
     @Test
