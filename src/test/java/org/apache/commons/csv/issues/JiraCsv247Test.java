@@ -29,7 +29,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 
-public class JiraCvs247Test {
+public class JiraCsv247Test {
 
     @Test
     public void testHeadersMissingOneColumn() throws Exception {
