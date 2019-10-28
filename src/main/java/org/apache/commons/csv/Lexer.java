@@ -88,6 +88,8 @@ final class Lexer implements Closeable {
      */
     Token nextToken(final Token token) throws IOException {
 
+        token.isAbsentValue = false;  // reset flag
+        
         // get the last read char (required for empty line detection)
         int lastChar = reader.getLastChar();
 
@@ -148,10 +150,12 @@ final class Lexer implements Closeable {
             // ok, start of token reached: encapsulated, or token
             if (isDelimiter(c)) {
                 // empty token return TOKEN("")
+                token.isAbsentValue = true;
                 token.type = TOKEN;
             } else if (eol) {
                 // empty token return EORECORD("")
                 // noop: token.content.append("");
+                token.isAbsentValue = true;
                 token.type = EORECORD;
             } else if (isQuoteChar(c)) {
                 // consume encapsulated token
@@ -159,6 +163,7 @@ final class Lexer implements Closeable {
             } else if (isEndOfFile(c)) {
                 // end of file return EOF()
                 // noop: token.content.append("");
+                token.isAbsentValue = true;
                 token.type = EOF;
                 token.isReady = true; // there is data at EOF
             } else {

@@ -55,6 +55,13 @@ final class Token {
     /** Token ready flag: indicates a valid token with content (ready for the parser). */
     boolean isReady;
 
+    /**
+     * If the token was surrounded by delimeters on both sides with zero chars
+     * in between. This is known as an "absent" value. Note that an encapsulated
+     * value by definition is never an absent value.
+     */
+    boolean isAbsentValue = false;
+    
     void reset() {
         content.setLength(0);
         type = INVALID;

@@ -176,6 +176,52 @@ public class CSVParserTest {
     }
 
     @Test
+    public void testAbsentValue() throws IOException {
+        // Test the absentMeansNull feature
+
+        final String code = 
+                "John,,Doe\n"  // 1)
+                + ",John,Doe\n" // 2)
+                + "John,\"\",Doe\n" // 3)
+                + "John,Doe,\n" // 4)
+                ;
+        final String[][] res1 = {     // the result to match if absentIsNull is true
+            { "John", null, "Doe"},   // 1)
+            { null, "John", "Doe"},   // 2)
+            { "John", "", "Doe"},     // 3)
+            { "John", "Doe", null}    // 4)
+        };
+        final String[][] res2 = {     // the result to match if absentIsNull is false
+            { "John", "", "Doe"},     // 1)
+            { "", "John", "Doe"},     // 2)
+            { "John", "", "Doe"},     // 3)
+            { "John", "Doe", ""}      // 4)
+        };
+
+        final CSVFormat format1 = CSVFormat.DEFAULT
+                .withAbsentMeansNull()
+                .withRecordSeparator('\n');
+
+        try (final CSVParser parser = CSVParser.parse(code, format1)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertTrue(records.size() > 0);
+
+            Utils.compare("", res1, records);
+        }
+
+
+        final CSVFormat format2 = CSVFormat.DEFAULT
+                .withRecordSeparator('\n');
+
+        try (final CSVParser parser = CSVParser.parse(code, format2)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertTrue(records.size() > 0);
+
+            Utils.compare("", res2, records);
+        }
+    }
+    
+    @Test
     @Disabled("CSV-107")
     public void testBOM() throws IOException {
         final URL url = ClassLoader.getSystemClassLoader().getResource("CSVFileParser/bom.csv");

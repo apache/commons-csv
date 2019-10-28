@@ -422,8 +422,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         if (lastRecord && inputClean.isEmpty() && this.format.getTrailingDelimiter()) {
             return;
         }
+        boolean isAbsent = (this.reusableToken.isAbsentValue);
         final String nullString = this.format.getNullString();
-        this.recordList.add(inputClean.equals(nullString) ? null : inputClean);
+        this.recordList.add(setNullValue(inputClean, nullString, this.format.getAbsentMeansNull(), isAbsent));
+    }
+    
+    private String setNullValue(String value, String nullString, boolean absentIsNull, boolean isAbsent) {
+        if (absentIsNull && isAbsent) {
+            return null;
+        }
+        return (value.equals(nullString)) ? null : value;
     }
 
     /**
