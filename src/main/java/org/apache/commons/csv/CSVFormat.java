@@ -633,7 +633,7 @@ public final class CSVFormat implements Serializable {
      * @param c
      *            the character to check
      *
-     * @return true if <code>c</code> is a line break character
+     * @return true if {@code c} is a line break character
      */
     private static boolean isLineBreak(final char c) {
         return c == LF || c == CR;
@@ -645,7 +645,7 @@ public final class CSVFormat implements Serializable {
      * @param c
      *            the character to check, may be null
      *
-     * @return true if <code>c</code> is a line break character (and not null)
+     * @return true if {@code c} is a line break character (and not null)
      */
     private static boolean isLineBreak(final Character c) {
         return c != null && isLineBreak(c.charValue());
