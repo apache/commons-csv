@@ -48,6 +48,7 @@
       <action issue="CSV-252" type="fix" dev="ggregory" due-to= "Alex Herbert">Upgrade test framework to JUnit 5 Jupiter #49, #50.</action>
       <action issue="CSV-247" type="fix" dev="ggregory" due-to="Alex Herbert, Gary Gregory">A single empty header is allowed when not allowing empty column headers. #47.</action>
       <action                 type="fix" dev="ggregory" due-to="Alex Herbert">Use test scope for supercsv #48.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from H2 1.4.199 to 1.4.200.</action>
     </release>
     <release version="1.7" date="2019-06-01" description="Feature and bug fix release (Java 8)">
       <action issue="CSV-233" type="add" dev="ggregory" due-to="Gary Gregory">Add predefined CSVFormats for printing MongoDB CSV and TSV.</action>
