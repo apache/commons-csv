@@ -39,7 +39,7 @@
   </properties>
   <body>
     <release version="1.8" date="2019-MM-DD" description="Feature and bug fix release (Java 8)">
-      <action issue="CSV-135" type="fix" dev="sebb" due-to="Mateusz Zakarczemny">Char escape doesn't work properly with quoting</action>
+      <action issue="CSV-135" type="fix" dev="sebb" due-to="Mateusz Zakarczemny">Char escape doesn't work properly with quoting.</action>
       <action issue="CSV-244" type="fix" dev="sebb">Test case failures following CSVFormat#equals() update.</action>
       <action issue="CSV-243" type="fix" dev="sebb">CSVFormat withTrim() and withIgnoreSurroundingSpaces() need better docs.</action>
       <action issue="CSV-242" type="fix" dev="sebb">CSVFormat equals() and hashCode() don't use all fields.</action>
@@ -49,6 +49,7 @@
       <action issue="CSV-247" type="fix" dev="ggregory" due-to="Alex Herbert, Gary Gregory">A single empty header is allowed when not allowing empty column headers. #47.</action>
       <action                 type="fix" dev="ggregory" due-to="Alex Herbert">Use test scope for supercsv #48.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from H2 1.4.199 to 1.4.200.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from Hamcrest 2.1 to 2.2.</action>
     </release>
     <release version="1.7" date="2019-06-01" description="Feature and bug fix release (Java 8)">
       <action issue="CSV-233" type="add" dev="ggregory" due-to="Gary Gregory">Add predefined CSVFormats for printing MongoDB CSV and TSV.</action>
