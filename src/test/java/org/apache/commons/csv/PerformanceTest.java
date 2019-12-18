@@ -264,7 +264,7 @@ public class PerformanceTest {
     private static Constructor<Lexer> getLexerCtor(final String clazz) throws Exception {
         @SuppressWarnings("unchecked")
         final Class<Lexer> lexer = (Class<Lexer>) Class.forName("org.apache.commons.csv." + clazz);
-        return lexer.getConstructor(new Class<?>[]{CSVFormat.class, ExtendedBufferedReader.class});
+        return lexer.getConstructor(CSVFormat.class, ExtendedBufferedReader.class);
     }
 
     private static void testCSVLexer(final boolean newToken, final String test) throws Exception {
@@ -317,8 +317,7 @@ public class PerformanceTest {
 
     private static Lexer createTestCSVLexer(final String test, final ExtendedBufferedReader input)
             throws InstantiationException, IllegalAccessException, InvocationTargetException, Exception {
-        return test.startsWith("CSVLexer") ? getLexerCtor(test)
-                .newInstance(new Object[] { format, input }) : new Lexer(format, input);
+        return test.startsWith("CSVLexer") ? getLexerCtor(test).newInstance(format, input) : new Lexer(format, input);
     }
 
     private static Stats iterate(final Iterable<CSVRecord> it) {

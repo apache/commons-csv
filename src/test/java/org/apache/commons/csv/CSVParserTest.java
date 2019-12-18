@@ -296,12 +296,12 @@ public class CSVParserTest {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> CSVParser.parse("a,b,a\n1,2,3\nx,y,z",
-                        CSVFormat.DEFAULT.withHeader(new String[] {}).withAllowDuplicateHeaderNames(false)));
+                        CSVFormat.DEFAULT.withHeader().withAllowDuplicateHeaderNames(false)));
     }
 
     @Test
     public void testDuplicateHeadersAllowedByDefault() throws Exception {
-        CSVParser.parse("a,b,a\n1,2,3\nx,y,z", CSVFormat.DEFAULT.withHeader(new String[] {}));
+        CSVParser.parse("a,b,a\n1,2,3\nx,y,z", CSVFormat.DEFAULT.withHeader());
     }
 
     @Test
