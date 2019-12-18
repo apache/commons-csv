@@ -69,7 +69,7 @@ public class CSVFormatTest {
             fail("Objects must not compare equal for " + name + "(" + type + ")");
         }
         if (left.hashCode() == right.hashCode()) {
-            fail("Hash code should not be equal for " + name + "(" + type + ")");            
+            fail("Hash code should not be equal for " + name + "(" + type + ")");
         }
     }
 
@@ -196,7 +196,7 @@ public class CSVFormatTest {
                    }
                }
             }
-         }   
+         }
     }
 
     @Test
@@ -1174,5 +1174,5 @@ public class CSVFormatTest {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withSystemRecordSeparator();
         assertEquals(System.getProperty("line.separator"), formatWithRecordSeparator.getRecordSeparator());
     }
-    
+
 }
