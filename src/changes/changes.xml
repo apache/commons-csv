@@ -50,7 +50,7 @@
       <action                 type="fix" dev="ggregory" due-to="Alex Herbert">Use test scope for supercsv #48.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from H2 1.4.199 to 1.4.200.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from Hamcrest 2.1 to 2.2.</action>
-      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from Mockito 3.1.0 to 3.2.0.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from Mockito 3.1.0 to 3.2.4.</action>
     </release>
     <release version="1.7" date="2019-06-01" description="Feature and bug fix release (Java 8)">
       <action issue="CSV-233" type="add" dev="ggregory" due-to="Gary Gregory">Add predefined CSVFormats for printing MongoDB CSV and TSV.</action>
