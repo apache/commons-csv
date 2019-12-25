@@ -134,10 +134,20 @@ public class CSVRecordTest {
     }
 
     @Test
-    public void testIsSet() {
+    public void testIsSetString() {
         assertFalse(record.isSet("first"));
         assertTrue(recordWithHeader.isSet("first"));
         assertFalse(recordWithHeader.isSet("fourth"));
+    }
+
+    @Test
+    public void testIsSetInt() {
+        assertFalse(record.isSet(-1));
+        assertTrue(record.isSet(0));
+        assertTrue(record.isSet(2));
+        assertFalse(record.isSet(3));
+        assertTrue(recordWithHeader.isSet(1));
+        assertFalse(recordWithHeader.isSet(1000));
     }
 
     @Test
