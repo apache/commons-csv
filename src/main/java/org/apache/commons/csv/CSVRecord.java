@@ -211,7 +211,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return whether a given columns is mapped and has a value
      */
     public boolean isSet(final String name) {
-        return isMapped(name) && getHeaderMapRaw().get(name).intValue() < values.length;
+        return isMapped(name) && getHeaderMapRaw().get(name) < values.length;
     }
 
     /**
