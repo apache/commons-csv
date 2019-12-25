@@ -215,6 +215,17 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
+     * Checks whether a column with given index has a value.
+     *
+     * @param i
+     *         a column index (0-based)
+     * @return whether a column with given index has a value
+     */
+    public boolean isSet(final int i) {
+        return 0 <= i && i < values.length;
+    }
+
+    /**
      * Returns an iterator over the values of this record.
      *
      * @return an iterator over the values of this record.
