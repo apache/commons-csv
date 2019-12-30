@@ -162,7 +162,7 @@ public class CSVParserTest {
         final String[][] res = { { "one", "two", "three" }, { "on\\\"e", "two" }, { "on\"e", "two" },
                 { "one", "tw\"o" }, { "one", "t\\,wo" }, // backslash in quotes only escapes a delimiter (",")
                 { "one", "two", "th,ree" }, { "a\\\\" }, // backslash in quotes only escapes a delimiter (",")
-                { "a\\", "b" }, // a backslash must be returnd
+                { "a\\", "b" }, // a backslash must be returned
                 { "a\\\\,b" } // backslash in quotes only escapes a delimiter (",")
         };
         try (final CSVParser parser = CSVParser.parse(code, CSVFormat.DEFAULT)) {

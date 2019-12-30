@@ -337,7 +337,7 @@ CSV files of various types.
                 </tags>
               </tagClass>
               <tagClass>
-                <displayName>Noteable Markers</displayName>
+                <displayName>Notable Markers</displayName>
                 <tags>
                   <tag>
                     <matchString>NOTE</matchString>
