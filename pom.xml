@@ -23,7 +23,7 @@
     <version>50</version>
   </parent>
   <artifactId>commons-csv</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8</version>
   <name>Apache Commons CSV</name>
   <url>https://commons.apache.org/proper/commons-csv/</url>
   <description>The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.</description>
