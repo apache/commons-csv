@@ -39,6 +39,7 @@
       <item name="Issue Tracking"  href="/issue-tracking.html"/>
       <item name="Team"            href="/team.html"/>
       <item name="Javadoc"         href="/apidocs/index.html"/>
+      <item name="Javadoc 1.8"     href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.8"/>
       <item name="Javadoc 1.7"     href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.7"/>
       <item name="Javadoc 1.6"     href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.6"/>
       <item name="Javadoc 1.5"     href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.5"/>
