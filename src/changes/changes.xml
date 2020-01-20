@@ -38,7 +38,7 @@
     <title>Apache Commons CSV Release Notes</title>
   </properties>
   <body>
-    <release version="1.8" date="2019-01-18" description="Feature and bug fix release (Java 8)">
+    <release version="1.8" date="2019-01-DD" description="Feature and bug fix release (Java 8)">
       <action issue="CSV-255" type="add" dev="ggregory" due-to="0x100">Add CSVRecord.isSet(int) method #52.</action>
       <action issue="CSV-135" type="fix" dev="sebb" due-to="Mateusz Zakarczemny">Char escape doesn't work properly with quoting.</action>
       <action issue="CSV-244" type="fix" dev="sebb">Test case failures following CSVFormat#equals() update.</action>
@@ -53,6 +53,7 @@
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from Hamcrest 2.1 to 2.2.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from Mockito 3.1.0 to 3.2.4.</action>
       <action                 type="update" dev="ggregory" due-to="Chen">Fix typos in site and test #53.</action>
+      <action                 type="update" dev="ggregory" due-to="Chen">Fix typo performance test #55.</action>
     </release>
     <release version="1.7" date="2019-06-01" description="Feature and bug fix release (Java 8)">
       <action issue="CSV-233" type="add" dev="ggregory" due-to="Gary Gregory">Add predefined CSVFormats for printing MongoDB CSV and TSV.</action>
