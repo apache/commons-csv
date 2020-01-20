@@ -41,9 +41,9 @@ public class CSVRecordTest {
         UNKNOWN_COLUMN
     }
 
-    private String[] values;
-    private CSVRecord record, recordWithHeader;
     private Map<String, Integer> headerMap;
+    private CSVRecord record, recordWithHeader;
+    private String[] values;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -134,13 +134,6 @@ public class CSVRecordTest {
     }
 
     @Test
-    public void testIsSetString() {
-        assertFalse(record.isSet("first"));
-        assertTrue(recordWithHeader.isSet("first"));
-        assertFalse(recordWithHeader.isSet("fourth"));
-    }
-
-    @Test
     public void testIsSetInt() {
         assertFalse(record.isSet(-1));
         assertTrue(record.isSet(0));
@@ -148,6 +141,13 @@ public class CSVRecordTest {
         assertFalse(record.isSet(3));
         assertTrue(recordWithHeader.isSet(1));
         assertFalse(recordWithHeader.isSet(1000));
+    }
+
+    @Test
+    public void testIsSetString() {
+        assertFalse(record.isSet("first"));
+        assertTrue(recordWithHeader.isSet("first"));
+        assertFalse(recordWithHeader.isSet("fourth"));
     }
 
     @Test
@@ -191,20 +191,20 @@ public class CSVRecordTest {
     }
 
     @Test
-    public void testToMapWithShortRecord() throws Exception {
-        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
-            final CSVRecord shortRec = parser.iterator().next();
-            shortRec.toMap();
-        }
-    }
-
-    @Test
     public void testToMapWithNoHeader() throws Exception {
         try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.newFormat(','))) {
             final CSVRecord shortRec = parser.iterator().next();
             final Map<String, String> map = shortRec.toMap();
             assertNotNull(map, "Map is not null.");
             assertTrue(map.isEmpty(), "Map is empty.");
+        }
+    }
+
+    @Test
+    public void testToMapWithShortRecord() throws Exception {
+        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
+            final CSVRecord shortRec = parser.iterator().next();
+            shortRec.toMap();
         }
     }
 
