@@ -2112,9 +2112,8 @@ public final class CSVFormat implements Serializable {
     /**
      * Returns a new {@code CSVFormat} with the parser trimming behavior of the format set to the given value.
      *
-     * @param ignoreSurroundingSpaces
-     *            the parser trimming behavior, {@code true} to remove the surrounding spaces, {@code false} to leave the
-     *            spaces as is.
+     * @param ignoreSurroundingSpaces the parser trimming behavior, {@code true} to remove the surrounding spaces,
+     *        {@code false} to leave the spaces as is.
      * @return A new CSVFormat that is equal to this but with the specified trimming behavior.
      */
     public CSVFormat withIgnoreSurroundingSpaces(final boolean ignoreSurroundingSpaces) {
