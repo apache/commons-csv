@@ -48,6 +48,7 @@
       <action issue="CSV-245" type="fix" dev="ggregory" due-to="Alex Herbert">Post 1.7 release fixes.</action>
       <action issue="CSV-252" type="fix" dev="ggregory" due-to= "Alex Herbert">Upgrade test framework to JUnit 5 Jupiter #49, #50.</action>
       <action issue="CSV-247" type="fix" dev="ggregory" due-to="Alex Herbert, Gary Gregory">A single empty header is allowed when not allowing empty column headers. #47.</action>
+      <action issue="CSV-248" type="fix" dev="ggregory" due-to="Alex Herbert">CSVRecord is not Serializable.</action>
       <action                 type="fix" dev="ggregory" due-to="Alex Herbert">Use test scope for supercsv #48.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from H2 1.4.199 to 1.4.200.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from Hamcrest 2.1 to 2.2.</action>

@@ -46,7 +46,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     private final String[] values;
 
     /** The parser that originates this record. */
-    private final CSVParser parser;
+    private final transient CSVParser parser;
 
     CSVRecord(final CSVParser parser, final String[] values, final String comment, final long recordNumber,
             final long characterPosition) {

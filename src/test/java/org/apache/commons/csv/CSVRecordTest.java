@@ -23,7 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +60,7 @@ public class CSVRecordTest {
             headerMap = parser.getHeaderMap();
         }
     }
-
+    
     @Test
     public void testGetInt() {
         assertEquals(values[0], record.get(0));
@@ -181,6 +183,18 @@ public class CSVRecordTest {
             Collections.sort(list);
             printer.printRecord(list);
             assertEquals("A,B,C,NewValue" + CSVFormat.DEFAULT.getRecordSeparator(), printer.getOut().toString());
+        }
+    }
+
+    @Test
+    public void testSerialization() throws IOException {
+        CSVRecord shortRec;
+        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.newFormat(','))) {
+            shortRec = parser.iterator().next();
+        }
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (ObjectOutputStream oos = new ObjectOutputStream(out)) {
+            oos.writeObject(shortRec);
         }
     }
 
