@@ -151,7 +151,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * Returns the parser.
      *
      * <p>Note: The parser is not part of the serialized state of the record. A null check
-     * should be used when the record may have originated from a serialized form. 
+     * should be used when the record may have originated from a serialized form.
      *
      * @return the parser.
      * @since 1.7

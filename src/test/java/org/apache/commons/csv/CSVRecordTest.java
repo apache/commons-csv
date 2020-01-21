@@ -63,7 +63,7 @@ public class CSVRecordTest {
             headerMap = parser.getHeaderMap();
         }
     }
-    
+
     @Test
     public void testGetInt() {
         assertEquals(values[0], record.get(0));
