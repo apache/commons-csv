@@ -83,11 +83,13 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Returns a value by name.
      *
-     * <p>Note: This requires a field mapping obtained from the original parser.
+     * <p>
+     * Note: This requires a field mapping obtained from the original parser.
      * A check using {@link #isMapped(String)} should be used to determine if a
-     * mapping exists from the provide {@code name} to a field index. In this case an
+     * mapping exists from the provided {@code name} to a field index. In this case an
      * exception will only be thrown if the record does not contain a field corresponding
      * to the mapping, that is the record length is not consistent with the mapping size.
+     * </p>
      *
      * @param name
      *            the name of the column to be retrieved.
@@ -150,8 +152,10 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Returns the parser.
      *
-     * <p>Note: The parser is not part of the serialized state of the record. A null check
+     * <p>
+     * Note: The parser is not part of the serialized state of the record. A null check
      * should be used when the record may have originated from a serialized form.
+     * </p>
      *
      * @return the parser.
      * @since 1.7
