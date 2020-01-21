@@ -92,6 +92,11 @@ public class CSVRecordTest {
     }
 
     @Test
+    public void testGetNullEnum() {
+        assertThrows(IllegalArgumentException.class, () -> recordWithHeader.get((Enum<?>) null));
+    }
+
+    @Test
     public void testGetUnmappedName() {
         assertThrows(IllegalArgumentException.class, () -> assertNull(recordWithHeader.get("fourth")));
     }

@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 /**
  * A CSV record parsed from a CSV file.
@@ -65,7 +66,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return the String at the given enum String
      */
     public String get(final Enum<?> e) {
-        return get(e.toString());
+        return get(Objects.toString(e, null));
     }
 
     /**
