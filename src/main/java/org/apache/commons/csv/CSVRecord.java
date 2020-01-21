@@ -83,6 +83,12 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Returns a value by name.
      *
+     * <p>Note: This requires a field mapping obtained from the original parser.
+     * A check using {@link #isMapped(String)} should be used to determine if a
+     * mapping exists from the provide {@code name} to a field index. In this case an
+     * exception will only be thrown if the record does not contain a field corresponding
+     * to the mapping, that is the record length is not consistent with the mapping size.
+     *
      * @param name
      *            the name of the column to be retrieved.
      * @return the column value, maybe null depending on {@link CSVFormat#getNullString()}.
@@ -90,7 +96,9 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *             if no header mapping was provided
      * @throws IllegalArgumentException
      *             if {@code name} is not mapped or if the record is inconsistent
+     * @see #isMapped(String)
      * @see #isConsistent()
+     * @see #getParser()
      * @see CSVFormat#withNullString(String)
      */
     public String get(final String name) {
@@ -136,11 +144,14 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     private Map<String, Integer> getHeaderMapRaw() {
-        return parser.getHeaderMapRaw();
+        return parser == null ? null : parser.getHeaderMapRaw();
     }
 
     /**
      * Returns the parser.
+     *
+     * <p>Note: The parser is not part of the serialized state of the record. A null check
+     * should be used when the record may have originated from a serialized form. 
      *
      * @return the parser.
      * @since 1.7
