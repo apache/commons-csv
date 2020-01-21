@@ -232,23 +232,6 @@ public class CSVRecordTest {
         }
     }
 
-    /**
-     * Test deserialisation of a record created using version 1.6.
-     *
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
-    @Test
-    public void testDeserialisation() throws IOException {
-        CSVRecord shortRec;
-        try (final CSVParser parser = CSVParser.parse("A,B\n#my comment\nOne,Two", CSVFormat.DEFAULT.withHeader().withCommentMarker('#'))) {
-            shortRec = parser.iterator().next();
-        }
-        try (FileOutputStream out = new FileOutputStream("/tmp/csvRecord.ser");
-            ObjectOutputStream oos = new ObjectOutputStream(out)) {
-            oos.writeObject(shortRec);
-        }
-    }
-
     @Test
     public void testToMap() {
         final Map<String, String> map = this.recordWithHeader.toMap();
