@@ -38,7 +38,12 @@
     <title>Apache Commons CSV Release Notes</title>
   </properties>
   <body>
-    <release version="1.8" date="2019-01-DD" description="Feature and bug fix release (Java 8)">
+    <release version="1.8" date="2019-01-DD" description="Feature and bug fix release (Java 8).
+
+This release fixes serialization compatibility of CSVRecord with versions 1.0 to 1.6.
+New fields added since 1.7 are not serialized. Support for Serializable is scheduled to be
+removed in version 2.0.
+">
       <action issue="CSV-255" type="add" dev="ggregory" due-to="0x100">Add CSVRecord.isSet(int) method #52.</action>
       <action issue="CSV-135" type="fix" dev="sebb" due-to="Mateusz Zakarczemny">Char escape doesn't work properly with quoting.</action>
       <action issue="CSV-244" type="fix" dev="sebb">Test case failures following CSVFormat#equals() update.</action>

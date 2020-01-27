@@ -28,6 +28,15 @@ import java.util.Objects;
 
 /**
  * A CSV record parsed from a CSV file.
+ *
+ * <p>
+ * Note: Support for {@link Serializable} is scheduled to be removed in version 2.0.
+ * In version 1.8 the mapping between the column header and the column index was
+ * removed from the serialised state. The class maintains serialization compatibility
+ * with versions pre-1.8 for the record values; these must be accessed by index
+ * following deserialization. There will be loss of any functionally linked to the header
+ * mapping when transferring serialised forms pre-1.8 to 1.8 and vice versa.
+ * </p>
  */
 public final class CSVRecord implements Serializable, Iterable<String> {
 
@@ -46,7 +55,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /** The values of the record */
     private final String[] values;
 
-    /** The parser that originates this record. */
+    /** The parser that originates this record. This is not serialized. */
     private final transient CSVParser parser;
 
     CSVRecord(final CSVParser parser, final String[] values, final String comment, final long recordNumber,
