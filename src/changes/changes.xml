@@ -38,7 +38,7 @@
     <title>Apache Commons CSV Release Notes</title>
   </properties>
   <body>
-    <release version="1.8" date="2019-01-DD" description="Feature and bug fix release (Java 8).
+    <release version="1.8" date="2019-02-01" description="Feature and bug fix release (Java 8).
 
 This release fixes serialization compatibility of CSVRecord with versions 1.0 to 1.6.
 New fields added since 1.7 are not serialized. Support for Serializable is scheduled to be
