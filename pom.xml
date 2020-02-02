@@ -32,7 +32,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.5.2</version>
+      <version>5.6.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -140,7 +140,7 @@
     <commons.release.version>1.8</commons.release.version>
     <commons.release.desc>(Java 8)</commons.release.desc>
     <!-- The RC version used in the staging repository URL. -->
-    <commons.rc.version>RC1</commons.rc.version>
+    <commons.rc.version>RC2</commons.rc.version>
     <commons.bc.version>1.7</commons.bc.version>
     <commons.componentid>csv</commons.componentid>
     <commons.module.name>org.apache.commons.csv</commons.module.name>
@@ -258,6 +258,7 @@
             <!-- The ferc.gov files are included discussion in https://issues.apache.org/jira/browse/LEGAL-175. -->
             <exclude>src/test/resources/ferc.gov/contract.txt</exclude>
             <exclude>src/test/resources/ferc.gov/transaction.txt</exclude>
+            <exclude>src/test/resources/**/*.bin</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -376,6 +377,7 @@
             <exclude>src/test/resources/CSVFileParser/testCSV85_ignoreEmpty.txt</exclude>
             <exclude>src/test/resources/ferc.gov/contract.txt</exclude>
             <exclude>src/test/resources/ferc.gov/transaction.txt</exclude>
+            <exclude>src/test/resources/**/*.bin</exclude>
           </excludes>
         </configuration>
       </plugin>

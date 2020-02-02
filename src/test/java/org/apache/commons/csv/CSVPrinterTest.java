@@ -289,15 +289,25 @@ public class CSVPrinterTest {
 
     @Test
     public void testCSV135() throws IOException {
-        List<String> l = new LinkedList<String>();
-        l.add("\"\"");   // ""
-        l.add("\\\\");   // \\
-        l.add("\\\"\\"); // \"\
-        tryFormat(l, null, null, "\"\",\\\\,\\\"\\"); // "",\\,\"\ (unchanged)
-        tryFormat(l, '"',  null, "\"\"\"\"\"\",\\\\,\"\\\"\"\\\"");              // """""",\\,"\""\" (quoted, and embedded DQ doubled)
-        tryFormat(l, null, '\\', "\"\",\\\\\\\\,\\\\\"\\\\");                    // "",\\\\,\\"\\ (escapes escaped, not quoted)
-        tryFormat(l, '"',  '\\', "\"\\\"\\\"\",\"\\\\\\\\\",\"\\\\\\\"\\\\\"");  // "\"\"","\\\\","\\\"\\" (quoted, and embedded DQ & escape escaped)
-        tryFormat(l, '"',  '"',  "\"\"\"\"\"\",\\\\,\"\\\"\"\\\"");              // """""",\\,"\""\" (quoted, embedded DQ escaped)
+        final List<String> list = new LinkedList<>();
+        list.add("\"\"");   // ""
+        list.add("\\\\");   // \\
+        list.add("\\\"\\"); // \"\
+        //
+        // "",\\,\"\ (unchanged)
+        tryFormat(list, null, null, "\"\",\\\\,\\\"\\");
+        //
+        // """""",\\,"\""\" (quoted, and embedded DQ doubled)
+        tryFormat(list, '"',  null, "\"\"\"\"\"\",\\\\,\"\\\"\"\\\"");
+        //
+        // "",\\\\,\\"\\ (escapes escaped, not quoted)
+        tryFormat(list, null, '\\', "\"\",\\\\\\\\,\\\\\"\\\\");
+        //
+        // "\"\"","\\\\","\\\"\\" (quoted, and embedded DQ & escape escaped)
+        tryFormat(list, '"',  '\\', "\"\\\"\\\"\",\"\\\\\\\\\",\"\\\\\\\"\\\\\"");
+        //
+        // """""",\\,"\""\" (quoted, embedded DQ escaped)
+        tryFormat(list, '"',  '"',  "\"\"\"\"\"\",\\\\,\"\\\"\"\\\"");
     }
 
     @Test
@@ -772,7 +782,8 @@ public class CSVPrinterTest {
     @Test
     public void testMySqlNullOutput() throws IOException {
         Object[] s = new String[] { "NULL", null };
-        CSVFormat format = CSVFormat.MYSQL.withQuote(DQUOTE_CHAR).withNullString("NULL").withQuoteMode(QuoteMode.NON_NUMERIC);
+        CSVFormat format = CSVFormat.MYSQL.withQuote(DQUOTE_CHAR).withNullString("NULL")
+            .withQuoteMode(QuoteMode.NON_NUMERIC);
         StringWriter writer = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(writer, format)) {
             printer.printRecord(s);
@@ -1519,10 +1530,10 @@ public class CSVPrinterTest {
         return CSVParser.parse(expected, format).getRecords().get(0).values();
     }
 
-    private void tryFormat(List<String> l, Character quote, Character escape, String expected) throws IOException {
-        CSVFormat format = CSVFormat.DEFAULT.withQuote(quote).withEscape(escape).withRecordSeparator(null);
-        Appendable out = new StringBuilder();
-        CSVPrinter printer = new CSVPrinter(out, format);
+    private void tryFormat(final List<String> l, final Character quote, final Character escape, final String expected) throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.withQuote(quote).withEscape(escape).withRecordSeparator(null);
+        final Appendable out = new StringBuilder();
+        final CSVPrinter printer = new CSVPrinter(out, format);
         printer.printRecord(l);
         printer.close();
         assertEquals(expected, out.toString());
