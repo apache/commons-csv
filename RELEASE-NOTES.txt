@@ -5,14 +5,16 @@
 
 INTRODUCTION:
 
-This document contains the release notes for the 1.8 version of Apache Commons CSV.
+This document contains the release notes for the 1.8-SNAPSHOT version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
 
 Commons CSV requires at least Java 6.
 
 The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
 
-Feature and bug fix release (Java 8)
+Feature and bug fix release (Java 8).
+This release fixes serialization compatibility of CSVRecord with versions 1.0 to 1.6. New fields added since 
+1.7 are not serialized. Support for Serializable is scheduled to be removed in version 2.0.
 
 Changes in this version include:
 
@@ -32,6 +34,7 @@ o CSV-241:  CSVFormat#validate() does not account for allowDuplicateHeaderNames 
 o CSV-245:  Post 1.7 release fixes. Thanks to Alex Herbert.
 o CSV-252:  Upgrade test framework to JUnit 5 Jupiter #49, #50. Thanks to Alex Herbert.
 o CSV-247:  A single empty header is allowed when not allowing empty column headers. #47. Thanks to Alex Herbert, Gary Gregory.
+o CSV-248:  CSVRecord is not Serializable. Thanks to Alex Herbert.
 o           Use test scope for supercsv #48. Thanks to Alex Herbert.
 
 CHANGES
@@ -41,6 +44,7 @@ o           Update tests from H2 1.4.199 to 1.4.200. Thanks to Gary Gregory.
 o           Update tests from Hamcrest 2.1 to 2.2. Thanks to Gary Gregory.
 o           Update tests from Mockito 3.1.0 to 3.2.4. Thanks to Gary Gregory.
 o           Fix typos in site and test #53. Thanks to Chen.
+o           Fix typo performance test #55. Thanks to Chen.
 
 
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
