@@ -42,7 +42,7 @@ public class CSVFileParserTest {
 
     private static final File BASE = new File("src/test/resources/CSVFileParser");
 
-    private String readTestData(BufferedReader reader) throws IOException {
+    private String readTestData(final BufferedReader reader) throws IOException {
         String line;
         do {
             line = reader.readLine();
@@ -61,7 +61,7 @@ public class CSVFileParserTest {
 
     @ParameterizedTest
     @MethodSource("generateData")
-    public void testCSVFile(File testFile) throws Exception {
+    public void testCSVFile(final File testFile) throws Exception {
         try (FileReader fr = new FileReader(testFile); BufferedReader testData = new BufferedReader(fr)) {
             String line = readTestData(testData);
             assertNotNull("file must contain config line", line);
@@ -108,7 +108,7 @@ public class CSVFileParserTest {
 
     @ParameterizedTest
     @MethodSource("generateData")
-    public void testCSVUrl(File testFile) throws Exception {
+    public void testCSVUrl(final File testFile) throws Exception {
         try (FileReader fr = new FileReader(testFile); BufferedReader testData = new BufferedReader(fr)) {
             String line = readTestData(testData);
             assertNotNull("file must contain config line", line);

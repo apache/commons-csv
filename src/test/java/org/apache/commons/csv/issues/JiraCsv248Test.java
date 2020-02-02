@@ -68,7 +68,7 @@ public class JiraCsv248Test {
             try {
                 rec.get("A");
                 org.junit.jupiter.api.Assertions.fail("Access by name is not expected after deserialisation");
-            } catch (IllegalStateException expected) {
+            } catch (final IllegalStateException expected) {
                 // OK
             }
         }
