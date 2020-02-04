@@ -555,6 +555,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * <p>
      * The map keys are column names. The map values are 0-based indices.
      * </p>
+     * <p>
+     * Note: The map can only provide a one-to-one mapping when the format did not
+     * contain null or duplicate column names.
+     * </p>
+     *
      * @return a copy of the header map.
      */
     public Map<String, Integer> getHeaderMap() {
@@ -577,8 +582,14 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     /**
      * Returns a read-only list of header names that iterates in column order.
+     * <p>
+     * Note: The list provides strings that can be used as keys in the header map.
+     * The list will not contain null column names if they were present in the input
+     * format.
+     * </p>
      *
      * @return read-only list of header names that iterates in column order.
+     * @see #getHeaderMap()
      * @since 1.7
      */
     public List<String> getHeaderNames() {

@@ -24,7 +24,6 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.csv.QuoteMode;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

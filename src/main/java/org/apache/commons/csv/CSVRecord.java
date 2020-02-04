@@ -24,9 +24,19 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 /**
  * A CSV record parsed from a CSV file.
+ *
+ * <p>
+ * Note: Support for {@link Serializable} is scheduled to be removed in version 2.0.
+ * In version 1.8 the mapping between the column header and the column index was
+ * removed from the serialised state. The class maintains serialization compatibility
+ * with versions pre-1.8 for the record values; these must be accessed by index
+ * following deserialization. There will be loss of any functionally linked to the header
+ * mapping when transferring serialised forms pre-1.8 to 1.8 and vice versa.
+ * </p>
  */
 public final class CSVRecord implements Serializable, Iterable<String> {
 
@@ -45,8 +55,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /** The values of the record */
     private final String[] values;
 
-    /** The parser that originates this record. */
-    private final CSVParser parser;
+    /** The parser that originates this record. This is not serialized. */
+    private final transient CSVParser parser;
 
     CSVRecord(final CSVParser parser, final String[] values, final String comment, final long recordNumber,
             final long characterPosition) {
@@ -65,7 +75,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return the String at the given enum String
      */
     public String get(final Enum<?> e) {
-        return get(e.toString());
+        return get(Objects.toString(e, null));
     }
 
     /**
@@ -82,6 +92,14 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Returns a value by name.
      *
+     * <p>
+     * Note: This requires a field mapping obtained from the original parser.
+     * A check using {@link #isMapped(String)} should be used to determine if a
+     * mapping exists from the provided {@code name} to a field index. In this case an
+     * exception will only be thrown if the record does not contain a field corresponding
+     * to the mapping, that is the record length is not consistent with the mapping size.
+     * </p>
+     *
      * @param name
      *            the name of the column to be retrieved.
      * @return the column value, maybe null depending on {@link CSVFormat#getNullString()}.
@@ -89,7 +107,9 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *             if no header mapping was provided
      * @throws IllegalArgumentException
      *             if {@code name} is not mapped or if the record is inconsistent
+     * @see #isMapped(String)
      * @see #isConsistent()
+     * @see #getParser()
      * @see CSVFormat#withNullString(String)
      */
     public String get(final String name) {
@@ -135,11 +155,16 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     private Map<String, Integer> getHeaderMapRaw() {
-        return parser.getHeaderMapRaw();
+        return parser == null ? null : parser.getHeaderMapRaw();
     }
 
     /**
      * Returns the parser.
+     *
+     * <p>
+     * Note: The parser is not part of the serialized state of the record. A null check
+     * should be used when the record may have originated from a serialized form.
+     * </p>
      *
      * @return the parser.
      * @since 1.7

@@ -64,7 +64,7 @@ public class CSVFormatTest {
         return format.withDelimiter(format.getDelimiter());
     }
 
-    private void assertNotEquals(String name, String type, Object left, Object right) {
+    private void assertNotEquals(final String name, final String type, final Object left, final Object right) {
         if (left.equals(right) || right.equals(left)) {
             fail("Objects must not compare equal for " + name + "(" + type + ")");
         }
@@ -153,12 +153,12 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsHash() throws Exception {
-        Method[] methods = CSVFormat.class.getDeclaredMethods();
-        for (Method method : methods) {
+        final Method[] methods = CSVFormat.class.getDeclaredMethods();
+        for (final Method method : methods) {
             if (Modifier.isPublic(method.getModifiers())) {
                final String name = method.getName();
                if (name.startsWith("with")) {
-                   for (Class<?> cls : method.getParameterTypes()) {
+                   for (final Class<?> cls : method.getParameterTypes()) {
                        final String type = cls.getCanonicalName();
                        if ("boolean".equals(type)) {
                            final Object defTrue = method.invoke(CSVFormat.DEFAULT, new Object[] {Boolean.TRUE});
@@ -550,7 +550,7 @@ public class CSVFormatTest {
 
         final CSVFormat csvFormat = CSVFormat.MYSQL;
 
-        NullPointerException e = assertThrows(NullPointerException.class, () -> csvFormat.format((Object[]) null));
+        final NullPointerException e = assertThrows(NullPointerException.class, () -> csvFormat.format((Object[]) null));
         assertEquals(CSVFormat.class.getName(), e.getStackTrace()[0].getClassName());
     }
 

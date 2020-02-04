@@ -725,6 +725,20 @@ public class CSVParserTest {
     }
 
     @Test
+    public void testHeadersWithNullColumnName() throws IOException {
+        final Reader in = new StringReader("header1,null,header3\n1,2,3\n4,5,6");
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT
+            .withHeader()
+            .withNullString("null")
+            .withAllowMissingColumnNames()
+            .parse(in).iterator();
+        final CSVRecord record = records.next();
+        // Expect the null header to be missing
+        assertEquals(Arrays.asList("header1", "header3"), record.getParser().getHeaderNames());
+        assertEquals(2, record.getParser().getHeaderMap().size());
+    }
+
+    @Test
     public void testIgnoreCaseHeaderMapping() throws Exception {
         final Reader reader = new StringReader("1,2,3");
         final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withHeader("One", "TWO", "three").withIgnoreHeaderCase()
