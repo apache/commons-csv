@@ -46,10 +46,9 @@ Apache Commons CSV
 [![Build Status](https://travis-ci.org/apache/commons-csv.svg)](https://travis-ci.org/apache/commons-csv)
 [![Coverage Status](https://coveralls.io/repos/apache/commons-csv/badge.svg)](https://coveralls.io/r/apache/commons-csv)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/)
-[![Javadocs](https://javadoc.io/badge/org.apache.commons/commons-csv/1.7.svg)](https://javadoc.io/doc/org.apache.commons/commons-csv/1.7)
+[![Javadocs](https://javadoc.io/badge/org.apache.commons/commons-csv/1.8.svg)](https://javadoc.io/doc/org.apache.commons/commons-csv/1.8)
 
-The Apache Commons CSV library provides a simple interface for reading and writing
-CSV files of various types.
+The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
 
 Documentation
 -------------
@@ -68,7 +67,7 @@ Alternatively you can pull it from the central Maven repositories:
 <dependency>
   <groupId>org.apache.commons</groupId>
   <artifactId>commons-csv</artifactId>
-  <version>1.7</version>
+  <version>1.8</version>
 </dependency>
 ```
 

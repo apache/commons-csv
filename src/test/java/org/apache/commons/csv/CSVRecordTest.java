@@ -23,10 +23,15 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -58,9 +63,9 @@ public class CSVRecordTest {
         }
     }
 
-    private String[] values;
-    private CSVRecord record, recordWithHeader;
     private Map<String, Integer> headerMap;
+    private CSVRecord record, recordWithHeader;
+    private String[] values;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -104,6 +109,11 @@ public class CSVRecordTest {
     @Test
     public void testGetUnmappedEnum() {
         assertThrows(IllegalArgumentException.class, () -> recordWithHeader.get(EnumFixture.UNKNOWN_COLUMN));
+    }
+
+    @Test
+    public void testGetNullEnum() {
+        assertThrows(IllegalArgumentException.class, () -> recordWithHeader.get((Enum<?>) null));
     }
 
     @Test
@@ -151,13 +161,6 @@ public class CSVRecordTest {
     }
 
     @Test
-    public void testIsSetString() {
-        assertFalse(record.isSet("first"));
-        assertTrue(recordWithHeader.isSet("first"));
-        assertFalse(recordWithHeader.isSet("fourth"));
-    }
-
-    @Test
     public void testIsSetInt() {
         assertFalse(record.isSet(-1));
         assertTrue(record.isSet(0));
@@ -165,6 +168,13 @@ public class CSVRecordTest {
         assertFalse(record.isSet(3));
         assertTrue(recordWithHeader.isSet(1));
         assertFalse(recordWithHeader.isSet(1000));
+    }
+
+    @Test
+    public void testIsSetString() {
+        assertFalse(record.isSet("first"));
+        assertTrue(recordWithHeader.isSet("first"));
+        assertFalse(recordWithHeader.isSet("fourth"));
     }
 
     @Test
@@ -202,17 +212,47 @@ public class CSVRecordTest {
     }
 
     @Test
-    public void testToMap() {
-        final Map<String, String> map = this.recordWithHeader.toMap();
-        this.validateMap(map, true);
+    public void testSerialization() throws IOException, ClassNotFoundException {
+        CSVRecord shortRec;
+        try (final CSVParser parser = CSVParser.parse("A,B\n#my comment\nOne,Two", CSVFormat.DEFAULT.withHeader().withCommentMarker('#'))) {
+            shortRec = parser.iterator().next();
+        }
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (ObjectOutputStream oos = new ObjectOutputStream(out)) {
+            oos.writeObject(shortRec);
+        }
+        final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+        try (ObjectInputStream ois = new ObjectInputStream(in)) {
+            final Object object = ois.readObject();
+            assertTrue(object instanceof CSVRecord);
+            final CSVRecord rec = (CSVRecord) object;
+            assertEquals(1L, rec.getRecordNumber());
+            assertEquals("One", rec.get(0));
+            assertEquals("Two", rec.get(1));
+            assertEquals(2, rec.size());
+            assertEquals(shortRec.getCharacterPosition(), rec.getCharacterPosition());
+            assertEquals("my comment", rec.getComment());
+            // The parser is not serialized
+            assertNull(rec.getParser());
+            // Check all header map functionality is absent
+            assertTrue(rec.isConsistent());
+            assertFalse(rec.isMapped("A"));
+            assertFalse(rec.isSet("A"));
+            assertEquals(0, rec.toMap().size());
+            // This will throw
+            try {
+                rec.get("A");
+                org.junit.jupiter.api.Assertions.fail("Access by name is not expected after deserialisation");
+            } catch (final IllegalStateException expected) {
+                // OK
+            }
+        }
     }
 
     @Test
-    public void testToMapWithShortRecord() throws Exception {
-        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
-            final CSVRecord shortRec = parser.iterator().next();
-            shortRec.toMap();
-        }
+    public void testToMap() {
+        final Map<String, String> map = this.recordWithHeader.toMap();
+        this.validateMap(map, true);
     }
 
     @Test
@@ -222,6 +262,14 @@ public class CSVRecordTest {
             final Map<String, String> map = shortRec.toMap();
             assertNotNull(map, "Map is not null.");
             assertTrue(map.isEmpty(), "Map is empty.");
+        }
+    }
+
+    @Test
+    public void testToMapWithShortRecord() throws Exception {
+        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
+            final CSVRecord shortRec = parser.iterator().next();
+            shortRec.toMap();
         }
     }
 

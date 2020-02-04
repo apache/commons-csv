@@ -162,7 +162,7 @@ public class CSVParserTest {
         final String[][] res = { { "one", "two", "three" }, { "on\\\"e", "two" }, { "on\"e", "two" },
                 { "one", "tw\"o" }, { "one", "t\\,wo" }, // backslash in quotes only escapes a delimiter (",")
                 { "one", "two", "th,ree" }, { "a\\\\" }, // backslash in quotes only escapes a delimiter (",")
-                { "a\\", "b" }, // a backslash must be returnd
+                { "a\\", "b" }, // a backslash must be returned
                 { "a\\\\,b" } // backslash in quotes only escapes a delimiter (",")
         };
         try (final CSVParser parser = CSVParser.parse(code, CSVFormat.DEFAULT)) {
@@ -722,6 +722,20 @@ public class CSVParserTest {
     public void testHeadersMissingOneColumnException() throws Exception {
        final Reader in = new StringReader("a,,c,d,e\n1,2,3,4,5\nv,w,x,y,z");
        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withHeader().parse(in).iterator());
+    }
+
+    @Test
+    public void testHeadersWithNullColumnName() throws IOException {
+        final Reader in = new StringReader("header1,null,header3\n1,2,3\n4,5,6");
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT
+            .withHeader()
+            .withNullString("null")
+            .withAllowMissingColumnNames()
+            .parse(in).iterator();
+        final CSVRecord record = records.next();
+        // Expect the null header to be missing
+        assertEquals(Arrays.asList("header1", "header3"), record.getParser().getHeaderNames());
+        assertEquals(2, record.getParser().getHeaderMap().size());
     }
 
     @Test

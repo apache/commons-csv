@@ -20,22 +20,19 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>48</version>
+    <version>50</version>
   </parent>
   <artifactId>commons-csv</artifactId>
   <version>1.8-SNAPSHOT</version>
   <name>Apache Commons CSV</name>
   <url>https://commons.apache.org/proper/commons-csv/</url>
-  <description>
-The Apache Commons CSV library provides a simple interface for reading and writing
-CSV files of various types.
-  </description>
+  <description>The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.</description>
 
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.5.2</version>
+      <version>5.6.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -143,7 +140,7 @@ CSV files of various types.
     <commons.release.version>1.8</commons.release.version>
     <commons.release.desc>(Java 8)</commons.release.desc>
     <!-- The RC version used in the staging repository URL. -->
-    <commons.rc.version>RC1</commons.rc.version>
+    <commons.rc.version>RC2</commons.rc.version>
     <commons.bc.version>1.7</commons.bc.version>
     <commons.componentid>csv</commons.componentid>
     <commons.module.name>org.apache.commons.csv</commons.module.name>
@@ -261,6 +258,7 @@ CSV files of various types.
             <!-- The ferc.gov files are included discussion in https://issues.apache.org/jira/browse/LEGAL-175. -->
             <exclude>src/test/resources/ferc.gov/contract.txt</exclude>
             <exclude>src/test/resources/ferc.gov/transaction.txt</exclude>
+            <exclude>src/test/resources/**/*.bin</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -337,7 +335,7 @@ CSV files of various types.
                 </tags>
               </tagClass>
               <tagClass>
-                <displayName>Noteable Markers</displayName>
+                <displayName>Notable Markers</displayName>
                 <tags>
                   <tag>
                     <matchString>NOTE</matchString>
@@ -379,6 +377,7 @@ CSV files of various types.
             <exclude>src/test/resources/CSVFileParser/testCSV85_ignoreEmpty.txt</exclude>
             <exclude>src/test/resources/ferc.gov/contract.txt</exclude>
             <exclude>src/test/resources/ferc.gov/transaction.txt</exclude>
+            <exclude>src/test/resources/**/*.bin</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -386,52 +385,6 @@ CSV files of various types.
   </reporting>
 
   <profiles>
-    <profile>
-      <id>setup-checkout</id>
-      <activation>
-        <file>
-          <missing>site-content</missing>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.8</version>
-            <executions>
-              <execution>
-                <id>prepare-checkout</id>
-                <phase>pre-site</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <configuration>
-                  <tasks>
-                    <exec executable="svn">
-                      <arg line="checkout --depth immediates ${commons.scmPubUrl} ${commons.scmPubCheckoutDirectory}" />
-                    </exec>
-
-                    <exec executable="svn">
-                      <arg line="update --set-depth exclude ${commons.scmPubCheckoutDirectory}/javadocs" />
-                    </exec>
-
-                    <pathconvert pathsep=" " property="dirs">
-                      <dirset dir="${commons.scmPubCheckoutDirectory}" includes="*" />
-                    </pathconvert>
-                    <exec executable="svn">
-                      <arg line="update --set-depth infinity ${dirs}" />
-                    </exec>
-                  </tasks>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-
     <!-- Profile to build and run the benchmarks. Use 'mvn test -Pbenchmark', and add '-Dbenchmark=foo' to run only the foo benchmark -->
     <profile>
       <id>benchmark</id>
