@@ -46,6 +46,23 @@ public class CSVRecordTest {
         UNKNOWN_COLUMN
     }
 
+    public enum EnumHeader {
+        FIRST("first"),
+        SECOND("second"),
+        THIRD("third");
+
+        private String number;
+
+        EnumHeader(String number) {
+            this.number = number;
+        }
+
+        @Override
+        public String toString() {
+            return number;
+        }
+    }
+
     private Map<String, Integer> headerMap;
     private CSVRecord record, recordWithHeader;
     private String[] values;
@@ -174,7 +191,7 @@ public class CSVRecordTest {
         final Map<String, String> map = new ConcurrentHashMap<>();
         this.recordWithHeader.putIn(map);
         this.validateMap(map, false);
-        // Test that we can compile with assigment to the same map as the param.
+        // Test that we can compile with assignment to the same map as the param.
         final TreeMap<String, String> map2 = recordWithHeader.putIn(new TreeMap<String, String>());
         this.validateMap(map2, false);
     }
@@ -270,4 +287,18 @@ public class CSVRecordTest {
         assertEquals(null, map.get("fourth"));
     }
 
+    @Test
+    public void testToString() {
+        assertNotNull(recordWithHeader.toString());
+        assertTrue(recordWithHeader.toString().contains("comment="));
+        assertTrue(recordWithHeader.toString().contains("recordNumber="));
+        assertTrue(recordWithHeader.toString().contains("values="));
+    }
+
+    @Test
+    public void testGetWithEnum() {
+        assertEquals(recordWithHeader.get("first"), recordWithHeader.get(EnumHeader.FIRST));
+        assertEquals(recordWithHeader.get("second"), recordWithHeader.get(EnumHeader.SECOND));
+        assertThrows(IllegalArgumentException.class, () -> recordWithHeader.get(EnumFixture.UNKNOWN_COLUMN));
+    }
 }
