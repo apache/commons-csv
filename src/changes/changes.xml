@@ -40,6 +40,7 @@
   <body>
     <release version="1.8.1" date="2020-MM-DD" description="Bug fix release (Java 8)">
       <action                 type="add" dev="ggregory" due-to="dota17">Add testcases for CSVRecord with get(Enum) and toString. #54.</action>
+      <action                 type="update" dev="ggregory" due-to="Amey Jadiye">Replace FindBugs with SpotBugs #56.</action>
     </release>
     <release version="1.8" date="2020-02-01" description="Feature and bug fix release (Java 8).
 
