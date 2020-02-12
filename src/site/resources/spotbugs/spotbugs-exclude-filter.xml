@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <!--
    Licensed to the Apache Software Foundation (ASF) under one or more
    contributor license agreements.  See the NOTICE file distributed with
@@ -15,21 +14,18 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-
-<!--
-  This file contains some false positive bugs detected by spotbugs. Their
-  false positive nature has been analyzed individually and they have been
-  put here to instruct spotbugs it must ignore them.
--->
 <FindBugsFilter
-    xmlns="https://github.com/spotbugs/filter/3.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+        xmlns="https://github.com/spotbugs/filter/3.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+
 
   <Match>
-    <Class name="org.apache.commons.csv.CSVPrinter"/>
-    <BugPattern name="SF_SWITCH_FALLTHROUGH"/>
-    <Method name="printComment"/>
+    <Class name="org.apache.commons.csv.CSVPrinter" />
+      <Method name="printComment" >
+          <!-- Deliberate switch statement fall-through -->
+      </Method>
+    <Bug code="SF" />
   </Match>
 
 </FindBugsFilter>

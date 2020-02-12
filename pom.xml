@@ -168,7 +168,7 @@
   </properties>
 
   <build>
-    <defaultGoal>clean verify apache-rat:check clirr:check javadoc:javadoc</defaultGoal>
+    <defaultGoal>clean verify apache-rat:check clirr:check checkstyle:check spotbugs:check javadoc:javadoc</defaultGoal>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -208,15 +208,12 @@
           <suppressionsLocation>${basedir}/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
         </configuration>
       </plugin>
-      <!-- Allow findbugs to be run interactively; keep in sync with report config below -->
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>${commons.findbugs.version}</version>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${commons.spotbugs.version}</version>
         <configuration>
-          <threshold>Normal</threshold>
-          <effort>Default</effort>
-          <excludeFilterFile>${basedir}/src/main/resources/findbugs/findbugs-exclude-filter.xml</excludeFilterFile>
+          <excludeFilterFile>${basedir}/src/site/resources/spotbugs/spotbugs-exclude-filter.xml</excludeFilterFile>
         </configuration>
       </plugin>
       <!-- Allow pmd to be run interactively; keep in sync with report config below -->
@@ -288,6 +285,14 @@
         </reportSets>
       </plugin>
       <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${commons.spotbugs.version}</version>
+        <configuration>
+          <excludeFilterFile>${basedir}/src/site/resources/spotbugs/spotbugs-exclude-filter.xml</excludeFilterFile>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
         <version>${pmd.version}</version>
@@ -298,16 +303,6 @@
           <rulesets>
             <ruleset>${basedir}/src/main/resources/pmd/pmd-ruleset.xml</ruleset>
           </rulesets>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>${commons.findbugs.version}</version>
-        <configuration>
-          <threshold>Normal</threshold>
-          <effort>Default</effort>
-          <excludeFilterFile>${basedir}/src/main/resources/findbugs/findbugs-exclude-filter.xml</excludeFilterFile>
         </configuration>
       </plugin>
       <plugin>
