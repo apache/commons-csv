@@ -106,7 +106,7 @@ import java.util.Set;
  * </pre>
  *
  * <p>
- * Calling {@link #withHeader(String...)} let's you use the given names to address values in a {@link CSVRecord}, and
+ * Calling {@link #withHeader(String...)} lets you use the given names to address values in a {@link CSVRecord}, and
  * assumes that your CSV source does not contain a first record that also defines column names.
  *
  * If it does, then you are overriding this metadata with your names and you should skip the first record by calling
