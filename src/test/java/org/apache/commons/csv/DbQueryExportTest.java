@@ -89,18 +89,14 @@ public class DbQueryExportTest {
         }
         Throwable throwable = assertThrows(ExportException.class, () -> {
             TestService testService = new TestService();
-            try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(filePath, true), StandardCharsets.UTF_8))) {
-                ExportParam exportParam = new ExportParam();
-                exportParam.setHeader("name,gender,email");
-                exportParam.setSum(10000000);
-                exportParam.setPageSize(100000);
-                exportParam.setRecordSeparator(Constants.CRLF);
-                exportParam.setSearchParam(null);
-                DbQueryExport DbQueryExport = new DbQueryExport(bufferedWriter, exportParam);
-                DbQueryExport.exportQueryPage(testService::queryDbPage);
-            } catch (IOException e) {
-            }
+            ExportParam exportParam = new ExportParam();
+            exportParam.setHeader("name,gender,email");
+            exportParam.setSum(10000000);
+            exportParam.setPageSize(100000);
+            exportParam.setRecordSeparator(Constants.CRLF);
+            exportParam.setSearchParam(null);
+            DbQueryExport DbQueryExport = new DbQueryExport(null, exportParam);
+            DbQueryExport.exportQueryPage(testService::queryDbPage);
         });
         assertEquals("export data error", throwable.getMessage());
     }
