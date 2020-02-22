@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,6 +33,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DbQueryExportTest {
 
     private static final File BASE = new File("src/test/resources/DbQueryExport");
+
+    @Test
+    public void testCalIndexList() {
+        List<Integer> indexList = DbQueryExport.calIndexList(10000000, 100000);
+        assertEquals(100, indexList.size());
+        assertEquals(0, indexList.get(0));
+    }
+
+    @Test
+    public void testParam() {
+        ExportParam exportParam = new ExportParam();
+        exportParam.setHeader("name,gender,email");
+        exportParam.setSum(10000000);
+        exportParam.setPageSize(100000);
+        exportParam.setRecordSeparator(Constants.CRLF);
+        Map<String, Object> searchParam = new HashMap<>(16);
+        exportParam.setSearchParam(searchParam);
+        assertEquals(10000000, exportParam.getSum());
+        assertEquals(100000, exportParam.getPageSize());
+    }
 
     @Test
     public void testExport() {
@@ -56,10 +77,6 @@ public class DbQueryExportTest {
             assertEquals(2, searchParam.size());
             assertEquals(9900000, searchParam.get(Constants.PADE_QUERY_INDEX));
         } catch (IOException e) {
-        } finally {
-            // coverage/coveralls — Coverage decreased (-4.8%) to 88.385%  delete file
-            // Do not delete local , export csv file
-            file.delete();
         }
     }
 }

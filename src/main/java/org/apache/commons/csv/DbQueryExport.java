@@ -71,7 +71,7 @@ public class DbQueryExport {
         }
     }
 
-    private static List<Integer> calIndexList(int sum, int pageNum) {
+    public static List<Integer> calIndexList(int sum, int pageNum) {
         List<Integer> list = new ArrayList<>(sum / pageNum);
         Integer startIndex = 0;
         if (sum <= pageNum) {
