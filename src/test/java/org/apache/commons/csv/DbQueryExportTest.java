@@ -22,6 +22,9 @@ import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author chengdu
@@ -46,10 +49,17 @@ public class DbQueryExportTest {
             exportParam.setSum(10000000);
             exportParam.setPageSize(100000);
             exportParam.setRecordSeparator(Constants.CRLF);
-            exportParam.setSearchParam(new HashMap<>());
+            Map<String, Object> searchParam = new HashMap<>(16);
+            exportParam.setSearchParam(searchParam);
             DbQueryExport DbQueryExport = new DbQueryExport(bufferedWriter, exportParam);
             DbQueryExport.exportQueryPage(testService::queryDbPage);
+            assertEquals(2, searchParam.size());
+            assertEquals(9900000, searchParam.get(Constants.PADE_QUERY_INDEX));
         } catch (IOException e) {
+        } finally {
+            // coverage/coveralls — Coverage decreased (-4.8%) to 88.385%  delete file
+            // Do not delete local , export csv file
+            file.delete();
         }
     }
 }
