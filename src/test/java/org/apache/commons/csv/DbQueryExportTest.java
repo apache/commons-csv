@@ -43,6 +43,20 @@ public class DbQueryExportTest {
     }
 
     @Test
+    public void testCalIndexPageList() {
+        List<Integer> indexList = DbQueryExport.calIndexList(100, 100000);
+        assertEquals(1, indexList.size());
+        assertEquals(0, indexList.get(0));
+    }
+
+    @Test
+    public void testBufferWrite() {
+        List<Integer> indexList = DbQueryExport.calIndexList(100, 100000);
+        assertEquals(1, indexList.size());
+        assertEquals(0, indexList.get(0));
+    }
+
+    @Test
     public void testParam() {
         ExportParam exportParam = new ExportParam();
         exportParam.setHeader("name,gender,email");
@@ -53,6 +67,8 @@ public class DbQueryExportTest {
         exportParam.setSearchParam(searchParam);
         assertEquals(10000000, exportParam.getSum());
         assertEquals(100000, exportParam.getPageSize());
+        assertEquals(0, exportParam.getSearchParam().size());
+        assertEquals(Constants.CRLF, exportParam.getRecordSeparator());
     }
 
     @Test
@@ -108,6 +124,18 @@ public class DbQueryExportTest {
                 int i = 1 / 0;
             } catch (Exception e) {
                 throw new ExportException("cal error", e);
+            }
+        });
+        assertEquals("cal error", throwable.getMessage());
+    }
+
+    @Test
+    public void testThrowException() {
+        Throwable throwable = assertThrows(ExportException.class, () -> {
+            try {
+                int i = 1 / 0;
+            } catch (Exception e) {
+                throw new ExportException("cal error");
             }
         });
         assertEquals("cal error", throwable.getMessage());
