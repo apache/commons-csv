@@ -100,4 +100,16 @@ public class DbQueryExportTest {
         });
         assertEquals("export data error", throwable.getMessage());
     }
+
+    @Test
+    public void testException() {
+        Throwable throwable = assertThrows(ExportException.class, () -> {
+            try {
+                int i = 1 / 0;
+            } catch (Exception e) {
+                throw new ExportException("cal error", e);
+            }
+        });
+        assertEquals("cal error", throwable.getMessage());
+    }
 }
