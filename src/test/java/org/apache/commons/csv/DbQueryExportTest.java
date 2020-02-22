@@ -49,12 +49,7 @@ public class DbQueryExportTest {
         assertEquals(0, indexList.get(0));
     }
 
-    @Test
-    public void testBufferWrite() {
-        List<Integer> indexList = DbQueryExport.calIndexList(100, 100000);
-        assertEquals(1, indexList.size());
-        assertEquals(0, indexList.get(0));
-    }
+
 
     @Test
     public void testParam() {
@@ -69,6 +64,41 @@ public class DbQueryExportTest {
         assertEquals(100000, exportParam.getPageSize());
         assertEquals(0, exportParam.getSearchParam().size());
         assertEquals(Constants.CRLF, exportParam.getRecordSeparator());
+    }
+
+    @Test
+    public void testBufferWrite() {
+        String filePath = BASE + File.separator + "export-table.csv";
+        File file = new File(filePath);
+        if (file.exists()) {
+            file.delete();
+        }
+        TestService testService = new TestService();
+        ExportParam exportParam = new ExportParam();
+        exportParam.setHeader("name,gender,email");
+        exportParam.setSum(10000000);
+        exportParam.setPageSize(100000);
+        exportParam.setRecordSeparator(Constants.CRLF);
+        Map<String, Object> searchParam = new HashMap<>(16);
+        exportParam.setSearchParam(searchParam);
+        try (BufferedWriter bufferedWriter = new BufferedWriter( new OutputStreamWriter(
+                new FileOutputStream(filePath, true), StandardCharsets.UTF_8))) {
+            bufferedWriter.append(exportParam.getHeader()).append(exportParam.getRecordSeparator());
+            int sum = exportParam.getSum();
+            int pageSize = exportParam.getPageSize();
+            List<Integer> indexList = DbQueryExport.calIndexList(sum, pageSize);
+            searchParam.put(Constants.PAGE_QUERY_SIZE, pageSize);
+            for (Integer index : indexList) {
+                searchParam.put(Constants.PADE_QUERY_INDEX, index);
+                List<String> queryList = testService.queryDbPage(searchParam);
+                if (queryList != null && queryList.size() > 0) {
+                    for (String rowData : queryList) {
+                        bufferedWriter.append(rowData).append(exportParam.getRecordSeparator());
+                    }
+                }
+            }
+        } catch (IOException e) {
+        }
     }
 
     @Test
