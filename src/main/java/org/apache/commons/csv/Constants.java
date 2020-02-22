@@ -79,4 +79,7 @@ final class Constants {
     /** ASCII unit separator */
     static final char US = 31;
 
+    static final String PAGE_QUERY_SIZE = "pageSize";
+
+    static final String PADE_QUERY_INDEX = "startIndex";
 }
