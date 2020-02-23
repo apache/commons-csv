@@ -20,6 +20,7 @@ package org.apache.commons.csv;
 import java.util.Map;
 
 /**
+ * export param for db query export
  * @author chengdu
  */
 public class ExportParam {

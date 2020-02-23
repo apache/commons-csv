@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
+ * export data from db
  * @author chengdu
  */
 public class DbQueryExport {
@@ -40,7 +41,7 @@ public class DbQueryExport {
 
     /**
      * export data from db
-     * @param pageQueryFun
+     * @param pageQueryFun query function
      */
     public void exportQueryPage(Function<Map<String, Object>, List<String>> pageQueryFun) {
         try {
@@ -71,6 +72,12 @@ public class DbQueryExport {
         }
     }
 
+    /**
+     * calculate page start index
+     * @param sum total number of data
+     * @param pageNum page size
+     * @return index collection
+     */
     public static List<Integer> calIndexList(int sum, int pageNum) {
         List<Integer> list = new ArrayList<>(sum / pageNum);
         Integer startIndex = 0;

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * mock the query method of the database
  * @author chengdu
  */
 public class TestService {

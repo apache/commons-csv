@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
+ * export page data from db test
  * @author chengdu
  */
 public class DbQueryExportTest {
@@ -101,6 +102,10 @@ public class DbQueryExportTest {
         }
     }
 
+
+    /**
+     * export data from db
+     */
     @Test
     public void testExport() {
         String filePath = BASE + File.separator + "export-table.csv";
