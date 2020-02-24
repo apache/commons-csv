@@ -641,11 +641,11 @@ public class CSVParserTest {
             assertEquals(2, record.getRecordNumber());
             assertEquals(2, parser.getRecordNumber());
             assertNotNull(record = parser.nextRecord());
-            assertEquals(8, parser.getCurrentLineNumber());
+            assertEquals(9, parser.getCurrentLineNumber());
             assertEquals(3, record.getRecordNumber());
             assertEquals(3, parser.getRecordNumber());
             assertNull(record = parser.nextRecord());
-            assertEquals(8, parser.getCurrentLineNumber());
+            assertEquals(9, parser.getCurrentLineNumber());
             assertEquals(3, parser.getRecordNumber());
         }
     }
@@ -1196,10 +1196,12 @@ public class CSVParserTest {
             assertEquals(2, parser.getCurrentLineNumber());
             assertNotNull(parser.nextRecord());
             // Still 2 because the last line is does not have EOL chars
-            assertEquals(2, parser.getCurrentLineNumber());
+            // read EOF without EOL should 3
+            assertEquals(3, parser.getCurrentLineNumber());
             assertNull(parser.nextRecord());
             // Still 2 because the last line is does not have EOL chars
-            assertEquals(2, parser.getCurrentLineNumber());
+            // read EOF without EOL should 3
+            assertEquals(3, parser.getCurrentLineNumber());
         }
     }
 
@@ -1280,5 +1282,38 @@ public class CSVParserTest {
         assertEquals("\u00c4", record.get(0));
 
         parser.close();
+    }
+
+    @Test
+    public void parseIssue195andIssue149() throws IOException {
+        String records = "A,B,C,D\r\n"
+                + "a1,b1,c1,d1\r\n"
+                + "a2,b2,c2,d2";
+        CSVFormat format = CSVFormat.RFC4180;
+        format = format.withFirstRecordAsHeader();
+        format = format.withIgnoreEmptyLines();
+        format = format.withTrim();
+        format = format.withQuote('"');
+        CSVParser parser = format.parse(new StringReader(records));
+        try {
+            for (CSVRecord record : parser) {
+                System.out.println(record);
+            }
+            assertEquals(3, parser.getCurrentLineNumber());
+        } finally {
+            parser.close();
+        }
+        String records2 = "A,B,C,D\r\n"
+                + "a1,b1,c1,d1\r\n"
+                + "a2,b2,c2,d2\r\n";
+        CSVParser parser2 = format.parse(new StringReader(records2));
+        try {
+            for (CSVRecord record : parser) {
+                System.out.println(record);
+            }
+            assertEquals(3, parser.getCurrentLineNumber());
+        } finally {
+            parser.close();
+        }
     }
 }

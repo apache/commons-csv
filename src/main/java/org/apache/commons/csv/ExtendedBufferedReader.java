@@ -59,6 +59,9 @@ final class ExtendedBufferedReader extends BufferedReader {
         if (current == CR || current == LF && lastChar != CR) {
             eolCounter++;
         }
+        else if (current == END_OF_STREAM && lastChar != LF && lastChar != CR  && lastChar != END_OF_STREAM) {
+            eolCounter++;
+        }
         lastChar = current;
         this.position++;
         return lastChar;
@@ -93,6 +96,8 @@ final class ExtendedBufferedReader extends BufferedReader {
                         eolCounter++;
                     }
                 } else if (ch == CR) {
+                    eolCounter++;
+                } else if (ch == END_OF_STREAM && (i > 0 ? buf[i - 1] : lastChar) != LF && (i > 0 ? buf[i - 1] : lastChar) != CR) {
                     eolCounter++;
                 }
             }
