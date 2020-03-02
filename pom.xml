@@ -57,7 +57,7 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.9</version>
-      <scope>test</scope>
+      <!--<scope>test</scope>-->
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
@@ -114,6 +114,11 @@
   <contributors>
     <contributor>
       <name>Bob Smith</name>
+    </contributor>
+    <contributor>
+      <name>Ali Ghanbari</name>
+      <email>ali.ghanbari@utdallas.edu</email>
+      <organization>The University of Texas at Dallas</organization>
     </contributor>
   </contributors>
 
@@ -240,6 +245,8 @@
         <configuration>
           <excludes>
             <!-- These files are used as test data and test result specifications. -->
+            <exclude>src/test/resources/csv-pretty/file1.csv</exclude>
+            <exclude>src/test/resources/csv-pretty/file2.csv</exclude>
             <exclude>src/test/resources/csv-167/sample1.csv</exclude>
             <exclude>src/test/resources/CSV-198/optd_por_public.csv</exclude>
             <exclude>src/test/resources/CSV-213/999751170.patch.csv</exclude>
