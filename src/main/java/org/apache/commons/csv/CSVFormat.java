@@ -1408,6 +1408,7 @@ public final class CSVFormat implements Serializable {
                 if (pos > start) {
                     out.append(builder.substring(start, pos));
                     builder.setLength(0);
+                    pos = -1;
                 }
                 if (c == LF) {
                     c = 'n';
