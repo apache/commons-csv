@@ -256,6 +256,7 @@
             <exclude>src/test/resources/ferc.gov/contract.txt</exclude>
             <exclude>src/test/resources/ferc.gov/transaction.txt</exclude>
             <exclude>src/test/resources/**/*.bin</exclude>
+            <exclude>src/test/resources/CSV-259/sample.txt</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -373,6 +374,7 @@
             <exclude>src/test/resources/ferc.gov/contract.txt</exclude>
             <exclude>src/test/resources/ferc.gov/transaction.txt</exclude>
             <exclude>src/test/resources/**/*.bin</exclude>
+            <exclude>src/test/resources/CSV-259/sample.txt</exclude>
           </excludes>
         </configuration>
       </plugin>
