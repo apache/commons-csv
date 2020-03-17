@@ -34,6 +34,8 @@ import java.io.PrintStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.io.Reader;
+import java.io.FileReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.sql.BatchUpdateException;
@@ -308,6 +310,16 @@ public class CSVPrinterTest {
         //
         // """""",\\,"\""\" (quoted, embedded DQ escaped)
         tryFormat(list, '"',  '"',  "\"\"\"\"\"\",\\\\,\"\\\"\"\\\"");
+    }
+
+    @Test
+    public void testCSV259() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final Reader reader = new FileReader("src/test/resources/CSV-259/sample.txt");
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape('!').withQuote(null))) {
+            printer.print(reader);
+            assertEquals("x!,y!,z", sw.toString());
+        }
     }
 
     @Test
