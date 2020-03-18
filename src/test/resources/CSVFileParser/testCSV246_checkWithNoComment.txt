@@ -1,0 +1,10 @@
+testCSV246.csv CommentStart=# CheckComments
+Delimiter=<,> QuoteChar=<"> CommentStart=<#> SkipHeaderRecord:false
+5:[a, b, c, e, f]
+# Very Long
+# Comment 2
+5:[g, h, i, j, k]#Very Long\nComment 2
+# Very Long
+1:[]#Very Long
+# Comment 3
+5:[l, m, n, o, p]#Comment 3

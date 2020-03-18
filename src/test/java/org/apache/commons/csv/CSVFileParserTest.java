@@ -93,11 +93,8 @@ public class CSVFileParserTest {
             try (final CSVParser parser = CSVParser.parse(new File(BASE, split[0]), Charset.defaultCharset(), format)) {
                 for (final CSVRecord record : parser) {
                     String parsed = Arrays.toString(record.values());
-                    if (checkComments) {
-                        final String comment = record.getComment().replace("\n", "\\n");
-                        if (comment != null) {
-                            parsed += "#" + comment;
-                        }
+                    if (checkComments && record.getComment() != null) {
+                        parsed += "#" + record.getComment().replace("\n", "\\n");
                     }
                     final int count = record.size();
                     assertEquals(readTestData(testData), count + ":" + parsed, testFile.getName());
@@ -140,11 +137,8 @@ public class CSVFileParserTest {
             try (final CSVParser parser = CSVParser.parse(resource, Charset.forName("UTF-8"), format)) {
                 for (final CSVRecord record : parser) {
                     String parsed = Arrays.toString(record.values());
-                    if (checkComments) {
-                        final String comment = record.getComment().replace("\n", "\\n");
-                        if (comment != null) {
-                            parsed += "#" + comment;
-                        }
+                    if (checkComments && record.getComment() != null) {
+                        parsed += "#" + record.getComment().replace("\n", "\\n");
                     }
                     final int count = record.size();
                     assertEquals(readTestData(testData), count + ":" + parsed, testFile.getName());
