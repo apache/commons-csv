@@ -1182,7 +1182,7 @@ public class CSVFormatTest {
     public void testPrintWithEscapesEndWithCRLF() throws IOException {
         final Reader in = new StringReader("x,y,x\r\na,?b,c\r\n");
         final Appendable out = new StringBuilder();
-        CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',').withQuote(null).withRecordSeparator(CRLF);
+        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',').withQuote(null).withRecordSeparator(CRLF);
         format.print(in,out,true);
         assertEquals("x?,y?,x?r?na?,??b?,c?r?n", out.toString());
     }
@@ -1191,17 +1191,17 @@ public class CSVFormatTest {
     public void testPrintWithEscapesEndWithoutCRLF() throws IOException {
         final Reader in = new StringReader("x,y,x");
         final Appendable out = new StringBuilder();
-        CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',').withQuote(null).withRecordSeparator(CRLF);
+        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',').withQuote(null).withRecordSeparator(CRLF);
         format.print(in,out,true);
         assertEquals("x?,y?,x", out.toString());
     }
 
     @Test
     public void testFormatToString() throws IOException {
-        CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',')
-                .withQuoteMode(QuoteMode.MINIMAL).withRecordSeparator(CRLF).withQuote('"').withNullString("").withIgnoreHeaderCase(true)
+        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',')
+                .withQuoteMode(QuoteMode.MINIMAL).withRecordSeparator(CRLF).withQuote('"')
+                .withNullString("").withIgnoreHeaderCase(true)
                 .withHeaderComments("This is HeaderComments").withHeader("col1","col2","col3");
-        System.out.print(format.toString());
         assertEquals("Delimiter=<,> Escape=<?> QuoteChar=<\"> QuoteMode=<MINIMAL> NullString=<> RecordSeparator=<" +CRLF+
                 "> IgnoreHeaderCase:ignored SkipHeaderRecord:false HeaderComments:[This is HeaderComments] Header:[col1, col2, col3]", format.toString());
     }
