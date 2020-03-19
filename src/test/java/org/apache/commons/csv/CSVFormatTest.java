@@ -36,6 +36,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Reader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -1175,4 +1178,31 @@ public class CSVFormatTest {
         assertEquals(System.getProperty("line.separator"), formatWithRecordSeparator.getRecordSeparator());
     }
 
+    @Test
+    public void testPrintWithEscapesEndWithCRLF() throws IOException {
+        final Reader in = new StringReader("x,y,x\r\na,?b,c\r\n");
+        final Appendable out = new StringBuilder();
+        CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',').withQuote(null).withRecordSeparator(CRLF);
+        format.print(in,out,true);
+        assertEquals("x?,y?,x?r?na?,??b?,c?r?n", out.toString());
+    }
+
+    @Test
+    public void testPrintWithEscapesEndWithoutCRLF() throws IOException {
+        final Reader in = new StringReader("x,y,x");
+        final Appendable out = new StringBuilder();
+        CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',').withQuote(null).withRecordSeparator(CRLF);
+        format.print(in,out,true);
+        assertEquals("x?,y?,x", out.toString());
+    }
+
+    @Test
+    public void testFormatToString() throws IOException {
+        CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',')
+                .withQuoteMode(QuoteMode.MINIMAL).withRecordSeparator(CRLF).withQuote('"').withNullString("").withIgnoreHeaderCase(true)
+                .withHeaderComments("This is HeaderComments").withHeader("col1","col2","col3");
+        System.out.print(format.toString());
+        assertEquals("Delimiter=<,> Escape=<?> QuoteChar=<\"> QuoteMode=<MINIMAL> NullString=<> RecordSeparator=<" +CRLF+
+                "> IgnoreHeaderCase:ignored SkipHeaderRecord:false HeaderComments:[This is HeaderComments] Header:[col1, col2, col3]", format.toString());
+    }
 }
