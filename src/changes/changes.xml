@@ -45,7 +45,7 @@
       <action issue="CSV-259" type="fix" dev="ggregory" due-to="Chen">CSVFormat.printWithEscapes throws StringIndexOutOfBoundsException when value is Reader #61.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">org.mockito:mockito-core 3.2.4 -> 3.3.3.</action>
       <action issue="CSV-184" type="add" dev="ggregory" due-to="Gaurav Agarwal, M. Steiger, Gary Gregory">Make the method CSVRecord#putIn(Map) public.</action>
-      Make the method CSVRecord#putIn(Map) public
+      <action                 type="update" dev="ggregory" due-to="Chen">Improve CSVFormat test coverage #63.</action>
     </release>
     <release version="1.8" date="2020-02-01" description="Feature and bug fix release (Java 8).
 
