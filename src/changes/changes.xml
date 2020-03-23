@@ -38,13 +38,14 @@
     <title>Apache Commons CSV Release Notes</title>
   </properties>
   <body>
-    <release version="1.8.1" date="2020-MM-DD" description="Bug fix release (Java 8)">
+    <release version="1.9" date="2020-MM-DD" description="Bug fix release (Java 8)">
       <action                 type="add" dev="ggregory" due-to="dota17">Add testcases for CSVRecord with get(Enum) and toString. #54.</action>
       <action                 type="update" dev="ggregory" due-to="Amey Jadiye">Replace FindBugs with SpotBugs #56.</action>
       <action                 type="update" dev="ggregory" due-to="Chen">Javadoc typo in CSVFormat let's -> lets #57.</action>
       <action issue="CSV-259" type="fix" dev="ggregory" due-to="Chen">CSVFormat.printWithEscapes throws StringIndexOutOfBoundsException when value is Reader #61.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">org.mockito:mockito-core 3.2.4 -> 3.3.3.</action>
-      <action                 type="update" dev="ggregory" due-to="Gary Gregory">maven-pmd-plugin 3.12.0 -> 3.13.0.</action>
+      <action issue="CSV-184" type="add" dev="ggregory" due-to="Gaurav Agarwal, M. Steiger, Gary Gregory">Make the method CSVRecord#putIn(Map) public.</action>
+      Make the method CSVRecord#putIn(Map) public
     </release>
     <release version="1.8" date="2020-02-01" description="Feature and bug fix release (Java 8).
 

@@ -23,7 +23,7 @@
     <version>50</version>
   </parent>
   <artifactId>commons-csv</artifactId>
-  <version>1.8.1-SNAPSHOT</version>
+  <version>1.9-SNAPSHOT</version>
   <name>Apache Commons CSV</name>
   <url>https://commons.apache.org/proper/commons-csv/</url>
   <description>The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.</description>
@@ -137,11 +137,11 @@
   </distributionManagement>
 
   <properties>
-    <commons.release.version>1.8</commons.release.version>
+    <commons.release.version>1.9</commons.release.version>
     <commons.release.desc>(Java 8)</commons.release.desc>
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC2</commons.rc.version>
-    <commons.bc.version>1.7</commons.bc.version>
+    <commons.bc.version>1.8</commons.bc.version>
     <commons.componentid>csv</commons.componentid>
     <commons.module.name>org.apache.commons.csv</commons.module.name>
     <commons.jira.id>CSV</commons.jira.id>
