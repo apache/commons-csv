@@ -257,6 +257,8 @@
             <exclude>src/test/resources/ferc.gov/transaction.txt</exclude>
             <exclude>src/test/resources/**/*.bin</exclude>
             <exclude>src/test/resources/CSV-259/sample.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV246.csv</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV246_checkWithNoComment.txt</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -375,6 +377,8 @@
             <exclude>src/test/resources/ferc.gov/transaction.txt</exclude>
             <exclude>src/test/resources/**/*.bin</exclude>
             <exclude>src/test/resources/CSV-259/sample.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV246.csv</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV246_checkWithNoComment.txt</exclude>
           </excludes>
         </configuration>
       </plugin>
