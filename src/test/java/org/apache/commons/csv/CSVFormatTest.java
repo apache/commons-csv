@@ -1233,7 +1233,7 @@ public class CSVFormatTest {
         final Appendable out = new StringBuilder();
         CSVFormat format = CSVFormat.RFC4180.withDelimiter(',').withQuote('"').withEscape('?').withQuoteMode(QuoteMode.NONE);
         format.print(in, out, true);
-        assertEquals("a?,b?,c",out.toString());
+        assertEquals("a?,b?,c", out.toString());
     }
 
     @Test
@@ -1261,21 +1261,21 @@ public class CSVFormatTest {
         CharSequence in = "a,b,c";
         final StringBuilder out = new StringBuilder();
         formatWithTrim.print(in, out, true);
-        assertEquals("a,b,c",out.toString());
+        assertEquals("a,b,c", out.toString());
 
         in = new StringBuilder(" x,y,z");
         out.setLength(0);
         formatWithTrim.print(in, out, true);
-        assertEquals("x,y,z",out.toString());
+        assertEquals("x,y,z", out.toString());
 
         in = new StringBuilder("");
         out.setLength(0);
         formatWithTrim.print(in, out, true);
-        assertEquals("",out.toString());
+        assertEquals("", out.toString());
 
         in = new StringBuilder("header\r\n");
         out.setLength(0);
         formatWithTrim.print(in, out, true);
-        assertEquals("header",out.toString());
+        assertEquals("header", out.toString());
     }
 }
