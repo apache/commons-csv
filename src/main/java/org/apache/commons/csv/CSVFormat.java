@@ -284,12 +284,12 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     * <li>{@code {@link #withDelimiter(char) withDelimiter(',')}}</li>
-     * <li>{@code {@link #withQuote(char) withQuote('"')}}</li>
-     * <li>{@code {@link #withRecordSeparator(String) withRecordSeparator("\r\n")}}</li>
-     * <li>{@code {@link #withIgnoreEmptyLines(boolean) withIgnoreEmptyLines(false)}}</li>
-     * <li>{@code {@link #withAllowMissingColumnNames(boolean) withAllowMissingColumnNames(true)}}</li>
-     * <li>{@code {@link #withAllowDuplicateHeaderNames(boolean) withAllowDuplicateHeaderNames(true)}}</li>
+     * <li>{@code withDelimiter(',')}</li>
+     * <li>{@code withQuote('"')}</li>
+     * <li>{@code withRecordSeparator("\r\n")}</li>
+     * <li>{@code withIgnoreEmptyLines(false)}</li>
+     * <li>{@code withAllowMissingColumnNames(true)}</li>
+     * <li>{@code withAllowDuplicateHeaderNames(true)}</li>
      * </ul>
      * <p>
      * Note: This is currently like {@link #RFC4180} plus {@link #withAllowMissingColumnNames(boolean)
