@@ -301,4 +301,18 @@ public class CSVRecordTest {
         assertEquals(recordWithHeader.get("second"), recordWithHeader.get(EnumHeader.SECOND));
         assertThrows(IllegalArgumentException.class, () -> recordWithHeader.get(EnumFixture.UNKNOWN_COLUMN));
     }
+
+    @Test
+    public void testCSVRecordNULLValues() throws IOException {
+        final String values[] = null;
+        final CSVParser parser = CSVParser.parse("#my comment\r\nA,B\r\nONE,TWO", CSVFormat.DEFAULT.withHeader().withCommentMarker('#'));
+        final CSVRecord record = parser.iterator().next();
+        final long recordNumber = record.getRecordNumber();
+        final long characterPosition = record.getCharacterPosition();
+        final CSVRecord csvRecord = new CSVRecord(parser, values,"my comment", recordNumber, characterPosition);
+        assertEquals("my comment", csvRecord.getComment());
+        assertEquals(null, values);
+        assertEquals(1L, csvRecord.getRecordNumber());
+
+    }
 }

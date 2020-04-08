@@ -1538,6 +1538,29 @@ public class CSVPrinterTest {
         }
     }
 
+    @Test
+    public void testNotFlushable() throws IOException {
+        final Appendable out = new StringBuilder();
+        try (final CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT)) {
+            printer.printRecord("a", "b", "c");
+            assertEquals("a,b,c" + recordSeparator, out.toString());
+            printer.flush();
+        }
+    }
+
+    @Test
+    public void testCRComment() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final Object value = "abc";
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentMarker('#'))) {
+            printer.print(value);
+            printer.printComment("This is a comment\r\non multiple lines\rthis is next comment\r");
+
+            assertEquals("abc" + recordSeparator + "# This is a comment" + recordSeparator + "# on multiple lines"
+                        + recordSeparator + "# this is next comment" + recordSeparator + "# " + recordSeparator, sw.toString());
+        }
+    }
+
     private String[] toFirstRecordValues(final String expected, final CSVFormat format) throws IOException {
         return CSVParser.parse(expected, format).getRecords().get(0).values();
     }
