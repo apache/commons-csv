@@ -301,4 +301,12 @@ public class CSVRecordTest {
         assertEquals(recordWithHeader.get("second"), recordWithHeader.get(EnumHeader.SECOND));
         assertThrows(IllegalArgumentException.class, () -> recordWithHeader.get(EnumFixture.UNKNOWN_COLUMN));
     }
+
+    @Test
+    public void testCSVRecordNULLValues() throws IOException {
+        final CSVParser parser = CSVParser.parse("A,B\r\nONE,TWO", CSVFormat.DEFAULT.withHeader());
+        final CSVRecord csvRecord = new CSVRecord(parser, null, null, 0L, 0L);
+        assertEquals(0, csvRecord.size());
+        assertThrows(IllegalArgumentException.class, () -> csvRecord.get("B"));
+    }
 }
