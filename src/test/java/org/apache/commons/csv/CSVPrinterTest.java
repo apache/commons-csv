@@ -1555,7 +1555,6 @@ public class CSVPrinterTest {
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentMarker('#'))) {
             printer.print(value);
             printer.printComment("This is a comment\r\non multiple lines\rthis is next comment\r");
-
             assertEquals("abc" + recordSeparator + "# This is a comment" + recordSeparator + "# on multiple lines"
                         + recordSeparator + "# this is next comment" + recordSeparator + "# " + recordSeparator, sw.toString());
         }

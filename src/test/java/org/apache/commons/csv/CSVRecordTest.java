@@ -304,15 +304,9 @@ public class CSVRecordTest {
 
     @Test
     public void testCSVRecordNULLValues() throws IOException {
-        final String values[] = null;
-        final CSVParser parser = CSVParser.parse("#my comment\r\nA,B\r\nONE,TWO", CSVFormat.DEFAULT.withHeader().withCommentMarker('#'));
-        final CSVRecord record = parser.iterator().next();
-        final long recordNumber = record.getRecordNumber();
-        final long characterPosition = record.getCharacterPosition();
-        final CSVRecord csvRecord = new CSVRecord(parser, values,"my comment", recordNumber, characterPosition);
-        assertEquals("my comment", csvRecord.getComment());
-        assertEquals(null, values);
-        assertEquals(1L, csvRecord.getRecordNumber());
-
+        final CSVParser parser = CSVParser.parse("A,B\r\nONE,TWO", CSVFormat.DEFAULT.withHeader());
+        final CSVRecord csvRecord = new CSVRecord(parser, null,null, 0L, 0L);
+        assertEquals(0, csvRecord.size());
+        assertThrows(IllegalArgumentException.class, () -> csvRecord.get("B"));
     }
 }
