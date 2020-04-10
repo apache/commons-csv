@@ -205,7 +205,7 @@
         <configuration>
           <configLocation>${basedir}/checkstyle.xml</configLocation>
           <enableRulesSummary>false</enableRulesSummary>
-          <suppressionsLocation>${basedir}/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <suppressionsLocation>${basedir}/src/site/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
         </configuration>
       </plugin>
       <plugin>
@@ -226,7 +226,7 @@
           <skipEmptyReport>false</skipEmptyReport>
           <analysisCache>true</analysisCache>
           <rulesets>
-            <ruleset>${basedir}/src/main/resources/pmd/pmd-ruleset.xml</ruleset>
+            <ruleset>${basedir}/src/site/resources/pmd/pmd-ruleset.xml</ruleset>
           </rulesets>
         </configuration>
       </plugin>
