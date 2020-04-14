@@ -29,9 +29,7 @@ import static org.apache.commons.csv.Token.Type.TOKEN;
 import static org.apache.commons.csv.TokenMatchers.hasContent;
 import static org.apache.commons.csv.TokenMatchers.matches;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -387,6 +385,47 @@ public class LexerTest {
         final String code = "escaping at EOF is evil\\";
         try (final Lexer lexer = createLexer(code, formatWithEscaping)) {
             assertThrows(IOException.class, () -> lexer.nextToken(new Token()));
+        }
+    }
+
+    @Test
+    public void testTrimTrailingSpacesZeroLength() throws Exception {
+        final StringBuilder buffer = new StringBuilder("");
+        final Lexer lexer = createLexer(buffer.toString(), CSVFormat.DEFAULT);
+        lexer.trimTrailingSpaces(buffer);
+        assertThat(lexer.nextToken(new Token()), matches(EOF, ""));
+    }
+
+    @Test
+    public void testReadEscapeTab() throws IOException {
+        try (final Lexer lexer = createLexer("t", CSVFormat.DEFAULT.withEscape('\t'))) {
+            final int ch = lexer.readEscape();
+            assertThat(lexer.nextToken(new Token()), matches(EOF, ""));
+            assertEquals(TAB, ch);
+        }
+    }
+
+    @Test
+    public void testReadEscapeBackspace() throws IOException {
+        try (final Lexer lexer = createLexer("b", CSVFormat.DEFAULT.withEscape('\b'))) {
+            final int ch = lexer.readEscape();
+            assertEquals(BACKSPACE, ch);
+        }
+    }
+
+    @Test
+    public void testReadEscapeFF() throws IOException {
+        try (final Lexer lexer = createLexer("f", CSVFormat.DEFAULT.withEscape('\f'))) {
+            final int ch = lexer.readEscape();
+            assertEquals(FF, ch);
+        }
+    }
+
+    @Test
+    public void testIsMetaCharCommentStart() throws IOException {
+        try (final Lexer lexer = createLexer("#", CSVFormat.DEFAULT.withCommentMarker('#'))) {
+            final int ch = lexer.readEscape();
+            assertEquals('#', ch);
         }
     }
 }
