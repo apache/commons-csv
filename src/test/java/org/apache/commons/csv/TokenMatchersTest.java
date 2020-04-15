@@ -20,7 +20,9 @@ import static org.apache.commons.csv.TokenMatchers.hasContent;
 import static org.apache.commons.csv.TokenMatchers.hasType;
 import static org.apache.commons.csv.TokenMatchers.isReady;
 import static org.apache.commons.csv.TokenMatchers.matches;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

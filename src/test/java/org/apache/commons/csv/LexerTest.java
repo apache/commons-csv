@@ -29,8 +29,10 @@ import static org.apache.commons.csv.Token.Type.TOKEN;
 import static org.apache.commons.csv.TokenMatchers.hasContent;
 import static org.apache.commons.csv.TokenMatchers.matches;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.io.StringReader;
 
