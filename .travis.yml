@@ -21,6 +21,7 @@ jdk:
   - openjdk11
   - openjdk12
   - openjdk13
+  - openjdk14
   - openjdk-ea
 
 after_success:
