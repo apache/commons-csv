@@ -52,6 +52,7 @@
       <action                 type="update" dev="ggregory" due-to="Chen">Improve test coverage in CSVFormatTest #65.</action>
       <action                 type="update" dev="ggregory" due-to="Chen">Removed invalid Javadoc markup for CSVFormat EXCEL #64.</action>
       <action                 type="update" dev="ggregory" due-to="Chen">Improve CSVRecord and CSVPrinter code coverage #66.</action>
+      <action                 type="update" dev="ggregory" due-to="Chen">Improve lexer and token coverage #67.</action>
     </release>
     <release version="1.8" date="2020-02-01" description="Feature and bug fix release (Java 8).
 
