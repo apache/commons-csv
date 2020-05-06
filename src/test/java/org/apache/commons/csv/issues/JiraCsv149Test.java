@@ -24,10 +24,8 @@ import java.io.StringReader;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-@Disabled
 public class JiraCsv149Test {
 
     private static final String CR_LF = "\r\n";

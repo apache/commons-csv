@@ -644,11 +644,11 @@ public class CSVParserTest {
             assertEquals(2, record.getRecordNumber());
             assertEquals(2, parser.getRecordNumber());
             assertNotNull(record = parser.nextRecord());
-            assertEquals(8, parser.getCurrentLineNumber());
+            assertEquals(9, parser.getCurrentLineNumber());
             assertEquals(3, record.getRecordNumber());
             assertEquals(3, parser.getRecordNumber());
             assertNull(record = parser.nextRecord());
-            assertEquals(8, parser.getCurrentLineNumber());
+            assertEquals(9, parser.getCurrentLineNumber());
             assertEquals(3, parser.getRecordNumber());
         }
     }
@@ -1192,11 +1192,11 @@ public class CSVParserTest {
             assertNotNull(parser.nextRecord());
             assertEquals(2, parser.getCurrentLineNumber());
             assertNotNull(parser.nextRecord());
-            // Still 2 because the last line is does not have EOL chars
-            assertEquals(2, parser.getCurrentLineNumber());
+            // Read EOF without EOL should 3
+            assertEquals(3, parser.getCurrentLineNumber());
             assertNull(parser.nextRecord());
-            // Still 2 because the last line is does not have EOL chars
-            assertEquals(2, parser.getCurrentLineNumber());
+            // Read EOF without EOL should 3
+            assertEquals(3, parser.getCurrentLineNumber());
         }
     }
 
