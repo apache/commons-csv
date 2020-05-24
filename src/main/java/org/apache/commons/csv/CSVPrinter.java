@@ -382,6 +382,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         while (resultSet.next()) {
             for (int i = 1; i <= columnCount; i++) {
                 final Object object = resultSet.getObject(i);
+                // TODO Who manages the Clob? The JDBC driver or must we close it? Is it driver-dependent?
                 print(object instanceof Clob ? ((Clob) object).getCharacterStream() : object);
             }
             println();
