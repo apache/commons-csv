@@ -30,7 +30,7 @@ public class JiraCsv211Test {
 
     @Test
     public void testJiraCsv211Format() throws IOException {
-        final String[] values = new String[]{"1", "Jane Doe", "USA", ""};
+        final String[] values = new String[] { "1", "Jane Doe", "USA", "" };
 
         final CSVFormat printFormat = CSVFormat.DEFAULT.withDelimiter('\t').withHeader("ID", "Name", "Country", "Age");
         String formatted = printFormat.format(values);
