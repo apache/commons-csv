@@ -236,7 +236,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Creates a parser for the given {@link Path}.
+     * Creates and returns a parser for the given {@link Path}, which the caller MUST close.
      *
      * @param path
      *            a CSV file. Must not be null.
@@ -251,6 +251,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If an I/O error occurs
      * @since 1.5
      */
+    @SuppressWarnings("resource")
     public static CSVParser parse(final Path path, final Charset charset, final CSVFormat format) throws IOException {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(format, "format");
@@ -303,7 +304,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     // the following objects are shared to reduce garbage
 
     /**
-     * Creates a parser for the given URL.
+     * Creates and returns a parser for the given URL, which the caller MUST close.
      *
      * <p>
      * If you do not read all records from the given {@code url}, you should call {@link #close()} on the parser, unless
@@ -322,6 +323,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
+    @SuppressWarnings("resource")
     public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException {
         Objects.requireNonNull(url, "url");
         Objects.requireNonNull(charset, "charset");
