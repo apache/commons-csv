@@ -1261,21 +1261,19 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Prints to the specified output.
+     * Prints to the specified output, returns a {@code CSVPrinter} which the caller MUST close.
      *
      * <p>
      * See also {@link CSVPrinter}.
      * </p>
      *
-     * @param out
-     *            the output.
-     * @param charset
-     *            A charset.
+     * @param out the output.
+     * @param charset A charset.
      * @return a printer to an output.
-     * @throws IOException
-     *             thrown if the optional header cannot be printed.
+     * @throws IOException thrown if the optional header cannot be printed.
      * @since 1.5
      */
+    @SuppressWarnings("resource")
     public CSVPrinter print(final Path out, final Charset charset) throws IOException {
         return print(Files.newBufferedWriter(out, charset));
     }
