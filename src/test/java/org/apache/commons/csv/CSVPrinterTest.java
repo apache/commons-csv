@@ -901,12 +901,12 @@ public class CSVPrinterTest {
 
     @Test
     public void testNewCsvPrinterAppendableNullFormat() {
-        assertThrows(IllegalArgumentException.class, () -> new CSVPrinter(new StringWriter(), null));
+        assertThrows(NullPointerException.class, () -> new CSVPrinter(new StringWriter(), null));
     }
 
     @Test
     public void testNewCsvPrinterNullAppendableFormat() {
-        assertThrows(IllegalArgumentException.class, () -> new CSVPrinter(null, CSVFormat.DEFAULT));
+        assertThrows(NullPointerException.class, () -> new CSVPrinter(null, CSVFormat.DEFAULT));
     }
 
     @Test

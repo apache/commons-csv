@@ -39,6 +39,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.TreeMap;
 
 /**
@@ -200,8 +201,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     @SuppressWarnings("resource")
     public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException {
-        Assertions.notNull(file, "file");
-        Assertions.notNull(format, "format");
+        Objects.requireNonNull(file, "file");
+        Objects.requireNonNull(format, "format");
         return new CSVParser(new InputStreamReader(new FileInputStream(file), charset), format);
     }
 
@@ -229,8 +230,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     @SuppressWarnings("resource")
     public static CSVParser parse(final InputStream inputStream, final Charset charset, final CSVFormat format)
             throws IOException {
-        Assertions.notNull(inputStream, "inputStream");
-        Assertions.notNull(format, "format");
+        Objects.requireNonNull(inputStream, "inputStream");
+        Objects.requireNonNull(format, "format");
         return parse(new InputStreamReader(inputStream, charset), format);
     }
 
@@ -251,8 +252,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @since 1.5
      */
     public static CSVParser parse(final Path path, final Charset charset, final CSVFormat format) throws IOException {
-        Assertions.notNull(path, "path");
-        Assertions.notNull(format, "format");
+        Objects.requireNonNull(path, "path");
+        Objects.requireNonNull(format, "format");
         return parse(Files.newInputStream(path), charset, format);
     }
 
@@ -293,8 +294,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If an I/O error occurs
      */
     public static CSVParser parse(final String string, final CSVFormat format) throws IOException {
-        Assertions.notNull(string, "string");
-        Assertions.notNull(format, "format");
+        Objects.requireNonNull(string, "string");
+        Objects.requireNonNull(format, "format");
 
         return new CSVParser(new StringReader(string), format);
     }
@@ -322,9 +323,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If an I/O error occurs
      */
     public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException {
-        Assertions.notNull(url, "url");
-        Assertions.notNull(charset, "charset");
-        Assertions.notNull(format, "format");
+        Objects.requireNonNull(url, "url");
+        Objects.requireNonNull(charset, "charset");
+        Objects.requireNonNull(format, "format");
 
         return new CSVParser(new InputStreamReader(url.openStream(), charset), format);
     }
@@ -403,8 +404,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     @SuppressWarnings("resource")
     public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber)
         throws IOException {
-        Assertions.notNull(reader, "reader");
-        Assertions.notNull(format, "format");
+        Objects.requireNonNull(reader, "reader");
+        Objects.requireNonNull(format, "format");
 
         this.format = format;
         this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
