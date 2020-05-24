@@ -190,7 +190,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param file
      *            a CSV file. Must not be null.
      * @param charset
-     *            A Charset
+     *            The Charset to decode the given file.
      * @param format
      *            the CSVFormat used for CSV parsing. Must not be null.
      * @return a new parser
@@ -217,7 +217,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param inputStream
      *            an InputStream containing CSV-formatted input. Must not be null.
      * @param charset
-     *            a Charset.
+     *            The Charset to decode the given file.
      * @param format
      *            the CSVFormat used for CSV parsing. Must not be null.
      * @return a new CSVParser configured with the given reader and format.
@@ -241,7 +241,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param path
      *            a CSV file. Must not be null.
      * @param charset
-     *            A Charset
+     *            The Charset to decode the given file.
      * @param format
      *            the CSVFormat used for CSV parsing. Must not be null.
      * @return a new parser
