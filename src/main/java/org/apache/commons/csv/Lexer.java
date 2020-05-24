@@ -60,10 +60,6 @@ final class Lexer implements Closeable {
     private final ExtendedBufferedReader reader;
     private String firstEol;
 
-    String getFirstEol(){
-        return firstEol;
-    }
-
     Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
         this.reader = reader;
         this.delimiter = format.getDelimiter();
@@ -72,6 +68,94 @@ final class Lexer implements Closeable {
         this.commentStart = mapNullToDisabled(format.getCommentMarker());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
+    }
+
+    /**
+     * Closes resources.
+     *
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    @Override
+    public void close() throws IOException {
+        reader.close();
+    }
+
+    /**
+     * Returns the current character position
+     *
+     * @return the current character position
+     */
+    long getCharacterPosition() {
+        return reader.getPosition();
+    }
+
+    /**
+     * Returns the current line number
+     *
+     * @return the current line number
+     */
+    long getCurrentLineNumber() {
+        return reader.getCurrentLineNumber();
+    }
+
+    String getFirstEol(){
+        return firstEol;
+    }
+
+    boolean isClosed() {
+        return reader.isClosed();
+    }
+
+    boolean isCommentStart(final int ch) {
+        return ch == commentStart;
+    }
+
+    boolean isDelimiter(final int ch) {
+        return ch == delimiter;
+    }
+
+    /**
+     * @return true if the given character indicates end of file
+     */
+    boolean isEndOfFile(final int ch) {
+        return ch == END_OF_STREAM;
+    }
+
+    boolean isEscape(final int ch) {
+        return ch == escape;
+    }
+
+    private boolean isMetaChar(final int ch) {
+        return ch == delimiter ||
+               ch == escape ||
+               ch == quoteChar ||
+               ch == commentStart;
+    }
+
+    boolean isQuoteChar(final int ch) {
+        return ch == quoteChar;
+    }
+
+    /**
+     * Checks if the current character represents the start of a line: a CR, LF or is at the start of the file.
+     *
+     * @param ch the character to check
+     * @return true if the character is at the start of a line.
+     */
+    boolean isStartOfLine(final int ch) {
+        return ch == LF || ch == CR || ch == UNDEFINED;
+    }
+
+    /**
+     * @return true if the given char is a whitespace character
+     */
+    boolean isWhitespace(final int ch) {
+        return !isDelimiter(ch) && Character.isWhitespace((char) ch);
+    }
+
+    private char mapNullToDisabled(final Character c) {
+        return c == null ? DISABLED : c.charValue();
     }
 
     /**
@@ -171,59 +255,6 @@ final class Lexer implements Closeable {
     }
 
     /**
-     * Parses a simple token.
-     * <p/>
-     * Simple token are tokens which are not surrounded by encapsulators. A simple token might contain escaped
-     * delimiters (as \, or \;). The token is finished when one of the following conditions become true:
-     * <ul>
-     * <li>end of line has been reached (EORECORD)</li>
-     * <li>end of stream has been reached (EOF)</li>
-     * <li>an unescaped delimiter has been reached (TOKEN)</li>
-     * </ul>
-     *
-     * @param token
-     *            the current token
-     * @param ch
-     *            the current character
-     * @return the filled token
-     * @throws IOException
-     *             on stream access error
-     */
-    private Token parseSimpleToken(final Token token, int ch) throws IOException {
-        // Faster to use while(true)+break than while(token.type == INVALID)
-        while (true) {
-            if (readEndOfLine(ch)) {
-                token.type = EORECORD;
-                break;
-            } else if (isEndOfFile(ch)) {
-                token.type = EOF;
-                token.isReady = true; // There is data at EOF
-                break;
-            } else if (isDelimiter(ch)) {
-                token.type = TOKEN;
-                break;
-            } else if (isEscape(ch)) {
-                final int unescaped = readEscape();
-                if (unescaped == END_OF_STREAM) { // unexpected char after escape
-                    token.content.append((char) ch).append((char) reader.getLastChar());
-                } else {
-                    token.content.append((char) unescaped);
-                }
-                ch = reader.read(); // continue
-            } else {
-                token.content.append((char) ch);
-                ch = reader.read(); // continue
-            }
-        }
-
-        if (ignoreSurroundingSpaces) {
-            trimTrailingSpaces(token.content);
-        }
-
-        return token;
-    }
-
-    /**
      * Parses an encapsulated token.
      * <p/>
      * Encapsulated tokens are surrounded by the given encapsulating-string. The encapsulator itself might be included
@@ -294,26 +325,84 @@ final class Lexer implements Closeable {
         }
     }
 
-    private char mapNullToDisabled(final Character c) {
-        return c == null ? DISABLED : c.charValue();
+    /**
+     * Parses a simple token.
+     * <p/>
+     * Simple token are tokens which are not surrounded by encapsulators. A simple token might contain escaped
+     * delimiters (as \, or \;). The token is finished when one of the following conditions become true:
+     * <ul>
+     * <li>end of line has been reached (EORECORD)</li>
+     * <li>end of stream has been reached (EOF)</li>
+     * <li>an unescaped delimiter has been reached (TOKEN)</li>
+     * </ul>
+     *
+     * @param token
+     *            the current token
+     * @param ch
+     *            the current character
+     * @return the filled token
+     * @throws IOException
+     *             on stream access error
+     */
+    private Token parseSimpleToken(final Token token, int ch) throws IOException {
+        // Faster to use while(true)+break than while(token.type == INVALID)
+        while (true) {
+            if (readEndOfLine(ch)) {
+                token.type = EORECORD;
+                break;
+            } else if (isEndOfFile(ch)) {
+                token.type = EOF;
+                token.isReady = true; // There is data at EOF
+                break;
+            } else if (isDelimiter(ch)) {
+                token.type = TOKEN;
+                break;
+            } else if (isEscape(ch)) {
+                final int unescaped = readEscape();
+                if (unescaped == END_OF_STREAM) { // unexpected char after escape
+                    token.content.append((char) ch).append((char) reader.getLastChar());
+                } else {
+                    token.content.append((char) unescaped);
+                }
+                ch = reader.read(); // continue
+            } else {
+                token.content.append((char) ch);
+                ch = reader.read(); // continue
+            }
+        }
+
+        if (ignoreSurroundingSpaces) {
+            trimTrailingSpaces(token.content);
+        }
+
+        return token;
     }
 
     /**
-     * Returns the current line number
+     * Greedily accepts \n, \r and \r\n This checker consumes silently the second control-character...
      *
-     * @return the current line number
+     * @return true if the given or next character is a line-terminator
      */
-    long getCurrentLineNumber() {
-        return reader.getCurrentLineNumber();
-    }
+    boolean readEndOfLine(int ch) throws IOException {
+        // check if we have \r\n...
+        if (ch == CR && reader.lookAhead() == LF) {
+            // note: does not change ch outside of this method!
+            ch = reader.read();
+            // Save the EOL state
+            if (firstEol == null) {
+                this.firstEol = Constants.CRLF;
+            }
+        }
+        // save EOL state here.
+        if (firstEol == null) {
+            if (ch == LF) {
+                this.firstEol = LF_STRING;
+            } else if (ch == CR) {
+                this.firstEol = CR_STRING;
+            }
+        }
 
-    /**
-     * Returns the current character position
-     *
-     * @return the current character position
-     */
-    long getCharacterPosition() {
-        return reader.getPosition();
+        return ch == LF || ch == CR;
     }
 
     // TODO escape handling needs more work
@@ -368,94 +457,5 @@ final class Lexer implements Closeable {
         if (length != buffer.length()) {
             buffer.setLength(length);
         }
-    }
-
-    /**
-     * Greedily accepts \n, \r and \r\n This checker consumes silently the second control-character...
-     *
-     * @return true if the given or next character is a line-terminator
-     */
-    boolean readEndOfLine(int ch) throws IOException {
-        // check if we have \r\n...
-        if (ch == CR && reader.lookAhead() == LF) {
-            // note: does not change ch outside of this method!
-            ch = reader.read();
-            // Save the EOL state
-            if (firstEol == null) {
-                this.firstEol = Constants.CRLF;
-            }
-        }
-        // save EOL state here.
-        if (firstEol == null) {
-            if (ch == LF) {
-                this.firstEol = LF_STRING;
-            } else if (ch == CR) {
-                this.firstEol = CR_STRING;
-            }
-        }
-
-        return ch == LF || ch == CR;
-    }
-
-    boolean isClosed() {
-        return reader.isClosed();
-    }
-
-    /**
-     * @return true if the given char is a whitespace character
-     */
-    boolean isWhitespace(final int ch) {
-        return !isDelimiter(ch) && Character.isWhitespace((char) ch);
-    }
-
-    /**
-     * Checks if the current character represents the start of a line: a CR, LF or is at the start of the file.
-     *
-     * @param ch the character to check
-     * @return true if the character is at the start of a line.
-     */
-    boolean isStartOfLine(final int ch) {
-        return ch == LF || ch == CR || ch == UNDEFINED;
-    }
-
-    /**
-     * @return true if the given character indicates end of file
-     */
-    boolean isEndOfFile(final int ch) {
-        return ch == END_OF_STREAM;
-    }
-
-    boolean isDelimiter(final int ch) {
-        return ch == delimiter;
-    }
-
-    boolean isEscape(final int ch) {
-        return ch == escape;
-    }
-
-    boolean isQuoteChar(final int ch) {
-        return ch == quoteChar;
-    }
-
-    boolean isCommentStart(final int ch) {
-        return ch == commentStart;
-    }
-
-    private boolean isMetaChar(final int ch) {
-        return ch == delimiter ||
-               ch == escape ||
-               ch == quoteChar ||
-               ch == commentStart;
-    }
-
-    /**
-     * Closes resources.
-     *
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    @Override
-    public void close() throws IOException {
-        reader.close();
     }
 }

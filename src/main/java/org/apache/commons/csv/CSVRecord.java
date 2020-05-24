@@ -229,17 +229,6 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Checks whether a given columns is mapped and has a value.
-     *
-     * @param name
-     *            the name of the column to be retrieved.
-     * @return whether a given columns is mapped and has a value
-     */
-    public boolean isSet(final String name) {
-        return isMapped(name) && getHeaderMapRaw().get(name).intValue() < values.length;
-    }
-
-    /**
      * Checks whether a column with given index has a value.
      *
      * @param index
@@ -248,6 +237,17 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     public boolean isSet(final int index) {
         return 0 <= index && index < values.length;
+    }
+
+    /**
+     * Checks whether a given columns is mapped and has a value.
+     *
+     * @param name
+     *            the name of the column to be retrieved.
+     * @return whether a given columns is mapped and has a value
+     */
+    public boolean isSet(final String name) {
+        return isMapped(name) && getHeaderMapRaw().get(name).intValue() < values.length;
     }
 
     /**

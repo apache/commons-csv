@@ -185,6 +185,26 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
+     * Header information based on name and position.
+     */
+    private static final class Headers {
+        /**
+         * Header column positions (0-based)
+         */
+        final Map<String, Integer> headerMap;
+
+        /**
+         * Header names in column order
+         */
+        final List<String> headerNames;
+
+        Headers(final Map<String, Integer> headerMap, final List<String> headerNames) {
+            this.headerMap = headerMap;
+            this.headerNames = headerNames;
+        }
+    }
+
+    /**
      * Creates a parser for the given {@link File}.
      *
      * @param file
@@ -281,6 +301,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         return new CSVParser(reader, format);
     }
 
+    // the following objects are shared to reduce garbage
+
     /**
      * Creates a parser for the given {@link String}.
      *
@@ -300,8 +322,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
         return new CSVParser(new StringReader(string), format);
     }
-
-    // the following objects are shared to reduce garbage
 
     /**
      * Creates and returns a parser for the given URL, which the caller MUST close.
@@ -446,26 +466,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         return this.format.getIgnoreHeaderCase() ?
                 new TreeMap<>(String.CASE_INSENSITIVE_ORDER) :
                 new LinkedHashMap<>();
-    }
-
-    /**
-     * Header information based on name and position.
-     */
-    private static final class Headers {
-        /**
-         * Header column positions (0-based)
-         */
-        final Map<String, Integer> headerMap;
-
-        /**
-         * Header names in column order
-         */
-        final List<String> headerNames;
-
-        Headers(final Map<String, Integer> headerMap, final List<String> headerNames) {
-            this.headerMap = headerMap;
-            this.headerNames = headerNames;
-        }
     }
 
     /**
