@@ -106,7 +106,7 @@ import java.util.Set;
  * </pre>
  *
  * <p>
- * Calling {@link #withHeader(String...)} let's you use the given names to address values in a {@link CSVRecord}, and
+ * Calling {@link #withHeader(String...)} lets you use the given names to address values in a {@link CSVRecord}, and
  * assumes that your CSV source does not contain a first record that also defines column names.
  *
  * If it does, then you are overriding this metadata with your names and you should skip the first record by calling
@@ -284,12 +284,12 @@ public final class CSVFormat implements Serializable {
      * Settings are:
      * </p>
      * <ul>
-     * <li>{@code {@link #withDelimiter(char) withDelimiter(',')}}</li>
-     * <li>{@code {@link #withQuote(char) withQuote('"')}}</li>
-     * <li>{@code {@link #withRecordSeparator(String) withRecordSeparator("\r\n")}}</li>
-     * <li>{@code {@link #withIgnoreEmptyLines(boolean) withIgnoreEmptyLines(false)}}</li>
-     * <li>{@code {@link #withAllowMissingColumnNames(boolean) withAllowMissingColumnNames(true)}}</li>
-     * <li>{@code {@link #withAllowDuplicateHeaderNames(boolean) withAllowDuplicateHeaderNames(true)}}</li>
+     * <li>{@code withDelimiter(',')}</li>
+     * <li>{@code withQuote('"')}</li>
+     * <li>{@code withRecordSeparator("\r\n")}</li>
+     * <li>{@code withIgnoreEmptyLines(false)}</li>
+     * <li>{@code withAllowMissingColumnNames(true)}</li>
+     * <li>{@code withAllowDuplicateHeaderNames(true)}</li>
      * </ul>
      * <p>
      * Note: This is currently like {@link #RFC4180} plus {@link #withAllowMissingColumnNames(boolean)
@@ -894,7 +894,9 @@ public final class CSVFormat implements Serializable {
         final StringWriter out = new StringWriter();
         try (CSVPrinter csvPrinter = new CSVPrinter(out, this)) {
             csvPrinter.printRecord(values);
-            return out.toString().trim();
+            String res = out.toString();
+            int len = recordSeparator != null ? res.length() - recordSeparator.length() : res.length();
+            return res.substring(0, len);
         } catch (final IOException e) {
             // should not happen because a StringWriter does not do IO.
             throw new IllegalStateException(e);
@@ -1259,21 +1261,19 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Prints to the specified output.
+     * Prints to the specified output, returns a {@code CSVPrinter} which the caller MUST close.
      *
      * <p>
      * See also {@link CSVPrinter}.
      * </p>
      *
-     * @param out
-     *            the output.
-     * @param charset
-     *            A charset.
+     * @param out the output.
+     * @param charset A charset.
      * @return a printer to an output.
-     * @throws IOException
-     *             thrown if the optional header cannot be printed.
+     * @throws IOException thrown if the optional header cannot be printed.
      * @since 1.5
      */
+    @SuppressWarnings("resource")
     public CSVPrinter print(final Path out, final Charset charset) throws IOException {
         return print(Files.newBufferedWriter(out, charset));
     }
@@ -1408,6 +1408,7 @@ public final class CSVFormat implements Serializable {
                 if (pos > start) {
                     out.append(builder.substring(start, pos));
                     builder.setLength(0);
+                    pos = -1;
                 }
                 if (c == LF) {
                     c = 'n';

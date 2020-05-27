@@ -15,14 +15,17 @@
 
 language: java
 
-jdk:
-  - oraclejdk11
-  - openjdk8
-  - openjdk11
-  - openjdk12
-  - openjdk13
-  - openjdk-ea
-
+matrix:
+  include:
+    - jdk: oraclejdk11
+    - jdk: openjdk8
+    - jdk: openjdk11
+    - jdk: openjdk12
+    - jdk: openjdk13
+    - jdk: openjdk14
+    - jdk: openjdk-ea
+  allow_failures:
+    - jdk: openjdk-ea
 after_success:
   - mvn -B -V clean test jacoco:report coveralls:report -Ptravis-jacoco
   

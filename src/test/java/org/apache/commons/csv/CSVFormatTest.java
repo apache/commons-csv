@@ -36,8 +36,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Reader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
@@ -1175,4 +1180,102 @@ public class CSVFormatTest {
         assertEquals(System.getProperty("line.separator"), formatWithRecordSeparator.getRecordSeparator());
     }
 
+    @Test
+    public void testPrintWithEscapesEndWithCRLF() throws IOException {
+        final Reader in = new StringReader("x,y,x\r\na,?b,c\r\n");
+        final Appendable out = new StringBuilder();
+        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',').withQuote(null).withRecordSeparator(CRLF);
+        format.print(in,out,true);
+        assertEquals("x?,y?,x?r?na?,??b?,c?r?n", out.toString());
+    }
+
+    @Test
+    public void testPrintWithEscapesEndWithoutCRLF() throws IOException {
+        final Reader in = new StringReader("x,y,x");
+        final Appendable out = new StringBuilder();
+        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',').withQuote(null).withRecordSeparator(CRLF);
+        format.print(in,out,true);
+        assertEquals("x?,y?,x", out.toString());
+    }
+
+    @Test
+    public void testFormatToString() throws IOException {
+        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',')
+                .withQuoteMode(QuoteMode.MINIMAL).withRecordSeparator(CRLF).withQuote('"')
+                .withNullString("").withIgnoreHeaderCase(true)
+                .withHeaderComments("This is HeaderComments").withHeader("col1","col2","col3");
+        assertEquals("Delimiter=<,> Escape=<?> QuoteChar=<\"> QuoteMode=<MINIMAL> NullString=<> RecordSeparator=<" +CRLF+
+                "> IgnoreHeaderCase:ignored SkipHeaderRecord:false HeaderComments:[This is HeaderComments] Header:[col1, col2, col3]", format.toString());
+    }
+
+    @Test
+    public void testDelimiterSameAsRecordSeparatorThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.newFormat(CR));
+    }
+
+    @Test
+    public void testWithHeaderEnumNull() {
+        final CSVFormat format =  CSVFormat.DEFAULT;
+        Class<Enum<?>> simpleName = null;
+        format.withHeader(simpleName);
+    }
+
+    @Test
+    public  void testWithHeaderResultSetNull() throws SQLException {
+        final CSVFormat format = CSVFormat.DEFAULT;
+        ResultSet resultSet = null;
+        format.withHeader(resultSet);
+    }
+
+    @Test
+    public void testPrintWithQuoteModeIsNONE() throws IOException {
+        final Reader in = new StringReader("a,b,c");
+        final Appendable out = new StringBuilder();
+        CSVFormat format = CSVFormat.RFC4180.withDelimiter(',').withQuote('"').withEscape('?').withQuoteMode(QuoteMode.NONE);
+        format.print(in, out, true);
+        assertEquals("a?,b?,c", out.toString());
+    }
+
+    @Test
+    public void testPrintWithQuotes() throws IOException {
+        final Reader in = new StringReader("\"a,b,c\r\nx,y,z");
+        final Appendable out = new StringBuilder();
+        CSVFormat format = CSVFormat.RFC4180.withDelimiter(',').withQuote('"').withEscape('?').withQuoteMode(QuoteMode.NON_NUMERIC);
+        format.print(in, out, true);
+        assertEquals("\"\"\"\"a,b,c\r\nx,y,z\"", out.toString());
+    }
+
+    @Test
+    public void testPrintWithoutQuotes() throws IOException {
+        final Reader in = new StringReader("");
+        final Appendable out = new StringBuilder();
+        CSVFormat format = CSVFormat.RFC4180.withDelimiter(',').withQuote('"').withEscape('?').withQuoteMode(QuoteMode.NON_NUMERIC);
+        format.print(in, out, true);
+        assertEquals("\"\"", out.toString());
+    }
+
+    @Test
+    public void testTrim() throws IOException {
+        CSVFormat formatWithTrim = CSVFormat.DEFAULT.withDelimiter(',').withTrim().withQuote(null).withRecordSeparator(CRLF);
+
+        CharSequence in = "a,b,c";
+        final StringBuilder out = new StringBuilder();
+        formatWithTrim.print(in, out, true);
+        assertEquals("a,b,c", out.toString());
+
+        in = new StringBuilder(" x,y,z");
+        out.setLength(0);
+        formatWithTrim.print(in, out, true);
+        assertEquals("x,y,z", out.toString());
+
+        in = new StringBuilder("");
+        out.setLength(0);
+        formatWithTrim.print(in, out, true);
+        assertEquals("", out.toString());
+
+        in = new StringBuilder("header\r\n");
+        out.setLength(0);
+        formatWithTrim.print(in, out, true);
+        assertEquals("header", out.toString());
+    }
 }

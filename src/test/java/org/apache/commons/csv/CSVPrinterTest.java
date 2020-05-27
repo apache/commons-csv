@@ -34,6 +34,8 @@ import java.io.PrintStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.io.Reader;
+import java.io.FileReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.sql.BatchUpdateException;
@@ -308,6 +310,16 @@ public class CSVPrinterTest {
         //
         // """""",\\,"\""\" (quoted, embedded DQ escaped)
         tryFormat(list, '"',  '"',  "\"\"\"\"\"\",\\\\,\"\\\"\"\\\"");
+    }
+
+    @Test
+    public void testCSV259() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final Reader reader = new FileReader("src/test/resources/CSV-259/sample.txt");
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape('!').withQuote(null))) {
+            printer.print(reader);
+            assertEquals("x!,y!,z", sw.toString());
+        }
     }
 
     @Test
@@ -889,12 +901,12 @@ public class CSVPrinterTest {
 
     @Test
     public void testNewCsvPrinterAppendableNullFormat() {
-        assertThrows(IllegalArgumentException.class, () -> new CSVPrinter(new StringWriter(), null));
+        assertThrows(NullPointerException.class, () -> new CSVPrinter(new StringWriter(), null));
     }
 
     @Test
     public void testNewCsvPrinterNullAppendableFormat() {
-        assertThrows(IllegalArgumentException.class, () -> new CSVPrinter(null, CSVFormat.DEFAULT));
+        assertThrows(NullPointerException.class, () -> new CSVPrinter(null, CSVFormat.DEFAULT));
     }
 
     @Test
@@ -1523,6 +1535,28 @@ public class CSVPrinterTest {
             printer.print(" A ");
             printer.print(" B ");
             assertEquals("A,B", sw.toString());
+        }
+    }
+
+    @Test
+    public void testNotFlushable() throws IOException {
+        final Appendable out = new StringBuilder();
+        try (final CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT)) {
+            printer.printRecord("a", "b", "c");
+            assertEquals("a,b,c" + recordSeparator, out.toString());
+            printer.flush();
+        }
+    }
+
+    @Test
+    public void testCRComment() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final Object value = "abc";
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentMarker('#'))) {
+            printer.print(value);
+            printer.printComment("This is a comment\r\non multiple lines\rthis is next comment\r");
+            assertEquals("abc" + recordSeparator + "# This is a comment" + recordSeparator + "# on multiple lines"
+                        + recordSeparator + "# this is next comment" + recordSeparator + "# " + recordSeparator, sw.toString());
         }
     }
 

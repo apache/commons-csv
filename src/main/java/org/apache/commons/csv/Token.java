@@ -26,9 +26,6 @@ import static org.apache.commons.csv.Token.Type.INVALID;
  */
 final class Token {
 
-    /** length of the initial token (content-)buffer */
-    private static final int INITIAL_TOKEN_LENGTH = 50;
-
     enum Type {
         /** Token has no valid content, i.e. is in its initialized state. */
         INVALID,
@@ -45,6 +42,9 @@ final class Token {
         /** Token is a comment line. */
         COMMENT
     }
+
+    /** length of the initial token (content-)buffer */
+    private static final int INITIAL_TOKEN_LENGTH = 50;
 
     /** Token type */
     Token.Type type = INVALID;

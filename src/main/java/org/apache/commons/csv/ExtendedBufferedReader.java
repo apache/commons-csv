@@ -53,15 +53,31 @@ final class ExtendedBufferedReader extends BufferedReader {
         super(reader);
     }
 
+    /**
+     * Closes the stream.
+     *
+     * @throws IOException
+     *             If an I/O error occurs
+     */
     @Override
-    public int read() throws IOException {
-        final int current = super.read();
-        if (current == CR || current == LF && lastChar != CR) {
-            eolCounter++;
+    public void close() throws IOException {
+        // Set ivars before calling super close() in case close() throws an IOException.
+        closed = true;
+        lastChar = END_OF_STREAM;
+        super.close();
+    }
+
+    /**
+     * Returns the current line number
+     *
+     * @return the current line number
+     */
+    long getCurrentLineNumber() {
+        // Check if we are at EOL or EOF or just starting
+        if (lastChar == CR || lastChar == LF || lastChar == UNDEFINED || lastChar == END_OF_STREAM) {
+            return eolCounter; // counter is accurate
         }
-        lastChar = current;
-        this.position++;
-        return lastChar;
+        return eolCounter + 1; // Allow for counter being incremented only at EOL
     }
 
     /**
@@ -73,6 +89,47 @@ final class ExtendedBufferedReader extends BufferedReader {
      * @return the last character that was read
      */
     int getLastChar() {
+        return lastChar;
+    }
+
+    /**
+     * Gets the character position in the reader.
+     *
+     * @return the current position in the reader (counting characters, not bytes since this is a Reader)
+     */
+    long getPosition() {
+        return this.position;
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    /**
+     * Returns the next character in the current reader without consuming it. So the next call to {@link #read()} will
+     * still return this value. Does not affect line number or last character.
+     *
+     * @return the next character
+     *
+     * @throws IOException
+     *             if there is an error in reading
+     */
+    int lookAhead() throws IOException {
+        super.mark(1);
+        final int c = super.read();
+        super.reset();
+
+        return c;
+    }
+
+    @Override
+    public int read() throws IOException {
+        final int current = super.read();
+        if (current == CR || current == LF && lastChar != CR) {
+            eolCounter++;
+        }
+        lastChar = current;
+        this.position++;
         return lastChar;
     }
 
@@ -129,63 +186,6 @@ final class ExtendedBufferedReader extends BufferedReader {
         }
 
         return line;
-    }
-
-    /**
-     * Returns the next character in the current reader without consuming it. So the next call to {@link #read()} will
-     * still return this value. Does not affect line number or last character.
-     *
-     * @return the next character
-     *
-     * @throws IOException
-     *             if there is an error in reading
-     */
-    int lookAhead() throws IOException {
-        super.mark(1);
-        final int c = super.read();
-        super.reset();
-
-        return c;
-    }
-
-    /**
-     * Returns the current line number
-     *
-     * @return the current line number
-     */
-    long getCurrentLineNumber() {
-        // Check if we are at EOL or EOF or just starting
-        if (lastChar == CR || lastChar == LF || lastChar == UNDEFINED || lastChar == END_OF_STREAM) {
-            return eolCounter; // counter is accurate
-        }
-        return eolCounter + 1; // Allow for counter being incremented only at EOL
-    }
-
-    /**
-     * Gets the character position in the reader.
-     *
-     * @return the current position in the reader (counting characters, not bytes since this is a Reader)
-     */
-    long getPosition() {
-        return this.position;
-    }
-
-    public boolean isClosed() {
-        return closed;
-    }
-
-    /**
-     * Closes the stream.
-     *
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    @Override
-    public void close() throws IOException {
-        // Set ivars before calling super close() in case close() throws an IOException.
-        closed = true;
-        lastChar = END_OF_STREAM;
-        super.close();
     }
 
 }

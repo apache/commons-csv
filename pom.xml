@@ -23,7 +23,7 @@
     <version>50</version>
   </parent>
   <artifactId>commons-csv</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.9-SNAPSHOT</version>
   <name>Apache Commons CSV</name>
   <url>https://commons.apache.org/proper/commons-csv/</url>
   <description>The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.</description>
@@ -32,7 +32,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.6.0</version>
+      <version>5.6.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -44,7 +44,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.2.4</version>
+      <version>3.3.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -56,7 +56,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.9</version>
+      <version>3.10</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -137,11 +137,11 @@
   </distributionManagement>
 
   <properties>
-    <commons.release.version>1.8</commons.release.version>
+    <commons.release.version>1.9</commons.release.version>
     <commons.release.desc>(Java 8)</commons.release.desc>
     <!-- The RC version used in the staging repository URL. -->
-    <commons.rc.version>RC2</commons.rc.version>
-    <commons.bc.version>1.7</commons.bc.version>
+    <commons.rc.version>RC1</commons.rc.version>
+    <commons.bc.version>1.8</commons.bc.version>
     <commons.componentid>csv</commons.componentid>
     <commons.module.name>org.apache.commons.csv</commons.module.name>
     <commons.jira.id>CSV</commons.jira.id>
@@ -159,7 +159,7 @@
     <checkstyle.header.file>${basedir}/LICENSE-header.txt</checkstyle.header.file>
     <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt, **/maven-archiver/pom.properties</checkstyle.resourceExcludes>
 
-    <pmd.version>3.12.0</pmd.version>
+    <commons.pmd.version>3.13.0</commons.pmd.version>
     <japicmp.skip>false</japicmp.skip>
     
     <commons.release.isDistModule>true</commons.release.isDistModule>
@@ -168,7 +168,7 @@
   </properties>
 
   <build>
-    <defaultGoal>clean verify apache-rat:check clirr:check javadoc:javadoc</defaultGoal>
+    <defaultGoal>clean verify apache-rat:check clirr:check checkstyle:check spotbugs:check javadoc:javadoc</defaultGoal>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -205,31 +205,28 @@
         <configuration>
           <configLocation>${basedir}/checkstyle.xml</configLocation>
           <enableRulesSummary>false</enableRulesSummary>
-          <suppressionsLocation>${basedir}/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <suppressionsLocation>${basedir}/src/site/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
         </configuration>
       </plugin>
-      <!-- Allow findbugs to be run interactively; keep in sync with report config below -->
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>${commons.findbugs.version}</version>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${commons.spotbugs.version}</version>
         <configuration>
-          <threshold>Normal</threshold>
-          <effort>Default</effort>
-          <excludeFilterFile>${basedir}/src/main/resources/findbugs/findbugs-exclude-filter.xml</excludeFilterFile>
+          <excludeFilterFile>${basedir}/src/site/resources/spotbugs/spotbugs-exclude-filter.xml</excludeFilterFile>
         </configuration>
       </plugin>
       <!-- Allow pmd to be run interactively; keep in sync with report config below -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>${pmd.version}</version>
+        <version>${commons.pmd.version}</version>
         <configuration>
           <targetJdk>${maven.compiler.target}</targetJdk>
           <skipEmptyReport>false</skipEmptyReport>
           <analysisCache>true</analysisCache>
           <rulesets>
-            <ruleset>${basedir}/src/main/resources/pmd/pmd-ruleset.xml</ruleset>
+            <ruleset>${basedir}/src/site/resources/pmd/pmd-ruleset.xml</ruleset>
           </rulesets>
         </configuration>
       </plugin>
@@ -259,6 +256,9 @@
             <exclude>src/test/resources/ferc.gov/contract.txt</exclude>
             <exclude>src/test/resources/ferc.gov/transaction.txt</exclude>
             <exclude>src/test/resources/**/*.bin</exclude>
+            <exclude>src/test/resources/CSV-259/sample.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV246.csv</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV246_checkWithNoComment.txt</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -276,7 +276,7 @@
         <configuration>
           <configLocation>${basedir}/checkstyle.xml</configLocation>
           <enableRulesSummary>false</enableRulesSummary>
-          <suppressionsLocation>${basedir}/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <suppressionsLocation>${basedir}/src/site/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
         </configuration>
         <!-- We need to specify reportSets because 2.9.1 creates two reports -->
         <reportSets>
@@ -288,26 +288,24 @@
         </reportSets>
       </plugin>
       <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${commons.spotbugs.version}</version>
+        <configuration>
+          <excludeFilterFile>${basedir}/src/site/resources/spotbugs/spotbugs-exclude-filter.xml</excludeFilterFile>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>${pmd.version}</version>
+        <version>${commons.pmd.version}</version>
         <configuration>
           <targetJdk>${maven.compiler.target}</targetJdk>
           <skipEmptyReport>false</skipEmptyReport>
           <analysisCache>true</analysisCache>
           <rulesets>
-            <ruleset>${basedir}/src/main/resources/pmd/pmd-ruleset.xml</ruleset>
+            <ruleset>${basedir}/src/site/resources/pmd/pmd-ruleset.xml</ruleset>
           </rulesets>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>${commons.findbugs.version}</version>
-        <configuration>
-          <threshold>Normal</threshold>
-          <effort>Default</effort>
-          <excludeFilterFile>${basedir}/src/main/resources/findbugs/findbugs-exclude-filter.xml</excludeFilterFile>
         </configuration>
       </plugin>
       <plugin>
@@ -378,6 +376,9 @@
             <exclude>src/test/resources/ferc.gov/contract.txt</exclude>
             <exclude>src/test/resources/ferc.gov/transaction.txt</exclude>
             <exclude>src/test/resources/**/*.bin</exclude>
+            <exclude>src/test/resources/CSV-259/sample.txt</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV246.csv</exclude>
+            <exclude>src/test/resources/CSVFileParser/testCSV246_checkWithNoComment.txt</exclude>
           </excludes>
         </configuration>
       </plugin>

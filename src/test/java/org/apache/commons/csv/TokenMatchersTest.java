@@ -22,6 +22,7 @@ import static org.apache.commons.csv.TokenMatchers.isReady;
 import static org.apache.commons.csv.TokenMatchers.matches;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,4 +68,10 @@ public class TokenMatchersTest {
         assertFalse(matches(Token.Type.EORECORD, "not the content").matches(token));
     }
 
+    @Test
+    public void testToString() {
+        assertTrue(matches(Token.Type.TOKEN, "content").matches(token));
+        assertEquals("TOKEN", token.type.name());
+        assertEquals("TOKEN [content]", token.toString());
+    }
 }

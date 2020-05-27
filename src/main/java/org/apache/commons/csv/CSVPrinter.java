@@ -28,6 +28,7 @@ import java.sql.Clob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Prints values in a {@link CSVFormat CSV format}.
@@ -92,8 +93,8 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             thrown if the parameters of the format are inconsistent or if either out or format are null.
      */
     public CSVPrinter(final Appendable out, final CSVFormat format) throws IOException {
-        Assertions.notNull(out, "out");
-        Assertions.notNull(format, "format");
+        Objects.requireNonNull(out, "out");
+        Objects.requireNonNull(format, "format");
 
         this.out = out;
         this.format = format;
@@ -381,6 +382,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         while (resultSet.next()) {
             for (int i = 1; i <= columnCount; i++) {
                 final Object object = resultSet.getObject(i);
+                // TODO Who manages the Clob? The JDBC driver or must we close it? Is it driver-dependent?
                 print(object instanceof Clob ? ((Clob) object).getCharacterStream() : object);
             }
             println();
