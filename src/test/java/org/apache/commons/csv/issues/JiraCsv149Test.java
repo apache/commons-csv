@@ -30,15 +30,17 @@ import org.junit.jupiter.api.Test;
 @Disabled
 public class JiraCsv149Test {
 
+    private static final String CR_LF = "\r\n";
+
     @Test
     public void testJiraCsv149EndWithEOL() throws IOException {
         testJiraCsv149EndWithEolAtEof(true);
     }
 
     private void testJiraCsv149EndWithEolAtEof(boolean eolAtEof) throws IOException {
-        String source = "A,B,C,D\r\n" + "a1,b1,c1,d1\r\n" + "a2,b2,c2,d2";
+        String source = "A,B,C,D" + CR_LF + "a1,b1,c1,d1" + CR_LF + "a2,b2,c2,d2";
         if (eolAtEof) {
-            source += "\\r\\n";
+            source += CR_LF;
         }
         final StringReader records = new StringReader(source);
         final CSVFormat format = CSVFormat.RFC4180.withFirstRecordAsHeader().withQuote('"');
