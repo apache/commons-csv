@@ -1,0 +1,16 @@
+A,B,C,"D"
+# plain values
+a,b,c,d
+# spaces before and after
+ e ,f , g,h 
+# quoted: with spaces before and after
+" i ", " j " , " k "," l " 
+# empty values
+,,,
+# empty quoted values
+"","","",""
+# 3 empty lines
+
+
+
+# EOF on next line

@@ -75,6 +75,6 @@ public class JiraCsv248Test {
     }
 
     private static InputStream getTestInput() {
-        return ClassLoader.getSystemClassLoader().getResourceAsStream("CSV-248/csvRecord.bin");
+        return ClassLoader.getSystemClassLoader().getResourceAsStream("org/apache/commons/csv/CSV-248/csvRecord.bin");
     }
 }

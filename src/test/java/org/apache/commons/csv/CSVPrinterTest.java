@@ -315,7 +315,7 @@ public class CSVPrinterTest {
     @Test
     public void testCSV259() throws IOException {
         final StringWriter sw = new StringWriter();
-        final Reader reader = new FileReader("src/test/resources/CSV-259/sample.txt");
+        final Reader reader = new FileReader("src/test/resources/org/apache/commons/csv/CSV-259/sample.txt");
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape('!').withQuote(null))) {
             printer.print(reader);
             assertEquals("x!,y!,z", sw.toString());

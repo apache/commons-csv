@@ -34,7 +34,7 @@ public class JiraCsv198Test {
 
     @Test
     public void test() throws UnsupportedEncodingException, IOException {
-        final InputStream pointsOfReference = getClass().getResourceAsStream("/CSV-198/optd_por_public.csv");
+        final InputStream pointsOfReference = getClass().getResourceAsStream("/org/apache/commons/csv/CSV-198/optd_por_public.csv");
         assertNotNull(pointsOfReference);
         try (@SuppressWarnings("resource")
         CSVParser parser = CSV_FORMAT.parse(new InputStreamReader(pointsOfReference, "UTF-8"))) {

@@ -40,7 +40,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 public class CSVFileParserTest {
 
-    private static final File BASE = new File("src/test/resources/CSVFileParser");
+    private static final File BASE = new File("src/test/resources/org/apache/commons/csv/CSVFileParser");
 
     private String readTestData(final BufferedReader reader) throws IOException {
         String line;
@@ -134,7 +134,7 @@ public class CSVFileParserTest {
             assertEquals(line, format.toString(), testFile.getName() + " Expected format ");
 
             // Now parse the file and compare against the expected results
-            final URL resource = ClassLoader.getSystemResource("CSVFileParser/" + split[0]);
+            final URL resource = ClassLoader.getSystemResource("org/apache/commons/csv/CSVFileParser/" + split[0]);
             try (final CSVParser parser = CSVParser.parse(resource, Charset.forName("UTF-8"), format)) {
                 for (final CSVRecord record : parser) {
                     String parsed = Arrays.toString(record.values());

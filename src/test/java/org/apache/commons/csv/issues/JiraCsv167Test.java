@@ -83,7 +83,7 @@ public class JiraCsv167Test {
     }
 
     private Reader getTestInput() {
-        final InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("csv-167/sample1.csv");
+        final InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("org/apache/commons/csv/csv-167/sample1.csv");
         return new InputStreamReader(is);
     }
 }
