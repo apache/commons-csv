@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -80,12 +81,12 @@ public class CSVFormatTest {
 
     @Test
     public void testDelimiterSameAsCommentStartThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter('!').withCommentMarker('!'));
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter("!").withCommentMarker('!'));
     }
 
     @Test
     public void testDelimiterSameAsEscapeThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter('!').withEscape('!'));
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter("!").withEscape('!'));
     }
 
     @Test
@@ -125,7 +126,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsCommentStart() {
-        final CSVFormat right = CSVFormat.newFormat('\'')
+        final CSVFormat right = CSVFormat.newFormat("'")
                 .withQuote('"')
                 .withCommentMarker('#')
                 .withQuoteMode(QuoteMode.ALL);
@@ -137,15 +138,15 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsDelimiter() {
-        final CSVFormat right = CSVFormat.newFormat('!');
-        final CSVFormat left = CSVFormat.newFormat('?');
+        final CSVFormat right = CSVFormat.newFormat("!");
+        final CSVFormat left = CSVFormat.newFormat("?");
 
         assertNotEquals(right, left);
     }
 
     @Test
     public void testEqualsEscape() {
-        final CSVFormat right = CSVFormat.newFormat('\'')
+        final CSVFormat right = CSVFormat.newFormat("'")
                 .withQuote('"')
                 .withCommentMarker('#')
                 .withEscape('+')
@@ -165,7 +166,13 @@ public class CSVFormatTest {
                if (name.startsWith("with")) {
                    for (final Class<?> cls : method.getParameterTypes()) {
                        final String type = cls.getCanonicalName();
-                       if ("boolean".equals(type)) {
+                       if ("withDelimiter".equals(name)) {
+                           assertThrows(InvocationTargetException.class, () -> {
+                              method.invoke(CSVFormat.DEFAULT, new Object[] {null});
+                           });
+                       } else if ("withHeader".equals(name)) { // covered below by String[]
+                           // ignored
+                       } else if ("boolean".equals(type)) {
                            final Object defTrue = method.invoke(CSVFormat.DEFAULT, new Object[] {Boolean.TRUE});
                            final Object defFalse = method.invoke(CSVFormat.DEFAULT, new Object[] {Boolean.FALSE});
                            assertNotEquals(name, type ,defTrue, defFalse);
@@ -193,8 +200,6 @@ public class CSVFormatTest {
                            final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {new Object[] {null, null}});
                            final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {new Object[] {new Object(), new Object()}});
                            assertNotEquals(name, type, a, b);
-                       } else if ("withHeader".equals(name)){ // covered above by String[]
-                           // ignored
                        } else {
                            fail("Unhandled method: "+name + "(" + type + ")");
                        }
@@ -206,7 +211,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsHeader() {
-        final CSVFormat right = CSVFormat.newFormat('\'')
+        final CSVFormat right = CSVFormat.newFormat("'")
                 .withRecordSeparator(CR)
                 .withCommentMarker('#')
                 .withEscape('+')
@@ -223,7 +228,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsIgnoreEmptyLines() {
-        final CSVFormat right = CSVFormat.newFormat('\'')
+        final CSVFormat right = CSVFormat.newFormat("'")
                 .withCommentMarker('#')
                 .withEscape('+')
                 .withIgnoreEmptyLines()
@@ -238,7 +243,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsIgnoreSurroundingSpaces() {
-        final CSVFormat right = CSVFormat.newFormat('\'')
+        final CSVFormat right = CSVFormat.newFormat("'")
                 .withCommentMarker('#')
                 .withEscape('+')
                 .withIgnoreSurroundingSpaces()
@@ -252,7 +257,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsLeftNoQuoteRightQuote() {
-    	final CSVFormat left = CSVFormat.newFormat(',').withQuote(null);
+    	final CSVFormat left = CSVFormat.newFormat(",").withQuote(null);
     	final CSVFormat right = left.withQuote('#');
 
     	assertNotEquals(left, right);
@@ -260,7 +265,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsNoQuotes() {
-    	final CSVFormat left = CSVFormat.newFormat(',').withQuote(null);
+    	final CSVFormat left = CSVFormat.newFormat(",").withQuote(null);
     	final CSVFormat right = left.withQuote(null);
 
     	assertEquals(left, right);
@@ -268,7 +273,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsNullString() {
-        final CSVFormat right = CSVFormat.newFormat('\'')
+        final CSVFormat right = CSVFormat.newFormat("'")
                 .withRecordSeparator(CR)
                 .withCommentMarker('#')
                 .withEscape('+')
@@ -302,7 +307,7 @@ public class CSVFormatTest {
         assertFalse(csvFormatOne.isCommentMarkerSet());
         assertTrue(csvFormatOne.isQuoteCharacterSet());
 
-        assertEquals('|', csvFormatOne.getDelimiter());
+        assertEquals("|", csvFormatOne.getDelimiter());
         assertFalse(csvFormatOne.getAllowMissingColumnNames());
 
         assertTrue(csvFormatOne.isEscapeCharacterSet());
@@ -324,7 +329,7 @@ public class CSVFormatTest {
         assertFalse(csvFormatTwo.getAllowMissingColumnNames());
         assertEquals(QuoteMode.ALL_NON_NULL, csvFormatTwo.getQuoteMode());
 
-        assertEquals('\t', csvFormatTwo.getDelimiter());
+        assertEquals("\t", csvFormatTwo.getDelimiter());
         assertEquals("\n", csvFormatTwo.getRecordSeparator());
 
         assertFalse(csvFormatTwo.isQuoteCharacterSet());
@@ -360,7 +365,7 @@ public class CSVFormatTest {
         assertFalse(csvFormatOne.isCommentMarkerSet());
         assertTrue(csvFormatOne.isQuoteCharacterSet());
 
-        assertEquals('|', csvFormatOne.getDelimiter());
+        assertEquals("|", csvFormatOne.getDelimiter());
         assertFalse(csvFormatOne.getAllowMissingColumnNames());
 
         assertTrue(csvFormatOne.isEscapeCharacterSet());
@@ -381,7 +386,7 @@ public class CSVFormatTest {
         assertFalse(csvFormatTwo.getAllowMissingColumnNames());
         assertEquals(QuoteMode.ALL_NON_NULL, csvFormatTwo.getQuoteMode());
 
-        assertEquals('\t', csvFormatTwo.getDelimiter());
+        assertEquals("\t", csvFormatTwo.getDelimiter());
         assertEquals("\n", csvFormatTwo.getRecordSeparator());
 
         assertFalse(csvFormatTwo.isQuoteCharacterSet());
@@ -414,7 +419,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsQuoteChar() {
-        final CSVFormat right = CSVFormat.newFormat('\'').withQuote('"');
+        final CSVFormat right = CSVFormat.newFormat("'").withQuote('"');
         final CSVFormat left = right.withQuote('!');
 
         assertNotEquals(right, left);
@@ -422,7 +427,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsQuotePolicy() {
-        final CSVFormat right = CSVFormat.newFormat('\'')
+        final CSVFormat right = CSVFormat.newFormat("'")
                 .withQuote('"')
                 .withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right
@@ -433,7 +438,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsRecordSeparator() {
-        final CSVFormat right = CSVFormat.newFormat('\'')
+        final CSVFormat right = CSVFormat.newFormat("'")
                 .withRecordSeparator(CR)
                 .withCommentMarker('#')
                 .withEscape('+')
@@ -449,7 +454,7 @@ public class CSVFormatTest {
 
     @Test
     public void testEqualsSkipHeaderRecord() {
-        final CSVFormat right = CSVFormat.newFormat('\'')
+        final CSVFormat right = CSVFormat.newFormat("'")
                 .withRecordSeparator(CR)
                 .withCommentMarker('#')
                 .withEscape('+')
@@ -488,7 +493,7 @@ public class CSVFormatTest {
         assertFalse(csvFormat.getAllowMissingColumnNames());
         assertEquals(QuoteMode.ALL_NON_NULL, csvFormat.getQuoteMode());
 
-        assertEquals('\t', csvFormat.getDelimiter());
+        assertEquals("\t", csvFormat.getDelimiter());
         assertFalse(csvFormat.getSkipHeaderRecord());
 
         assertEquals("\n", csvFormat.getRecordSeparator());
@@ -515,7 +520,7 @@ public class CSVFormatTest {
         assertFalse(csvFormat.getAllowMissingColumnNames());
         assertEquals(QuoteMode.ALL_NON_NULL, csvFormat.getQuoteMode());
 
-        assertEquals('\t', csvFormat.getDelimiter());
+        assertEquals("\t", csvFormat.getDelimiter());
         assertFalse(csvFormat.getSkipHeaderRecord());
 
         assertEquals("\n", csvFormat.getRecordSeparator());
@@ -598,7 +603,7 @@ public class CSVFormatTest {
     @Test
     public void testNewFormat() {
 
-        final CSVFormat csvFormat = CSVFormat.newFormat('X');
+        final CSVFormat csvFormat = CSVFormat.newFormat("X");
 
         assertFalse(csvFormat.getSkipHeaderRecord());
         assertFalse(csvFormat.isEscapeCharacterSet());
@@ -618,7 +623,7 @@ public class CSVFormatTest {
         assertFalse(csvFormat.getIgnoreSurroundingSpaces());
         assertFalse(csvFormat.getTrailingDelimiter());
 
-        assertEquals('X', csvFormat.getDelimiter());
+        assertEquals("X", csvFormat.getDelimiter());
         assertNull(csvFormat.getNullString());
 
         assertFalse(csvFormat.isQuoteCharacterSet());
@@ -645,7 +650,7 @@ public class CSVFormatTest {
         assertFalse(csvFormat.getIgnoreSurroundingSpaces());
         assertFalse(csvFormat.getTrailingDelimiter());
 
-        assertEquals('X', csvFormat.getDelimiter());
+        assertEquals("X", csvFormat.getDelimiter());
         assertNull(csvFormat.getNullString());
 
         assertFalse(csvFormat.isQuoteCharacterSet());
@@ -658,7 +663,7 @@ public class CSVFormatTest {
 
     @Test
     public void testNullRecordSeparatorCsv106() {
-        final CSVFormat format = CSVFormat.newFormat(';').withSkipHeaderRecord().withHeader("H1", "H2");
+        final CSVFormat format = CSVFormat.newFormat(";").withSkipHeaderRecord().withHeader("H1", "H2");
         final String formatStr = format.format("A", "B");
         assertNotNull(formatStr);
         assertFalse(formatStr.endsWith("null"));
@@ -679,18 +684,18 @@ public class CSVFormatTest {
 
     @Test
     public void testQuoteCharSameAsDelimiterThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withQuote('!').withDelimiter('!'));
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withQuote('!').withDelimiter("!"));
     }
 
     @Test
     public void testQuotePolicyNoneWithoutEscapeThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> CSVFormat.newFormat('!').withQuoteMode(QuoteMode.NONE));
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.newFormat("!").withQuoteMode(QuoteMode.NONE));
     }
 
     @Test
     public void testRFC4180() {
         assertEquals(null, RFC4180.getCommentMarker());
-        assertEquals(',', RFC4180.getDelimiter());
+        assertEquals(",", RFC4180.getDelimiter());
         assertEquals(null, RFC4180.getEscapeCharacter());
         assertFalse(RFC4180.getIgnoreEmptyLines());
         assertEquals(Character.valueOf('"'), RFC4180.getQuoteCharacter());
@@ -743,7 +748,7 @@ public class CSVFormatTest {
         assertFalse(csvFormat.getIgnoreSurroundingSpaces());
 
         assertFalse(csvFormat.getTrailingDelimiter());
-        assertEquals(',', csvFormat.getDelimiter());
+        assertEquals(",", csvFormat.getDelimiter());
 
         assertFalse(csvFormat.getIgnoreHeaderCase());
         assertEquals("\r\n", csvFormat.getRecordSeparator());
@@ -774,7 +779,7 @@ public class CSVFormatTest {
         assertFalse(csvFormat.getIgnoreSurroundingSpaces());
 
         assertFalse(csvFormat.getTrailingDelimiter());
-        assertEquals(',', csvFormat.getDelimiter());
+        assertEquals(",", csvFormat.getDelimiter());
 
         assertFalse(csvFormat.getIgnoreHeaderCase());
         assertEquals("\r\n", csvFormat.getRecordSeparator());
@@ -800,7 +805,7 @@ public class CSVFormatTest {
         assertEquals('\"', (char)csvFormatTwo.getQuoteCharacter());
         assertNull(csvFormatTwo.getNullString());
 
-        assertEquals(',', csvFormatTwo.getDelimiter());
+        assertEquals(",", csvFormatTwo.getDelimiter());
         assertFalse(csvFormatTwo.getTrailingDelimiter());
 
         assertTrue(csvFormatTwo.isCommentMarkerSet());
@@ -833,7 +838,7 @@ public class CSVFormatTest {
         assertFalse(csvFormat.getIgnoreSurroundingSpaces());
 
         assertFalse(csvFormat.getTrailingDelimiter());
-        assertEquals(',', csvFormat.getDelimiter());
+        assertEquals(",", csvFormat.getDelimiter());
 
         assertFalse(csvFormat.getIgnoreHeaderCase());
         assertEquals("\r\n", csvFormat.getRecordSeparator());
@@ -859,7 +864,7 @@ public class CSVFormatTest {
         assertEquals('\"', (char)csvFormatTwo.getQuoteCharacter());
         assertNull(csvFormatTwo.getNullString());
 
-        assertEquals(',', csvFormatTwo.getDelimiter());
+        assertEquals(",", csvFormatTwo.getDelimiter());
         assertFalse(csvFormatTwo.getTrailingDelimiter());
 
         assertTrue(csvFormatTwo.isCommentMarkerSet());
@@ -905,13 +910,33 @@ public class CSVFormatTest {
 
     @Test
     public void testWithDelimiter() {
-        final CSVFormat formatWithDelimiter = CSVFormat.DEFAULT.withDelimiter('!');
-        assertEquals('!', formatWithDelimiter.getDelimiter());
+        final CSVFormat formatWithDelimiter = CSVFormat.DEFAULT.withDelimiter("!");
+        assertEquals("!", formatWithDelimiter.getDelimiter());
+    }
+    @Test
+    public void testNewFormatWithNullDelimiterThrowsException() {
+        assertThrows(NullPointerException.class, () -> CSVFormat.newFormat(null));
+    }
+
+    @Test
+    public void testWithDelimiterNullThrowsException() {
+        assertThrows(NullPointerException.class, () -> CSVFormat.DEFAULT.withDelimiter(null));
+    }
+
+
+    @Test
+    public void testWithDelimiterEmptyStringThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter(""));
+    }
+
+    @Test
+    public void testWithDelimiterCRThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter(String.valueOf(CR)));
     }
 
     @Test
     public void testWithDelimiterLFThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter(LF));
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter(String.valueOf(LF)));
     }
 
     @Test
@@ -962,7 +987,7 @@ public class CSVFormatTest {
         assertFalse(csvFormat.getSkipHeaderRecord());
         assertNull(csvFormat.getQuoteMode());
 
-        assertEquals(',', csvFormat.getDelimiter());
+        assertEquals(",", csvFormat.getDelimiter());
         assertTrue(csvFormat.getIgnoreEmptyLines());
 
         assertFalse(csvFormat.getIgnoreHeaderCase());
@@ -992,7 +1017,7 @@ public class CSVFormatTest {
         assertFalse(csvFormat.getSkipHeaderRecord());
         assertNull(csvFormat.getQuoteMode());
 
-        assertEquals(',', csvFormat.getDelimiter());
+        assertEquals(",", csvFormat.getDelimiter());
         assertTrue(csvFormat.getIgnoreEmptyLines());
 
         assertFalse(csvFormat.getIgnoreHeaderCase());
@@ -1032,7 +1057,7 @@ public class CSVFormatTest {
         assertFalse(csvFormatTwo.getTrailingDelimiter());
 
         assertEquals("\r\n", csvFormatTwo.getRecordSeparator());
-        assertEquals(',', csvFormatTwo.getDelimiter());
+        assertEquals(",", csvFormatTwo.getDelimiter());
 
         assertNull(csvFormatTwo.getCommentMarker());
         assertFalse(csvFormatTwo.isCommentMarkerSet());
@@ -1053,7 +1078,7 @@ public class CSVFormatTest {
         assertFalse(csvFormat.getSkipHeaderRecord());
         assertNull(csvFormat.getQuoteMode());
 
-        assertEquals(',', csvFormat.getDelimiter());
+        assertEquals(",", csvFormat.getDelimiter());
         assertTrue(csvFormat.getIgnoreEmptyLines());
 
         assertFalse(csvFormat.getIgnoreHeaderCase());
@@ -1093,7 +1118,7 @@ public class CSVFormatTest {
         assertFalse(csvFormatTwo.getTrailingDelimiter());
 
         assertEquals("\r\n", csvFormatTwo.getRecordSeparator());
-        assertEquals(',', csvFormatTwo.getDelimiter());
+        assertEquals(",", csvFormatTwo.getDelimiter());
 
         assertNull(csvFormatTwo.getCommentMarker());
         assertFalse(csvFormatTwo.isCommentMarkerSet());
@@ -1184,23 +1209,42 @@ public class CSVFormatTest {
     public void testPrintWithEscapesEndWithCRLF() throws IOException {
         final Reader in = new StringReader("x,y,x\r\na,?b,c\r\n");
         final Appendable out = new StringBuilder();
-        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',').withQuote(null).withRecordSeparator(CRLF);
+        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(",").withQuote(null).withRecordSeparator(CRLF);
         format.print(in,out,true);
         assertEquals("x?,y?,x?r?na?,??b?,c?r?n", out.toString());
+    }
+
+    @Test
+    public void testPrintWithEscapesEndWithCRLFWithDelimiterString() throws IOException {
+        final Reader in = new StringReader("x[|]y[|]x\r\na[|]?b[|]c\r\n");
+        final Appendable out = new StringBuilder();
+        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter("[|]").withQuote(null).withRecordSeparator(CRLF);
+        format.print(in,out,true);
+        System.out.println(out.toString());
+        assertEquals("x?[?|?]y?[?|?]x?r?na?[?|?]??b?[?|?]c?r?n", out.toString());
     }
 
     @Test
     public void testPrintWithEscapesEndWithoutCRLF() throws IOException {
         final Reader in = new StringReader("x,y,x");
         final Appendable out = new StringBuilder();
-        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',').withQuote(null).withRecordSeparator(CRLF);
+        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(",").withQuote(null).withRecordSeparator(CRLF);
         format.print(in,out,true);
         assertEquals("x?,y?,x", out.toString());
     }
 
     @Test
+    public void testPrintWithEscapesEndWithoutCRLFWithDelimiterString() throws IOException {
+        final Reader in = new StringReader("x[|]y[|]x");
+        final Appendable out = new StringBuilder();
+        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter("[|]").withQuote(null).withRecordSeparator(CRLF);
+        format.print(in,out,true);
+        assertEquals("x?[?|?]y?[?|?]x", out.toString());
+    }
+
+    @Test
     public void testFormatToString() throws IOException {
-        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',')
+        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(",")
                 .withQuoteMode(QuoteMode.MINIMAL).withRecordSeparator(CRLF).withQuote('"')
                 .withNullString("").withIgnoreHeaderCase(true)
                 .withHeaderComments("This is HeaderComments").withHeader("col1","col2","col3");
@@ -1210,7 +1254,7 @@ public class CSVFormatTest {
 
     @Test
     public void testDelimiterSameAsRecordSeparatorThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> CSVFormat.newFormat(CR));
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.newFormat(String.valueOf(CR)));
     }
 
     @Test
@@ -1231,7 +1275,7 @@ public class CSVFormatTest {
     public void testPrintWithQuoteModeIsNONE() throws IOException {
         final Reader in = new StringReader("a,b,c");
         final Appendable out = new StringBuilder();
-        CSVFormat format = CSVFormat.RFC4180.withDelimiter(',').withQuote('"').withEscape('?').withQuoteMode(QuoteMode.NONE);
+        CSVFormat format = CSVFormat.RFC4180.withDelimiter(",").withQuote('"').withEscape('?').withQuoteMode(QuoteMode.NONE);
         format.print(in, out, true);
         assertEquals("a?,b?,c", out.toString());
     }
@@ -1240,7 +1284,7 @@ public class CSVFormatTest {
     public void testPrintWithQuotes() throws IOException {
         final Reader in = new StringReader("\"a,b,c\r\nx,y,z");
         final Appendable out = new StringBuilder();
-        CSVFormat format = CSVFormat.RFC4180.withDelimiter(',').withQuote('"').withEscape('?').withQuoteMode(QuoteMode.NON_NUMERIC);
+        CSVFormat format = CSVFormat.RFC4180.withDelimiter(",").withQuote('"').withEscape('?').withQuoteMode(QuoteMode.NON_NUMERIC);
         format.print(in, out, true);
         assertEquals("\"\"\"\"a,b,c\r\nx,y,z\"", out.toString());
     }
@@ -1249,14 +1293,14 @@ public class CSVFormatTest {
     public void testPrintWithoutQuotes() throws IOException {
         final Reader in = new StringReader("");
         final Appendable out = new StringBuilder();
-        CSVFormat format = CSVFormat.RFC4180.withDelimiter(',').withQuote('"').withEscape('?').withQuoteMode(QuoteMode.NON_NUMERIC);
+        CSVFormat format = CSVFormat.RFC4180.withDelimiter(",").withQuote('"').withEscape('?').withQuoteMode(QuoteMode.NON_NUMERIC);
         format.print(in, out, true);
         assertEquals("\"\"", out.toString());
     }
 
     @Test
     public void testTrim() throws IOException {
-        CSVFormat formatWithTrim = CSVFormat.DEFAULT.withDelimiter(',').withTrim().withQuote(null).withRecordSeparator(CRLF);
+        CSVFormat formatWithTrim = CSVFormat.DEFAULT.withDelimiter(",").withTrim().withQuote(null).withRecordSeparator(CRLF);
 
         CharSequence in = "a,b,c";
         final StringBuilder out = new StringBuilder();

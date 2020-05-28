@@ -43,7 +43,7 @@ public class JiraCsv213Test {
         // @formatter:off
         final CSVFormat csvFormat =
                 CSVFormat.DEFAULT
-                    .withDelimiter(';')
+                    .withDelimiter(";")
                     .withFirstRecordAsHeader()
                     .withRecordSeparator('\n')
                     .withQuoteMode(QuoteMode.ALL);

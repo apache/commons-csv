@@ -257,7 +257,7 @@ public class CSVRecordTest {
 
     @Test
     public void testToMapWithNoHeader() throws Exception {
-        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.newFormat(','))) {
+        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.newFormat(","))) {
             final CSVRecord shortRec = parser.iterator().next();
             final Map<String, String> map = shortRec.toMap();
             assertNotNull(map, "Map is not null.");

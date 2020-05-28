@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 public class JiraCsv198Test {
 
-    private static final CSVFormat CSV_FORMAT = CSVFormat.EXCEL.withDelimiter('^').withFirstRecordAsHeader();
+    private static final CSVFormat CSV_FORMAT = CSVFormat.EXCEL.withDelimiter("^").withFirstRecordAsHeader();
 
     @Test
     public void test() throws UnsupportedEncodingException, IOException {

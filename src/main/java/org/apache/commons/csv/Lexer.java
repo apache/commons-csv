@@ -48,7 +48,8 @@ final class Lexer implements Closeable {
      */
     private static final char DISABLED = '\ufffe';
 
-    private final char delimiter;
+    private final char[] delimiter;
+    private final int delimiterLen;
     private final char escape;
     private final char quoteChar;
     private final char commentStart;
@@ -62,7 +63,8 @@ final class Lexer implements Closeable {
 
     Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
         this.reader = reader;
-        this.delimiter = format.getDelimiter();
+        this.delimiter = format.getDelimiter().toCharArray();
+        this.delimiterLen = this.delimiter.length;
         this.escape = mapNullToDisabled(format.getEscapeCharacter());
         this.quoteChar = mapNullToDisabled(format.getQuoteCharacter());
         this.commentStart = mapNullToDisabled(format.getCommentMarker());
@@ -111,8 +113,27 @@ final class Lexer implements Closeable {
         return ch == commentStart;
     }
 
-    boolean isDelimiter(final int ch) {
-        return ch == delimiter;
+    /**
+     * Determine whether the next characters constitute a delimiter through {@link ExtendedBufferedReader#lookAhead(int)}
+     *
+     * @param ch
+     *             the current character
+     * @return true if the next characters constitute a delimiter
+     * @throws IOException
+     */
+    boolean isDelimiter(final int ch) throws IOException {
+        if (ch != delimiter[0]) {
+            return false;
+        }
+        int len = delimiterLen - 1;
+        char[] buf = reader.lookAhead(len);
+        for (int i = 0; i < len; i++) {
+            if (buf[i] != delimiter[i+1]) {
+                return false;
+            }
+        }
+        reader.read(buf, 0, len);
+        return true;
     }
 
     /**
@@ -126,9 +147,31 @@ final class Lexer implements Closeable {
         return ch == escape;
     }
 
+    /**
+     * Determine whether the next characters constitute a escape delimiter through
+     * {@link ExtendedBufferedReader#lookAhead(int)} like: delimiter:"[|]" escape:'!', return true if the next characters
+     * constitute "![!|!]"
+     *
+     * @return true if the next characters constitute a escape delimiter
+     * @throws IOException
+     */
+    boolean isEscapeDelimiter() throws IOException {
+        int len = 2 * delimiterLen - 1;
+        char[] buf = reader.lookAhead(len);
+        if (buf[0] != delimiter[0]) {
+            return false;
+        }
+        for (int i = 1; i < delimiterLen; i++) {
+            if (buf[2 * i] != delimiter[i] || buf[2 * i - 1] != escape) {
+                return false;
+            }
+        }
+        reader.read(buf, 0, len);
+        return true;
+    }
+
     private boolean isMetaChar(final int ch) {
-        return ch == delimiter ||
-               ch == escape ||
+        return ch == escape ||
                ch == quoteChar ||
                ch == commentStart;
     }
@@ -150,7 +193,7 @@ final class Lexer implements Closeable {
     /**
      * @return true if the given char is a whitespace character
      */
-    boolean isWhitespace(final int ch) {
+    boolean isWhitespace(final int ch) throws IOException {
         return !isDelimiter(ch) && Character.isWhitespace((char) ch);
     }
 
@@ -282,11 +325,15 @@ final class Lexer implements Closeable {
             c = reader.read();
 
             if (isEscape(c)) {
-                final int unescaped = readEscape();
-                if (unescaped == END_OF_STREAM) { // unexpected char after escape
-                    token.content.append((char) c).append((char) reader.getLastChar());
+                if (isEscapeDelimiter()) {
+                    token.content.append(delimiter);
                 } else {
-                    token.content.append((char) unescaped);
+                    final int unescaped = readEscape();
+                    if (unescaped == END_OF_STREAM) { // unexpected char after escape
+                        token.content.append((char) c).append((char) reader.getLastChar());
+                    } else {
+                        token.content.append((char) unescaped);
+                    }
                 }
             } else if (isQuoteChar(c)) {
                 if (isQuoteChar(reader.lookAhead())) {
@@ -358,11 +405,15 @@ final class Lexer implements Closeable {
                 token.type = TOKEN;
                 break;
             } else if (isEscape(ch)) {
-                final int unescaped = readEscape();
-                if (unescaped == END_OF_STREAM) { // unexpected char after escape
-                    token.content.append((char) ch).append((char) reader.getLastChar());
+                if (isEscapeDelimiter()) {
+                    token.content.append(delimiter);
                 } else {
-                    token.content.append((char) unescaped);
+                    final int unescaped = readEscape();
+                    if (unescaped == END_OF_STREAM) { // unexpected char after escape
+                        token.content.append((char) ch).append((char) reader.getLastChar());
+                    } else {
+                        token.content.append((char) unescaped);
+                    }
                 }
                 ch = reader.read(); // continue
             } else {

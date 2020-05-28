@@ -55,7 +55,7 @@ public class JiraCsv167Test {
         //
         format = format.withAllowMissingColumnNames(false);
         format = format.withCommentMarker('#');
-        format = format.withDelimiter(',');
+        format = format.withDelimiter(",");
         format = format.withEscape('\\');
         format = format.withHeader("author", "title", "publishDate");
         format = format.withHeaderComments("headerComment");

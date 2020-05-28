@@ -333,6 +333,16 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testDelimeterStringQuoted() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withDelimiter("[|]").withQuote('\''))) {
+            printer.print("a[|]b[|]c");
+            printer.print("xyz");
+            assertEquals("'a[|]b[|]c'[|]xyz", sw.toString());
+        }
+    }
+
+    @Test
     public void testDelimeterQuoteNone() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVFormat format = CSVFormat.DEFAULT.withEscape('!').withQuoteMode(QuoteMode.NONE);
@@ -344,12 +354,34 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testDelimeterStringQuoteNone() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final CSVFormat format = CSVFormat.DEFAULT.withDelimiter("[|]").withEscape('!').withQuoteMode(QuoteMode.NONE);
+        try (final CSVPrinter printer = new CSVPrinter(sw, format)) {
+            printer.print("a[|]b[|]c");
+            printer.print("xyz");
+            printer.print("a[xy]bc[]");
+            assertEquals("a![!|!]b![!|!]c[|]xyz[|]a[xy]bc[]", sw.toString());
+        }
+    }
+
+    @Test
     public void testDelimiterEscaped() throws IOException {
         final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape('!').withQuote(null))) {
             printer.print("a,b,c");
             printer.print("xyz");
             assertEquals("a!,b!,c,xyz", sw.toString());
+        }
+    }
+
+    @Test
+    public void testDelimiterStringEscaped() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withDelimiter("|||").withEscape('!').withQuote(null))) {
+            printer.print("a|||b|||c");
+            printer.print("xyz");
+            assertEquals("a!|!|!|b!|!|!|c|||xyz", sw.toString());
         }
     }
 
@@ -602,7 +634,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testInvalidFormat() {
-        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter(CR));
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter(String.valueOf(CR)));
     }
 
     @Test

@@ -116,7 +116,7 @@ public class CSVParserTest {
             { "/", "/" }, // 7
             { "   8   ", "   \"quoted \"\" /\" / string\"   " }, { "9", "   \n   " }, };
 
-        final CSVFormat format = CSVFormat.newFormat(',').withQuote('\'').withRecordSeparator(CRLF).withEscape('/')
+        final CSVFormat format = CSVFormat.newFormat(",").withQuote('\'').withRecordSeparator(CRLF).withEscape('/')
             .withIgnoreEmptyLines();
 
         try (final CSVParser parser = CSVParser.parse(code, format)) {
@@ -143,7 +143,7 @@ public class CSVParserTest {
             { " / ", " , ", " ," }, // 3
         };
 
-        final CSVFormat format = CSVFormat.newFormat(',').withRecordSeparator(CRLF).withEscape('/')
+        final CSVFormat format = CSVFormat.newFormat(",").withRecordSeparator(CRLF).withEscape('/')
             .withIgnoreEmptyLines();
 
         try (final CSVParser parser = CSVParser.parse(code, format)) {
@@ -763,7 +763,7 @@ public class CSVParserTest {
 
     @Test
     public void testInvalidFormat() {
-        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter(CR));
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withDelimiter(Character.toString(CR)));
     }
 
     @Test
@@ -1229,7 +1229,7 @@ public class CSVParserTest {
             // completeness...
             "\u00c4,\u00d6,\u00dc" + lineSeparator + "EOF,EOF,EOF";
 
-        final CSVFormat format = CSVFormat.newFormat(',').withQuote('\'').withRecordSeparator(lineSeparator);
+        final CSVFormat format = CSVFormat.newFormat(",").withQuote('\'').withRecordSeparator(lineSeparator);
         CSVParser parser = CSVParser.parse(code, format);
 
         CSVRecord record;
@@ -1277,5 +1277,78 @@ public class CSVParserTest {
         assertEquals("\u00c4", record.get(0));
 
         parser.close();
+    }
+
+    @Test
+    public void testParseWithDelimiterWithQuote() throws IOException {
+        String source = "'a,b,c',xyz";
+        CSVFormat csvFormat = CSVFormat.DEFAULT.withQuote('\'');
+        CSVParser csvParser = csvFormat.parse(new StringReader(source));
+        CSVRecord csvRecord = csvParser.nextRecord();
+        assertEquals("a,b,c", csvRecord.get(0));
+        assertEquals("xyz", csvRecord.get(1));
+    }
+
+    @Test
+    public void testParseWithDelimiterStringWithQuote() throws IOException {
+        String source = "'a[|]b[|]c'[|]xyz\r\nabc[abc][|]xyz";
+        CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter("[|]").withQuote('\'');
+        CSVParser csvParser = csvFormat.parse(new StringReader(source));
+        CSVRecord csvRecord = csvParser.nextRecord();
+        assertEquals("a[|]b[|]c", csvRecord.get(0));
+        assertEquals("xyz", csvRecord.get(1));
+        csvRecord = csvParser.nextRecord();
+        assertEquals("abc[abc]", csvRecord.get(0));
+        assertEquals("xyz", csvRecord.get(1));
+    }
+
+    @Test
+    public void testParseWithDelimiterWithEscape() throws IOException {
+        String source = "a!,b!,c,xyz";
+        CSVFormat csvFormat = CSVFormat.DEFAULT.withEscape('!');
+        CSVParser csvParser = csvFormat.parse(new StringReader(source));
+        CSVRecord csvRecord = csvParser.nextRecord();
+        assertEquals("a,b,c", csvRecord.get(0));
+        assertEquals("xyz", csvRecord.get(1));
+    }
+
+    @Test
+    public void testParseWithDelimiterStringWithEscape() throws IOException {
+        String source = "a![!|!]b![|]c[|]xyz\r\nabc[abc][|]xyz";
+        CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter("[|]").withEscape('!');
+        CSVParser csvParser = csvFormat.parse(new StringReader(source));
+        CSVRecord csvRecord = csvParser.nextRecord();
+        assertEquals("a[|]b![|]c", csvRecord.get(0));
+        assertEquals("xyz", csvRecord.get(1));
+        csvRecord = csvParser.nextRecord();
+        assertEquals("abc[abc]", csvRecord.get(0));
+        assertEquals("xyz", csvRecord.get(1));
+    }
+
+    @Test
+    public void testParseWithQuoteWithEscape() throws IOException {
+        String source = "'a?,b?,c?d',xyz";
+        CSVFormat csvFormat = CSVFormat.DEFAULT.withQuote('\'').withEscape('?');
+        CSVParser csvParser = csvFormat.parse(new StringReader(source));
+        CSVRecord csvRecord = csvParser.nextRecord();
+        assertEquals("a,b,c?d", csvRecord.get(0));
+        assertEquals("xyz", csvRecord.get(1));
+    }
+
+    @Test
+    public void testParseWithQuoteThrowsException() {
+        CSVFormat csvFormat = CSVFormat.DEFAULT.withQuote('\'');
+        assertThrows(IOException.class, () -> csvFormat.parse(new StringReader("'a,b,c','")).nextRecord());
+        assertThrows(IOException.class, () -> csvFormat.parse(new StringReader("'a,b,c'abc,xyz")).nextRecord());
+        assertThrows(IOException.class, () -> csvFormat.parse(new StringReader("'abc'a,b,c',xyz")).nextRecord());
+    }
+
+    @Test
+    public void testNotValueCSV() throws IOException {
+        String source = "#";
+        CSVFormat csvFormat = CSVFormat.DEFAULT.withCommentMarker('#');
+        CSVParser csvParser = csvFormat.parse(new StringReader(source));
+        CSVRecord csvRecord = csvParser.nextRecord();
+        assertNull(csvRecord);
     }
 }

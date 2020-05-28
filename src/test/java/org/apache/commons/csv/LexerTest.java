@@ -258,7 +258,7 @@ public class LexerTest {
          * file: a;'b and \' more ' !comment;;;; ;;
          */
         final String code = "a;'b and '' more\n'\n!comment;;;;\n;;";
-        final CSVFormat format = CSVFormat.DEFAULT.withQuote('\'').withCommentMarker('!').withDelimiter(';');
+        final CSVFormat format = CSVFormat.DEFAULT.withQuote('\'').withCommentMarker('!').withDelimiter(";");
         try (final Lexer parser = createLexer(code, format)) {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
             assertThat(parser.nextToken(new Token()), matches(EORECORD, "b and ' more\n"));
