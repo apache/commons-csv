@@ -39,7 +39,7 @@
   </properties>
   <body>
     <release version="1.9" date="2020-MM-DD" description="Feature and bug fix release (Java 8)">
-      <action                 type="add" dev="ggregory" due-to="dota17">Add testcases for CSVRecord with get(Enum) and toString. #54.</action>
+      <action                 type="add" dev="ggregory" due-to="dota17">Add test cases for CSVRecord with get(Enum) and toString. #54.</action>
       <action                 type="update" dev="ggregory" due-to="Amey Jadiye">Replace FindBugs with SpotBugs #56.</action>
       <action                 type="update" dev="ggregory" due-to="Chen">Javadoc typo in CSVFormat let's -> lets #57.</action>
       <action issue="CSV-259" type="fix" dev="ggregory" due-to="Chen">CSVFormat.printWithEscapes throws StringIndexOutOfBoundsException when value is Reader #61.</action>
