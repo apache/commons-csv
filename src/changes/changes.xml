@@ -55,6 +55,7 @@
       <action                 type="update" dev="ggregory" due-to="Chen">Improve lexer and token coverage #67.</action>
       <action issue="CSV-211" type="fix" dev="ggregory" due-to="Alpesh Kulkarni, Chen">CSVFormat.format trims last delimiter if the delimiter is a white space #71.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Replace org.apache.commons.csv.Assertions.notNull() with Objects.requireNonNull().</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from commons-io:commons-io 2.6 to 2.7.</action>
     </release>
     <release version="1.8" date="2020-02-01" description="Feature and bug fix release (Java 8).
 
