@@ -56,6 +56,8 @@
       <action issue="CSV-211" type="fix" dev="ggregory" due-to="Alpesh Kulkarni, Chen">CSVFormat.format trims last delimiter if the delimiter is a white space #71.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Replace org.apache.commons.csv.Assertions.notNull() with Objects.requireNonNull().</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from commons-io:commons-io 2.6 to 2.7.</action>
+      <action issue="CSV-149" type="fix" dev="ggregory" due-to="Kranthi, Gary Gregory, Brent Worden, dota17">Line number is not proper at EOF.</action>
+      <action issue="CSV-195" type="fix" dev="ggregory" due-to="Rodolfo Duldulao, Rodolfo Duldulao, Michael Vitz, dota17">Parser iterates over the last CSV Record twice.</action>
     </release>
     <release version="1.8" date="2020-02-01" description="Feature and bug fix release (Java 8).
 
