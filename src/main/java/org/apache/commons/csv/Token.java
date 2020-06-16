@@ -55,10 +55,13 @@ final class Token {
     /** Token ready flag: indicates a valid token with content (ready for the parser). */
     boolean isReady;
 
+    boolean isQuoted;
+
     void reset() {
         content.setLength(0);
         type = INVALID;
         isReady = false;
+        isQuoted = false;
     }
 
     /**

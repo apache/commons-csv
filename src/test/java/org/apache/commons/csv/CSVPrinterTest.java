@@ -803,7 +803,7 @@ public class CSVPrinterTest {
         String expected = "\"NULL\"\tNULL\n";
         assertEquals(expected, writer.toString());
         String[] record0 = toFirstRecordValues(expected, format);
-        assertArrayEquals(new Object[2], record0);
+        assertArrayEquals(s, record0);
 
         s = new String[] { "\\N", null };
         format = CSVFormat.MYSQL.withNullString("\\N");

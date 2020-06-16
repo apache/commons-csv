@@ -275,6 +275,7 @@ final class Lexer implements Closeable {
      *             on invalid state: EOF before closing encapsulator or invalid character before delimiter or EOL
      */
     private Token parseEncapsulatedToken(final Token token) throws IOException {
+        token.isQuoted = true;
         // save current line number in case needed for IOE
         final long startLineNumber = getCurrentLineNumber();
         int c;
