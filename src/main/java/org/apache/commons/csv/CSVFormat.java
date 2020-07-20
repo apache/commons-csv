@@ -1567,11 +1567,11 @@ public final class CSVFormat implements Serializable {
                 // write out segment up until this char
                 if (pos > 0) {
                     out.append(builder.substring(0, pos));
+                    out.append(quote);
                     builder.setLength(0);
                     pos = -1;
                 }
 
-                out.append(quote);
                 out.append((char) c);
             }
             pos++;
