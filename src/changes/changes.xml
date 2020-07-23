@@ -61,6 +61,7 @@
       <action                 type="update" dev="ggregory" due-to="Dependabot">Update actions/checkout from v1 to v2.3.1 #79.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Update commons-parent from 50 to 51 #80.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Update junit-jupiter from 5.6.1 to 5.6.2 #84.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update maven-checkstyle-plugin from 3.0.0 to 3.1.1.</action>
     </release>
     <release version="1.8" date="2020-02-01" description="Feature and bug fix release (Java 8).
 
