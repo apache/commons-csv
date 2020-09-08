@@ -65,7 +65,8 @@
       <action                 type="update" dev="ggregory" due-to="Dependabot">Update tests from opencsv from 3.1 to 5.2 #81.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Update tests from org.mockito:mockito-core 3.2.4 -> 3.4.6; #88.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from super-csv from 2.2.1 to 2.4.0 #86.</action>
-      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests mockito-core from 3.4.6 to 3.5.10 #107.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Update tests mockito-core from 3.4.6 to 3.5.10 #107.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Update build actions/setup-java from v1.4.0 to v1.4.2 #101.</action>
     </release>
     <release version="1.8" date="2020-02-01" description="Feature and bug fix release (Java 8).
 
