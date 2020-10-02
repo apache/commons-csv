@@ -263,8 +263,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Puts all values of this record into the given Map.
      *
-     * @param map
-     *            The Map to populate.
+     * @param <M> the map type
+     * @param map The Map to populate.
      * @return the given map.
      * @since 1.9
      */
