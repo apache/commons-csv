@@ -1337,6 +1337,21 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testPrintRecordsWithCSVRecord() throws IOException {
+        final String[] values = new String[] {"A", "B", "C"};
+        final String rowData = StringUtils.join(values, ',');
+        final CharArrayWriter charArrayWriter = new CharArrayWriter(0);
+        try (final CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(rowData));
+            CSVPrinter csvPrinter = CSVFormat.INFORMIX_UNLOAD.print(charArrayWriter)) {
+            for (CSVRecord record : parser) {
+                csvPrinter.printRecord(record);
+            }
+        }
+        assertEquals(6, charArrayWriter.size());
+        assertEquals("A|B|C" + CSVFormat.INFORMIX_UNLOAD.getRecordSeparator(), charArrayWriter.toString());
+    }
+
+    @Test
     public void testPrintRecordsWithEmptyVector() throws IOException {
         final PrintStream out = System.out;
         try {
