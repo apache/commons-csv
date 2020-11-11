@@ -290,6 +290,18 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testCRComment() throws IOException {
+        final StringWriter sw = new StringWriter();
+        final Object value = "abc";
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentMarker('#'))) {
+            printer.print(value);
+            printer.printComment("This is a comment\r\non multiple lines\rthis is next comment\r");
+            assertEquals("abc" + recordSeparator + "# This is a comment" + recordSeparator + "# on multiple lines"
+                        + recordSeparator + "# this is next comment" + recordSeparator + "# " + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
     public void testCSV135() throws IOException {
         final List<String> list = new LinkedList<>();
         list.add("\"\"");   // ""
@@ -910,6 +922,16 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testNotFlushable() throws IOException {
+        final Appendable out = new StringBuilder();
+        try (final CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT)) {
+            printer.printRecord("a", "b", "c");
+            assertEquals("a,b,c" + recordSeparator, out.toString());
+            printer.flush();
+        }
+    }
+
+    @Test
     public void testParseCustomNullValues() throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVFormat format = CSVFormat.DEFAULT.withNullString("NULL");
@@ -1447,6 +1469,7 @@ public class CSVPrinterTest {
         doRandom(CSVFormat.POSTGRESQL_TEXT, ITERATIONS_FOR_RANDOM_TEST);
     }
 
+
     @Test
     public void testRandomRfc4180() throws Exception {
         doRandom(CSVFormat.RFC4180, ITERATIONS_FOR_RANDOM_TEST);
@@ -1456,7 +1479,6 @@ public class CSVPrinterTest {
     public void testRandomTdf() throws Exception {
         doRandom(CSVFormat.TDF, ITERATIONS_FOR_RANDOM_TEST);
     }
-
 
     @Test
     public void testSingleLineComment() throws IOException {
@@ -1535,28 +1557,6 @@ public class CSVPrinterTest {
             printer.print(" A ");
             printer.print(" B ");
             assertEquals("A,B", sw.toString());
-        }
-    }
-
-    @Test
-    public void testNotFlushable() throws IOException {
-        final Appendable out = new StringBuilder();
-        try (final CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT)) {
-            printer.printRecord("a", "b", "c");
-            assertEquals("a,b,c" + recordSeparator, out.toString());
-            printer.flush();
-        }
-    }
-
-    @Test
-    public void testCRComment() throws IOException {
-        final StringWriter sw = new StringWriter();
-        final Object value = "abc";
-        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentMarker('#'))) {
-            printer.print(value);
-            printer.printComment("This is a comment\r\non multiple lines\rthis is next comment\r");
-            assertEquals("abc" + recordSeparator + "# This is a comment" + recordSeparator + "# on multiple lines"
-                        + recordSeparator + "# this is next comment" + recordSeparator + "# " + recordSeparator, sw.toString());
         }
     }
 
