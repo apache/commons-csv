@@ -791,9 +791,9 @@ public class CSVParserTest {
 
         // Iterator hasNext() shouldn't break sequence
         try (CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(fiveRows))) {
-            int recordNumber = 0;
+            
             final Iterator<CSVRecord> iter = parser.iterator();
-            recordNumber = 0;
+            int recordNumber = 0;
             while (iter.hasNext()) {
                 final CSVRecord record = iter.next();
                 recordNumber++;
