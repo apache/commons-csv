@@ -1061,28 +1061,10 @@ public final class CSVFormat implements Serializable {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-
-        result = prime * result + delimiter;
-        result = prime * result + ((quoteMode == null) ? 0 : quoteMode.hashCode());
-        result = prime * result + ((quoteCharacter == null) ? 0 : quoteCharacter.hashCode());
-        result = prime * result + ((commentMarker == null) ? 0 : commentMarker.hashCode());
-        result = prime * result + ((escapeCharacter == null) ? 0 : escapeCharacter.hashCode());
-        result = prime * result + ((nullString == null) ? 0 : nullString.hashCode());
-        result = prime * result + (ignoreSurroundingSpaces ? 1231 : 1237);
-        result = prime * result + (ignoreHeaderCase ? 1231 : 1237);
-        result = prime * result + (ignoreEmptyLines ? 1231 : 1237);
-        result = prime * result + (skipHeaderRecord ? 1231 : 1237);
-        result = prime * result + (allowDuplicateHeaderNames ? 1231 : 1237);
-        result = prime * result + (trim ? 1231 : 1237);
-        result = prime * result + (autoFlush ? 1231 : 1237);
-        result = prime * result + (trailingDelimiter ? 1231 : 1237);
-        result = prime * result + (allowMissingColumnNames ? 1231 : 1237);
-        result = prime * result + ((recordSeparator == null) ? 0 : recordSeparator.hashCode());
-        result = prime * result + Arrays.hashCode(header);
-        result = prime * result + Arrays.hashCode(headerComments);
-        return result;
+        return Objects.hash(delimiter, quoteMode, quoteCharacter, commentMarker, escapeCharacter, nullString,
+            ignoreSurroundingSpaces, ignoreHeaderCase, ignoreEmptyLines, skipHeaderRecord, allowDuplicateHeaderNames,
+            trim, autoFlush, trailingDelimiter, allowMissingColumnNames, recordSeparator, Arrays.hashCode(header),
+            Arrays.hashCode(headerComments));
     }
 
     /**
