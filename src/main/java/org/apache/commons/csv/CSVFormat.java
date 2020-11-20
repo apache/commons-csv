@@ -45,6 +45,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -830,32 +831,16 @@ public final class CSVFormat implements Serializable {
         if (quoteMode != other.quoteMode) {
             return false;
         }
-        if (quoteCharacter == null) {
-            if (other.quoteCharacter != null) {
-                return false;
-            }
-        } else if (!quoteCharacter.equals(other.quoteCharacter)) {
+        if (!Objects.equals(quoteCharacter, other.quoteCharacter)) {
             return false;
         }
-        if (commentMarker == null) {
-            if (other.commentMarker != null) {
-                return false;
-            }
-        } else if (!commentMarker.equals(other.commentMarker)) {
+        if (!Objects.equals(commentMarker, other.commentMarker)) {
             return false;
         }
-        if (escapeCharacter == null) {
-            if (other.escapeCharacter != null) {
-                return false;
-            }
-        } else if (!escapeCharacter.equals(other.escapeCharacter)) {
+        if (!Objects.equals(escapeCharacter, other.escapeCharacter)) {
             return false;
         }
-        if (nullString == null) {
-            if (other.nullString != null) {
-                return false;
-            }
-        } else if (!nullString.equals(other.nullString)) {
+        if (!Objects.equals(nullString, other.nullString)) {
             return false;
         }
         if (!Arrays.equals(header, other.header)) {
@@ -870,11 +855,7 @@ public final class CSVFormat implements Serializable {
         if (skipHeaderRecord != other.skipHeaderRecord) {
             return false;
         }
-        if (recordSeparator == null) {
-            if (other.recordSeparator != null) {
-                return false;
-            }
-        } else if (!recordSeparator.equals(other.recordSeparator)) {
+        if (!Objects.equals(recordSeparator, other.recordSeparator)) {
             return false;
         }
         if (!Arrays.equals(headerComments, other.headerComments)) {
