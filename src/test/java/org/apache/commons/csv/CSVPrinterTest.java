@@ -1343,7 +1343,7 @@ public class CSVPrinterTest {
         final CharArrayWriter charArrayWriter = new CharArrayWriter(0);
         try (final CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(rowData));
             CSVPrinter csvPrinter = CSVFormat.INFORMIX_UNLOAD.print(charArrayWriter)) {
-            for (CSVRecord record : parser) {
+            for (final CSVRecord record : parser) {
                 csvPrinter.printRecord(record);
             }
         }

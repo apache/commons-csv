@@ -35,7 +35,7 @@ public class JiraCsv149Test {
         testJiraCsv149EndWithEolAtEof(true);
     }
 
-    private void testJiraCsv149EndWithEolAtEof(boolean eolAtEof) throws IOException {
+    private void testJiraCsv149EndWithEolAtEof(final boolean eolAtEof) throws IOException {
         String source = "A,B,C,D" + CR_LF + "a1,b1,c1,d1" + CR_LF + "a2,b2,c2,d2";
         if (eolAtEof) {
             source += CR_LF;
@@ -44,7 +44,7 @@ public class JiraCsv149Test {
         final CSVFormat format = CSVFormat.RFC4180.withFirstRecordAsHeader().withQuote('"');
         int lineCounter = 2;
         try (final CSVParser parser = new CSVParser(records, format)) {
-            for (CSVRecord record : parser) {
+            for (final CSVRecord record : parser) {
                 assertEquals(lineCounter++, parser.getCurrentLineNumber());
             }
         }

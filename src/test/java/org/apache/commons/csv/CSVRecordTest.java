@@ -51,9 +51,9 @@ public class CSVRecordTest {
         SECOND("second"),
         THIRD("third");
 
-        private String number;
+        private final String number;
 
-        EnumHeader(String number) {
+        EnumHeader(final String number) {
             this.number = number;
         }
 
