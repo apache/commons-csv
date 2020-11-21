@@ -241,8 +241,8 @@ public class PerformanceTest {
     }
 
     @FunctionalInterface
-    private static interface CSVParserFactory {
-        public CSVParser createParser() throws IOException;
+    private interface CSVParserFactory {
+        CSVParser createParser() throws IOException;
     }
 
     private static void testParseCommonsCSV() throws Exception {
