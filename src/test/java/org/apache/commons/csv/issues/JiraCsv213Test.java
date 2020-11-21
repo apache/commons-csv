@@ -55,8 +55,6 @@ public class JiraCsv213Test {
                 // System.out.println(parser.getRecordNumber());
                 // get only first record we don't need other's
                 parser.iterator().next(); // this fails
-
-                return;
             }
         } catch (final IOException e) {
             throw new IllegalStateException("Error while adding end channel to CSV", e);
