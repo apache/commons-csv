@@ -159,7 +159,7 @@
     <checkstyle.header.file>${basedir}/LICENSE-header.txt</checkstyle.header.file>
     <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt, **/maven-archiver/pom.properties</checkstyle.resourceExcludes>
 
-    <commons.pmd.version>3.13.0</commons.pmd.version>
+    <commons.pmd.version>3.14.0</commons.pmd.version>
     <japicmp.skip>false</japicmp.skip>
     
     <commons.release.isDistModule>true</commons.release.isDistModule>
