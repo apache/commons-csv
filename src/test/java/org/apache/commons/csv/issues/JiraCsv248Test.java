@@ -46,7 +46,7 @@ public class JiraCsv248Test {
         //    CSVRecord rec = parser.iterator().next();
         //}
         try (InputStream in = getTestInput();
-            ObjectInputStream ois = new ObjectInputStream(in)) {
+             final ObjectInputStream ois = new ObjectInputStream(in)) {
             final Object object = ois.readObject();
             assertTrue(object instanceof CSVRecord);
             final CSVRecord rec = (CSVRecord) object;

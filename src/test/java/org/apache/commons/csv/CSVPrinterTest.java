@@ -179,7 +179,7 @@ public class CSVPrinterTest {
         final char[] buf = new char[sz];
         for (int i = 0; i < sz; i++) {
             // stick in special chars with greater frequency
-            char ch;
+            final char ch;
             final int what = r.nextInt(20);
             switch (what) {
             case 0:
@@ -1342,7 +1342,7 @@ public class CSVPrinterTest {
         final String rowData = StringUtils.join(values, ',');
         final CharArrayWriter charArrayWriter = new CharArrayWriter(0);
         try (final CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(rowData));
-            CSVPrinter csvPrinter = CSVFormat.INFORMIX_UNLOAD.print(charArrayWriter)) {
+            final CSVPrinter csvPrinter = CSVFormat.INFORMIX_UNLOAD.print(charArrayWriter)) {
             for (final CSVRecord record : parser) {
                 csvPrinter.printRecord(record);
             }

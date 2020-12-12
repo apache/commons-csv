@@ -88,7 +88,7 @@ public class PerformanceTest {
             max = Integer.parseInt(args[0]);
         }
 
-        String tests[];
+        final String[] tests;
         if (argc > 1) {
             tests = new String[argc - 1];
             for (int i = 1; i < argc; i++) {

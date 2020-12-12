@@ -203,11 +203,12 @@ public final class CSVPrinter implements Flushable, Closeable {
         }
         out.append(format.getCommentMarker().charValue());
         out.append(SP);
-        for (int i = 0; i < comment.length(); i++) {
+        final int commentLength = comment.length();
+        for (int i = 0; i < commentLength; i++) {
             final char c = comment.charAt(i);
             switch (c) {
             case CR:
-                if (i + 1 < comment.length() && comment.charAt(i + 1) == LF) {
+                if (i + 1 < commentLength && comment.charAt(i + 1) == LF) {
                     i++;
                 }
                 //$FALL-THROUGH$ break intentionally excluded.

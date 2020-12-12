@@ -40,7 +40,7 @@ public class JiraCsv249Test {
             printer.printRecord("foo \\", "bar");
         }
         final StringReader stringReader = new StringReader(stringWriter.toString());
-        List<CSVRecord> records;
+        final List<CSVRecord> records;
         try (CSVParser parser = new CSVParser(stringReader, csvFormat)) {
             records = parser.getRecords();
         }
