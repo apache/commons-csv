@@ -58,14 +58,16 @@
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update org.junit.jupiter:junit-jupiter from 5.6.0 to 5.7.0, #84 #109</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from Apache Commons Lang 3.9 to 3.11.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from commons-io:commons-io 2.6 to 2.8.0, #108.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Update actions/checkout from v1 to v2.3.2 #79, #92.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Update commons-parent from 50 to 51 #80.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump actions/checkout from v1 to v2.3.4, #79, #92, #121.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump commons-parent from 50 to 51 #80.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update maven-checkstyle-plugin from 3.0.0 to 3.1.1.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Update tests from opencsv from 3.1 to 5.2 #81.</action>
-      <action                 type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Update tests from org.mockito:mockito-core 3.2.4 -> 3.4.6; #88.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump tests from opencsv from 3.1 to 5.2 #81.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump tests from org.mockito:mockito-core 3.2.4 -> 3.4.6; #88.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from super-csv from 2.2.1 to 2.4.0 #86.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Update tests mockito-core from 3.4.6 to 3.5.11 #107, #110.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Update build actions/setup-java from v1.4.0 to v1.4.2 #101.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump tests mockito-core from 3.4.6 to 3.5.11 #107, #110.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump build actions/setup-java from v1.4.0 to v1.4.3, #101, #113.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump maven-pmd-plugin from 3.13.0 to 3.14.0 #122.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump mockito-core from 3.5.11 to 3.6.28 #123.</action>
     </release>
     <release version="1.8" date="2020-02-01" description="Feature and bug fix release (Java 8).
 
