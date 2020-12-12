@@ -31,7 +31,6 @@ import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -213,7 +212,7 @@ public class CSVRecordTest {
 
     @Test
     public void testSerialization() throws IOException, ClassNotFoundException {
-        CSVRecord shortRec;
+        final CSVRecord shortRec;
         try (final CSVParser parser = CSVParser.parse("A,B\n#my comment\nOne,Two", CSVFormat.DEFAULT.withHeader().withCommentMarker('#'))) {
             shortRec = parser.iterator().next();
         }

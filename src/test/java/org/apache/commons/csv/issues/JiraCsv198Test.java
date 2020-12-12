@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -37,7 +38,7 @@ public class JiraCsv198Test {
         final InputStream pointsOfReference = getClass().getResourceAsStream("/org/apache/commons/csv/CSV-198/optd_por_public.csv");
         assertNotNull(pointsOfReference);
         try (@SuppressWarnings("resource")
-        CSVParser parser = CSV_FORMAT.parse(new InputStreamReader(pointsOfReference, "UTF-8"))) {
+        CSVParser parser = CSV_FORMAT.parse(new InputStreamReader(pointsOfReference, StandardCharsets.UTF_8))) {
             for (final CSVRecord record : parser) {
                 final String locationType = record.get("location_type");
                 assertNotNull(locationType);

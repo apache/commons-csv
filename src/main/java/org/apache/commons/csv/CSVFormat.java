@@ -1051,7 +1051,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Returns whether to trim leading and trailing blanks.
      * This is used by {@link #print(Object, Appendable, boolean)}
-     * Also by {@link CSVParser#addRecordValue(boolean)}
+     * Also by {CSVParser#addRecordValue(boolean)}
      *
      * @return whether to trim leading and trailing blanks.
      */
@@ -1322,8 +1322,7 @@ public final class CSVFormat implements Serializable {
     private void printWithEscapes(final CharSequence value, final Appendable out) throws IOException {
         int start = 0;
         int pos = 0;
-        final int len = value.length();
-        final int end = len;
+        final int end = value.length();
 
         final char delim = getDelimiter();
         final char escape = getEscapeCharacter().charValue();
