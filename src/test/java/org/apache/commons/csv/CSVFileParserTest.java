@@ -29,6 +29,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -135,7 +136,7 @@ public class CSVFileParserTest {
 
             // Now parse the file and compare against the expected results
             final URL resource = ClassLoader.getSystemResource("org/apache/commons/csv/CSVFileParser/" + split[0]);
-            try (final CSVParser parser = CSVParser.parse(resource, Charset.forName("UTF-8"), format)) {
+            try (final CSVParser parser = CSVParser.parse(resource, StandardCharsets.UTF_8, format)) {
                 for (final CSVRecord record : parser) {
                     String parsed = Arrays.toString(record.values());
                     final String comment = record.getComment();

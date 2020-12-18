@@ -635,7 +635,7 @@ public class CSVPrinterTest {
     public void testJdbcPrinterWithResultSet() throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
         Class.forName("org.h2.Driver");
-        try (final Connection connection = geH2Connection();) {
+        try (final Connection connection = geH2Connection()) {
             setUpTable(connection);
             try (final Statement stmt = connection.createStatement();
                     final ResultSet resultSet = stmt.executeQuery("select ID, NAME, TEXT from TEST");
