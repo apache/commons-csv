@@ -1626,9 +1626,9 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Verifies the consistency of the parameters and throws an IllegalArgumentException if necessary.
+     * Verifies the validity and consistency of the attributes, and throws an IllegalArgumentException if necessary.
      *
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException Throw when any attribute is invalid or inconsistent with other attributes.
      */
     private void validate() throws IllegalArgumentException {
         if (isLineBreak(delimiter)) {
