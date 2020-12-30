@@ -64,7 +64,7 @@ public class PerformanceTest {
     private static int max = 11; // skip first test
 
     private static int num = 0; // number of elapsed times recorded
-    private static long[] elapsedTimes = new long[max];
+    private static final long[] ELAPSED_TIMES = new long[max];
 
     private static final CSVFormat format = CSVFormat.EXCEL;
 
@@ -149,7 +149,7 @@ public class PerformanceTest {
     private static void show(final String msg, final Stats s, final long start) {
         final long elapsed = System.currentTimeMillis() - start;
         System.out.printf("%-20s: %5dms %d lines %d fields%n", msg, elapsed, s.count, s.fields);
-        elapsedTimes[num] = elapsed;
+        ELAPSED_TIMES[num] = elapsed;
         num++;
     }
 
@@ -158,7 +158,7 @@ public class PerformanceTest {
         if (num > 1) {
             long tot = 0;
             for (int i = 1; i < num; i++) { // skip first test
-                tot += elapsedTimes[i];
+                tot += ELAPSED_TIMES[i];
             }
             System.out.printf("%-20s: %5dms%n%n", "Average(not first)", tot / (num - 1));
         }

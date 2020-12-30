@@ -1402,7 +1402,6 @@ public final class CSVFormat implements Serializable {
         int start = 0;
         int pos = 0;
         final int len = value.length();
-        final int end = len;
 
         final char delimChar = getDelimiter();
         final char quoteChar = getQuoteCharacter().charValue();
@@ -1445,7 +1444,7 @@ public final class CSVFormat implements Serializable {
                     // by including the default comment char too.
                     quote = true;
                 } else {
-                    while (pos < end) {
+                    while (pos < len) {
                         c = value.charAt(pos);
                         if (c == LF || c == CR || c == quoteChar || c == delimChar || c == escapeChar) {
                             quote = true;
@@ -1455,7 +1454,7 @@ public final class CSVFormat implements Serializable {
                     }
 
                     if (!quote) {
-                        pos = end - 1;
+                        pos = len - 1;
                         c = value.charAt(pos);
                         // Some other chars at the end caused the parser to fail, so for now
                         // encapsulate if we end in anything less than ' '
@@ -1468,7 +1467,7 @@ public final class CSVFormat implements Serializable {
 
             if (!quote) {
                 // no encapsulation needed - write out the original value
-                out.append(value, start, end);
+                out.append(value, start, len);
                 return;
             }
             break;
@@ -1478,7 +1477,7 @@ public final class CSVFormat implements Serializable {
 
         if (!quote) {
             // no encapsulation needed - write out the original value
-            out.append(value, start, end);
+            out.append(value, start, len);
             return;
         }
 
@@ -1487,7 +1486,7 @@ public final class CSVFormat implements Serializable {
 
         // Pick up where we left off: pos should be positioned on the first character that caused
         // the need for encapsulation.
-        while (pos < end) {
+        while (pos < len) {
             final char c = value.charAt(pos);
             if (c == quoteChar || c == escapeChar) {
                 // write out the chunk up until this point
@@ -1507,6 +1506,7 @@ public final class CSVFormat implements Serializable {
      * Always use quotes unless QuoteMode is NONE, so we not have to look ahead.
      *
      * @throws IOException
+     *             If an I/O error occurs
      */
     private void printWithQuotes(final Reader reader, final Appendable out) throws IOException {
 

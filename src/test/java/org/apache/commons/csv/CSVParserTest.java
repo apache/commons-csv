@@ -572,7 +572,7 @@ public class CSVParserTest {
     /**
      * Tests reusing a parser to process new string records one at a time as they are being discovered. See [CSV-110].
      *
-     * @throws IOException
+     * @throws IOException when an I/O error occurs.
      */
     @Test
     public void testGetOneLineOneParser() throws IOException {
