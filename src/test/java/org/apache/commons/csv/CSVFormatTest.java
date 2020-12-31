@@ -538,7 +538,7 @@ public class CSVFormatTest {
         // Cannot assume that callers won't use different Character objects
         assertThrows(
                 IllegalArgumentException.class,
-                () -> CSVFormat.DEFAULT.withEscape(new Character('!')).withCommentMarker(new Character('!')));
+                () -> CSVFormat.DEFAULT.withEscape(Character.valueOf('!')).withCommentMarker(new Character('!')));
     }
 
     @Test
@@ -674,7 +674,7 @@ public class CSVFormatTest {
         // Cannot assume that callers won't use different Character objects
         assertThrows(
                 IllegalArgumentException.class,
-                () -> CSVFormat.DEFAULT.withQuote(new Character('!')).withCommentMarker('!'));
+                () -> CSVFormat.DEFAULT.withQuote(Character.valueOf('!')).withCommentMarker('!'));
     }
 
     @Test
