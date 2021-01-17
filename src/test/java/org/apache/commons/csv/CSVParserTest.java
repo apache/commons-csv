@@ -121,7 +121,7 @@ public class CSVParserTest {
 
         try (final CSVParser parser = CSVParser.parse(code, format)) {
             final List<CSVRecord> records = parser.getRecords();
-            assertTrue(records.size() > 0);
+            assertFalse(records.isEmpty());
 
             Utils.compare("Records do not match expected result", res, records);
         }
@@ -148,7 +148,7 @@ public class CSVParserTest {
 
         try (final CSVParser parser = CSVParser.parse(code, format)) {
             final List<CSVRecord> records = parser.getRecords();
-            assertTrue(records.size() > 0);
+            assertFalse(records.isEmpty());
 
             Utils.compare("", res, records);
         }
@@ -168,7 +168,7 @@ public class CSVParserTest {
         try (final CSVParser parser = CSVParser.parse(code, CSVFormat.DEFAULT)) {
             final List<CSVRecord> records = parser.getRecords();
             assertEquals(res.length, records.size());
-            assertTrue(records.size() > 0);
+            assertFalse(records.isEmpty());
             for (int i = 0; i < res.length; i++) {
                 assertArrayEquals(res[i], records.get(i).values());
             }
@@ -282,7 +282,7 @@ public class CSVParserTest {
 
         try (final CSVParser parser = CSVParser.parse(code, format)) {
             final List<CSVRecord> records = parser.getRecords();
-            assertTrue(records.size() > 0);
+            assertFalse(records.isEmpty());
 
             Utils.compare("Failed to parse without comments", res, records);
 
@@ -330,7 +330,7 @@ public class CSVParserTest {
             try (final CSVParser parser = CSVParser.parse(code, CSVFormat.DEFAULT)) {
                 final List<CSVRecord> records = parser.getRecords();
                 assertEquals(res.length, records.size());
-                assertTrue(records.size() > 0);
+                assertFalse(records.isEmpty());
                 for (int i = 0; i < res.length; i++) {
                     assertArrayEquals(res[i], records.get(i).values());
                 }
@@ -347,7 +347,7 @@ public class CSVParserTest {
             try (final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL)) {
                 final List<CSVRecord> records = parser.getRecords();
                 assertEquals(res.length, records.size());
-                assertTrue(records.size() > 0);
+                assertFalse(records.isEmpty());
                 for (int i = 0; i < res.length; i++) {
                     assertArrayEquals(res[i], records.get(i).values());
                 }
@@ -366,7 +366,7 @@ public class CSVParserTest {
             try (final CSVParser parser = CSVParser.parse(code, CSVFormat.DEFAULT)) {
                 final List<CSVRecord> records = parser.getRecords();
                 assertEquals(res.length, records.size());
-                assertTrue(records.size() > 0);
+                assertFalse(records.isEmpty());
                 for (int i = 0; i < res.length; i++) {
                     assertArrayEquals(res[i], records.get(i).values());
                 }
@@ -386,7 +386,7 @@ public class CSVParserTest {
             try (final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL)) {
                 final List<CSVRecord> records = parser.getRecords();
                 assertEquals(res.length, records.size());
-                assertTrue(records.size() > 0);
+                assertFalse(records.isEmpty());
                 for (int i = 0; i < res.length; i++) {
                     assertArrayEquals(res[i], records.get(i).values());
                 }
@@ -403,7 +403,7 @@ public class CSVParserTest {
         try (final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL)) {
             final List<CSVRecord> records = parser.getRecords();
             assertEquals(res.length, records.size());
-            assertTrue(records.size() > 0);
+            assertFalse(records.isEmpty());
             for (int i = 0; i < res.length; i++) {
                 assertArrayEquals(res[i], records.get(i).values());
             }
@@ -417,7 +417,7 @@ public class CSVParserTest {
         try (final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL)) {
             final List<CSVRecord> records = parser.getRecords();
             assertEquals(res.length, records.size());
-            assertTrue(records.size() > 0);
+            assertFalse(records.isEmpty());
             for (int i = 0; i < res.length; i++) {
                 assertArrayEquals(res[i], records.get(i).values());
             }
@@ -620,7 +620,7 @@ public class CSVParserTest {
         try (final CSVParser parser = CSVParser.parse(CSV_INPUT, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces())) {
             final List<CSVRecord> records = parser.getRecords();
             assertEquals(RESULT.length, records.size());
-            assertTrue(records.size() > 0);
+            assertFalse(records.isEmpty());
             for (int i = 0; i < RESULT.length; i++) {
                 assertArrayEquals(RESULT[i], records.get(i).values());
             }
@@ -1131,7 +1131,7 @@ public class CSVParserTest {
             try (final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL)) {
                 final List<CSVRecord> records = parser.getRecords();
                 assertEquals(res.length, records.size());
-                assertTrue(records.size() > 0);
+                assertFalse(records.isEmpty());
                 for (int i = 0; i < res.length; i++) {
                     assertArrayEquals(res[i], records.get(i).values());
                 }
