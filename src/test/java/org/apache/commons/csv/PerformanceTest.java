@@ -63,7 +63,7 @@ public class PerformanceTest {
 
     private static int max = 11; // skip first test
 
-    private static int num = 0; // number of elapsed times recorded
+    private static int num; // number of elapsed times recorded
     private static final long[] ELAPSED_TIMES = new long[max];
 
     private static final CSVFormat format = CSVFormat.EXCEL;
@@ -91,9 +91,7 @@ public class PerformanceTest {
         final String[] tests;
         if (argc > 1) {
             tests = new String[argc - 1];
-            for (int i = 1; i < argc; i++) {
-                tests[i - 1] = args[i];
-            }
+            System.arraycopy(args, 1, tests, 0, argc - 1);
         } else {
             tests = new String[] { "file", "split", "extb", "exts", "csv", "csv-path", "csv-path-db", "csv-url", "lexreset", "lexnew" };
         }

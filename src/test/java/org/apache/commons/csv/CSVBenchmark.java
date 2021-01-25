@@ -184,7 +184,7 @@ public class CSVBenchmark {
     }
 
     private static class CountingReaderCallback implements org.skife.csv.ReaderCallback {
-        public int count = 0;
+        public int count;
 
         @Override
         public void onRow(final String[] fields) {
