@@ -40,8 +40,6 @@ import java.util.Objects;
  */
 public final class CSVRecord implements Serializable, Iterable<String> {
 
-    private static final String[] EMPTY_STRING_ARRAY = new String[0];
-
     private static final long serialVersionUID = 1L;
 
     private final long characterPosition;
@@ -61,7 +59,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     CSVRecord(final CSVParser parser, final String[] values, final String comment, final long recordNumber,
             final long characterPosition) {
         this.recordNumber = recordNumber;
-        this.values = values != null ? values : EMPTY_STRING_ARRAY;
+        this.values = values != null ? values : Constants.EMPTY_STRING_ARRAY;
         this.parser = parser;
         this.comment = comment;
         this.characterPosition = characterPosition;
