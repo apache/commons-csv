@@ -225,6 +225,18 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
+     * Prints headers for a result set based on its metadata.
+     *
+     * @param resultSet The result set to query for metadata.
+     * @throws IOException If an I/O error occurs.
+     * @throws SQLException If a database access error occurs or this method is called on a closed result set.
+     * @since 1.9.0
+     */
+    public void printHeaders(final ResultSet resultSet) throws IOException, SQLException {
+        printRecord((Object[]) format.withHeader(resultSet).getHeader());
+    }
+
+    /**
      * Outputs the record separator.
      *
      * @throws IOException
@@ -387,5 +399,21 @@ public final class CSVPrinter implements Flushable, Closeable {
             }
             println();
         }
+    }
+
+    /**
+     * Prints all the objects with metadata in the given JDBC result set based on the header boolean.
+     *
+     * @param resultSet result set the values to print.
+     * @param printHeader Boolean value to print header or not.
+     * @throws IOException If an I/O error occurs
+     * @throws SQLException if a database access error occurs
+     * @since 1.9.0
+     */
+    public void printRecords(final ResultSet resultSet, final boolean printHeader) throws SQLException, IOException {
+        if (printHeader) {
+            printHeaders(resultSet);
+        }
+        printRecords(resultSet);
     }
 }

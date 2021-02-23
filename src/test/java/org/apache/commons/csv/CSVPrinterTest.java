@@ -21,6 +21,7 @@ import static org.apache.commons.csv.Constants.CR;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -29,13 +30,13 @@ import static org.mockito.Mockito.verify;
 
 import java.io.CharArrayWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.io.Reader;
-import java.io.FileReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.sql.BatchUpdateException;
@@ -62,7 +63,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
- *
+ * Tests {@link CSVPrinter}.
  */
 public class CSVPrinterTest {
 
@@ -86,8 +87,8 @@ public class CSVPrinterTest {
     }
 
     private final String recordSeparator = CSVFormat.DEFAULT.getRecordSeparator();
-    private String longText2;
 
+    private String longText2;
     private void doOneRandom(final CSVFormat format) throws Exception {
         final Random r = new Random();
 
@@ -140,7 +141,7 @@ public class CSVPrinterTest {
         return fixed;
     }
 
-    private Connection geH2Connection() throws SQLException, ClassNotFoundException {
+    private Connection getH2Connection() throws SQLException, ClassNotFoundException {
         Class.forName("org.h2.Driver");
         return DriverManager.getConnection("jdbc:h2:mem:my_test;", "sa", "");
     }
@@ -620,7 +621,7 @@ public class CSVPrinterTest {
     @Test
     public void testJdbcPrinter() throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
-        try (final Connection connection = geH2Connection()) {
+        try (final Connection connection = getH2Connection()) {
             setUpTable(connection);
             try (final Statement stmt = connection.createStatement();
                     final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT)) {
@@ -635,7 +636,7 @@ public class CSVPrinterTest {
     public void testJdbcPrinterWithResultSet() throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
         Class.forName("org.h2.Driver");
-        try (final Connection connection = geH2Connection()) {
+        try (final Connection connection = getH2Connection()) {
             setUpTable(connection);
             try (final Statement stmt = connection.createStatement();
                     final ResultSet resultSet = stmt.executeQuery("select ID, NAME, TEXT from TEST");
@@ -648,10 +649,31 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testJdbcPrinterWithResultSetHeader() throws IOException, ClassNotFoundException, SQLException {
+        final StringWriter sw = new StringWriter();
+        try (final Connection connection = getH2Connection()) {
+            setUpTable(connection);
+            try (final Statement stmt = connection.createStatement();
+                final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);) {
+                try (final ResultSet resultSet = stmt.executeQuery("select ID, NAME from TEST")) {
+                    printer.printRecords(resultSet, true);
+                    assertEquals("ID,NAME" + recordSeparator + "1,r1" + recordSeparator + "2,r2" + recordSeparator,
+                        sw.toString());
+                }
+                try (final ResultSet resultSet = stmt.executeQuery("select ID, NAME from TEST")) {
+                    printer.printRecords(resultSet, false);
+                    assertNotEquals("ID,NAME" + recordSeparator + "1,r1" + recordSeparator + "2,r2" + recordSeparator,
+                        sw.toString());
+                }
+            }
+        }
+    }
+
+    @Test
     public void testJdbcPrinterWithResultSetMetaData() throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
         Class.forName("org.h2.Driver");
-        try (final Connection connection = geH2Connection()) {
+        try (final Connection connection = getH2Connection()) {
             setUpTable(connection);
             try (final Statement stmt = connection.createStatement();
                     final ResultSet resultSet = stmt.executeQuery("select ID, NAME, TEXT from TEST");
