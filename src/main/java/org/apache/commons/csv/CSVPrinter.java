@@ -404,8 +404,8 @@ public final class CSVPrinter implements Flushable, Closeable {
     /**
      * Prints all the objects with metadata in the given JDBC result set based on the header boolean.
      *
-     * @param resultSet result set the values to print.
-     * @param printHeader Boolean value to print header or not.
+     * @param resultSet source of row data.
+     * @param printHeader whether to print headers.
      * @throws IOException If an I/O error occurs
      * @throws SQLException if a database access error occurs
      * @since 1.9.0
