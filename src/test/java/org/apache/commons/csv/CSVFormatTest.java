@@ -166,28 +166,28 @@ public class CSVFormatTest {
                    for (final Class<?> cls : method.getParameterTypes()) {
                        final String type = cls.getCanonicalName();
                        if ("boolean".equals(type)) {
-                           final Object defTrue = method.invoke(CSVFormat.DEFAULT, new Object[] {Boolean.TRUE});
-                           final Object defFalse = method.invoke(CSVFormat.DEFAULT, new Object[] {Boolean.FALSE});
+                           final Object defTrue = method.invoke(CSVFormat.DEFAULT, Boolean.TRUE);
+                           final Object defFalse = method.invoke(CSVFormat.DEFAULT, Boolean.FALSE);
                            assertNotEquals(name, type ,defTrue, defFalse);
                        } else if ("char".equals(type)){
-                           final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {'a'});
-                           final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {'b'});
+                           final Object a = method.invoke(CSVFormat.DEFAULT, 'a');
+                           final Object b = method.invoke(CSVFormat.DEFAULT, 'b');
                            assertNotEquals(name, type, a, b);
                        } else if ("java.lang.Character".equals(type)){
                            final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {null});
-                           final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {new Character('d')});
+                           final Object b = method.invoke(CSVFormat.DEFAULT, new Character('d'));
                            assertNotEquals(name, type, a, b);
                        } else if ("java.lang.String".equals(type)){
                            final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {null});
-                           final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {"e"});
+                           final Object b = method.invoke(CSVFormat.DEFAULT, "e");
                            assertNotEquals(name, type, a, b);
                        } else if ("java.lang.String[]".equals(type)){
                            final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {new String[] {null, null}});
                            final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {new String[] {"f", "g"}});
                            assertNotEquals(name, type, a, b);
                        } else if ("org.apache.commons.csv.QuoteMode".equals(type)){
-                           final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {QuoteMode.MINIMAL});
-                           final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {QuoteMode.ALL});
+                           final Object a = method.invoke(CSVFormat.DEFAULT, QuoteMode.MINIMAL);
+                           final Object b = method.invoke(CSVFormat.DEFAULT, QuoteMode.ALL);
                            assertNotEquals(name, type, a, b);
                        } else if ("java.lang.Object[]".equals(type)){
                            final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {new Object[] {null, null}});

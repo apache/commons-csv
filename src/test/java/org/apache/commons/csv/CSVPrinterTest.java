@@ -547,7 +547,7 @@ public class CSVPrinterTest {
         final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
             printer.printRecords(
-                    Arrays.asList(new List[] { Arrays.asList("r1c1", "r1c2"), Arrays.asList("r2c1", "r2c2") }));
+                    Arrays.asList(Arrays.asList("r1c1", "r1c2"), Arrays.asList("r2c1", "r2c2")));
             assertEquals("r1c1,r1c2" + recordSeparator + "r2c1,r2c2" + recordSeparator, sw.toString());
         }
     }
