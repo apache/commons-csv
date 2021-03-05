@@ -300,14 +300,17 @@ final class Lexer implements Closeable {
                         if (isDelimiter(c)) {
                             token.type = TOKEN;
                             return token;
-                        } else if (isEndOfFile(c)) {
+                        }
+                        if (isEndOfFile(c)) {
                             token.type = EOF;
                             token.isReady = true; // There is data at EOF
                             return token;
-                        } else if (readEndOfLine(c)) {
+                        }
+                        if (readEndOfLine(c)) {
                             token.type = EORECORD;
                             return token;
-                        } else if (!isWhitespace(c)) {
+                        }
+                        if (!isWhitespace(c)) {
                             // error invalid char between token and next delimiter
                             throw new IOException("(line " + getCurrentLineNumber() +
                                     ") invalid char between encapsulated token and delimiter");
@@ -350,14 +353,17 @@ final class Lexer implements Closeable {
             if (readEndOfLine(ch)) {
                 token.type = EORECORD;
                 break;
-            } else if (isEndOfFile(ch)) {
+            }
+            if (isEndOfFile(ch)) {
                 token.type = EOF;
                 token.isReady = true; // There is data at EOF
                 break;
-            } else if (isDelimiter(ch)) {
+            }
+            if (isDelimiter(ch)) {
                 token.type = TOKEN;
                 break;
-            } else if (isEscape(ch)) {
+            }
+            if (isEscape(ch)) {
                 final int unescaped = readEscape();
                 if (unescaped == END_OF_STREAM) { // unexpected char after escape
                     token.content.append((char) ch).append((char) reader.getLastChar());
