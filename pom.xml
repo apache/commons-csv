@@ -396,7 +396,7 @@
         <dependency>
           <groupId>org.openjdk.jmh</groupId>
           <artifactId>jmh-core</artifactId>
-          <version>1.5.2</version>
+          <version>1.31</version>
           <scope>test</scope>
         </dependency>
 
