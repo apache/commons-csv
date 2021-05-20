@@ -217,6 +217,13 @@
         <configuration>
           <excludeFilterFile>${basedir}/src/site/resources/spotbugs/spotbugs-exclude-filter.xml</excludeFilterFile>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>9.1</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <!-- Allow pmd to be run interactively; keep in sync with report config below -->
       <plugin>
