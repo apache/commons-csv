@@ -81,10 +81,23 @@ public class CSVRecordTest {
     }
 
     @Test
+    public void testCSVRecordNULLValues() throws IOException {
+        final CSVParser parser = CSVParser.parse("A,B\r\nONE,TWO", CSVFormat.DEFAULT.withHeader());
+        final CSVRecord csvRecord = new CSVRecord(parser, null, null, 0L, 0L);
+        assertEquals(0, csvRecord.size());
+        assertThrows(IllegalArgumentException.class, () -> csvRecord.get("B"));
+    }
+
+    @Test
     public void testGetInt() {
         assertEquals(values[0], record.get(0));
         assertEquals(values[1], record.get(1));
         assertEquals(values[2], record.get(2));
+    }
+
+    @Test
+    public void testGetNullEnum() {
+        assertThrows(IllegalArgumentException.class, () -> recordWithHeader.get((Enum<?>) null));
     }
 
     @Test
@@ -111,11 +124,6 @@ public class CSVRecordTest {
     }
 
     @Test
-    public void testGetNullEnum() {
-        assertThrows(IllegalArgumentException.class, () -> recordWithHeader.get((Enum<?>) null));
-    }
-
-    @Test
     public void testGetUnmappedName() {
         assertThrows(IllegalArgumentException.class, () -> assertNull(recordWithHeader.get("fourth")));
     }
@@ -128,6 +136,13 @@ public class CSVRecordTest {
     @Test
     public void testGetUnmappedPositiveInt() {
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> recordWithHeader.get(Integer.MAX_VALUE));
+    }
+
+    @Test
+    public void testGetWithEnum() {
+        assertEquals(recordWithHeader.get("first"), recordWithHeader.get(EnumHeader.FIRST));
+        assertEquals(recordWithHeader.get("second"), recordWithHeader.get(EnumHeader.SECOND));
+        assertThrows(IllegalArgumentException.class, () -> recordWithHeader.get(EnumFixture.UNKNOWN_COLUMN));
     }
 
     @Test
@@ -281,6 +296,14 @@ public class CSVRecordTest {
         }
     }
 
+    @Test
+    public void testToString() {
+        assertNotNull(recordWithHeader.toString());
+        assertTrue(recordWithHeader.toString().contains("comment="));
+        assertTrue(recordWithHeader.toString().contains("recordNumber="));
+        assertTrue(recordWithHeader.toString().contains("values="));
+    }
+
     private void validateMap(final Map<String, String> map, final boolean allowsNulls) {
         assertTrue(map.containsKey("first"));
         assertTrue(map.containsKey("second"));
@@ -293,28 +316,5 @@ public class CSVRecordTest {
         assertEquals("B", map.get("second"));
         assertEquals("C", map.get("third"));
         assertEquals(null, map.get("fourth"));
-    }
-
-    @Test
-    public void testToString() {
-        assertNotNull(recordWithHeader.toString());
-        assertTrue(recordWithHeader.toString().contains("comment="));
-        assertTrue(recordWithHeader.toString().contains("recordNumber="));
-        assertTrue(recordWithHeader.toString().contains("values="));
-    }
-
-    @Test
-    public void testGetWithEnum() {
-        assertEquals(recordWithHeader.get("first"), recordWithHeader.get(EnumHeader.FIRST));
-        assertEquals(recordWithHeader.get("second"), recordWithHeader.get(EnumHeader.SECOND));
-        assertThrows(IllegalArgumentException.class, () -> recordWithHeader.get(EnumFixture.UNKNOWN_COLUMN));
-    }
-
-    @Test
-    public void testCSVRecordNULLValues() throws IOException {
-        final CSVParser parser = CSVParser.parse("A,B\r\nONE,TWO", CSVFormat.DEFAULT.withHeader());
-        final CSVRecord csvRecord = new CSVRecord(parser, null, null, 0L, 0L);
-        assertEquals(0, csvRecord.size());
-        assertThrows(IllegalArgumentException.class, () -> csvRecord.get("B"));
     }
 }
