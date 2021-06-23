@@ -309,6 +309,16 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
+     * Returns a sequential ordered stream whose elements are the values.
+     *
+     * @return the new stream.
+     * @since 1.9.0
+     */
+    public Stream<String> toStream() {
+        return Arrays.stream(values);
+    }
+
+    /**
      * Returns a string representation of the contents of this record. The result is constructed by comment, mapping,
      * recordNumber and by passing the internal values array to {@link Arrays#toString(Object[])}.
      *
