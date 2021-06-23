@@ -249,6 +249,15 @@ public class CSVRecordTest {
     }
 
     @Test
+    public void testToList() {
+        int i = 0;
+        for (final String value : record.toList()) {
+            assertEquals(values[i], value);
+            i++;
+        }
+    }
+
+    @Test
     public void testToMap() {
         final Map<String, String> map = this.recordWithHeader.toMap();
         this.validateMap(map, true);
