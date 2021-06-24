@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Stream;
 import java.util.Objects;
 
 /**
@@ -291,11 +292,10 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Converts the values to a List.
      *
-     * TODO: Maybe make this public?
-     *
      * @return a new List
+     * @since 1.9.0
      */
-    private List<String> toList() {
+    public List<String> toList() {
         return Arrays.asList(values);
     }
 
@@ -306,6 +306,16 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     public Map<String, String> toMap() {
         return putIn(new LinkedHashMap<String, String>(values.length));
+    }
+
+    /**
+     * Returns a sequential ordered stream whose elements are the values.
+     *
+     * @return the new stream.
+     * @since 1.9.0
+     */
+    public Stream<String> toStream() {
+        return Arrays.stream(values);
     }
 
     /**

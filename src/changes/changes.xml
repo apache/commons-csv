@@ -39,6 +39,7 @@
   </properties>
   <body>
     <release version="1.9" date="2020-MM-DD" description="Feature and bug fix release (Java 8)">
+      <!-- FIX -->
       <action                 type="add" dev="ggregory" due-to="dota17">Add test cases for CSVRecord with get(Enum) and toString. #54.</action>
       <action                 type="update" dev="ggregory" due-to="Amey Jadiye">Replace FindBugs with SpotBugs #56.</action>
       <action                 type="update" dev="ggregory" due-to="Chen">Javadoc typo in CSVFormat let's -> lets #57.</action>
@@ -57,6 +58,8 @@
       <action issue="CSV-267" type="fix" dev="ggregory" due-to="Arturo Bernal">Minor improvements #126, #127.</action>
       <action issue="CSV-123" type="fix" dev="ggregory" due-to="Emmanuel Bourg, Benedikt Ritter, shivakrishnaah, Gary Gregory">Add possibility to use ResultSet header meta data as CSV header #11.</action>
       <!-- ADD -->
+      <action issue="CSV-275" type="add" dev="ggregory" due-to="Michael Wyraz, Gary Gregory">Make CSVRecord#toList() public.</action>
+      <action                 type="add" dev="ggregory" due-to="Gary Gregory">Add CSVRecord#toStream().</action>
       <!-- UPDATE -->
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update org.junit.jupiter:junit-jupiter from 5.6.0 to 5.7.0, #84 #109</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from Apache Commons Lang 3.9 to 3.12.0.</action>
