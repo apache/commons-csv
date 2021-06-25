@@ -76,7 +76,7 @@
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump mockito-core from 3.5.11 to 3.7.7, #123, #128, #129.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump actions/cache from v2 to v2.1.6 #132, #153.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump maven-checkstyle-plugin from 3.1.1 to 3.1.2 #131.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump junit-jupiter from 5.7.0 to 5.7.1 #133.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump junit-jupiter from 5.7.0 to 5.7.2 #133, #149.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump commons.jacoco.version from 0.8.5 to 0.8.7 (Java 16).</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump commons.spotbugs.version from 4.0.4 to 4.2.3 (Java 16).</action>
     </release>
