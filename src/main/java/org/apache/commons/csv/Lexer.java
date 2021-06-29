@@ -41,17 +41,10 @@ final class Lexer implements Closeable {
     private static final String CR_STRING = Character.toString(CR);
     private static final String LF_STRING = Character.toString(LF);
 
-    /**
-     * Constant char to use for disabling comments, escapes and encapsulation. The value -2 is used because it
-     * won't be confused with an EOF signal (-1), and because the Unicode value {@code FFFE} would be encoded as two
-     * chars (using surrogates) and thus there should never be a collision with a real text char.
-     */
-    private static final char DISABLED = '\ufffe';
-
     private final char delimiter;
-    private final char escape;
-    private final char quoteChar;
-    private final char commentStart;
+    private final Character escape;
+    private final Character quoteChar;
+    private final Character commentStart;
 
     private final boolean ignoreSurroundingSpaces;
     private final boolean ignoreEmptyLines;
@@ -63,9 +56,9 @@ final class Lexer implements Closeable {
     Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
         this.reader = reader;
         this.delimiter = format.getDelimiter();
-        this.escape = mapNullToDisabled(format.getEscapeCharacter());
-        this.quoteChar = mapNullToDisabled(format.getQuoteCharacter());
-        this.commentStart = mapNullToDisabled(format.getCommentMarker());
+        this.escape = format.getEscapeCharacter();
+        this.quoteChar = format.getQuoteCharacter();
+        this.commentStart = format.getCommentMarker();
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
     }
@@ -108,7 +101,7 @@ final class Lexer implements Closeable {
     }
 
     boolean isCommentStart(final int ch) {
-        return ch == commentStart;
+        return isEqual(commentStart, ch);
     }
 
     boolean isDelimiter(final int ch) {
@@ -122,19 +115,20 @@ final class Lexer implements Closeable {
         return ch == END_OF_STREAM;
     }
 
+    private boolean isEqual(Character character, final int ch) {
+        return null != character && character.charValue() == ch;
+    }
+
     boolean isEscape(final int ch) {
-        return ch == escape;
+        return isEqual(escape, ch);
     }
 
     private boolean isMetaChar(final int ch) {
-        return ch == delimiter ||
-               ch == escape ||
-               ch == quoteChar ||
-               ch == commentStart;
+        return ch == delimiter || isEscape(ch) || isQuoteChar(ch) || isCommentStart(ch);
     }
 
     boolean isQuoteChar(final int ch) {
-        return ch == quoteChar;
+        return isEqual(quoteChar, ch);
     }
 
     /**
@@ -152,10 +146,6 @@ final class Lexer implements Closeable {
      */
     boolean isWhitespace(final int ch) {
         return !isDelimiter(ch) && Character.isWhitespace((char) ch);
-    }
-
-    private char mapNullToDisabled(final Character c) {
-        return c == null ? DISABLED : c.charValue();
     }
 
     /**
