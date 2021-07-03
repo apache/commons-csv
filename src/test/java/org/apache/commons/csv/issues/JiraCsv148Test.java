@@ -16,11 +16,10 @@
  */
 package org.apache.commons.csv.issues;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.QuoteMode;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.QuoteMode;
 import org.junit.jupiter.api.Test;
 
 public class JiraCsv148Test {
