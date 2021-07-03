@@ -67,7 +67,7 @@
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from commons-io:commons-io 2.6 to 2.10.0, #108.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump actions/checkout from v1 to v2.3.4, #79, #92, #121.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump commons-parent from 50 to 51 #80.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump tests from opencsv from 3.1 to 5.2 #81.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump tests from opencsv from 3.1 to 5.4 #81, #137.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from super-csv from 2.2.1 to 2.4.0 #86.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump build actions/setup-java from v1.4.0 to v2, #101, #113.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump maven-pmd-plugin from 3.13.0 to 3.14.0 #122.</action>
