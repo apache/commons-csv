@@ -1198,7 +1198,7 @@ public class CSVFormatTest {
     }
 
     @Test
-    public void testFormatToString() throws IOException {
+    public void testFormatToString() {
         final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',')
                 .withQuoteMode(QuoteMode.MINIMAL).withRecordSeparator(CRLF).withQuote('"')
                 .withNullString("").withIgnoreHeaderCase(true)
