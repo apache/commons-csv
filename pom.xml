@@ -164,7 +164,8 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <commons.encoding>UTF-8</commons.encoding>
 
-    <checkstyle.version>3.1.2</checkstyle.version>
+    <commons.checkstyle-plugin.version>3.1.2</commons.checkstyle-plugin.version>
+    <commons.checkstyle.version>8.44</commons.checkstyle.version>
     <checkstyle.header.file>${basedir}/src/site/resources/checkstyle/checkstyle-header.txt</checkstyle.header.file>
     <checkstyle.config.file>${basedir}/src/site/resources/checkstyle/checkstyle.xml</checkstyle.config.file>
     <checkstyle.suppress.file>${basedir}/src/site/resources/checkstyle/checkstyle-suppressions.xml</checkstyle.suppress.file>
@@ -181,7 +182,28 @@
   </properties>
 
   <build>
-    <defaultGoal>clean verify apache-rat:check clirr:check checkstyle:check spotbugs:check javadoc:javadoc</defaultGoal>
+    <defaultGoal>clean package apache-rat:check japicmp:cmp checkstyle:check spotbugs:check javadoc:javadoc</defaultGoal>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${commons.checkstyle-plugin.version}</version>
+          <configuration>
+            <configLocation>${checkstyle.config.file}</configLocation>
+            <enableRulesSummary>false</enableRulesSummary>
+            <suppressionsLocation>${checkstyle.suppress.file}</suppressionsLocation>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>${commons.checkstyle.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -214,12 +236,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${checkstyle.version}</version>
-        <configuration>
-          <configLocation>${checkstyle.config.file}</configLocation>
-          <enableRulesSummary>false</enableRulesSummary>
-          <suppressionsLocation>${checkstyle.suppress.file}</suppressionsLocation>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>com.github.spotbugs</groupId>
@@ -285,12 +301,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${checkstyle.version}</version>
-        <configuration>
-          <configLocation>${checkstyle.config.file}</configLocation>
-          <enableRulesSummary>false</enableRulesSummary>
-          <suppressionsLocation>${checkstyle.suppress.file}</suppressionsLocation>
-        </configuration>
         <!-- We need to specify reportSets because 2.9.1 creates two reports -->
         <reportSets>
           <reportSet>

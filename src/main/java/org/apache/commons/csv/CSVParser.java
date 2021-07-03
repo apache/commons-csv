@@ -40,7 +40,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.TreeMap;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Parses CSV files according to the specified format.
@@ -710,6 +714,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 this.recordNumber, startCharPosition);
         }
         return result;
+    }
+
+    /**
+     * Returns a sequential {@code Stream} with this collection as its source.
+     *
+     * @return a sequential {@code Stream} with this collection as its source.
+     * @since 1.9.0
+     */
+    public Stream<CSVRecord> stream() {
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator(), Spliterator.ORDERED), false);
     }
 
 }

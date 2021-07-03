@@ -48,6 +48,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.input.BOMInputStream;
 import org.junit.jupiter.api.Disabled;
@@ -1157,6 +1158,16 @@ public class CSVParserTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void testStream() throws Exception {
+        final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
+        final List<CSVRecord> list = CSVFormat.DEFAULT.parse(in).stream().collect(Collectors.toList());
+        assertFalse(list.isEmpty());
+        assertArrayEquals(new String[] { "a", "b", "c" }, list.get(0).values());
+        assertArrayEquals(new String[] { "1", "2", "3" }, list.get(1).values());
+        assertArrayEquals(new String[] { "x", "y", "z" }, list.get(2).values());
     }
 
     @Test

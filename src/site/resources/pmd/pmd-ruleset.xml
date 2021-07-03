@@ -77,12 +77,14 @@
   <rule ref="category/java/performance.xml/BigIntegerInstantiation"/>
   <rule ref="category/java/performance.xml/BooleanInstantiation"/>
 
-  <!-- Rule customisations. -->
+  <!-- Custom rules. -->
 
   <rule ref="category/java/codestyle.xml/TooManyStaticImports">
     <properties>
       <property name="violationSuppressXPath"
-        value="//ClassOrInterfaceDeclaration[@Image='CSVFormat' or @Image='Lexer']"/>
+        value="//ClassOrInterfaceDeclaration[.[typeIs('org.apache.commons.csv.CSVFormat')]]" />
+      <property name="violationSuppressXPath"
+        value="//ClassOrInterfaceDeclaration[.[typeIs('org.apache.commons.csv.Lexer')]]" />
     </properties>
   </rule>
 

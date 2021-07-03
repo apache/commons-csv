@@ -59,26 +59,26 @@
       <action issue="CSV-123" type="fix" dev="ggregory" due-to="Emmanuel Bourg, Benedikt Ritter, shivakrishnaah, Gary Gregory">Add possibility to use ResultSet header meta data as CSV header #11.</action>
       <!-- ADD -->
       <action issue="CSV-275" type="add" dev="ggregory" due-to="Michael Wyraz, Gary Gregory">Make CSVRecord#toList() public.</action>
-      <action                 type="add" dev="ggregory" due-to="Gary Gregory">Add CSVRecord#toStream().</action>
+      <action                 type="add" dev="ggregory" due-to="Gary Gregory">Add CSVRecord#stream().</action>
+      <action                 type="add" dev="ggregory" due-to="Gary Gregory">Add CSVParser#stream().</action>
       <!-- UPDATE -->
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update org.junit.jupiter:junit-jupiter from 5.6.0 to 5.7.0, #84 #109</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from Apache Commons Lang 3.9 to 3.12.0.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from commons-io:commons-io 2.6 to 2.10.0, #108.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump actions/checkout from v1 to v2.3.4, #79, #92, #121.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump commons-parent from 50 to 51 #80.</action>
-      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update maven-checkstyle-plugin from 3.0.0 to 3.1.1.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump tests from opencsv from 3.1 to 5.2 #81.</action>
-      <action                 type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump tests from org.mockito:mockito-core 3.2.4 -> 3.4.6; #88.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from super-csv from 2.2.1 to 2.4.0 #86.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump tests mockito-core from 3.4.6 to 3.5.11 #107, #110.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump build actions/setup-java from v1.4.0 to v2, #101, #113.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump maven-pmd-plugin from 3.13.0 to 3.14.0 #122.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump mockito-core from 3.5.11 to 3.11.2, #123, #128, #129, #156.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump tests from org.mockito:mockito-core 3.2.4 -> 3.11.2; #88, #107, #110, #123, #128, #129, #156.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump actions/cache from v2 to v2.1.6 #132, #153.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump maven-checkstyle-plugin from 3.1.1 to 3.1.2 #131.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump maven-checkstyle-plugin from 3.0.0 to 3.1.2 #131.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump checkstyle from 8.29 to 8.44.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump junit-jupiter from 5.7.0 to 5.7.2 #133, #149.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump commons.jacoco.version from 0.8.5 to 0.8.7 (Java 16).</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump commons.spotbugs.version from 4.0.4 to 4.2.3 (Java 16).</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump commons.javadoc.version from 3.2.0 to 3.3.0.</action>
     </release>
     <release version="1.8" date="2020-02-01" description="Feature and bug fix release (Java 8).
 
