@@ -79,6 +79,7 @@
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump commons.jacoco.version from 0.8.5 to 0.8.7 (Java 16).</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump commons.spotbugs.version from 4.0.4 to 4.2.3 (Java 16).</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump commons.javadoc.version from 3.2.0 to 3.3.0.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-generator-annprocess from 1.5.2 to 1.32 #151.</action>
     </release>
     <release version="1.8" date="2020-02-01" description="Feature and bug fix release (Java 8).
 
