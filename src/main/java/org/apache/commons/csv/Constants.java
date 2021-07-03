@@ -79,6 +79,6 @@ final class Constants {
     /** ASCII unit separator */
     static final char US = 31;
 
-    static final String[] EMPTY_STRING_ARRAY = new String[0];
+    static final String[] EMPTY_STRING_ARRAY = {};
 
 }

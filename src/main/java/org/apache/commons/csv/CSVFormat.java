@@ -1183,22 +1183,18 @@ public final class CSVFormat implements Serializable {
             // https://issues.apache.org/jira/browse/CSV-203
             if (null == nullString) {
                 charSequence = EMPTY;
+            } else if (QuoteMode.ALL == quoteMode) {
+                charSequence = quotedNullString;
             } else {
-                if (QuoteMode.ALL == quoteMode) {
-                    charSequence = quotedNullString;
-                } else {
-                    charSequence = nullString;
-                }
+                charSequence = nullString;
             }
+        } else if (value instanceof CharSequence) {
+            charSequence = (CharSequence) value;
+        } else if (value instanceof Reader) {
+            print((Reader) value, out, newRecord);
+            return;
         } else {
-            if (value instanceof CharSequence) {
-                charSequence = (CharSequence) value;
-            } else if (value instanceof Reader) {
-                print((Reader) value, out, newRecord);
-                return;
-            } else {
-                charSequence = value.toString();
-            }
+            charSequence = value.toString();
         }
         charSequence = getTrim() ? trim(charSequence) : charSequence;
         print(value, charSequence, out, newRecord);

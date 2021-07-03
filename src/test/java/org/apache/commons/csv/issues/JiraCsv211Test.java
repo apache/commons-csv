@@ -16,21 +16,21 @@
  */
 package org.apache.commons.csv.issues;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.IOException;
+import java.io.StringReader;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.io.StringReader;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class JiraCsv211Test {
 
     @Test
     public void testJiraCsv211Format() throws IOException {
-        final String[] values = new String[] { "1", "Jane Doe", "USA", "" };
+        final String[] values = { "1", "Jane Doe", "USA", "" };
 
         final CSVFormat printFormat = CSVFormat.DEFAULT.withDelimiter('\t').withHeader("ID", "Name", "Country", "Age");
         final String formatted = printFormat.format(values);

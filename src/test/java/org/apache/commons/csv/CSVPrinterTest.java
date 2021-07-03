@@ -1360,7 +1360,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintRecordsWithCSVRecord() throws IOException {
-        final String[] values = new String[] {"A", "B", "C"};
+        final String[] values = {"A", "B", "C"};
         final String rowData = StringUtils.join(values, ',');
         final CharArrayWriter charArrayWriter = new CharArrayWriter(0);
         try (final CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(rowData));

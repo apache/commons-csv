@@ -21,7 +21,6 @@ import static org.apache.commons.csv.CSVFormat.RFC4180;
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.LF;
-
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -34,10 +33,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Reader;
-import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -175,7 +174,7 @@ public class CSVFormatTest {
                            assertNotEquals(name, type, a, b);
                        } else if ("java.lang.Character".equals(type)){
                            final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {null});
-                           final Object b = method.invoke(CSVFormat.DEFAULT, new Character('d'));
+                           final Object b = method.invoke(CSVFormat.DEFAULT, Character.valueOf('d'));
                            assertNotEquals(name, type, a, b);
                        } else if ("java.lang.String".equals(type)){
                            final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {null});
@@ -538,7 +537,7 @@ public class CSVFormatTest {
         // Cannot assume that callers won't use different Character objects
         assertThrows(
                 IllegalArgumentException.class,
-                () -> CSVFormat.DEFAULT.withEscape(Character.valueOf('!')).withCommentMarker(new Character('!')));
+                () -> CSVFormat.DEFAULT.withEscape(Character.valueOf('!')).withCommentMarker(Character.valueOf('!')));
     }
 
     @Test
@@ -561,7 +560,7 @@ public class CSVFormatTest {
 
     @Test
     public void testGetHeader() {
-        final String[] header = new String[]{"one", "two", "three"};
+        final String[] header = {"one", "two", "three"};
         final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
         // getHeader() makes a copy of the header array.
         final String[] headerCopy = formatWithHeader.getHeader();
@@ -940,7 +939,7 @@ public class CSVFormatTest {
 
     @Test
     public void testWithHeader() {
-        final String[] header = new String[]{"one", "two", "three"};
+        final String[] header = {"one", "two", "three"};
         // withHeader() makes a copy of the header array.
         final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
         assertArrayEquals(header, formatWithHeader.getHeader());
