@@ -1601,12 +1601,12 @@ public class CSVPrinterTest {
         return CSVParser.parse(expected, format).getRecords().get(0).values();
     }
 
-    private void tryFormat(final List<String> l, final Character quote, final Character escape, final String expected) throws IOException {
+    private void tryFormat(final List<String> list, final Character quote, final Character escape, final String expected) throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.withQuote(quote).withEscape(escape).withRecordSeparator(null);
         final Appendable out = new StringBuilder();
-        final CSVPrinter printer = new CSVPrinter(out, format);
-        printer.printRecord(l);
-        printer.close();
+        try (final CSVPrinter printer = new CSVPrinter(out, format)) {
+            printer.printRecord(list);
+        }
         assertEquals(expected, out.toString());
     }
 }
