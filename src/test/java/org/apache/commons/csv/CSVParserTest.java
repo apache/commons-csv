@@ -259,6 +259,18 @@ public class CSVParserTest {
     }
 
     @Test
+    public void testCSV235() throws IOException {
+        final String dqString = "\"aaa\",\"b\"\"bb\",\"ccc\""; // "aaa","b""bb","ccc"
+        final Iterator<CSVRecord> records = CSVFormat.RFC4180.parse(new StringReader(dqString)).iterator();
+        final CSVRecord record = records.next();
+        assertFalse(records.hasNext());
+        assertEquals(3, record.size());
+        assertEquals("aaa", record.get(0));
+        assertEquals("b\"bb", record.get(1));
+        assertEquals("ccc", record.get(2));
+    }
+
+    @Test
     public void testCSV57() throws Exception {
         try (final CSVParser parser = CSVParser.parse("", CSVFormat.DEFAULT)) {
             final List<CSVRecord> list = parser.getRecords();
@@ -296,14 +308,21 @@ public class CSVParserTest {
     }
 
     @Test
+    public void testDuplicateHeadersAllowedByDefault() throws Exception {
+        CSVParser.parse("a,b,a\n1,2,3\nx,y,z", CSVFormat.DEFAULT.withHeader());
+    }
+
+    @Test
     public void testDuplicateHeadersNotAllowed() {
         assertThrows(IllegalArgumentException.class, () -> CSVParser.parse("a,b,a\n1,2,3\nx,y,z",
             CSVFormat.DEFAULT.withHeader().withAllowDuplicateHeaderNames(false)));
     }
 
     @Test
-    public void testDuplicateHeadersAllowedByDefault() throws Exception {
-        CSVParser.parse("a,b,a\n1,2,3\nx,y,z", CSVFormat.DEFAULT.withHeader());
+    public void testEmptyFile() throws Exception {
+        try (final CSVParser parser = CSVParser.parse("", CSVFormat.DEFAULT)) {
+            assertNull(parser.nextRecord());
+        }
     }
 
     @Test
@@ -311,13 +330,6 @@ public class CSVParserTest {
         try (final CSVParser parser = CSVParser.parse("", CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
             assertNull(parser.nextRecord());
             assertTrue(parser.getHeaderNames().isEmpty());
-        }
-    }
-
-    @Test
-    public void testEmptyFile() throws Exception {
-        try (final CSVParser parser = CSVParser.parse("", CSVFormat.DEFAULT)) {
-            assertNull(parser.nextRecord());
         }
     }
 
@@ -1066,6 +1078,14 @@ public class CSVParserTest {
     }
 
     @Test
+    public void testRepeatedHeadersAreReturnedInCSVRecordHeaderNames() throws IOException {
+        final Reader in = new StringReader("header1,header2,header1\n1,2,3\n4,5,6");
+        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().withTrim().parse(in).iterator();
+        final CSVRecord record = records.next();
+        assertEquals(Arrays.asList("header1", "header2", "header1"), record.getParser().getHeaderNames());
+    }
+
+    @Test
     public void testRoundtrip() throws Exception {
         final StringWriter out = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT)) {
@@ -1161,26 +1181,6 @@ public class CSVParserTest {
         assertEquals("2", record.get("Y"));
         assertEquals("3", record.get("Z"));
         assertEquals(3, record.size());
-    }
-
-    @Test
-    public void testRepeatedHeadersAreReturnedInCSVRecordHeaderNames() throws IOException {
-        final Reader in = new StringReader("header1,header2,header1\n1,2,3\n4,5,6");
-        final Iterator<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().withTrim().parse(in).iterator();
-        final CSVRecord record = records.next();
-        assertEquals(Arrays.asList("header1", "header2", "header1"), record.getParser().getHeaderNames());
-    }
-
-    @Test
-    public void testCSV235() throws IOException {
-        final String dqString = "\"aaa\",\"b\"\"bb\",\"ccc\""; // "aaa","b""bb","ccc"
-        final Iterator<CSVRecord> records = CSVFormat.RFC4180.parse(new StringReader(dqString)).iterator();
-        final CSVRecord record = records.next();
-        assertFalse(records.hasNext());
-        assertEquals(3, record.size());
-        assertEquals("aaa", record.get(0));
-        assertEquals("b\"bb", record.get(1));
-        assertEquals("ccc", record.get(2));
     }
 
     private void validateLineNumbers(final String lineSeparator) throws IOException {
