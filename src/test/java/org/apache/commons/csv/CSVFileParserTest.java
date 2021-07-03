@@ -54,10 +54,7 @@ public class CSVFileParserTest {
     public static Stream<File> generateData() {
         final FilenameFilter fileNameFilter = (dir, name) -> name.startsWith("test") && name.endsWith(".txt");
         final File[] files = BASE.listFiles(fileNameFilter);
-        if (files != null) {
-            return Arrays.stream(files);
-        }
-        return Stream.empty();
+        return files != null ? Stream.of(files) : Stream.empty();
     }
 
     @ParameterizedTest

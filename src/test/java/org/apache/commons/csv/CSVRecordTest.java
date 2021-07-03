@@ -298,9 +298,9 @@ public class CSVRecordTest {
     }
 
     @Test
-    public void testToStream() {
+    public void testStream() {
         final AtomicInteger i = new AtomicInteger();
-        record.toStream().forEach(value -> {
+        record.stream().forEach(value -> {
             assertEquals(values[i.get()], value);
             i.incrementAndGet();
         });
