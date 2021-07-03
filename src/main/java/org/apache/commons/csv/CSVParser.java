@@ -223,11 +223,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    @SuppressWarnings("resource")
     public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException {
         Objects.requireNonNull(file, "file");
-        Objects.requireNonNull(format, "format");
-        return new CSVParser(new InputStreamReader(new FileInputStream(file), charset), format);
+        return parse(file.toPath(), charset, format);
     }
 
     /**
