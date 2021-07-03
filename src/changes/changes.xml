@@ -55,8 +55,9 @@
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Replace org.apache.commons.csv.Assertions.notNull() with Objects.requireNonNull().</action>
       <action issue="CSV-149" type="fix" dev="ggregory" due-to="Kranthi, Gary Gregory, Brent Worden, dota17">Line number is not proper at EOF.</action>
       <action issue="CSV-195" type="fix" dev="ggregory" due-to="Rodolfo Duldulao, Rodolfo Duldulao, Michael Vitz, dota17">Parser iterates over the last CSV Record twice.</action>
-      <action issue="CSV-267" type="fix" dev="ggregory" due-to="Arturo Bernal">Minor improvements #126, #127.</action>
+      <action issue="CSV-267" type="fix" dev="ggregory" due-to="Arturo Bernal">Minor improvements #126, #127, #130.</action>
       <action issue="CSV-123" type="fix" dev="ggregory" due-to="Emmanuel Bourg, Benedikt Ritter, shivakrishnaah, Gary Gregory">Add possibility to use ResultSet header meta data as CSV header #11.</action>
+      
       <!-- ADD -->
       <action issue="CSV-275" type="add" dev="ggregory" due-to="Michael Wyraz, Gary Gregory">Make CSVRecord#toList() public.</action>
       <action                 type="add" dev="ggregory" due-to="Gary Gregory">Add CSVRecord#stream().</action>
