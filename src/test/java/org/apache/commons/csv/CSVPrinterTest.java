@@ -282,9 +282,8 @@ public class CSVPrinterTest {
     @Test
     public void testCloseWithFlushOn() throws IOException {
         try (final Writer writer = mock(Writer.class)) {
-            final CSVFormat csvFormat = CSVFormat.DEFAULT;
             @SuppressWarnings("resource")
-            final CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
+            final CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
             csvPrinter.close(true);
             verify(writer, times(1)).flush();
         }
@@ -328,8 +327,8 @@ public class CSVPrinterTest {
     @Test
     public void testCSV259() throws IOException {
         final StringWriter sw = new StringWriter();
-        final Reader reader = new FileReader("src/test/resources/org/apache/commons/csv/CSV-259/sample.txt");
-        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape('!').withQuote(null))) {
+        try (final Reader reader = new FileReader("src/test/resources/org/apache/commons/csv/CSV-259/sample.txt");
+                final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape('!').withQuote(null))) {
             printer.print(reader);
             assertEquals("x!,y!,z", sw.toString());
         }
@@ -624,12 +623,12 @@ public class CSVPrinterTest {
         try (final Connection connection = getH2Connection()) {
             setUpTable(connection);
             try (final Statement stmt = connection.createStatement();
-                    final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT)) {
-                printer.printRecords(stmt.executeQuery("select ID, NAME, TEXT from TEST"));
+                    final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+                    final ResultSet resultSet = stmt.executeQuery("select ID, NAME, TEXT from TEST");) {
+                printer.printRecords(resultSet);
             }
         }
-        assertEquals("1,r1,\"long text 1\"" + recordSeparator + "2,r2,\"" + longText2 + "\"" + recordSeparator,
-                sw.toString());
+        assertEquals("1,r1,\"long text 1\"" + recordSeparator + "2,r2,\"" + longText2 + "\"" + recordSeparator, sw.toString());
     }
 
     @Test
