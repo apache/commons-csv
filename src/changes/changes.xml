@@ -63,6 +63,7 @@
       <action                 type="add" dev="ggregory" due-to="Gary Gregory">Add CSVParser#stream().</action>
       <action issue="CSV-184" type="add" dev="ggregory" due-to="Gaurav Agarwal, M. Steiger, Gary Gregory">Make the method CSVRecord.putIn(Map) public.</action>
       <action                 type="add" dev="ggregory" due-to="dota17">Add test cases for CSVRecord with get(Enum) and toString. #54.</action>
+      <action                 type="add" dev="ggregory" due-to="Gary Gregory, dota17">Add and use CSVFormat.Builder, deprecated CSVFormat#with methods, based on #73.</action>
       <!-- UPDATE -->
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update org.junit.jupiter:junit-jupiter from 5.6.0 to 5.7.0, #84 #109</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from Apache Commons Lang 3.9 to 3.12.0.</action>

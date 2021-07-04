@@ -109,7 +109,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @see #isMapped(String)
      * @see #isConsistent()
      * @see #getParser()
-     * @see CSVFormat#withNullString(String)
+     * @see CSVFormat.Builder#setNullString(String)
      */
     public String get(final String name) {
         final Map<String, Integer> headerMap = getHeaderMapRaw();
