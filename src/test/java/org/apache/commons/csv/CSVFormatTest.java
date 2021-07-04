@@ -43,6 +43,7 @@ import java.lang.reflect.Modifier;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
 
@@ -555,7 +556,7 @@ public class CSVFormatTest {
         final CSVFormat csvFormat = CSVFormat.MYSQL;
 
         final NullPointerException e = assertThrows(NullPointerException.class, () -> csvFormat.format((Object[]) null));
-        assertEquals(CSVFormat.class.getName(), e.getStackTrace()[0].getClassName());
+        assertEquals(Objects.class.getName(), e.getStackTrace()[0].getClassName());
     }
 
     @Test
