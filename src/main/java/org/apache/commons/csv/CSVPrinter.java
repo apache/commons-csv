@@ -281,8 +281,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void printRecord(final Object... values) throws IOException {
-        format.printRecord(out, values);
-        newRecord = true;
+        printRecord(Arrays.asList(values));
     }
 
     /**
