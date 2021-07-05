@@ -186,9 +186,11 @@ final class ExtendedBufferedReader extends BufferedReader {
      * Calls {@link BufferedReader#readLine()} which drops the line terminator(s). This method should only be called
      * when processing a comment, otherwise information can be lost.
      * <p>
-     * Increments {@link #eolCounter}
+     * Increments {@link #eolCounter}.
+     * </p>
      * <p>
-     * Sets {@link #lastChar} to {@link Constants#END_OF_STREAM} at EOF, otherwise to LF
+     * Sets {@link #lastChar} to {@link Constants#END_OF_STREAM} at EOF, otherwise to LF.
+     * </p>
      *
      * @return the line that was read, or null if reached EOF.
      */
