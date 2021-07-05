@@ -67,11 +67,11 @@ import org.junit.jupiter.api.Test;
  */
 public class CSVPrinterTest {
 
-    private static final char EURO_CH = '\u20AC';
-    private static final char DQUOTE_CHAR = '"';
     private static final char BACKSLASH_CH = '\\';
-    private static final char QUOTE_CH = '\'';
+    private static final char DQUOTE_CHAR = '"';
+    private static final char EURO_CH = '\u20AC';
     private static final int ITERATIONS_FOR_RANDOM_TEST = 50000;
+    private static final char QUOTE_CH = '\'';
 
     private static String printable(final String s) {
         final StringBuilder sb = new StringBuilder();
@@ -86,9 +86,10 @@ public class CSVPrinterTest {
         return sb.toString();
     }
 
-    private final String recordSeparator = CSVFormat.DEFAULT.getRecordSeparator();
-
     private String longText2;
+
+    private final String recordSeparator = CSVFormat.DEFAULT.getRecordSeparator();
+    
     private void doOneRandom(final CSVFormat format) throws Exception {
         final Random r = new Random();
 
@@ -141,11 +142,6 @@ public class CSVPrinterTest {
         return fixed;
     }
 
-    private Connection getH2Connection() throws SQLException, ClassNotFoundException {
-        Class.forName("org.h2.Driver");
-        return DriverManager.getConnection("jdbc:h2:mem:my_test;", "sa", "");
-    }
-
     private String[][] generateLines(final int nLines, final int nCol) {
         final String[][] lines = new String[nLines][];
         for (int i = 0; i < nLines; i++) {
@@ -156,6 +152,11 @@ public class CSVPrinterTest {
             }
         }
         return lines;
+    }
+
+    private Connection getH2Connection() throws SQLException, ClassNotFoundException {
+        Class.forName("org.h2.Driver");
+        return DriverManager.getConnection("jdbc:h2:mem:my_test;", "sa", "");
     }
 
     private CSVPrinter printWithHeaderComments(final StringWriter sw, final Date now, final CSVFormat baseFormat)
