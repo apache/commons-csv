@@ -26,7 +26,7 @@ final class Constants {
 
     static final char BACKSPACE = '\b';
 
-    static final char COMMA = ',';
+    static final String COMMA = ",";
 
     /**
      * Starts a comment, the remainder of the line is the comment.

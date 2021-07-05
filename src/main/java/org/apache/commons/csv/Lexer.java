@@ -48,7 +48,7 @@ final class Lexer implements Closeable {
      */
     private static final char DISABLED = '\ufffe';
 
-    private final char delimiter;
+    private final char[] delimiter;
     private final char escape;
     private final char quoteChar;
     private final char commentStart;
@@ -62,7 +62,7 @@ final class Lexer implements Closeable {
 
     Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
         this.reader = reader;
-        this.delimiter = format.getDelimiter();
+        this.delimiter = format.getDelimiterString().toCharArray();
         this.escape = mapNullToDisabled(format.getEscapeCharacter());
         this.quoteChar = mapNullToDisabled(format.getQuoteCharacter());
         this.commentStart = mapNullToDisabled(format.getCommentMarker());
@@ -111,26 +111,72 @@ final class Lexer implements Closeable {
         return ch == commentStart;
     }
 
-    boolean isDelimiter(final int ch) {
-        return ch == delimiter;
+    /**
+     * Determine whether the next characters constitute a delimiter through {@link ExtendedBufferedReader#lookAhead(int)}
+     *
+     * @param ch
+     *             the current character.
+     * @return true if the next characters constitute a delimiter.
+     * @throws IOException If an I/O error occurs.
+     */
+    boolean isDelimiter(final int ch) throws IOException {
+        if (ch != delimiter[0]) {
+            return false;
+        }
+        final int len = delimiter.length - 1;
+        final char[] buf = reader.lookAhead(len);
+        for (int i = 0; i < len; i++) {
+            if (buf[i] != delimiter[i+1]) {
+                return false;
+            }
+        }
+        final int count = reader.read(buf, 0, len);
+        return count != END_OF_STREAM;
     }
 
     /**
-     * @return true if the given character indicates end of file
+     * Tests if the given character indicates end of file.
+     *
+     * @return true if the given character indicates end of file.
      */
     boolean isEndOfFile(final int ch) {
         return ch == END_OF_STREAM;
     }
 
+    /**
+     * Tests if the given character is the escape character.
+     *
+     * @return true if the given character is the escape character.
+     */
     boolean isEscape(final int ch) {
         return ch == escape;
     }
 
+    /**
+     * Tests if the next characters constitute a escape delimiter through {@link ExtendedBufferedReader#lookAhead(int)}.
+     *
+     * For example, for delimiter "[|]" and escape '!', return true if the next characters constitute "![!|!]".
+     *
+     * @return true if the next characters constitute a escape delimiter.
+     * @throws IOException If an I/O error occurs.
+     */
+    boolean isEscapeDelimiter() throws IOException {
+        final int len = 2 * delimiter.length - 1;
+        final char[] buf = reader.lookAhead(len);
+        if (buf[0] != delimiter[0]) {
+            return false;
+        }
+        for (int i = 1; i < delimiter.length; i++) {
+            if (buf[2 * i] != delimiter[i] || buf[2 * i - 1] != escape) {
+                return false;
+            }
+        }
+        final int count = reader.read(buf, 0, len);
+        return count != END_OF_STREAM;
+    }
+
     private boolean isMetaChar(final int ch) {
-        return ch == delimiter ||
-               ch == escape ||
-               ch == quoteChar ||
-               ch == commentStart;
+        return ch == escape || ch == quoteChar || ch == commentStart;
     }
 
     boolean isQuoteChar(final int ch) {
@@ -138,7 +184,7 @@ final class Lexer implements Closeable {
     }
 
     /**
-     * Checks if the current character represents the start of a line: a CR, LF or is at the start of the file.
+     * Tests if the current character represents the start of a line: a CR, LF or is at the start of the file.
      *
      * @param ch the character to check
      * @return true if the character is at the start of a line.
@@ -148,9 +194,12 @@ final class Lexer implements Closeable {
     }
 
     /**
-     * @return true if the given char is a whitespace character
+     * Tests if the given char is a whitespace character.
+     *
+     * @return true if the given char is a whitespace character.
+     * @throws IOException If an I/O error occurs.
      */
-    boolean isWhitespace(final int ch) {
+    boolean isWhitespace(final int ch) throws IOException {
         return !isDelimiter(ch) && Character.isWhitespace((char) ch);
     }
 
@@ -166,9 +215,8 @@ final class Lexer implements Closeable {
      *
      * @param token
      *            an existing Token object to reuse. The caller is responsible to initialize the Token.
-     * @return the next token found
-     * @throws java.io.IOException
-     *             on stream access error
+     * @return the next token found.
+     * @throws java.io.IOException on stream access error.
      */
     Token nextToken(final Token token) throws IOException {
 
@@ -256,10 +304,11 @@ final class Lexer implements Closeable {
 
     /**
      * Parses an encapsulated token.
-     * <p/>
+     * <p>
      * Encapsulated tokens are surrounded by the given encapsulating-string. The encapsulator itself might be included
      * in the token using a doubling syntax (as "", '') or using escaping (as in \", \'). Whitespaces before and after
      * an encapsulated token are ignored. The token is finished when one of the following conditions become true:
+     * </p>
      * <ul>
      * <li>an unescaped encapsulator has been reached, and is followed by optional whitespace then:</li>
      * <ul>
@@ -282,11 +331,15 @@ final class Lexer implements Closeable {
             c = reader.read();
 
             if (isEscape(c)) {
-                final int unescaped = readEscape();
-                if (unescaped == END_OF_STREAM) { // unexpected char after escape
-                    token.content.append((char) c).append((char) reader.getLastChar());
+                if (isEscapeDelimiter()) {
+                    token.content.append(delimiter);
                 } else {
-                    token.content.append((char) unescaped);
+                    final int unescaped = readEscape();
+                    if (unescaped == END_OF_STREAM) { // unexpected char after escape
+                        token.content.append((char) c).append((char) reader.getLastChar());
+                    } else {
+                        token.content.append((char) unescaped);
+                    }
                 }
             } else if (isQuoteChar(c)) {
                 if (isQuoteChar(reader.lookAhead())) {
@@ -330,9 +383,10 @@ final class Lexer implements Closeable {
 
     /**
      * Parses a simple token.
-     * <p/>
+     * <p>
      * Simple token are tokens which are not surrounded by encapsulators. A simple token might contain escaped
      * delimiters (as \, or \;). The token is finished when one of the following conditions become true:
+     * </p>
      * <ul>
      * <li>end of line has been reached (EORECORD)</li>
      * <li>end of stream has been reached (EOF)</li>
@@ -364,11 +418,15 @@ final class Lexer implements Closeable {
                 break;
             }
             if (isEscape(ch)) {
-                final int unescaped = readEscape();
-                if (unescaped == END_OF_STREAM) { // unexpected char after escape
-                    token.content.append((char) ch).append((char) reader.getLastChar());
+                if (isEscapeDelimiter()) {
+                    token.content.append(delimiter);
                 } else {
-                    token.content.append((char) unescaped);
+                    final int unescaped = readEscape();
+                    if (unescaped == END_OF_STREAM) { // unexpected char after escape
+                        token.content.append((char) ch).append((char) reader.getLastChar());
+                    } else {
+                        token.content.append((char) unescaped);
+                    }
                 }
                 ch = reader.read(); // continue
             } else {

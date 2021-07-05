@@ -112,7 +112,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      * @return the next character
      *
      * @throws IOException
-     *             if there is an error in reading
+     *             If an I/O error occurs
      */
     int lookAhead() throws IOException {
         super.mark(1);
@@ -120,6 +120,23 @@ final class ExtendedBufferedReader extends BufferedReader {
         super.reset();
 
         return c;
+    }
+
+    /**
+     * Returns the next n characters in the current reader without consuming them. The next call to {@link #read()} will still return the next value. This
+     * doesn't affect line number or last character.
+     *
+     * @param n the number characters look ahead.
+     * @return the next n characters.
+     * @throws IOException If an I/O error occurs
+     */
+    char[] lookAhead(final int n) throws IOException {
+        final char[] buf = new char[n];
+        super.mark(n);
+        super.read(buf, 0, n);
+        super.reset();
+
+        return buf;
     }
 
     @Override
@@ -130,7 +147,7 @@ final class ExtendedBufferedReader extends BufferedReader {
             eolCounter++;
         }
         lastChar = current;
-        this.position++;
+        position++;
         return lastChar;
     }
 

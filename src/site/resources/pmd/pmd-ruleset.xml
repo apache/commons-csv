@@ -15,7 +15,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<ruleset name="commons-rng-customized"
+<ruleset name="commons-csv-customized"
     xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
@@ -35,7 +35,8 @@
   <rule ref="category/java/codestyle.xml/DuplicateImports"/>
   <rule ref="category/java/codestyle.xml/ExtendsObject"/>
   <rule ref="category/java/codestyle.xml/ForLoopShouldBeWhileLoop"/>
-  <rule ref="category/java/codestyle.xml/TooManyStaticImports"/>
+  <!-- See custom rules -->
+  <!--  <rule ref="category/java/codestyle.xml/TooManyStaticImports"/> -->
   <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName"/>
   <rule ref="category/java/codestyle.xml/UnnecessaryModifier"/>
   <rule ref="category/java/codestyle.xml/UnnecessaryReturn"/>
@@ -82,9 +83,7 @@
   <rule ref="category/java/codestyle.xml/TooManyStaticImports">
     <properties>
       <property name="violationSuppressXPath"
-        value="//ClassOrInterfaceDeclaration[.[typeIs('org.apache.commons.csv.CSVFormat')]]" />
-      <property name="violationSuppressXPath"
-        value="//ClassOrInterfaceDeclaration[.[typeIs('org.apache.commons.csv.Lexer')]]" />
+        value="//ClassOrInterfaceDeclaration[contains(@Name, 'org.apache.commons.csv.CSVFormat')] or //ClassOrInterfaceDeclaration[contains(@SimpleName, 'org.apache.commons.csv.Lexer')]" />
     </properties>
   </rule>
 
