@@ -1262,6 +1262,68 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testPrintCSVParser() throws IOException {
+        final String code = "a1,b1\n" // 1)
+            + "a2,b2\n" // 2)
+            + "a3,b3\n" // 3)
+            + "a4,b4\n"// 4)
+        ;
+        final String[][] res = {{"a1", "b1"}, {"a2", "b2"}, {"a3", "b3"}, {"a4", "b4"}};
+        CSVFormat format = CSVFormat.DEFAULT;
+        StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = format.print(sw); final CSVParser parser = CSVParser.parse(code, format)) {
+            printer.printRecords(parser);
+        }
+        try (final CSVParser parser = CSVParser.parse(sw.toString(), format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertFalse(records.isEmpty());
+            Utils.compare("Fail", res, records);
+        }
+    }
+
+    @Test
+    public void testPrintCSVRecord() throws IOException {
+        final String code = "a1,b1\n" // 1)
+            + "a2,b2\n" // 2)
+            + "a3,b3\n" // 3)
+            + "a4,b4\n"// 4)
+        ;
+        final String[][] res = {{"a1", "b1"}, {"a2", "b2"}, {"a3", "b3"}, {"a4", "b4"}};
+        CSVFormat format = CSVFormat.DEFAULT;
+        StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = format.print(sw); final CSVParser parser = CSVParser.parse(code, format)) {
+            for (CSVRecord record : parser) {
+                printer.printRecord(record);
+            }
+        }
+        try (final CSVParser parser = CSVParser.parse(sw.toString(), format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertFalse(records.isEmpty());
+            Utils.compare("Fail", res, records);
+        }
+    }
+
+    @Test
+    public void testPrintCSVRecords() throws IOException {
+        final String code = "a1,b1\n" // 1)
+            + "a2,b2\n" // 2)
+            + "a3,b3\n" // 3)
+            + "a4,b4\n"// 4)
+        ;
+        final String[][] res = {{"a1", "b1"}, {"a2", "b2"}, {"a3", "b3"}, {"a4", "b4"}};
+        CSVFormat format = CSVFormat.DEFAULT;
+        StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = format.print(sw); final CSVParser parser = CSVParser.parse(code, format)) {
+            printer.printRecords(parser.getRecords());
+        }
+        try (final CSVParser parser = CSVParser.parse(sw.toString(), format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertFalse(records.isEmpty());
+            Utils.compare("Fail", res, records);
+        }
+    }
+
+    @Test
     public void testPrintCustomNullValues() throws IOException {
         final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withNullString("NULL"))) {
