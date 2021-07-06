@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -271,12 +270,12 @@ public final class CSVRecord implements Serializable, Iterable<String> {
         if (getHeaderMapRaw() == null) {
             return map;
         }
-        for (final Entry<String, Integer> entry : getHeaderMapRaw().entrySet()) {
+        getHeaderMapRaw().entrySet().forEach(entry -> {
             final int col = entry.getValue().intValue();
             if (col < values.length) {
                 map.put(entry.getKey(), values[col]);
             }
-        }
+        });
         return map;
     }
 

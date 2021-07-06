@@ -102,9 +102,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         // It seems a pain to have to track whether the header has already been printed or not.
         if (format.getHeaderComments() != null) {
             for (final String line : format.getHeaderComments()) {
-                if (line != null) {
-                    this.printComment(line);
-                }
+                this.printComment(line);
             }
         }
         if (format.getHeader() != null && !format.getSkipHeaderRecord()) {
@@ -195,7 +193,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void printComment(final String comment) throws IOException {
-        if (!format.isCommentMarkerSet()) {
+        if (comment == null || !format.isCommentMarkerSet()) {
             return;
         }
         if (!newRecord) {
