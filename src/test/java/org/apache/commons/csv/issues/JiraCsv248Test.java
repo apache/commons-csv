@@ -22,12 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.apache.commons.csv.CSVRecord;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+
+import org.apache.commons.csv.CSVRecord;
+import org.junit.jupiter.api.Test;
 
 public class JiraCsv248Test {
     /**
@@ -46,7 +46,7 @@ public class JiraCsv248Test {
         //    CSVRecord rec = parser.iterator().next();
         //}
         try (InputStream in = getTestInput();
-            ObjectInputStream ois = new ObjectInputStream(in)) {
+             final ObjectInputStream ois = new ObjectInputStream(in)) {
             final Object object = ois.readObject();
             assertTrue(object instanceof CSVRecord);
             final CSVRecord rec = (CSVRecord) object;

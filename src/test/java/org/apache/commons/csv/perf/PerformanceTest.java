@@ -94,10 +94,12 @@ public class PerformanceTest {
 
     public long testParseBigFile(final boolean traverseColumns) throws Exception {
         final long startMillis = System.currentTimeMillis();
-        final long count = this.parse(this.createBufferedReader(), traverseColumns);
-        final long totalMillis = System.currentTimeMillis() - startMillis;
-        this.println(String.format("File parsed in %,d milliseconds with Commons CSV: %,d lines.", totalMillis, count));
-        return totalMillis;
+        try (final BufferedReader reader = this.createBufferedReader()) {
+            final long count = this.parse(reader, traverseColumns);
+            final long totalMillis = System.currentTimeMillis() - startMillis;
+            this.println(String.format("File parsed in %,d milliseconds with Commons CSV: %,d lines.", totalMillis, count));
+            return totalMillis;
+        }
     }
 
     @Test

@@ -21,7 +21,6 @@ import static org.apache.commons.csv.Token.Type.TOKEN;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,7 +39,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.TreeMap;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Parses CSV files according to the specified format.
@@ -219,11 +222,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    @SuppressWarnings("resource")
     public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException {
         Objects.requireNonNull(file, "file");
-        Objects.requireNonNull(format, "format");
-        return new CSVParser(new InputStreamReader(new FileInputStream(file), charset), format);
+        return parse(file.toPath(), charset, format);
     }
 
     /**
@@ -706,10 +707,20 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         if (!this.recordList.isEmpty()) {
             this.recordNumber++;
             final String comment = sb == null ? null : sb.toString();
-            result = new CSVRecord(this, this.recordList.toArray(new String[this.recordList.size()]),
-                comment, this.recordNumber, startCharPosition);
+            result = new CSVRecord(this, this.recordList.toArray(Constants.EMPTY_STRING_ARRAY), comment,
+                this.recordNumber, startCharPosition);
         }
         return result;
+    }
+
+    /**
+     * Returns a sequential {@code Stream} with this collection as its source.
+     *
+     * @return a sequential {@code Stream} with this collection as its source.
+     * @since 1.9.0
+     */
+    public Stream<CSVRecord> stream() {
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator(), Spliterator.ORDERED), false);
     }
 
 }

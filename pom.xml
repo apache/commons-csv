@@ -20,10 +20,10 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>50</version>
+    <version>52</version>
   </parent>
   <artifactId>commons-csv</artifactId>
-  <version>1.9-SNAPSHOT</version>
+  <version>1.9.0-SNAPSHOT</version>
   <name>Apache Commons CSV</name>
   <url>https://commons.apache.org/proper/commons-csv/</url>
   <inceptionYear>2005</inceptionYear>
@@ -33,7 +33,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.6.1</version>
+      <version>5.7.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -45,19 +45,19 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.3.3</version>
+      <version>3.11.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.7</version>
+      <version>2.10.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.11</version>
+      <version>3.12.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -94,10 +94,19 @@
       <organization>Apache</organization>
     </developer>
     <developer>
-      <name>Gary Gregory</name>
       <id>ggregory</id>
-      <email>ggregory@apache.org</email>
-      <url>http://www.garygregory.com</url>
+      <name>Gary Gregory</name>
+      <email>ggregory at apache.org</email>
+      <url>https://www.garygregory.com</url>
+      <organization>The Apache Software Foundation</organization>
+      <organizationUrl>https://www.apache.org/</organizationUrl>      
+      <roles>
+        <role>PMC Member</role>
+      </roles>
+      <timezone>America/New_York</timezone>
+      <properties>
+        <picUrl>https://people.apache.org/~ggregory/img/garydgregory80.png</picUrl>
+      </properties>
     </developer>
     <developer>
       <name>Benedikt Ritter</name>
@@ -138,7 +147,7 @@
   </distributionManagement>
 
   <properties>
-    <commons.release.version>1.9</commons.release.version>
+    <commons.release.version>1.9.0</commons.release.version>
     <commons.release.desc>(Java 8)</commons.release.desc>
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC1</commons.rc.version>
@@ -155,20 +164,72 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <commons.encoding>UTF-8</commons.encoding>
 
-    <checkstyle.version>3.0.0</checkstyle.version>
-    <checkstyle.header.file>${basedir}/LICENSE-header.txt</checkstyle.header.file>
+    <commons.checkstyle-plugin.version>3.1.2</commons.checkstyle-plugin.version>
+    <commons.checkstyle.version>8.44</commons.checkstyle.version>
+    <checkstyle.header.file>${basedir}/src/site/resources/checkstyle/checkstyle-header.txt</checkstyle.header.file>
+    <checkstyle.config.file>${basedir}/src/site/resources/checkstyle/checkstyle.xml</checkstyle.config.file>
+    <checkstyle.suppress.file>${basedir}/src/site/resources/checkstyle/checkstyle-suppressions.xml</checkstyle.suppress.file>
     <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt, **/maven-archiver/pom.properties</checkstyle.resourceExcludes>
 
-    <commons.pmd.version>3.13.0</commons.pmd.version>
+    <commons.pmd.version>3.14.0</commons.pmd.version>
+    <commons.pmd-impl.version>6.36.0</commons.pmd-impl.version>
+    <commons.jacoco.version>0.8.7</commons.jacoco.version>
+    <commons.spotbugs.version>4.2.3</commons.spotbugs.version>
+    <commons.japicmp.version>0.15.3</commons.japicmp.version>
     <japicmp.skip>false</japicmp.skip>
-    
+
     <commons.release.isDistModule>true</commons.release.isDistModule>
-    <commons.releaseManagerName>Gary Gregory</commons.releaseManagerName>    
+    <commons.releaseManagerName>Gary Gregory</commons.releaseManagerName>
     <commons.releaseManagerKey>86fdc7e2a11262cb</commons.releaseManagerKey>
   </properties>
 
   <build>
-    <defaultGoal>clean verify apache-rat:check clirr:check checkstyle:check spotbugs:check javadoc:javadoc</defaultGoal>
+    <defaultGoal>clean package apache-rat:check japicmp:cmp checkstyle:check spotbugs:check pmd:check javadoc:javadoc</defaultGoal>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${commons.checkstyle-plugin.version}</version>
+          <configuration>
+            <configLocation>${checkstyle.config.file}</configLocation>
+            <enableRulesSummary>false</enableRulesSummary>
+            <suppressionsLocation>${checkstyle.suppress.file}</suppressionsLocation>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>${commons.checkstyle.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-pmd-plugin</artifactId>
+          <version>${commons.pmd.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>net.sourceforge.pmd</groupId>
+              <artifactId>pmd-core</artifactId>
+              <version>${commons.pmd-impl.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>net.sourceforge.pmd</groupId>
+              <artifactId>pmd-java</artifactId>
+              <version>${commons.pmd-impl.version}</version>
+            </dependency>
+          </dependencies>
+          <configuration>
+            <targetJdk>${maven.compiler.target}</targetJdk>
+            <skipEmptyReport>false</skipEmptyReport>
+            <rulesets>
+              <ruleset>${basedir}/src/site/resources/pmd/pmd-ruleset.xml</ruleset>
+            </rulesets>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -201,12 +262,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${checkstyle.version}</version>
-        <configuration>
-          <configLocation>${basedir}/checkstyle.xml</configLocation>
-          <enableRulesSummary>false</enableRulesSummary>
-          <suppressionsLocation>${basedir}/src/site/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>com.github.spotbugs</groupId>
@@ -220,15 +275,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>${commons.pmd.version}</version>
-        <configuration>
-          <targetJdk>${maven.compiler.target}</targetJdk>
-          <skipEmptyReport>false</skipEmptyReport>
-          <analysisCache>true</analysisCache>
-          <rulesets>
-            <ruleset>${basedir}/src/site/resources/pmd/pmd-ruleset.xml</ruleset>
-          </rulesets>
-        </configuration>
       </plugin>
 
       <!-- We need to add our test data files to rat exclusions -->
@@ -272,12 +318,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${checkstyle.version}</version>
-        <configuration>
-          <configLocation>${basedir}/checkstyle.xml</configLocation>
-          <enableRulesSummary>false</enableRulesSummary>
-          <suppressionsLocation>${basedir}/src/site/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-        </configuration>
         <!-- We need to specify reportSets because 2.9.1 creates two reports -->
         <reportSets>
           <reportSet>
@@ -298,15 +338,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>${commons.pmd.version}</version>
-        <configuration>
-          <targetJdk>${maven.compiler.target}</targetJdk>
-          <skipEmptyReport>false</skipEmptyReport>
-          <analysisCache>true</analysisCache>
-          <rulesets>
-            <ruleset>${basedir}/src/site/resources/pmd/pmd-ruleset.xml</ruleset>
-          </rulesets>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -394,14 +425,14 @@
         <dependency>
           <groupId>org.openjdk.jmh</groupId>
           <artifactId>jmh-core</artifactId>
-          <version>1.5.2</version>
+          <version>1.32</version>
           <scope>test</scope>
         </dependency>
 
         <dependency>
           <groupId>org.openjdk.jmh</groupId>
           <artifactId>jmh-generator-annprocess</artifactId>
-          <version>1.5.2</version>
+          <version>1.32</version>
           <scope>test</scope>
         </dependency>
 
@@ -422,14 +453,14 @@
         <dependency>
           <groupId>com.opencsv</groupId>
           <artifactId>opencsv</artifactId>
-          <version>3.1</version>
+          <version>5.5</version>
           <scope>test</scope>
         </dependency>
 
         <dependency>
           <groupId>net.sf.supercsv</groupId>
           <artifactId>super-csv</artifactId>
-          <version>2.2.1</version>
+          <version>2.4.0</version>
           <scope>test</scope>
         </dependency>
 
@@ -444,7 +475,7 @@
         <dependency>
           <groupId>org.apache.commons</groupId>
           <artifactId>commons-lang3</artifactId>
-          <version>3.11</version>
+          <version>3.12.0</version>
         </dependency>
       </dependencies>
 

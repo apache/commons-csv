@@ -65,17 +65,18 @@ public class JiraCsv247Test {
     public void testHeadersMissingThrowsWhenNotAllowingMissingColumnNames() throws Exception {
         final CSVFormat format = CSVFormat.DEFAULT.withHeader();
 
-        assertFalse(format.getAllowMissingColumnNames(),
-            "By default we should not allow missing column names");
+        assertFalse(format.getAllowMissingColumnNames(), "By default we should not allow missing column names");
 
         assertThrows(IllegalArgumentException.class, () -> {
-            final Reader in = new StringReader("a,,c,d,e\n1,2,3,4,5\nv,w,x,y,z");
-            format.parse(in);
+            try (final Reader in = new StringReader("a,,c,d,e\n1,2,3,4,5\nv,w,x,y,z")) {
+                format.parse(in);
+            }
         }, "1 missing column header is not allowed");
 
         assertThrows(IllegalArgumentException.class, () -> {
-            final Reader in = new StringReader("a,,c,d,\n1,2,3,4,5\nv,w,x,y,z");
-            format.parse(in);
+            try (final Reader in = new StringReader("a,,c,d,\n1,2,3,4,5\nv,w,x,y,z")) {
+                format.parse(in);
+            }
         }, "2+ missing column headers is not allowed!");
     }
 }

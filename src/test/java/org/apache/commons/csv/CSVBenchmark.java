@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
@@ -63,7 +64,7 @@ public class CSVBenchmark {
     public void init() throws IOException {
         final File file = new File("src/test/resources/perf/worldcitiespop.txt.gz");
         final InputStream in = new GZIPInputStream(new FileInputStream(file));
-        this.data = IOUtils.toString(in, "ISO-8859-1");
+        this.data = IOUtils.toString(in, StandardCharsets.ISO_8859_1);
         in.close();
     }
 
@@ -183,7 +184,7 @@ public class CSVBenchmark {
     }
 
     private static class CountingReaderCallback implements org.skife.csv.ReaderCallback {
-        public int count = 0;
+        public int count;
 
         @Override
         public void onRow(final String[] fields) {

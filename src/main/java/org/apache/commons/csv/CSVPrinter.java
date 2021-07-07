@@ -102,9 +102,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         // It seems a pain to have to track whether the header has already been printed or not.
         if (format.getHeaderComments() != null) {
             for (final String line : format.getHeaderComments()) {
-                if (line != null) {
-                    this.printComment(line);
-                }
+                this.printComment(line);
             }
         }
         if (format.getHeader() != null && !format.getSkipHeaderRecord()) {
@@ -195,7 +193,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void printComment(final String comment) throws IOException {
-        if (!format.isCommentMarkerSet()) {
+        if (comment == null || !format.isCommentMarkerSet()) {
             return;
         }
         if (!newRecord) {
@@ -222,6 +220,18 @@ public final class CSVPrinter implements Flushable, Closeable {
             }
         }
         println();
+    }
+
+    /**
+     * Prints headers for a result set based on its metadata.
+     *
+     * @param resultSet The result set to query for metadata.
+     * @throws IOException If an I/O error occurs.
+     * @throws SQLException If a database access error occurs or this method is called on a closed result set.
+     * @since 1.9.0
+     */
+    public void printHeaders(final ResultSet resultSet) throws IOException, SQLException {
+        printRecord((Object[]) format.builder().setHeader(resultSet).build().getHeader());
     }
 
     /**
@@ -269,8 +279,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void printRecord(final Object... values) throws IOException {
-        format.printRecord(out, values);
-        newRecord = true;
+        printRecord(Arrays.asList(values));
     }
 
     /**
@@ -387,5 +396,21 @@ public final class CSVPrinter implements Flushable, Closeable {
             }
             println();
         }
+    }
+
+    /**
+     * Prints all the objects with metadata in the given JDBC result set based on the header boolean.
+     *
+     * @param resultSet source of row data.
+     * @param printHeader whether to print headers.
+     * @throws IOException If an I/O error occurs
+     * @throws SQLException if a database access error occurs
+     * @since 1.9.0
+     */
+    public void printRecords(final ResultSet resultSet, final boolean printHeader) throws SQLException, IOException {
+        if (printHeader) {
+            printHeaders(resultSet);
+        }
+        printRecords(resultSet);
     }
 }

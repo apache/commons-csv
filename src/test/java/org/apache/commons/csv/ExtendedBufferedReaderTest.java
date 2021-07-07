@@ -28,9 +28,13 @@ import java.io.StringReader;
 import org.junit.jupiter.api.Test;
 
 /**
- *
+ * Test {@link ExtendedBufferedReader}.
  */
 public class ExtendedBufferedReaderTest {
+
+    private ExtendedBufferedReader createBufferedReader(final String s) {
+        return new ExtendedBufferedReader(new StringReader(s));
+    }
 
     @Test
     public void testEmptyInput() throws Exception {
@@ -40,6 +44,97 @@ public class ExtendedBufferedReaderTest {
             assertEquals(END_OF_STREAM, br.getLastChar());
             assertNull(br.readLine());
             assertEquals(0, br.read(new char[10], 0, 0));
+        }
+    }
+
+    /*
+     * Test to illustrate https://issues.apache.org/jira/browse/CSV-75
+     *
+     */
+    @Test
+    public void testReadChar() throws Exception {
+        final String LF = "\n";
+        final String CR = "\r";
+        final String CRLF = CR + LF;
+        final String LFCR = LF + CR;// easier to read the string below
+        final String test = "a" + LF + "b" + CR + "c" + LF + LF + "d" + CR + CR + "e" + LFCR + "f " + CRLF;
+        // EOL eol EOL EOL eol eol EOL+CR EOL
+        final int EOLeolct = 9;
+
+        try (final ExtendedBufferedReader br = createBufferedReader(test)) {
+            assertEquals(0, br.getCurrentLineNumber());
+            while (br.readLine() != null) {
+                // consume all
+            }
+            assertEquals(EOLeolct, br.getCurrentLineNumber());
+        }
+        try (final ExtendedBufferedReader br = createBufferedReader(test)) {
+            assertEquals(0, br.getCurrentLineNumber());
+            while (br.read() != -1) {
+                // consume all
+            }
+            assertEquals(EOLeolct, br.getCurrentLineNumber());
+        }
+        try (final ExtendedBufferedReader br = createBufferedReader(test)) {
+            assertEquals(0, br.getCurrentLineNumber());
+            final char[] buff = new char[10];
+            while (br.read(buff, 0, 3) != -1) {
+                // consume all
+            }
+            assertEquals(EOLeolct, br.getCurrentLineNumber());
+        }
+    }
+
+    @Test
+    public void testReadingInDifferentBuffer() throws Exception {
+        char[] tmp1 = new char[2], tmp2 = new char[4];
+        try (ExtendedBufferedReader reader = createBufferedReader("1\r\n2\r\n")) {
+            reader.read(tmp1, 0, 2);
+            reader.read(tmp2, 2, 2);
+            assertEquals(2, reader.getCurrentLineNumber());
+        }
+    }
+
+    @Test
+    public void testReadLine() throws Exception {
+        try (final ExtendedBufferedReader br = createBufferedReader("")) {
+            assertNull(br.readLine());
+        }
+        try (final ExtendedBufferedReader br = createBufferedReader("\n")) {
+            assertEquals("", br.readLine());
+            assertNull(br.readLine());
+        }
+        try (final ExtendedBufferedReader br = createBufferedReader("foo\n\nhello")) {
+            assertEquals(0, br.getCurrentLineNumber());
+            assertEquals("foo", br.readLine());
+            assertEquals(1, br.getCurrentLineNumber());
+            assertEquals("", br.readLine());
+            assertEquals(2, br.getCurrentLineNumber());
+            assertEquals("hello", br.readLine());
+            assertEquals(3, br.getCurrentLineNumber());
+            assertNull(br.readLine());
+            assertEquals(3, br.getCurrentLineNumber());
+        }
+        try (final ExtendedBufferedReader br = createBufferedReader("foo\n\nhello")) {
+            assertEquals('f', br.read());
+            assertEquals('o', br.lookAhead());
+            assertEquals("oo", br.readLine());
+            assertEquals(1, br.getCurrentLineNumber());
+            assertEquals('\n', br.lookAhead());
+            assertEquals("", br.readLine());
+            assertEquals(2, br.getCurrentLineNumber());
+            assertEquals('h', br.lookAhead());
+            assertEquals("hello", br.readLine());
+            assertNull(br.readLine());
+            assertEquals(3, br.getCurrentLineNumber());
+        }
+        try (final ExtendedBufferedReader br = createBufferedReader("foo\rbaar\r\nfoo")) {
+            assertEquals("foo", br.readLine());
+            assertEquals('b', br.lookAhead());
+            assertEquals("baar", br.readLine());
+            assertEquals('f', br.lookAhead());
+            assertEquals("foo", br.readLine());
+            assertNull(br.readLine());
         }
     }
 
@@ -121,90 +216,5 @@ public class ExtendedBufferedReaderTest {
             assertArrayEquals(ref, res);
             assertEquals('d', br.getLastChar());
         }
-    }
-
-    @Test
-    public void testReadLine() throws Exception {
-        try (final ExtendedBufferedReader br = createBufferedReader("")) {
-            assertNull(br.readLine());
-        }
-        try (final ExtendedBufferedReader br = createBufferedReader("\n")) {
-            assertEquals("", br.readLine());
-            assertNull(br.readLine());
-        }
-        try (final ExtendedBufferedReader br = createBufferedReader("foo\n\nhello")) {
-            assertEquals(0, br.getCurrentLineNumber());
-            assertEquals("foo", br.readLine());
-            assertEquals(1, br.getCurrentLineNumber());
-            assertEquals("", br.readLine());
-            assertEquals(2, br.getCurrentLineNumber());
-            assertEquals("hello", br.readLine());
-            assertEquals(3, br.getCurrentLineNumber());
-            assertNull(br.readLine());
-            assertEquals(3, br.getCurrentLineNumber());
-        }
-        try (final ExtendedBufferedReader br = createBufferedReader("foo\n\nhello")) {
-            assertEquals('f', br.read());
-            assertEquals('o', br.lookAhead());
-            assertEquals("oo", br.readLine());
-            assertEquals(1, br.getCurrentLineNumber());
-            assertEquals('\n', br.lookAhead());
-            assertEquals("", br.readLine());
-            assertEquals(2, br.getCurrentLineNumber());
-            assertEquals('h', br.lookAhead());
-            assertEquals("hello", br.readLine());
-            assertNull(br.readLine());
-            assertEquals(3, br.getCurrentLineNumber());
-        }
-        try (final ExtendedBufferedReader br = createBufferedReader("foo\rbaar\r\nfoo")) {
-            assertEquals("foo", br.readLine());
-            assertEquals('b', br.lookAhead());
-            assertEquals("baar", br.readLine());
-            assertEquals('f', br.lookAhead());
-            assertEquals("foo", br.readLine());
-            assertNull(br.readLine());
-        }
-    }
-
-    /*
-     * Test to illustrate https://issues.apache.org/jira/browse/CSV-75
-     *
-     */
-    @Test
-    public void testReadChar() throws Exception {
-        final String LF = "\n";
-        final String CR = "\r";
-        final String CRLF = CR + LF;
-        final String LFCR = LF + CR;// easier to read the string below
-        final String test = "a" + LF + "b" + CR + "c" + LF + LF + "d" + CR + CR + "e" + LFCR + "f " + CRLF;
-        // EOL eol EOL EOL eol eol EOL+CR EOL
-        final int EOLeolct = 9;
-
-        try (final ExtendedBufferedReader br = createBufferedReader(test)) {
-            assertEquals(0, br.getCurrentLineNumber());
-            while (br.readLine() != null) {
-                // consume all
-            }
-            assertEquals(EOLeolct, br.getCurrentLineNumber());
-        }
-        try (final ExtendedBufferedReader br = createBufferedReader(test)) {
-            assertEquals(0, br.getCurrentLineNumber());
-            while (br.read() != -1) {
-                // consume all
-            }
-            assertEquals(EOLeolct, br.getCurrentLineNumber());
-        }
-        try (final ExtendedBufferedReader br = createBufferedReader(test)) {
-            assertEquals(0, br.getCurrentLineNumber());
-            final char[] buff = new char[10];
-            while (br.read(buff, 0, 3) != -1) {
-                // consume all
-            }
-            assertEquals(EOLeolct, br.getCurrentLineNumber());
-        }
-    }
-
-    private ExtendedBufferedReader createBufferedReader(final String s) {
-        return new ExtendedBufferedReader(new StringReader(s));
     }
 }

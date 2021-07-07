@@ -23,8 +23,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * A CSV record parsed from a CSV file.
@@ -39,8 +39,6 @@ import java.util.Objects;
  * </p>
  */
 public final class CSVRecord implements Serializable, Iterable<String> {
-
-    private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     private static final long serialVersionUID = 1L;
 
@@ -61,7 +59,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     CSVRecord(final CSVParser parser, final String[] values, final String comment, final long recordNumber,
             final long characterPosition) {
         this.recordNumber = recordNumber;
-        this.values = values != null ? values : EMPTY_STRING_ARRAY;
+        this.values = values != null ? values : Constants.EMPTY_STRING_ARRAY;
         this.parser = parser;
         this.comment = comment;
         this.characterPosition = characterPosition;
@@ -110,7 +108,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @see #isMapped(String)
      * @see #isConsistent()
      * @see #getParser()
-     * @see CSVFormat#withNullString(String)
+     * @see CSVFormat.Builder#setNullString(String)
      */
     public String get(final String name) {
         final Map<String, Integer> headerMap = getHeaderMapRaw();
@@ -263,21 +261,21 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Puts all values of this record into the given Map.
      *
-     * @param map
-     *            The Map to populate.
+     * @param <M> the map type
+     * @param map The Map to populate.
      * @return the given map.
-     * @since 1.9
+     * @since 1.9.0
      */
     public <M extends Map<String, String>> M putIn(final M map) {
         if (getHeaderMapRaw() == null) {
             return map;
         }
-        for (final Entry<String, Integer> entry : getHeaderMapRaw().entrySet()) {
+        getHeaderMapRaw().entrySet().forEach(entry -> {
             final int col = entry.getValue().intValue();
             if (col < values.length) {
                 map.put(entry.getKey(), values[col]);
             }
-        }
+        });
         return map;
     }
 
@@ -291,13 +289,22 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
+     * Returns a sequential ordered stream whose elements are the values.
+     *
+     * @return the new stream.
+     * @since 1.9.0
+     */
+    public Stream<String> stream() {
+        return Stream.of(values);
+    }
+
+    /**
      * Converts the values to a List.
      *
-     * TODO: Maybe make this public?
-     *
      * @return a new List
+     * @since 1.9.0
      */
-    private List<String> toList() {
+    public List<String> toList() {
         return Arrays.asList(values);
     }
 

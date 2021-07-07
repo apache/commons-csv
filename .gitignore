@@ -1,4 +1,5 @@
 ### https://raw.github.com/github/gitignore/14b7566ce157ce95b07006466bacee160f242284/maven.gitignore
+.DS_Store
 
 target/
 pom.xml.tag
@@ -11,3 +12,4 @@ release.properties
 /.classpath
 /.project
 /.settings/
+/commons-csv.iml

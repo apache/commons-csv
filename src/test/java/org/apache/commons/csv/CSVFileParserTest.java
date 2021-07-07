@@ -29,6 +29,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -53,10 +54,7 @@ public class CSVFileParserTest {
     public static Stream<File> generateData() {
         final FilenameFilter fileNameFilter = (dir, name) -> name.startsWith("test") && name.endsWith(".txt");
         final File[] files = BASE.listFiles(fileNameFilter);
-        if (files != null) {
-            return Arrays.stream(files);
-        }
-        return Stream.empty();
+        return files != null ? Stream.of(files) : Stream.empty();
     }
 
     @ParameterizedTest
@@ -93,7 +91,7 @@ public class CSVFileParserTest {
             try (final CSVParser parser = CSVParser.parse(new File(BASE, split[0]), Charset.defaultCharset(), format)) {
                 for (final CSVRecord record : parser) {
                     String parsed = Arrays.toString(record.values());
-                    String comment = record.getComment();
+                    final String comment = record.getComment();
                     if (checkComments && comment != null) {
                         parsed += "#" + comment.replace("\n", "\\n");
                     }
@@ -135,10 +133,10 @@ public class CSVFileParserTest {
 
             // Now parse the file and compare against the expected results
             final URL resource = ClassLoader.getSystemResource("org/apache/commons/csv/CSVFileParser/" + split[0]);
-            try (final CSVParser parser = CSVParser.parse(resource, Charset.forName("UTF-8"), format)) {
+            try (final CSVParser parser = CSVParser.parse(resource, StandardCharsets.UTF_8, format)) {
                 for (final CSVRecord record : parser) {
                     String parsed = Arrays.toString(record.values());
-                    String comment = record.getComment();
+                    final String comment = record.getComment();
                     if (checkComments && comment != null) {
                         parsed += "#" + comment.replace("\n", "\\n");
                     }

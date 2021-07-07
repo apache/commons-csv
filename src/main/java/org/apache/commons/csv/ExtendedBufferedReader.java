@@ -112,7 +112,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      * @return the next character
      *
      * @throws IOException
-     *             if there is an error in reading
+     *             If an I/O error occurs
      */
     int lookAhead() throws IOException {
         super.mark(1);
@@ -122,15 +122,32 @@ final class ExtendedBufferedReader extends BufferedReader {
         return c;
     }
 
+    /**
+     * Returns the next n characters in the current reader without consuming them. The next call to {@link #read()} will still return the next value. This
+     * doesn't affect line number or last character.
+     *
+     * @param n the number characters look ahead.
+     * @return the next n characters.
+     * @throws IOException If an I/O error occurs
+     */
+    char[] lookAhead(final int n) throws IOException {
+        final char[] buf = new char[n];
+        super.mark(n);
+        super.read(buf, 0, n);
+        super.reset();
+
+        return buf;
+    }
+
     @Override
     public int read() throws IOException {
         final int current = super.read();
-        if ((current == CR || current == LF && lastChar != CR)
-            || (current == END_OF_STREAM && lastChar != CR && lastChar != LF && lastChar != END_OF_STREAM)) {
+        if (current == CR || current == LF && lastChar != CR ||
+            current == END_OF_STREAM && lastChar != CR && lastChar != LF && lastChar != END_OF_STREAM) {
             eolCounter++;
         }
         lastChar = current;
-        this.position++;
+        position++;
         return lastChar;
     }
 
@@ -147,7 +164,7 @@ final class ExtendedBufferedReader extends BufferedReader {
             for (int i = offset; i < offset + len; i++) {
                 final char ch = buf[i];
                 if (ch == LF) {
-                    if (CR != (i > 0 ? buf[i - 1] : lastChar)) {
+                    if (CR != (i > offset ? buf[i - 1] : lastChar)) {
                         eolCounter++;
                     }
                 } else if (ch == CR) {
@@ -169,9 +186,11 @@ final class ExtendedBufferedReader extends BufferedReader {
      * Calls {@link BufferedReader#readLine()} which drops the line terminator(s). This method should only be called
      * when processing a comment, otherwise information can be lost.
      * <p>
-     * Increments {@link #eolCounter}
+     * Increments {@link #eolCounter}.
+     * </p>
      * <p>
-     * Sets {@link #lastChar} to {@link Constants#END_OF_STREAM} at EOF, otherwise to LF
+     * Sets {@link #lastChar} to {@link Constants#END_OF_STREAM} at EOF, otherwise to LF.
+     * </p>
      *
      * @return the line that was read, or null if reached EOF.
      */

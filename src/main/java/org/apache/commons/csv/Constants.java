@@ -26,7 +26,7 @@ final class Constants {
 
     static final char BACKSPACE = '\b';
 
-    static final char COMMA = ',';
+    static final String COMMA = ",";
 
     /**
      * Starts a comment, the remainder of the line is the comment.
@@ -78,5 +78,7 @@ final class Constants {
 
     /** ASCII unit separator */
     static final char US = 31;
+
+    static final String[] EMPTY_STRING_ARRAY = {};
 
 }

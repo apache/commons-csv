@@ -16,33 +16,33 @@
  */
 package org.apache.commons.csv.issues;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.IOException;
+import java.io.StringReader;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.io.StringReader;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class JiraCsv211Test {
 
     @Test
     public void testJiraCsv211Format() throws IOException {
-        final String[] values = new String[] { "1", "Jane Doe", "USA", "" };
+        final String[] values = { "1", "Jane Doe", "USA", "" };
 
         final CSVFormat printFormat = CSVFormat.DEFAULT.withDelimiter('\t').withHeader("ID", "Name", "Country", "Age");
-        String formatted = printFormat.format(values);
+        final String formatted = printFormat.format(values);
         assertEquals("ID\tName\tCountry\tAge\r\n1\tJane Doe\tUSA\t", formatted);
 
         final CSVFormat parseFormat = CSVFormat.DEFAULT.withDelimiter('\t').withFirstRecordAsHeader();
-        CSVParser parser = parseFormat.parse(new StringReader(formatted));
-        for (CSVRecord record : parser) {
-            assertEquals("1", record.get(0));
-            assertEquals("Jane Doe", record.get(1));
-            assertEquals("USA", record.get(2));
-            assertEquals("", record.get(3));
-        }
-    }
+        try (final CSVParser parser = parseFormat.parse(new StringReader(formatted))) {
+            for (final CSVRecord record : parser) {
+                assertEquals("1", record.get(0));
+                assertEquals("Jane Doe", record.get(1));
+                assertEquals("USA", record.get(2));
+                assertEquals("", record.get(3));
+            }
+        }}
 }
