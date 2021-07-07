@@ -45,6 +45,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Objects;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -61,8 +62,8 @@ public class CSVFormatTest {
     }
 
     private static void assertNotEquals(final Object right, final Object left) {
-        assertFalse(right.equals(left));
-        assertFalse(left.equals(right));
+        Assertions.assertNotEquals(right, left);
+        Assertions.assertNotEquals(left, right);
     }
 
     private static CSVFormat copy(final CSVFormat format) {
@@ -151,8 +152,8 @@ public class CSVFormatTest {
         final CSVFormat right = CSVFormat.DEFAULT;
         final CSVFormat left = copy(right);
 
-        assertFalse(right.equals(null));
-        assertFalse(right.equals("A String Instance"));
+        Assertions.assertNotEquals(null, right);
+        Assertions.assertNotEquals("A String Instance", right);
 
         assertEquals(right, right);
         assertEquals(right, left);
@@ -509,7 +510,7 @@ public class CSVFormatTest {
         assertFalse(csvFormatTwo.isCommentMarkerSet());
 
         assertNotSame(csvFormatTwo, csvFormatOne);
-        assertFalse(csvFormatTwo.equals(csvFormatOne));
+        Assertions.assertNotEquals(csvFormatTwo, csvFormatOne);
 
         assertEquals('\\', (char)csvFormatOne.getEscapeCharacter());
         assertNull(csvFormatOne.getQuoteMode());
@@ -568,10 +569,10 @@ public class CSVFormatTest {
         assertNotSame(csvFormatOne, csvFormatTwo);
         assertNotSame(csvFormatTwo, csvFormatOne);
 
-        assertFalse(csvFormatOne.equals(csvFormatTwo));
-        assertFalse(csvFormatTwo.equals(csvFormatOne));
+        Assertions.assertNotEquals(csvFormatOne, csvFormatTwo);
+        Assertions.assertNotEquals(csvFormatTwo, csvFormatOne);
 
-        assertFalse(csvFormatTwo.equals(csvFormatOne));
+        Assertions.assertNotEquals(csvFormatTwo, csvFormatOne);
 
     }
 
@@ -749,7 +750,7 @@ public class CSVFormatTest {
         assertEquals('\"', (char)csvFormat.getQuoteCharacter());
         assertTrue(csvFormat.isNullStringSet());
 
-        assertFalse(csvFormat.equals( null));
+        Assertions.assertNotEquals(null, csvFormat);
 
     }
 
@@ -833,7 +834,7 @@ public class CSVFormatTest {
         assertTrue(csvFormatTwo.getIgnoreHeaderCase()); // now different
         assertFalse(csvFormatTwo.getTrailingDelimiter());
 
-        assertFalse(csvFormatTwo.equals(csvFormat)); // CSV-244 - should not be equal
+        Assertions.assertNotEquals(csvFormatTwo, csvFormat); // CSV-244 - should not be equal
         assertFalse(csvFormatTwo.getAllowMissingColumnNames());
 
         assertFalse(csvFormatTwo.getTrim());
@@ -1026,12 +1027,12 @@ public class CSVFormatTest {
 
     @Test
     public void testRFC4180() {
-        assertEquals(null, RFC4180.getCommentMarker());
+        assertNull(RFC4180.getCommentMarker());
         assertEquals(',', RFC4180.getDelimiter());
-        assertEquals(null, RFC4180.getEscapeCharacter());
+        assertNull(RFC4180.getEscapeCharacter());
         assertFalse(RFC4180.getIgnoreEmptyLines());
         assertEquals(Character.valueOf('"'), RFC4180.getQuoteCharacter());
-        assertEquals(null, RFC4180.getQuoteMode());
+        assertNull(RFC4180.getQuoteMode());
         assertEquals("\r\n", RFC4180.getRecordSeparator());
     }
 
@@ -1161,7 +1162,7 @@ public class CSVFormatTest {
         assertNotSame(csvFormat, csvFormatTwo);
         assertNotSame(csvFormatTwo, csvFormat);
 
-        assertFalse(csvFormatTwo.equals(csvFormat));
+        Assertions.assertNotEquals(csvFormatTwo, csvFormat);
 
         assertNull(csvFormat.getEscapeCharacter());
         assertTrue(csvFormat.isQuoteCharacterSet());
@@ -1220,9 +1221,9 @@ public class CSVFormatTest {
         assertNotSame(csvFormat, csvFormatTwo);
         assertNotSame(csvFormatTwo, csvFormat);
 
-        assertFalse(csvFormat.equals(csvFormatTwo));
+        Assertions.assertNotEquals(csvFormat, csvFormatTwo);
 
-        assertFalse(csvFormatTwo.equals(csvFormat));
+        Assertions.assertNotEquals(csvFormatTwo, csvFormat);
         assertEquals("Delimiter=<,> QuoteChar=<\"> CommentStart=<n> " +
                         "RecordSeparator=<\r\n> EmptyLines:ignored SkipHeaderRecord:false"
                 , csvFormatTwo.toString());
@@ -1283,7 +1284,7 @@ public class CSVFormatTest {
     @Test
     public void testWithEmptyEnum() {
         final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(EmptyEnum.class);
-        assertTrue(formatWithHeader.getHeader().length == 0);
+        assertEquals(0, formatWithHeader.getHeader().length);
     }
 
 
@@ -1304,7 +1305,7 @@ public class CSVFormatTest {
     public void testWithFirstRecordAsHeader() {
         final CSVFormat formatWithFirstRecordAsHeader = CSVFormat.DEFAULT.withFirstRecordAsHeader();
         assertTrue(formatWithFirstRecordAsHeader.getSkipHeaderRecord());
-        assertTrue(formatWithFirstRecordAsHeader.getHeader().length == 0);
+        assertEquals(0, formatWithFirstRecordAsHeader.getHeader().length);
     }
 
     @Test
@@ -1408,7 +1409,7 @@ public class CSVFormatTest {
         assertNotSame(csvFormat, csvFormatTwo);
         assertNotSame(csvFormatTwo, csvFormat);
 
-        assertFalse(csvFormatTwo.equals(csvFormat)); // CSV-244 - should not be equal
+        Assertions.assertNotEquals(csvFormatTwo, csvFormat); // CSV-244 - should not be equal
 
         final String string = csvFormatTwo.format(objectArray);
 
@@ -1470,9 +1471,9 @@ public class CSVFormatTest {
         assertNotSame(csvFormatTwo, csvFormat);
 
         assertNotNull(string);
-        assertFalse(csvFormat.equals(csvFormatTwo)); // CSV-244 - should not be equal
+        Assertions.assertNotEquals(csvFormat, csvFormatTwo); // CSV-244 - should not be equal
 
-        assertFalse(csvFormatTwo.equals(csvFormat)); // CSV-244 - should not be equal
+        Assertions.assertNotEquals(csvFormatTwo, csvFormat); // CSV-244 - should not be equal
         assertEquals(",,,,,,,", string);
 
     }

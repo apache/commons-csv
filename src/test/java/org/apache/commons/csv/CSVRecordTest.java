@@ -325,6 +325,6 @@ public class CSVRecordTest {
         assertEquals("A", map.get("first"));
         assertEquals("B", map.get("second"));
         assertEquals("C", map.get("third"));
-        assertEquals(null, map.get("fourth"));
+        assertNull(map.get("fourth"));
     }
 }
