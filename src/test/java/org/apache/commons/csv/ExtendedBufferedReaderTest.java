@@ -204,6 +204,15 @@ public class ExtendedBufferedReaderTest {
         }
     }
 
+    @Test
+    public void testReadingInDifferentBuffer() throws Exception {
+        char[] tmp1 = new char[2], tmp2 = new char[4];
+        ExtendedBufferedReader br = createBufferedReader("1\r\n2\r\n");
+        br.read(tmp1, 0, 2);
+        br.read(tmp2, 2, 2);
+        assertEquals(2, br.getCurrentLineNumber());
+    }
+
     private ExtendedBufferedReader createBufferedReader(final String s) {
         return new ExtendedBufferedReader(new StringReader(s));
     }
