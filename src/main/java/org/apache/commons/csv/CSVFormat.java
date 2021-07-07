@@ -1371,6 +1371,22 @@ public final class CSVFormat implements Serializable {
         validate();
     }
 
+    private void append(final char c, final Appendable appendable) throws IOException {
+        //try {
+            appendable.append(c);
+        //} catch (final IOException e) {
+        //    throw new UncheckedIOException(e);
+        //}
+    }
+
+    private void append(final CharSequence csq, final Appendable appendable) throws IOException {
+        //try {
+            appendable.append(csq);
+        //} catch (final IOException e) {
+        //    throw new UncheckedIOException(e);
+        //}
+    }
+
     /**
      * Creates a new Builder for this instance.
      *
@@ -1606,10 +1622,9 @@ public final class CSVFormat implements Serializable {
         int result = 1;
         result = prime * result + Arrays.hashCode(header);
         result = prime * result + Arrays.hashCode(headerComments);
-        result = prime * result + Objects.hash(allowDuplicateHeaderNames, allowMissingColumnNames, autoFlush, commentMarker, delimiter, escapeCharacter,
+        return prime * result + Objects.hash(allowDuplicateHeaderNames, allowMissingColumnNames, autoFlush, commentMarker, delimiter, escapeCharacter,
                 ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, nullString, quoteCharacter, quoteMode, quotedNullString, recordSeparator,
                 skipHeaderRecord, trailingDelimiter, trim);
-        return result;
     }
 
     /**
@@ -1804,7 +1819,7 @@ public final class CSVFormat implements Serializable {
     private void print(final Reader reader, final Appendable out, final boolean newRecord) throws IOException {
         // Reader is never null
         if (!newRecord) {
-            out.append(getDelimiterString());
+            append(getDelimiterString(), out);
         }
         if (isQuoteCharacterSet()) {
             printWithQuotes(reader, out);
@@ -1837,15 +1852,15 @@ public final class CSVFormat implements Serializable {
      * Outputs the trailing delimiter (if set) followed by the record separator (if set).
      *
      * @param appendable where to write
-     * @throws IOException If an I/O error occurs
+     * @throws IOException If an I/O error occurs.
      * @since 1.4
      */
     public void println(final Appendable appendable) throws IOException {
         if (getTrailingDelimiter()) {
-            appendable.append(getDelimiterString());
+            append(getDelimiterString(), appendable);
         }
         if (recordSeparator != null) {
-            appendable.append(recordSeparator);
+            append(recordSeparator, appendable);
         }
     }
 
@@ -1883,7 +1898,7 @@ public final class CSVFormat implements Serializable {
 
         while (pos < end) {
             char c = charSeq.charAt(pos);
-            boolean isDelimiterStart = isDelimiter(c, charSeq, pos, delim, delimLength);
+            final boolean isDelimiterStart = isDelimiter(c, charSeq, pos, delim, delimLength);
             if (c == CR || c == LF || c == escape || isDelimiterStart) {
                 // write out segment up until this char
                 if (pos > start) {
@@ -1918,7 +1933,7 @@ public final class CSVFormat implements Serializable {
         }
     }
 
-    private void printWithEscapes(final Reader reader, final Appendable out) throws IOException {
+    private void printWithEscapes(final Reader reader, final Appendable appendable) throws IOException {
         int start = 0;
         int pos = 0;
 
@@ -1932,12 +1947,12 @@ public final class CSVFormat implements Serializable {
         int c;
         while (-1 != (c = bufferedReader.read())) {
             builder.append((char) c);
-            boolean isDelimiterStart = isDelimiter((char) c, builder.toString() + new String(bufferedReader.lookAhead(delimLength - 1)), pos, delim,
+            final boolean isDelimiterStart = isDelimiter((char) c, builder.toString() + new String(bufferedReader.lookAhead(delimLength - 1)), pos, delim,
                     delimLength);
             if (c == CR || c == LF || c == escape || isDelimiterStart) {
                 // write out segment up until this char
                 if (pos > start) {
-                    out.append(builder.substring(start, pos));
+                    append(builder.substring(start, pos), appendable);
                     builder.setLength(0);
                     pos = -1;
                 }
@@ -1947,14 +1962,14 @@ public final class CSVFormat implements Serializable {
                     c = 'r';
                 }
 
-                out.append(escape);
-                out.append((char) c);
+                append(escape, appendable);
+                append((char) c, appendable);
 
                 if (isDelimiterStart) {
                     for (int i = 1; i < delimLength; i++) {
                         c = bufferedReader.read();
-                        out.append(escape);
-                        out.append((char) c);
+                        append(escape, appendable);
+                        append((char) c, appendable);
                     }
                 }
 
@@ -1965,7 +1980,7 @@ public final class CSVFormat implements Serializable {
 
         // write last segment
         if (pos > start) {
-            out.append(builder.substring(start, pos));
+            append(builder.substring(start, pos), appendable);
         }
     }
 
@@ -2096,7 +2111,7 @@ public final class CSVFormat implements Serializable {
         final char quote = getQuoteCharacter().charValue();
         final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
 
-        appendable.append(quote);
+        append(quote, appendable);
 
         int c;
         while (-1 != (c = reader.read())) {
@@ -2104,23 +2119,23 @@ public final class CSVFormat implements Serializable {
             if (c == quote) {
                 // write out segment up until this char
                 if (pos > 0) {
-                    appendable.append(builder.substring(0, pos));
+                    append(builder.substring(0, pos), appendable);
                     builder.setLength(0);
                     pos = -1;
                 }
 
-                appendable.append(quote);
-                appendable.append((char) c);
+                append(quote, appendable);
+                append((char) c, appendable);
             }
             pos++;
         }
 
         // write last segment
         if (pos > 0) {
-            appendable.append(builder.substring(0, pos));
+            append(builder.substring(0, pos), appendable);
         }
 
-        appendable.append(quote);
+        append(quote, appendable);
     }
 
     @Override
