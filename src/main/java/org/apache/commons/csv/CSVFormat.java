@@ -1747,7 +1747,7 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Prints the {@code value} as the next value on the line to {@code out}. The value will be escaped or encapsulated as needed. Useful when one wants to
-     * avoid creating CSVPrinters. Trims the value if {@link #getTrim()} is true
+     * avoid creating CSVPrinters. Trims the value if {@link #getTrim()} is true.
      *
      * @param value     value to output.
      * @param out       where to print the value.
@@ -2120,11 +2120,11 @@ public final class CSVFormat implements Serializable {
                 // write out segment up until this char
                 if (pos > 0) {
                     append(builder.substring(0, pos), appendable);
+                    append(quote, appendable);
                     builder.setLength(0);
                     pos = -1;
                 }
 
-                append(quote, appendable);
                 append((char) c, appendable);
             }
             pos++;

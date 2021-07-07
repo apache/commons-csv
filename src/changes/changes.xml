@@ -59,6 +59,7 @@
       <action                 type="fix" dev="ggregory" due-to="Gary Gregory">Update CSVParser.parse(File, Charset, CSVFormat) from IO to NIO.</action>
       <action issue="CSV-271" type="fix" dev="ggregory" due-to="Amar Prakash Pandey">Missing separator with print(object) followed by printRecord(Object[]) #157.</action>
       <action issue="CSV-158" type="fix" dev="ggregory" due-to="Alexander Bondarev, Benedikt Ritter, Gary Gregory, Chen">Fix EOL checking for read array in ExtendedBufferedReader #5.</action>
+      <action issue="CSV-263" type="fix" dev="ggregory" due-to="Jason A. Guild, Gary Gregory">Print from Reader with embedded quotes generates incorrect output #78.</action>
       <!-- ADD -->
       <action issue="CSV-275" type="add" dev="ggregory" due-to="Michael Wyraz, Gary Gregory">Make CSVRecord#toList() public.</action>
       <action                 type="add" dev="ggregory" due-to="Gary Gregory">Add CSVRecord#stream().</action>
