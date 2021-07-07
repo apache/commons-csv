@@ -971,7 +971,7 @@ public class CSVFormatTest {
         final Appendable out = new StringBuilder();
         final CSVFormat format = CSVFormat.RFC4180.withDelimiter(',').withQuote('"').withEscape('?').withQuoteMode(QuoteMode.NON_NUMERIC);
         format.print(in, out, true);
-        assertEquals("\"\"\"\"a,b,c\r\nx,y,z\"", out.toString());
+        assertEquals("\"\"\"a,b,c\r\nx,y,z\"", out.toString());
     }
 
     @Test
