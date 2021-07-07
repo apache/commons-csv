@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -965,7 +966,7 @@ public class CSVPrinterTest {
             final Iterator<CSVRecord> iterator = iterable.iterator();
             final CSVRecord record = iterator.next();
             assertEquals("a", record.get(0));
-            assertEquals(null, record.get(1));
+            assertNull(record.get(1));
             assertEquals("b", record.get(2));
             assertFalse(iterator.hasNext());
         }
