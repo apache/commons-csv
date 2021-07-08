@@ -38,7 +38,7 @@ public class JiraCsv206Test {
         final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setDelimiter("[|]").build();
         CSVRecord record = null;
         try (final CSVParser csvParser = new CSVParser(reader, csvFormat)) {
-            Iterator<CSVRecord> iterator = csvParser.iterator();
+            final Iterator<CSVRecord> iterator = csvParser.iterator();
             record = iterator.next();
             assertEquals("FirstName", record.get(0));
             assertEquals("LastName", record.get(1));
