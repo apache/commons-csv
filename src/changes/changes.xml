@@ -89,6 +89,7 @@
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump maven-javadoc-plugin from 3.2.0 to 3.3.0.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-generator-annprocess from 1.5.2 to 1.32 #151.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump PMD core from 6.29.0 to 6.36.0.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump biz.aQute.bnd:biz.aQute.bndlib from 5.1.2 to 5.3.0.</action>
     </release>
     <release version="1.8" date="2020-02-01" description="Feature and bug fix release (Java 8).
 

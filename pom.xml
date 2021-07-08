@@ -177,6 +177,7 @@
     <commons.spotbugs.version>4.2.3</commons.spotbugs.version>
     <commons.japicmp.version>0.15.3</commons.japicmp.version>
     <commons.javadoc.version>3.3.0</commons.javadoc.version>
+    <biz.aQute.bndlib.version>5.3.0</biz.aQute.bndlib.version>
     <japicmp.skip>false</japicmp.skip>
 
     <commons.release.isDistModule>true</commons.release.isDistModule>
