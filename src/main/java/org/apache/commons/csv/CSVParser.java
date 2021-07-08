@@ -446,8 +446,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         if (lastRecord && inputClean.isEmpty() && this.format.getTrailingDelimiter()) {
             return;
         }
-        final String nullString = this.format.getNullString();
-        this.recordList.add(inputClean.equals(nullString) ? null : inputClean);
+        this.recordList.add(handleNull(inputClean));
     }
 
     /**
@@ -636,7 +635,26 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Gets whether this parser is closed.
+     * Handle whether input is parsed as null
+     *
+     * @param input
+     *           the cell data to further processed
+     * @return null if input is parsed as null, or input itself if input isn't parsed as null
+     */
+    private String handleNull(final String input) {
+        final boolean isQuoted = this.reusableToken.isQuoted;
+        final String nullString = format.getNullString();
+        final boolean strictQuoteMode = isStrictQuoteMode();
+        if (input.equals(nullString)) {
+            // nullString = NULL(String), distinguish between "NULL" and NULL in ALL_NON_NULL or NON_NUMERIC quote mode
+            return strictQuoteMode && isQuoted ? input : null;
+        }
+        // don't set nullString, distinguish between "" and ,, (absent values) in All_NON_NULL or NON_NUMERIC quote mode
+        return strictQuoteMode && nullString == null && input.isEmpty() && !isQuoted ? null : input;
+    }
+
+    /**
+     * Tests whether this parser is closed.
      *
      * @return whether this parser is closed.
      */
@@ -645,7 +663,18 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Returns an iterator on the records.
+     * Tests whether the format's {@link QuoteMode} is {@link QuoteMode#ALL_NON_NULL} or {@link QuoteMode#NON_NUMERIC}.
+     *
+     * @return true if the format's {@link QuoteMode} is {@link QuoteMode#ALL_NON_NULL} or
+     *         {@link QuoteMode#NON_NUMERIC}.
+     */
+    private boolean isStrictQuoteMode() {
+        return this.format.getQuoteMode() == QuoteMode.ALL_NON_NULL ||
+               this.format.getQuoteMode() == QuoteMode.NON_NUMERIC;
+    }
+
+    /**
+     * Returns the record iterator.
      *
      * <p>
      * An {@link IOException} caught during the iteration are re-thrown as an
