@@ -176,6 +176,7 @@
     <commons.jacoco.version>0.8.7</commons.jacoco.version>
     <commons.spotbugs.version>4.2.3</commons.spotbugs.version>
     <commons.japicmp.version>0.15.3</commons.japicmp.version>
+    <commons.javadoc.version>3.3.0</commons.javadoc.version>
     <japicmp.skip>false</japicmp.skip>
 
     <commons.release.isDistModule>true</commons.release.isDistModule>
