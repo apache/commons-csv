@@ -25,11 +25,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -41,7 +41,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 public class CSVFileParserTest {
 
-    private static final File BASE = new File("src/test/resources/org/apache/commons/csv/CSVFileParser");
+    private static final File BASE_DIR = new File("src/test/resources/org/apache/commons/csv/CSVFileParser");
 
     private String readTestData(final BufferedReader reader) throws IOException {
         String line;
@@ -52,8 +52,7 @@ public class CSVFileParserTest {
     }
 
     public static Stream<File> generateData() {
-        final FilenameFilter fileNameFilter = (dir, name) -> name.startsWith("test") && name.endsWith(".txt");
-        final File[] files = BASE.listFiles(fileNameFilter);
+        final File[] files = BASE_DIR.listFiles((dir, name) -> name.startsWith("test") && name.endsWith(".txt"));
         return files != null ? Stream.of(files) : Stream.empty();
     }
 
@@ -88,7 +87,7 @@ public class CSVFileParserTest {
 
             // Now parse the file and compare against the expected results
             // We use a buffered reader internally so no need to create one here.
-            try (final CSVParser parser = CSVParser.parse(new File(BASE, split[0]), Charset.defaultCharset(), format)) {
+            try (final CSVParser parser = CSVParser.parse(new File(BASE_DIR, split[0]), Charset.defaultCharset(), format)) {
                 for (final CSVRecord record : parser) {
                     String parsed = Arrays.toString(record.values());
                     final String comment = record.getComment();
