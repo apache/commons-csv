@@ -110,10 +110,6 @@ public final class CSVPrinter implements Flushable, Closeable {
         }
     }
 
-    // ======================================================
-    // printing implementation
-    // ======================================================
-
     @Override
     public void close() throws IOException {
         close(false);
