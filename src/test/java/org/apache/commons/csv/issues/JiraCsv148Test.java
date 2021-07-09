@@ -25,30 +25,41 @@ import org.junit.jupiter.api.Test;
 public class JiraCsv148Test {
 
     /**
-     * The difference between withTrim()and withIgnoreSurroundingSpace()：
-     * difference:  withTrim() can remove the leading and trailing spaces and newlines in quotation marks,
-     * while withIgnoreSurroundingSpace() cannot
-     * The same point: you can remove the leading and trailing spaces,tabs and other symbols.
+     * The difference between withTrim()and withIgnoreSurroundingSpace()： difference: withTrim() can remove the leading
+     * and trailing spaces and newlines in quotation marks, while withIgnoreSurroundingSpace() cannot The same point:
+     * you can remove the leading and trailing spaces,tabs and other symbols.
      */
     @Test
-    public void testWithTrimEmpty() throws Exception {
-        final CSVFormat format = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.ALL).withTrim();
-        assertEquals("\"\",\"\",\"Single space on the left\",\"Single space on the right\"," +
-                        "\"Single spaces on both sides\",\"Multiple spaces on the left\"," +
-                        "\"Multiple spaces on the right\",\"Multiple spaces on both sides\"",
-                format.format("", " ", " Single space on the left", "Single space on the right ",
-                        " Single spaces on both sides ", "   Multiple spaces on the left",
-                        "Multiple spaces on the right   ", "  Multiple spaces on both sides     "));
+    public void testWithTrimEmpty() {
+        // @formatter:off
+        final CSVFormat format = CSVFormat.DEFAULT.builder()
+            .setQuoteMode(QuoteMode.ALL)
+            .setTrim(true)
+            .build();
+        // @formatter:on
+        assertEquals(
+            "\"\",\"\",\"Single space on the left\",\"Single space on the right\","
+                + "\"Single spaces on both sides\",\"Multiple spaces on the left\","
+                + "\"Multiple spaces on the right\",\"Multiple spaces on both sides\"",
+            format.format("", " ", " Single space on the left", "Single space on the right ",
+                " Single spaces on both sides ", "   Multiple spaces on the left", "Multiple spaces on the right   ",
+                "  Multiple spaces on both sides     "));
     }
 
     @Test
-    public void testWithIgnoreSurroundingSpacesEmpty() throws Exception {
-        final CSVFormat format = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.ALL).withIgnoreSurroundingSpaces();
-        assertEquals("\"\",\" \",\" Single space on the left\",\"Single space on the right \"," +
-                        "\" Single spaces on both sides \",\"   Multiple spaces on the left\"," +
-                        "\"Multiple spaces on the right   \",\"  Multiple spaces on both sides     \"",
-                format.format("", " ", " Single space on the left", "Single space on the right ",
-                        " Single spaces on both sides ", "   Multiple spaces on the left",
-                        "Multiple spaces on the right   ", "  Multiple spaces on both sides     "));
+    public void testWithIgnoreSurroundingSpacesEmpty() {
+        // @formatter:off
+        final CSVFormat format = CSVFormat.DEFAULT.builder()
+            .setQuoteMode(QuoteMode.ALL)
+            .setIgnoreSurroundingSpaces(true)
+            .build();
+        // @formatter:on
+        assertEquals(
+            "\"\",\" \",\" Single space on the left\",\"Single space on the right \","
+                + "\" Single spaces on both sides \",\"   Multiple spaces on the left\","
+                + "\"Multiple spaces on the right   \",\"  Multiple spaces on both sides     \"",
+            format.format("", " ", " Single space on the left", "Single space on the right ",
+                " Single spaces on both sides ", "   Multiple spaces on the left", "Multiple spaces on the right   ",
+                "  Multiple spaces on both sides     "));
     }
 }

@@ -24,17 +24,20 @@ import org.apache.commons.csv.QuoteMode;
 import org.junit.jupiter.api.Test;
 
 /**
- * JIRA: <a href="https://issues.apache.org/jira/browse/CSV-203">withNullString value is printed without quotes when QuoteMode.ALL is specified</a>
+ * JIRA: <a href="https://issues.apache.org/jira/browse/CSV-203">withNullString value is printed without quotes when
+ * QuoteMode.ALL is specified</a>
  */
 public class JiraCsv203Test {
 
     @Test
     public void testQuoteModeAll() throws Exception {
-        final CSVFormat format = CSVFormat.EXCEL
-                .withNullString("N/A")
-                .withIgnoreSurroundingSpaces(true)
-                .withQuoteMode(QuoteMode.ALL);
-
+        // @formatter:off
+        final CSVFormat format = CSVFormat.EXCEL.builder()
+                .setNullString("N/A")
+                .setIgnoreSurroundingSpaces(true)
+                .setQuoteMode(QuoteMode.ALL)
+                .build();
+        // @formatter:on
         final StringBuffer buffer = new StringBuffer();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
@@ -44,11 +47,13 @@ public class JiraCsv203Test {
 
     @Test
     public void testQuoteModeAllNonNull() throws Exception {
-        final CSVFormat format = CSVFormat.EXCEL
-                .withNullString("N/A")
-                .withIgnoreSurroundingSpaces(true)
-                .withQuoteMode(QuoteMode.ALL_NON_NULL);
-
+        // @formatter:off
+        final CSVFormat format = CSVFormat.EXCEL.builder()
+                .setNullString("N/A")
+                .setIgnoreSurroundingSpaces(true)
+                .setQuoteMode(QuoteMode.ALL_NON_NULL)
+                .build();
+        // @formatter:on
         final StringBuffer buffer = new StringBuffer();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
@@ -58,10 +63,12 @@ public class JiraCsv203Test {
 
     @Test
     public void testWithoutQuoteMode() throws Exception {
-        final CSVFormat format = CSVFormat.EXCEL
-                .withNullString("N/A")
-                .withIgnoreSurroundingSpaces(true);
-
+        // @formatter:off
+        final CSVFormat format = CSVFormat.EXCEL.builder()
+                .setNullString("N/A")
+                .setIgnoreSurroundingSpaces(true)
+                .build();
+        // @formatter:on
         final StringBuffer buffer = new StringBuffer();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
@@ -71,11 +78,13 @@ public class JiraCsv203Test {
 
     @Test
     public void testQuoteModeMinimal() throws Exception {
-        final CSVFormat format = CSVFormat.EXCEL
-                .withNullString("N/A")
-                .withIgnoreSurroundingSpaces(true)
-                .withQuoteMode(QuoteMode.MINIMAL);
-
+        // @formatter:off
+        final CSVFormat format = CSVFormat.EXCEL.builder()
+                .setNullString("N/A")
+                .setIgnoreSurroundingSpaces(true)
+                .setQuoteMode(QuoteMode.MINIMAL)
+                .build();
+        // @formatter:on
         final StringBuffer buffer = new StringBuffer();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
@@ -85,11 +94,13 @@ public class JiraCsv203Test {
 
     @Test
     public void testQuoteModeNonNumeric() throws Exception {
-        final CSVFormat format = CSVFormat.EXCEL
-                .withNullString("N/A")
-                .withIgnoreSurroundingSpaces(true)
-                .withQuoteMode(QuoteMode.NON_NUMERIC);
-
+        // @formatter:off
+        final CSVFormat format = CSVFormat.EXCEL.builder()
+                .setNullString("N/A")
+                .setIgnoreSurroundingSpaces(true)
+                .setQuoteMode(QuoteMode.NON_NUMERIC)
+                .build();
+        // @formatter:on
         final StringBuffer buffer = new StringBuffer();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
@@ -99,11 +110,13 @@ public class JiraCsv203Test {
 
     @Test
     public void testWithoutNullString() throws Exception {
-        final CSVFormat format = CSVFormat.EXCEL
-                //.withNullString("N/A")
-                .withIgnoreSurroundingSpaces(true)
-                .withQuoteMode(QuoteMode.ALL);
-
+        // @formatter:off
+        final CSVFormat format = CSVFormat.EXCEL.builder()
+                //.setNullString("N/A")
+                .setIgnoreSurroundingSpaces(true)
+                .setQuoteMode(QuoteMode.ALL)
+                .build();
+        // @formatter:on
         final StringBuffer buffer = new StringBuffer();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
@@ -113,15 +126,17 @@ public class JiraCsv203Test {
 
     @Test
     public void testWithEmptyValues() throws Exception {
-        final CSVFormat format = CSVFormat.EXCEL
-                .withNullString("N/A")
-                .withIgnoreSurroundingSpaces(true)
-                .withQuoteMode(QuoteMode.ALL);
-
+        // @formatter:off
+        final CSVFormat format = CSVFormat.EXCEL.builder()
+                .setNullString("N/A")
+                .setIgnoreSurroundingSpaces(true)
+                .setQuoteMode(QuoteMode.ALL)
+                .build();
+        // @formatter:on
         final StringBuffer buffer = new StringBuffer();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord("", "Hello", "", "World");
-            //printer.printRecord(new Object[] { null, "Hello", null, "World" });
+            // printer.printRecord(new Object[] { null, "Hello", null, "World" });
         }
         assertEquals("\"\",\"Hello\",\"\",\"World\"\r\n", buffer.toString());
     }

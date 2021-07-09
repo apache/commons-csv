@@ -34,7 +34,7 @@ public class JiraCsv249Test {
 
     @Test
     public void testJiraCsv249() throws IOException {
-        final CSVFormat csvFormat = CSVFormat.DEFAULT.withEscape('\\');
+        final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setEscape('\\').build();
         final StringWriter stringWriter = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(stringWriter, csvFormat)) {
             printer.printRecord("foo \\", "bar");

@@ -41,15 +41,16 @@ public class JiraCsv213Test {
 
     private void createEndChannel(final File csvFile) {
         // @formatter:off
-        final CSVFormat csvFormat =
-                CSVFormat.DEFAULT
-                    .withDelimiter(';')
-                    .withFirstRecordAsHeader()
-                    .withRecordSeparator('\n')
-                    .withQuoteMode(QuoteMode.ALL);
+        final CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
+                    .setDelimiter(';')
+                    .setHeader()
+                    .setSkipHeaderRecord(true)
+                    .setRecordSeparator('\n')
+                    .setQuoteMode(QuoteMode.ALL)
+                    .build();
         // @formatter:on
         try (CSVParser parser = csvFormat
-                .parse(new InputStreamReader(new FileInputStream(csvFile), StandardCharsets.UTF_8))) {
+            .parse(new InputStreamReader(new FileInputStream(csvFile), StandardCharsets.UTF_8))) {
             if (parser.iterator().hasNext()) {
                 // System.out.println(parser.getCurrentLineNumber());
                 // System.out.println(parser.getRecordNumber());

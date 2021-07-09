@@ -50,22 +50,23 @@ public class JiraCsv167Test {
                 }
             }
         }
-        CSVFormat format = CSVFormat.DEFAULT;
-        //
-        format = format.withAllowMissingColumnNames(false);
-        format = format.withCommentMarker('#');
-        format = format.withDelimiter(',');
-        format = format.withEscape('\\');
-        format = format.withHeader("author", "title", "publishDate");
-        format = format.withHeaderComments("headerComment");
-        format = format.withNullString("NULL");
-        format = format.withIgnoreEmptyLines(true);
-        format = format.withIgnoreSurroundingSpaces(true);
-        format = format.withQuote('"');
-        format = format.withQuoteMode(QuoteMode.ALL);
-        format = format.withRecordSeparator('\n');
-        format = format.withSkipHeaderRecord(false);
-        //
+        CSVFormat format = CSVFormat.DEFAULT.builder()
+        // @formatter:off
+            .setAllowMissingColumnNames(false)
+            .setCommentMarker('#')
+            .setDelimiter(',')
+            .setEscape('\\')
+            .setHeader("author", "title", "publishDate")
+            .setHeaderComments("headerComment")
+            .setNullString("NULL")
+            .setIgnoreEmptyLines(true)
+            .setIgnoreSurroundingSpaces(true)
+            .setQuote('"')
+            .setQuoteMode(QuoteMode.ALL)
+            .setRecordSeparator('\n')
+            .setSkipHeaderRecord(false)
+            .build();
+        // @formatter:on
         int comments = 0;
         int records = 0;
         try (final CSVParser parser = format.parse(getTestInput())) {
@@ -82,6 +83,7 @@ public class JiraCsv167Test {
     }
 
     private Reader getTestInput() {
-        return new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream("org/apache/commons/csv/csv-167/sample1.csv"));
+        return new InputStreamReader(
+            ClassLoader.getSystemClassLoader().getResourceAsStream("org/apache/commons/csv/csv-167/sample1.csv"));
     }
 }

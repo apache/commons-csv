@@ -41,7 +41,13 @@ public class JiraCsv149Test {
             source += CR_LF;
         }
         final StringReader records = new StringReader(source);
-        final CSVFormat format = CSVFormat.RFC4180.withFirstRecordAsHeader().withQuote('"');
+        // @formatter:off
+        final CSVFormat format = CSVFormat.RFC4180.builder()
+            .setHeader()
+            .setSkipHeaderRecord(true)
+            .setQuote('"')
+            .build();
+        // @formatter:on
         int lineCounter = 2;
         try (final CSVParser parser = new CSVParser(records, format)) {
             for (final CSVRecord record : parser) {

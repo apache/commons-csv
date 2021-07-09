@@ -33,8 +33,9 @@ public class JiraCsv248Test {
     /**
      * Test deserialisation of a CSVRecord created using version 1.6.
      *
-     * <p>This test asserts that serialization from 1.8 onwards is consistent with
-     * previous versions. Serialization was broken in version 1.7.
+     * <p>
+     * This test asserts that serialization from 1.8 onwards is consistent with previous versions. Serialization was
+     * broken in version 1.7.
      *
      * @throws IOException Signals that an I/O exception has occurred.
      * @throws ClassNotFoundException If the CSVRecord cannot be deserialized
@@ -42,11 +43,11 @@ public class JiraCsv248Test {
     @Test
     public void testJiraCsv248() throws IOException, ClassNotFoundException {
         // Record was originally created using CSV version 1.6 with the following code:
-        //try (final CSVParser parser = CSVParser.parse("A,B\n#my comment\nOne,Two", CSVFormat.DEFAULT.withHeader().withCommentMarker('#'))) {
-        //    CSVRecord rec = parser.iterator().next();
-        //}
-        try (InputStream in = getTestInput();
-             final ObjectInputStream ois = new ObjectInputStream(in)) {
+        // try (final CSVParser parser = CSVParser.parse("A,B\n#my comment\nOne,Two",
+        // CSVFormat.DEFAULT.builder().setHeader().setCommentMarker('#'))) {
+        // CSVRecord rec = parser.iterator().next();
+        // }
+        try (InputStream in = getTestInput(); final ObjectInputStream ois = new ObjectInputStream(in)) {
             final Object object = ois.readObject();
             assertTrue(object instanceof CSVRecord);
             final CSVRecord rec = (CSVRecord) object;

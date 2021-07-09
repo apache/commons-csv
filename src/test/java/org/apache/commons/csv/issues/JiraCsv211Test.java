@@ -30,13 +30,19 @@ public class JiraCsv211Test {
 
     @Test
     public void testJiraCsv211Format() throws IOException {
-        final String[] values = { "1", "Jane Doe", "USA", "" };
+        final String[] values = {"1", "Jane Doe", "USA", ""};
 
-        final CSVFormat printFormat = CSVFormat.DEFAULT.withDelimiter('\t').withHeader("ID", "Name", "Country", "Age");
+        // @formatter:off
+        final CSVFormat printFormat = CSVFormat.DEFAULT.builder()
+            .setDelimiter('\t')
+            .setHeader("ID", "Name", "Country", "Age")
+            .build();
+        // @formatter:on
         final String formatted = printFormat.format(values);
         assertEquals("ID\tName\tCountry\tAge\r\n1\tJane Doe\tUSA\t", formatted);
 
-        final CSVFormat parseFormat = CSVFormat.DEFAULT.withDelimiter('\t').withFirstRecordAsHeader();
+        final CSVFormat parseFormat = CSVFormat.DEFAULT.builder().setDelimiter('\t').setHeader()
+            .setSkipHeaderRecord(true).build();
         try (final CSVParser parser = parseFormat.parse(new StringReader(formatted))) {
             for (final CSVRecord record : parser) {
                 assertEquals("1", record.get(0));
@@ -44,5 +50,6 @@ public class JiraCsv211Test {
                 assertEquals("USA", record.get(2));
                 assertEquals("", record.get(3));
             }
-        }}
+        }
+    }
 }

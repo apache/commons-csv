@@ -49,14 +49,15 @@ public class JiraCsv206Test {
             assertEquals("123 Main St.", record.get(2));
         }
         // Write with multiple character delimiter
-        final String outString = "# Change delimiter to [I]\r\n" + "first name[I]last name[I]address\r\n" + "John[I]Smith[I]123 Main St.";
+        final String outString = "# Change delimiter to [I]\r\n" + "first name[I]last name[I]address\r\n"
+            + "John[I]Smith[I]123 Main St.";
         final String comment = "Change delimiter to [I]";
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()
                 .setDelimiter("[I]").setHeader("first name", "last name", "address")
                 .setCommentMarker('#')
                 .setHeaderComments(comment).build();
-        // @formatter:off
+        // @formatter:on
         final StringBuilder out = new StringBuilder();
         try (final CSVPrinter printer = format.print(out)) {
             printer.print(record.get(0));
