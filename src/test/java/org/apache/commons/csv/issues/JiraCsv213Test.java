@@ -17,10 +17,10 @@
 package org.apache.commons.csv.issues;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -49,8 +49,8 @@ public class JiraCsv213Test {
                     .setQuoteMode(QuoteMode.ALL)
                     .build();
         // @formatter:on
-        try (CSVParser parser = csvFormat
-            .parse(new InputStreamReader(new FileInputStream(csvFile), StandardCharsets.UTF_8))) {
+        try (Reader reader = Files.newBufferedReader(csvFile.toPath(), StandardCharsets.UTF_8);
+            CSVParser parser = csvFormat.parse(reader)) {
             if (parser.iterator().hasNext()) {
                 // System.out.println(parser.getCurrentLineNumber());
                 // System.out.println(parser.getRecordNumber());
