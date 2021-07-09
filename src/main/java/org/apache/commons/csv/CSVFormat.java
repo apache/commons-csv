@@ -1703,12 +1703,12 @@ public final class CSVFormat implements Serializable {
      * See also the various static parse methods on {@link CSVParser}.
      * </p>
      *
-     * @param in the input stream
+     * @param reader the input stream
      * @return a parser over a stream of {@link CSVRecord}s.
      * @throws IOException If an I/O error occurs
      */
-    public CSVParser parse(final Reader in) throws IOException {
-        return new CSVParser(in, this);
+    public CSVParser parse(final Reader reader) throws IOException {
+        return new CSVParser(reader, this);
     }
 
     /**
