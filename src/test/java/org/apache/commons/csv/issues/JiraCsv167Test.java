@@ -35,7 +35,7 @@ public class JiraCsv167Test {
     public void parse() throws IOException {
         int totcomment = 0;
         int totrecs = 0;
-        try (final BufferedReader br = new BufferedReader(getTestInput())) {
+        try (final Reader reader = getTestReader(); final BufferedReader br = new BufferedReader(reader)) {
             String s = null;
             boolean lastWasComment = false;
             while ((s = br.readLine()) != null) {
@@ -69,7 +69,7 @@ public class JiraCsv167Test {
         // @formatter:on
         int comments = 0;
         int records = 0;
-        try (final CSVParser parser = format.parse(getTestInput())) {
+        try (final Reader reader = getTestReader(); final CSVParser parser = format.parse(reader)) {
             for (final CSVRecord csvRecord : parser) {
                 records++;
                 if (csvRecord.hasComment()) {
@@ -82,7 +82,7 @@ public class JiraCsv167Test {
         assertEquals(totrecs, records); // records includes the header
     }
 
-    private Reader getTestInput() {
+    private Reader getTestReader() {
         return new InputStreamReader(
             ClassLoader.getSystemClassLoader().getResourceAsStream("org/apache/commons/csv/csv-167/sample1.csv"));
     }
