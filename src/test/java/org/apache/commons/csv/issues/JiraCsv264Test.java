@@ -19,20 +19,21 @@ package org.apache.commons.csv.issues;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.DuplicateHeaderMode;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.io.StringReader;
 
 /**
- * When {@link CSVFormat#withHeader(String...)} is not null;
- * duplicate headers with empty strings should not be allowed.
+ * When {@link CSVFormat#withHeader(String...)} is not null; duplicate headers
+ * with empty strings should not be allowed.
  *
- * @see <a href="https://issues.apache.org/jira/projects/CSV/issues/CSV-264?filter=allopenissues">Jira Ticker</a>
+ * @see <a href="https://issues.apache.org/jira/browse/CSV-264">Jira Ticker</a>
  */
 public class JiraCsv264Test {
-  
+
     private static final String CSV_STRING = "\"\",\"B\",\"\"\n" +
                                              "\"1\",\"2\",\"3\"\n" +
                                              "\"4\",\"5\",\"6\"";
@@ -54,12 +55,7 @@ public class JiraCsv264Test {
             .build();
 
         try (StringReader reader = new StringReader(CSV_STRING)) {
-            try {
-                csvFormat.parse(reader);
-                Assertions.fail("This shouldn't parse the CSV string successfully.");
-            } catch (IllegalArgumentException ex) {
-                // Test is successful!
-            }
+            assertThrows(IllegalArgumentException.class, () -> csvFormat.parse(reader));
         }
     }
 
@@ -87,12 +83,7 @@ public class JiraCsv264Test {
             .build();
 
         try (StringReader reader = new StringReader(CSV_STRING_GAP)) {
-            try {
-                csvFormat.parse(reader);
-                Assertions.fail("This shouldn't parse the CSV string successfully.");
-            } catch (IllegalArgumentException ex) {
-                // Test is successful!
-            }
+            assertThrows(IllegalArgumentException.class, () -> csvFormat.parse(reader));
         }
     }
 }

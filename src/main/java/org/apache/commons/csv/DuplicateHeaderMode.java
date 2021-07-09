@@ -21,23 +21,22 @@ package org.apache.commons.csv;
  * Determines how duplicate header fields should be handled
  * if {@link CSVFormat#withHeader(String...)} is not null.
  *
- * @since 1.9
+ * @since 1.9.0
  */
 public enum DuplicateHeaderMode {
 
     /**
-     * Allows all duplicate headings.
+     * Allows all duplicate headers.
      */
     ALLOW_ALL,
 
     /**
-     * Allows duplicate headings only if they're empty
-     * strings or null.
+     * Allows duplicate headers only if they're empty strings or null.
      */
     ALLOW_EMPTY,
 
     /**
-     * Disallows duplicate headings entirely.
+     * Disallows duplicate headers entirely.
      */
     DISALLOW
 }

@@ -17,6 +17,8 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.csv.Token.Type.TOKEN;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -42,8 +44,6 @@ import java.util.Spliterators;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import static org.apache.commons.csv.Token.Type.TOKEN;
 
 /**
  * Parses CSV files according to the specified format.
