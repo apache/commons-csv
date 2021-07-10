@@ -38,7 +38,7 @@ public class JiraCsv203Test {
                 .setQuoteMode(QuoteMode.ALL)
                 .build();
         // @formatter:on
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
         }
@@ -54,7 +54,7 @@ public class JiraCsv203Test {
                 .setQuoteMode(QuoteMode.ALL_NON_NULL)
                 .build();
         // @formatter:on
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
         }
@@ -69,7 +69,7 @@ public class JiraCsv203Test {
                 .setIgnoreSurroundingSpaces(true)
                 .build();
         // @formatter:on
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
         }
@@ -85,7 +85,7 @@ public class JiraCsv203Test {
                 .setQuoteMode(QuoteMode.MINIMAL)
                 .build();
         // @formatter:on
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
         }
@@ -101,7 +101,7 @@ public class JiraCsv203Test {
                 .setQuoteMode(QuoteMode.NON_NUMERIC)
                 .build();
         // @formatter:on
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
         }
@@ -117,7 +117,7 @@ public class JiraCsv203Test {
                 .setQuoteMode(QuoteMode.ALL)
                 .build();
         // @formatter:on
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
         }
@@ -133,7 +133,7 @@ public class JiraCsv203Test {
                 .setQuoteMode(QuoteMode.ALL)
                 .build();
         // @formatter:on
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord("", "Hello", "", "World");
             // printer.printRecord(new Object[] { null, "Hello", null, "World" });

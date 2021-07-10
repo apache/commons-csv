@@ -50,7 +50,7 @@ public class JiraCsv167Test {
                 }
             }
         }
-        CSVFormat format = CSVFormat.DEFAULT.builder()
+        final CSVFormat format = CSVFormat.DEFAULT.builder()
         // @formatter:off
             .setAllowMissingColumnNames(false)
             .setCommentMarker('#')
