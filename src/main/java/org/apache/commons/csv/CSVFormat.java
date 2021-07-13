@@ -1946,17 +1946,17 @@ public final class CSVFormat implements Serializable {
         int start = 0;
         int pos = 0;
 
-        @SuppressWarnings("resource") // Temp reader on input reader.
-        final ExtendedBufferedReader bufferedReader = new ExtendedBufferedReader(reader);
         final char[] delim = getDelimiterString().toCharArray();
         final int delimLength = delim.length;
+        @SuppressWarnings("resource") // Temp reader on input reader.
+        final ExtendedPushbackReader bufferedReader = ExtendedPushbackReader.create(reader, delimLength);
         final char escape = getEscapeCharacter().charValue();
         final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
 
         int c;
         while (-1 != (c = bufferedReader.read())) {
             builder.append((char) c);
-            final boolean isDelimiterStart = isDelimiter((char) c, builder.toString() + new String(bufferedReader.lookAhead(delimLength - 1)), pos, delim,
+            final boolean isDelimiterStart = isDelimiter((char) c, builder.toString() + new String(bufferedReader.peek(delimLength - 1)), pos, delim,
                     delimLength);
             if (c == CR || c == LF || c == escape || isDelimiterStart) {
                 // write out segment up until this char

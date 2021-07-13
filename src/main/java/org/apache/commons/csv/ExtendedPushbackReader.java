@@ -22,9 +22,11 @@ import static org.apache.commons.csv.Constants.END_OF_STREAM;
 import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.UNDEFINED;
 
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PushbackReader;
 import java.io.Reader;
+import java.io.StringReader;
+import java.util.Arrays;
 
 /**
  * A special buffered reader which supports sophisticated read access.
@@ -33,7 +35,7 @@ import java.io.Reader;
  * {@link #read()}. This reader also tracks how many characters have been read with {@link #getPosition()}.
  * </p>
  */
-final class ExtendedBufferedReader extends BufferedReader {
+final class ExtendedPushbackReader extends PushbackReader {
 
     /** The last char returned */
     private int lastChar = UNDEFINED;
@@ -49,8 +51,8 @@ final class ExtendedBufferedReader extends BufferedReader {
     /**
      * Created extended buffered reader using default buffer-size
      */
-    ExtendedBufferedReader(final Reader reader) {
-        super(reader);
+    private ExtendedPushbackReader(final Reader reader, final int delimiterSize) {
+        super(reader, Math.max(1, 2 * delimiterSize));
     }
 
     /**
@@ -105,55 +107,6 @@ final class ExtendedBufferedReader extends BufferedReader {
         return closed;
     }
 
-    /**
-     * Returns the next character in the current reader without consuming it. So the next call to {@link #read()} will
-     * still return this value. Does not affect line number or last character.
-     *
-     * @return the next character
-     *
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    int lookAhead() throws IOException {
-        super.mark(1);
-        final int c = super.read();
-        super.reset();
-
-        return c;
-    }
-
-    /**
-     * Returns the next n characters in the current reader without consuming them. The next call to {@link #read()} will still return the next value. This
-     * doesn't affect line number or last character.
-     *
-     * @param n the number characters look ahead.
-     * @return the next n characters.
-     * @throws IOException If an I/O error occurs
-     */
-    char[] lookAhead(final int n) throws IOException {
-        final char[] buf = new char[n];
-        return lookAhead(buf);
-    }
-
-    /**
-     * Populates the buffer with the next {@code buf.length} characters in the
-     * current reader without consuming them. The next call to {@link #read()} will
-     * still return the next value. This doesn't affect line number or last
-     * character.
-     *
-     * @param buf the buffer to fill for the look ahead.
-     * @return the buffer itself
-     * @throws IOException If an I/O error occurs
-     */
-    char[] lookAhead(final char[] buf) throws IOException {
-        final int n = buf.length;
-        super.mark(n);
-        super.read(buf, 0, n);
-        super.reset();
-
-        return buf;
-    }
-
     @Override
     public int read() throws IOException {
         final int current = super.read();
@@ -164,6 +117,21 @@ final class ExtendedBufferedReader extends BufferedReader {
         lastChar = current;
         position++;
         return lastChar;
+    }
+
+    int peek() throws IOException {
+      final int current = super.read();
+      if (current != END_OF_STREAM) {
+          super.unread(current);
+      }
+      return current;
+    }
+
+    char[] peek(int n) throws IOException {
+        final char[] buf = new char[n];
+        int count = super.read(buf);
+        super.unread(buf, 0, count);
+        return (count == buf.length) ? buf : Arrays.copyOf(buf, count);
     }
 
     @Override
@@ -198,7 +166,7 @@ final class ExtendedBufferedReader extends BufferedReader {
     }
 
     /**
-     * Calls {@link BufferedReader#readLine()} which drops the line terminator(s). This method should only be called
+     * Read the next line of input, which drops the line terminator(s). This method should only be called
      * when processing a comment, otherwise information can be lost.
      * <p>
      * Increments {@link #eolCounter}.
@@ -209,18 +177,60 @@ final class ExtendedBufferedReader extends BufferedReader {
      *
      * @return the line that was read, or null if reached EOF.
      */
-    @Override
     public String readLine() throws IOException {
-        final String line = super.readLine();
+        StringBuilder sb = new StringBuilder(64);
+        final long startEolCounter = eolCounter;
 
-        if (line != null) {
-            lastChar = LF; // needed for detecting start of line
-            eolCounter++;
-        } else {
-            lastChar = END_OF_STREAM;
+        int c = this.read();
+
+        // First read was EOS
+        if (c == END_OF_STREAM) {
+          return null;
+        }
+        // First read was EOL
+        if (eolCounter != startEolCounter) {
+          if (c == CR && peek() == LF) {
+            this.read();
+          }
+          return "";
+        }
+        // Read until new line is hit
+        do {
+          sb.append((char)c);
+          c = this.read();
+        }
+        while (eolCounter == startEolCounter);
+
+        // If the line is terminated with CR+LF, trim the LF
+        if (c == CR && peek() == LF) {
+          this.read();
         }
 
-        return line;
+        return sb.toString();
     }
+
+    /**
+     * Create an ExtendedPushbackReader for the given {@code Reader} with space
+     * for a delimiter with {@code delimiterSize} characters.
+     */
+    static ExtendedPushbackReader create(Reader reader, int delimiterSize) {
+        return new ExtendedPushbackReader(reader, delimiterSize);
+    }
+
+    /**
+     * Create an ExtendedPushbackReader for the given string with space for a
+     * delimiter with {@code delimiterSize} characters.
+     */
+    static ExtendedPushbackReader create(String string, int delimiterSize) {
+        return create(new StringReader(string), delimiterSize);
+    }
+
+    /**
+     * Create an ExtendedPushbackReader for the given string with space for a
+     * single delimiter character.
+     */
+    static ExtendedPushbackReader create(String string) {
+      return create(string, 1);
+  }
 
 }

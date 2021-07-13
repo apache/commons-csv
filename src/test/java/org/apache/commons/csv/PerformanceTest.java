@@ -192,7 +192,7 @@ public class PerformanceTest {
             int fields = 0;
             int lines = 0;
             final long startMillis;
-            try (final ExtendedBufferedReader in = new ExtendedBufferedReader(createReader())) {
+            try (final ExtendedPushbackReader in = ExtendedPushbackReader.create(createReader(), 1)) {
                 startMillis = System.currentTimeMillis();
                 int read;
                 if (makeString) {
@@ -262,7 +262,7 @@ public class PerformanceTest {
     private static Constructor<Lexer> getLexerCtor(final String clazz) throws Exception {
         @SuppressWarnings("unchecked")
         final Class<Lexer> lexer = (Class<Lexer>) Class.forName("org.apache.commons.csv." + clazz);
-        return lexer.getConstructor(CSVFormat.class, ExtendedBufferedReader.class);
+        return lexer.getConstructor(CSVFormat.class, ExtendedPushbackReader.class);
     }
 
     private static void testCSVLexer(final boolean newToken, final String test) throws Exception {
@@ -272,7 +272,7 @@ public class PerformanceTest {
             final String simpleName;
             final Stats stats;
             final long startMillis;
-            try (final ExtendedBufferedReader input = new ExtendedBufferedReader(createReader());
+            try (final ExtendedPushbackReader input = ExtendedPushbackReader.create(createReader(), 1);
                     final Lexer lexer = createTestCSVLexer(test, input)) {
                 if (test.startsWith("CSVLexer")) {
                     dynamic = "!";
@@ -313,7 +313,7 @@ public class PerformanceTest {
         show();
     }
 
-    private static Lexer createTestCSVLexer(final String test, final ExtendedBufferedReader input)
+    private static Lexer createTestCSVLexer(final String test, final ExtendedPushbackReader input)
             throws InstantiationException, IllegalAccessException, InvocationTargetException, Exception {
         return test.startsWith("CSVLexer") ? getLexerCtor(test).newInstance(format, input) : new Lexer(format, input);
     }

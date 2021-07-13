@@ -32,6 +32,7 @@ import static org.apache.commons.csv.Token.Type.TOKEN;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.Reader;
 
 /**
  * Lexical analyzer.
@@ -59,11 +60,10 @@ final class Lexer implements Closeable {
     private final boolean ignoreEmptyLines;
 
     /** The input stream */
-    private final ExtendedBufferedReader reader;
+    private final ExtendedPushbackReader reader;
     private String firstEol;
 
-    Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
-        this.reader = reader;
+    Lexer(final CSVFormat format, final Reader reader) {
         this.delimiter = format.getDelimiterString().toCharArray();
         this.escape = mapNullToDisabled(format.getEscapeCharacter());
         this.quoteChar = mapNullToDisabled(format.getQuoteCharacter());
@@ -72,6 +72,7 @@ final class Lexer implements Closeable {
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
         this.delimiterBuf = new char[delimiter.length - 1];
         this.escapeDelimiterBuf = new char[2 * delimiter.length - 1];
+        this.reader = ExtendedPushbackReader.create(reader, this.delimiter.length);
     }
 
     /**
@@ -116,7 +117,7 @@ final class Lexer implements Closeable {
     }
 
     /**
-     * Determine whether the next characters constitute a delimiter through {@link ExtendedBufferedReader#lookAhead(char[])}.
+     * Determine whether the next characters constitute a delimiter.
      *
      * @param ch
      *             the current character.
@@ -130,14 +131,22 @@ final class Lexer implements Closeable {
         if (delimiter.length == 1) {
           return true;
         }
-        reader.lookAhead(delimiterBuf);
+
+        final int count = reader.read(delimiterBuf);
+
+        if (count < delimiterBuf.length) {
+          reader.unread(delimiterBuf, 0, count);
+          return false;
+        }
+
         for (int i = 0; i < delimiterBuf.length; i++) {
             if (delimiterBuf[i] != delimiter[i+1]) {
+                reader.unread(delimiterBuf);
                 return false;
             }
         }
-        final int count = reader.read(delimiterBuf, 0, delimiterBuf.length);
-        return count != END_OF_STREAM;
+
+        return true;
     }
 
     /**
@@ -159,7 +168,7 @@ final class Lexer implements Closeable {
     }
 
     /**
-     * Tests if the next characters constitute a escape delimiter through {@link ExtendedBufferedReader#lookAhead(char[])}.
+     * Tests if the next characters constitute a escape delimiter.
      *
      * For example, for delimiter "[|]" and escape '!', return true if the next characters constitute "![!|!]".
      *
@@ -167,17 +176,30 @@ final class Lexer implements Closeable {
      * @throws IOException If an I/O error occurs.
      */
     boolean isEscapeDelimiter() throws IOException {
-        reader.lookAhead(escapeDelimiterBuf);
+        final int len = escapeDelimiterBuf.length;
+        final int count = reader.read(escapeDelimiterBuf);
+
+        if (count < len) {
+            if (count > 0) {
+                // incomplete read, put back what was read
+                reader.unread(escapeDelimiterBuf, 0, count);
+            }
+          return false;
+        }
+
         if (escapeDelimiterBuf[0] != delimiter[0]) {
+            reader.unread(escapeDelimiterBuf);
             return false;
         }
+
         for (int i = 1; i < delimiter.length; i++) {
             if (escapeDelimiterBuf[2 * i] != delimiter[i] || escapeDelimiterBuf[2 * i - 1] != escape) {
+                reader.unread(escapeDelimiterBuf);
                 return false;
             }
         }
-        final int count = reader.read(escapeDelimiterBuf, 0, escapeDelimiterBuf.length);
-        return count != END_OF_STREAM;
+
+        return true;
     }
 
     private boolean isMetaChar(final int ch) {
@@ -338,7 +360,7 @@ final class Lexer implements Closeable {
                     }
                 }
             } else if (isQuoteChar(c)) {
-                if (isQuoteChar(reader.lookAhead())) {
+                if (isQuoteChar(reader.peek())) {
                     // double or escaped encapsulator -> add single encapsulator to token
                     c = reader.read();
                     token.content.append((char) c);
@@ -445,7 +467,7 @@ final class Lexer implements Closeable {
      */
     boolean readEndOfLine(int ch) throws IOException {
         // check if we have \r\n...
-        if (ch == CR && reader.lookAhead() == LF) {
+        if (ch == CR && reader.peek() == LF) {
             // note: does not change ch outside of this method!
             ch = reader.read();
             // Save the EOL state
@@ -469,7 +491,7 @@ final class Lexer implements Closeable {
     /**
      * Handle an escape sequence.
      * The current character must be the escape character.
-     * On return, the next character is available by calling {@link ExtendedBufferedReader#getLastChar()}
+     * On return, the next character is available by calling {@link ExtendedPushbackReader#getLastChar()}
      * on the input stream.
      *
      * @return the unescaped character (as an int) or {@link Constants#END_OF_STREAM} if char following the escape is

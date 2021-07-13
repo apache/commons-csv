@@ -19,6 +19,7 @@ package org.apache.commons.csv;
 
 import static org.apache.commons.csv.Token.Type.TOKEN;
 
+import java.io.BufferedInputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -276,7 +277,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public static CSVParser parse(final Path path, final Charset charset, final CSVFormat format) throws IOException {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(format, "format");
-        return parse(Files.newInputStream(path), charset, format);
+        return parse(new BufferedInputStream(Files.newInputStream(path)), charset, format);
     }
 
     /**
@@ -427,7 +428,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         Objects.requireNonNull(format, "format");
 
         this.format = format.copy();
-        this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
+        this.lexer = new Lexer(format, reader);
         this.csvRecordIterator = new CSVRecordIterator();
         this.headers = createHeaders();
         this.characterOffset = characterOffset;

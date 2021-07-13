@@ -54,7 +54,7 @@ public class LexerTest {
 
     @SuppressWarnings("resource")
     private Lexer createLexer(final String input, final CSVFormat format) {
-        return new Lexer(format, new ExtendedBufferedReader(new StringReader(input)));
+        return new Lexer(format, new StringReader(input));
     }
 
     @Test
