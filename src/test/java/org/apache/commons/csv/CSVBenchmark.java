@@ -109,9 +109,9 @@ public class CSVBenchmark {
     public int split(final Blackhole bh) throws Exception {
       int count = 0;
 
-      try (Scanner scanner = new Scanner(getReader())) {
-          while (scanner.hasNextLine()) {
-            final String line = scanner.nextLine();
+      try (BufferedReader reader = new BufferedReader(getReader())) {
+          String line;
+          while ((line = reader.readLine()) != null) {
             final String[] values = StringUtils.split(line, ',');
             count += values.length;
           }
