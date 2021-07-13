@@ -144,7 +144,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      * @param buf the buffer to fill for the look ahead.
      * @return the buffer itself
      * @throws IOException If an I/O error occurs
-	 */
+     */
     char[] lookAhead(final char[] buf) throws IOException {
         final int n = buf.length;
         super.mark(n);
