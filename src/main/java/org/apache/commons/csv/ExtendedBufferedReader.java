@@ -150,6 +150,7 @@ final class ExtendedBufferedReader extends BufferedReader {
         super.mark(n);
         super.read(buf, 0, n);
         super.reset();
+
         return buf;
     }
 
