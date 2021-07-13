@@ -74,7 +74,7 @@
       <!-- UPDATE -->
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update org.junit.jupiter:junit-jupiter from 5.6.0 to 5.7.0, #84 #109</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from Apache Commons Lang 3.9 to 3.12.0.</action>
-      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from commons-io:commons-io 2.6 to 2.10.0, #108.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from commons-io:commons-io 2.6 to 2.11.0, #108.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump actions/checkout from v1 to v2.3.4, #79, #92, #121.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump commons-parent from 50 to 51 #80.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump tests from opencsv from 3.1 to 5.5 #81, #137, #158.</action>
