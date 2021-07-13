@@ -29,6 +29,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 
 import com.generationjava.io.CsvReader;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReaderBuilder;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -156,7 +159,10 @@ public class CSVBenchmark {
     public int parseOpenCSV(final Blackhole bh) throws Exception {
         final BufferedReader in = getReader();
 
-        final com.opencsv.CSVReader reader = new com.opencsv.CSVReader(in, ',');
+        final com.opencsv.CSVParser parser = new CSVParserBuilder()
+          .withSeparator(',').withIgnoreQuotations(true).build();
+        final com.opencsv.CSVReader reader =
+          new CSVReaderBuilder(in).withSkipLines(1).withCSVParser(parser).build();
 
         int count = 0;
         while (reader.readNext() != null) {
