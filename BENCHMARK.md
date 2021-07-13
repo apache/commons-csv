@@ -29,7 +29,7 @@ installed into the local Maven repository. Run the falling script to download an
 the JAR file (~1MB).
 
 ```shell
-> ./benchmark-prereq.sh
+./benchmark-prereq.sh
 ```
 
 Benchmarks
@@ -56,4 +56,7 @@ mvn test -Pbenchmark
 
 # Run a specific benchmark test
 mvn test -Pbenchmark -Dbenchmark=<name>
+
+# Example of running basic "read" benchmark
+mvn test -Pbenchmark -Dbenchmark=read
 ```
