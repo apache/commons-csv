@@ -132,6 +132,21 @@ final class ExtendedBufferedReader extends BufferedReader {
      */
     char[] lookAhead(final int n) throws IOException {
         final char[] buf = new char[n];
+        return lookAhead(buf);
+    }
+
+    /**
+     * Populates the buffer with the next {@code buf.length} characters in the
+     * current reader without consuming them. The next call to {@link #read()} will
+     * still return the next value. This doesn't affect line number or last
+     * character.
+     *
+     * @param buf the buffer to fill for the look ahead.
+     * @return the buffer itself
+     * @throws IOException If an I/O error occurs
+     */
+    char[] lookAhead(final char[] buf) throws IOException {
+        final int n = buf.length;
         super.mark(n);
         super.read(buf, 0, n);
         super.reset();
