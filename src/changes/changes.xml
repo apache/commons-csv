@@ -63,6 +63,7 @@
       <action                 type="fix" dev="ggregory" due-to="Arturo Bernal">Replace JUnit assert by simpler but equivalent calls. #159.</action>
       <action                 type="fix" dev="ggregory" due-to="Seth Falco">Update gitignore to ignore idea and vscode #160.</action>
       <action issue="CSV-281" type="fix" dev="ggregory" due-to="belugabehr">Update CSVBenchmark #165.</action>
+      <action issue="CSV-283" type="fix" dev="ggregory" due-to="belugabehr">Remove Whitespace Check Determines Delimiter Twice #167.</action>
       <!-- ADD -->
       <action issue="CSV-275" type="add" dev="ggregory" due-to="Michael Wyraz, Gary Gregory">Make CSVRecord#toList() public.</action>
       <action                 type="add" dev="ggregory" due-to="Gary Gregory">Add CSVRecord#stream().</action>
