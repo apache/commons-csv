@@ -260,6 +260,10 @@ public class CSVFormatTest {
                            final Object a = method.invoke(CSVFormat.DEFAULT, QuoteMode.MINIMAL);
                            final Object b = method.invoke(CSVFormat.DEFAULT, QuoteMode.ALL);
                            assertNotEquals(name, type, a, b);
+                       } else if ("org.apache.commons.csv.DuplicateHeaderMode".equals(type)) {
+                           final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {DuplicateHeaderMode.ALLOW_ALL});
+                           final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {DuplicateHeaderMode.DISALLOW});
+                           assertNotEquals(name, type, a, b);
                        } else if ("java.lang.Object[]".equals(type)){
                            final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {new Object[] {null, null}});
                            final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {new Object[] {new Object(), new Object()}});
@@ -1294,6 +1298,15 @@ public class CSVFormatTest {
         assertEquals(Character.valueOf('&'), formatWithEscape.getEscapeCharacter());
     }
 
+
+    @Test
+    public void testWithEmptyDuplicates() {
+        final CSVFormat formatWithEmptyDuplicates =
+            CSVFormat.DEFAULT.builder().setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_EMPTY).build();
+
+        assertEquals(DuplicateHeaderMode.ALLOW_EMPTY, formatWithEmptyDuplicates.getDuplicateHeaderMode());
+        assertFalse(formatWithEmptyDuplicates.getAllowDuplicateHeaderNames());
+    }
 
     @Test
     public void testWithEscapeCRThrowsExceptions() {
