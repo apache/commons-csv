@@ -355,11 +355,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     private final CSVFormat format;
 
-    /** A mapping of column names to column indices */
-    private final Map<String, Integer> headerMap;
-
-    /** The column order to avoid re-computing it. */
-    private final List<String> headerNames;
+    private final Headers headers;
 
     private final Lexer lexer;
 
@@ -430,12 +426,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         Objects.requireNonNull(reader, "reader");
         Objects.requireNonNull(format, "format");
 
-        this.format = format;
+        this.format = format.copy();
         this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
         this.csvRecordIterator = new CSVRecordIterator();
-        final Headers headers = createHeaders();
-        this.headerMap = headers.headerMap;
-        this.headerNames = headers.headerNames;
+        this.headers = createHeaders();
         this.characterOffset = characterOffset;
         this.recordNumber = recordNumber - 1;
     }
@@ -566,11 +560,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @return a copy of the header map.
      */
     public Map<String, Integer> getHeaderMap() {
-        if (this.headerMap == null) {
+        if (this.headers.headerMap == null) {
             return null;
         }
         final Map<String, Integer> map = createEmptyHeaderMap();
-        map.putAll(this.headerMap);
+        map.putAll(this.headers.headerMap);
         return map;
     }
 
@@ -580,7 +574,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @return the header map.
      */
     Map<String, Integer> getHeaderMapRaw() {
-        return this.headerMap;
+        return this.headers.headerMap;
     }
 
     /**
@@ -596,7 +590,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @since 1.7
      */
     public List<String> getHeaderNames() {
-        return headerNames;
+        return Collections.unmodifiableList(headers.headerNames);
     }
 
     /**

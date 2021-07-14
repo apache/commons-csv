@@ -20,12 +20,32 @@
         xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
 
 
+  <!-- Deliberate switch statement fall-through. -->
   <Match>
     <Class name="org.apache.commons.csv.CSVPrinter" />
-      <Method name="printComment" >
-          <!-- Deliberate switch statement fall-through -->
-      </Method>
+    <Method name="printComment" />
     <Bug code="SF" />
   </Match>
 
+  <!-- A format is immutable. -->
+  <Match>
+    <Class name="org.apache.commons.csv.CSVFormat$Predefined" />
+    <Method name="getFormat" />
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+  
+  <!-- Should not have called this method iterator() since it returns the current iterator and not a new one. -->
+  <Match>
+    <Class name="org.apache.commons.csv.CSVParser" />
+    <Method name="iterator" />
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+  
+  <!-- Could make package private in the next major version. -->
+  <Match>
+    <Class name="org.apache.commons.csv.CSVRecord" />
+    <Method name="getParser" />
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+  
 </FindBugsFilter>

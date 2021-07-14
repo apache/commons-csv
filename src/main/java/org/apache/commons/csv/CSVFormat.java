@@ -1396,6 +1396,15 @@ public final class CSVFormat implements Serializable {
         return Builder.create(this);
     }
 
+    /**
+     * Creates a copy of this instance.
+     *
+     * @return a copy of this instance.
+     */
+    CSVFormat copy() {
+        return builder().build();
+    }
+
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
