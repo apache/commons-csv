@@ -123,6 +123,9 @@ final class Lexer implements Closeable {
         if (ch != delimiter[0]) {
             return false;
         }
+        if (delimiter.length == 1) {
+          return true;
+        }
         final int len = delimiter.length - 1;
         final char[] buf = reader.lookAhead(len);
         for (int i = 0; i < len; i++) {
