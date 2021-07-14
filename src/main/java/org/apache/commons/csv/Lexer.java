@@ -193,16 +193,6 @@ final class Lexer implements Closeable {
         return ch == LF || ch == CR || ch == UNDEFINED;
     }
 
-    /**
-     * Tests if the given char is a whitespace character.
-     *
-     * @return true if the given char is a whitespace character.
-     * @throws IOException If an I/O error occurs.
-     */
-    boolean isWhitespace(final int ch) throws IOException {
-        return !isDelimiter(ch) && Character.isWhitespace((char) ch);
-    }
-
     private char mapNullToDisabled(final Character c) {
         return c == null ? DISABLED : c.charValue();
     }
@@ -271,7 +261,7 @@ final class Lexer implements Closeable {
         while (token.type == INVALID) {
             // ignore whitespaces at beginning of a token
             if (ignoreSurroundingSpaces) {
-                while (isWhitespace(c) && !eol) {
+                while (Character.isWhitespace((char)c) && !isDelimiter(c) && !eol) {
                     c = reader.read();
                     eol = readEndOfLine(c);
                 }
@@ -364,7 +354,7 @@ final class Lexer implements Closeable {
                             token.type = EORECORD;
                             return token;
                         }
-                        if (!isWhitespace(c)) {
+                        if (!Character.isWhitespace((char)c)) {
                             // error invalid char between token and next delimiter
                             throw new IOException("(line " + getCurrentLineNumber() +
                                     ") invalid char between encapsulated token and delimiter");
