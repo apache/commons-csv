@@ -49,6 +49,8 @@ final class Lexer implements Closeable {
     private static final char DISABLED = '\ufffe';
 
     private final char[] delimiter;
+    private final char[] delimiterBuf;
+    private final char[] escapeDelimiterBuf;
     private final char escape;
     private final char quoteChar;
     private final char commentStart;
@@ -68,6 +70,8 @@ final class Lexer implements Closeable {
         this.commentStart = mapNullToDisabled(format.getCommentMarker());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
+        this.delimiterBuf = new char[delimiter.length - 1];
+        this.escapeDelimiterBuf = new char[2 * delimiter.length - 1];
     }
 
     /**
@@ -112,7 +116,7 @@ final class Lexer implements Closeable {
     }
 
     /**
-     * Determine whether the next characters constitute a delimiter through {@link ExtendedBufferedReader#lookAhead(int)}
+     * Determine whether the next characters constitute a delimiter through {@link ExtendedBufferedReader#lookAhead(char[])}.
      *
      * @param ch
      *             the current character.
@@ -126,14 +130,13 @@ final class Lexer implements Closeable {
         if (delimiter.length == 1) {
           return true;
         }
-        final int len = delimiter.length - 1;
-        final char[] buf = reader.lookAhead(len);
-        for (int i = 0; i < len; i++) {
-            if (buf[i] != delimiter[i+1]) {
+        reader.lookAhead(delimiterBuf);
+        for (int i = 0; i < delimiterBuf.length; i++) {
+            if (delimiterBuf[i] != delimiter[i+1]) {
                 return false;
             }
         }
-        final int count = reader.read(buf, 0, len);
+        final int count = reader.read(delimiterBuf, 0, delimiterBuf.length);
         return count != END_OF_STREAM;
     }
 
@@ -156,7 +159,7 @@ final class Lexer implements Closeable {
     }
 
     /**
-     * Tests if the next characters constitute a escape delimiter through {@link ExtendedBufferedReader#lookAhead(int)}.
+     * Tests if the next characters constitute a escape delimiter through {@link ExtendedBufferedReader#lookAhead(char[])}.
      *
      * For example, for delimiter "[|]" and escape '!', return true if the next characters constitute "![!|!]".
      *
@@ -164,17 +167,16 @@ final class Lexer implements Closeable {
      * @throws IOException If an I/O error occurs.
      */
     boolean isEscapeDelimiter() throws IOException {
-        final int len = 2 * delimiter.length - 1;
-        final char[] buf = reader.lookAhead(len);
-        if (buf[0] != delimiter[0]) {
+        reader.lookAhead(escapeDelimiterBuf);
+        if (escapeDelimiterBuf[0] != delimiter[0]) {
             return false;
         }
         for (int i = 1; i < delimiter.length; i++) {
-            if (buf[2 * i] != delimiter[i] || buf[2 * i - 1] != escape) {
+            if (escapeDelimiterBuf[2 * i] != delimiter[i] || escapeDelimiterBuf[2 * i - 1] != escape) {
                 return false;
             }
         }
-        final int count = reader.read(buf, 0, len);
+        final int count = reader.read(escapeDelimiterBuf, 0, escapeDelimiterBuf.length);
         return count != END_OF_STREAM;
     }
 
