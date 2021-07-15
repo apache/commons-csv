@@ -19,7 +19,6 @@ package org.apache.commons.csv.perf;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -46,6 +45,7 @@ public class PerformanceTest {
 
     private final int max = 10;
 
+    private static final String TEST_RESRC = "org/apache/commons/csv/perf/worldcitiespop.txt.gz";
     private static final File BIG_FILE = new File(System.getProperty("java.io.tmpdir"), "worldcitiespop.txt");
 
     @BeforeAll
@@ -54,10 +54,10 @@ public class PerformanceTest {
             System.out.println(String.format("Found test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
             return;
         }
-        System.out.println("Decompressing test fixture " + BIG_FILE + "...");
+        System.out.println("Decompressing test fixture to: " + BIG_FILE + "...");
         try (
             final InputStream input = new GZIPInputStream(
-                new FileInputStream("src/test/resources/perf/worldcitiespop.txt.gz"));
+                PerformanceTest.class.getClassLoader().getResourceAsStream(TEST_RESRC));
             final OutputStream output = new FileOutputStream(BIG_FILE)) {
             IOUtils.copy(input, output);
             System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
@@ -85,24 +85,12 @@ public class PerformanceTest {
         return recordCount;
     }
 
-    private void println(final String s) {
-        System.out.println(s);
-    }
-
-    private long readAll(final BufferedReader in) throws IOException {
-        long count = 0;
-        while (in.readLine() != null) {
-            count++;
-        }
-        return count;
-    }
-
-    public long testParseBigFile(final boolean traverseColumns) throws Exception {
+    private long testParseBigFile(final boolean traverseColumns) throws Exception {
         final long startMillis = System.currentTimeMillis();
         try (final BufferedReader reader = this.createBufferedReader()) {
             final long count = this.parse(reader, traverseColumns);
             final long totalMillis = System.currentTimeMillis() - startMillis;
-            this.println(
+            System.out.println(
                 String.format("File parsed in %,d milliseconds with Commons CSV: %,d lines.", totalMillis, count));
             return totalMillis;
         }
@@ -114,23 +102,25 @@ public class PerformanceTest {
         for (int i = 0; i < this.max; i++) {
             bestTime = Math.min(this.testParseBigFile(false), bestTime);
         }
-        this.println(String.format("Best time out of %,d is %,d milliseconds.", this.max, bestTime));
+        System.out.println(String.format("Best time out of %,d is %,d milliseconds.", this.max, bestTime));
     }
 
     @Test
     public void testReadBigFile() throws Exception {
         long bestTime = Long.MAX_VALUE;
-        long count;
+        long count = 0L;
         for (int i = 0; i < this.max; i++) {
             final long startMillis;
             try (final BufferedReader in = this.createBufferedReader()) {
                 startMillis = System.currentTimeMillis();
-                count = this.readAll(in);
+                while (in.readLine() != null) {
+                    count++;
+                }
             }
             final long totalMillis = System.currentTimeMillis() - startMillis;
             bestTime = Math.min(totalMillis, bestTime);
-            this.println(String.format("File read in %,d milliseconds: %,d lines.", totalMillis, count));
+            System.out.println(String.format("File read in %,d milliseconds: %,d lines.", totalMillis, count));
         }
-        this.println(String.format("Best time out of %,d is %,d milliseconds.", this.max, bestTime));
+        System.out.println(String.format("Best time out of %,d is %,d milliseconds.", this.max, bestTime));
     }
 }
