@@ -19,7 +19,6 @@ package org.apache.commons.csv.perf;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -46,6 +45,7 @@ public class PerformanceTest {
 
     private final int max = 10;
 
+    private static final String TEST_RESRC = "org/apache/commons/csv/perf/worldcitiespop.txt.gz";
     private static final File BIG_FILE = new File(System.getProperty("java.io.tmpdir"), "worldcitiespop.txt");
 
     @BeforeAll
@@ -54,10 +54,10 @@ public class PerformanceTest {
             System.out.println(String.format("Found test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
             return;
         }
-        System.out.println("Decompressing test fixture " + BIG_FILE + "...");
+        System.out.println("Decompressing test fixture to: " + BIG_FILE + "...");
         try (
             final InputStream input = new GZIPInputStream(
-                new FileInputStream("src/test/resources/perf/worldcitiespop.txt.gz"));
+                PerformanceTest.class.getClassLoader().getResourceAsStream(TEST_RESRC));
             final OutputStream output = new FileOutputStream(BIG_FILE)) {
             IOUtils.copy(input, output);
             System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));

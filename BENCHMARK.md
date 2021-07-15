@@ -60,3 +60,15 @@ mvn test -Pbenchmark -Dbenchmark=<name>
 # Example of running basic "read" benchmark
 mvn test -Pbenchmark -Dbenchmark=read
 ```
+
+Performance Test
+-------------
+
+Apache Commons CSV includes a stand-alone performance test which only covers commons-csv.
+
+```shell
+# Run the performance test
+mvn test -Dtest=PerformanceTest
+```
+
+> :warning: This performance test does not use JMH; it uses simple timing metrics.
