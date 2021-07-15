@@ -16,10 +16,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 wget -P /tmp https://kasparov.skife.org/csv/csv-1.0.jar
-
-mvn -version
-
-mvn install:install-file -Dfile=/tmp/csv-1.0.jar -DgroupId=org.skife.kasparov -DartifactId=csv -Dversion=1.0 -Dpackaging=jar
-
+mvn -V install:install-file -Dfile=/tmp/csv-1.0.jar -DgroupId=org.skife.kasparov -DartifactId=csv -Dversion=1.0 -Dpackaging=jar
