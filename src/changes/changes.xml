@@ -72,6 +72,7 @@
       <action                 type="fix" dev="ggregory" due-to="Gary Gregory">SpotBugs Error: Medium: new org.apache.commons.csv.CSVParser(Reader, CSVFormat, long, long) may expose internal representation by storing an externally mutable object into CSVParser.headerNames [org.apache.commons.csv.CSVParser] At CSVParser.java:[line 438] EI_EXPOSE_REP2.</action>
       <action                 type="fix" dev="ggregory" due-to="Gary Gregory">SpotBugs Error: Medium: new org.apache.commons.csv.CSVPrinter(Appendable, CSVFormat) may expose internal representation by storing an externally mutable object into CSVPrinter.format [org.apache.commons.csv.CSVPrinter] At CSVPrinter.java:[line 100] EI_EXPOSE_REP2.</action>
       <action issue="CSV-284" type="fix" dev="ggregory" due-to="belugabehr">Formalize PerformanceTest #168.</action>
+      <action issue="CSV-278" type="fix" dev="ggregory" due-to="belugabehr">Reuse Buffers in Lexer for Delimiter Detection #162.</action>
       <!-- ADD -->
       <action issue="CSV-275" type="add" dev="ggregory" due-to="Michael Wyraz, Gary Gregory">Make CSVRecord#toList() public.</action>
       <action                 type="add" dev="ggregory" due-to="Gary Gregory">Add CSVRecord#stream().</action>
