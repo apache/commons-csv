@@ -37,8 +37,6 @@ import org.apache.commons.io.IOUtils;
 
 /**
  * Basic test harness.
- *
- * Requires test file to be downloaded separately.
  */
 @SuppressWarnings("boxing")
 public class PerformanceTest {
@@ -68,20 +66,21 @@ public class PerformanceTest {
 
     private static final CSVFormat format = CSVFormat.EXCEL;
 
-    private static final File BIG_FILE = new File("src/test/resources/perf/worldcitiespop.txt");
+    private static final String TEST_RESRC = "org/apache/commons/csv/perf/worldcitiespop.txt.gz";
+    private static final File BIG_FILE = new File(System.getProperty("java.io.tmpdir"), "worldcitiespop.txt");
 
     public static void main(final String [] args) throws Exception {
         if (BIG_FILE.exists()) {
             System.out.printf("Found test fixture %s: %,d bytes.%n", BIG_FILE, BIG_FILE.length());
         } else {
-            final File compressedFile = new File(BIG_FILE.getParentFile(), BIG_FILE.getName() + ".gz");
-            System.out.printf("Decompressing test fixture %s...%n", compressedFile);
-            long bytesOut = 0L;
-            try (final InputStream input = new GZIPInputStream(new FileInputStream(compressedFile));
-                    final OutputStream output = new FileOutputStream(BIG_FILE)) {
-                bytesOut = IOUtils.copy(input, output);
-            }
-            System.out.printf("Decompressed test fixture %s: %,d bytes to: %s: %,d bytes.%n", compressedFile, compressedFile.length(), BIG_FILE, bytesOut);
+          System.out.println("Decompressing test fixture to: " + BIG_FILE + "...");
+          try (
+              final InputStream input = new GZIPInputStream(
+                  PerformanceTest.class.getClassLoader().getResourceAsStream(TEST_RESRC));
+              final OutputStream output = new FileOutputStream(BIG_FILE)) {
+              IOUtils.copy(input, output);
+              System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
+          }
         }
         final int argc = args.length;
         if (argc > 0) {

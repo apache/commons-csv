@@ -72,3 +72,8 @@ mvn test -Dtest=PerformanceTest
 ```
 
 > :warning: This performance test does not use JMH; it uses simple timing metrics.
+
+Performance Test Harness
+-------------
+
+CSV offers a secondary performance test harness located at: `org.apache.commons.csv.PerformanceTest`
