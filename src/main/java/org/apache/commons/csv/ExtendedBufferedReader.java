@@ -198,29 +198,37 @@ final class ExtendedBufferedReader extends BufferedReader {
     }
 
     /**
-     * Calls {@link BufferedReader#readLine()} which drops the line terminator(s). This method should only be called
-     * when processing a comment, otherwise information can be lost.
+     * Gets the next line, dropping the line terminator(s). This method should only be called when processing a
+     * comment, otherwise information can be lost.
      * <p>
-     * Increments {@link #eolCounter}.
+     * Increments {@link #eolCounter} and updates {@link #position}.
      * </p>
      * <p>
-     * Sets {@link #lastChar} to {@link Constants#END_OF_STREAM} at EOF, otherwise to LF.
+     * Sets {@link #lastChar} to {@link Constants#END_OF_STREAM} at EOF, otherwise the last EOL character.
      * </p>
      *
      * @return the line that was read, or null if reached EOF.
      */
     @Override
     public String readLine() throws IOException {
-        final String line = super.readLine();
-
-        if (line != null) {
-            lastChar = LF; // needed for detecting start of line
-            eolCounter++;
-        } else {
-            lastChar = END_OF_STREAM;
+        if (lookAhead() == END_OF_STREAM) {
+            return null;
         }
-
-        return line;
+        final StringBuilder buffer = new StringBuilder();
+        while (true) {
+            final int current = read();
+            if (current == CR) {
+                final int next = lookAhead();
+                if (next == LF) {
+                    read();
+                }
+            }
+            if (current == END_OF_STREAM || current == LF || current == CR) {
+                break;
+            }
+            buffer.append((char) current);
+        }
+        return buffer.toString();
     }
 
 }
