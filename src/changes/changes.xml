@@ -74,6 +74,7 @@
       <action issue="CSV-284" type="fix" dev="ggregory" due-to="belugabehr">Formalize PerformanceTest #168.</action>
       <action issue="CSV-278" type="fix" dev="ggregory" due-to="belugabehr">Reuse Buffers in Lexer for Delimiter Detection #162.</action>
       <action issue="CSV-286" type="fix" dev="ggregory" due-to="belugabehr">Cleanup and Document Performance Test Harness #170.</action>
+      <action issue="CSV-265" type="fix" dev="ggregory" due-to="belugabehr">Update buffer position when reading line comment #120.</action>
       <!-- ADD -->
       <action issue="CSV-275" type="add" dev="ggregory" due-to="Michael Wyraz, Gary Gregory">Make CSVRecord#toList() public.</action>
       <action                 type="add" dev="ggregory" due-to="Gary Gregory">Add CSVRecord#stream().</action>
