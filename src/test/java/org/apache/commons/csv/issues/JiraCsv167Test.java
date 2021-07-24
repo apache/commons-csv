@@ -31,6 +31,11 @@ import org.junit.jupiter.api.Test;
 
 public class JiraCsv167Test {
 
+    private Reader getTestReader() {
+        return new InputStreamReader(
+            ClassLoader.getSystemClassLoader().getResourceAsStream("org/apache/commons/csv/csv-167/sample1.csv"));
+    }
+
     @Test
     public void parse() throws IOException {
         int totcomment = 0;
@@ -80,10 +85,5 @@ public class JiraCsv167Test {
         // Comment lines are concatenated, in this example 4 lines become 2 comments.
         assertEquals(totcomment, comments);
         assertEquals(totrecs, records); // records includes the header
-    }
-
-    private Reader getTestReader() {
-        return new InputStreamReader(
-            ClassLoader.getSystemClassLoader().getResourceAsStream("org/apache/commons/csv/csv-167/sample1.csv"));
     }
 }

@@ -41,6 +41,21 @@ import org.apache.commons.io.IOUtils;
 @SuppressWarnings("boxing")
 public class PerformanceTest {
 
+    @FunctionalInterface
+    private interface CSVParserFactory {
+        CSVParser createParser() throws IOException;
+    }
+
+    // Container for basic statistics
+    private static class Stats {
+        final int count;
+        final int fields;
+        Stats(final int c, final int f) {
+            count = c;
+            fields = f;
+        }
+    }
+
     private static final String[] PROPS = {
         "java.version",                  // Java Runtime Environment version
         "java.vendor",                   // Java Runtime Environment vendor
@@ -58,16 +73,41 @@ public class PerformanceTest {
         "os.arch",                       // Operating system architecture
         "os.version",                    // Operating system version
     };
-
     private static int max = 11; // skip first test
 
     private static int num; // number of elapsed times recorded
-    private static final long[] ELAPSED_TIMES = new long[max];
 
+    private static final long[] ELAPSED_TIMES = new long[max];
     private static final CSVFormat format = CSVFormat.EXCEL;
 
     private static final String TEST_RESRC = "org/apache/commons/csv/perf/worldcitiespop.txt.gz";
+
     private static final File BIG_FILE = new File(System.getProperty("java.io.tmpdir"), "worldcitiespop.txt");
+
+    private static Reader createReader() throws IOException {
+        return new InputStreamReader(new FileInputStream(BIG_FILE), StandardCharsets.ISO_8859_1);
+    }
+
+    private static Lexer createTestCSVLexer(final String test, final ExtendedBufferedReader input)
+            throws InstantiationException, IllegalAccessException, InvocationTargetException, Exception {
+        return test.startsWith("CSVLexer") ? getLexerCtor(test).newInstance(format, input) : new Lexer(format, input);
+    }
+
+    private static Constructor<Lexer> getLexerCtor(final String clazz) throws Exception {
+        @SuppressWarnings("unchecked")
+        final Class<Lexer> lexer = (Class<Lexer>) Class.forName("org.apache.commons.csv." + clazz);
+        return lexer.getConstructor(CSVFormat.class, ExtendedBufferedReader.class);
+    }
+
+    private static Stats iterate(final Iterable<CSVRecord> it) {
+        int count = 0;
+        int fields = 0;
+        for (final CSVRecord record : it) {
+            count++;
+            fields += record.size();
+        }
+        return new Stats(count, fields);
+    }
 
     public static void main(final String [] args) throws Exception {
         if (BIG_FILE.exists()) {
@@ -128,26 +168,15 @@ public class PerformanceTest {
         }
     }
 
-    private static Reader createReader() throws IOException {
-        return new InputStreamReader(new FileInputStream(BIG_FILE), StandardCharsets.ISO_8859_1);
-    }
-
-    // Container for basic statistics
-    private static class Stats {
-        final int count;
-        final int fields;
-        Stats(final int c, final int f) {
-            count = c;
-            fields = f;
+    private static Stats readAll(final BufferedReader in, final boolean split) throws IOException {
+        int count = 0;
+        int fields = 0;
+        String record;
+        while ((record = in.readLine()) != null) {
+            count++;
+            fields += split ? record.split(",").length : 1;
         }
-    }
-
-    // Display end stats; store elapsed for average
-    private static void show(final String msg, final Stats s, final long start) {
-        final long elapsed = System.currentTimeMillis() - start;
-        System.out.printf("%-20s: %5dms %d lines %d fields%n", msg, elapsed, s.count, s.fields);
-        ELAPSED_TIMES[num] = elapsed;
-        num++;
+        return new Stats(count, fields);
     }
 
     // calculate and show average
@@ -162,106 +191,12 @@ public class PerformanceTest {
         num = 0; // ready for next set
     }
 
-    private static void testReadBigFile(final boolean split) throws Exception {
-        for (int i = 0; i < max; i++) {
-            final long startMillis;
-            final Stats stats;
-            try (final BufferedReader in = new BufferedReader(createReader())) {
-                startMillis = System.currentTimeMillis();
-                stats = readAll(in, split);
-            }
-            show(split ? "file+split" : "file", stats, startMillis);
-        }
-        show();
-    }
-
-    private static Stats readAll(final BufferedReader in, final boolean split) throws IOException {
-        int count = 0;
-        int fields = 0;
-        String record;
-        while ((record = in.readLine()) != null) {
-            count++;
-            fields += split ? record.split(",").length : 1;
-        }
-        return new Stats(count, fields);
-    }
-
-    private static void testExtendedBuffer(final boolean makeString) throws Exception {
-        for (int i = 0; i < max; i++) {
-            int fields = 0;
-            int lines = 0;
-            final long startMillis;
-            try (final ExtendedBufferedReader in = new ExtendedBufferedReader(createReader())) {
-                startMillis = System.currentTimeMillis();
-                int read;
-                if (makeString) {
-                    StringBuilder sb = new StringBuilder();
-                    while ((read = in.read()) != -1) {
-                        sb.append((char) read);
-                        if (read == ',') { // count delimiters
-                            sb.toString();
-                            sb = new StringBuilder();
-                            fields++;
-                        } else if (read == '\n') {
-                            sb.toString();
-                            sb = new StringBuilder();
-                            lines++;
-                        }
-                    }
-                } else {
-                    while ((read = in.read()) != -1) {
-                        if (read == ',') { // count delimiters
-                            fields++;
-                        } else if (read == '\n') {
-                            lines++;
-                        }
-                    }
-                }
-                fields += lines; // EOL is a delimiter too
-            }
-            show("Extended" + (makeString ? " toString" : ""), new Stats(lines, fields), startMillis);
-        }
-        show();
-    }
-
-    private static void testParser(final String msg, final CSVParserFactory fac) throws Exception {
-        for (int i = 0; i < max; i++) {
-            final long startMillis;
-            final Stats stats;
-            try (final CSVParser parser = fac.createParser()) {
-                startMillis = System.currentTimeMillis();
-                stats = iterate(parser);
-            }
-            show(msg, stats, startMillis);
-        }
-        show();
-    }
-
-    @FunctionalInterface
-    private interface CSVParserFactory {
-        CSVParser createParser() throws IOException;
-    }
-
-    private static void testParseCommonsCSV() throws Exception {
-        testParser("CSV", () -> new CSVParser(createReader(), format));
-    }
-
-    private static void testParsePath() throws Exception {
-        testParser("CSV-PATH", () -> CSVParser.parse(Files.newInputStream(Paths.get(BIG_FILE.toURI())), StandardCharsets.ISO_8859_1, format));
-    }
-
-    private static void testParsePathDoubleBuffering() throws Exception {
-        testParser("CSV-PATH-DB", () -> CSVParser.parse(Files.newBufferedReader(Paths.get(BIG_FILE.toURI()), StandardCharsets.ISO_8859_1), format));
-    }
-
-    private static void testParseURL() throws Exception {
-        testParser("CSV-URL", () -> CSVParser.parse(BIG_FILE.toURI().toURL(), StandardCharsets.ISO_8859_1, format));
-    }
-
-    private static Constructor<Lexer> getLexerCtor(final String clazz) throws Exception {
-        @SuppressWarnings("unchecked")
-        final Class<Lexer> lexer = (Class<Lexer>) Class.forName("org.apache.commons.csv." + clazz);
-        return lexer.getConstructor(CSVFormat.class, ExtendedBufferedReader.class);
+    // Display end stats; store elapsed for average
+    private static void show(final String msg, final Stats s, final long start) {
+        final long elapsed = System.currentTimeMillis() - start;
+        System.out.printf("%-20s: %5dms %d lines %d fields%n", msg, elapsed, s.count, s.fields);
+        ELAPSED_TIMES[num] = elapsed;
+        num++;
     }
 
     private static void testCSVLexer(final boolean newToken, final String test) throws Exception {
@@ -312,19 +247,84 @@ public class PerformanceTest {
         show();
     }
 
-    private static Lexer createTestCSVLexer(final String test, final ExtendedBufferedReader input)
-            throws InstantiationException, IllegalAccessException, InvocationTargetException, Exception {
-        return test.startsWith("CSVLexer") ? getLexerCtor(test).newInstance(format, input) : new Lexer(format, input);
+    private static void testExtendedBuffer(final boolean makeString) throws Exception {
+        for (int i = 0; i < max; i++) {
+            int fields = 0;
+            int lines = 0;
+            final long startMillis;
+            try (final ExtendedBufferedReader in = new ExtendedBufferedReader(createReader())) {
+                startMillis = System.currentTimeMillis();
+                int read;
+                if (makeString) {
+                    StringBuilder sb = new StringBuilder();
+                    while ((read = in.read()) != -1) {
+                        sb.append((char) read);
+                        if (read == ',') { // count delimiters
+                            sb.toString();
+                            sb = new StringBuilder();
+                            fields++;
+                        } else if (read == '\n') {
+                            sb.toString();
+                            sb = new StringBuilder();
+                            lines++;
+                        }
+                    }
+                } else {
+                    while ((read = in.read()) != -1) {
+                        if (read == ',') { // count delimiters
+                            fields++;
+                        } else if (read == '\n') {
+                            lines++;
+                        }
+                    }
+                }
+                fields += lines; // EOL is a delimiter too
+            }
+            show("Extended" + (makeString ? " toString" : ""), new Stats(lines, fields), startMillis);
+        }
+        show();
     }
 
-    private static Stats iterate(final Iterable<CSVRecord> it) {
-        int count = 0;
-        int fields = 0;
-        for (final CSVRecord record : it) {
-            count++;
-            fields += record.size();
+    private static void testParseCommonsCSV() throws Exception {
+        testParser("CSV", () -> new CSVParser(createReader(), format));
+    }
+
+    private static void testParsePath() throws Exception {
+        testParser("CSV-PATH", () -> CSVParser.parse(Files.newInputStream(Paths.get(BIG_FILE.toURI())), StandardCharsets.ISO_8859_1, format));
+    }
+
+    private static void testParsePathDoubleBuffering() throws Exception {
+        testParser("CSV-PATH-DB", () -> CSVParser.parse(Files.newBufferedReader(Paths.get(BIG_FILE.toURI()), StandardCharsets.ISO_8859_1), format));
+    }
+
+    private static void testParser(final String msg, final CSVParserFactory fac) throws Exception {
+        for (int i = 0; i < max; i++) {
+            final long startMillis;
+            final Stats stats;
+            try (final CSVParser parser = fac.createParser()) {
+                startMillis = System.currentTimeMillis();
+                stats = iterate(parser);
+            }
+            show(msg, stats, startMillis);
         }
-        return new Stats(count, fields);
+        show();
+    }
+
+    private static void testParseURL() throws Exception {
+        testParser("CSV-URL", () -> CSVParser.parse(BIG_FILE.toURI().toURL(), StandardCharsets.ISO_8859_1, format));
+    }
+
+    private static void testReadBigFile(final boolean split) throws Exception {
+        for (int i = 0; i < max; i++) {
+            final long startMillis;
+            final Stats stats;
+            try (final BufferedReader in = new BufferedReader(createReader())) {
+                startMillis = System.currentTimeMillis();
+                stats = readAll(in, split);
+            }
+            show(split ? "file+split" : "file", stats, startMillis);
+        }
+        show();
     }
 
 }

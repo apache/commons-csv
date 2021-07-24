@@ -27,25 +27,6 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
  */
 final class TokenMatchers {
 
-    public static Matcher<Token> hasType(final Token.Type expectedType) {
-        return new TypeSafeDiagnosingMatcher<Token>() {
-
-            @Override
-            public void describeTo(final Description description) {
-                description.appendText("token has type ");
-                description.appendValue(expectedType);
-            }
-
-            @Override
-            protected boolean matchesSafely(final Token item,
-                    final Description mismatchDescription) {
-                mismatchDescription.appendText("token type is ");
-                mismatchDescription.appendValue(item.type);
-                return item.type == expectedType;
-            }
-        };
-    }
-
     public static Matcher<Token> hasContent(final String expectedContent) {
         return new TypeSafeDiagnosingMatcher<Token>() {
 
@@ -61,6 +42,25 @@ final class TokenMatchers {
                 mismatchDescription.appendText("token content is ");
                 mismatchDescription.appendValue(item.content.toString());
                 return expectedContent.equals(item.content.toString());
+            }
+        };
+    }
+
+    public static Matcher<Token> hasType(final Token.Type expectedType) {
+        return new TypeSafeDiagnosingMatcher<Token>() {
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText("token has type ");
+                description.appendValue(expectedType);
+            }
+
+            @Override
+            protected boolean matchesSafely(final Token item,
+                    final Description mismatchDescription) {
+                mismatchDescription.appendText("token type is ");
+                mismatchDescription.appendValue(item.type);
+                return item.type == expectedType;
             }
         };
     }

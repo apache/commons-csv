@@ -28,9 +28,6 @@ import java.util.List;
  */
 final class Utils {
 
-    private Utils() {
-    }
-
     /**
      * Checks if the 2d array has the same contents as the list of records.
      *
@@ -44,5 +41,8 @@ final class Utils {
         for (int i = 0; i < expectedLength; i++) {
             assertArrayEquals(expected[i], actual.get(i).values(), message + " (entry " + i + ")");
         }
+    }
+
+    private Utils() {
     }
 }

@@ -43,11 +43,9 @@ import org.junit.jupiter.api.Test;
 @SuppressWarnings("boxing") // test code
 public class PerformanceTest {
 
-    private final int max = 10;
-
     private static final String TEST_RESRC = "org/apache/commons/csv/perf/worldcitiespop.txt.gz";
-    private static final File BIG_FILE = new File(System.getProperty("java.io.tmpdir"), "worldcitiespop.txt");
 
+    private static final File BIG_FILE = new File(System.getProperty("java.io.tmpdir"), "worldcitiespop.txt");
     @BeforeAll
     public static void setUpClass() throws FileNotFoundException, IOException {
         if (BIG_FILE.exists()) {
@@ -63,6 +61,8 @@ public class PerformanceTest {
             System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
         }
     }
+
+    private final int max = 10;
 
     private BufferedReader createBufferedReader() throws IOException {
         return new BufferedReader(new FileReader(BIG_FILE));

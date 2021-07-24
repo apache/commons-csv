@@ -265,6 +265,15 @@ public class CSVRecordTest {
     }
 
     @Test
+    public void testStream() {
+        final AtomicInteger i = new AtomicInteger();
+        record.stream().forEach(value -> {
+            assertEquals(values[i.get()], value);
+            i.incrementAndGet();
+        });
+    }
+
+    @Test
     public void testToList() {
         int i = 0;
         for (final String value : record.toList()) {
@@ -295,15 +304,6 @@ public class CSVRecordTest {
             final CSVRecord shortRec = parser.iterator().next();
             shortRec.toMap();
         }
-    }
-
-    @Test
-    public void testStream() {
-        final AtomicInteger i = new AtomicInteger();
-        record.stream().forEach(value -> {
-            assertEquals(values[i.get()], value);
-            i.incrementAndGet();
-        });
     }
 
     @Test

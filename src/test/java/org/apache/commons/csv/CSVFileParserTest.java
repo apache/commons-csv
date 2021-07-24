@@ -42,17 +42,17 @@ public class CSVFileParserTest {
 
     private static final File BASE_DIR = new File("src/test/resources/org/apache/commons/csv/CSVFileParser");
 
+    public static Stream<File> generateData() {
+        final File[] files = BASE_DIR.listFiles((dir, name) -> name.startsWith("test") && name.endsWith(".txt"));
+        return files != null ? Stream.of(files) : Stream.empty();
+    }
+
     private String readTestData(final BufferedReader reader) throws IOException {
         String line;
         do {
             line = reader.readLine();
         } while (line != null && line.startsWith("#"));
         return line;
-    }
-
-    public static Stream<File> generateData() {
-        final File[] files = BASE_DIR.listFiles((dir, name) -> name.startsWith("test") && name.endsWith(".txt"));
-        return files != null ? Stream.of(files) : Stream.empty();
     }
 
     @ParameterizedTest

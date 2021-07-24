@@ -62,21 +62,6 @@ public class JiraCsv203Test {
     }
 
     @Test
-    public void testWithoutQuoteMode() throws Exception {
-        // @formatter:off
-        final CSVFormat format = CSVFormat.EXCEL.builder()
-                .setNullString("N/A")
-                .setIgnoreSurroundingSpaces(true)
-                .build();
-        // @formatter:on
-        final StringBuilder buffer = new StringBuilder();
-        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
-            printer.printRecord(null, "Hello", null, "World");
-        }
-        assertEquals("N/A,Hello,N/A,World\r\n", buffer.toString());
-    }
-
-    @Test
     public void testQuoteModeMinimal() throws Exception {
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()
@@ -109,6 +94,23 @@ public class JiraCsv203Test {
     }
 
     @Test
+    public void testWithEmptyValues() throws Exception {
+        // @formatter:off
+        final CSVFormat format = CSVFormat.EXCEL.builder()
+                .setNullString("N/A")
+                .setIgnoreSurroundingSpaces(true)
+                .setQuoteMode(QuoteMode.ALL)
+                .build();
+        // @formatter:on
+        final StringBuilder buffer = new StringBuilder();
+        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+            printer.printRecord("", "Hello", "", "World");
+            // printer.printRecord(new Object[] { null, "Hello", null, "World" });
+        }
+        assertEquals("\"\",\"Hello\",\"\",\"World\"\r\n", buffer.toString());
+    }
+
+    @Test
     public void testWithoutNullString() throws Exception {
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()
@@ -125,19 +127,17 @@ public class JiraCsv203Test {
     }
 
     @Test
-    public void testWithEmptyValues() throws Exception {
+    public void testWithoutQuoteMode() throws Exception {
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()
                 .setNullString("N/A")
                 .setIgnoreSurroundingSpaces(true)
-                .setQuoteMode(QuoteMode.ALL)
                 .build();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
-            printer.printRecord("", "Hello", "", "World");
-            // printer.printRecord(new Object[] { null, "Hello", null, "World" });
+            printer.printRecord(null, "Hello", null, "World");
         }
-        assertEquals("\"\",\"Hello\",\"\",\"World\"\r\n", buffer.toString());
+        assertEquals("N/A,Hello,N/A,World\r\n", buffer.toString());
     }
 }

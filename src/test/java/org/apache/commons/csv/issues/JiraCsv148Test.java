@@ -24,6 +24,23 @@ import org.junit.jupiter.api.Test;
 
 public class JiraCsv148Test {
 
+    @Test
+    public void testWithIgnoreSurroundingSpacesEmpty() {
+        // @formatter:off
+        final CSVFormat format = CSVFormat.DEFAULT.builder()
+            .setQuoteMode(QuoteMode.ALL)
+            .setIgnoreSurroundingSpaces(true)
+            .build();
+        // @formatter:on
+        assertEquals(
+            "\"\",\" \",\" Single space on the left\",\"Single space on the right \","
+                + "\" Single spaces on both sides \",\"   Multiple spaces on the left\","
+                + "\"Multiple spaces on the right   \",\"  Multiple spaces on both sides     \"",
+            format.format("", " ", " Single space on the left", "Single space on the right ",
+                " Single spaces on both sides ", "   Multiple spaces on the left", "Multiple spaces on the right   ",
+                "  Multiple spaces on both sides     "));
+    }
+
     /**
      * The difference between withTrim()and withIgnoreSurroundingSpace()： difference: withTrim() can remove the leading
      * and trailing spaces and newlines in quotation marks, while withIgnoreSurroundingSpace() cannot The same point:
@@ -41,23 +58,6 @@ public class JiraCsv148Test {
             "\"\",\"\",\"Single space on the left\",\"Single space on the right\","
                 + "\"Single spaces on both sides\",\"Multiple spaces on the left\","
                 + "\"Multiple spaces on the right\",\"Multiple spaces on both sides\"",
-            format.format("", " ", " Single space on the left", "Single space on the right ",
-                " Single spaces on both sides ", "   Multiple spaces on the left", "Multiple spaces on the right   ",
-                "  Multiple spaces on both sides     "));
-    }
-
-    @Test
-    public void testWithIgnoreSurroundingSpacesEmpty() {
-        // @formatter:off
-        final CSVFormat format = CSVFormat.DEFAULT.builder()
-            .setQuoteMode(QuoteMode.ALL)
-            .setIgnoreSurroundingSpaces(true)
-            .build();
-        // @formatter:on
-        assertEquals(
-            "\"\",\" \",\" Single space on the left\",\"Single space on the right \","
-                + "\" Single spaces on both sides \",\"   Multiple spaces on the left\","
-                + "\"Multiple spaces on the right   \",\"  Multiple spaces on both sides     \"",
             format.format("", " ", " Single space on the left", "Single space on the right ",
                 " Single spaces on both sides ", "   Multiple spaces on the left", "Multiple spaces on the right   ",
                 "  Multiple spaces on both sides     "));

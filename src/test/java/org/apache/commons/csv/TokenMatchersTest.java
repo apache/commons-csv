@@ -40,17 +40,17 @@ public class TokenMatchersTest {
     }
 
     @Test
+    public void testHasContent() {
+        assertFalse(hasContent("This is not the token's content").matches(token));
+        assertTrue(hasContent("content").matches(token));
+    }
+
+    @Test
     public void testHasType() {
         assertFalse(hasType(Token.Type.COMMENT).matches(token));
         assertFalse(hasType(Token.Type.EOF).matches(token));
         assertFalse(hasType(Token.Type.EORECORD).matches(token));
         assertTrue(hasType(Token.Type.TOKEN).matches(token));
-    }
-
-    @Test
-    public void testHasContent() {
-        assertFalse(hasContent("This is not the token's content").matches(token));
-        assertTrue(hasContent("content").matches(token));
     }
 
     @Test
