@@ -43,10 +43,11 @@
 Apache Commons CSV
 ===================
 
-[![Build Status](https://travis-ci.org/apache/commons-csv.svg)](https://travis-ci.org/apache/commons-csv)
+[![Travis-CI Status](https://travis-ci.org/apache/commons-csv.svg)](https://travis-ci.org/apache/commons-csv)
+[![GitHub Actions Status](https://github.com/apache/commons-csv/workflows/Java%20CI/badge.svg)](https://github.com/apache/commons-csv/actions)
 [![Coverage Status](https://coveralls.io/repos/apache/commons-csv/badge.svg)](https://coveralls.io/r/apache/commons-csv)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/)
-[![Javadocs](https://javadoc.io/badge/org.apache.commons/commons-csv/1.8.svg)](https://javadoc.io/doc/org.apache.commons/commons-csv/1.8)
+[![Javadocs](https://javadoc.io/badge/org.apache.commons/commons-csv/1.9.0.svg)](https://javadoc.io/doc/org.apache.commons/commons-csv/1.9.0)
 
 The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
 
@@ -67,7 +68,7 @@ Alternatively you can pull it from the central Maven repositories:
 <dependency>
   <groupId>org.apache.commons</groupId>
   <artifactId>commons-csv</artifactId>
-  <version>1.8</version>
+  <version>1.9.0</version>
 </dependency>
 ```
 
@@ -86,7 +87,7 @@ You can learn more about contributing via GitHub in our [contribution guidelines
 
 License
 -------
-This code is under the [Apache License v2](https://www.apache.org/licenses/LICENSE-2.0).
+This code is under the [Apache Licence v2](https://www.apache.org/licenses/LICENSE-2.0).
 
 See the `NOTICE.txt` file for required notices and attributions.
 
