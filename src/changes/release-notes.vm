@@ -16,8 +16,8 @@
 ## under the License.
 ##
                         ${project.name}
-                            Version ${version}
-                           Release Notes
+                        Version ${version}
+                        Release Notes
 
 
 INTRODUCTION:
@@ -81,7 +81,7 @@ Changes in this version include:
 
 #if ($release.getActions('add').size() !=0)
 NEW FEATURES
-==============
+============
 
 #foreach($actionItem in $release.getActions('add'))
 #processaction()
@@ -90,7 +90,7 @@ NEW FEATURES
 
 #if ($release.getActions('fix').size() !=0)
 FIXED BUGS
-============
+==========
 
 #foreach($actionItem in $release.getActions('fix'))
 #processaction()
@@ -99,7 +99,7 @@ FIXED BUGS
 
 #if ($release.getActions('update').size() !=0)
 CHANGES
-=========
+=======
 
 #foreach($actionItem in $release.getActions('update'))
 #processaction()
@@ -126,3 +126,6 @@ Download page: ${project.url}download_csv.cgi
 
 Have fun!
 -Apache Commons CSV team
+
+------------------------------------------------------------------------------
+

@@ -1,4 +1,111 @@
                         Apache Commons CSV
+                        Version 1.9.0
+                        Release Notes
+
+
+INTRODUCTION:
+
+This document contains the release notes for the 1.9.0 version of Apache Commons CSV.
+Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
+
+Commons CSV requires at least Java 8.
+
+The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
+
+Feature and bug fix release (Java 8)
+
+Changes in this version include:
+
+NEW FEATURES
+============
+
+o CSV-275:  Make CSVRecord#toList() public. Thanks to Michael Wyraz, Gary Gregory.
+o           Add CSVRecord#stream(). Thanks to Gary Gregory.
+o           Add CSVParser#stream(). Thanks to Gary Gregory.
+o CSV-184:  Make the method CSVRecord.putIn(Map) public. Thanks to Gaurav Agarwal, M. Steiger, Gary Gregory.
+o           Add test cases for CSVRecord with get(Enum) and toString. #54. Thanks to dota17.
+o           Add and use CSVFormat.Builder, deprecated CSVFormat#with methods, based on #73. Thanks to Gary Gregory, dota17.
+o CSV-206:  Add support for String delimiters #76. Thanks to Gary Gregory, dota17.
+
+FIXED BUGS
+==========
+
+o           Replace FindBugs with SpotBugs #56. Thanks to Amey Jadiye.
+o           Javadoc typo in CSVFormat let's -> lets #57. Thanks to Chen.
+o CSV-259:  CSVFormat.printWithEscapes throws StringIndexOutOfBoundsException when value is Reader #61. Thanks to Chen.
+o           Improve CSVFormat test coverage #63. Thanks to Chen.
+o           Fix CSVFileParserTest.java to allow for a null return value from record.getComment() #62. Thanks to Chen.
+o           Improve test coverage in CSVFormatTest #65. Thanks to Chen.
+o           Removed invalid Javadoc markup for CSVFormat EXCEL #64. Thanks to Chen.
+o           Improve CSVRecord and CSVPrinter code coverage #66. Thanks to Chen.
+o           Improve lexer and token coverage #67. Thanks to Chen.
+o CSV-211:  CSVFormat.format trims last delimiter if the delimiter is a white space #71. Thanks to Alpesh Kulkarni, Chen.
+o           Replace org.apache.commons.csv.Assertions.notNull() with Objects.requireNonNull(). Thanks to Gary Gregory.
+o CSV-149:  Line number is not proper at EOF. Thanks to Kranthi, Gary Gregory, Brent Worden, dota17.
+o CSV-195:  Parser iterates over the last CSV Record twice. Thanks to Rodolfo Duldulao, Rodolfo Duldulao, Michael Vitz, dota17.
+o CSV-267:  Minor improvements #126, #127, #130. Thanks to Arturo Bernal.
+o CSV-123:  Add possibility to use ResultSet header meta data as CSV header #11. Thanks to Emmanuel Bourg, Benedikt Ritter, shivakrishnaah, Gary Gregory.
+o CSV-148:  Add test cases for withIgnoreSurroundingSpaces() and withTrim() #70. Thanks to dota17.
+o           Update CSVParser.parse(File, Charset, CSVFormat) from IO to NIO. Thanks to Gary Gregory.
+o CSV-271:  Missing separator with print(object) followed by printRecord(Object[]) #157. Thanks to Amar Prakash Pandey.
+o CSV-158:  Fix EOL checking for read array in ExtendedBufferedReader #5. Thanks to Alexander Bondarev, Benedikt Ritter, Gary Gregory, Chen.
+o CSV-263:  Print from Reader with embedded quotes generates incorrect output #78. Thanks to Jason A. Guild, Gary Gregory.
+o           Replace JUnit assert by simpler but equivalent calls. #159. Thanks to Arturo Bernal.
+o           Update gitignore to ignore idea and vscode #160. Thanks to Seth Falco.
+o CSV-281:  Update CSVBenchmark #165. Thanks to belugabehr.
+o CSV-283:  Remove Whitespace Check Determines Delimiter Twice #167. Thanks to belugabehr.
+o CSV-283:  Document and Automate CSV Benchmark Harness #166. Thanks to belugabehr.
+o CSV-279:  Optimize Lexer Delimiter Check for One Character Delimiter #163. Thanks to belugabehr.
+o           SpotBugs Error: Medium: org.apache.commons.csv.CSVParser.getHeaderNames() may expose internal representation by returning CSVParser.headerNames [org.apache.commons.csv.CSVParser] At CSVParser.java:[line 599] EI_EXPOSE_REP. Thanks to Gary Gregory.
+o           SpotBugs Error: Medium: new org.apache.commons.csv.CSVParser(Reader, CSVFormat, long, long) may expose internal representation by storing an externally mutable object into CSVParser.format [org.apache.commons.csv.CSVParser] At CSVParser.java:[line 433] EI_EXPOSE_REP2. Thanks to Gary Gregory.
+o           SpotBugs Error: Medium: new org.apache.commons.csv.CSVParser(Reader, CSVFormat, long, long) may expose internal representation by storing an externally mutable object into CSVParser.headerMap [org.apache.commons.csv.CSVParser] At CSVParser.java:[line 437] EI_EXPOSE_REP2. Thanks to Gary Gregory.
+o           SpotBugs Error: Medium: new org.apache.commons.csv.CSVParser(Reader, CSVFormat, long, long) may expose internal representation by storing an externally mutable object into CSVParser.headerNames [org.apache.commons.csv.CSVParser] At CSVParser.java:[line 438] EI_EXPOSE_REP2. Thanks to Gary Gregory.
+o           SpotBugs Error: Medium: new org.apache.commons.csv.CSVPrinter(Appendable, CSVFormat) may expose internal representation by storing an externally mutable object into CSVPrinter.format [org.apache.commons.csv.CSVPrinter] At CSVPrinter.java:[line 100] EI_EXPOSE_REP2. Thanks to Gary Gregory.
+o CSV-284:  Formalize PerformanceTest #168. Thanks to belugabehr.
+o CSV-278:  Reuse Buffers in Lexer for Delimiter Detection #162. Thanks to belugabehr.
+o CSV-286:  Cleanup and Document Performance Test Harness #170. Thanks to belugabehr.
+o CSV-265:  Update buffer position when reading line comment #120. Thanks to belugabehr.
+
+CHANGES
+=======
+
+o           Update org.junit.jupiter:junit-jupiter from 5.6.0 to 5.7.0, #84 #109 Thanks to Gary Gregory.
+o           Update tests from Apache Commons Lang 3.9 to 3.12.0. Thanks to Gary Gregory.
+o           Update tests from commons-io:commons-io 2.6 to 2.11.0, #108. Thanks to Gary Gregory.
+o           Bump actions/checkout from v1 to v2.3.4, #79, #92, #121. Thanks to Dependabot.
+o           Bump commons-parent from 50 to 51 #80. Thanks to Dependabot.
+o           Bump tests from opencsv from 3.1 to 5.5.1 #81, #137, #158. Thanks to Dependabot, Gary Gregory.
+o           Update tests from super-csv from 2.2.1 to 2.4.0 #86. Thanks to Gary Gregory.
+o           Bump build actions/setup-java from v1.4.0 to v2, #101, #113. Thanks to Dependabot, Gary Gregory.
+o           Bump maven-pmd-plugin from 3.13.0 to 3.14.0 #122. Thanks to Dependabot.
+o           Bump tests from org.mockito:mockito-core 3.2.4 -> 3.11.2; #88, #107, #110, #123, #128, #129, #156. Thanks to Gary Gregory, Dependabot.
+o           Bump actions/cache from v2 to v2.1.6 #132, #153. Thanks to Dependabot.
+o           Bump maven-checkstyle-plugin from 3.0.0 to 3.1.2 #131. Thanks to Gary Gregory, Dependabot.
+o           Bump checkstyle from 8.29 to 8.44. Thanks to Gary Gregory.
+o           Bump junit-jupiter from 5.7.0 to 5.8.0-M1 #133, #149. Thanks to Dependabot, Gary Gregory.
+o           Bump commons.jacoco.version from 0.8.5 to 0.8.7 (Java 16). Thanks to Dependabot.
+o           Bump commons.spotbugs.version from 4.0.4 to 4.3.0 (Java 16). Thanks to Dependabot.
+o           Bump maven-javadoc-plugin from 3.2.0 to 3.3.0. Thanks to Gary Gregory.
+o           Bump jmh-generator-annprocess from 1.5.2 to 1.32 #151. Thanks to Dependabot.
+o           Bump PMD core from 6.29.0 to 6.36.0. Thanks to Dependabot.
+o           Bump biz.aQute.bnd:biz.aQute.bndlib from 5.1.2 to 5.3.0. Thanks to Dependabot.
+
+
+Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
+
+For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+
+https://commons.apache.org/proper/commons-csv/
+
+Download page: https://commons.apache.org/proper/commons-csv/download_csv.cgi
+
+Have fun!
+-Apache Commons CSV team
+
+------------------------------------------------------------------------------
+
+                        Apache Commons CSV
                         Version 1.8
                         Release Notes
 
