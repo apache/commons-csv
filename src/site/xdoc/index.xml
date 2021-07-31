@@ -50,16 +50,8 @@ Various <a href="project-reports.html">project reports</a> are also available.
 The Javadoc API documents are available online:
 </p>
 <ul>
-  <li><a href="apidocs/index.html">Javadoc trunk</a></li>
-  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.8">Javadoc 1.8</a></li>
-  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.7">Javadoc 1.7</a></li>
-  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.6">Javadoc 1.6</a></li>
-  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.5">Javadoc 1.5</a></li>
-  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.4">Javadoc 1.4</a></li>
-  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.3">Javadoc 1.3</a></li>
-  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.2">Javadoc 1.2</a></li>
-  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.1">Javadoc 1.1</a></li>
-  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/1.0">Javadoc 1.0</a></li>
+  <li><a href="apidocs/index.html">Javadoc current</a></li>
+  <li><a href="https://javadoc.io/doc/org.apache.commons/commons-csv/">Javadoc archives</a></li>
 </ul>
 <p>
 The <a href="scm.html">git repository</a> can be
@@ -69,15 +61,8 @@ The <a href="scm.html">git repository</a> can be
 <!-- ================================================== -->
 <section name="Releases">
 <ul>
-  <li><a href="https://commons.apache.org/csv/download_csv.cgi">Apache Commons CSV 1.8 (mirrors)</a> requires Java 8</li>
-  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.7 (archives)</a> requires Java 8</li>
-  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.6 (archives)</a> requires Java 7</li>
-  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.5 (archives)</a> requires Java 7</li>
-  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.4 (archives)</a> requires Java 6</li>
-  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.3 (archives)</a> requires Java 6</li>
-  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.2 (archives)</a> requires Java 6</li>
-  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.1 (archives)</a> requires Java 6</li>
-  <li><a href="https://archive.apache.org/dist/commons/csv/">Apache Commons CSV 1.0 (archives)</a> requires Java 6</li>
+  <li><a href="https://commons.apache.org/csv/download_csv.cgi">Download Apache Commons CSV current (mirrors)</a> requires Java 8</li>
+  <li><a href="https://archive.apache.org/dist/commons/csv/">Download Apache Commons CSV archived releases</a></li>
 </ul>
 <p>
 See the
@@ -95,7 +80,7 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
   <pre>&lt;dependency&gt;
     &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
     &lt;artifactId&gt;commons-csv&lt;/artifactId&gt;
-    &lt;version&gt;1.8&lt;/version&gt;
+    &lt;version&gt;1.9.0&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 </p>
 <p>
