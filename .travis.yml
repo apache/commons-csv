@@ -16,6 +16,7 @@
 language: java
 
 matrix:
+  fast_finish: true
   include:
     - jdk: openjdk8
     - jdk: openjdk11
