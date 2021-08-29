@@ -2353,7 +2353,7 @@ public final class CSVFormat implements Serializable {
      * Returns a new {@code CSVFormat} with the escape character of the format set to the specified character.
      *
      * @param escape the escape character
-     * @return A new CSVFormat that is equal to his but with the specified character as the escape character
+     * @return A new CSVFormat that is equal to this but with the specified character as the escape character
      * @throws IllegalArgumentException thrown if the specified character is a line break
      * @deprecated Use {@link Builder#setEscape(char)}
      */
