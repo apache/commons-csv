@@ -49,6 +49,7 @@
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump actions/checkout from 2.3.4 to 2.3.5 #188.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump mockito-core from 3.11.2 to 4.0.0 #187.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump maven-pmd-plugin from 3.14.0 to 3.15.0 #184.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump opencsv from 5.5.1 to 5.5.2 #182.</action>
     </release>
     <release version="1.9.0" date="2021-07-24" description="Feature and bug fix release (Java 8)">
       <!-- FIX -->
