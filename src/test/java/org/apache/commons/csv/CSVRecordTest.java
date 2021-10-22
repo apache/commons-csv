@@ -207,7 +207,7 @@ public class CSVRecordTest {
         this.recordWithHeader.putIn(map);
         this.validateMap(map, false);
         // Test that we can compile with assignment to the same map as the param.
-        final TreeMap<String, String> map2 = recordWithHeader.putIn(new TreeMap<String, String>());
+        final TreeMap<String, String> map2 = recordWithHeader.putIn(new TreeMap<>());
         this.validateMap(map2, false);
     }
 

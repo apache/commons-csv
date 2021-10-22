@@ -413,6 +413,7 @@ final class Lexer implements Closeable {
                 token.type = TOKEN;
                 break;
             }
+            // continue
             if (isEscape(ch)) {
                 if (isEscapeDelimiter()) {
                     token.content.append(delimiter);
@@ -424,11 +425,10 @@ final class Lexer implements Closeable {
                         token.content.append((char) unescaped);
                     }
                 }
-                ch = reader.read(); // continue
             } else {
                 token.content.append((char) ch);
-                ch = reader.read(); // continue
             }
+            ch = reader.read(); // continue
         }
 
         if (ignoreSurroundingSpaces) {

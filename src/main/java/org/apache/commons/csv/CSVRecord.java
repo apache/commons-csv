@@ -270,10 +270,10 @@ public final class CSVRecord implements Serializable, Iterable<String> {
         if (getHeaderMapRaw() == null) {
             return map;
         }
-        getHeaderMapRaw().entrySet().forEach(entry -> {
-            final int col = entry.getValue().intValue();
+        getHeaderMapRaw().forEach((key, value) -> {
+            final int col = value;
             if (col < values.length) {
-                map.put(entry.getKey(), values[col]);
+                map.put(key, values[col]);
             }
         });
         return map;
@@ -314,7 +314,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return A new Map. The map is empty if the record has no headers.
      */
     public Map<String, String> toMap() {
-        return putIn(new LinkedHashMap<String, String>(values.length));
+        return putIn(new LinkedHashMap<>(values.length));
     }
 
     /**
