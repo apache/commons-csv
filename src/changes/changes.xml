@@ -39,6 +39,7 @@
   </properties>
   <body>
     <release version="1.9.1" date="2021-MM-DD" description="Feature and bug fix release (Java 8)">
+      <action                 type="update" dev="ggregory" due-to="Arturo Bernal">Minor changes #172.</action>
       <!-- UPDATE -->
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump checkstyle from 8.44 to 9.0.1 #180, #190.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump junit-jupiter from 5.8.0-M1 to 5.8.1 #179, #186.</action>
