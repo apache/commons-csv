@@ -48,4 +48,11 @@
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
   
+  <!-- [CSV-291] Make CSVRecord#values() public. -->
+  <Match>
+    <Class name="org.apache.commons.csv.CSVRecord" />
+    <Method name="values" />
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+  
 </FindBugsFilter>

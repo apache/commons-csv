@@ -329,7 +329,13 @@ public final class CSVRecord implements Serializable, Iterable<String> {
             Arrays.toString(values) + "]";
     }
 
-    String[] values() {
+    /**
+     * Gets the values for this record. This is not a copy.
+     *
+     * @return the values for this record.
+     * @since 1.10.0
+     */
+    public String[] values() {
         return values;
     }
 
