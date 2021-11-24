@@ -53,7 +53,7 @@
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump mockito-core from 3.11.2 to 4.1.0 #187, #197.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump maven-pmd-plugin from 3.14.0 to 3.15.0 #184.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump opencsv from 5.5.1 to 5.5.2 #182.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump spotbugs-maven-plugin from 4.3.0 to 4.4.2.2 #192.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump spotbugs-maven-plugin from 4.3.0 to 4.5.0.0 #192, #198.</action>
       <action                 type="update" dev="kinow" due-to="Dependabot">Bump actions/cache from 2.1.6 to 2.1.7 #196.</action>
     </release>
     <release version="1.9.0" date="2021-07-24" description="Feature and bug fix release (Java 8)">
