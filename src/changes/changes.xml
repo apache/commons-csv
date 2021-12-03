@@ -44,7 +44,7 @@
       <!-- ADD -->
       <action issue="CSV-291" type="add" dev="ggregory" due-to="Gary Gregory">Make CSVRecord#values() public.</action>
       <!-- UPDATE -->
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump checkstyle from 8.44 to 9.1 #180, #190, #194.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump checkstyle from 8.44 to 9.2 #180, #190, #194, #202.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump junit-jupiter from 5.8.0-M1 to 5.8.2 #179, #186, #201.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-core from 1.32 to 1.33 #176.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-generator-annprocess from 1.32 to 1.33 #175.</action>
