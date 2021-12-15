@@ -1160,6 +1160,7 @@ public final class CSVFormat implements Serializable {
      * Returns true if the given string contains the search char.
      *
      * @param source the string to check.
+     * @param searchCh the character to search.
      *
      * @return true if {@code c} contains a line break character
      */
@@ -1342,6 +1343,7 @@ public final class CSVFormat implements Serializable {
      * @param trim                    TODO Doc me.
      * @param trailingDelimiter       TODO Doc me.
      * @param autoFlush               TODO Doc me.
+     * @param allowDuplicateHeaderNames TODO Doc me.
      * @throws IllegalArgumentException if the delimiter is a line break character.
      */
     private CSVFormat(final String delimiter, final Character quoteChar, final QuoteMode quoteMode, final Character commentStart, final Character escape,
@@ -2106,6 +2108,8 @@ public final class CSVFormat implements Serializable {
     /**
      * Always use quotes unless QuoteMode is NONE, so we not have to look ahead.
      *
+     * @param reader What to print
+     * @param appendable Where to print it
      * @throws IOException If an I/O error occurs
      */
     private void printWithQuotes(final Reader reader, final Appendable appendable) throws IOException {
