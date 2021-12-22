@@ -54,7 +54,7 @@
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump mockito-core from 3.11.2 to 4.1.0 #187, #197.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump maven-pmd-plugin from 3.14.0 to 3.15.0 #184.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump opencsv from 5.5.1 to 5.5.2 #182.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump spotbugs-maven-plugin from 4.3.0 to 4.5.0.0 #192, #198.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump spotbugs-maven-plugin from 4.3.0 to 4.5.2.0 #192, #198, #203.</action>
       <action                 type="update" dev="kinow" due-to="Dependabot">Bump actions/cache from 2.1.6 to 2.1.7 #196.</action>
       <action                 type="update" dev="kinow" due-to="Dependabot">Bump h2 from 1.4.200 to 2.0.202 #200.</action>
     </release>
