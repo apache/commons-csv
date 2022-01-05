@@ -16,7 +16,9 @@
  *
  */
 
-package org.apache.commons.csv;
+package org.apache.commons.csv.util;
+
+import org.apache.commons.csv.CSVRecord;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,7 +28,7 @@ import java.util.List;
 /**
  * Utility methods for test cases
  */
-final class Utils {
+public final class Utils {
 
     /**
      * Checks if the 2d array has the same contents as the list of records.

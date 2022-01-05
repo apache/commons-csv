@@ -22,7 +22,7 @@ import java.io.Writer;
 import java.nio.CharBuffer;
 
 /** Copied from Apache Commons IO. */
-class IOUtils {
+public class IOUtils {
 
     /**
      * <p>
@@ -30,7 +30,7 @@ class IOUtils {
      * </p>
      * The default buffer size ({@value}).
      */
-    static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
+    public static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
     /**
      * <p>
@@ -56,7 +56,7 @@ class IOUtils {
      * @throws IOException          if an I/O error occurs
      * @since 2.7
      */
-    static long copy(final Reader input, final Appendable output) throws IOException {
+    public static long copy(final Reader input, final Appendable output) throws IOException {
         return copy(input, output, CharBuffer.allocate(DEFAULT_BUFFER_SIZE));
     }
 
@@ -75,7 +75,7 @@ class IOUtils {
      * @throws IOException          if an I/O error occurs
      * @since 2.7
      */
-    static long copy(final Reader input, final Appendable output, final CharBuffer buffer) throws IOException {
+    public static long copy(final Reader input, final Appendable output, final CharBuffer buffer) throws IOException {
         long count = 0;
         int n;
         while (EOF != (n = input.read(buffer))) {
@@ -104,7 +104,7 @@ class IOUtils {
      * @throws IOException          if an I/O error occurs
      * @since 1.3
      */
-    static long copyLarge(final Reader input, final Writer output) throws IOException {
+    public static long copyLarge(final Reader input, final Writer output) throws IOException {
         return copyLarge(input, output, new char[DEFAULT_BUFFER_SIZE]);
     }
 
@@ -126,7 +126,7 @@ class IOUtils {
      * @throws IOException          if an I/O error occurs
      * @since 2.2
      */
-    static long copyLarge(final Reader input, final Writer output, final char[] buffer) throws IOException {
+    public static long copyLarge(final Reader input, final Writer output, final char[] buffer) throws IOException {
         long count = 0;
         int n;
         while (EOF != (n = input.read(buffer))) {
