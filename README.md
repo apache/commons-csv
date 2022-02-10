@@ -43,7 +43,6 @@
 Apache Commons CSV
 ===================
 
-[![Travis-CI Status](https://travis-ci.org/apache/commons-csv.svg)](https://travis-ci.org/apache/commons-csv)
 [![GitHub Actions Status](https://github.com/apache/commons-csv/workflows/Java%20CI/badge.svg)](https://github.com/apache/commons-csv/actions)
 [![Coverage Status](https://coveralls.io/repos/apache/commons-csv/badge.svg)](https://coveralls.io/r/apache/commons-csv)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/)
