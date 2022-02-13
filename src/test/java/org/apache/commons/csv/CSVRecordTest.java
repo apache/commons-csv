@@ -220,7 +220,7 @@ public class CSVRecordTest {
             map.put("ZColumn", "NewValue");
             // check:
             final ArrayList<String> list = new ArrayList<>(map.values());
-            Collections.sort(list);
+            list.sort(null);
             printer.printRecord(list);
             assertEquals("A,B,C,NewValue" + CSVFormat.DEFAULT.getRecordSeparator(), printer.getOut().toString());
         }
