@@ -61,6 +61,8 @@ final class Lexer implements Closeable {
     /** The input stream */
     private final ExtendedBufferedReader reader;
     private String firstEol;
+    
+    private boolean isLastTokenDelimiter;
 
     Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
         this.reader = reader;
@@ -124,10 +126,12 @@ final class Lexer implements Closeable {
      * @throws IOException If an I/O error occurs.
      */
     boolean isDelimiter(final int ch) throws IOException {
+        isLastTokenDelimiter = false;
         if (ch != delimiter[0]) {
             return false;
         }
         if (delimiter.length == 1) {
+            isLastTokenDelimiter = true;
           return true;
         }
         reader.lookAhead(delimiterBuf);
@@ -137,7 +141,8 @@ final class Lexer implements Closeable {
             }
         }
         final int count = reader.read(delimiterBuf, 0, delimiterBuf.length);
-        return count != END_OF_STREAM;
+        isLastTokenDelimiter = count != END_OF_STREAM;
+        return isLastTokenDelimiter;
     }
 
     /**
@@ -243,7 +248,7 @@ final class Lexer implements Closeable {
         }
 
         // did we reach eof during the last iteration already ? EOF
-        if (isEndOfFile(lastChar) || !isDelimiter(lastChar) && isEndOfFile(c)) {
+        if (isEndOfFile(lastChar) || !isLastTokenDelimiter && isEndOfFile(c)) {
             token.type = EOF;
             // don't set token.isReady here because no content
             return token;
