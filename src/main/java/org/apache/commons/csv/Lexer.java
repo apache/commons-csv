@@ -61,7 +61,7 @@ final class Lexer implements Closeable {
     /** The input stream */
     private final ExtendedBufferedReader reader;
     private String firstEol;
-    
+
     private boolean isLastTokenDelimiter;
 
     Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
