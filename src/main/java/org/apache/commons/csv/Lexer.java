@@ -132,7 +132,7 @@ final class Lexer implements Closeable {
         }
         if (delimiter.length == 1) {
             isLastTokenDelimiter = true;
-          return true;
+            return true;
         }
         reader.lookAhead(delimiterBuf);
         for (int i = 0; i < delimiterBuf.length; i++) {
