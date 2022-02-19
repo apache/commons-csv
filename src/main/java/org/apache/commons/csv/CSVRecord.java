@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -73,7 +72,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return the String at the given enum String
      */
     public String get(final Enum<?> e) {
-        return get(Objects.toString(e, null));
+        return get(e == null ? null : e.name());
     }
 
     /**

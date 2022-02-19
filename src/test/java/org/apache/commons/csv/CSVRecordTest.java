@@ -30,12 +30,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,6 +48,7 @@ public class CSVRecordTest {
         UNKNOWN_COLUMN
     }
 
+    /** This enum overrides toString() but it's the names that matter. */
     public enum EnumHeader {
         FIRST("first"),
         SECOND("second"),
@@ -69,13 +72,12 @@ public class CSVRecordTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        values = new String[] { "A", "B", "C" };
+        values = new String[] {"A", "B", "C"};
         final String rowData = StringUtils.join(values, ',');
         try (final CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(rowData))) {
             record = parser.iterator().next();
         }
-        final String[] headers = { "first", "second", "third" };
-        try (final CSVParser parser = CSVFormat.DEFAULT.withHeader(headers).parse(new StringReader(rowData))) {
+        try (final CSVParser parser = CSVFormat.DEFAULT.builder().setHeader(EnumHeader.class).build().parse(new StringReader(rowData))) {
             recordWithHeader = parser.iterator().next();
             headerMap = parser.getHeaderMap();
         }
@@ -103,9 +105,9 @@ public class CSVRecordTest {
 
     @Test
     public void testGetString() {
-        assertEquals(values[0], recordWithHeader.get("first"));
-        assertEquals(values[1], recordWithHeader.get("second"));
-        assertEquals(values[2], recordWithHeader.get("third"));
+        assertEquals(values[0], recordWithHeader.get(EnumHeader.FIRST.name()));
+        assertEquals(values[1], recordWithHeader.get(EnumHeader.SECOND.name()));
+        assertEquals(values[2], recordWithHeader.get(EnumHeader.THIRD.name()));
     }
 
     @Test
@@ -141,8 +143,8 @@ public class CSVRecordTest {
 
     @Test
     public void testGetWithEnum() {
-        assertEquals(recordWithHeader.get("first"), recordWithHeader.get(EnumHeader.FIRST));
-        assertEquals(recordWithHeader.get("second"), recordWithHeader.get(EnumHeader.SECOND));
+        assertEquals(recordWithHeader.get("FIRST"), recordWithHeader.get(EnumHeader.FIRST));
+        assertEquals(recordWithHeader.get("SECOND"), recordWithHeader.get(EnumHeader.SECOND));
         assertThrows(IllegalArgumentException.class, () -> recordWithHeader.get(EnumFixture.UNKNOWN_COLUMN));
     }
 
@@ -171,7 +173,7 @@ public class CSVRecordTest {
     @Test
     public void testIsMapped() {
         assertFalse(record.isMapped("first"));
-        assertTrue(recordWithHeader.isMapped("first"));
+        assertTrue(recordWithHeader.isMapped(EnumHeader.FIRST.name()));
         assertFalse(recordWithHeader.isMapped("fourth"));
     }
 
@@ -188,8 +190,8 @@ public class CSVRecordTest {
     @Test
     public void testIsSetString() {
         assertFalse(record.isSet("first"));
-        assertTrue(recordWithHeader.isSet("first"));
-        assertFalse(recordWithHeader.isSet("fourth"));
+        assertTrue(recordWithHeader.isSet(EnumHeader.FIRST.name()));
+        assertFalse(recordWithHeader.isSet("DOES NOT EXIST"));
     }
 
     @Test
@@ -315,16 +317,16 @@ public class CSVRecordTest {
     }
 
     private void validateMap(final Map<String, String> map, final boolean allowsNulls) {
-        assertTrue(map.containsKey("first"));
-        assertTrue(map.containsKey("second"));
-        assertTrue(map.containsKey("third"));
+        assertTrue(map.containsKey(EnumHeader.FIRST.name()));
+        assertTrue(map.containsKey(EnumHeader.SECOND.name()));
+        assertTrue(map.containsKey(EnumHeader.THIRD.name()));
         assertFalse(map.containsKey("fourth"));
         if (allowsNulls) {
             assertFalse(map.containsKey(null));
         }
-        assertEquals("A", map.get("first"));
-        assertEquals("B", map.get("second"));
-        assertEquals("C", map.get("third"));
+        assertEquals("A", map.get(EnumHeader.FIRST.name()));
+        assertEquals("B", map.get(EnumHeader.SECOND.name()));
+        assertEquals("C", map.get(EnumHeader.THIRD.name()));
         assertNull(map.get("fourth"));
     }
 }
