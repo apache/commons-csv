@@ -34,10 +34,10 @@ public class JiraCsv288Test {
     // expected: <a,b,c,d,,f> but was: <a,b|c,d,|f>
     public void testParseWithDoublePipeDelimiter() throws Exception {
         final Reader in = new StringReader("a||b||c||d||||f");
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").build())) {
-            for (CSVRecord csvRecord : csvParser) {
+            for (final CSVRecord csvRecord : csvParser) {
                 for (int i = 0; i < csvRecord.size(); i++) {
                     csvPrinter.print(csvRecord.get(i));
                 }
@@ -51,10 +51,10 @@ public class JiraCsv288Test {
     // expected: <a,b,c,d,,f> but was: <a,b|c,d,|f>
     public void testParseWithTriplePipeDelimiter() throws Exception {
         final Reader in = new StringReader("a|||b|||c|||d||||||f");
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|||").build())) {
-            for (CSVRecord csvRecord : csvParser) {
+            for (final CSVRecord csvRecord : csvParser) {
                 for (int i = 0; i < csvRecord.size(); i++) {
                     csvPrinter.print(csvRecord.get(i));
                 }
@@ -68,10 +68,10 @@ public class JiraCsv288Test {
     // expected: <a,b,c,d,,f> but was: <a,b,c,d,|f>
     public void testParseWithABADelimiter() throws Exception {
         final Reader in = new StringReader("a|~|b|~|c|~|d|~||~|f");
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|~|").build())) {
-            for (CSVRecord csvRecord : csvParser) {
+            for (final CSVRecord csvRecord : csvParser) {
                 for (int i = 0; i < csvRecord.size(); i++) {
                     csvPrinter.print(csvRecord.get(i));
                 }
@@ -85,10 +85,10 @@ public class JiraCsv288Test {
     // expected: <a,b||c,d,,f> but was: <a,b||c,d,|f>
     public void testParseWithDoublePipeDelimiterQuoted() throws Exception {
         final Reader in = new StringReader("a||\"b||c\"||d||||f");
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").build())) {
-            for (CSVRecord csvRecord : csvParser) {
+            for (final CSVRecord csvRecord : csvParser) {
                 for (int i = 0; i < csvRecord.size(); i++) {
                     csvPrinter.print(csvRecord.get(i));
                 }
@@ -102,10 +102,10 @@ public class JiraCsv288Test {
     // expected: <a,b,c,d,,f,> but was: <a,b|c,d,|f>
     public void testParseWithDoublePipeDelimiterEndsWithDelimiter() throws Exception {
         final Reader in = new StringReader("a||b||c||d||||f||");
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").build())) {
-            for (CSVRecord csvRecord : csvParser) {
+            for (final CSVRecord csvRecord : csvParser) {
                 for (int i = 0; i < csvRecord.size(); i++) {
                     csvPrinter.print(csvRecord.get(i));
                 }
@@ -119,10 +119,10 @@ public class JiraCsv288Test {
     // expected: <a,b,c,d,,f,> but was: <a,b,c,d,,f>
     public void testParseWithTwoCharDelimiterEndsWithDelimiter() throws Exception {
         final Reader in = new StringReader("a~|b~|c~|d~|~|f~|");
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
-            for (CSVRecord csvRecord : csvParser) {
+            for (final CSVRecord csvRecord : csvParser) {
                 for (int i = 0; i < csvRecord.size(); i++) {
                     csvPrinter.print(csvRecord.get(i));
                 }
@@ -136,10 +136,10 @@ public class JiraCsv288Test {
 
     public void testParseWithDoublePipeDelimiterDoubleCharValue() throws Exception {
         final Reader in = new StringReader("a||bb||cc||dd||f");
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").build())) {
-            for (CSVRecord csvRecord : csvParser) {
+            for (final CSVRecord csvRecord : csvParser) {
                 for (int i = 0; i < csvRecord.size(); i++) {
                     csvPrinter.print(csvRecord.get(i));
                 }
@@ -152,10 +152,10 @@ public class JiraCsv288Test {
     // Regression, already passed before fix
     public void testParseWithTwoCharDelimiter1() throws Exception {
         final Reader in = new StringReader("a~|b~|c~|d~|~|f");
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
-            for (CSVRecord csvRecord : csvParser) {
+            for (final CSVRecord csvRecord : csvParser) {
                 for (int i = 0; i < csvRecord.size(); i++) {
                     csvPrinter.print(csvRecord.get(i));
                 }
@@ -168,10 +168,10 @@ public class JiraCsv288Test {
     // Regression, already passed before fix
     public void testParseWithTwoCharDelimiter2() throws Exception {
         final Reader in = new StringReader("a~|b~|c~|d~|~|f~");
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
-            for (CSVRecord csvRecord : csvParser) {
+            for (final CSVRecord csvRecord : csvParser) {
                 for (int i = 0; i < csvRecord.size(); i++) {
                     csvPrinter.print(csvRecord.get(i));
                 }
@@ -184,10 +184,10 @@ public class JiraCsv288Test {
     // Regression, already passed before fix
     public void testParseWithTwoCharDelimiter3() throws Exception {
         final Reader in = new StringReader("a~|b~|c~|d~|~|f|");
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
-            for (CSVRecord csvRecord : csvParser) {
+            for (final CSVRecord csvRecord : csvParser) {
                 for (int i = 0; i < csvRecord.size(); i++) {
                     csvPrinter.print(csvRecord.get(i));
                 }
@@ -200,10 +200,10 @@ public class JiraCsv288Test {
     // Regression, already passed before fix
     public void testParseWithTwoCharDelimiter4() throws Exception {
         final Reader in = new StringReader("a~|b~|c~|d~|~|f~~||g");
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
-            for (CSVRecord csvRecord : csvParser) {
+            for (final CSVRecord csvRecord : csvParser) {
                 for (int i = 0; i < csvRecord.size(); i++) {
                     csvPrinter.print(csvRecord.get(i));
                 }
@@ -216,10 +216,10 @@ public class JiraCsv288Test {
     // Regression, already passed before fix
     public void testParseWithSinglePipeDelimiterEndsWithDelimiter() throws Exception {
         final Reader in = new StringReader("a|b|c|d||f|");
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|").build())) {
-            for (CSVRecord csvRecord : csvParser) {
+            for (final CSVRecord csvRecord : csvParser) {
                 for (int i = 0; i < csvRecord.size(); i++) {
                     csvPrinter.print(csvRecord.get(i));
                 }

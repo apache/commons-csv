@@ -261,8 +261,8 @@ public class CSVFormatTest {
                            final Object b = method.invoke(CSVFormat.DEFAULT, QuoteMode.ALL);
                            assertNotEquals(name, type, a, b);
                        } else if ("org.apache.commons.csv.DuplicateHeaderMode".equals(type)) {
-                           final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {DuplicateHeaderMode.ALLOW_ALL});
-                           final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] {DuplicateHeaderMode.DISALLOW});
+                           final Object a = method.invoke(CSVFormat.DEFAULT, DuplicateHeaderMode.ALLOW_ALL);
+                           final Object b = method.invoke(CSVFormat.DEFAULT, DuplicateHeaderMode.DISALLOW);
                            assertNotEquals(name, type, a, b);
                        } else if ("java.lang.Object[]".equals(type)){
                            final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] {new Object[] {null, null}});
