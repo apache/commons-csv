@@ -42,6 +42,7 @@
       <!-- FIX -->
       <action                 type="fix" dev="ggregory" due-to="Arturo Bernal">Minor changes #172.</action>
       <action issue="CSV-292" type="fix" dev="kinow" due-to="Rob Vesse">No Automatic-Module-Name prevents usage in JPMS projects without repacking the JAR.</action>
+      <action issue="CSV-288" type="fix" dev="ggregory" due-to="Santhsoh, Angus">Fix for multi-char delimiter not working as expected #218.</action>
       <!-- ADD -->
       <action issue="CSV-291" type="add" dev="ggregory" due-to="Gary Gregory">Make CSVRecord#values() public.</action>
       <!-- UPDATE -->
