@@ -188,8 +188,6 @@ public final class CSVFormat implements Serializable {
             return new Builder(csvFormat);
         }
 
-        private boolean allowDuplicateHeaderNames;
-
         private boolean allowMissingColumnNames;
 
         private boolean autoFlush;
@@ -197,6 +195,8 @@ public final class CSVFormat implements Serializable {
         private Character commentMarker;
 
         private String delimiter;
+
+        private DuplicateHeaderMode duplicateHeaderMode;
 
         private Character escapeCharacter;
 
@@ -245,7 +245,7 @@ public final class CSVFormat implements Serializable {
             this.trim = csvFormat.trim;
             this.autoFlush = csvFormat.autoFlush;
             this.quotedNullString = csvFormat.quotedNullString;
-            this.allowDuplicateHeaderNames = csvFormat.allowDuplicateHeaderNames;
+            this.duplicateHeaderMode = csvFormat.duplicateHeaderMode;
         }
 
         /**
@@ -262,10 +262,24 @@ public final class CSVFormat implements Serializable {
          *
          * @param allowDuplicateHeaderNames the duplicate header names behavior, true to allow, false to disallow.
          * @return This instance.
+         * @deprecated Use {@link #setDuplicateHeaderMode(DuplicateHeaderMode)}.
          */
+        @Deprecated
         public Builder setAllowDuplicateHeaderNames(final boolean allowDuplicateHeaderNames) {
-            this.allowDuplicateHeaderNames = allowDuplicateHeaderNames;
+            final DuplicateHeaderMode mode = allowDuplicateHeaderNames ? DuplicateHeaderMode.ALLOW_ALL : DuplicateHeaderMode.ALLOW_EMPTY;
+            setDuplicateHeaderMode(mode);
             return this;
+        }
+
+        /**
+         * Sets the duplicate header names behavior.
+         *
+         * @param duplicateHeaderMode the duplicate header names behavior
+         * @return This instance.
+         */
+        public Builder setDuplicateHeaderMode(final DuplicateHeaderMode duplicateHeaderMode) {
+          this.duplicateHeaderMode = duplicateHeaderMode;
+          return this;
         }
 
         /**
@@ -760,7 +774,8 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Standard Comma Separated Value format, as for {@link #RFC4180} but allowing empty lines.
+     * Standard Comma Separated Value format, as for {@link #RFC4180} but allowing
+     * empty lines.
      *
      * <p>
      * The {@link Builder} settings are:
@@ -770,13 +785,13 @@ public final class CSVFormat implements Serializable {
      * <li>{@code setQuote('"')}</li>
      * <li>{@code setRecordSeparator("\r\n")}</li>
      * <li>{@code setIgnoreEmptyLines(true)}</li>
-     * <li>{@code setAllowDuplicateHeaderNames(true)}</li>
+     * <li>{@code setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL)}</li>
      * </ul>
      *
      * @see Predefined#Default
      */
     public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, null, null, null, false, false, false,
-            false, false, false, true);
+            false, false, false, DuplicateHeaderMode.ALLOW_ALL);
 
     /**
      * Excel file format (using a comma as the value delimiter). Note that the actual value delimiter used by Excel is locale dependent, it might be necessary
@@ -799,7 +814,7 @@ public final class CSVFormat implements Serializable {
      * <li>{@code setRecordSeparator("\r\n")}</li>
      * <li>{@code setIgnoreEmptyLines(false)}</li>
      * <li>{@code setAllowMissingColumnNames(true)}</li>
-     * <li>{@code setAllowDuplicateHeaderNames(true)}</li>
+     * <li>{@code setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL)}</li>
      * </ul>
      * <p>
      * Note: This is currently like {@link #RFC4180} plus {@link Builder#setAllowMissingColumnNames(boolean) Builder#setAllowMissingColumnNames(true)} and
@@ -1220,7 +1235,7 @@ public final class CSVFormat implements Serializable {
      */
     public static CSVFormat newFormat(final char delimiter) {
         return new CSVFormat(String.valueOf(delimiter), null, null, null, null, false, false, null, null, null, null, false, false, false, false, false, false,
-                true);
+                DuplicateHeaderMode.ALLOW_ALL);
     }
 
     static String[] toStringArray(final Object[] values) {
@@ -1262,7 +1277,7 @@ public final class CSVFormat implements Serializable {
         return CSVFormat.Predefined.valueOf(format).getFormat();
     }
 
-    private final boolean allowDuplicateHeaderNames;
+    private final DuplicateHeaderMode duplicateHeaderMode;
 
     private final boolean allowMissingColumnNames;
 
@@ -1319,7 +1334,7 @@ public final class CSVFormat implements Serializable {
         this.trim = builder.trim;
         this.autoFlush = builder.autoFlush;
         this.quotedNullString = builder.quotedNullString;
-        this.allowDuplicateHeaderNames = builder.allowDuplicateHeaderNames;
+        this.duplicateHeaderMode = builder.duplicateHeaderMode;
         validate();
     }
 
@@ -1343,14 +1358,14 @@ public final class CSVFormat implements Serializable {
      * @param trim                    TODO Doc me.
      * @param trailingDelimiter       TODO Doc me.
      * @param autoFlush               TODO Doc me.
-     * @param allowDuplicateHeaderNames TODO Doc me.
+     * @param duplicateHeaderMode     the behavior when handling duplicate headers
      * @throws IllegalArgumentException if the delimiter is a line break character.
      */
     private CSVFormat(final String delimiter, final Character quoteChar, final QuoteMode quoteMode, final Character commentStart, final Character escape,
             final boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String recordSeparator, final String nullString,
             final Object[] headerComments, final String[] header, final boolean skipHeaderRecord, final boolean allowMissingColumnNames,
             final boolean ignoreHeaderCase, final boolean trim, final boolean trailingDelimiter, final boolean autoFlush,
-            final boolean allowDuplicateHeaderNames) {
+            final DuplicateHeaderMode duplicateHeaderMode) {
         this.delimiter = delimiter;
         this.quoteCharacter = quoteChar;
         this.quoteMode = quoteMode;
@@ -1369,7 +1384,7 @@ public final class CSVFormat implements Serializable {
         this.trim = trim;
         this.autoFlush = autoFlush;
         this.quotedNullString = quoteCharacter + nullString + quoteCharacter;
-        this.allowDuplicateHeaderNames = allowDuplicateHeaderNames;
+        this.duplicateHeaderMode = duplicateHeaderMode;
         validate();
     }
 
@@ -1416,7 +1431,7 @@ public final class CSVFormat implements Serializable {
             return false;
         }
         final CSVFormat other = (CSVFormat) obj;
-        return allowDuplicateHeaderNames == other.allowDuplicateHeaderNames && allowMissingColumnNames == other.allowMissingColumnNames &&
+        return duplicateHeaderMode == other.duplicateHeaderMode && allowMissingColumnNames == other.allowMissingColumnNames &&
                 autoFlush == other.autoFlush && Objects.equals(commentMarker, other.commentMarker) && Objects.equals(delimiter, other.delimiter) &&
                 Objects.equals(escapeCharacter, other.escapeCharacter) && Arrays.equals(header, other.header) &&
                 Arrays.equals(headerComments, other.headerComments) && ignoreEmptyLines == other.ignoreEmptyLines &&
@@ -1450,9 +1465,21 @@ public final class CSVFormat implements Serializable {
      *
      * @return whether duplicate header names are allowed
      * @since 1.7
+     * @deprecated Use {@link #getDuplicateHeaderMode()}.
      */
+    @Deprecated
     public boolean getAllowDuplicateHeaderNames() {
-        return allowDuplicateHeaderNames;
+        return duplicateHeaderMode == DuplicateHeaderMode.ALLOW_ALL;
+    }
+
+    /**
+     * Gets how duplicate headers are handled.
+     *
+     * @return if duplicate header values are allowed, allowed conditionally, or disallowed.
+     * @since 1.9.0
+     */
+    public DuplicateHeaderMode getDuplicateHeaderMode() {
+        return duplicateHeaderMode;
     }
 
     /**
@@ -1633,7 +1660,7 @@ public final class CSVFormat implements Serializable {
         int result = 1;
         result = prime * result + Arrays.hashCode(header);
         result = prime * result + Arrays.hashCode(headerComments);
-        return prime * result + Objects.hash(allowDuplicateHeaderNames, allowMissingColumnNames, autoFlush, commentMarker, delimiter, escapeCharacter,
+        return prime * result + Objects.hash(duplicateHeaderMode, allowMissingColumnNames, autoFlush, commentMarker, delimiter, escapeCharacter,
                 ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, nullString, quoteCharacter, quoteMode, quotedNullString, recordSeparator,
                 skipHeaderRecord, trailingDelimiter, trim);
     }
@@ -2235,7 +2262,7 @@ public final class CSVFormat implements Serializable {
         }
 
         // validate header
-        if (header != null && !allowDuplicateHeaderNames) {
+        if (header != null && duplicateHeaderMode != DuplicateHeaderMode.ALLOW_ALL) {
             final Set<String> dupCheck = new HashSet<>();
             for (final String hdr : header) {
                 if (!dupCheck.add(hdr)) {
@@ -2254,7 +2281,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withAllowDuplicateHeaderNames() {
-        return builder().setAllowDuplicateHeaderNames(true).build();
+        return builder().setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL).build();
     }
 
     /**
@@ -2267,7 +2294,8 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withAllowDuplicateHeaderNames(final boolean allowDuplicateHeaderNames) {
-        return builder().setAllowDuplicateHeaderNames(allowDuplicateHeaderNames).build();
+        final DuplicateHeaderMode mode = allowDuplicateHeaderNames ? DuplicateHeaderMode.ALLOW_ALL : DuplicateHeaderMode.ALLOW_EMPTY;
+        return builder().setDuplicateHeaderMode(mode).build();
     }
 
     /**
