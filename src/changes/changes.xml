@@ -45,6 +45,8 @@
       <action issue="CSV-288" type="fix" dev="ggregory" due-to="Santhsoh, Angus">Fix for multi-char delimiter not working as expected #218.</action>
       <!-- ADD -->
       <action issue="CSV-291" type="add" dev="ggregory" due-to="Gary Gregory">Make CSVRecord#values() public.</action>
+      <action issue="CSV-264" type="add" dev="ggregory" due-to="Seth Falco, Alex Herbert, Gary Gregory">Add DuplicateHeaderMode for flexibility with header strictness. #114.</action>
+      
       <!-- UPDATE -->
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump checkstyle from 8.44 to 9.2.1 #180, #190, #194, #202, #207.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump junit-jupiter from 5.8.0-M1 to 5.8.2 #179, #186, #201.</action>
