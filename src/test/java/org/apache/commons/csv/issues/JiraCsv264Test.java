@@ -17,14 +17,14 @@
 
 package org.apache.commons.csv.issues;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.DuplicateHeaderMode;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.io.StringReader;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.DuplicateHeaderMode;
+import org.junit.jupiter.api.Test;
 
 /**
  * When {@link CSVFormat#withHeader(String...)} is not null; duplicate headers
