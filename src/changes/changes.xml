@@ -54,7 +54,7 @@
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-core from 1.32 to 1.34 #176, #208.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-generator-annprocess from 1.32 to 1.34 #175, #206.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump commons.pmd-impl.version from 6.36.0 to 6.41.0 #173, #189, #193, #199.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump actions/checkout from 2.3.4 to 2.4.0 #188, #195.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump actions/checkout from 2.3.4 to 3 #188, #195, #220.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump mockito-core from 3.11.2 to 4.3.1 #187, #197, #204, #212.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump maven-pmd-plugin from 3.14.0 to 3.16.0 #184, #219.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump commons.pmd-impl.version from 6.41.0 to 6.42.0 #214.</action>
