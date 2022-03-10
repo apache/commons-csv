@@ -62,6 +62,7 @@
       <action                 type="update" dev="kinow" due-to="Dependabot">Bump actions/cache from 2.1.6 to 2.1.7 #196.</action>
       <action                 type="update" dev="kinow" due-to="Dependabot">Bump h2 from 1.4.200 to 2.0.214 #200, #205, #213.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump maven-javadoc-plugin from 3.3.0 to 3.3.2.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump biz.aQute.bnd:biz.aQute.bndlib from 5.3.0 to 6.2.0.</action>
     </release>
     <release version="1.9.0" date="2021-07-24" description="Feature and bug fix release (Java 8)">
       <!-- FIX -->
