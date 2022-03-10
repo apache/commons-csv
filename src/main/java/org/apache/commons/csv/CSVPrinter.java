@@ -162,7 +162,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public void print(final Object value) throws IOException {
+    public synchronized void print(final Object value) throws IOException {
         format.print(value, appendable, newRecord);
         newRecord = false;
     }
@@ -188,7 +188,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public void printComment(final String comment) throws IOException {
+    public synchronized void printComment(final String comment) throws IOException {
         if (comment == null || !format.isCommentMarkerSet()) {
             return;
         }
@@ -226,7 +226,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws SQLException If a database access error occurs or this method is called on a closed result set.
      * @since 1.9.0
      */
-    public void printHeaders(final ResultSet resultSet) throws IOException, SQLException {
+    public synchronized void printHeaders(final ResultSet resultSet) throws IOException, SQLException {
         printRecord((Object[]) format.builder().setHeader(resultSet).build().getHeader());
     }
 
@@ -236,7 +236,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public void println() throws IOException {
+    public synchronized void println() throws IOException {
         format.println(appendable);
         newRecord = true;
     }
@@ -254,7 +254,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public void printRecord(final Iterable<?> values) throws IOException {
+    public synchronized void printRecord(final Iterable<?> values) throws IOException {
         for (final Object value : values) {
             print(value);
         }

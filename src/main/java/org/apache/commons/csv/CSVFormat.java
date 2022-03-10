@@ -1793,7 +1793,7 @@ public final class CSVFormat implements Serializable {
      * @throws IOException If an I/O error occurs.
      * @since 1.4
      */
-    public void print(final Object value, final Appendable out, final boolean newRecord) throws IOException {
+    public synchronized void print(final Object value, final Appendable out, final boolean newRecord) throws IOException {
         // null values are considered empty
         // Only call CharSequence.toString() if you have to, helps GC-free use cases.
         CharSequence charSequence;
@@ -1818,7 +1818,7 @@ public final class CSVFormat implements Serializable {
         print(value, charSequence, out, newRecord);
     }
 
-    private void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord) throws IOException {
+    private synchronized void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord) throws IOException {
         final int offset = 0;
         final int len = value.length();
         if (!newRecord) {
@@ -1893,7 +1893,7 @@ public final class CSVFormat implements Serializable {
      * @throws IOException If an I/O error occurs.
      * @since 1.4
      */
-    public void println(final Appendable appendable) throws IOException {
+    public synchronized void println(final Appendable appendable) throws IOException {
         if (getTrailingDelimiter()) {
             append(getDelimiterString(), appendable);
         }
@@ -1915,7 +1915,7 @@ public final class CSVFormat implements Serializable {
      * @throws IOException If an I/O error occurs.
      * @since 1.4
      */
-    public void printRecord(final Appendable appendable, final Object... values) throws IOException {
+    public synchronized void printRecord(final Appendable appendable, final Object... values) throws IOException {
         for (int i = 0; i < values.length; i++) {
             print(values[i], appendable, i == 0);
         }
