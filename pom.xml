@@ -172,7 +172,7 @@
     <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt, **/maven-archiver/pom.properties</checkstyle.resourceExcludes>
 
     <commons.pmd.version>3.16.0</commons.pmd.version>
-    <commons.pmd-impl.version>6.42.0</commons.pmd-impl.version>
+    <commons.pmd-impl.version>6.43.0</commons.pmd-impl.version>
     <commons.jacoco.version>0.8.7</commons.jacoco.version>
     <commons.spotbugs.version>4.5.3.0</commons.spotbugs.version>
     <commons.japicmp.version>0.15.3</commons.japicmp.version>
