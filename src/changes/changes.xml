@@ -44,6 +44,8 @@
       <action issue="CSV-292" type="fix" dev="kinow" due-to="Rob Vesse">No Automatic-Module-Name prevents usage in JPMS projects without repacking the JAR.</action>
       <action issue="CSV-288" type="fix" dev="ggregory" due-to="Santhsoh, Angus">Fix for multi-char delimiter not working as expected #218.</action>
       <action issue="CSV-269" type="fix" dev="ggregory" due-to="Auke te Winkel, Gary Gregory">CSVRecord.get(Enum) should use Enum.name() instead of Enum.toString().</action>
+      <action                 type="fix" dev="ggregory" due-to="Gary Gregory">Allow org.apache.commons.csv.IOUtils.copy(Reader, Appendable, CharBuffer) to compile on Java 11 and run on Java 8.</action>
+      <action                 type="fix" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 52 to 53.</action>
       <!-- ADD -->
       <action issue="CSV-291" type="add" dev="ggregory" due-to="Gary Gregory">Make CSVRecord#values() public.</action>
       <action issue="CSV-264" type="add" dev="ggregory" due-to="Sagar Tiwari, Seth Falco, Alex Herbert, Gary Gregory">Add DuplicateHeaderMode for flexibility with header strictness. #114.</action>

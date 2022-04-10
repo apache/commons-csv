@@ -19,6 +19,7 @@ package org.apache.commons.csv;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.Buffer;
 import java.nio.CharBuffer;
 
 /** Copied from Apache Commons IO. */
@@ -79,7 +80,7 @@ class IOUtils {
         long count = 0;
         int n;
         while (EOF != (n = input.read(buffer))) {
-            buffer.flip();
+            ((Buffer) buffer).flip();
             output.append(buffer, 0, n);
             count += n;
         }
