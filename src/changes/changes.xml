@@ -56,7 +56,7 @@
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump actions/setup-java from 2 to 3.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump checkstyle from 8.44 to 9.2.1 #180, #190, #194, #202, #207.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump junit-jupiter from 5.8.0-M1 to 5.8.2 #179, #186, #201.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-core from 1.32 to 1.34 #176, #208.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-core from 1.32 to 1.35 #176, #208, #229.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-generator-annprocess from 1.32 to 1.35 #175, #206, #226.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump commons.pmd-impl.version from 6.36.0 to 6.44.0 #173, #189, #193, #199, #227.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump mockito-core from 3.11.2 to 4.4.0 #187, #197, #204, #212.</action>
