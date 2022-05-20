@@ -174,7 +174,7 @@
     <commons.pmd.version>3.16.0</commons.pmd.version>
     <commons.pmd-impl.version>6.45.0</commons.pmd-impl.version>
     <commons.jacoco.version>0.8.7</commons.jacoco.version>
-    <commons.spotbugs.version>4.6.0.0</commons.spotbugs.version>
+    <commons.spotbugs.version>4.7.0.0</commons.spotbugs.version>
     <commons.japicmp.version>0.15.3</commons.japicmp.version>
     <commons.javadoc.version>3.3.2</commons.javadoc.version>
     <biz.aQute.bndlib.version>6.2.0</biz.aQute.bndlib.version>
