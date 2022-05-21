@@ -216,7 +216,7 @@ final class Lexer implements Closeable {
      * @param token
      *            an existing Token object to reuse. The caller is responsible to initialize the Token.
      * @return the next token found.
-     * @throws java.io.IOException on stream access error.
+     * @throws IOException on stream access error.
      */
     Token nextToken(final Token token) throws IOException {
 
