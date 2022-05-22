@@ -176,7 +176,7 @@
     <commons.jacoco.version>0.8.8</commons.jacoco.version>
     <commons.spotbugs.version>4.7.0.0</commons.spotbugs.version>
     <commons.japicmp.version>0.15.7</commons.japicmp.version>
-    <commons.javadoc.version>3.3.2</commons.javadoc.version>
+    <commons.javadoc.version>3.4.0</commons.javadoc.version>
     <biz.aQute.bndlib.version>6.2.0</biz.aQute.bndlib.version>
     <japicmp.skip>false</japicmp.skip>
 
