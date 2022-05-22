@@ -68,6 +68,7 @@
       <action                 type="update" dev="kinow" due-to="Dependabot">Bump h2 from 1.4.200 to 2.1.212 #200, #205, #213.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump maven-javadoc-plugin from 3.3.0 to 3.3.2.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump biz.aQute.bnd:biz.aQute.bndlib from 5.3.0 to 6.2.0.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump jacoco-maven-plugin from 0.8.7 to 0.8.8.</action>
     </release>
     <release version="1.9.0" date="2021-07-24" description="Feature and bug fix release (Java 8)">
       <!-- FIX -->
