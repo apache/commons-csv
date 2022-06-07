@@ -52,7 +52,7 @@
       <action issue="CSV-295" type="add" dev="ggregory" due-to="Gary Gregory">Support for parallelism in CSVPrinter.</action>
       <action type="add" dev="ggregory">Add github/codeql-action.</action>
       <!-- UPDATE -->
-      <action                 type="update" dev="kinow" due-to="Dependabot, Gary Gregory">Bump actions/cache from 2.1.6 to 3.0.3 #196, #233.</action>
+      <action                 type="update" dev="kinow" due-to="Dependabot, Gary Gregory">Bump actions/cache from 2.1.6 to 3.0.4 #196, #233.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump actions/checkout from 2.3.4 to 3 #188, #195, #220.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump actions/setup-java from 2 to 3.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump checkstyle from 8.44 to 9.2.1 #180, #190, #194, #202, #207.</action>
