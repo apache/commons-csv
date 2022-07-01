@@ -165,7 +165,7 @@
     <commons.encoding>UTF-8</commons.encoding>
 
     <commons.checkstyle-plugin.version>3.1.2</commons.checkstyle-plugin.version>
-    <commons.checkstyle.version>9.3</commons.checkstyle.version>
+    <commons.checkstyle.version>10.3.1</commons.checkstyle.version>
     <checkstyle.header.file>${basedir}/src/site/resources/checkstyle/checkstyle-header.txt</checkstyle.header.file>
     <checkstyle.config.file>${basedir}/src/site/resources/checkstyle/checkstyle.xml</checkstyle.config.file>
     <checkstyle.suppress.file>${basedir}/src/site/resources/checkstyle/checkstyle-suppressions.xml</checkstyle.suppress.file>
