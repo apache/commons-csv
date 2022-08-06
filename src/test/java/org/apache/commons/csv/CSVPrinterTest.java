@@ -56,6 +56,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Vector;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.NullOutputStream;
@@ -584,6 +585,15 @@ public class CSVPrinterTest {
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
             printer.printRecords(
                     Arrays.asList(Arrays.asList("r1c1", "r1c2"), Arrays.asList("r2c1", "r2c2")));
+            assertEquals("r1c1,r1c2" + recordSeparator + "r2c1,r2c2" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
+    public void testExcelPrintAllStreamOfArrays() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
+            printer.printRecords(Stream.of(new String[][] { { "r1c1", "r1c2" }, { "r2c1", "r2c2" } }));
             assertEquals("r1c1,r1c2" + recordSeparator + "r2c1,r2c2" + recordSeparator, sw.toString());
         }
     }
@@ -1454,6 +1464,28 @@ public class CSVPrinterTest {
             printer.print(value);
         }
         assertEquals(content, sw.toString());
+    }
+
+    @Test
+    public void testPrintRecordStream() throws IOException {
+        final String code = "a1,b1\n" // 1)
+            + "a2,b2\n" // 2)
+            + "a3,b3\n" // 3)
+            + "a4,b4\n"// 4)
+        ;
+        final String[][] res = {{"a1", "b1"}, {"a2", "b2"}, {"a3", "b3"}, {"a4", "b4"}};
+        final CSVFormat format = CSVFormat.DEFAULT;
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = format.print(sw); final CSVParser parser = CSVParser.parse(code, format)) {
+            for (final CSVRecord record : parser) {
+                printer.printRecord(record.stream());
+            }
+        }
+        try (final CSVParser parser = CSVParser.parse(sw.toString(), format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertFalse(records.isEmpty());
+            Utils.compare("Fail", res, records);
+        }
     }
 
     @Test

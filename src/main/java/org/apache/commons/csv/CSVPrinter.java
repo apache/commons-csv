@@ -29,6 +29,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * Prints values in a {@link CSVFormat CSV format}.
@@ -69,8 +70,21 @@ import java.util.Objects;
  */
 public final class CSVPrinter implements Flushable, Closeable {
 
+    /**
+     * Throws the given throwable.
+     *
+     * @param <T> The throwable cast type.
+     * @param throwable The throwable to rethrow.
+     * @return nothing because we throw.
+     * @throws T Always thrown.
+     */
+    @SuppressWarnings("unchecked")
+    private static <T extends Throwable> RuntimeException rethrow(final Throwable throwable) throws T {
+        throw (T) throwable;
+    }
     /** The place that the values get written. */
     private final Appendable appendable;
+
     private final CSVFormat format;
 
     /** True if we just began a new record. */
@@ -242,7 +256,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Prints the given values a single record of delimiter separated values followed by the record separator.
+     * Prints the given values as a single record of delimiter separated values followed by the record separator.
      *
      * <p>
      * The values will be quoted if needed. Quotes and newLine characters will be escaped. This method adds the record
@@ -262,7 +276,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Prints the given values a single record of delimiter separated values followed by the record separator.
+     * Prints the given values as a single record of delimiter separated values followed by the record separator.
      *
      * <p>
      * The values will be quoted if needed. Quotes and newLine characters will be escaped. This method adds the record
@@ -279,11 +293,46 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Prints all the objects in the given collection handling nested collections/arrays as records.
+     * Prints the given values as a single record of delimiter separated values followed by the record separator.
      *
      * <p>
-     * If the given collection only contains simple objects, this method will print a single record like
-     * {@link #printRecord(Iterable)}. If the given collections contains nested collections/arrays those nested elements
+     * The values will be quoted if needed. Quotes and newLine characters will be escaped. This method adds the record
+     * separator to the output after printing the record, so there is no need to call {@link #println()}.
+     * </p>
+     *
+     * @param values
+     *            values to output.
+     * @throws IOException
+     *             If an I/O error occurs
+     * @since 1.10.0
+     */
+    public synchronized void printRecord(final Stream<?> values) throws IOException {
+        values.forEachOrdered(t -> {
+            try {
+                print(t);
+            } catch (IOException e) {
+                throw rethrow(e);
+            }
+        });
+        println();
+    }
+
+    private void printRecordObject(final Object value) throws IOException {
+        if (value instanceof Object[]) {
+            this.printRecord((Object[]) value);
+        } else if (value instanceof Iterable) {
+            this.printRecord((Iterable<?>) value);
+        } else {
+            this.printRecord(value);
+        }
+    }
+
+    /**
+     * Prints all the objects in the given {@link Iterable} handling nested collections/arrays as records.
+     *
+     * <p>
+     * If the given Iterable only contains simple objects, this method will print a single record like
+     * {@link #printRecord(Iterable)}. If the given Iterable contains nested collections/arrays those nested elements
      * will each be printed as records using {@link #printRecord(Object...)}.
      * </p>
      *
@@ -293,7 +342,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *
      * <pre>
      * <code>
-     * List&lt;String[]&gt; data = ...
+     * List&lt;String[]&gt; data = new ArrayList&lt;&gt;();
      * data.add(new String[]{ "A", "B", "C" });
      * data.add(new String[]{ "1", "2", "3" });
      * data.add(new String[]{ "A1", "B2", "C3" });
@@ -319,13 +368,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      */
     public void printRecords(final Iterable<?> values) throws IOException {
         for (final Object value : values) {
-            if (value instanceof Object[]) {
-                this.printRecord((Object[]) value);
-            } else if (value instanceof Iterable) {
-                this.printRecord((Iterable<?>) value);
-            } else {
-                this.printRecord(value);
-            }
+            printRecordObject(value);
         }
     }
 
@@ -408,5 +451,57 @@ public final class CSVPrinter implements Flushable, Closeable {
             printHeaders(resultSet);
         }
         printRecords(resultSet);
+    }
+
+    /**
+     * Prints all the objects in the given {@link Stream} handling nested collections/arrays as records.
+     *
+     * <p>
+     * If the given Stream only contains simple objects, this method will print a single record like
+     * {@link #printRecord(Iterable)}. If the given Stream contains nested collections/arrays those nested elements
+     * will each be printed as records using {@link #printRecord(Object...)}.
+     * </p>
+     *
+     * <p>
+     * Given the following data structure:
+     * </p>
+     *
+     * <pre>
+     * <code>
+     * List&lt;String[]&gt; data = new ArrayList&lt;&gt;();
+     * data.add(new String[]{ "A", "B", "C" });
+     * data.add(new String[]{ "1", "2", "3" });
+     * data.add(new String[]{ "A1", "B2", "C3" });
+     * Stream&lt;String[]&gt; stream = data.stream();
+     * </code>
+     * </pre>
+     *
+     * <p>
+     * Calling this method will print:
+     * </p>
+     *
+     * <pre>
+     * <code>
+     * A, B, C
+     * 1, 2, 3
+     * A1, B2, C3
+     * </code>
+     * </pre>
+     *
+     * @param values
+     *            the values to print.
+     * @throws IOException
+     *             If an I/O error occurs
+     * @since 1.10.0
+     */
+    @SuppressWarnings("unused") // rethrow() throws IOException
+    public void printRecords(final Stream<?> values) throws IOException {
+        values.forEachOrdered(t -> {
+            try {
+                printRecordObject(t);
+            } catch (IOException e) {
+                throw rethrow(e);
+            }
+        });
     }
 }
