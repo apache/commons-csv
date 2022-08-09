@@ -282,6 +282,13 @@ public class CSVRecordTest {
     }
 
     @Test
+    public void testToListReadOnly() {
+        assertFalse(record.toList().isEmpty());
+        assertThrows(UnsupportedOperationException.class, () -> record.toList().remove(0));
+        assertThrows(UnsupportedOperationException.class, () -> record.iterator().remove());
+    }
+
+    @Test
     public void testToMap() {
         final Map<String, String> map = this.recordWithHeader.toMap();
         this.validateMap(map, true);

@@ -19,6 +19,7 @@ package org.apache.commons.csv;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -248,7 +249,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns an iterator over the values of this record.
+     * Returns an iterator over the values of this record.<br>
+     * The iterator is read-only i.e. {@link Iterator#remove()} is not supported.
      *
      * @return an iterator over the values of this record.
      */
@@ -298,13 +300,13 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Converts the values to a List.
+     * Returns the record's values as a read-only {@code List}.
      *
-     * @return a new List
+     * @return values as a new read-only {@code List}
      * @since 1.9.0
      */
     public List<String> toList() {
-        return Arrays.asList(values);
+        return Collections.unmodifiableList(Arrays.asList(values));
     }
 
     /**
