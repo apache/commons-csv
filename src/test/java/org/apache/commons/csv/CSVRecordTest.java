@@ -16,6 +16,7 @@
  */
 package org.apache.commons.csv;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -30,6 +31,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,9 +49,7 @@ public class CSVRecordTest {
 
     /** This enum overrides toString() but it's the names that matter. */
     public enum EnumHeader {
-        FIRST("first"),
-        SECOND("second"),
-        THIRD("third");
+        FIRST("first"), SECOND("second"), THIRD("third");
 
         private final String number;
 
@@ -69,7 +69,7 @@ public class CSVRecordTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        values = new String[] {"A", "B", "C"};
+        values = new String[] { "A", "B", "C" };
         final String rowData = StringUtils.join(values, ',');
         try (final CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(rowData))) {
             record = parser.iterator().next();
@@ -273,12 +273,40 @@ public class CSVRecordTest {
     }
 
     @Test
-    public void testToList() {
+    public void testToListAdd() {
+        String[] expected = values.clone();
+        final List<String> list = record.toList();
+        list.add("Last");
+        assertEquals("Last", list.get(list.size() - 1));
+        assertEquals(list.size(), values.length + 1);
+        assertArrayEquals(expected, values);
+    }
+
+    @Test
+    public void testToListFor() {
         int i = 0;
         for (final String value : record.toList()) {
             assertEquals(values[i], value);
             i++;
         }
+    }
+
+    @Test
+    public void testToListForEach() {
+        AtomicInteger i = new AtomicInteger();
+        record.toList().forEach(e -> {
+            assertEquals(values[i.getAndIncrement()], e);
+        });
+    }
+
+    @Test
+    public void testToListSet() {
+        String[] expected = values.clone();
+        final List<String> list = record.toList();
+        list.set(list.size() - 1, "Last");
+        assertEquals("Last", list.get(list.size() - 1));
+        assertEquals(list.size(), values.length);
+        assertArrayEquals(expected, values);
     }
 
     @Test

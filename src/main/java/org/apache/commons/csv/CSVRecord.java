@@ -18,6 +18,7 @@
 package org.apache.commons.csv;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -298,17 +299,26 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Converts the values to a List.
+     * Converts the values to a new List.
+     * <p>
+     * Editing the list does not update this instance.
+     * </p>
      *
      * @return a new List
      * @since 1.9.0
      */
     public List<String> toList() {
-        return Arrays.asList(values);
+        // Only allocate a single list of known size
+        final ArrayList<String> list = new ArrayList<>(values.length);
+        Stream.of(values).forEach(list::add);
+        return list;
     }
 
     /**
      * Copies this record into a new Map of header name to record value.
+     * <p>
+     * Editing the map does not update this instance.
+     * </p>
      *
      * @return A new Map. The map is empty if the record has no headers.
      */
