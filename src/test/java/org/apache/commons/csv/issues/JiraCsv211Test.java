@@ -38,7 +38,7 @@ public class JiraCsv211Test {
             .setHeader("ID", "Name", "Country", "Age")
             .build();
         // @formatter:on
-        final String formatted = printFormat.format(values);
+        final String formatted = printFormat.format((Object[]) values);
         assertEquals("ID\tName\tCountry\tAge\r\n1\tJane Doe\tUSA\t", formatted);
 
         final CSVFormat parseFormat = CSVFormat.DEFAULT.builder().setDelimiter('\t').setHeader()

@@ -82,7 +82,7 @@ public class CSVRecordTest {
 
     @Test
     public void testCSVRecordNULLValues() throws IOException {
-        final CSVParser parser = CSVParser.parse("A,B\r\nONE,TWO", CSVFormat.DEFAULT.withHeader());
+        final CSVParser parser = CSVParser.parse("A,B\r\nONE,TWO", CSVFormat.DEFAULT.builder().setHeader().build());
         final CSVRecord csvRecord = new CSVRecord(parser, null, null, 0L, 0L);
         assertEquals(0, csvRecord.size());
         assertThrows(IllegalArgumentException.class, () -> csvRecord.get("B"));
@@ -159,7 +159,7 @@ public class CSVRecordTest {
     public void testIsInconsistent() throws IOException {
         final String[] headers = { "first", "second", "third" };
         final String rowData = StringUtils.join(values, ',');
-        try (final CSVParser parser = CSVFormat.DEFAULT.withHeader(headers).parse(new StringReader(rowData))) {
+        try (final CSVParser parser = CSVFormat.DEFAULT.builder().setHeader(headers).build().parse(new StringReader(rowData))) {
             final Map<String, Integer> map = parser.getHeaderMapRaw();
             final CSVRecord record1 = parser.iterator().next();
             map.put("fourth", Integer.valueOf(4));
@@ -228,7 +228,8 @@ public class CSVRecordTest {
     @Test
     public void testSerialization() throws IOException, ClassNotFoundException {
         final CSVRecord shortRec;
-        try (final CSVParser parser = CSVParser.parse("A,B\n#my comment\nOne,Two", CSVFormat.DEFAULT.withHeader().withCommentMarker('#'))) {
+        try (final CSVParser parser = CSVParser.parse("A,B\n#my comment\nOne,Two",
+                CSVFormat.DEFAULT.builder().setHeader().setCommentMarker('#').build())) {
             shortRec = parser.iterator().next();
         }
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -327,7 +328,7 @@ public class CSVRecordTest {
 
     @Test
     public void testToMapWithShortRecord() throws Exception {
-        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
+        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.DEFAULT.builder().setHeader("A", "B", "C").build())) {
             final CSVRecord shortRec = parser.iterator().next();
             shortRec.toMap();
         }

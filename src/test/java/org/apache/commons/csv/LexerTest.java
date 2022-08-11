@@ -54,7 +54,7 @@ public class LexerTest {
 
     @BeforeEach
     public void setUp() {
-        formatWithEscaping = CSVFormat.DEFAULT.withEscape('\\');
+        formatWithEscaping = CSVFormat.DEFAULT.builder().setEscape('\\').build();
     }
 
     // simple token with escaping enabled
@@ -64,7 +64,7 @@ public class LexerTest {
          * file: a,\,,b \,,
          */
         final String code = "a,\\,,b\\\\\n\\,,\\\nc,d\\\r\ne";
-        final CSVFormat format = formatWithEscaping.withIgnoreEmptyLines(false);
+        final CSVFormat format = formatWithEscaping.builder().setIgnoreEmptyLines(false).build();
         assertTrue(format.isEscapeCharacterSet());
         try (final Lexer parser = createLexer(code, format)) {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
@@ -110,7 +110,7 @@ public class LexerTest {
     public void testComments() throws IOException {
         final String code = "first,line,\n" + "second,line,tokenWith#no-comment\n" + "# comment line \n" +
                 "third,line,#no-comment\n" + "# penultimate comment\n" + "# Final comment\n";
-        final CSVFormat format = CSVFormat.DEFAULT.withCommentMarker('#');
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setCommentMarker('#').build();
         try (final Lexer parser = createLexer(code, format)) {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "first"));
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "line"));
@@ -145,7 +145,7 @@ public class LexerTest {
                 "\n" + // 6b
                 "\n" + // 6c
                 "# Final comment\n"; // 7
-        final CSVFormat format = CSVFormat.DEFAULT.withCommentMarker('#').withIgnoreEmptyLines(false);
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setCommentMarker('#').setIgnoreEmptyLines(false).build();
         assertFalse(format.getIgnoreEmptyLines(), "Should not ignore empty lines");
 
         try (final Lexer parser = createLexer(code, format)) {
@@ -214,14 +214,14 @@ public class LexerTest {
     @Test
     public void testEscapedControlCharacter() throws Exception {
         // we are explicitly using an escape different from \ here
-        try (final Lexer lexer = createLexer("character!rEscaped", CSVFormat.DEFAULT.withEscape('!'))) {
+        try (final Lexer lexer = createLexer("character!rEscaped", CSVFormat.DEFAULT.builder().setEscape('!').build())) {
             assertThat(lexer.nextToken(new Token()), hasContent("character" + CR + "Escaped"));
         }
     }
 
     @Test
     public void testEscapedControlCharacter2() throws Exception {
-        try (final Lexer lexer = createLexer("character\\rEscaped", CSVFormat.DEFAULT.withEscape('\\'))) {
+        try (final Lexer lexer = createLexer("character\\rEscaped", CSVFormat.DEFAULT.builder().setEscape('\\').build())) {
             assertThat(lexer.nextToken(new Token()), hasContent("character" + CR + "Escaped"));
         }
     }
@@ -282,7 +282,7 @@ public class LexerTest {
     public void testIgnoreEmptyLines() throws IOException {
         final String code = "first,line,\n" + "\n" + "\n" + "second,line\n" + "\n" + "\n" + "third line \n" + "\n" +
                 "\n" + "last, line \n" + "\n" + "\n" + "\n";
-        final CSVFormat format = CSVFormat.DEFAULT.withIgnoreEmptyLines();
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setIgnoreEmptyLines(true).build();
         try (final Lexer parser = createLexer(code, format)) {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "first"));
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "line"));
@@ -299,7 +299,7 @@ public class LexerTest {
 
     @Test
     public void testIsMetaCharCommentStart() throws IOException {
-        try (final Lexer lexer = createLexer("#", CSVFormat.DEFAULT.withCommentMarker('#'))) {
+        try (final Lexer lexer = createLexer("#", CSVFormat.DEFAULT.builder().setCommentMarker('#').build())) {
             final int ch = lexer.readEscape();
             assertEquals('#', ch);
         }
@@ -320,7 +320,7 @@ public class LexerTest {
          * file: a,"foo",b a, " foo",b a,"foo " ,b // whitespace after closing encapsulator a, " foo " ,b
          */
         final String code = "a,\"foo\",b\na,   \" foo\",b\na,\"foo \"  ,b\na,  \" foo \"  ,b";
-        try (final Lexer parser = createLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces())) {
+        try (final Lexer parser = createLexer(code, CSVFormat.DEFAULT.builder().setIgnoreSurroundingSpaces(true).build())) {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "foo"));
             assertThat(parser.nextToken(new Token()), matches(EORECORD, "b"));
@@ -357,7 +357,7 @@ public class LexerTest {
          * file: a;'b and \' more ' !comment;;;; ;;
          */
         final String code = "a;'b and '' more\n'\n!comment;;;;\n;;";
-        final CSVFormat format = CSVFormat.DEFAULT.withQuote('\'').withCommentMarker('!').withDelimiter(';');
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setQuote('\'').setCommentMarker('!').setDelimiter(';').build();
         try (final Lexer parser = createLexer(code, format)) {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
             assertThat(parser.nextToken(new Token()), matches(EORECORD, "b and ' more\n"));
@@ -366,7 +366,7 @@ public class LexerTest {
 
     @Test
     public void testReadEscapeBackspace() throws IOException {
-        try (final Lexer lexer = createLexer("b", CSVFormat.DEFAULT.withEscape('\b'))) {
+        try (final Lexer lexer = createLexer("b", CSVFormat.DEFAULT.builder().setEscape('\b').build())) {
             final int ch = lexer.readEscape();
             assertEquals(BACKSPACE, ch);
         }
@@ -374,7 +374,7 @@ public class LexerTest {
 
     @Test
     public void testReadEscapeFF() throws IOException {
-        try (final Lexer lexer = createLexer("f", CSVFormat.DEFAULT.withEscape('\f'))) {
+        try (final Lexer lexer = createLexer("f", CSVFormat.DEFAULT.builder().setEscape('\f').build())) {
             final int ch = lexer.readEscape();
             assertEquals(FF, ch);
         }
@@ -382,7 +382,7 @@ public class LexerTest {
 
     @Test
     public void testReadEscapeTab() throws IOException {
-        try (final Lexer lexer = createLexer("t", CSVFormat.DEFAULT.withEscape('\t'))) {
+        try (final Lexer lexer = createLexer("t", CSVFormat.DEFAULT.builder().setEscape('\t').build())) {
             final int ch = lexer.readEscape();
             assertThat(lexer.nextToken(new Token()), matches(EOF, ""));
             assertEquals(TAB, ch);
@@ -392,7 +392,7 @@ public class LexerTest {
     @Test
     public void testSurroundingSpacesAreDeleted() throws IOException {
         final String code = "noSpaces,  leadingSpaces,trailingSpaces  ,  surroundingSpaces  ,  ,,";
-        try (final Lexer parser = createLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces())) {
+        try (final Lexer parser = createLexer(code, CSVFormat.DEFAULT.builder().setIgnoreSurroundingSpaces(true).build())) {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "noSpaces"));
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "leadingSpaces"));
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "trailingSpaces"));
@@ -406,7 +406,7 @@ public class LexerTest {
     @Test
     public void testSurroundingTabsAreDeleted() throws IOException {
         final String code = "noTabs,\tleadingTab,trailingTab\t,\tsurroundingTabs\t,\t\t,,";
-        try (final Lexer parser = createLexer(code, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces())) {
+        try (final Lexer parser = createLexer(code, CSVFormat.DEFAULT.builder().setIgnoreSurroundingSpaces(true).build())) {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "noTabs"));
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "leadingTab"));
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "trailingTab"));
