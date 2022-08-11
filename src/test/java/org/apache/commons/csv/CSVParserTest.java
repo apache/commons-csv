@@ -744,7 +744,7 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testHeadersMissingOneColumnException() throws Exception {
+    public void testHeadersMissingOneColumnException() {
         final Reader in = new StringReader("a,,c,d,e\n1,2,3,4,5\nv,w,x,y,z");
         assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withHeader().parse(in).iterator());
     }
