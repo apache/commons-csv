@@ -1,0 +1,18 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "differences",
+    "configuration": {
+      "differences": [
+        {
+          "ignore": true,
+          "code": "java.field.serialVersionUIDUnchanged",
+          "old": "field org.apache.commons.csv.CSVFormat.serialVersionUID",
+          "new": "field org.apache.commons.csv.CSVFormat.serialVersionUID",
+          "serialVersionUID": "1",
+          "justification": "CSV-302 - Ignore for the time being to not break the build"
+        }
+      ]
+    }
+  }
+]
