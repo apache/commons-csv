@@ -18,12 +18,12 @@
 package org.apache.commons.csv;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -271,9 +271,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
             return map;
         }
         getHeaderMapRaw().forEach((key, value) -> {
-            final int col = value;
-            if (col < values.length) {
-                map.put(key, values[col]);
+            if (value < values.length) {
+                map.put(key, values[value]);
             }
         });
         return map;
@@ -308,10 +307,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @since 1.9.0
      */
     public List<String> toList() {
-        // Only allocate a single list of known size
-        final ArrayList<String> list = new ArrayList<>(values.length);
-        Stream.of(values).forEach(list::add);
-        return list;
+        return stream().collect(Collectors.toList());
     }
 
     /**
