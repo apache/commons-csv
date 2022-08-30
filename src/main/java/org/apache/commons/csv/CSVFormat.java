@@ -2570,7 +2570,7 @@ public final class CSVFormat implements Serializable {
      * Returns a new {@code CSVFormat} with the empty line skipping behavior of the format set to {@code true}.
      *
      * @return A new CSVFormat that is equal to this but with the specified empty line skipping behavior.
-     * @since {@link Builder#setIgnoreEmptyLines(boolean)}
+     * @see Builder#setIgnoreEmptyLines(boolean)
      * @since 1.1
      * @deprecated Use {@link Builder#setIgnoreEmptyLines(boolean) Builder#setIgnoreEmptyLines(true)}
      */
