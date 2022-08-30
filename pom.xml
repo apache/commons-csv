@@ -177,7 +177,7 @@
     <commons.spotbugs.version>4.7.1.1</commons.spotbugs.version>
     <commons.spotbugs.impl.version>4.7.1</commons.spotbugs.impl.version>
     <commons.japicmp.version>0.15.7</commons.japicmp.version>
-    <commons.javadoc.version>3.4.0</commons.javadoc.version>
+    <commons.javadoc.version>3.4.1</commons.javadoc.version>
     <commons.biz.aQute.bndlib.version>6.3.1</commons.biz.aQute.bndlib.version>
     <japicmp.skip>false</japicmp.skip>
 
