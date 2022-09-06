@@ -55,7 +55,7 @@
       <action type="add" dev="ggregory">Add github/codeql-action.</action>
       <!-- UPDATE -->
       <action                 type="update" dev="kinow" due-to="Dependabot, Gary Gregory">Bump actions/cache from 2.1.6 to 3.0.8 #196, #233, #243.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump actions/checkout from 2.3.4 to 3 #188, #195, #220.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump actions/checkout from 2.3.4 to 3.0.2 #188, #195, #220.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump actions/setup-java from 2 to 3.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump checkstyle from 8.44 to 9.2.1 #180, #190, #194, #202, #207.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump junit-jupiter from 5.8.0-M1 to 5.9.0 #179, #186, #201, #244.</action>
