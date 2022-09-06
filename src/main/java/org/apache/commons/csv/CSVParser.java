@@ -352,6 +352,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
         return new CSVParser(new InputStreamReader(url.openStream(), charset), format);
     }
+    private String headerComment;
+
+    private String trailerComment;
 
     private final CSVFormat format;
 
@@ -480,10 +483,12 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 final CSVRecord nextRecord = this.nextRecord();
                 if (nextRecord != null) {
                     headerRecord = nextRecord.values();
+                    headerComment = nextRecord.getComment();
                 }
             } else {
                 if (this.format.getSkipHeaderRecord()) {
-                    this.nextRecord();
+                    final CSVRecord csvRecord = this.nextRecord();
+                    headerComment = csvRecord.getComment();
                 }
                 headerRecord = formatHeader;
             }
@@ -596,7 +601,49 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public List<String> getHeaderNames() {
         return Collections.unmodifiableList(headers.headerNames);
     }
-
+    /**
+     * Checks whether this parser has a header comment, false otherwise.
+     * The header comment appears before the header record.
+     * Note that if the parser's format has been given an explicit header
+     * (with {@link CSVFormat.Builder#setHeader(String... )} or another overload)
+     * and the header record is not being skipped
+     * ({@link CSVFormat.Builder#setSkipHeaderRecord} is false) then any initial comments
+     * will be associated with the first record, not the header.
+     *
+     * @return true if this parser has seen a header comment, false otherwise
+     */
+    public boolean hasHeaderComment() {
+        return headerComment != null;
+    }
+    /**
+     * Returns the header comment for this parser, if any.
+     * The header comment appears before the header record.
+     *
+     * @return the header comment for this stream, or null if no comment is available.
+     */
+    public String getHeaderComment() {
+        return headerComment;
+    }
+    /**
+     * Checks whether this parser has seen a trailer comment, false otherwise.
+     * Trailer comments are located between the last record and EOF.
+     * The trailer comments will only be available after the parser has
+     * finished processing this stream.
+     *
+     * @return true if this parser has seen a trailer comment, false otherwise
+     */
+    public boolean hasTrailerComment() {
+        return trailerComment != null;
+    }
+    /**
+     * Returns the trailer comment for this record, if any.
+     * Trailer comments are located between the last record and EOF
+     *
+     * @return the trailer comment for this stream, or null if no comment is available.
+     */
+    public String getTrailerComment() {
+        return trailerComment;
+    }
     /**
      * Returns the current record number in the input stream.
      *
@@ -713,6 +760,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             case EOF:
                 if (this.reusableToken.isReady) {
                     this.addRecordValue(true);
+                } else {
+                    if (sb != null) {
+                        trailerComment = sb.toString();
+                    }
                 }
                 break;
             case INVALID:
