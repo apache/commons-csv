@@ -602,7 +602,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         return Collections.unmodifiableList(headers.headerNames);
     }
     /**
-     * Checks whether this parser has a header comment, false otherwise.
+     * Checks whether there is a header comment.
      * The header comment appears before the header record.
      * Note that if the parser's format has been given an explicit header
      * (with {@link CSVFormat.Builder#setHeader(String... )} or another overload)
@@ -611,35 +611,39 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * will be associated with the first record, not the header.
      *
      * @return true if this parser has seen a header comment, false otherwise
+     * @since 1.10.0
      */
     public boolean hasHeaderComment() {
         return headerComment != null;
     }
     /**
-     * Returns the header comment for this parser, if any.
+     * Returns the header comment, if any.
      * The header comment appears before the header record.
      *
      * @return the header comment for this stream, or null if no comment is available.
+     * @since 1.10.0
      */
     public String getHeaderComment() {
         return headerComment;
     }
     /**
-     * Checks whether this parser has seen a trailer comment, false otherwise.
+     * Checks whether there is a trailer comment.
      * Trailer comments are located between the last record and EOF.
      * The trailer comments will only be available after the parser has
      * finished processing this stream.
      *
      * @return true if this parser has seen a trailer comment, false otherwise
+     * @since 1.10.0
      */
     public boolean hasTrailerComment() {
         return trailerComment != null;
     }
     /**
-     * Returns the trailer comment for this record, if any.
+     * Returns the trailer comment, if any.
      * Trailer comments are located between the last record and EOF
      *
      * @return the trailer comment for this stream, or null if no comment is available.
+     * @since 1.10.0
      */
     public String getTrailerComment() {
         return trailerComment;
