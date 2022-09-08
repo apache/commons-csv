@@ -1396,6 +1396,7 @@ public class CSVParserTest {
             .setCommentMarker('#')
             .setHeader("A", "B")
             .build();
+
     @Test
     public void testGetHeaderComment_NoComment1() throws IOException {
 
@@ -1406,6 +1407,7 @@ public class CSVParserTest {
             assertNull(parser.getHeaderComment());
         }
     }
+
     @Test
     public void testGetHeaderComment_HeaderComment1() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_HEADER_COMMENT, FORMAT_AUTO_HEADER)) {
@@ -1415,6 +1417,7 @@ public class CSVParserTest {
             assertEquals("header comment", parser.getHeaderComment());
         }
     }
+
     @Test
     public void testGetHeaderComment_HeaderTrailerComment() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_MULTILINE_HEADER_TRAILER_COMMENT, FORMAT_AUTO_HEADER)) {
@@ -1424,6 +1427,7 @@ public class CSVParserTest {
             assertEquals("multi-line"+LF+"header comment", parser.getHeaderComment());
         }
     }
+
     @Test
     public void testGetHeaderComment_NoComment2() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_NO_COMMENT, FORMAT_EXPLICIT_HEADER)) {
@@ -1433,6 +1437,7 @@ public class CSVParserTest {
             assertNull(parser.getHeaderComment());
         }
     }
+
     @Test
     public void testGetHeaderComment_HeaderComment2() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_HEADER_COMMENT, FORMAT_EXPLICIT_HEADER)) {
@@ -1442,6 +1447,7 @@ public class CSVParserTest {
             assertEquals("header comment", parser.getHeaderComment());
         }
     }
+
     @Test
     public void testGetHeaderComment_NoComment3() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_NO_COMMENT, FORMAT_EXPLICIT_HEADER_NOSKIP)) {
@@ -1451,6 +1457,7 @@ public class CSVParserTest {
             assertNull(parser.getHeaderComment());
         }
     }
+
     @Test
     public void testGetHeaderComment_HeaderComment3() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_HEADER_COMMENT, FORMAT_EXPLICIT_HEADER_NOSKIP)) {
@@ -1469,6 +1476,7 @@ public class CSVParserTest {
             assertNull(parser.getTrailerComment());
         }
     }
+
     @Test
     public void testGetTrailerComment_HeaderTrailerComment1() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_HEADER_TRAILER_COMMENT, FORMAT_AUTO_HEADER)) {
@@ -1477,6 +1485,7 @@ public class CSVParserTest {
             assertEquals("comment", parser.getTrailerComment());
         }
     }
+
     @Test
     public void testGetTrailerComment_MultilineComment() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_MULTILINE_HEADER_TRAILER_COMMENT, FORMAT_AUTO_HEADER)) {
@@ -1485,6 +1494,7 @@ public class CSVParserTest {
             assertEquals("multi-line"+LF+"comment", parser.getTrailerComment());
         }
     }
+
     @Test
     public void testGetTrailerComment_HeaderComment2() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_HEADER_COMMENT, FORMAT_EXPLICIT_HEADER)) {
@@ -1493,6 +1503,7 @@ public class CSVParserTest {
             assertNull(parser.getTrailerComment());
         }
     }
+
     @Test
     public void testGetTrailerComment_HeaderTrailerComment2() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_HEADER_TRAILER_COMMENT, FORMAT_EXPLICIT_HEADER)) {
@@ -1501,6 +1512,7 @@ public class CSVParserTest {
             assertEquals("comment", parser.getTrailerComment());
         }
     }
+
     @Test
     public void testGetTrailerComment_HeaderComment3() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_HEADER_COMMENT, FORMAT_EXPLICIT_HEADER_NOSKIP)) {
@@ -1509,6 +1521,7 @@ public class CSVParserTest {
             assertNull(parser.getTrailerComment());
         }
     }
+
     @Test
     public void testGetTrailerComment_HeaderTrailerComment3() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_HEADER_TRAILER_COMMENT, FORMAT_EXPLICIT_HEADER_NOSKIP)) {

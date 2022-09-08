@@ -352,6 +352,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
         return new CSVParser(new InputStreamReader(url.openStream(), charset), format);
     }
+
     private String headerComment;
 
     private String trailerComment;
@@ -487,8 +488,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 }
             } else {
                 if (this.format.getSkipHeaderRecord()) {
-                    final CSVRecord csvRecord = this.nextRecord();
-                    headerComment = csvRecord.getComment();
+                    final CSVRecord nextRecord = this.nextRecord();
+                    if (nextRecord != null) {
+                        headerComment = nextRecord.getComment();
+                    }
                 }
                 headerRecord = formatHeader;
             }
@@ -764,10 +767,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             case EOF:
                 if (this.reusableToken.isReady) {
                     this.addRecordValue(true);
-                } else {
-                    if (sb != null) {
+                } else if (sb != null) {
                         trailerComment = sb.toString();
-                    }
                 }
                 break;
             case INVALID:
