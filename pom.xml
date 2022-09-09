@@ -174,7 +174,7 @@
     <commons.pmd.version>3.18.0</commons.pmd.version>
     <commons.pmd-impl.version>6.49.0</commons.pmd-impl.version>
     <commons.jacoco.version>0.8.8</commons.jacoco.version>
-    <commons.spotbugs.version>4.7.1.1</commons.spotbugs.version>
+    <commons.spotbugs.version>4.7.2.0</commons.spotbugs.version>
     <commons.spotbugs.impl.version>4.7.1</commons.spotbugs.impl.version>
     <commons.japicmp.version>0.15.7</commons.japicmp.version>
     <commons.javadoc.version>3.4.1</commons.javadoc.version>
