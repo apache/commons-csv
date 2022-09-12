@@ -32,7 +32,6 @@ final class IOUtils {
 
     /**
      * Represents the end-of-file (or stream).
-     * @since 2.5 (made public)
      */
     private static final int EOF = -1;
 
@@ -82,15 +81,14 @@ final class IOUtils {
     }
 
     /**
-     * <p>
-     * Copied from Apache Commons IO.
-     * </p>
      * Copies chars from a large (over 2GB) {@code Reader} to a {@code Writer}.
      * <p>
      * This method buffers the input internally, so there is no need to use a
      * {@code BufferedReader}.
+     * </p>
      * <p>
      * The buffer size is given by {@link #DEFAULT_BUFFER_SIZE}.
+     * </p>
      *
      * @param input the {@code Reader} to read from
      * @param output the {@code Writer} to write to
@@ -104,14 +102,11 @@ final class IOUtils {
     }
 
     /**
-     * <p>
-     * Copied from Apache Commons IO.
-     * </p>
      * Copies chars from a large (over 2GB) {@code Reader} to a {@code Writer}.
      * <p>
      * This method uses the provided buffer, so there is no need to use a
      * {@code BufferedReader}.
-     * <p>
+     * </p>
      *
      * @param input the {@code Reader} to read from
      * @param output the {@code Writer} to write to
