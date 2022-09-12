@@ -26,17 +26,11 @@ import java.nio.CharBuffer;
 final class IOUtils {
 
     /**
-     * <p>
-     * Copied from Apache Commons IO.
-     * </p>
      * The default buffer size ({@value}).
      */
     static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
     /**
-     * <p>
-     * Copied from Apache Commons IO.
-     * </p>
      * Represents the end-of-file (or stream).
      * @since 2.5 (made public)
      */
