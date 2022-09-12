@@ -52,6 +52,7 @@
       <action issue="CSV-264" type="add" dev="ggregory" due-to="Sagar Tiwari, Seth Falco, Alex Herbert, Gary Gregory">Add DuplicateHeaderMode for flexibility with header strictness. #114.</action>
       <action issue="CSV-295" type="add" dev="ggregory" due-to="Gary Gregory">Support for parallelism in CSVPrinter.</action>
       <action issue="CSV-295" type="add" dev="ggregory" due-to="Gary Gregory">Add CSVPrinter.printRecord[s](Stream).</action>
+      <action issue="CSV-304" type="add" dev="ggregory" due-to="Peter Hull, Bruno P. Kinoshita, Gary Gregory">Add accessors for header/trailer comments #257.</action>
       <action type="add" dev="ggregory">Add github/codeql-action.</action>
       <!-- UPDATE -->
       <action                 type="update" dev="kinow" due-to="Dependabot, Gary Gregory">Bump actions/cache from 2.1.6 to 3.0.8 #196, #233, #243.</action>
