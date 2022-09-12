@@ -36,8 +36,8 @@ public class JiraCsv288Test {
         final Reader in = new StringReader("a|~|b|~|c|~|d|~||~|f");
         final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
-                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|~|").build())) {
-            for (final CSVRecord csvRecord : csvParser) {
+                CSVParser parser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|~|").build())) {
+            for (final CSVRecord csvRecord : parser) {
                 for (int i = 0; i < csvRecord.size(); i++) {
                     csvPrinter.print(csvRecord.get(i));
                 }

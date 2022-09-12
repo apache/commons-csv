@@ -113,9 +113,7 @@ public class CSVParserTest {
     }
 
     private void parseFully(final CSVParser parser) {
-        for (final CSVRecord csvRecord : parser) {
-            assertNotNull(csvRecord);
-        }
+        parser.forEach(record -> assertNotNull(record));
     }
 
     @Test
@@ -208,11 +206,7 @@ public class CSVParserTest {
     public void testBOM() throws IOException {
         final URL url = ClassLoader.getSystemClassLoader().getResource("org/apache/commons/csv/CSVFileParser/bom.csv");
         try (final CSVParser parser = CSVParser.parse(url, Charset.forName(UTF_8_NAME), CSVFormat.EXCEL.withHeader())) {
-            for (final CSVRecord record : parser) {
-                final String string = record.get("Date");
-                assertNotNull(string);
-                // System.out.println("date: " + record.get("Date"));
-            }
+            parser.forEach(record -> assertNotNull(record.get("Date")));
         }
     }
 
@@ -220,11 +214,7 @@ public class CSVParserTest {
     public void testBOMInputStream_ParserWithInputStream() throws IOException {
         try (final BOMInputStream inputStream = createBOMInputStream("org/apache/commons/csv/CSVFileParser/bom.csv");
             final CSVParser parser = CSVParser.parse(inputStream, UTF_8, CSVFormat.EXCEL.withHeader())) {
-            for (final CSVRecord record : parser) {
-                final String string = record.get("Date");
-                assertNotNull(string);
-                // System.out.println("date: " + record.get("Date"));
-            }
+            parser.forEach(record -> assertNotNull(record.get("Date")));
         }
     }
 
@@ -232,11 +222,7 @@ public class CSVParserTest {
     public void testBOMInputStream_ParserWithReader() throws IOException {
         try (final Reader reader = new InputStreamReader(createBOMInputStream("org/apache/commons/csv/CSVFileParser/bom.csv"), UTF_8_NAME);
             final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader())) {
-            for (final CSVRecord record : parser) {
-                final String string = record.get("Date");
-                assertNotNull(string);
-                // System.out.println("date: " + record.get("Date"));
-            }
+            parser.forEach(record -> assertNotNull(record.get("Date")));
         }
     }
 
@@ -244,11 +230,7 @@ public class CSVParserTest {
     public void testBOMInputStream_parseWithReader() throws IOException {
         try (final Reader reader = new InputStreamReader(createBOMInputStream("org/apache/commons/csv/CSVFileParser/bom.csv"), UTF_8_NAME);
             final CSVParser parser = CSVParser.parse(reader, CSVFormat.EXCEL.withHeader())) {
-            for (final CSVRecord record : parser) {
-                final String string = record.get("Date");
-                assertNotNull(string);
-                // System.out.println("date: " + record.get("Date"));
-            }
+            parser.forEach(record -> assertNotNull(record.get("Date")));
         }
     }
 
@@ -476,11 +458,11 @@ public class CSVParserTest {
     public void testExcelHeaderCountLessThanData() throws Exception {
         final String code = "A,B,C,,\r\na,b,c,d,e\r\n";
         try (final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL.withHeader())) {
-            for (final CSVRecord record : parser.getRecords()) {
+            parser.getRecords().forEach(record -> {
                 assertEquals("a", record.get("A"));
                 assertEquals("b", record.get("B"));
                 assertEquals("c", record.get("C"));
-            }
+            });
         }
     }
 
@@ -516,8 +498,8 @@ public class CSVParserTest {
 
     @Test
     public void testForEach() throws Exception {
-        final List<CSVRecord> records = new ArrayList<>();
         try (final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z"); final CSVParser parser = CSVFormat.DEFAULT.parse(in)) {
+            final List<CSVRecord> records = new ArrayList<>();
             for (final CSVRecord record : parser) {
                 records.add(record);
             }

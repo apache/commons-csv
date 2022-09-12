@@ -56,7 +56,7 @@ public class PerformanceTest {
         }
     }
 
-    private static final String[] PROPS = {
+    private static final String[] PROPERTY_NAMES = {
         "java.version",                  // Java Runtime Environment version
         "java.vendor",                   // Java Runtime Environment vendor
 //        "java.vm.specification.version", // Java Virtual Machine specification version
@@ -99,10 +99,10 @@ public class PerformanceTest {
         return lexer.getConstructor(CSVFormat.class, ExtendedBufferedReader.class);
     }
 
-    private static Stats iterate(final Iterable<CSVRecord> it) {
+    private static Stats iterate(final Iterable<CSVRecord> iterable) {
         int count = 0;
         int fields = 0;
-        for (final CSVRecord record : it) {
+        for (final CSVRecord record : iterable) {
             count++;
             fields += record.size();
         }
@@ -134,7 +134,7 @@ public class PerformanceTest {
         } else {
             tests = new String[] { "file", "split", "extb", "exts", "csv", "csv-path", "csv-path-db", "csv-url", "lexreset", "lexnew" };
         }
-        for (final String p : PROPS) {
+        for (final String p : PROPERTY_NAMES) {
             System.out.printf("%s=%s%n", p, System.getProperty(p));
         }
         System.out.printf("Max count: %d%n%n", max);

@@ -41,15 +41,14 @@ public class JiraCsv211Test {
         final String formatted = printFormat.format(values);
         assertEquals("ID\tName\tCountry\tAge\r\n1\tJane Doe\tUSA\t", formatted);
 
-        final CSVFormat parseFormat = CSVFormat.DEFAULT.builder().setDelimiter('\t').setHeader()
-            .setSkipHeaderRecord(true).build();
+        final CSVFormat parseFormat = CSVFormat.DEFAULT.builder().setDelimiter('\t').setHeader().setSkipHeaderRecord(true).build();
         try (final CSVParser parser = parseFormat.parse(new StringReader(formatted))) {
-            for (final CSVRecord record : parser) {
+            parser.forEach(record -> {
                 assertEquals("1", record.get(0));
                 assertEquals("Jane Doe", record.get(1));
                 assertEquals("USA", record.get(2));
                 assertEquals("", record.get(3));
-            }
+            });
         }
     }
 }
