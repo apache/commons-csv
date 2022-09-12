@@ -604,6 +604,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public List<String> getHeaderNames() {
         return Collections.unmodifiableList(headers.headerNames);
     }
+
     /**
      * Checks whether there is a header comment.
      * The header comment appears before the header record.
@@ -619,6 +620,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public boolean hasHeaderComment() {
         return headerComment != null;
     }
+
     /**
      * Returns the header comment, if any.
      * The header comment appears before the header record.
@@ -629,6 +631,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public String getHeaderComment() {
         return headerComment;
     }
+
     /**
      * Checks whether there is a trailer comment.
      * Trailer comments are located between the last record and EOF.
@@ -641,6 +644,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public boolean hasTrailerComment() {
         return trailerComment != null;
     }
+
     /**
      * Returns the trailer comment, if any.
      * Trailer comments are located between the last record and EOF
@@ -651,6 +655,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public String getTrailerComment() {
         return trailerComment;
     }
+
     /**
      * Returns the current record number in the input stream.
      *
