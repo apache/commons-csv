@@ -81,4 +81,9 @@ final class Constants {
 
     static final String[] EMPTY_STRING_ARRAY = {};
 
+    /** No instances. */
+    private Constants() {
+        // noop
+    }
+
 }

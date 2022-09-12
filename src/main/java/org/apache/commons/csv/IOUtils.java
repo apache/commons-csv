@@ -23,7 +23,7 @@ import java.nio.Buffer;
 import java.nio.CharBuffer;
 
 /** Copied from Apache Commons IO. */
-class IOUtils {
+final class IOUtils {
 
     /**
      * <p>
@@ -135,6 +135,11 @@ class IOUtils {
             count += n;
         }
         return count;
+    }
+
+    /** No instances. */
+    private IOUtils() {
+        // Noop
     }
 
 }
