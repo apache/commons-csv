@@ -1375,6 +1375,7 @@ public class CSVParserTest {
 
         parser.close();
     }
+
     // CSV with no header comments
     static private final String CSV_INPUT_NO_COMMENT = "A,B"+CRLF+"1,2"+CRLF;
     // CSV with a header comment
@@ -1399,7 +1400,6 @@ public class CSVParserTest {
 
     @Test
     public void testGetHeaderComment_NoComment1() throws IOException {
-
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_NO_COMMENT, FORMAT_AUTO_HEADER)) {
             parser.getRecords();
             // Expect no header comment
