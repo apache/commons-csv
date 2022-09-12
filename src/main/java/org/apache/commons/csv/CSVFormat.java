@@ -272,17 +272,6 @@ public final class CSVFormat implements Serializable {
         }
 
         /**
-         * Sets the duplicate header names behavior.
-         *
-         * @param duplicateHeaderMode the duplicate header names behavior
-         * @return This instance.
-         */
-        public Builder setDuplicateHeaderMode(final DuplicateHeaderMode duplicateHeaderMode) {
-          this.duplicateHeaderMode = duplicateHeaderMode;
-          return this;
-        }
-
-        /**
          * Sets the missing column names behavior, {@code true} to allow missing column names in the header line, {@code false} to cause an
          * {@link IllegalArgumentException} to be thrown.
          *
@@ -359,6 +348,17 @@ public final class CSVFormat implements Serializable {
             }
             this.delimiter = delimiter;
             return this;
+        }
+
+        /**
+         * Sets the duplicate header names behavior.
+         *
+         * @param duplicateHeaderMode the duplicate header names behavior
+         * @return This instance.
+         */
+        public Builder setDuplicateHeaderMode(final DuplicateHeaderMode duplicateHeaderMode) {
+          this.duplicateHeaderMode = duplicateHeaderMode;
+          return this;
         }
 
         /**
@@ -1473,16 +1473,6 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Gets how duplicate headers are handled.
-     *
-     * @return if duplicate header values are allowed, allowed conditionally, or disallowed.
-     * @since 1.9.0
-     */
-    public DuplicateHeaderMode getDuplicateHeaderMode() {
-        return duplicateHeaderMode;
-    }
-
-    /**
      * Specifies whether missing column names are allowed when parsing the header line.
      *
      * @return {@code true} if missing column names are allowed when parsing the header line, {@code false} to throw an {@link IllegalArgumentException}.
@@ -1528,6 +1518,16 @@ public final class CSVFormat implements Serializable {
      */
     public String getDelimiterString() {
         return delimiter;
+    }
+
+    /**
+     * Gets how duplicate headers are handled.
+     *
+     * @return if duplicate header values are allowed, allowed conditionally, or disallowed.
+     * @since 1.9.0
+     */
+    public DuplicateHeaderMode getDuplicateHeaderMode() {
+        return duplicateHeaderMode;
     }
 
     /**

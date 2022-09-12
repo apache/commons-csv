@@ -1286,6 +1286,16 @@ public class CSVFormatTest {
 
 
     @Test
+    public void testWithEmptyDuplicates() {
+        final CSVFormat formatWithEmptyDuplicates =
+            CSVFormat.DEFAULT.builder().setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_EMPTY).build();
+
+        assertEquals(DuplicateHeaderMode.ALLOW_EMPTY, formatWithEmptyDuplicates.getDuplicateHeaderMode());
+        assertFalse(formatWithEmptyDuplicates.getAllowDuplicateHeaderNames());
+    }
+
+
+    @Test
     public void testWithEmptyEnum() {
         final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(EmptyEnum.class);
         assertEquals(0, formatWithHeader.getHeader().length);
@@ -1296,16 +1306,6 @@ public class CSVFormatTest {
     public void testWithEscape() {
         final CSVFormat formatWithEscape = CSVFormat.DEFAULT.withEscape('&');
         assertEquals(Character.valueOf('&'), formatWithEscape.getEscapeCharacter());
-    }
-
-
-    @Test
-    public void testWithEmptyDuplicates() {
-        final CSVFormat formatWithEmptyDuplicates =
-            CSVFormat.DEFAULT.builder().setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_EMPTY).build();
-
-        assertEquals(DuplicateHeaderMode.ALLOW_EMPTY, formatWithEmptyDuplicates.getDuplicateHeaderMode());
-        assertFalse(formatWithEmptyDuplicates.getAllowDuplicateHeaderNames());
     }
 
     @Test

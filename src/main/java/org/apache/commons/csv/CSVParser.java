@@ -560,6 +560,17 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
+     * Returns the header comment, if any.
+     * The header comment appears before the header record.
+     *
+     * @return the header comment for this stream, or null if no comment is available.
+     * @since 1.10.0
+     */
+    public String getHeaderComment() {
+        return headerComment;
+    }
+
+    /**
      * Returns a copy of the header map.
      * <p>
      * The map keys are column names. The map values are 0-based indices.
@@ -606,57 +617,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Checks whether there is a header comment.
-     * The header comment appears before the header record.
-     * Note that if the parser's format has been given an explicit header
-     * (with {@link CSVFormat.Builder#setHeader(String... )} or another overload)
-     * and the header record is not being skipped
-     * ({@link CSVFormat.Builder#setSkipHeaderRecord} is false) then any initial comments
-     * will be associated with the first record, not the header.
-     *
-     * @return true if this parser has seen a header comment, false otherwise
-     * @since 1.10.0
-     */
-    public boolean hasHeaderComment() {
-        return headerComment != null;
-    }
-
-    /**
-     * Returns the header comment, if any.
-     * The header comment appears before the header record.
-     *
-     * @return the header comment for this stream, or null if no comment is available.
-     * @since 1.10.0
-     */
-    public String getHeaderComment() {
-        return headerComment;
-    }
-
-    /**
-     * Checks whether there is a trailer comment.
-     * Trailer comments are located between the last record and EOF.
-     * The trailer comments will only be available after the parser has
-     * finished processing this stream.
-     *
-     * @return true if this parser has seen a trailer comment, false otherwise
-     * @since 1.10.0
-     */
-    public boolean hasTrailerComment() {
-        return trailerComment != null;
-    }
-
-    /**
-     * Returns the trailer comment, if any.
-     * Trailer comments are located between the last record and EOF
-     *
-     * @return the trailer comment for this stream, or null if no comment is available.
-     * @since 1.10.0
-     */
-    public String getTrailerComment() {
-        return trailerComment;
-    }
-
-    /**
      * Returns the current record number in the input stream.
      *
      * <p>
@@ -692,6 +652,17 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
+     * Returns the trailer comment, if any.
+     * Trailer comments are located between the last record and EOF
+     *
+     * @return the trailer comment for this stream, or null if no comment is available.
+     * @since 1.10.0
+     */
+    public String getTrailerComment() {
+        return trailerComment;
+    }
+
+    /**
      * Handle whether input is parsed as null
      *
      * @param input
@@ -708,6 +679,35 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         }
         // don't set nullString, distinguish between "" and ,, (absent values) in All_NON_NULL or NON_NUMERIC quote mode
         return strictQuoteMode && nullString == null && input.isEmpty() && !isQuoted ? null : input;
+    }
+
+    /**
+     * Checks whether there is a header comment.
+     * The header comment appears before the header record.
+     * Note that if the parser's format has been given an explicit header
+     * (with {@link CSVFormat.Builder#setHeader(String... )} or another overload)
+     * and the header record is not being skipped
+     * ({@link CSVFormat.Builder#setSkipHeaderRecord} is false) then any initial comments
+     * will be associated with the first record, not the header.
+     *
+     * @return true if this parser has seen a header comment, false otherwise
+     * @since 1.10.0
+     */
+    public boolean hasHeaderComment() {
+        return headerComment != null;
+    }
+
+    /**
+     * Checks whether there is a trailer comment.
+     * Trailer comments are located between the last record and EOF.
+     * The trailer comments will only be available after the parser has
+     * finished processing this stream.
+     *
+     * @return true if this parser has seen a trailer comment, false otherwise
+     * @since 1.10.0
+     */
+    public boolean hasTrailerComment() {
+        return trailerComment != null;
     }
 
     /**
