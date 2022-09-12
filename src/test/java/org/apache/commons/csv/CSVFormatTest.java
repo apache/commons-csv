@@ -1567,6 +1567,6 @@ public class CSVFormatTest {
     @Test
     public void testWithSystemRecordSeparator() {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withSystemRecordSeparator();
-        assertEquals(System.getProperty("line.separator"), formatWithRecordSeparator.getRecordSeparator());
+        assertEquals(System.lineSeparator(), formatWithRecordSeparator.getRecordSeparator());
     }
 }

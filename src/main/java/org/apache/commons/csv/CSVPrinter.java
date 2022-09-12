@@ -312,7 +312,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         values.forEachOrdered(t -> {
             try {
                 print(t);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw rethrow(e);
             }
         });
@@ -501,7 +501,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         values.forEachOrdered(t -> {
             try {
                 printRecordObject(t);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw rethrow(e);
             }
         });

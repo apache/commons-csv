@@ -274,7 +274,7 @@ public class CSVRecordTest {
 
     @Test
     public void testToListAdd() {
-        String[] expected = values.clone();
+        final String[] expected = values.clone();
         final List<String> list = record.toList();
         list.add("Last");
         assertEquals("Last", list.get(list.size() - 1));
@@ -293,7 +293,7 @@ public class CSVRecordTest {
 
     @Test
     public void testToListForEach() {
-        AtomicInteger i = new AtomicInteger();
+        final AtomicInteger i = new AtomicInteger();
         record.toList().forEach(e -> {
             assertEquals(values[i.getAndIncrement()], e);
         });
@@ -301,7 +301,7 @@ public class CSVRecordTest {
 
     @Test
     public void testToListSet() {
-        String[] expected = values.clone();
+        final String[] expected = values.clone();
         final List<String> list = record.toList();
         list.set(list.size() - 1, "Last");
         assertEquals("Last", list.get(list.size() - 1));
