@@ -70,19 +70,6 @@ import java.util.stream.Stream;
  */
 public final class CSVPrinter implements Flushable, Closeable {
 
-    /**
-     * Throws the given throwable.
-     *
-     * @param <T> The throwable cast type.
-     * @param throwable The throwable to rethrow.
-     * @return nothing because we throw.
-     * @throws T Always thrown.
-     */
-    @SuppressWarnings("unchecked")
-    private static <T extends Throwable> RuntimeException rethrow(final Throwable throwable) throws T {
-        throw (T) throwable;
-    }
-
     /** The place that the values get written. */
     private final Appendable appendable;
 
@@ -313,7 +300,7 @@ public final class CSVPrinter implements Flushable, Closeable {
             try {
                 print(t);
             } catch (final IOException e) {
-                throw rethrow(e);
+                throw IOUtils.rethrow(e);
             }
         });
         println();
@@ -502,7 +489,7 @@ public final class CSVPrinter implements Flushable, Closeable {
             try {
                 printRecordObject(t);
             } catch (final IOException e) {
-                throw rethrow(e);
+                throw IOUtils.rethrow(e);
             }
         });
     }

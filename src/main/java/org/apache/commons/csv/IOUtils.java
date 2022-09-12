@@ -131,4 +131,17 @@ final class IOUtils {
         // Noop
     }
 
+    /**
+     * Throws the given throwable.
+     *
+     * @param <T> The throwable cast type.
+     * @param throwable The throwable to rethrow.
+     * @return nothing because we throw.
+     * @throws T Always thrown.
+     */
+    @SuppressWarnings("unchecked")
+    static <T extends Throwable> RuntimeException rethrow(final Throwable throwable) throws T {
+        throw (T) throwable;
+    }
+
 }
