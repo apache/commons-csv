@@ -773,7 +773,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 if (this.reusableToken.isReady) {
                     this.addRecordValue(true);
                 } else if (sb != null) {
-                        trailerComment = sb.toString();
+                    trailerComment = sb.toString();
                 }
                 break;
             case INVALID:
