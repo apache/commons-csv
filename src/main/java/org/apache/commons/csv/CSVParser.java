@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -42,6 +43,7 @@ import java.util.Objects;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -145,8 +147,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             try {
                 return CSVParser.this.nextRecord();
             } catch (final IOException e) {
-                throw new IllegalStateException(
-                        e.getClass().getSimpleName() + " reading next record: " + e.toString(), e);
+                throw new UncheckedIOException(e.getClass().getSimpleName() + " reading next record: " + e.toString(), e);
             }
         }
 
@@ -639,16 +640,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * </p>
      *
      * @return list of {@link CSVRecord CSVRecords}, may be empty
-     * @throws IOException
+     * @throws UncheckedIOException
      *             on parse error or input read-failure
      */
-    public List<CSVRecord> getRecords() throws IOException {
-        CSVRecord rec;
-        final List<CSVRecord> records = new ArrayList<>();
-        while ((rec = this.nextRecord()) != null) {
-            records.add(rec);
-        }
-        return records;
+    public List<CSVRecord> getRecords() {
+        return stream().collect(Collectors.toList());
     }
 
     /**

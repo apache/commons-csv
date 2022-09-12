@@ -36,6 +36,7 @@ import java.io.PipedWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -106,9 +107,9 @@ public class CSVParserTest {
             .setHeader("A", "B")
             .build();
 
+    @SuppressWarnings("resource") // caller releases
     private BOMInputStream createBOMInputStream(final String resource) throws IOException {
-        final URL url = ClassLoader.getSystemClassLoader().getResource(resource);
-        return new BOMInputStream(url.openStream());
+        return new BOMInputStream(ClassLoader.getSystemClassLoader().getResource(resource).openStream());
     }
 
     private void parseFully(final CSVParser parser) {
@@ -466,8 +467,6 @@ public class CSVParserTest {
 
     /**
      * Tests an exported Excel worksheet with a header row and rows that have more columns than the headers
-     *
-     * @throws Exception
      */
     @Test
     public void testExcelHeaderCountLessThanData() throws Exception {
@@ -737,7 +736,7 @@ public class CSVParserTest {
     public void testGetRecordsFromBrokenInputStream() throws IOException {
         @SuppressWarnings("resource") // We also get an exception on close, which is OK but can't assert in a try.
         final CSVParser parser = CSVParser.parse(new BrokenInputStream(), UTF_8, CSVFormat.DEFAULT);
-        assertThrows(IOException.class, parser::getRecords);
+        assertThrows(UncheckedIOException.class, parser::getRecords);
 
     }
 

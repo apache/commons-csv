@@ -45,8 +45,8 @@
       <action issue="CSV-288" type="fix" dev="ggregory" due-to="Santhsoh, Angus">Fix for multi-char delimiter not working as expected #218.</action>
       <action issue="CSV-269" type="fix" dev="ggregory" due-to="Auke te Winkel, Gary Gregory">CSVRecord.get(Enum) should use Enum.name() instead of Enum.toString().</action>
       <action                 type="fix" dev="ggregory" due-to="Gary Gregory">Allow org.apache.commons.csv.IOUtils.copy(Reader, Appendable, CharBuffer) to compile on Java 11 and run on Java 8.</action>
-      <action                 type="fix" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 52 to 53.</action>
       <action issue="CSV-300" type="fix" dev="ggregory" due-to="Markus Spann, Gary Gregory">CSVRecord.toList() does not give write access to the new List.</action>
+      <action                 type="fix" dev="ggregory" due-to="Gary Gregory">CSVParser.getRecords() now throws UncheckedIOException instead of IOException.</action>
       <!-- ADD -->
       <action issue="CSV-291" type="add" dev="ggregory" due-to="Gary Gregory">Make CSVRecord#values() public.</action>
       <action issue="CSV-264" type="add" dev="ggregory" due-to="Sagar Tiwari, Seth Falco, Alex Herbert, Gary Gregory">Add DuplicateHeaderMode for flexibility with header strictness. #114.</action>
@@ -55,6 +55,7 @@
       <action issue="CSV-304" type="add" dev="ggregory" due-to="Peter Hull, Bruno P. Kinoshita, Gary Gregory">Add accessors for header/trailer comments #257.</action>
       <action type="add" dev="ggregory">Add github/codeql-action.</action>
       <!-- UPDATE -->
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 52 to 53.</action>
       <action                 type="update" dev="kinow" due-to="Dependabot, Gary Gregory">Bump actions/cache from 2.1.6 to 3.0.8 #196, #233, #243.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump actions/checkout from 2.3.4 to 3.0.2 #188, #195, #220.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump actions/setup-java from 2 to 3.</action>

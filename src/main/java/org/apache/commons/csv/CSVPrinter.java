@@ -82,6 +82,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     private static <T extends Throwable> RuntimeException rethrow(final Throwable throwable) throws T {
         throw (T) throwable;
     }
+
     /** The place that the values get written. */
     private final Appendable appendable;
 
