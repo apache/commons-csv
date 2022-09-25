@@ -1047,7 +1047,7 @@ public final class CSVFormat implements Serializable {
      *
      * <p>
      * This is a comma-delimited format with a LF character as the line separator. Values are double quoted and special
-     * characters are escaped with {@code '"'}. The default NULL string is {@code ""}.
+     * characters are not escaped. The default NULL string is {@code ""}.
      * </p>
      *
      * <p>
@@ -1055,7 +1055,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      * <ul>
      * <li>{@code setDelimiter(',')}</li>
-     * <li>{@code setEscape('"')}</li>
+     * <li>{@code setEscape(null)}</li>
      * <li>{@code setIgnoreEmptyLines(false)}</li>
      * <li>{@code setQuote('"')}</li>
      * <li>{@code setRecordSeparator('\n')}</li>
@@ -1071,7 +1071,7 @@ public final class CSVFormat implements Serializable {
     // @formatter:off
     public static final CSVFormat POSTGRESQL_CSV = DEFAULT.builder()
             .setDelimiter(COMMA)
-            .setEscape(DOUBLE_QUOTE_CHAR)
+            .setEscape(null)
             .setIgnoreEmptyLines(false)
             .setQuote(DOUBLE_QUOTE_CHAR)
             .setRecordSeparator(LF)
@@ -1084,8 +1084,8 @@ public final class CSVFormat implements Serializable {
      * Default PostgreSQL text format used by the {@code COPY} operation.
      *
      * <p>
-     * This is a tab-delimited format with a LF character as the line separator. Values are double quoted and special
-     * characters are escaped with {@code '"'}. The default NULL string is {@code "\\N"}.
+     * This is a tab-delimited format with a LF character as the line separator. Values are not quoted and special
+     * characters are escaped with {@code '\\'}. The default NULL string is {@code "\\N"}.
      * </p>
      *
      * <p>
@@ -1095,7 +1095,7 @@ public final class CSVFormat implements Serializable {
      * <li>{@code setDelimiter('\t')}</li>
      * <li>{@code setEscape('\\')}</li>
      * <li>{@code setIgnoreEmptyLines(false)}</li>
-     * <li>{@code setQuote('"')}</li>
+     * <li>{@code setQuote(null)}</li>
      * <li>{@code setRecordSeparator('\n')}</li>
      * <li>{@code setNullString("\\N")}</li>
      * <li>{@code setQuoteMode(QuoteMode.ALL_NON_NULL)}</li>
@@ -1111,7 +1111,7 @@ public final class CSVFormat implements Serializable {
             .setDelimiter(TAB)
             .setEscape(BACKSLASH)
             .setIgnoreEmptyLines(false)
-            .setQuote(DOUBLE_QUOTE_CHAR)
+            .setQuote(null)
             .setRecordSeparator(LF)
             .setNullString("\\N")
             .setQuoteMode(QuoteMode.ALL_NON_NULL)
