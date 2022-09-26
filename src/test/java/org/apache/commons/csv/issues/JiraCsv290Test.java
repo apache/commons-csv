@@ -37,7 +37,7 @@ import org.junit.jupiter.api.Test;
 //
 // create table COMMONS_CSV_PSQL_TEST (ID INTEGER, COL1 VARCHAR, COL2 VARCHAR, COL3 VARCHAR, COL4 VARCHAR);
 // insert into COMMONS_CSV_PSQL_TEST select 1, 'abc', 'test line 1' || chr(10) || 'test line 2', null, '';
-// insert into COMMONS_CSV_PSQL_TEST select 2, 'xyz', '\b:' || chr(8) || ' \n:' || chr(10) || ' \r:' || chr(13), 'a', 'b';
+// insert into COMMONS_CSV_PSQL_TEST select 2, 'xyz', '\b:' || chr(8) || ' \t:' || chr(9) || ' \n:' || chr(10) || ' \r:' || chr(13), 'a', 'b';
 // insert into COMMONS_CSV_PSQL_TEST values (3, 'a', 'b,c,d', '"quoted"', 'e');
 // copy COMMONS_CSV_PSQL_TEST TO '/tmp/psql.csv' WITH (FORMAT CSV);
 // copy COMMONS_CSV_PSQL_TEST TO '/tmp/psql.tsv';
@@ -45,14 +45,14 @@ import org.junit.jupiter.api.Test;
 // cat /tmp/psql.csv
 // 1,abc,"test line 1
 // test line 2",,""
-// 2,xyz,"\b:^H \n:
+// 2,xyz,"\b:^H \t:         \n:
 //  \r:^M",a,b
 // 3,a,"b,c,d","""quoted""",e
 //
 // cat /tmp/psql.tsv
-// 1    abc    test line 1\ntest line 2               \N
-// 2    xyz    \\b:\b \\n:\n \\r:\r       a           b
-// 3    a      b,c,d                      "quoted"    e
+// 1    abc    test line 1\ntest line 2                  \N
+// 2    xyz    \\b:\b \\t:\t \\n:\n \\r:\r    a          b
+// 3    a      b,c,d                         "quoted"    e
 //
 public class JiraCsv290Test {
     private void testHelper(String filename, CSVFormat format) throws Exception {
@@ -67,6 +67,7 @@ public class JiraCsv290Test {
                 }
             }
         }
+
         assertEquals(3, content.size());
 
         assertEquals("1", content.get(0).get(0));
@@ -76,7 +77,7 @@ public class JiraCsv290Test {
         assertEquals("", content.get(0).get(4));
 
         assertEquals("2", content.get(1).get(0));
-        assertEquals("\\b:\b \\n:\n \\r:\r", content.get(1).get(2)); // \b, \n, \r
+        assertEquals("\\b:\b \\t:\t \\n:\n \\r:\r", content.get(1).get(2)); // \b, \t, \n, \r
 
         assertEquals("3", content.get(2).get(0));
         assertEquals("b,c,d", content.get(2).get(2)); // value has comma
