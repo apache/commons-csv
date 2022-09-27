@@ -1569,4 +1569,9 @@ public class CSVFormatTest {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withSystemRecordSeparator();
         assertEquals(System.lineSeparator(), formatWithRecordSeparator.getRecordSeparator());
     }
+
+    @Test
+    public void testDelimiterEmptyStringThrowsException1() {
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.builder().setDelimiter("").build());
+    }
 }

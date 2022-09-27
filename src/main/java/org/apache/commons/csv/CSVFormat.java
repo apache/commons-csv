@@ -346,6 +346,9 @@ public final class CSVFormat implements Serializable {
             if (containsLineBreak(delimiter)) {
                 throw new IllegalArgumentException("The delimiter cannot be a line break");
             }
+            if (delimiter.isEmpty()) {
+                throw new IllegalArgumentException("The delimiter cannot be empty");
+            }
             this.delimiter = delimiter;
             return this;
         }
