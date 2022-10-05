@@ -734,9 +734,24 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * {@link IllegalStateException}.
      * </p>
      * <p>
-     * If the parser is closed a call to {@link Iterator#next()} will throw a
+     * If the parser is closed, the iterator will not yield any more records.
+     * A call to {@link Iterator#hasNext()} will return {@code false} and
+     * a call to {@link Iterator#next()} will throw a
      * {@link NoSuchElementException}.
      * </p>
+     * <p>
+     * For example, the iterator from code such as
+     * <pre>
+     * Iterator{@code<CSVRecord>} items() throws IOException {
+     *    try (CSVParser parser = CSVParser.parse( ... )) {
+     *       return parser.iterator();
+     *    }
+     * }
+     * </pre>
+     * will never yield any records because the parser is closed by the
+     * try-with-resources block.
+     * An alternative is to extract all records as a list with
+     * {@link getRecords()}, and return an iterator to that list.
      */
     @Override
     public Iterator<CSVRecord> iterator() {
@@ -799,7 +814,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
     /**
      * Returns a sequential {@code Stream} with this collection as its source.
-     *
+     * <p>
+     * If the parser is closed, the stream will not produce any more values.
+     * See the comments in {@link iterator()}.
      * @return a sequential {@code Stream} with this collection as its source.
      * @since 1.9.0
      */
