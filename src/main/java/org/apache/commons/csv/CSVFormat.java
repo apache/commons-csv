@@ -414,9 +414,7 @@ public final class CSVFormat implements Serializable {
             if (headerEnum != null) {
                 final Enum<?>[] enumValues = headerEnum.getEnumConstants();
                 header = new String[enumValues.length];
-                for (int i = 0; i < enumValues.length; i++) {
-                    header[i] = enumValues[i].name();
-                }
+                Arrays.setAll(header, i -> enumValues[i].name());
             }
             return setHeader(header);
         }
@@ -1243,9 +1241,7 @@ public final class CSVFormat implements Serializable {
             return null;
         }
         final String[] strings = new String[values.length];
-        for (int i = 0; i < values.length; i++) {
-            strings[i] = Objects.toString(values[i], null);
-        }
+        Arrays.setAll(strings, i -> Objects.toString(values[i], null));
         return strings;
     }
 

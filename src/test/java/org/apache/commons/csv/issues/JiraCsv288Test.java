@@ -29,6 +29,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 
 public class JiraCsv288Test {
+
     @Test
     // Before fix:
     // expected: <a,b,c,d,,f> but was: <a,b,c,d,|f>
