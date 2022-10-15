@@ -19,6 +19,7 @@ package org.apache.commons.csv.issues;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
@@ -30,6 +31,12 @@ import org.junit.jupiter.api.Test;
 
 public class JiraCsv288Test {
 
+    private void print(final CSVRecord csvRecord, CSVPrinter csvPrinter) throws IOException {
+        for (String value : csvRecord) {
+            csvPrinter.print(value);
+        }
+    }
+
     @Test
     // Before fix:
     // expected: <a,b,c,d,,f> but was: <a,b,c,d,|f>
@@ -39,9 +46,7 @@ public class JiraCsv288Test {
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser parser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|~|").build())) {
             for (final CSVRecord csvRecord : parser) {
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    csvPrinter.print(csvRecord.get(i));
-                }
+                print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f", stringBuilder.toString());
             }
         }
@@ -56,9 +61,7 @@ public class JiraCsv288Test {
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").build())) {
             for (final CSVRecord csvRecord : csvParser) {
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    csvPrinter.print(csvRecord.get(i));
-                }
+                print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f", stringBuilder.toString());
             }
         }
@@ -73,9 +76,7 @@ public class JiraCsv288Test {
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").build())) {
             for (final CSVRecord csvRecord : csvParser) {
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    csvPrinter.print(csvRecord.get(i));
-                }
+                print(csvRecord, csvPrinter);
                 assertEquals("a,bb,cc,dd,f", stringBuilder.toString());
             }
         }
@@ -90,9 +91,7 @@ public class JiraCsv288Test {
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").build())) {
             for (final CSVRecord csvRecord : csvParser) {
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    csvPrinter.print(csvRecord.get(i));
-                }
+                print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f,", stringBuilder.toString());
             }
         }
@@ -107,9 +106,7 @@ public class JiraCsv288Test {
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").build())) {
             for (final CSVRecord csvRecord : csvParser) {
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    csvPrinter.print(csvRecord.get(i));
-                }
+                print(csvRecord, csvPrinter);
                 assertEquals("a,b||c,d,,f", stringBuilder.toString());
             }
         }
@@ -123,9 +120,7 @@ public class JiraCsv288Test {
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|").build())) {
             for (final CSVRecord csvRecord : csvParser) {
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    csvPrinter.print(csvRecord.get(i));
-                }
+                print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f,", stringBuilder.toString());
             }
         }
@@ -140,9 +135,7 @@ public class JiraCsv288Test {
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|||").build())) {
             for (final CSVRecord csvRecord : csvParser) {
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    csvPrinter.print(csvRecord.get(i));
-                }
+                print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f", stringBuilder.toString());
             }
         }
@@ -156,9 +149,7 @@ public class JiraCsv288Test {
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
             for (final CSVRecord csvRecord : csvParser) {
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    csvPrinter.print(csvRecord.get(i));
-                }
+                print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f", stringBuilder.toString());
             }
         }
@@ -172,9 +163,7 @@ public class JiraCsv288Test {
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
             for (final CSVRecord csvRecord : csvParser) {
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    csvPrinter.print(csvRecord.get(i));
-                }
+                print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f~", stringBuilder.toString());
             }
         }
@@ -188,9 +177,7 @@ public class JiraCsv288Test {
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
             for (final CSVRecord csvRecord : csvParser) {
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    csvPrinter.print(csvRecord.get(i));
-                }
+                print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f|", stringBuilder.toString());
             }
         }
@@ -204,9 +191,7 @@ public class JiraCsv288Test {
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
             for (final CSVRecord csvRecord : csvParser) {
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    csvPrinter.print(csvRecord.get(i));
-                }
+                print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f~,|g", stringBuilder.toString());
             }
         }
@@ -221,9 +206,7 @@ public class JiraCsv288Test {
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
                 CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
             for (final CSVRecord csvRecord : csvParser) {
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    csvPrinter.print(csvRecord.get(i));
-                }
+                print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f,", stringBuilder.toString());
             }
         }
