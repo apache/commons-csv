@@ -1511,7 +1511,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns the character delimiting the values (typically ";", "," or "\t").
+     * Gets the character delimiting the values (typically ";", "," or "\t").
      *
      * @return the delimiter.
      * @since 1.9.0
@@ -1531,7 +1531,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns the escape character.
+     * Gets the escape character.
      *
      * @return the escape character, may be {@code null}
      */
@@ -1540,7 +1540,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a copy of the header array.
+     * Gets a copy of the header array.
      *
      * @return a copy of the header array; {@code null} if disabled, the empty array if to be read from the file
      */
@@ -1549,7 +1549,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a copy of the header comment array.
+     * Gets a copy of the header comment array.
      *
      * @return a copy of the header comment array; {@code null} if disabled.
      */
@@ -1599,7 +1599,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns the character used to encapsulate values containing special characters.
+     * Gets the character used to encapsulate values containing special characters.
      *
      * @return the quoteChar character, may be {@code null}
      */
@@ -1608,7 +1608,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns the quote policy output fields.
+     * Gets the quote policy output fields.
      *
      * @return the quote policy
      */
@@ -1617,7 +1617,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns the record separator delimiting output records.
+     * Gets the record separator delimiting output records.
      *
      * @return the record separator
      */
@@ -1626,7 +1626,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns whether to skip the header record.
+     * Gets whether to skip the header record.
      *
      * @return whether to skip the header record.
      */
@@ -1635,7 +1635,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns whether to add a trailing delimiter.
+     * Gets whether to add a trailing delimiter.
      *
      * @return whether to add a trailing delimiter.
      * @since 1.3
@@ -1645,7 +1645,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns whether to trim leading and trailing blanks. This is used by {@link #print(Object, Appendable, boolean)} Also by
+     * Gets whether to trim leading and trailing blanks. This is used by {@link #print(Object, Appendable, boolean)} Also by
      * {CSVParser#addRecordValue(boolean)}
      *
      * @return whether to trim leading and trailing blanks.
@@ -1708,7 +1708,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns whether escape are being processed.
+     * Tests whether escape are being processed.
      *
      * @return {@code true} if escapes are processed
      */
@@ -1717,7 +1717,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns whether a nullString has been defined.
+     * Tests whether a nullString has been defined.
      *
      * @return {@code true} if a nullString is defined
      */
@@ -1726,7 +1726,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns whether a quoteChar has been defined.
+     * Tests whether a quoteChar has been defined.
      *
      * @return {@code true} if a quoteChar is defined
      */
