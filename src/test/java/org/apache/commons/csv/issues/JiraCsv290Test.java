@@ -26,6 +26,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -55,17 +56,12 @@ import org.junit.jupiter.api.Test;
 // 3    a      b,c,d                         "quoted"    e
 //
 public class JiraCsv290Test {
+
     private void testHelper(final String filename, final CSVFormat format) throws Exception {
-        final List<List<String>> content = new ArrayList<>();
-        try (CSVParser csvParser = CSVParser.parse(new InputStreamReader(
-                this.getClass().getResourceAsStream("/org/apache/commons/csv/CSV-290/" + filename)), format)) {
-            for (CSVRecord csvRecord : csvParser) {
-                final List<String> row = new ArrayList<>();
-                content.add(row);
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    row.add(csvRecord.get(i));
-                }
-            }
+        List<List<String>> content = new ArrayList<>();
+        try (CSVParser csvParser = CSVParser.parse(new InputStreamReader(this.getClass().getResourceAsStream("/org/apache/commons/csv/CSV-290/" + filename)),
+                format)) {
+            content = csvParser.stream().collect(Collectors.mapping(CSVRecord::toList, Collectors.toList()));
         }
 
         assertEquals(3, content.size());
