@@ -1514,6 +1514,7 @@ public final class CSVFormat implements Serializable {
      * Returns the character delimiting the values (typically ";", "," or "\t").
      *
      * @return the delimiter.
+     * @since 1.9.0
      */
     public String getDelimiterString() {
         return delimiter;
