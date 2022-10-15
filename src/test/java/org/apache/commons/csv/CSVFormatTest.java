@@ -706,7 +706,7 @@ public class CSVFormatTest {
         assertFalse(csvFormat.getTrailingDelimiter());
         assertFalse(csvFormat.getTrim());
 
-        assertTrue(csvFormat.isQuoteCharacterSet());
+        assertFalse(csvFormat.isQuoteCharacterSet());
         assertEquals("\\N", csvFormat.getNullString());
 
         assertFalse(csvFormat.getIgnoreHeaderCase());
@@ -724,7 +724,7 @@ public class CSVFormatTest {
         assertEquals("\n", csvFormat.getRecordSeparator());
         assertFalse(csvFormat.getIgnoreEmptyLines());
 
-        assertEquals('\"', (char)csvFormat.getQuoteCharacter());
+        assertNull(csvFormat.getQuoteCharacter());
         assertTrue(csvFormat.isNullStringSet());
 
         assertEquals('\\', (char)csvFormat.getEscapeCharacter());
@@ -733,7 +733,7 @@ public class CSVFormatTest {
         assertFalse(csvFormat.getTrailingDelimiter());
         assertFalse(csvFormat.getTrim());
 
-        assertTrue(csvFormat.isQuoteCharacterSet());
+        assertFalse(csvFormat.isQuoteCharacterSet());
         assertEquals("\\N", csvFormat.getNullString());
 
         assertFalse(csvFormat.getIgnoreHeaderCase());
@@ -751,7 +751,7 @@ public class CSVFormatTest {
         assertEquals("\n", csvFormat.getRecordSeparator());
         assertFalse(csvFormat.getIgnoreEmptyLines());
 
-        assertEquals('\"', (char)csvFormat.getQuoteCharacter());
+        assertNull(csvFormat.getQuoteCharacter());
         assertTrue(csvFormat.isNullStringSet());
 
         Assertions.assertNotEquals(null, csvFormat);
