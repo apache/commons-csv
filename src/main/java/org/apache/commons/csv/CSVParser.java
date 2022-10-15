@@ -742,7 +742,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * <p>
      * If it is necessary to construct an iterator which is usable after the
      * parser is closed, one option is to extract all records as a list with
-     * {@link getRecords()}, and return an iterator to that list.
+     * {@link #getRecords()}, and return an iterator to that list.
      * </p>
      */
     @Override
@@ -808,7 +808,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Returns a sequential {@code Stream} with this collection as its source.
      * <p>
      * If the parser is closed, the stream will not produce any more values.
-     * See the comments in {@link iterator()}.
+     * See the comments in {@link #iterator()}.
      * </p>
      * @return a sequential {@code Stream} with this collection as its source.
      * @since 1.9.0
