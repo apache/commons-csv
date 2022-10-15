@@ -23,7 +23,6 @@ import java.io.StringReader;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 
 public class JiraCsv211Test {

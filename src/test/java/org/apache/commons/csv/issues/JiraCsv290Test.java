@@ -55,12 +55,12 @@ import org.junit.jupiter.api.Test;
 // 3    a      b,c,d                         "quoted"    e
 //
 public class JiraCsv290Test {
-    private void testHelper(String filename, CSVFormat format) throws Exception {
-        List<List<String>> content = new ArrayList<>();
+    private void testHelper(final String filename, final CSVFormat format) throws Exception {
+        final List<List<String>> content = new ArrayList<>();
         try (CSVParser csvParser = CSVParser.parse(new InputStreamReader(
                 this.getClass().getResourceAsStream("/org/apache/commons/csv/CSV-290/" + filename)), format)) {
             for (CSVRecord csvRecord : csvParser) {
-                List<String> row = new ArrayList<>();
+                final List<String> row = new ArrayList<>();
                 content.add(row);
                 for (int i = 0; i < csvRecord.size(); i++) {
                     row.add(csvRecord.get(i));
@@ -96,9 +96,9 @@ public class JiraCsv290Test {
 
     @Test
     public void testWriteThenRead() throws Exception {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
 
-        CSVPrinter printer = new CSVPrinter(sw,
+        final CSVPrinter printer = new CSVPrinter(sw,
                 CSVFormat.POSTGRESQL_CSV.builder().setHeader().setSkipHeaderRecord(true).build());
 
         printer.printRecord("column1", "column2");
@@ -106,12 +106,12 @@ public class JiraCsv290Test {
         printer.printRecord("v21", "v22");
         printer.close();
 
-        CSVParser parser = new CSVParser(new StringReader(sw.toString()),
+        final CSVParser parser = new CSVParser(new StringReader(sw.toString()),
                 CSVFormat.POSTGRESQL_CSV.builder().setHeader().setSkipHeaderRecord(true).build());
 
         assertArrayEquals(new Object[] { "column1", "column2" }, parser.getHeaderNames().toArray());
 
-        Iterator<CSVRecord> i = parser.iterator();
+        final Iterator<CSVRecord> i = parser.iterator();
         assertArrayEquals(new String[] { "v11", "v12" }, i.next().toList().toArray());
         assertArrayEquals(new String[] { "v21", "v22" }, i.next().toList().toArray());
     }
