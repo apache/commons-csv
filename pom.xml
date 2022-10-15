@@ -199,13 +199,6 @@
             <enableRulesSummary>false</enableRulesSummary>
             <suppressionsLocation>${checkstyle.suppress.file}</suppressionsLocation>
           </configuration>
-          <dependencies>
-            <dependency>
-              <groupId>com.puppycrawl.tools</groupId>
-              <artifactId>checkstyle</artifactId>
-              <version>${commons.checkstyle.version}</version>
-            </dependency>
-          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
