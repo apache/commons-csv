@@ -25,18 +25,17 @@ import java.nio.file.Files;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.QuoteMode;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
  * Tests https://issues.apache.org/jira/browse/CSV-213
- *
+ * <p>
  * This is normal behavior with the current architecture: The iterator() API presents an object that is backed by data
  * in the CSVParser as the parser is streaming over the file. The CSVParser is like a forward-only stream. When you
  * create a new Iterator you are only created a new view on the same position in the parser's stream. For the behavior
  * you want, you need to open a new CSVParser.
+ * </p>
  */
-@Disabled
 public class JiraCsv213Test {
 
     private void createEndChannel(final File csvFile) {
@@ -64,6 +63,6 @@ public class JiraCsv213Test {
 
     @Test
     public void test() {
-        createEndChannel(new File("src/test/resources/CSV-213/999751170.patch.csv"));
+        createEndChannel(new File("src/test/resources/org/apache/commons/csv/CSV-213/999751170.patch.csv"));
     }
 }
