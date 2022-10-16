@@ -137,6 +137,11 @@
     <url>https://issues.apache.org/jira/browse/CSV</url>
   </issueManagement>
 
+  <ciManagement>
+    <system>github</system>
+    <url>https://github.com/apache/commons-csv/actions</url>
+  </ciManagement>
+
   <distributionManagement>
     <site>
       <id>apache.website</id>
