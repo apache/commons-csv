@@ -732,7 +732,6 @@ public class CSVPrinterTest {
     }
 
     @Test
-    @Disabled
     public void testJira135_part1() throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote(DQUOTE_CHAR).withEscape(BACKSLASH);
         final StringWriter sw = new StringWriter();
@@ -764,7 +763,6 @@ public class CSVPrinterTest {
     }
 
     @Test
-    @Disabled
     public void testJira135_part3() throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator('\n').withQuote(DQUOTE_CHAR).withEscape(BACKSLASH);
         final StringWriter sw = new StringWriter();
@@ -1631,7 +1629,6 @@ public class CSVPrinterTest {
     }
 
     @Test
-    @Disabled
     public void testRandomPostgreSqlText() throws Exception {
         doRandom(CSVFormat.POSTGRESQL_TEXT, ITERATIONS_FOR_RANDOM_TEST);
     }
