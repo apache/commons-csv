@@ -42,6 +42,8 @@ final class Constants {
 
     static final String EMPTY = "";
 
+    static final String[] EMPTY_STRING_ARRAY = {};
+
     /** The end of stream symbol */
     static final int END_OF_STREAM = -1;
 
@@ -71,6 +73,8 @@ final class Constants {
 
     static final char SP = ' ';
 
+    static final String SQL_NULL_STRING = "\\N";
+
     static final char TAB = '\t';
 
     /** Undefined state for the lookahead char */
@@ -78,8 +82,6 @@ final class Constants {
 
     /** ASCII unit separator */
     static final char US = 31;
-
-    static final String[] EMPTY_STRING_ARRAY = {};
 
     /** No instances. */
     private Constants() {

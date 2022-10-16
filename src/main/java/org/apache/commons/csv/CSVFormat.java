@@ -998,7 +998,7 @@ public final class CSVFormat implements Serializable {
             .setIgnoreEmptyLines(false)
             .setQuote(null)
             .setRecordSeparator(LF)
-            .setNullString("\\N")
+            .setNullString(Constants.SQL_NULL_STRING)
             .setQuoteMode(QuoteMode.ALL_NON_NULL)
             .build();
     // @formatter:off
@@ -1036,7 +1036,7 @@ public final class CSVFormat implements Serializable {
             .setEscape(BACKSLASH)
             .setIgnoreEmptyLines(false)
             .setQuote(DOUBLE_QUOTE_CHAR)
-            .setNullString("\\N")
+            .setNullString(Constants.SQL_NULL_STRING)
             .setTrim(true)
             .setRecordSeparator(System.lineSeparator())
             .setQuoteMode(QuoteMode.MINIMAL)
@@ -1114,7 +1114,7 @@ public final class CSVFormat implements Serializable {
             .setIgnoreEmptyLines(false)
             .setQuote(null)
             .setRecordSeparator(LF)
-            .setNullString("\\N")
+            .setNullString(Constants.SQL_NULL_STRING)
             .setQuoteMode(QuoteMode.ALL_NON_NULL)
             .build();
     // @formatter:off
@@ -1217,6 +1217,14 @@ public final class CSVFormat implements Serializable {
         return c != null && isLineBreak(c.charValue());
     }
 
+    private static boolean isTrimChar(final char ch) {
+        return ch <= SP;
+    }
+
+    private static boolean isTrimChar(final CharSequence charSequence, int pos) {
+        return isTrimChar(charSequence.charAt(pos));
+    }
+
     /**
      * Creates a new CSV format with the specified delimiter.
      *
@@ -1256,10 +1264,10 @@ public final class CSVFormat implements Serializable {
         int len = count;
         int pos = 0;
 
-        while (pos < len && charSequence.charAt(pos) <= SP) {
+        while (pos < len && isTrimChar(charSequence, pos)) {
             pos++;
         }
-        while (pos < len && charSequence.charAt(len - 1) <= SP) {
+        while (pos < len && isTrimChar(charSequence, len - 1)) {
             len--;
         }
         return pos > 0 || len < count ? charSequence.subSequence(pos, len) : charSequence;
@@ -1460,7 +1468,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns true if and only if duplicate names are allowed in the headers.
+     * Gets whether duplicate names are allowed in the headers.
      *
      * @return whether duplicate header names are allowed
      * @since 1.7
@@ -1472,7 +1480,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Specifies whether missing column names are allowed when parsing the header line.
+     * Gets whether missing column names are allowed when parsing the header line.
      *
      * @return {@code true} if missing column names are allowed when parsing the header line, {@code false} to throw an {@link IllegalArgumentException}.
      */
@@ -1481,7 +1489,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns whether to flush on close.
+     * Gets whether to flush on close.
      *
      * @return whether to flush on close.
      * @since 1.6
@@ -1491,7 +1499,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns the character marking the start of a line comment.
+     * Gets the character marking the start of a line comment.
      *
      * @return the comment start marker, may be {@code null}
      */
@@ -1500,7 +1508,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns the first character delimiting the values (typically ';', ',' or '\t').
+     * Gets the first character delimiting the values (typically ';', ',' or '\t').
      *
      * @return the first delimiter character.
      * @deprecated Use {@link #getDelimiterString()}.
@@ -1558,7 +1566,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Specifies whether empty lines between records are ignored when parsing input.
+     * Gets whether empty lines between records are ignored when parsing input.
      *
      * @return {@code true} if empty lines between records are ignored, {@code false} if they are turned into empty records.
      */
@@ -1567,7 +1575,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Specifies whether header names will be accessed ignoring case.
+     * Gets whether header names will be accessed ignoring case.
      *
      * @return {@code true} if header names cases are ignored, {@code false} if they are case sensitive.
      * @since 1.3
@@ -1577,7 +1585,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Specifies whether spaces around values are ignored when parsing input.
+     * Gets whether spaces around values are ignored when parsing input.
      *
      * @return {@code true} if spaces around values are ignored, {@code false} if they are treated as part of the value.
      */
@@ -1666,7 +1674,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Specifies whether comments are supported by this format.
+     * Tests whether comments are supported by this format.
      *
      * Note that the comment introducer character is only recognized at the start of a line.
      *
@@ -1677,7 +1685,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Matches whether the next characters constitute a delimiter
+     * Tests whether the next characters constitute a delimiter
      *
      * @param ch
      *            the current char
@@ -2088,7 +2096,7 @@ public final class CSVFormat implements Serializable {
                         c = charSeq.charAt(pos);
                         // Some other chars at the end caused the parser to fail, so for now
                         // encapsulate if we end in anything less than ' '
-                        if (c <= SP) {
+                        if (isTrimChar(c)) {
                             quote = true;
                         }
                     }
