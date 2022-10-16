@@ -76,15 +76,7 @@ for the latest releases.<br />
 For previous releases, see the <a href="https://archive.apache.org/dist/commons/csv/">Apache Archive</a>
 </p>
 <p>
-  Alternatively, you can pull it from a Maven repository:
-  <pre>&lt;dependency&gt;
-    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
-    &lt;artifactId&gt;commons-csv&lt;/artifactId&gt;
-    &lt;version&gt;1.9.0&lt;/version&gt;
-&lt;/dependency&gt;</pre>
-</p>
-<p>
-  For other dependency access methods, see <a href="dependency-info.html">Dependency Information</a>
+  For dependency access methods, see <a href="dependency-info.html">Dependency Information</a>
 </p>
 </section>
 
