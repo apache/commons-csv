@@ -358,6 +358,7 @@ public final class CSVFormat implements Serializable {
          *
          * @param duplicateHeaderMode the duplicate header names behavior
          * @return This instance.
+         * @since 1.10.0
          */
         public Builder setDuplicateHeaderMode(final DuplicateHeaderMode duplicateHeaderMode) {
           this.duplicateHeaderMode = duplicateHeaderMode;
@@ -1532,7 +1533,7 @@ public final class CSVFormat implements Serializable {
      * Gets how duplicate headers are handled.
      *
      * @return if duplicate header values are allowed, allowed conditionally, or disallowed.
-     * @since 1.9.0
+     * @since 1.10.0
      */
     public DuplicateHeaderMode getDuplicateHeaderMode() {
         return duplicateHeaderMode;
