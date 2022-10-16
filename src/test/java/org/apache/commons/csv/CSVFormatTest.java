@@ -79,6 +79,11 @@ public class CSVFormatTest {
         }
     }
 
+    @Test
+    public void testDelimiterEmptyStringThrowsException1() {
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.builder().setDelimiter("").build());
+    }
+
     @SuppressWarnings("deprecation")
     @Test
     public void testDelimiterSameAsCommentStartThrowsException_Deprecated() {
@@ -798,6 +803,22 @@ public class CSVFormatTest {
     }
 
     @Test
+    public void testPrintRecord() throws IOException {
+        final Appendable out = new StringBuilder();
+        final CSVFormat format = CSVFormat.RFC4180;
+        format.printRecord(out, "a", "b", "c");
+        assertEquals("a,b,c" + format.getRecordSeparator(), out.toString());
+    }
+
+    @Test
+    public void testPrintRecordEmpty() throws IOException {
+        final Appendable out = new StringBuilder();
+        final CSVFormat format = CSVFormat.RFC4180;
+        format.printRecord(out);
+        assertEquals(format.getRecordSeparator(), out.toString());
+    }
+
+    @Test
     public void testPrintWithEscapesEndWithCRLF() throws IOException {
         final Reader in = new StringReader("x,y,x\r\na,?b,c\r\n");
         final Appendable out = new StringBuilder();
@@ -1418,10 +1439,5 @@ public class CSVFormatTest {
     public void testWithSystemRecordSeparator() {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withSystemRecordSeparator();
         assertEquals(System.lineSeparator(), formatWithRecordSeparator.getRecordSeparator());
-    }
-
-    @Test
-    public void testDelimiterEmptyStringThrowsException1() {
-        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.builder().setDelimiter("").build());
     }
 }
