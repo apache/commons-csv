@@ -229,8 +229,6 @@ public final class CSVFormat implements Serializable {
 
         private Character quoteCharacter;
 
-        private String quotedNullString;
-
         private QuoteMode quoteMode;
 
         private String recordSeparator;
@@ -259,7 +257,6 @@ public final class CSVFormat implements Serializable {
             this.trailingDelimiter = csvFormat.trailingDelimiter;
             this.trim = csvFormat.trim;
             this.autoFlush = csvFormat.autoFlush;
-            this.quotedNullString = csvFormat.quotedNullString;
             this.duplicateHeaderMode = csvFormat.duplicateHeaderMode;
         }
 
@@ -370,7 +367,7 @@ public final class CSVFormat implements Serializable {
         /**
          * Sets the duplicate header names behavior.
          *
-         * @param duplicateHeaderMode the duplicate header names behavior
+         * @param duplicateHeaderMode the duplicate header names behavior, may not be null
          * @return This instance.
          * @since 1.10.0
          */
@@ -595,7 +592,6 @@ public final class CSVFormat implements Serializable {
          */
         public Builder setNullString(final String nullString) {
             this.nullString = nullString;
-            this.quotedNullString = quoteCharacter + nullString + quoteCharacter;
             return this;
         }
 
@@ -1338,26 +1334,24 @@ public final class CSVFormat implements Serializable {
     private final boolean trim;
 
     private CSVFormat(final Builder builder) {
-        this.delimiter = builder.delimiter;
-        this.quoteCharacter = builder.quoteCharacter;
-        this.quoteMode = builder.quoteMode;
-        this.commentMarker = builder.commentMarker;
-        this.escapeCharacter = builder.escapeCharacter;
-        this.ignoreSurroundingSpaces = builder.ignoreSurroundingSpaces;
-        this.allowMissingColumnNames = builder.allowMissingColumnNames;
-        this.ignoreEmptyLines = builder.ignoreEmptyLines;
-        this.recordSeparator = builder.recordSeparator;
-        this.nullString = builder.nullString;
-        this.headerComments = builder.headerComments;
-        this.header = builder.headers;
-        this.skipHeaderRecord = builder.skipHeaderRecord;
-        this.ignoreHeaderCase = builder.ignoreHeaderCase;
-        this.trailingDelimiter = builder.trailingDelimiter;
-        this.trim = builder.trim;
-        this.autoFlush = builder.autoFlush;
-        this.quotedNullString = builder.quotedNullString;
-        this.duplicateHeaderMode = builder.duplicateHeaderMode;
-        validate();
+        this(builder.delimiter,
+             builder.quoteCharacter,
+             builder.quoteMode,
+             builder.commentMarker,
+             builder.escapeCharacter,
+             builder.ignoreSurroundingSpaces,
+             builder.ignoreEmptyLines,
+             builder.recordSeparator,
+             builder.nullString,
+             builder.headerComments,
+             builder.headers,
+             builder.skipHeaderRecord,
+             builder.allowMissingColumnNames,
+             builder.ignoreHeaderCase,
+             builder.trim,
+             builder.trailingDelimiter,
+             builder.autoFlush,
+             builder.duplicateHeaderMode);
     }
 
     /**
@@ -1374,12 +1368,12 @@ public final class CSVFormat implements Serializable {
      * @param nullString              the line separator to use for output.
      * @param headerComments          the comments to be printed by the Printer before the actual CSV data.
      * @param header                  the header
-     * @param skipHeaderRecord        TODO Doc me.
-     * @param allowMissingColumnNames TODO Doc me.
-     * @param ignoreHeaderCase        TODO Doc me.
-     * @param trim                    TODO Doc me.
-     * @param trailingDelimiter       TODO Doc me.
-     * @param autoFlush               TODO Doc me.
+     * @param skipHeaderRecord        whether to skip the header record
+     * @param allowMissingColumnNames the missing column names behavior
+     * @param ignoreHeaderCase        the case mapping behavior
+     * @param trim                    whether to trim leading and trailing blanks
+     * @param trailingDelimiter       whether to add a trailing delimiter
+     * @param autoFlush               whether to flush on close
      * @param duplicateHeaderMode     the behavior when handling duplicate headers
      * @throws IllegalArgumentException if the delimiter is a line break character.
      */
