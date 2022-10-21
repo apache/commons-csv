@@ -684,6 +684,15 @@ public class CSVFormatTest {
     }
 
     @Test
+    public void testGetAllowDuplicateHeaderNames() {
+        final Builder builder = CSVFormat.DEFAULT.builder();
+        assertTrue(builder.build().getAllowDuplicateHeaderNames());
+        assertTrue(builder.setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL).build().getAllowDuplicateHeaderNames());
+        assertFalse(builder.setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_EMPTY).build().getAllowDuplicateHeaderNames());
+        assertFalse(builder.setDuplicateHeaderMode(DuplicateHeaderMode.DISALLOW).build().getAllowDuplicateHeaderNames());
+    }
+
+    @Test
     public void testGetHeader() {
         final String[] header = { "one", "two", "three" };
         final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
@@ -1167,15 +1176,6 @@ public class CSVFormatTest {
 
         assertEquals(DuplicateHeaderMode.ALLOW_EMPTY, formatWithEmptyDuplicates.getDuplicateHeaderMode());
         assertFalse(formatWithEmptyDuplicates.getAllowDuplicateHeaderNames());
-    }
-
-    @Test
-    public void testGetAllowDuplicateHeaderNames() {
-        final Builder builder = CSVFormat.DEFAULT.builder();
-        assertTrue(builder.build().getAllowDuplicateHeaderNames());
-        assertTrue(builder.setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL).build().getAllowDuplicateHeaderNames());
-        assertFalse(builder.setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_EMPTY).build().getAllowDuplicateHeaderNames());
-        assertFalse(builder.setDuplicateHeaderMode(DuplicateHeaderMode.DISALLOW).build().getAllowDuplicateHeaderNames());
     }
 
     @Test
