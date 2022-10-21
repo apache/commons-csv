@@ -281,8 +281,7 @@ public final class CSVFormat implements Serializable {
          */
         @Deprecated
         public Builder setAllowDuplicateHeaderNames(final boolean allowDuplicateHeaderNames) {
-            final DuplicateHeaderMode mode = allowDuplicateHeaderNames ? DuplicateHeaderMode.ALLOW_ALL : DuplicateHeaderMode.ALLOW_EMPTY;
-            setDuplicateHeaderMode(mode);
+            setDuplicateHeaderMode(allowDuplicateHeaderNames ? DuplicateHeaderMode.ALLOW_ALL : DuplicateHeaderMode.ALLOW_EMPTY);
             return this;
         }
 
@@ -376,7 +375,7 @@ public final class CSVFormat implements Serializable {
          * @since 1.10.0
          */
         public Builder setDuplicateHeaderMode(final DuplicateHeaderMode duplicateHeaderMode) {
-          this.duplicateHeaderMode = duplicateHeaderMode;
+          this.duplicateHeaderMode = Objects.requireNonNull(duplicateHeaderMode, "duplicateHeaderMode");
           return this;
         }
 
