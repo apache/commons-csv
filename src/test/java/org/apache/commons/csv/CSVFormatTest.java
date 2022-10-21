@@ -140,11 +140,13 @@ public class CSVFormatTest {
         assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withAllowDuplicateHeaderNames(false).withHeader("A", "A"));
     }
 
+    @Test
     public void testDuplicateHeaderElementsTrue() {
         CSVFormat.DEFAULT.builder().setAllowDuplicateHeaderNames(true).setHeader("A", "A").build();
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testDuplicateHeaderElementsTrue_Deprecated() {
         CSVFormat.DEFAULT.withAllowDuplicateHeaderNames(true).withHeader("A", "A");
     }
