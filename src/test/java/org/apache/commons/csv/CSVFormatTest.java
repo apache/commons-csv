@@ -693,6 +693,16 @@ public class CSVFormatTest {
     }
 
     @Test
+    public void testGetDuplicateHeaderMode() {
+        final Builder builder = CSVFormat.DEFAULT.builder();
+
+        assertEquals(DuplicateHeaderMode.ALLOW_ALL, builder.build().getDuplicateHeaderMode());
+        assertEquals(DuplicateHeaderMode.ALLOW_ALL, builder.setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL).build().getDuplicateHeaderMode());
+        assertEquals(DuplicateHeaderMode.ALLOW_EMPTY, builder.setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_EMPTY).build().getDuplicateHeaderMode());
+        assertEquals(DuplicateHeaderMode.DISALLOW, builder.setDuplicateHeaderMode(DuplicateHeaderMode.DISALLOW).build().getDuplicateHeaderMode());
+    }
+
+    @Test
     public void testGetHeader() {
         final String[] header = { "one", "two", "three" };
         final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
