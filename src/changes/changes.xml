@@ -50,6 +50,9 @@
       <action issue="CSV-274" type="fix" dev="ggregory" due-to="Peter Hull, Bruno P. Kinoshita, Gary Gregory">Add comments to iterator() and stream() #270.</action>
       <action issue="CSV-290" type="fix" dev="ggregory" due-to="angusdev, Gary Gregory">Fix wrong assumptions in PostgreSQL formats #265.</action>
       <action                 type="fix" dev="ggregory" due-to="Mykola Faryma">Validate input to setDelimiter(String) for empty string #266.</action>
+      <action                 type="fix" dev="ggregory" due-to="Dependabot">Bump CSVFormat#serialVersionUID from 1 to 2.</action>
+      <!-- REMOVE -->
+      <action                 type="remove" dev="ggregory">Serialization in CSVFormat is not supported from one version to the next.</action>
       <!-- ADD -->
       <action issue="CSV-291" type="add" dev="ggregory" due-to="Gary Gregory">Make CSVRecord#values() public.</action>
       <action issue="CSV-264" type="add" dev="ggregory" due-to="Sagar Tiwari, Seth Falco, Alex Herbert, Gary Gregory">Add DuplicateHeaderMode for flexibility with header strictness. #114.</action>

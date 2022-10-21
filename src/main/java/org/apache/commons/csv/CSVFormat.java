@@ -154,8 +154,23 @@ import java.util.Set;
  * This makes your code impervious to changes in column order in the CSV file.
  * </p>
  *
- * <h2>Notes</h2>
+ * <h2>Serialization</h2>
+ * <p>
+ *   This class implements the {@link Serializable} interface with the following caveats:
+ * </p>
+ * <ul>
+ *   <li>This class will no longer implement Serializable in 2.0.</li>
+ *   <li>Serialization is not supported from one version to the next.</li>
+ * </ul>
+ * <p>
+ *   The {@code serialVersionUID} values are:
+ * </p>
+ * <ul>
+ *   <li>Version 1.10.0: {@code 2L}</li>
+ *   <li>Version 1.9.0 through 1.0: {@code 1L}</li>
+ * </ul>
  *
+ * <h2>Notes</h2>
  * <p>
  * This class is immutable.
  * </p>
@@ -1137,7 +1152,7 @@ public final class CSVFormat implements Serializable {
      */
     public static final CSVFormat RFC4180 = DEFAULT.builder().setIgnoreEmptyLines(false).build();
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     /**
      * Tab-delimited format.
@@ -1222,7 +1237,7 @@ public final class CSVFormat implements Serializable {
         return ch <= SP;
     }
 
-    private static boolean isTrimChar(final CharSequence charSequence, int pos) {
+    private static boolean isTrimChar(final CharSequence charSequence, final int pos) {
         return isTrimChar(charSequence.charAt(pos));
     }
 
