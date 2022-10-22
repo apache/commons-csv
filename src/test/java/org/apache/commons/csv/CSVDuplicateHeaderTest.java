@@ -27,13 +27,14 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 /**
- * Tests {@link CSVFormat}.
+ * Tests parsing of duplicate column names in a CSV header.
+ * The test verifies that headers are consistently handled by CSVFormat and CSVParser.
  */
 public class CSVDuplicateHeaderTest {
     /**
      * Return test cases for duplicate header data. Uses the order:
      * <pre>
-     * DuplicateHeaderMode duolicateHeaderMode
+     * DuplicateHeaderMode duplicateHeaderMode
      * boolean allowMissingColumnNames
      * String[] headers
      * boolean valid
@@ -98,24 +99,24 @@ public class CSVDuplicateHeaderTest {
     /**
      * Test duplicate headers with the CSVFormat.
      *
-     * @param duolicateHeaderMode the duolicate header mode
+     * @param duplicateHeaderMode the duplicate header mode
      * @param allowMissingColumnNames the allow missing column names flag
      * @param headers the headers
      * @param valid true if the settings are expected to be valid
      */
     @ParameterizedTest
     @MethodSource(value = {"duplicateHeaderData"})
-    public void testCSVFormat(DuplicateHeaderMode duolicateHeaderMode,
+    public void testCSVFormat(DuplicateHeaderMode duplicateHeaderMode,
                               boolean allowMissingColumnNames,
                               String[] headers,
                               boolean valid) {
         CSVFormat.Builder builder = CSVFormat.DEFAULT.builder()
-                                                     .setDuplicateHeaderMode(duolicateHeaderMode)
+                                                     .setDuplicateHeaderMode(duplicateHeaderMode)
                                                      .setAllowMissingColumnNames(allowMissingColumnNames)
                                                      .setHeader(headers);
         if (valid) {
             CSVFormat format = builder.build();
-            Assertions.assertEquals(duolicateHeaderMode, format.getDuplicateHeaderMode(), "DuplicateHeaderMode");
+            Assertions.assertEquals(duplicateHeaderMode, format.getDuplicateHeaderMode(), "DuplicateHeaderMode");
             Assertions.assertEquals(allowMissingColumnNames, format.getAllowMissingColumnNames(), "AllowMissingColumnNames");
             Assertions.assertArrayEquals(headers, format.getHeader(), "Header");
         } else {
@@ -126,7 +127,7 @@ public class CSVDuplicateHeaderTest {
     /**
      * Test duplicate headers with the CSVParser.
      *
-     * @param duolicateHeaderMode the duolicate header mode
+     * @param duplicateHeaderMode the duplicate header mode
      * @param allowMissingColumnNames the allow missing column names flag
      * @param headers the headers (joined with the CSVFormat delimiter to create a string input)
      * @param valid true if the settings are expected to be valid
@@ -134,12 +135,12 @@ public class CSVDuplicateHeaderTest {
      */
     @ParameterizedTest
     @MethodSource(value = {"duplicateHeaderData"})
-    public void testCSVParser(DuplicateHeaderMode duolicateHeaderMode,
+    public void testCSVParser(DuplicateHeaderMode duplicateHeaderMode,
                               boolean allowMissingColumnNames,
                               String[] headers,
                               boolean valid) throws IOException {
         CSVFormat format = CSVFormat.DEFAULT.builder()
-                                            .setDuplicateHeaderMode(duolicateHeaderMode)
+                                            .setDuplicateHeaderMode(duplicateHeaderMode)
                                             .setAllowMissingColumnNames(allowMissingColumnNames)
                                             .setHeader()
                                             .build();
