@@ -286,7 +286,7 @@ public final class CSVFormat implements Serializable {
         }
 
         /**
-         * Sets the missing column names behavior, {@code true} to allow missing column names in the header line, {@code false} to cause an
+         * Sets the missing column names parser behavior, {@code true} to allow missing column names in the header line, {@code false} to cause an
          * {@link IllegalArgumentException} to be thrown.
          *
          * @param allowMissingColumnNames the missing column names behavior, {@code true} to allow missing column names in the header line, {@code false} to

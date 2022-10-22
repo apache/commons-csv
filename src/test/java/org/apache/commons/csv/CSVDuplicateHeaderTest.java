@@ -31,6 +31,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  * The test verifies that headers are consistently handled by CSVFormat and CSVParser.
  */
 public class CSVDuplicateHeaderTest {
+
     /**
      * Return test cases for duplicate header data. Uses the order:
      * <pre>
@@ -39,13 +40,16 @@ public class CSVDuplicateHeaderTest {
      * String[] headers
      * boolean valid
      * </pre>
-     *
-     * <p>TODO: Reinstate cases failed by CSVFormat.
+     * <p>
+     * TODO: Reinstate cases failed by CSVFormat.
+     * </p>
      *
      * @return the stream of arguments
      */
     static Stream<Arguments> duplicateHeaderData() {
         return Stream.of(
+            // Commented out data here are for cases that are only supported for parsing.
+                
             // Any combination with a valid header
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, new String[] {"A", "B"}, true),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, new String[] {"A", "B"}, true),
@@ -64,8 +68,8 @@ public class CSVDuplicateHeaderTest {
 
             // Duplicate empty names
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, new String[] {"", ""}, false),
-            //Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, new String[] {"", ""}, false),
-            //Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, new String[] {"", ""}, false),
+            // Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, new String[] {"", ""}, false),
+            // Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, new String[] {"", ""}, false),
             Arguments.of(DuplicateHeaderMode.DISALLOW,    true,  new String[] {"", ""}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  new String[] {"", ""}, true),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  new String[] {"", ""}, true),
@@ -73,15 +77,15 @@ public class CSVDuplicateHeaderTest {
             // Duplicate blank names
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, new String[] {" ", " "}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, new String[] {" ", " "}, false),
-            //Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, new String[] {" ", " "}, false),
+            // Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, new String[] {" ", " "}, false),
             Arguments.of(DuplicateHeaderMode.DISALLOW,    true,  new String[] {" ", " "}, false),
-            //Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  new String[] {" ", " "}, true),
+            // Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  new String[] {" ", " "}, true),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  new String[] {" ", " "}, true),
 
             // Duplicate non-empty and empty names
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, new String[] {"A", "A", "", ""}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, new String[] {"A", "A", "", ""}, false),
-            //Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, new String[] {"A", "A", "", ""}, false),
+            // Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, new String[] {"A", "A", "", ""}, false),
             Arguments.of(DuplicateHeaderMode.DISALLOW,    true,  new String[] {"A", "A", "", ""}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  new String[] {"A", "A", "", ""}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  new String[] {"A", "A", "", ""}, true),
@@ -89,11 +93,28 @@ public class CSVDuplicateHeaderTest {
             // Duplicate non-empty and blank names
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, new String[] {"A", "A", " ", " "}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, new String[] {"A", "A", " ", " "}, false),
-            //Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, new String[] {"A", "A", " ", " "}, false),
+            // Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, new String[] {"A", "A", " ", " "}, false),
             Arguments.of(DuplicateHeaderMode.DISALLOW,    true,  new String[] {"A", "A", " ", " "}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  new String[] {"A", "A", " ", " "}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  new String[] {"A", "A", " ", " "}, true)
         );
+    }
+
+    static Stream<Arguments> duplicateHeaderParseOnlyData() {
+        return Stream.of(
+                // Duplicate empty names
+                Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, new String[] { "", "" }, false),
+                Arguments.of(DuplicateHeaderMode.ALLOW_ALL, false, new String[] { "", "" }, false),
+
+                // Duplicate blank names
+                Arguments.of(DuplicateHeaderMode.ALLOW_ALL, false, new String[] { " ", " " }, false),
+                Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true, new String[] { " ", " " }, true),
+
+                // Duplicate non-empty and empty names
+                Arguments.of(DuplicateHeaderMode.ALLOW_ALL, false, new String[] { "A", "A", "", "" }, false),
+
+                // Duplicate non-empty and blank names
+                Arguments.of(DuplicateHeaderMode.ALLOW_ALL, false, new String[] { "A", "A", " ", " " }, false));
     }
 
     /**
@@ -106,21 +127,21 @@ public class CSVDuplicateHeaderTest {
      */
     @ParameterizedTest
     @MethodSource(value = {"duplicateHeaderData"})
-    public void testCSVFormat(DuplicateHeaderMode duplicateHeaderMode,
-                              boolean allowMissingColumnNames,
-                              String[] headers,
-                              boolean valid) {
-        CSVFormat.Builder builder = CSVFormat.DEFAULT.builder()
+    public void testCSVFormat(final DuplicateHeaderMode duplicateHeaderMode,
+                              final boolean allowMissingColumnNames,
+                              final String[] headers,
+                              final boolean valid) {
+        final CSVFormat.Builder builder = CSVFormat.DEFAULT.builder()
                                                      .setDuplicateHeaderMode(duplicateHeaderMode)
                                                      .setAllowMissingColumnNames(allowMissingColumnNames)
                                                      .setHeader(headers);
         if (valid) {
-            CSVFormat format = builder.build();
+            final CSVFormat format = builder.build();
             Assertions.assertEquals(duplicateHeaderMode, format.getDuplicateHeaderMode(), "DuplicateHeaderMode");
             Assertions.assertEquals(allowMissingColumnNames, format.getAllowMissingColumnNames(), "AllowMissingColumnNames");
             Assertions.assertArrayEquals(headers, format.getHeader(), "Header");
         } else {
-            Assertions.assertThrows(IllegalArgumentException.class, () -> builder.build());
+            Assertions.assertThrows(IllegalArgumentException.class, builder::build);
         }
     }
 
@@ -134,17 +155,17 @@ public class CSVDuplicateHeaderTest {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     @ParameterizedTest
-    @MethodSource(value = {"duplicateHeaderData"})
-    public void testCSVParser(DuplicateHeaderMode duplicateHeaderMode,
-                              boolean allowMissingColumnNames,
-                              String[] headers,
-                              boolean valid) throws IOException {
-        CSVFormat format = CSVFormat.DEFAULT.builder()
+    @MethodSource(value = {"duplicateHeaderData", "duplicateHeaderParseOnlyData"})
+    public void testCSVParser(final DuplicateHeaderMode duplicateHeaderMode,
+                              final boolean allowMissingColumnNames,
+                              final String[] headers,
+                              final boolean valid) throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder()
                                             .setDuplicateHeaderMode(duplicateHeaderMode)
                                             .setAllowMissingColumnNames(allowMissingColumnNames)
                                             .setHeader()
                                             .build();
-        String input = Arrays.stream(headers).collect(Collectors.joining(format.getDelimiterString()));
+        final String input = Arrays.stream(headers).collect(Collectors.joining(format.getDelimiterString()));
         if (valid) {
             try(CSVParser parser = CSVParser.parse(input, format)) {
                 Assertions.assertEquals(Arrays.asList(headers), parser.getHeaderNames());
