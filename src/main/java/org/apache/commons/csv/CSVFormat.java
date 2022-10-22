@@ -253,7 +253,7 @@ public final class CSVFormat implements Serializable {
             this.recordSeparator = csvFormat.recordSeparator;
             this.nullString = csvFormat.nullString;
             this.headerComments = csvFormat.headerComments;
-            this.headers = csvFormat.header;
+            this.headers = csvFormat.headers;
             this.skipHeaderRecord = csvFormat.skipHeaderRecord;
             this.ignoreHeaderCase = csvFormat.ignoreHeaderCase;
             this.trailingDelimiter = csvFormat.trailingDelimiter;
@@ -1311,7 +1311,7 @@ public final class CSVFormat implements Serializable {
 
     private final Character escapeCharacter; // null if escaping is disabled
 
-    private final String[] header; // array of header column names
+    private final String[] headers; // array of header column names
 
     private final String[] headerComments; // array of header comment lines
 
@@ -1349,7 +1349,7 @@ public final class CSVFormat implements Serializable {
         this.recordSeparator = builder.recordSeparator;
         this.nullString = builder.nullString;
         this.headerComments = builder.headerComments;
-        this.header = builder.headers;
+        this.headers = builder.headers;
         this.skipHeaderRecord = builder.skipHeaderRecord;
         this.ignoreHeaderCase = builder.ignoreHeaderCase;
         this.trailingDelimiter = builder.trailingDelimiter;
@@ -1399,7 +1399,7 @@ public final class CSVFormat implements Serializable {
         this.recordSeparator = recordSeparator;
         this.nullString = nullString;
         this.headerComments = toStringArray(headerComments);
-        this.header = clone(header);
+        this.headers = clone(header);
         this.skipHeaderRecord = skipHeaderRecord;
         this.ignoreHeaderCase = ignoreHeaderCase;
         this.trailingDelimiter = trailingDelimiter;
@@ -1455,7 +1455,7 @@ public final class CSVFormat implements Serializable {
         final CSVFormat other = (CSVFormat) obj;
         return duplicateHeaderMode == other.duplicateHeaderMode && allowMissingColumnNames == other.allowMissingColumnNames &&
                 autoFlush == other.autoFlush && Objects.equals(commentMarker, other.commentMarker) && Objects.equals(delimiter, other.delimiter) &&
-                Objects.equals(escapeCharacter, other.escapeCharacter) && Arrays.equals(header, other.header) &&
+                Objects.equals(escapeCharacter, other.escapeCharacter) && Arrays.equals(headers, other.headers) &&
                 Arrays.equals(headerComments, other.headerComments) && ignoreEmptyLines == other.ignoreEmptyLines &&
                 ignoreHeaderCase == other.ignoreHeaderCase && ignoreSurroundingSpaces == other.ignoreSurroundingSpaces &&
                 Objects.equals(nullString, other.nullString) && Objects.equals(quoteCharacter, other.quoteCharacter) && quoteMode == other.quoteMode &&
@@ -1568,7 +1568,7 @@ public final class CSVFormat implements Serializable {
      * @return a copy of the header array; {@code null} if disabled, the empty array if to be read from the file
      */
     public String[] getHeader() {
-        return header != null ? header.clone() : null;
+        return headers != null ? headers.clone() : null;
     }
 
     /**
@@ -1681,7 +1681,7 @@ public final class CSVFormat implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + Arrays.hashCode(header);
+        result = prime * result + Arrays.hashCode(headers);
         result = prime * result + Arrays.hashCode(headerComments);
         return prime * result + Objects.hash(duplicateHeaderMode, allowMissingColumnNames, autoFlush, commentMarker, delimiter, escapeCharacter,
                 ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, nullString, quoteCharacter, quoteMode, quotedNullString, recordSeparator,
@@ -2243,9 +2243,9 @@ public final class CSVFormat implements Serializable {
             sb.append(' ');
             sb.append("HeaderComments:").append(Arrays.toString(headerComments));
         }
-        if (header != null) {
+        if (headers != null) {
             sb.append(' ');
-            sb.append("Header:").append(Arrays.toString(header));
+            sb.append("Header:").append(Arrays.toString(headers));
         }
         return sb.toString();
     }
@@ -2284,12 +2284,17 @@ public final class CSVFormat implements Serializable {
             throw new IllegalArgumentException("No quotes mode set but no escape character is set");
         }
 
-        // validate header
-        if (header != null && duplicateHeaderMode != DuplicateHeaderMode.ALLOW_ALL) {
-            final Set<String> dupCheck = new HashSet<>();
-            for (final String hdr : header) {
-                if (!dupCheck.add(hdr)) {
-                    throw new IllegalArgumentException("The header contains a duplicate entry: '" + hdr + "' in " + Arrays.toString(header));
+        // Validate headers
+        if (headers != null && duplicateHeaderMode != DuplicateHeaderMode.ALLOW_ALL) {
+            final Set<String> dupCheckSet = new HashSet<>(headers.length);
+            final boolean rejectEmpty = duplicateHeaderMode != DuplicateHeaderMode.ALLOW_EMPTY;
+            for (final String header : headers) {
+                final boolean empty = header == null || header.isEmpty();
+                if (rejectEmpty && empty) {
+                    throw new IllegalArgumentException("Header is empty");
+                }
+                if (!empty && !dupCheckSet.add(header)) {
+                    throw new IllegalArgumentException(String.format("Header '%s' is a duplicate in %s", header, Arrays.toString(headers)));
                 }
             }
         }

@@ -152,6 +152,21 @@ public class CSVFormatTest {
     }
 
     @Test
+    public void testDuplicateHeaderElementsTrueContainsEmpty1() {
+        CSVFormat.DEFAULT.builder().setAllowDuplicateHeaderNames(false).setHeader("A", "", "B", "").build();
+    }
+
+    @Test
+    public void testDuplicateHeaderElementsTrueContainsEmpty2() {
+        CSVFormat.DEFAULT.builder().setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_EMPTY).setHeader("A", "", "B", "").build();
+    }
+
+    @Test
+    public void testDuplicateHeaderElementsTrueContainsEmpty3() {
+        CSVFormat.DEFAULT.builder().setAllowDuplicateHeaderNames(false).setAllowMissingColumnNames(true).setHeader("A", "", "B", "").build();
+    }
+
+    @Test
     public void testEquals() {
         final CSVFormat right = CSVFormat.DEFAULT;
         final CSVFormat left = copy(right);
