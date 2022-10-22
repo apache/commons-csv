@@ -96,7 +96,7 @@ public class CSVDuplicateHeaderTest {
     }
 
     /**
-     * Test duplicate headers with the CSVParser.
+     * Test duplicate headers with the CSVFormat.
      *
      * @param duolicateHeaderMode the duolicate header mode
      * @param allowMissingColumnNames the allow missing column names flag
