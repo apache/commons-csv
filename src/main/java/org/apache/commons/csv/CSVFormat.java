@@ -2304,14 +2304,16 @@ public final class CSVFormat implements Serializable {
         // Validate headers
         if (headers != null && duplicateHeaderMode != DuplicateHeaderMode.ALLOW_ALL) {
             final Set<String> dupCheckSet = new HashSet<>(headers.length);
-            final boolean rejectEmpty = duplicateHeaderMode != DuplicateHeaderMode.ALLOW_EMPTY;
-            for (final String header : headers) {
+            final boolean emptyDuplicatesAllowed = duplicateHeaderMode == DuplicateHeaderMode.ALLOW_EMPTY;
+            for (String header : headers) {
                 final boolean blank = isBlank(header);
-                if (rejectEmpty && blank) {
-                    throw new IllegalArgumentException("Header is empty");
-                }
-                if (!blank && !dupCheckSet.add(header)) {
-                    throw new IllegalArgumentException(String.format("Header '%s' is a duplicate in %s", header, Arrays.toString(headers)));
+                // Sanitise all empty headers to the empty string "" when checking duplicates
+                final boolean containsHeader = !dupCheckSet.add(blank ? "" : header);
+                if (containsHeader && !(blank && emptyDuplicatesAllowed)) {
+                    throw new IllegalArgumentException(
+                        String.format(
+                            "The header contains a duplicate name: \"%s\" in %s. If this is valid then use CSVFormat.Builder.setDuplicateHeaderMode().",
+                            header, Arrays.toString(headers)));
                 }
             }
         }
