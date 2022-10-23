@@ -49,7 +49,7 @@ public class CSVDuplicateHeaderTest {
     static Stream<Arguments> duplicateHeaderData() {
         return Stream.of(
             // Commented out data here are for cases that are only supported for parsing.
-                
+
             // Any combination with a valid header
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, new String[] {"A", "B"}, true),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, new String[] {"A", "B"}, true),
@@ -68,24 +68,25 @@ public class CSVDuplicateHeaderTest {
 
             // Duplicate empty names
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, new String[] {"", ""}, false),
-            // Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, new String[] {"", ""}, false),
-            // Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, new String[] {"", ""}, false),
             Arguments.of(DuplicateHeaderMode.DISALLOW,    true,  new String[] {"", ""}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  new String[] {"", ""}, true),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  new String[] {"", ""}, true),
 
-            // Duplicate blank names
+            // Duplicate blank names (1 space)
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, new String[] {" ", " "}, false),
-            Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, new String[] {" ", " "}, false),
-            // Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, new String[] {" ", " "}, false),
             Arguments.of(DuplicateHeaderMode.DISALLOW,    true,  new String[] {" ", " "}, false),
-            // Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  new String[] {" ", " "}, true),
+            Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  new String[] {" ", " "}, true),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  new String[] {" ", " "}, true),
+
+            // Duplicate blank names (3 spaces)
+            Arguments.of(DuplicateHeaderMode.DISALLOW,    false, new String[] {"   ", "   "}, false),
+            Arguments.of(DuplicateHeaderMode.DISALLOW,    true,  new String[] {"   ", "   "}, false),
+            Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  new String[] {"   ", "   "}, true),
+            Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  new String[] {"   ", "   "}, true),
 
             // Duplicate non-empty and empty names
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, new String[] {"A", "A", "", ""}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, new String[] {"A", "A", "", ""}, false),
-            // Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, new String[] {"A", "A", "", ""}, false),
             Arguments.of(DuplicateHeaderMode.DISALLOW,    true,  new String[] {"A", "A", "", ""}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  new String[] {"A", "A", "", ""}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  new String[] {"A", "A", "", ""}, true),
@@ -93,7 +94,6 @@ public class CSVDuplicateHeaderTest {
             // Duplicate non-empty and blank names
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, new String[] {"A", "A", " ", " "}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, new String[] {"A", "A", " ", " "}, false),
-            // Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, new String[] {"A", "A", " ", " "}, false),
             Arguments.of(DuplicateHeaderMode.DISALLOW,    true,  new String[] {"A", "A", " ", " "}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  new String[] {"A", "A", " ", " "}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  new String[] {"A", "A", " ", " "}, true)
@@ -106,9 +106,13 @@ public class CSVDuplicateHeaderTest {
                 Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, new String[] { "", "" }, false),
                 Arguments.of(DuplicateHeaderMode.ALLOW_ALL, false, new String[] { "", "" }, false),
 
-                // Duplicate blank names
+                // Duplicate blank names (1 space)
                 Arguments.of(DuplicateHeaderMode.ALLOW_ALL, false, new String[] { " ", " " }, false),
                 Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true, new String[] { " ", " " }, true),
+
+                // Duplicate blank names (3 spaces)
+                Arguments.of(DuplicateHeaderMode.ALLOW_ALL, false, new String[] { "   ", "   " }, false),
+                Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true, new String[] { "   ", "   " }, true),
 
                 // Duplicate non-empty and empty names
                 Arguments.of(DuplicateHeaderMode.ALLOW_ALL, false, new String[] { "A", "A", "", "" }, false),
@@ -118,12 +122,12 @@ public class CSVDuplicateHeaderTest {
     }
 
     /**
-     * Test duplicate headers with the CSVFormat.
+     * Tests duplicate headers with the CSVFormat.
      *
      * @param duplicateHeaderMode the duplicate header mode
-     * @param allowMissingColumnNames the allow missing column names flag
+     * @param allowMissingColumnNames the allow missing column names flag (only used for parsing)
      * @param headers the headers
-     * @param valid true if the settings are expected to be valid
+     * @param valid true if the settings are expected to be valid, otherwise expect a IllegalArgumentException
      */
     @ParameterizedTest
     @MethodSource(value = {"duplicateHeaderData"})
@@ -146,12 +150,12 @@ public class CSVDuplicateHeaderTest {
     }
 
     /**
-     * Test duplicate headers with the CSVParser.
+     * Tests duplicate headers with the CSVParser.
      *
      * @param duplicateHeaderMode the duplicate header mode
-     * @param allowMissingColumnNames the allow missing column names flag
+     * @param allowMissingColumnNames the allow missing column names flag (only used for parsing)
      * @param headers the headers (joined with the CSVFormat delimiter to create a string input)
-     * @param valid true if the settings are expected to be valid
+     * @param valid true if the settings are expected to be valid, otherwise expect a IllegalArgumentException
      * @throws IOException Signals that an I/O exception has occurred.
      */
     @ParameterizedTest

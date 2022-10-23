@@ -31,7 +31,7 @@ public enum DuplicateHeaderMode {
     ALLOW_ALL,
 
     /**
-     * Allows duplicate headers only if they're empty strings or null.
+     * Allows duplicate headers only if they're empty, blank, or null strings.
      */
     ALLOW_EMPTY,
 
