@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.DuplicateHeaderMode;
 import org.junit.jupiter.api.Test;
 
@@ -68,8 +69,8 @@ public class JiraCsv264Test {
             .setAllowMissingColumnNames(true)
             .build();
 
-        try (StringReader reader = new StringReader(CSV_STRING_GAP)) {
-            csvFormat.parse(reader);
+        try (StringReader reader = new StringReader(CSV_STRING_GAP); final CSVParser parser = csvFormat.parse(reader)) {
+            // empty
         }
     }
 

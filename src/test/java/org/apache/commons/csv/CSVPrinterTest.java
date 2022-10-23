@@ -1725,7 +1725,9 @@ public class CSVPrinterTest {
     }
 
     private String[] toFirstRecordValues(final String expected, final CSVFormat format) throws IOException {
-        return CSVParser.parse(expected, format).getRecords().get(0).values();
+        try (final CSVParser parser = CSVParser.parse(expected, format)) {
+            return parser.getRecords().get(0).values();
+        }
     }
 
     private void tryFormat(final List<String> list, final Character quote, final Character escape, final String expected) throws IOException {

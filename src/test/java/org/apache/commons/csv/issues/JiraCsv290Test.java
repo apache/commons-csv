@@ -94,21 +94,21 @@ public class JiraCsv290Test {
     public void testWriteThenRead() throws Exception {
         final StringWriter sw = new StringWriter();
 
-        final CSVPrinter printer = new CSVPrinter(sw,
-                CSVFormat.POSTGRESQL_CSV.builder().setHeader().setSkipHeaderRecord(true).build());
+        try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.POSTGRESQL_CSV.builder().setHeader().setSkipHeaderRecord(true).build())) {
 
-        printer.printRecord("column1", "column2");
-        printer.printRecord("v11", "v12");
-        printer.printRecord("v21", "v22");
-        printer.close();
+            printer.printRecord("column1", "column2");
+            printer.printRecord("v11", "v12");
+            printer.printRecord("v21", "v22");
+            printer.close();
 
-        final CSVParser parser = new CSVParser(new StringReader(sw.toString()),
-                CSVFormat.POSTGRESQL_CSV.builder().setHeader().setSkipHeaderRecord(true).build());
+            final CSVParser parser = new CSVParser(new StringReader(sw.toString()),
+                    CSVFormat.POSTGRESQL_CSV.builder().setHeader().setSkipHeaderRecord(true).build());
 
-        assertArrayEquals(new Object[] { "column1", "column2" }, parser.getHeaderNames().toArray());
+            assertArrayEquals(new Object[] { "column1", "column2" }, parser.getHeaderNames().toArray());
 
-        final Iterator<CSVRecord> i = parser.iterator();
-        assertArrayEquals(new String[] { "v11", "v12" }, i.next().toList().toArray());
-        assertArrayEquals(new String[] { "v21", "v22" }, i.next().toList().toArray());
+            final Iterator<CSVRecord> i = parser.iterator();
+            assertArrayEquals(new String[] { "v11", "v12" }, i.next().toList().toArray());
+            assertArrayEquals(new String[] { "v21", "v22" }, i.next().toList().toArray());
+        }
     }
 }
