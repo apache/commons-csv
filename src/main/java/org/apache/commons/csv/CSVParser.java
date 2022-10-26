@@ -499,6 +499,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
             // build the name to index mappings
             if (headerRecord != null) {
+                // Track an occurrence of a null, empty or blank header.
+                boolean observedMissing = false;
                 for (int i = 0; i < headerRecord.length; i++) {
                     final String header = headerRecord[i];
                     final boolean blankHeader = CSVFormat.isBlank(header);
@@ -507,7 +509,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                             "A header name is missing in " + Arrays.toString(headerRecord));
                     }
 
-                    final boolean containsHeader = header != null && hdrMap.containsKey(header);
+                    final boolean containsHeader = blankHeader ? observedMissing : hdrMap.containsKey(header);
                     final DuplicateHeaderMode headerMode = this.format.getDuplicateHeaderMode();
                     final boolean duplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_ALL;
                     final boolean emptyDuplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_EMPTY;
@@ -518,6 +520,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                                 "The header contains a duplicate name: \"%s\" in %s. If this is valid then use CSVFormat.Builder.setDuplicateHeaderMode().",
                                 header, Arrays.toString(headerRecord)));
                     }
+                    observedMissing |= blankHeader;
                     if (header != null) {
                         hdrMap.put(header, Integer.valueOf(i));
                         if (headerNames == null) {
