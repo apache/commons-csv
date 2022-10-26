@@ -2305,7 +2305,7 @@ public final class CSVFormat implements Serializable {
         if (headers != null && duplicateHeaderMode != DuplicateHeaderMode.ALLOW_ALL) {
             final Set<String> dupCheckSet = new HashSet<>(headers.length);
             final boolean emptyDuplicatesAllowed = duplicateHeaderMode == DuplicateHeaderMode.ALLOW_EMPTY;
-            for (String header : headers) {
+            for (final String header : headers) {
                 final boolean blank = isBlank(header);
                 // Sanitise all empty headers to the empty string "" when checking duplicates
                 final boolean containsHeader = !dupCheckSet.add(blank ? "" : header);

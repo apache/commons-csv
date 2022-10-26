@@ -53,6 +53,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.io.input.BrokenInputStream;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -113,7 +114,7 @@ public class CSVParserTest {
     }
 
     private void parseFully(final CSVParser parser) {
-        parser.forEach(record -> assertNotNull(record));
+        parser.forEach(Assertions::assertNotNull);
     }
 
     @Test

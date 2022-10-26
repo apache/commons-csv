@@ -31,8 +31,8 @@ import org.junit.jupiter.api.Test;
 
 public class JiraCsv288Test {
 
-    private void print(final CSVRecord csvRecord, CSVPrinter csvPrinter) throws IOException {
-        for (String value : csvRecord) {
+    private void print(final CSVRecord csvRecord, final CSVPrinter csvPrinter) throws IOException {
+        for (final String value : csvRecord) {
             csvPrinter.print(value);
         }
     }
