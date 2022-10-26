@@ -51,6 +51,7 @@
       <action issue="CSV-290" type="fix" dev="ggregory" due-to="angusdev, Gary Gregory">Fix wrong assumptions in PostgreSQL formats #265.</action>
       <action                 type="fix" dev="ggregory" due-to="Mykola Faryma">Validate input to setDelimiter(String) for empty string #266.</action>
       <action                 type="fix" dev="ggregory" due-to="Dependabot">Bump CSVFormat#serialVersionUID from 1 to 2.</action>
+      <action                 type="fix" dev="ggregory" due-to="Alex Herbert">CSVParser: Identify duplicates in null, empty and blank header names #279.</action>
       <!-- REMOVE -->
       <action                 type="remove" dev="ggregory">Serialization in CSVFormat is not supported from one version to the next.</action>
       <!-- ADD -->
