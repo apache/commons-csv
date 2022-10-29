@@ -906,8 +906,10 @@ public class CSVParserTest {
             final Iterator<CSVRecord> records = parser.iterator();
             final CSVRecord record = records.next();
             // Expect the null header to be missing
-            assertEquals(Arrays.asList("header1", "header3"), record.getParser().getHeaderNames());
-            assertEquals(2, record.getParser().getHeaderMap().size());
+            @SuppressWarnings("resource")
+            final CSVParser recordParser = record.getParser();
+            assertEquals(Arrays.asList("header1", "header3"), recordParser.getHeaderNames());
+            assertEquals(2, recordParser.getHeaderMap().size());
         }
     }
 
@@ -1133,7 +1135,8 @@ public class CSVParserTest {
         final CSVFormat format = CSVFormat.DEFAULT.withHeader("A", "B", "C", "D");
         final Charset charset = StandardCharsets.UTF_8;
 
-        try (final CSVParser parser = CSVParser.parse(new InputStreamReader(url.openStream(), charset), format)) {
+        try (@SuppressWarnings("resource") // CSVParser closes the input resource
+        final CSVParser parser = CSVParser.parse(new InputStreamReader(url.openStream(), charset), format)) {
             parseFully(parser);
         }
         try (final CSVParser parser = CSVParser.parse(new String(Files.readAllBytes(Paths.get(url.toURI())), charset), format)) {
@@ -1142,7 +1145,8 @@ public class CSVParserTest {
         try (final CSVParser parser = CSVParser.parse(new File(url.toURI()), charset, format)) {
             parseFully(parser);
         }
-        try (final CSVParser parser = CSVParser.parse(url.openStream(), charset, format)) {
+        try (@SuppressWarnings("resource") // CSVParser closes the input resource
+        final CSVParser parser = CSVParser.parse(url.openStream(), charset, format)) {
             parseFully(parser);
         }
         try (final CSVParser parser = CSVParser.parse(Paths.get(url.toURI()), charset, format)) {
@@ -1314,7 +1318,9 @@ public class CSVParserTest {
         try (final CSVParser parser = CSVFormat.DEFAULT.withFirstRecordAsHeader().withTrim().parse(in)) {
             final Iterator<CSVRecord> records = parser.iterator();
             final CSVRecord record = records.next();
-            assertEquals(Arrays.asList("header1", "header2", "header1"), record.getParser().getHeaderNames());
+            @SuppressWarnings("resource")
+            final CSVParser recordParser = record.getParser();
+            assertEquals(Arrays.asList("header1", "header2", "header1"), recordParser.getHeaderNames());
         }}
 
     @Test
