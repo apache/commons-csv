@@ -232,7 +232,7 @@ public class CSVDuplicateHeaderTest {
      * names flag is true and ignore header case is false: these flags are exclusively for parsing.
      * CSVFormat validation applies to both parsing and writing and thus validation
      * is less strict and behaves as if the allow missing column names constraint and
-     * the ignore header case behaviour are absent.
+     * the ignore header case behavior are absent.
      * The filtered data is then returned with the parser flags set to both true and false
      * for each test case.
      * </p>
