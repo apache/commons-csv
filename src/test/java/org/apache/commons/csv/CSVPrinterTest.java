@@ -41,6 +41,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -1543,7 +1544,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintToFileWithCharsetUtf16Be() throws IOException {
-        final File file = File.createTempFile(getClass().getName(), ".csv");
+        final File file = Files.createTempFile(getClass().getName(), ".csv").toFile();
         try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, StandardCharsets.UTF_16BE)) {
             printer.printRecord("a", "b\\c");
         }
@@ -1552,7 +1553,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintToFileWithDefaultCharset() throws IOException {
-        final File file = File.createTempFile(getClass().getName(), ".csv");
+        final File file = Files.createTempFile(getClass().getName(), ".csv").toFile();
         try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, Charset.defaultCharset())) {
             printer.printRecord("a", "b\\c");
         }
@@ -1561,7 +1562,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintToPathWithDefaultCharset() throws IOException {
-        final File file = File.createTempFile(getClass().getName(), ".csv");
+        final File file = Files.createTempFile(getClass().getName(), ".csv").toFile();
         try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file.toPath(), Charset.defaultCharset())) {
             printer.printRecord("a", "b\\c");
         }
