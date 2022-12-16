@@ -71,7 +71,7 @@
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump junit-jupiter from 5.8.0-M1 to 5.9.1 #179, #186, #201, #244, #263.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-core from 1.32 to 1.36 #176, #208, #229, #285.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-generator-annprocess from 1.32 to 1.36 #175, #206, #226, #283.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump mockito-core from 3.11.2 to 4.9.0 #187, #197, #204, #212, #230, #237, #251, #259, #284.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump mockito-core from 3.11.2 to 4.10.0 #187, #197, #204, #212, #230, #237, #251, #259, #284, #292.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump maven-pmd-plugin from 3.14.0 to 3.19.0 #184, #219, #238, #254, #258.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump pmd from 6.36.0 to 6.52.0 #173, #189, #193, #199, #227, #233, #214, #236, #240, #247, #255, #273.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump opencsv from 5.5.1 to 5.7.1 #182, #221, #260, #281.</action>
