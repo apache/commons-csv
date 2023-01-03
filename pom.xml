@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>55</version>
+    <version>56</version>
   </parent>
   <artifactId>commons-csv</artifactId>
   <version>1.10.0-SNAPSHOT</version>
