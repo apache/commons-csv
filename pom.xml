@@ -176,7 +176,6 @@
     <commons.pmd-impl.version>6.52.0</commons.pmd-impl.version>
     <commons.spotbugs.version>4.7.3.0</commons.spotbugs.version>
     <commons.spotbugs.impl.version>4.7.3</commons.spotbugs.impl.version>
-    <commons.japicmp.version>0.16.0</commons.japicmp.version>
     <japicmp.skip>false</japicmp.skip>
 
     <commons.release.isDistModule>true</commons.release.isDistModule>
