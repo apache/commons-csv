@@ -68,7 +68,7 @@ o           Bump maven-checkstyle-plugin from 3.1.2 to 3.2.0 #253. Thanks to Dep
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -175,7 +175,7 @@ o           Bump biz.aQute.bnd:biz.aQute.bndlib from 5.1.2 to 5.3.0. Thanks to D
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -235,7 +235,7 @@ o           Fix typo performance test #55. Thanks to Chen.
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -287,7 +287,7 @@ o           Update tests from H2 1.4.198 to 1.4.199. Thanks to Gary Gregory.
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -400,7 +400,7 @@ o CSV-201: Do not use RuntimeException in CSVParser.iterator().new Iterator() {.
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -444,7 +444,7 @@ o CSV-183:  Drop ferc.gov tests.
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -536,7 +536,7 @@ o CSV-156:  Incorrect Javadoc on QuoteMode.NONE. Thanks to Jason Steenstra-Picke
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -582,7 +582,7 @@ o [CSV-134] Unified parameter validation. Thanks to wu wen.
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -677,7 +677,7 @@ o CSV-27:   Decide whether to keep the csv.writer subpackage
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
