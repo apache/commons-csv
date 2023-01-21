@@ -274,7 +274,7 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testCSV141_CSVFormat_DEFAULT() throws Exception {
+    public void testCSV141CSVFormat_DEFAULT() throws Exception {
         testCSV141Failure(CSVFormat.DEFAULT, 3);
     }
 
