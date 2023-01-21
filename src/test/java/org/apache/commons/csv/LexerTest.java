@@ -431,4 +431,30 @@ public class LexerTest {
         lexer.trimTrailingSpaces(buffer);
         assertThat(lexer.nextToken(new Token()), matches(EOF, ""));
     }
+
+    @Test
+    public void testTrailingTextAfterQuote() throws Exception {
+        final String code = "\"a\" b,\"a\" \" b,\"a\" b \"\"";
+        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setAllowTrailingText(true).build())) {
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "a b"));
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "a \" b"));
+            assertThat(parser.nextToken(new Token()), matches(EOF, "a b \"\""));
+        }
+        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setAllowTrailingText(false).build())) {
+            assertThrows(IOException.class, () -> parser.nextToken(new Token()));
+        }
+    }
+
+    @Test
+    public void testEOFWithoutClosingQuote() throws Exception {
+        final String code = "a,\"b";
+        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setAllowEofWithoutClosingQuote(true).build())) {
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
+            assertThat(parser.nextToken(new Token()), matches(EOF, "b"));
+        }
+        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setAllowEofWithoutClosingQuote(false).build())) {
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
+            assertThrows(IOException.class, () -> parser.nextToken(new Token()));
+        }
+    }
 }
