@@ -113,6 +113,14 @@ public class CSVParserTest {
         return new BOMInputStream(ClassLoader.getSystemClassLoader().getResource(resource).openStream());
     }
 
+    CSVRecord parse(final CSVParser parser, final int failParseRecordNo) throws IOException {
+        if (parser.getRecordNumber() + 1 == failParseRecordNo) {
+            assertThrows(IOException.class, () -> parser.nextRecord());
+            return null;
+        }
+        return parser.nextRecord();
+    }
+
     private void parseFully(final CSVParser parser) {
         parser.forEach(Assertions::assertNotNull);
     }
@@ -263,6 +271,109 @@ public class CSVParserTest {
         }
         assertFalse(records.hasNext());
         assertThrows(NoSuchElementException.class, records::next);
+    }
+
+    @Test
+    public void testCSV141_CSVFormat_DEFAULT() throws Exception {
+        testCSV141Failure(CSVFormat.DEFAULT, 3);
+    }
+
+    @Test
+    public void testCSV141CSVFormat_INFORMIX_UNLOAD() throws Exception {
+        testCSV141Failure(CSVFormat.INFORMIX_UNLOAD, 1);
+    }
+
+    @Test
+    public void testCSV141CSVFormat_INFORMIX_UNLOAD_CSV() throws Exception {
+        testCSV141Failure(CSVFormat.INFORMIX_UNLOAD_CSV, 3);
+    }
+
+    @Test
+    public void testCSV141CSVFormat_ORACLE() throws Exception {
+        testCSV141Failure(CSVFormat.ORACLE, 2);
+    }
+
+
+    @Test
+    public void testCSV141CSVFormat_POSTGRESQL_CSV() throws Exception {
+        testCSV141Failure(CSVFormat.POSTGRESQL_CSV, 3);
+    }
+
+    @Test
+    @Disabled("PR 295 does not work")
+    public void testCSV141Excel() throws Exception {
+        testCSV141Ok(CSVFormat.EXCEL);
+    }
+
+    private void testCSV141Failure(final CSVFormat format, final int failParseRecordNo) throws IOException {
+        final Path path = Paths.get("src/test/resources/org/apache/commons/csv/CSV-141/csv-141.csv");
+        try (final CSVParser parser = CSVParser.parse(path, StandardCharsets.UTF_8, format)) {
+            // row 1
+            CSVRecord record = parse(parser, failParseRecordNo);
+            if (record == null) {
+                return; // expected failure
+            }
+            assertEquals("1414770317901", record.get(0));
+            assertEquals("android.widget.EditText", record.get(1));
+            assertEquals("pass sem1 _84*|*", record.get(2));
+            assertEquals("0", record.get(3));
+            assertEquals("pass sem1 _8", record.get(4));
+            assertEquals(5, record.size());
+            // row 2
+            record = parse(parser, failParseRecordNo);
+            if (record == null) {
+                return; // expected failure
+            }
+            assertEquals("1414770318470", record.get(0));
+            assertEquals("android.widget.EditText", record.get(1));
+            assertEquals("pass sem1 _84:|", record.get(2));
+            assertEquals("0", record.get(3));
+            assertEquals("pass sem1 _84:\\", record.get(4));
+            assertEquals(5, record.size());
+            // row 3: Fail for certain
+            assertThrows(IOException.class, () -> parser.nextRecord());
+        }
+    }
+
+    private void testCSV141Ok(final CSVFormat format) throws IOException {
+        final Path path = Paths.get("src/test/resources/org/apache/commons/csv/CSV-141/csv-141.csv");
+        try (final CSVParser parser = CSVParser.parse(path, StandardCharsets.UTF_8, format)) {
+            // row 1
+            CSVRecord record = parser.nextRecord();
+            assertEquals("1414770317901", record.get(0));
+            assertEquals("android.widget.EditText", record.get(1));
+            assertEquals("pass sem1 _84*|*", record.get(2));
+            assertEquals("0", record.get(3));
+            assertEquals("pass sem1 _8", record.get(4));
+            assertEquals(5, record.size());
+            // row 2
+            record = parser.nextRecord();
+            assertEquals("1414770318470", record.get(0));
+            assertEquals("android.widget.EditText", record.get(1));
+            assertEquals("pass sem1 _84:|", record.get(2));
+            assertEquals("0", record.get(3));
+            assertEquals("pass sem1 _84:\\", record.get(4));
+            assertEquals(5, record.size());
+            // row 3
+            record = parser.nextRecord();
+            assertEquals("1414770318327", record.get(0));
+            assertEquals("android.widget.EditText", record.get(1));
+            assertEquals("pass sem1", record.get(2));
+            assertEquals(3, record.size());
+            // row 4
+            record = parser.nextRecord();
+            assertEquals("1414770318628", record.get(0));
+            assertEquals("android.widget.EditText", record.get(1));
+            assertEquals("pass sem1 _84*|*", record.get(2));
+            assertEquals("0", record.get(3));
+            assertEquals("pass sem1", record.get(4));
+            assertEquals(5, record.size());
+        }
+    }
+
+    @Test
+    public void testCSV141RFC4180() throws Exception {
+        testCSV141Failure(CSVFormat.RFC4180, 3);
     }
 
     @Test
