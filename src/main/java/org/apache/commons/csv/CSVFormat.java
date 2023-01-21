@@ -208,8 +208,6 @@ public final class CSVFormat implements Serializable {
 
         private boolean allowMissingColumnNames;
 
-        private boolean allowTrailingText;
-
         private boolean autoFlush;
 
         private Character commentMarker;
@@ -266,7 +264,6 @@ public final class CSVFormat implements Serializable {
             this.autoFlush = csvFormat.autoFlush;
             this.quotedNullString = csvFormat.quotedNullString;
             this.duplicateHeaderMode = csvFormat.duplicateHeaderMode;
-            this.allowTrailingText = csvFormat.allowTrailingText;
         }
 
         /**
@@ -301,20 +298,6 @@ public final class CSVFormat implements Serializable {
          */
         public Builder setAllowMissingColumnNames(final boolean allowMissingColumnNames) {
             this.allowMissingColumnNames = allowMissingColumnNames;
-            return this;
-        }
-
-        /**
-         * Sets whether to allow trailing text in a quoted field, after the closing quote.
-         *
-         * @param allowTrailingText the trailing text behavior, {@code true} to append that text to the field contents, {@code false} to throw
-         *        an {@link IOException}.
-         *
-         * @return This instance.
-         * @since 1.10.0
-         */
-        public Builder setAllowTrailingText(final boolean allowTrailingText) {
-            this.allowTrailingText = allowTrailingText;
             return this;
         }
 
@@ -827,7 +810,7 @@ public final class CSVFormat implements Serializable {
      * @see Predefined#Default
      */
     public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, null, null, null, false, false, false,
-            false, false, false, DuplicateHeaderMode.ALLOW_ALL, false);
+            false, false, false, DuplicateHeaderMode.ALLOW_ALL);
 
     /**
      * Excel file format (using a comma as the value delimiter). Note that the actual value delimiter used by Excel is locale dependent, it might be necessary
@@ -851,7 +834,6 @@ public final class CSVFormat implements Serializable {
      * <li>{@code setIgnoreEmptyLines(false)}</li>
      * <li>{@code setAllowMissingColumnNames(true)}</li>
      * <li>{@code setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL)}</li>
-     * <li>{@code setAllowTrailingText(true)}</li>
      * </ul>
      * <p>
      * Note: This is currently like {@link #RFC4180} plus {@link Builder#setAllowMissingColumnNames(boolean) Builder#setAllowMissingColumnNames(true)} and
@@ -864,7 +846,6 @@ public final class CSVFormat implements Serializable {
     public static final CSVFormat EXCEL = DEFAULT.builder()
             .setIgnoreEmptyLines(false)
             .setAllowMissingColumnNames(true)
-            .setAllowTrailingText(true)
             .build();
     // @formatter:on
 
@@ -1287,7 +1268,7 @@ public final class CSVFormat implements Serializable {
      */
     public static CSVFormat newFormat(final char delimiter) {
         return new CSVFormat(String.valueOf(delimiter), null, null, null, null, false, false, null, null, null, null, false, false, false, false, false, false,
-                DuplicateHeaderMode.ALLOW_ALL, false);
+                DuplicateHeaderMode.ALLOW_ALL);
     }
 
     static String[] toStringArray(final Object[] values) {
@@ -1330,8 +1311,6 @@ public final class CSVFormat implements Serializable {
     private final DuplicateHeaderMode duplicateHeaderMode;
 
     private final boolean allowMissingColumnNames;
-
-    private final boolean allowTrailingText;
 
     private final boolean autoFlush;
 
@@ -1387,7 +1366,6 @@ public final class CSVFormat implements Serializable {
         this.autoFlush = builder.autoFlush;
         this.quotedNullString = builder.quotedNullString;
         this.duplicateHeaderMode = builder.duplicateHeaderMode;
-        this.allowTrailingText = builder.allowTrailingText;
         validate();
     }
 
@@ -1418,7 +1396,7 @@ public final class CSVFormat implements Serializable {
             final boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String recordSeparator, final String nullString,
             final Object[] headerComments, final String[] header, final boolean skipHeaderRecord, final boolean allowMissingColumnNames,
             final boolean ignoreHeaderCase, final boolean trim, final boolean trailingDelimiter, final boolean autoFlush,
-            final DuplicateHeaderMode duplicateHeaderMode, final boolean allowTrailingText) {
+            final DuplicateHeaderMode duplicateHeaderMode) {
         this.delimiter = delimiter;
         this.quoteCharacter = quoteChar;
         this.quoteMode = quoteMode;
@@ -1438,7 +1416,6 @@ public final class CSVFormat implements Serializable {
         this.autoFlush = autoFlush;
         this.quotedNullString = quoteCharacter + nullString + quoteCharacter;
         this.duplicateHeaderMode = duplicateHeaderMode;
-        this.allowTrailingText = allowTrailingText;
         validate();
     }
 
@@ -1492,8 +1469,7 @@ public final class CSVFormat implements Serializable {
                 ignoreHeaderCase == other.ignoreHeaderCase && ignoreSurroundingSpaces == other.ignoreSurroundingSpaces &&
                 Objects.equals(nullString, other.nullString) && Objects.equals(quoteCharacter, other.quoteCharacter) && quoteMode == other.quoteMode &&
                 Objects.equals(quotedNullString, other.quotedNullString) && Objects.equals(recordSeparator, other.recordSeparator) &&
-                skipHeaderRecord == other.skipHeaderRecord && trailingDelimiter == other.trailingDelimiter && trim == other.trim &&
-                allowTrailingText == other.allowTrailingText;
+                skipHeaderRecord == other.skipHeaderRecord && trailingDelimiter == other.trailingDelimiter && trim == other.trim;
     }
 
     /**
@@ -1534,16 +1510,6 @@ public final class CSVFormat implements Serializable {
      */
     public boolean getAllowMissingColumnNames() {
         return allowMissingColumnNames;
-    }
-
-    /**
-     * Gets whether quoted fields allow trailing text after the closing quote.
-     *
-     * @return {@code true} if allowed, {@code false} to throw an {@link IOException}.
-     * @since 1.10.0
-     */
-    public boolean getAllowTrailingText() {
-        return allowTrailingText;
     }
 
     /**
@@ -1726,9 +1692,9 @@ public final class CSVFormat implements Serializable {
         int result = 1;
         result = prime * result + Arrays.hashCode(headers);
         result = prime * result + Arrays.hashCode(headerComments);
-        return prime * result + Objects.hash(duplicateHeaderMode, allowMissingColumnNames, allowTrailingText, autoFlush, commentMarker, delimiter,
-                escapeCharacter, ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, nullString, quoteCharacter, quoteMode, quotedNullString,
-                recordSeparator, skipHeaderRecord, trailingDelimiter, trim);
+        return prime * result + Objects.hash(duplicateHeaderMode, allowMissingColumnNames, autoFlush, commentMarker, delimiter, escapeCharacter,
+                ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, nullString, quoteCharacter, quoteMode, quotedNullString, recordSeparator,
+                skipHeaderRecord, trailingDelimiter, trim);
     }
 
     /**

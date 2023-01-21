@@ -431,17 +431,4 @@ public class LexerTest {
         lexer.trimTrailingSpaces(buffer);
         assertThat(lexer.nextToken(new Token()), matches(EOF, ""));
     }
-
-    @Test
-    public void testTrailingTextAfterQuote() throws Exception {
-        final String code = "\"a\" b,\"a\" \" b,\"a\" b \"\"";
-        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setAllowTrailingText(true).build())) {
-            assertThat(parser.nextToken(new Token()), matches(TOKEN, "a b"));
-            assertThat(parser.nextToken(new Token()), matches(TOKEN, "a \" b"));
-            assertThat(parser.nextToken(new Token()), matches(EOF, "a b \"\""));
-        }
-        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setAllowTrailingText(false).build())) {
-            assertThrows(IOException.class, () -> lexer.nextToken(new Token()));
-        }
-    }
 }

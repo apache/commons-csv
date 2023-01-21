@@ -57,7 +57,6 @@ final class Lexer implements Closeable {
 
     private final boolean ignoreSurroundingSpaces;
     private final boolean ignoreEmptyLines;
-    private final boolean allowTrailingText;
 
     /** The input stream */
     private final ExtendedBufferedReader reader;
@@ -73,7 +72,6 @@ final class Lexer implements Closeable {
         this.commentStart = mapNullToDisabled(format.getCommentMarker());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
-        this.allowTrailingText = format.getAllowTrailingText();
         this.delimiterBuf = new char[delimiter.length - 1];
         this.escapeDelimiterBuf = new char[2 * delimiter.length - 1];
     }
@@ -366,14 +364,10 @@ final class Lexer implements Closeable {
                             token.type = EORECORD;
                             return token;
                         }
-                        if (allowTrailingText) {
-                            token.content.append((char) c);
-                        } else {
-                            if (!Character.isWhitespace((char)c)) {
-                                // error invalid char between token and next delimiter
-                                throw new IOException("(line " + getCurrentLineNumber() +
-                                        ") invalid char between encapsulated token and delimiter");
-                            }
+                        if (!Character.isWhitespace((char)c)) {
+                            // error invalid char between token and next delimiter
+                            throw new IOException("(line " + getCurrentLineNumber() +
+                                    ") invalid char between encapsulated token and delimiter");
                         }
                     }
                 }
