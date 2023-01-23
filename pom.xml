@@ -216,6 +216,7 @@
             <excludes>
               <!-- These files are used as test data and test result specifications. -->
               <exclude>src/test/resources/org/apache/commons/csv/empty.txt</exclude>
+              <exclude>src/test/resources/org/apache/commons/csv/CSV-141/csv-141.csv</exclude>
               <exclude>src/test/resources/org/apache/commons/csv/csv-167/sample1.csv</exclude>
               <exclude>src/test/resources/org/apache/commons/csv/CSV-198/optd_por_public.csv</exclude>
               <exclude>src/test/resources/org/apache/commons/csv/CSV-213/999751170.patch.csv</exclude>
