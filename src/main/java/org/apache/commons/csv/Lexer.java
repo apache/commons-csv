@@ -58,6 +58,7 @@ final class Lexer implements Closeable {
     private final boolean ignoreSurroundingSpaces;
     private final boolean ignoreEmptyLines;
     private final boolean allowTrailingText;
+    private final boolean allowEofWithoutClosingQuote;
 
     /** The input stream */
     private final ExtendedBufferedReader reader;
@@ -74,6 +75,7 @@ final class Lexer implements Closeable {
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
         this.allowTrailingText = format.getAllowTrailingText();
+        this.allowEofWithoutClosingQuote = format.getAllowEofWithoutClosingQuote();
         this.delimiterBuf = new char[delimiter.length - 1];
         this.escapeDelimiterBuf = new char[2 * delimiter.length - 1];
     }
@@ -378,9 +380,15 @@ final class Lexer implements Closeable {
                     }
                 }
             } else if (isEndOfFile(c)) {
-                // error condition (end of file before end of token)
-                throw new IOException("(startline " + startLineNumber +
-                        ") EOF reached before encapsulated token finished");
+                if (allowEofWithoutClosingQuote) {
+                    token.type = EOF;
+                    token.isReady = true; // There is data at EOF
+                    return token;
+                } else {
+                    // error condition (end of file before end of token)
+                    throw new IOException("(startline " + startLineNumber +
+                            ") EOF reached before encapsulated token finished");
+                }
             } else {
                 // consume character
                 token.content.append((char) c);
