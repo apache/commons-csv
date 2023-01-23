@@ -300,7 +300,6 @@ public class CSVParserTest {
     }
 
     @Test
-    @Disabled("PR 295 does not work")
     public void testCSV141Excel() throws Exception {
         testCSV141Ok(CSVFormat.EXCEL);
     }
@@ -358,16 +357,12 @@ public class CSVParserTest {
             record = parser.nextRecord();
             assertEquals("1414770318327", record.get(0));
             assertEquals("android.widget.EditText", record.get(1));
-            assertEquals("pass sem1", record.get(2));
-            assertEquals(3, record.size());
-            // row 4
-            record = parser.nextRecord();
-            assertEquals("1414770318628", record.get(0));
-            assertEquals("android.widget.EditText", record.get(1));
-            assertEquals("pass sem1 _84*|*", record.get(2));
-            assertEquals("0", record.get(3));
-            assertEquals("pass sem1", record.get(4));
-            assertEquals(5, record.size());
+            assertEquals("pass sem1\n1414770318628\"", record.get(2));
+            assertEquals("android.widget.EditText", record.get(3));
+            assertEquals("pass sem1 _84*|*", record.get(4));
+            assertEquals("0", record.get(5));
+            assertEquals("pass sem1\n", record.get(6));
+            assertEquals(7, record.size());
         }
     }
 
