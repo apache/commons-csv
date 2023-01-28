@@ -17,6 +17,7 @@
 package org.apache.commons.csv.issues;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -51,6 +52,7 @@ public class JiraCsv149Test {
         int lineCounter = 2;
         try (final CSVParser parser = new CSVParser(records, format)) {
             for (final CSVRecord record : parser) {
+                assertNotNull(record);
                 assertEquals(lineCounter++, parser.getCurrentLineNumber());
             }
         }
