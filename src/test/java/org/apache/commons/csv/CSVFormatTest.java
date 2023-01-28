@@ -45,6 +45,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Objects;
 
+import org.apache.commons.csv.CSVFormat.Builder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -139,13 +140,30 @@ public class CSVFormatTest {
         assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.withAllowDuplicateHeaderNames(false).withHeader("A", "A"));
     }
 
+    @Test
     public void testDuplicateHeaderElementsTrue() {
         CSVFormat.DEFAULT.builder().setAllowDuplicateHeaderNames(true).setHeader("A", "A").build();
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testDuplicateHeaderElementsTrue_Deprecated() {
         CSVFormat.DEFAULT.withAllowDuplicateHeaderNames(true).withHeader("A", "A");
+    }
+
+    @Test
+    public void testDuplicateHeaderElementsTrueContainsEmpty1() {
+        CSVFormat.DEFAULT.builder().setAllowDuplicateHeaderNames(false).setHeader("A", "", "B", "").build();
+    }
+
+    @Test
+    public void testDuplicateHeaderElementsTrueContainsEmpty2() {
+        CSVFormat.DEFAULT.builder().setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_EMPTY).setHeader("A", "", "B", "").build();
+    }
+
+    @Test
+    public void testDuplicateHeaderElementsTrueContainsEmpty3() {
+        CSVFormat.DEFAULT.builder().setAllowDuplicateHeaderNames(false).setAllowMissingColumnNames(true).setHeader("A", "", "B", "").build();
     }
 
     @Test
@@ -680,6 +698,25 @@ public class CSVFormatTest {
                 "Delimiter=<,> Escape=<?> QuoteChar=<\"> QuoteMode=<MINIMAL> NullString=<> RecordSeparator=<" + CRLF
                         + "> IgnoreHeaderCase:ignored SkipHeaderRecord:false HeaderComments:[This is HeaderComments] Header:[col1, col2, col3]",
                 format.toString());
+    }
+
+    @Test
+    public void testGetAllowDuplicateHeaderNames() {
+        final Builder builder = CSVFormat.DEFAULT.builder();
+        assertTrue(builder.build().getAllowDuplicateHeaderNames());
+        assertTrue(builder.setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL).build().getAllowDuplicateHeaderNames());
+        assertFalse(builder.setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_EMPTY).build().getAllowDuplicateHeaderNames());
+        assertFalse(builder.setDuplicateHeaderMode(DuplicateHeaderMode.DISALLOW).build().getAllowDuplicateHeaderNames());
+    }
+
+    @Test
+    public void testGetDuplicateHeaderMode() {
+        final Builder builder = CSVFormat.DEFAULT.builder();
+
+        assertEquals(DuplicateHeaderMode.ALLOW_ALL, builder.build().getDuplicateHeaderMode());
+        assertEquals(DuplicateHeaderMode.ALLOW_ALL, builder.setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL).build().getDuplicateHeaderMode());
+        assertEquals(DuplicateHeaderMode.ALLOW_EMPTY, builder.setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_EMPTY).build().getDuplicateHeaderMode());
+        assertEquals(DuplicateHeaderMode.DISALLOW, builder.setDuplicateHeaderMode(DuplicateHeaderMode.DISALLOW).build().getDuplicateHeaderMode());
     }
 
     @Test

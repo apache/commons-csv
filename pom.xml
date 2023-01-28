@@ -20,10 +20,10 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>54</version>
+    <version>56</version>
   </parent>
   <artifactId>commons-csv</artifactId>
-  <version>1.10.0</version>
+  <version>1.10.0-SNAPSHOT</version>
   <name>Apache Commons CSV</name>
   <url>https://commons.apache.org/proper/commons-csv/</url>
   <inceptionYear>2005</inceptionYear>
@@ -44,7 +44,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.8.0</version>
+      <version>4.11.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -154,7 +154,7 @@
     <commons.release.version>1.10.0</commons.release.version>
     <commons.release.desc>(Java 8)</commons.release.desc>
     <!-- The RC version used in the staging repository URL. -->
-    <commons.rc.version>RC1</commons.rc.version>
+    <commons.rc.version>RC2</commons.rc.version>
     <commons.bc.version>1.9.0</commons.bc.version>
     <commons.componentid>csv</commons.componentid>
     <commons.module.name>org.apache.commons.csv</commons.module.name>
@@ -168,22 +168,11 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <commons.encoding>UTF-8</commons.encoding>
 
-    <commons.checkstyle-plugin.version>3.2.0</commons.checkstyle-plugin.version>
-    <commons.checkstyle.version>9.3</commons.checkstyle.version>
     <checkstyle.header.file>${basedir}/src/site/resources/checkstyle/checkstyle-header.txt</checkstyle.header.file>
     <checkstyle.config.file>${basedir}/src/site/resources/checkstyle/checkstyle.xml</checkstyle.config.file>
     <checkstyle.suppress.file>${basedir}/src/site/resources/checkstyle/checkstyle-suppressions.xml</checkstyle.suppress.file>
     <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt, **/maven-archiver/pom.properties</checkstyle.resourceExcludes>
 
-    <commons.junit.version>5.9.1</commons.junit.version>
-    <commons.pmd.version>3.19.0</commons.pmd.version>
-    <commons.pmd-impl.version>6.50.0</commons.pmd-impl.version>
-    <commons.jacoco.version>0.8.8</commons.jacoco.version>
-    <commons.spotbugs.version>4.7.2.1</commons.spotbugs.version>
-    <commons.spotbugs.impl.version>4.7.2</commons.spotbugs.impl.version>
-    <commons.japicmp.version>0.16.0</commons.japicmp.version>
-    <commons.javadoc.version>3.4.1</commons.javadoc.version>
-    <commons.biz.aQute.bndlib.version>6.3.1</commons.biz.aQute.bndlib.version>
     <japicmp.skip>false</japicmp.skip>
 
     <commons.release.isDistModule>true</commons.release.isDistModule>
@@ -227,6 +216,7 @@
             <excludes>
               <!-- These files are used as test data and test result specifications. -->
               <exclude>src/test/resources/org/apache/commons/csv/empty.txt</exclude>
+              <exclude>src/test/resources/org/apache/commons/csv/CSV-141/csv-141.csv</exclude>
               <exclude>src/test/resources/org/apache/commons/csv/csv-167/sample1.csv</exclude>
               <exclude>src/test/resources/org/apache/commons/csv/CSV-198/optd_por_public.csv</exclude>
               <exclude>src/test/resources/org/apache/commons/csv/CSV-213/999751170.patch.csv</exclude>
@@ -307,7 +297,6 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${commons.spotbugs.version}</version>
         <configuration>
           <excludeFilterFile>${basedir}/src/site/resources/spotbugs/spotbugs-exclude-filter.xml</excludeFilterFile>
         </configuration>
@@ -414,14 +403,14 @@
         <dependency>
           <groupId>org.openjdk.jmh</groupId>
           <artifactId>jmh-core</artifactId>
-          <version>1.35</version>
+          <version>1.36</version>
           <scope>test</scope>
         </dependency>
 
         <dependency>
           <groupId>org.openjdk.jmh</groupId>
           <artifactId>jmh-generator-annprocess</artifactId>
-          <version>1.35</version>
+          <version>1.36</version>
           <scope>test</scope>
         </dependency>
 
@@ -442,7 +431,7 @@
         <dependency>
           <groupId>com.opencsv</groupId>
           <artifactId>opencsv</artifactId>
-          <version>5.7.0</version>
+          <version>5.7.1</version>
           <scope>test</scope>
         </dependency>
 

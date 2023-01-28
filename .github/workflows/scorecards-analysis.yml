@@ -40,12 +40,12 @@ jobs:
     steps:
 
       - name: "Checkout code"
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8   # 3.0.2
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c   # 3.3.0
         with:
           persist-credentials: false
 
       - name: "Run analysis"
-        uses: ossf/scorecard-action@ce330fde6b1a5c9c75b417e7efc510b822a35564    # 1.1.2
+        uses: ossf/scorecard-action@e38b1902ae4f44df626f11ba0734b14fb91f8f86    # 2.1.2
         with:
           results_file: results.sarif
           results_format: sarif
@@ -57,7 +57,7 @@ jobs:
           publish_results: true
 
       - name: "Upload artifact"
-        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8    # 3.1.0
+        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce    # 3.1.0
         with:
           name: SARIF file
           path: results.sarif

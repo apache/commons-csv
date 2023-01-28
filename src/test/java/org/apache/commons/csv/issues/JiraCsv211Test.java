@@ -29,15 +29,13 @@ public class JiraCsv211Test {
 
     @Test
     public void testJiraCsv211Format() throws IOException {
-        final String[] values = {"1", "Jane Doe", "USA", ""};
-
         // @formatter:off
         final CSVFormat printFormat = CSVFormat.DEFAULT.builder()
             .setDelimiter('\t')
             .setHeader("ID", "Name", "Country", "Age")
             .build();
         // @formatter:on
-        final String formatted = printFormat.format(values);
+        final String formatted = printFormat.format("1", "Jane Doe", "USA", "");
         assertEquals("ID\tName\tCountry\tAge\r\n1\tJane Doe\tUSA\t", formatted);
 
         final CSVFormat parseFormat = CSVFormat.DEFAULT.builder().setDelimiter('\t').setHeader().setSkipHeaderRecord(true).build();

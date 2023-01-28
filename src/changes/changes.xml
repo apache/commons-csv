@@ -38,7 +38,7 @@
     <title>Apache Commons CSV Release Notes</title>
   </properties>
   <body>
-    <release version="1.10.0" date="2022-10-16" description="Feature and bug fix release (Java 8)">
+    <release version="1.10.0" date="2023-01-28" description="Feature and bug fix release (Java 8)">
       <!-- FIX -->
       <action                 type="fix" dev="ggregory" due-to="Arturo Bernal">Minor changes #172.</action>
       <action issue="CSV-292" type="fix" dev="kinow" due-to="Rob Vesse">No Automatic-Module-Name prevents usage in JPMS projects without repacking the JAR.</action>
@@ -50,6 +50,10 @@
       <action issue="CSV-274" type="fix" dev="ggregory" due-to="Peter Hull, Bruno P. Kinoshita, Gary Gregory">Add comments to iterator() and stream() #270.</action>
       <action issue="CSV-290" type="fix" dev="ggregory" due-to="angusdev, Gary Gregory">Fix wrong assumptions in PostgreSQL formats #265.</action>
       <action                 type="fix" dev="ggregory" due-to="Mykola Faryma">Validate input to setDelimiter(String) for empty string #266.</action>
+      <action                 type="fix" dev="ggregory" due-to="Dependabot">Bump CSVFormat#serialVersionUID from 1 to 2.</action>
+      <action                 type="fix" dev="ggregory" due-to="Alex Herbert">CSVParser: Identify duplicates in null, empty and blank header names #279.</action>
+      <!-- REMOVE -->
+      <action                 type="remove" dev="ggregory">Serialization in CSVFormat is not supported from one version to the next.</action>
       <!-- ADD -->
       <action issue="CSV-291" type="add" dev="ggregory" due-to="Gary Gregory">Make CSVRecord#values() public.</action>
       <action issue="CSV-264" type="add" dev="ggregory" due-to="Sagar Tiwari, Seth Falco, Alex Herbert, Gary Gregory">Add DuplicateHeaderMode for flexibility with header strictness. #114.</action>
@@ -61,16 +65,17 @@
       <action                 type="update" dev="kinow" due-to="Dependabot, Gary Gregory">Bump actions/cache from 2.1.6 to 3.0.10 #196, #233, #243, #267, #271.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump actions/checkout from 2.3.4 to 3.1.0 #188, #195, #220, #272.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump actions/setup-java from 2 to 3.5.1.</action>
-      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 52 to 54 #264.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump actions/upload-artifact from 3.1.0 to 3.1.1 #280.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 52 to 56 #264, #288, #298.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump checkstyle from 8.44 to 9.2.1 #180, #190, #194, #202, #207.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump junit-jupiter from 5.8.0-M1 to 5.9.1 #179, #186, #201, #244, #263.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-core from 1.32 to 1.35 #176, #208, #229.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-generator-annprocess from 1.32 to 1.35 #175, #206, #226.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump mockito-core from 3.11.2 to 4.8.0 #187, #197, #204, #212, #230, #237, #251, #259.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-core from 1.32 to 1.36 #176, #208, #229, #285.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-generator-annprocess from 1.32 to 1.36 #175, #206, #226, #283.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump mockito-core from 3.11.2 to 4.11.0 #187, #197, #204, #212, #230, #237, #251, #259, #284, #292, #297.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump maven-pmd-plugin from 3.14.0 to 3.19.0 #184, #219, #238, #254, #258.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump pmd from 6.36.0 to 6.50.0 #173, #189, #193, #199, #227, #233, #214, #236, #240, #247, #255, #273.</action>
-      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump opencsv from 5.5.1 to 5.7.0 #182, #221, #260.</action>
-      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump spotbugs-maven-plugin from 4.3.0 to 4.7.2.1 #192, #198, #203, #211, #225, #234, #242, #245, #261, #275.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump pmd from 6.36.0 to 6.52.0 #173, #189, #193, #199, #227, #233, #214, #236, #240, #247, #255, #273.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump opencsv from 5.5.1 to 5.7.1 #182, #221, #260, #281.</action>
+      <action                 type="update" dev="ggregory" due-to="Dependabot">Bump spotbugs-maven-plugin from 4.3.0 to 4.7.3.0 #192, #198, #203, #211, #225, #234, #242, #245, #261, #275, #282.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump com.github.spotbugs:spotbugs from 4.5.3 to 4.7.2.</action>
       <action                 type="update" dev="kinow" due-to="Dependabot">Bump h2 from 1.4.200 to 2.1.214 #200, #205, #213, #239.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump maven-javadoc-plugin from 3.3.0 to 3.4.1.</action>
@@ -243,7 +248,7 @@ removed in version 2.0.
     </release>
     <release version="1.0" date="2014-08-14" description="First release (Java 6)">
       <action issue="CSV-125" type="fix" dev="britter">No longer works with Java 6</action>
-      <action issue="CSV-122" type="fix" dev="britter" due-to="Mike Lewis">NullPointerException when empty header string and and null string of ""</action>
+      <action issue="CSV-122" type="fix" dev="britter" due-to="Mike Lewis">NullPointerException when empty header string and null string of ""</action>
       <action issue="CSV-117" type="update" dev="sebb">Validate format parameters in constructor</action>
       <action issue="CSV-121" type="add" dev="ggregory" due-to="Sebastian Hardt">IllegalArgumentException thrown when the header contains duplicate names when the column names are empty.</action>
       <action issue="CSV-120" type="add" dev="ggregory" due-to="Sergei Lebedev">CSVFormat#withHeader doesn't work with CSVPrinter</action>

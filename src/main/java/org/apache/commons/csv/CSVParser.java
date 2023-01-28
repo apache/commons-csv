@@ -192,6 +192,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Header information based on name and position.
      */
     private static final class Headers {
+
         /**
          * Header column positions (0-based)
          */
@@ -383,7 +384,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private final Token reusableToken = new Token();
 
     /**
-     * Customized CSV parser using the given {@link CSVFormat}
+     * Constructs a new instance using the given {@link CSVFormat}
      *
      * <p>
      * If you do not read all records from the given {@code reader}, you should call {@link #close()} on the parser,
@@ -404,7 +405,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Customized CSV parser using the given {@link CSVFormat}
+     * Constructs a new instance using the given {@link CSVFormat}
      *
      * <p>
      * If you do not read all records from the given {@code reader}, you should call {@link #close()} on the parser,
@@ -440,12 +441,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     private void addRecordValue(final boolean lastRecord) {
-        final String input = this.reusableToken.content.toString();
-        final String inputClean = this.format.getTrim() ? input.trim() : input;
-        if (lastRecord && inputClean.isEmpty() && this.format.getTrailingDelimiter()) {
+        final String input = this.format.trim(this.reusableToken.content.toString());
+        if (lastRecord && input.isEmpty() && this.format.getTrailingDelimiter()) {
             return;
         }
-        this.recordList.add(handleNull(inputClean));
+        this.recordList.add(handleNull(input));
     }
 
     /**
@@ -499,25 +499,28 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
             // build the name to index mappings
             if (headerRecord != null) {
+                // Track an occurrence of a null, empty or blank header.
+                boolean observedMissing = false;
                 for (int i = 0; i < headerRecord.length; i++) {
                     final String header = headerRecord[i];
-                    final boolean emptyHeader = header == null || header.trim().isEmpty();
-                    if (emptyHeader && !this.format.getAllowMissingColumnNames()) {
+                    final boolean blankHeader = CSVFormat.isBlank(header);
+                    if (blankHeader && !this.format.getAllowMissingColumnNames()) {
                         throw new IllegalArgumentException(
                             "A header name is missing in " + Arrays.toString(headerRecord));
                     }
 
-                    final boolean containsHeader = header != null && hdrMap.containsKey(header);
+                    final boolean containsHeader = blankHeader ? observedMissing : hdrMap.containsKey(header);
                     final DuplicateHeaderMode headerMode = this.format.getDuplicateHeaderMode();
                     final boolean duplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_ALL;
                     final boolean emptyDuplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_EMPTY;
 
-                    if (containsHeader && !duplicatesAllowed && !(emptyHeader && emptyDuplicatesAllowed)) {
+                    if (containsHeader && !duplicatesAllowed && !(blankHeader && emptyDuplicatesAllowed)) {
                         throw new IllegalArgumentException(
                             String.format(
                                 "The header contains a duplicate name: \"%s\" in %s. If this is valid then use CSVFormat.Builder.setDuplicateHeaderMode().",
                                 header, Arrays.toString(headerRecord)));
                     }
+                    observedMissing |= blankHeader;
                     if (header != null) {
                         hdrMap.put(header, Integer.valueOf(i));
                         if (headerNames == null) {
@@ -529,7 +532,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             }
         }
         if (headerNames == null) {
-            headerNames = Collections.emptyList(); //immutable
+            headerNames = Collections.emptyList(); // immutable
         } else {
             headerNames = Collections.unmodifiableList(headerNames);
         }
@@ -537,7 +540,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Returns the current line number in the input stream.
+     * Gets the current line number in the input stream.
      *
      * <p>
      * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
@@ -561,7 +564,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Returns the header comment, if any.
+     * Gets the header comment, if any.
      * The header comment appears before the header record.
      *
      * @return the header comment for this stream, or null if no comment is available.
@@ -572,7 +575,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Returns a copy of the header map.
+     * Gets a copy of the header map as defined in the CSVFormat's header.
      * <p>
      * The map keys are column names. The map values are 0-based indices.
      * </p>
@@ -593,16 +596,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Returns the header map.
+     * Gets the underlying header map.
      *
-     * @return the header map.
+     * @return the underlying header map.
      */
     Map<String, Integer> getHeaderMapRaw() {
         return this.headers.headerMap;
     }
 
     /**
-     * Returns a read-only list of header names that iterates in column order.
+     * Gets a read-only list of header names that iterates in column order as defined in the CSVFormat's header.
      * <p>
      * Note: The list provides strings that can be used as keys in the header map.
      * The list will not contain null column names if they were present in the input
@@ -618,7 +621,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Returns the current record number in the input stream.
+     * Gets the current record number in the input stream.
      *
      * <p>
      * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
@@ -648,7 +651,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Returns the trailer comment, if any.
+     * Gets the trailer comment, if any.
      * Trailer comments are located between the last record and EOF
      *
      * @return the trailer comment for this stream, or null if no comment is available.

@@ -12,7 +12,7 @@ Commons CSV requires at least Java 8.
 
 The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
 
-This is a feature and bug fix release.
+Feature and bug fix release (Java 8)
 
 Changes in this version include:
 
@@ -39,6 +39,8 @@ o           CSVParser.getRecords() now throws UncheckedIOException instead of IO
 o CSV-274:  Add comments to iterator() and stream() #270. Thanks to Peter Hull, Bruno P. Kinoshita, Gary Gregory.
 o CSV-290:  Fix wrong assumptions in PostgreSQL formats #265. Thanks to angusdev, Gary Gregory.
 o           Validate input to setDelimiter(String) for empty string #266. Thanks to Mykola Faryma.
+o           Bump CSVFormat#serialVersionUID from 1 to 2. Thanks to Dependabot.
+o           CSVParser: Identify duplicates in null, empty and blank header names #279. Thanks to Alex Herbert.
 
 CHANGES
 =======
@@ -46,16 +48,17 @@ CHANGES
 o           Bump actions/cache from 2.1.6 to 3.0.10 #196, #233, #243, #267, #271. Thanks to Dependabot, Gary Gregory.
 o           Bump actions/checkout from 2.3.4 to 3.1.0 #188, #195, #220, #272. Thanks to Dependabot, Gary Gregory.
 o           Bump actions/setup-java from 2 to 3.5.1. Thanks to Gary Gregory.
-o           Bump commons-parent from 52 to 54 #264. Thanks to Gary Gregory.
+o           Bump actions/upload-artifact from 3.1.0 to 3.1.1 #280. Thanks to Dependabot.
+o           Bump commons-parent from 52 to 56 #264, #288, #298. Thanks to Gary Gregory.
 o           Bump checkstyle from 8.44 to 9.2.1 #180, #190, #194, #202, #207. Thanks to Dependabot.
 o           Bump junit-jupiter from 5.8.0-M1 to 5.9.1 #179, #186, #201, #244, #263. Thanks to Dependabot.
-o           Bump jmh-core from 1.32 to 1.35 #176, #208, #229. Thanks to Dependabot.
-o           Bump jmh-generator-annprocess from 1.32 to 1.35 #175, #206, #226. Thanks to Dependabot.
-o           Bump mockito-core from 3.11.2 to 4.8.0 #187, #197, #204, #212, #230, #237, #251, #259. Thanks to Dependabot, Gary Gregory.
+o           Bump jmh-core from 1.32 to 1.36 #176, #208, #229, #285. Thanks to Dependabot.
+o           Bump jmh-generator-annprocess from 1.32 to 1.36 #175, #206, #226, #283. Thanks to Dependabot.
+o           Bump mockito-core from 3.11.2 to 4.11.0 #187, #197, #204, #212, #230, #237, #251, #259, #284, #292, #297. Thanks to Dependabot, Gary Gregory.
 o           Bump maven-pmd-plugin from 3.14.0 to 3.19.0 #184, #219, #238, #254, #258. Thanks to Dependabot.
-o           Bump pmd from 6.36.0 to 6.50.0 #173, #189, #193, #199, #227, #233, #214, #236, #240, #247, #255, #273. Thanks to Dependabot, Gary Gregory.
-o           Bump opencsv from 5.5.1 to 5.7.0 #182, #221, #260. Thanks to Gary Gregory.
-o           Bump spotbugs-maven-plugin from 4.3.0 to 4.7.2.1 #192, #198, #203, #211, #225, #234, #242, #245, #261, #275. Thanks to Dependabot.
+o           Bump pmd from 6.36.0 to 6.52.0 #173, #189, #193, #199, #227, #233, #214, #236, #240, #247, #255, #273. Thanks to Dependabot, Gary Gregory.
+o           Bump opencsv from 5.5.1 to 5.7.1 #182, #221, #260, #281. Thanks to Gary Gregory.
+o           Bump spotbugs-maven-plugin from 4.3.0 to 4.7.3.0 #192, #198, #203, #211, #225, #234, #242, #245, #261, #275, #282. Thanks to Dependabot.
 o           Bump com.github.spotbugs:spotbugs from 4.5.3 to 4.7.2. Thanks to Gary Gregory.
 o           Bump h2 from 1.4.200 to 2.1.214 #200, #205, #213, #239. Thanks to Dependabot.
 o           Bump maven-javadoc-plugin from 3.3.0 to 3.4.1. Thanks to Gary Gregory.
@@ -64,11 +67,13 @@ o           Bump jacoco-maven-plugin from 0.8.7 to 0.8.8. Thanks to Gary Gregory
 o           Bump japicmp-maven-plugin from 0.15.3 to 0.16.0. Thanks to Gary Gregory.
 o           Bump maven-checkstyle-plugin from 3.1.2 to 3.2.0 #253. Thanks to Dependabot.
 
+Removed:
+o           Serialization in CSVFormat is not supported from one version to the next.
 
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -175,7 +180,7 @@ o           Bump biz.aQute.bnd:biz.aQute.bndlib from 5.1.2 to 5.3.0. Thanks to D
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -235,7 +240,7 @@ o           Fix typo performance test #55. Thanks to Chen.
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -287,7 +292,7 @@ o           Update tests from H2 1.4.198 to 1.4.199. Thanks to Gary Gregory.
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -400,7 +405,7 @@ o CSV-201: Do not use RuntimeException in CSVParser.iterator().new Iterator() {.
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -444,7 +449,7 @@ o CSV-183:  Drop ferc.gov tests.
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -536,7 +541,7 @@ o CSV-156:  Incorrect Javadoc on QuoteMode.NONE. Thanks to Jason Steenstra-Picke
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -582,7 +587,7 @@ o [CSV-134] Unified parameter validation. Thanks to wu wen.
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 
@@ -628,7 +633,7 @@ FIXED BUGS
 ==========
 
 o CSV-125:  No longer works with Java 6
-o CSV-122:  NullPointerException when empty header string and and null string of "".
+o CSV-122:  NullPointerException when empty header string and null string of "".
             Thanks to Mike Lewis.
 o CSV-118:  CSVRecord.toMap() throws NPE on formats with no
             headers. Thanks to Enrique Lara.
@@ -677,7 +682,7 @@ o CSV-27:   Decide whether to keep the csv.writer subpackage
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
 For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
-patches, or suggestions for improvement, see the Apache Apache Commons CSV website:
+patches, or suggestions for improvement, see the Apache Commons CSV website:
 
 https://commons.apache.org/proper/commons-csv/
 

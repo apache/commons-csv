@@ -49,7 +49,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Specifies the format of a CSV file and parses input.
+ * Specifies the format of a CSV file for parsing and writing.
  *
  * <h2>Using predefined formats</h2>
  *
@@ -154,10 +154,28 @@ import java.util.Set;
  * This makes your code impervious to changes in column order in the CSV file.
  * </p>
  *
- * <h2>Notes</h2>
+ * <h2>Serialization</h2>
+ * <p>
+ *   This class implements the {@link Serializable} interface with the following caveats:
+ * </p>
+ * <ul>
+ *   <li>This class will no longer implement Serializable in 2.0.</li>
+ *   <li>Serialization is not supported from one version to the next.</li>
+ * </ul>
+ * <p>
+ *   The {@code serialVersionUID} values are:
+ * </p>
+ * <ul>
+ *   <li>Version 1.10.0: {@code 2L}</li>
+ *   <li>Version 1.9.0 through 1.0: {@code 1L}</li>
+ * </ul>
  *
+ * <h2>Notes</h2>
  * <p>
  * This class is immutable.
+ * </p>
+ * <p>
+ * Not all settings are used for both parsing and writing.
  * </p>
  */
 public final class CSVFormat implements Serializable {
@@ -238,7 +256,7 @@ public final class CSVFormat implements Serializable {
             this.recordSeparator = csvFormat.recordSeparator;
             this.nullString = csvFormat.nullString;
             this.headerComments = csvFormat.headerComments;
-            this.headers = csvFormat.header;
+            this.headers = csvFormat.headers;
             this.skipHeaderRecord = csvFormat.skipHeaderRecord;
             this.ignoreHeaderCase = csvFormat.ignoreHeaderCase;
             this.trailingDelimiter = csvFormat.trailingDelimiter;
@@ -266,13 +284,12 @@ public final class CSVFormat implements Serializable {
          */
         @Deprecated
         public Builder setAllowDuplicateHeaderNames(final boolean allowDuplicateHeaderNames) {
-            final DuplicateHeaderMode mode = allowDuplicateHeaderNames ? DuplicateHeaderMode.ALLOW_ALL : DuplicateHeaderMode.ALLOW_EMPTY;
-            setDuplicateHeaderMode(mode);
+            setDuplicateHeaderMode(allowDuplicateHeaderNames ? DuplicateHeaderMode.ALLOW_ALL : DuplicateHeaderMode.ALLOW_EMPTY);
             return this;
         }
 
         /**
-         * Sets the missing column names behavior, {@code true} to allow missing column names in the header line, {@code false} to cause an
+         * Sets the parser missing column names behavior, {@code true} to allow missing column names in the header line, {@code false} to cause an
          * {@link IllegalArgumentException} to be thrown.
          *
          * @param allowMissingColumnNames the missing column names behavior, {@code true} to allow missing column names in the header line, {@code false} to
@@ -361,7 +378,7 @@ public final class CSVFormat implements Serializable {
          * @since 1.10.0
          */
         public Builder setDuplicateHeaderMode(final DuplicateHeaderMode duplicateHeaderMode) {
-          this.duplicateHeaderMode = duplicateHeaderMode;
+          this.duplicateHeaderMode = Objects.requireNonNull(duplicateHeaderMode, "duplicateHeaderMode");
           return this;
         }
 
@@ -547,7 +564,7 @@ public final class CSVFormat implements Serializable {
         }
 
         /**
-         * Sets the case mapping behavior, {@code true} to access name/values, {@code false} to leave the mapping as is.
+         * Sets the parser case mapping behavior, {@code true} to access name/values, {@code false} to leave the mapping as is.
          *
          * @param ignoreHeaderCase the case mapping behavior, {@code true} to access name/values, {@code false} to leave the mapping as is.
          * @return This instance.
@@ -1137,7 +1154,7 @@ public final class CSVFormat implements Serializable {
      */
     public static final CSVFormat RFC4180 = DEFAULT.builder().setIgnoreEmptyLines(false).build();
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     /**
      * Tab-delimited format.
@@ -1196,6 +1213,10 @@ public final class CSVFormat implements Serializable {
         return contains(source, CR) || contains(source, LF);
     }
 
+    static boolean isBlank(final String value) {
+        return value == null || value.trim().isEmpty();
+    }
+
     /**
      * Returns true if the given character is a line break character.
      *
@@ -1218,11 +1239,13 @@ public final class CSVFormat implements Serializable {
         return c != null && isLineBreak(c.charValue());
     }
 
+    /** Same test as in as {@link String#trim()}. */
     private static boolean isTrimChar(final char ch) {
         return ch <= SP;
     }
 
-    private static boolean isTrimChar(final CharSequence charSequence, int pos) {
+    /** Same test as in as {@link String#trim()}. */
+    private static boolean isTrimChar(final CharSequence charSequence, final int pos) {
         return isTrimChar(charSequence.charAt(pos));
     }
 
@@ -1297,7 +1320,7 @@ public final class CSVFormat implements Serializable {
 
     private final Character escapeCharacter; // null if escaping is disabled
 
-    private final String[] header; // array of header column names
+    private final String[] headers; // array of header column names
 
     private final String[] headerComments; // array of header comment lines
 
@@ -1335,7 +1358,7 @@ public final class CSVFormat implements Serializable {
         this.recordSeparator = builder.recordSeparator;
         this.nullString = builder.nullString;
         this.headerComments = builder.headerComments;
-        this.header = builder.headers;
+        this.headers = builder.headers;
         this.skipHeaderRecord = builder.skipHeaderRecord;
         this.ignoreHeaderCase = builder.ignoreHeaderCase;
         this.trailingDelimiter = builder.trailingDelimiter;
@@ -1385,7 +1408,7 @@ public final class CSVFormat implements Serializable {
         this.recordSeparator = recordSeparator;
         this.nullString = nullString;
         this.headerComments = toStringArray(headerComments);
-        this.header = clone(header);
+        this.headers = clone(header);
         this.skipHeaderRecord = skipHeaderRecord;
         this.ignoreHeaderCase = ignoreHeaderCase;
         this.trailingDelimiter = trailingDelimiter;
@@ -1441,7 +1464,7 @@ public final class CSVFormat implements Serializable {
         final CSVFormat other = (CSVFormat) obj;
         return duplicateHeaderMode == other.duplicateHeaderMode && allowMissingColumnNames == other.allowMissingColumnNames &&
                 autoFlush == other.autoFlush && Objects.equals(commentMarker, other.commentMarker) && Objects.equals(delimiter, other.delimiter) &&
-                Objects.equals(escapeCharacter, other.escapeCharacter) && Arrays.equals(header, other.header) &&
+                Objects.equals(escapeCharacter, other.escapeCharacter) && Arrays.equals(headers, other.headers) &&
                 Arrays.equals(headerComments, other.headerComments) && ignoreEmptyLines == other.ignoreEmptyLines &&
                 ignoreHeaderCase == other.ignoreHeaderCase && ignoreSurroundingSpaces == other.ignoreSurroundingSpaces &&
                 Objects.equals(nullString, other.nullString) && Objects.equals(quoteCharacter, other.quoteCharacter) && quoteMode == other.quoteMode &&
@@ -1554,7 +1577,7 @@ public final class CSVFormat implements Serializable {
      * @return a copy of the header array; {@code null} if disabled, the empty array if to be read from the file
      */
     public String[] getHeader() {
-        return header != null ? header.clone() : null;
+        return headers != null ? headers.clone() : null;
     }
 
     /**
@@ -1576,7 +1599,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Gets whether header names will be accessed ignoring case.
+     * Gets whether header names will be accessed ignoring case when parsing input.
      *
      * @return {@code true} if header names cases are ignored, {@code false} if they are case sensitive.
      * @since 1.3
@@ -1667,7 +1690,7 @@ public final class CSVFormat implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + Arrays.hashCode(header);
+        result = prime * result + Arrays.hashCode(headers);
         result = prime * result + Arrays.hashCode(headerComments);
         return prime * result + Objects.hash(duplicateHeaderMode, allowMissingColumnNames, autoFlush, commentMarker, delimiter, escapeCharacter,
                 ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, nullString, quoteCharacter, quoteMode, quotedNullString, recordSeparator,
@@ -2229,15 +2252,23 @@ public final class CSVFormat implements Serializable {
             sb.append(' ');
             sb.append("HeaderComments:").append(Arrays.toString(headerComments));
         }
-        if (header != null) {
+        if (headers != null) {
             sb.append(' ');
-            sb.append("Header:").append(Arrays.toString(header));
+            sb.append("Header:").append(Arrays.toString(headers));
         }
         return sb.toString();
     }
 
+    String trim(final String value) {
+        return getTrim() ? value.trim() : value;
+    }
+
     /**
-     * Verifies the validity and consistency of the attributes, and throws an IllegalArgumentException if necessary.
+     * Verifies the validity and consistency of the attributes, and throws an {@link IllegalArgumentException} if necessary.
+     * <p>
+     * Because an instance can be used for both writing an parsing, not all conditions can be tested here. For example allowMissingColumnNames is only used for
+     * parsing, so it cannot be used here.
+     * </p>
      *
      * @throws IllegalArgumentException Throw when any attribute is invalid or inconsistent with other attributes.
      */
@@ -2270,19 +2301,26 @@ public final class CSVFormat implements Serializable {
             throw new IllegalArgumentException("No quotes mode set but no escape character is set");
         }
 
-        // validate header
-        if (header != null && duplicateHeaderMode != DuplicateHeaderMode.ALLOW_ALL) {
-            final Set<String> dupCheck = new HashSet<>();
-            for (final String hdr : header) {
-                if (!dupCheck.add(hdr)) {
-                    throw new IllegalArgumentException("The header contains a duplicate entry: '" + hdr + "' in " + Arrays.toString(header));
+        // Validate headers
+        if (headers != null && duplicateHeaderMode != DuplicateHeaderMode.ALLOW_ALL) {
+            final Set<String> dupCheckSet = new HashSet<>(headers.length);
+            final boolean emptyDuplicatesAllowed = duplicateHeaderMode == DuplicateHeaderMode.ALLOW_EMPTY;
+            for (final String header : headers) {
+                final boolean blank = isBlank(header);
+                // Sanitise all empty headers to the empty string "" when checking duplicates
+                final boolean containsHeader = !dupCheckSet.add(blank ? "" : header);
+                if (containsHeader && !(blank && emptyDuplicatesAllowed)) {
+                    throw new IllegalArgumentException(
+                        String.format(
+                            "The header contains a duplicate name: \"%s\" in %s. If this is valid then use CSVFormat.Builder.setDuplicateHeaderMode().",
+                            header, Arrays.toString(headers)));
                 }
             }
         }
     }
 
     /**
-     * Returns a new {@code CSVFormat} that allows duplicate header names.
+     * Builds a new {@code CSVFormat} that allows duplicate header names.
      *
      * @return a new {@code CSVFormat} that allows duplicate header names
      * @since 1.7
@@ -2294,7 +2332,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with duplicate header names behavior set to the given value.
+     * Builds a new {@code CSVFormat} with duplicate header names behavior set to the given value.
      *
      * @param allowDuplicateHeaderNames the duplicate header names behavior, true to allow, false to disallow.
      * @return a new {@code CSVFormat} with duplicate header names behavior set to the given value.
@@ -2308,7 +2346,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the missing column names behavior of the format set to {@code true}.
+     * Builds a new {@code CSVFormat} with the missing column names behavior of the format set to {@code true}.
      *
      * @return A new CSVFormat that is equal to this but with the specified missing column names behavior.
      * @see Builder#setAllowMissingColumnNames(boolean)
@@ -2321,7 +2359,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the missing column names behavior of the format set to the given value.
+     * Builds a new {@code CSVFormat} with the missing column names behavior of the format set to the given value.
      *
      * @param allowMissingColumnNames the missing column names behavior, {@code true} to allow missing column names in the header line, {@code false} to cause
      *                                an {@link IllegalArgumentException} to be thrown.
@@ -2334,7 +2372,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with whether to flush on close.
+     * Builds a new {@code CSVFormat} with whether to flush on close.
      *
      * @param autoFlush whether to flush on close.
      *
@@ -2348,7 +2386,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the comment start marker of the format set to the specified character.
+     * Builds a new {@code CSVFormat} with the comment start marker of the format set to the specified character.
      *
      * Note that the comment start character is only recognized at the start of a line.
      *
@@ -2363,7 +2401,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the comment start marker of the format set to the specified character.
+     * Builds a new {@code CSVFormat} with the comment start marker of the format set to the specified character.
      *
      * Note that the comment start character is only recognized at the start of a line.
      *
@@ -2378,7 +2416,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the delimiter of the format set to the specified character.
+     * Builds a new {@code CSVFormat} with the delimiter of the format set to the specified character.
      *
      * @param delimiter the delimiter character
      * @return A new CSVFormat that is equal to this with the specified character as delimiter
@@ -2391,7 +2429,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the escape character of the format set to the specified character.
+     * Builds a new {@code CSVFormat} with the escape character of the format set to the specified character.
      *
      * @param escape the escape character
      * @return A new CSVFormat that is equal to this but with the specified character as the escape character
@@ -2404,7 +2442,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the escape character of the format set to the specified character.
+     * Builds a new {@code CSVFormat} with the escape character of the format set to the specified character.
      *
      * @param escape the escape character, use {@code null} to disable
      * @return A new CSVFormat that is equal to this but with the specified character as the escape character
@@ -2417,7 +2455,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} using the first record as header.
+     * Builds a new {@code CSVFormat} using the first record as header.
      *
      * <p>
      * Calling this method is equivalent to calling:
@@ -2444,7 +2482,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the header of the format defined by the enum class.
+     * Builds a new {@code CSVFormat} with the header of the format defined by the enum class.
      *
      * <p>
      * Example:
@@ -2474,7 +2512,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the header of the format set from the result set metadata. The header can either be parsed automatically from the
+     * Builds a new {@code CSVFormat} with the header of the format set from the result set metadata. The header can either be parsed automatically from the
      * input file with:
      *
      * <pre>
@@ -2502,7 +2540,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the header of the format set from the result set metadata. The header can either be parsed automatically from the
+     * Builds a new {@code CSVFormat} with the header of the format set from the result set metadata. The header can either be parsed automatically from the
      * input file with:
      *
      * <pre>
@@ -2530,7 +2568,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the header of the format set to the given values. The header can either be parsed automatically from the input file
+     * Builds a new {@code CSVFormat} with the header of the format set to the given values. The header can either be parsed automatically from the input file
      * with:
      *
      * <pre>
@@ -2557,7 +2595,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the header comments of the format set to the given values. The comments will be printed first, before the headers.
+     * Builds a new {@code CSVFormat} with the header comments of the format set to the given values. The comments will be printed first, before the headers.
      * This setting is ignored by the parser.
      *
      * <pre>
@@ -2576,7 +2614,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the empty line skipping behavior of the format set to {@code true}.
+     * Builds a new {@code CSVFormat} with the empty line skipping behavior of the format set to {@code true}.
      *
      * @return A new CSVFormat that is equal to this but with the specified empty line skipping behavior.
      * @see Builder#setIgnoreEmptyLines(boolean)
@@ -2589,7 +2627,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the empty line skipping behavior of the format set to the given value.
+     * Builds a new {@code CSVFormat} with the empty line skipping behavior of the format set to the given value.
      *
      * @param ignoreEmptyLines the empty line skipping behavior, {@code true} to ignore the empty lines between the records, {@code false} to translate empty
      *                         lines to empty records.
@@ -2602,7 +2640,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the header ignore case behavior set to {@code true}.
+     * Builds a new {@code CSVFormat} with the header ignore case behavior set to {@code true}.
      *
      * @return A new CSVFormat that will ignore case header name.
      * @see Builder#setIgnoreHeaderCase(boolean)
@@ -2615,7 +2653,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with whether header names should be accessed ignoring case.
+     * Builds a new {@code CSVFormat} with whether header names should be accessed ignoring case.
      *
      * @param ignoreHeaderCase the case mapping behavior, {@code true} to access name/values, {@code false} to leave the mapping as is.
      * @return A new CSVFormat that will ignore case header name if specified as {@code true}
@@ -2628,7 +2666,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the parser trimming behavior of the format set to {@code true}.
+     * Builds a new {@code CSVFormat} with the parser trimming behavior of the format set to {@code true}.
      *
      * @return A new CSVFormat that is equal to this but with the specified parser trimming behavior.
      * @see Builder#setIgnoreSurroundingSpaces(boolean)
@@ -2641,7 +2679,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the parser trimming behavior of the format set to the given value.
+     * Builds a new {@code CSVFormat} with the parser trimming behavior of the format set to the given value.
      *
      * @param ignoreSurroundingSpaces the parser trimming behavior, {@code true} to remove the surrounding spaces, {@code false} to leave the spaces as is.
      * @return A new CSVFormat that is equal to this but with the specified trimming behavior.
@@ -2653,7 +2691,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with conversions to and from null for strings on input and output.
+     * Builds a new {@code CSVFormat} with conversions to and from null for strings on input and output.
      * <ul>
      * <li><strong>Reading:</strong> Converts strings equal to the given {@code nullString} to {@code null} when reading records.</li>
      * <li><strong>Writing:</strong> Writes {@code null} as the given {@code nullString} when writing records.</li>
@@ -2669,7 +2707,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the quoteChar of the format set to the specified character.
+     * Builds a new {@code CSVFormat} with the quoteChar of the format set to the specified character.
      *
      * @param quoteChar the quote character
      * @return A new CSVFormat that is equal to this but with the specified character as quoteChar
@@ -2682,7 +2720,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the quoteChar of the format set to the specified character.
+     * Builds a new {@code CSVFormat} with the quoteChar of the format set to the specified character.
      *
      * @param quoteChar the quote character, use {@code null} to disable.
      * @return A new CSVFormat that is equal to this but with the specified character as quoteChar
@@ -2695,7 +2733,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the output quote policy of the format set to the specified value.
+     * Builds a new {@code CSVFormat} with the output quote policy of the format set to the specified value.
      *
      * @param quoteMode the quote policy to use for output.
      *
@@ -2708,7 +2746,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the record separator of the format set to the specified character.
+     * Builds a new {@code CSVFormat} with the record separator of the format set to the specified character.
      *
      * <p>
      * <strong>Note:</strong> This setting is only used during printing and does not affect parsing. Parsing currently only works for inputs with '\n', '\r' and
@@ -2725,7 +2763,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the record separator of the format set to the specified String.
+     * Builds a new {@code CSVFormat} with the record separator of the format set to the specified String.
      *
      * <p>
      * <strong>Note:</strong> This setting is only used during printing and does not affect parsing. Parsing currently only works for inputs with '\n', '\r' and
@@ -2743,7 +2781,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with skipping the header record set to {@code true}.
+     * Builds a new {@code CSVFormat} with skipping the header record set to {@code true}.
      *
      * @return A new CSVFormat that is equal to this but with the specified skipHeaderRecord setting.
      * @see Builder#setSkipHeaderRecord(boolean)
@@ -2757,7 +2795,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with whether to skip the header record.
+     * Builds a new {@code CSVFormat} with whether to skip the header record.
      *
      * @param skipHeaderRecord whether to skip the header record.
      * @return A new CSVFormat that is equal to this but with the specified skipHeaderRecord setting.
@@ -2770,7 +2808,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with the record separator of the format set to the operating system's line separator string, typically CR+LF on Windows
+     * Builds a new {@code CSVFormat} with the record separator of the format set to the operating system's line separator string, typically CR+LF on Windows
      * and LF on Linux.
      *
      * <p>
@@ -2788,7 +2826,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} to add a trailing delimiter.
+     * Builds a new {@code CSVFormat} to add a trailing delimiter.
      *
      * @return A new CSVFormat that is equal to this but with the trailing delimiter setting.
      * @since 1.3
@@ -2800,7 +2838,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with whether to add a trailing delimiter.
+     * Builds a new {@code CSVFormat} with whether to add a trailing delimiter.
      *
      * @param trailingDelimiter whether to add a trailing delimiter.
      * @return A new CSVFormat that is equal to this but with the specified trailing delimiter setting.
@@ -2813,7 +2851,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} to trim leading and trailing blanks. See {@link #getTrim()} for details of where this is used.
+     * Builds a new {@code CSVFormat} to trim leading and trailing blanks. See {@link #getTrim()} for details of where this is used.
      *
      * @return A new CSVFormat that is equal to this but with the trim setting on.
      * @since 1.3
@@ -2825,7 +2863,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Returns a new {@code CSVFormat} with whether to trim leading and trailing blanks. See {@link #getTrim()} for details of where this is used.
+     * Builds a new {@code CSVFormat} with whether to trim leading and trailing blanks. See {@link #getTrim()} for details of where this is used.
      *
      * @param trim whether to trim leading and trailing blanks.
      * @return A new CSVFormat that is equal to this but with the specified trim setting.

@@ -41,6 +41,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -91,6 +93,14 @@ public class CSVPrinterTest {
     private String longText2;
 
     private final String recordSeparator = CSVFormat.DEFAULT.getRecordSeparator();
+
+    private File createTempFile() throws IOException {
+        return createTempPath().toFile();
+    }
+
+    private Path createTempPath() throws IOException {
+        return Files.createTempFile(getClass().getName(), ".csv");
+    }
 
     private void doOneRandom(final CSVFormat format) throws Exception {
         final Random r = new Random();
@@ -1543,7 +1553,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintToFileWithCharsetUtf16Be() throws IOException {
-        final File file = File.createTempFile(getClass().getName(), ".csv");
+        final File file = createTempFile();
         try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, StandardCharsets.UTF_16BE)) {
             printer.printRecord("a", "b\\c");
         }
@@ -1552,7 +1562,7 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintToFileWithDefaultCharset() throws IOException {
-        final File file = File.createTempFile(getClass().getName(), ".csv");
+        final File file = createTempFile();
         try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, Charset.defaultCharset())) {
             printer.printRecord("a", "b\\c");
         }
@@ -1561,11 +1571,11 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintToPathWithDefaultCharset() throws IOException {
-        final File file = File.createTempFile(getClass().getName(), ".csv");
-        try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file.toPath(), Charset.defaultCharset())) {
+        final Path file = createTempPath();
+        try (final CSVPrinter printer = CSVFormat.DEFAULT.print(file, Charset.defaultCharset())) {
             printer.printRecord("a", "b\\c");
         }
-        assertEquals("a,b\\c" + recordSeparator, FileUtils.readFileToString(file, Charset.defaultCharset()));
+        assertEquals("a,b\\c" + recordSeparator, new String(Files.readAllBytes(file), Charset.defaultCharset()));
     }
 
     @Test
@@ -1725,7 +1735,9 @@ public class CSVPrinterTest {
     }
 
     private String[] toFirstRecordValues(final String expected, final CSVFormat format) throws IOException {
-        return CSVParser.parse(expected, format).getRecords().get(0).values();
+        try (final CSVParser parser = CSVParser.parse(expected, format)) {
+            return parser.getRecords().get(0).values();
+        }
     }
 
     private void tryFormat(final List<String> list, final Character quote, final Character escape, final String expected) throws IOException {
