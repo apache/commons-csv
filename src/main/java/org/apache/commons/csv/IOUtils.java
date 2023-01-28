@@ -126,11 +126,6 @@ final class IOUtils {
         return count;
     }
 
-    /** No instances. */
-    private IOUtils() {
-        // Noop
-    }
-
     /**
      * Throws the given throwable.
      *
@@ -142,6 +137,11 @@ final class IOUtils {
     @SuppressWarnings("unchecked")
     static <T extends Throwable> RuntimeException rethrow(final Throwable throwable) throws T {
         throw (T) throwable;
+    }
+
+    /** No instances. */
+    private IOUtils() {
+        // Noop
     }
 
 }

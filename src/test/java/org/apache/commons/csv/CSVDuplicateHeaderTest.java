@@ -35,6 +35,40 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class CSVDuplicateHeaderTest {
 
     /**
+     * Return test cases for duplicate header data for use in CSVFormat.
+     * <p>
+     * This filters the parsing test data to all cases where the allow missing column
+     * names flag is true and ignore header case is false: these flags are exclusively for parsing.
+     * CSVFormat validation applies to both parsing and writing and thus validation
+     * is less strict and behaves as if the allow missing column names constraint and
+     * the ignore header case behavior are absent.
+     * The filtered data is then returned with the parser flags set to both true and false
+     * for each test case.
+     * </p>
+     *
+     * @return the stream of arguments
+     */
+    static Stream<Arguments> duplicateHeaderAllowsMissingColumnsNamesData() {
+        return duplicateHeaderData()
+            .filter(arg -> Boolean.TRUE.equals(arg.get()[1]) && Boolean.FALSE.equals(arg.get()[2]))
+            .flatMap(arg -> {
+                // Return test case with flags as all true/false combinations
+                final Object[][] data = new Object[4][];
+                final Boolean[] flags = {Boolean.TRUE, Boolean.FALSE};
+                int i = 0;
+                for (final Boolean a : flags) {
+                    for (final Boolean b : flags) {
+                        data[i] = arg.get().clone();
+                        data[i][1] = a;
+                        data[i][2] = b;
+                        i++;
+                    }
+                }
+                return Arrays.stream(data).map(Arguments::of);
+            });
+    }
+
+    /**
      * Return test cases for duplicate header data for use in parsing (CSVParser). Uses the order:
      * <pre>
      * DuplicateHeaderMode duplicateHeaderMode
@@ -223,40 +257,6 @@ public class CSVDuplicateHeaderTest {
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  true, new String[] {"A", "a", null, null}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  true, new String[] {"A", "a", null, null}, true)
         );
-    }
-
-    /**
-     * Return test cases for duplicate header data for use in CSVFormat.
-     * <p>
-     * This filters the parsing test data to all cases where the allow missing column
-     * names flag is true and ignore header case is false: these flags are exclusively for parsing.
-     * CSVFormat validation applies to both parsing and writing and thus validation
-     * is less strict and behaves as if the allow missing column names constraint and
-     * the ignore header case behavior are absent.
-     * The filtered data is then returned with the parser flags set to both true and false
-     * for each test case.
-     * </p>
-     *
-     * @return the stream of arguments
-     */
-    static Stream<Arguments> duplicateHeaderAllowsMissingColumnsNamesData() {
-        return duplicateHeaderData()
-            .filter(arg -> Boolean.TRUE.equals(arg.get()[1]) && Boolean.FALSE.equals(arg.get()[2]))
-            .flatMap(arg -> {
-                // Return test case with flags as all true/false combinations
-                final Object[][] data = new Object[4][];
-                final Boolean[] flags = {Boolean.TRUE, Boolean.FALSE};
-                int i = 0;
-                for (final Boolean a : flags) {
-                    for (final Boolean b : flags) {
-                        data[i] = arg.get().clone();
-                        data[i][1] = a;
-                        data[i][2] = b;
-                        i++;
-                    }
-                }
-                return Arrays.stream(data).map(Arguments::of);
-            });
     }
 
     /**
