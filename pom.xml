@@ -23,7 +23,7 @@
     <version>56</version>
   </parent>
   <artifactId>commons-csv</artifactId>
-  <version>1.10.0</version>
+  <version>1.10.1-SNAPSHOT</version>
   <name>Apache Commons CSV</name>
   <url>https://commons.apache.org/proper/commons-csv/</url>
   <inceptionYear>2005</inceptionYear>
