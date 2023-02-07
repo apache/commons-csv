@@ -521,6 +521,30 @@
         <coveralls.skip>true</coveralls.skip>
       </properties>
     </profile>
+
+    <profile>
+      <id>skip-spdx</id>
+      <activation>
+        <property><name>!enable-spdx</name></property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.spdx</groupId>
+            <artifactId>spdx-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>build-spdx</id>
+                <goals>
+                  <goal>createSPDX</goal>
+                </goals>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
 </project>
