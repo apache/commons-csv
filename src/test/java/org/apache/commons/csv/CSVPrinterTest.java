@@ -104,36 +104,41 @@ public class CSVPrinterTest {
 
     private void doOneRandom(final CSVFormat format) throws Exception {
         final Random r = new Random();
-
-        final int nLines = r.nextInt(4) + 1;
-        final int nCol = r.nextInt(3) + 1;
-        // nLines=1;nCol=2;
-        final String[][] lines = generateLines(nLines, nCol);
-
+    
+        final int minLines = 1;
+        final int maxLines = 4;
+        final int nLines = r.nextInt(maxLines - minLines + 1) + minLines;
+    
+        final int minCols = 1;
+        final int maxCols = 3;
+        final int nCols = r.nextInt(maxCols - minCols + 1) + minCols;
+    
+        final String[][] lines = generateLines(nLines, nCols);
+    
         final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, format)) {
-
+    
             for (int i = 0; i < nLines; i++) {
-                // for (int j=0; j<lines[i].length; j++) System.out.println("### VALUE=:" + printable(lines[i][j]));
                 printer.printRecord((Object[]) lines[i]);
             }
-
+    
             printer.flush();
         }
+    
         final String result = sw.toString();
-        // System.out.println("### :" + printable(result));
-
-        try (final CSVParser parser = CSVParser.parse(result, format)) {
+    
+        try (final CSVParser parser = CSVParser.parse(result , format)) {
             final List<CSVRecord> parseResult = parser.getRecords();
-
+    
             final String[][] expected = lines.clone();
             for (int i = 0; i < expected.length; i++) {
                 expected[i] = expectNulls(expected[i], format);
             }
+    
             Utils.compare("Printer output :" + printable(result), expected, parseResult);
         }
     }
-
+    
     private void doRandom(final CSVFormat format, final int iter) throws Exception {
         for (int i = 0; i < iter; i++) {
             doOneRandom(format);

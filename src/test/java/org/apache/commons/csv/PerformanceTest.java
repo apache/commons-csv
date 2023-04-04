@@ -140,33 +140,89 @@ public class PerformanceTest {
         System.out.printf("Max count: %d%n%n", max);
 
         for (final String test : tests) {
-            if ("file".equals(test)) {
+            if (isFileTest(test)) {
                 testReadBigFile(false);
-            } else if ("split".equals(test)) {
+                } else if (isSplitTest(test)) {
                 testReadBigFile(true);
-            } else if ("csv".equals(test)) {
-                testParseCommonsCSV();
-            } else if ("csv-path".equals(test)) {
+                } else if (isCsvTest(test)) {
+                testCsvTest(test);
+                } else if (isCsvPathTest(test)) {
                 testParsePath();
-            } else if ("csv-path-db".equals(test)) {
+                } else if (isCsvPathDbTest(test)) {
                 testParsePathDoubleBuffering();
-            } else if ("csv-url".equals(test)) {
+                } else if (isCsvUrlTest(test)) {
                 testParseURL();
-            } else if ("lexreset".equals(test)) {
+                } else if (isLexresetTest(test)) {
                 testCSVLexer(false, test);
-            } else if ("lexnew".equals(test)) {
+                } else if (isLexnewTest(test)) {
                 testCSVLexer(true, test);
-            } else if (test.startsWith("CSVLexer")) {
+                } else if (isCSVLexerTest(test)) {
                 testCSVLexer(false, test);
-            } else if ("extb".equals(test)) {
+                } else if (isExtbTest(test)) {
                 testExtendedBuffer(false);
-            } else if ("exts".equals(test)) {
+                } else if (isExtsTest(test)) {
                 testExtendedBuffer(true);
-            } else {
-                System.out.printf("Invalid test name: %s%n", test);
-            }
+                } else {
+                printInvalidTestName(test);
+                }       
         }
     }
+
+    private static boolean isFileTest(String test) {
+        return "file".equals(test);
+        }
+        
+    private static boolean isSplitTest(String test) {
+        return "split".equals(test);
+        }
+        
+    private static boolean isCsvTest(String test) {
+        return "csv".equals(test);
+        }
+        
+    private static boolean isCsvPathTest(String test) {
+        return "csv-path".equals(test);
+        }
+        
+    private static boolean isCsvPathDbTest(String test) {
+        return "csv-path-db".equals(test);
+        }
+        
+    private static boolean isCsvUrlTest(String test) {
+        return "csv-url".equals(test);
+        }
+        
+    private static boolean isLexresetTest(String test) {
+        return "lexreset".equals(test);
+        }
+        
+    private static boolean isLexnewTest(String test) {
+        return "lexnew".equals(test);
+        }
+        
+    private static boolean isCSVLexerTest(String test) {
+        return test.startsWith("CSVLexer");
+        }
+        
+    private static boolean isExtbTest(String test) {
+        return "extb".equals(test);
+        }
+        
+    private static boolean isExtsTest(String test) {
+        return "exts".equals(test);
+        }
+        
+    private static void printInvalidTestName(String test) {
+        System.out.printf("Invalid test name: %s%n", test);
+        }
+        
+    private static void testCsvTest(String test) throws Exception {
+        if ("csv".equals(test)) {
+        testParseCommonsCSV();
+        } else {
+        printInvalidTestName(test);
+        }
+        }
 
     private static Stats readAll(final BufferedReader in, final boolean split) throws IOException {
         int count = 0;

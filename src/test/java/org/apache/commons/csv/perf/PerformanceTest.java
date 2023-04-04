@@ -52,6 +52,10 @@ public class PerformanceTest {
             System.out.println(String.format("Found test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
             return;
         }
+        decompressTestFile();
+    }
+
+    private static void decompressTestFile() throws IOException {
         System.out.println("Decompressing test fixture to: " + BIG_FILE + "...");
         try (
             final InputStream input = new GZIPInputStream(
