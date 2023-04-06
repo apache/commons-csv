@@ -38,7 +38,7 @@ final class Constants {
     /** RFC 4180 defines line breaks as CRLF */
     static final String CRLF = "\r\n";
 
-    static final Character DOUBLE_QUOTE_CHAR = Character.valueOf('"');
+    static final Character DOUBLE_QUOTE_CHAR = '"';
 
     static final String EMPTY = "";
 
@@ -71,7 +71,7 @@ final class Constants {
     /** ASCII record separator */
     static final char RS = 30;
 
-    static final char SP = ' ';
+    static final char SPACE = ' ';
 
     static final String SQL_NULL_STRING = "\\N";
 

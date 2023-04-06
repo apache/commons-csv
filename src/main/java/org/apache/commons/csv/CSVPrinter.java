@@ -19,7 +19,7 @@ package org.apache.commons.csv;
 
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.LF;
-import static org.apache.commons.csv.Constants.SP;
+import static org.apache.commons.csv.Constants.SPACE;
 
 import java.io.Closeable;
 import java.io.Flushable;
@@ -199,7 +199,7 @@ public final class CSVPrinter implements Flushable, Closeable {
             println();
         }
         appendable.append(format.getCommentMarker().charValue());
-        appendable.append(SP);
+        appendable.append(SPACE);
         for (int i = 0; i < comment.length(); i++) {
             final char c = comment.charAt(i);
             switch (c) {
@@ -211,7 +211,7 @@ public final class CSVPrinter implements Flushable, Closeable {
             case LF:
                 println();
                 appendable.append(format.getCommentMarker().charValue());
-                appendable.append(SP);
+                appendable.append(SPACE);
                 break;
             default:
                 appendable.append(c);

@@ -26,7 +26,7 @@ import static org.apache.commons.csv.Constants.DOUBLE_QUOTE_CHAR;
 import static org.apache.commons.csv.Constants.EMPTY;
 import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.PIPE;
-import static org.apache.commons.csv.Constants.SP;
+import static org.apache.commons.csv.Constants.SPACE;
 import static org.apache.commons.csv.Constants.TAB;
 
 import java.io.File;
@@ -1241,7 +1241,7 @@ public final class CSVFormat implements Serializable {
 
     /** Same test as in as {@link String#trim()}. */
     private static boolean isTrimChar(final char ch) {
-        return ch <= SP;
+        return ch <= SPACE;
     }
 
     /** Same test as in as {@link String#trim()}. */
