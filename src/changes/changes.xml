@@ -70,7 +70,7 @@
       <action                 type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump actions/checkout from 2.3.4 to 3.1.0 #188, #195, #220, #272.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump actions/setup-java from 2 to 3.5.1.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump actions/upload-artifact from 3.1.0 to 3.1.1 #280.</action>
-      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 52 to 56 #264, #288, #298.</action>
+      <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 52 to 57 #264, #288, #298, #323.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump checkstyle from 8.44 to 9.2.1 #180, #190, #194, #202, #207.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump junit-jupiter from 5.8.0-M1 to 5.9.1 #179, #186, #201, #244, #263.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump jmh-core from 1.32 to 1.36 #176, #208, #229, #285.</action>
