@@ -56,6 +56,7 @@
       <action                 type="fix" dev="ggregory" due-to="Mykola Faryma">Validate input to setDelimiter(String) for empty string #266.</action>
       <action                 type="fix" dev="ggregory" due-to="Dependabot">Bump CSVFormat#serialVersionUID from 1 to 2.</action>
       <action                 type="fix" dev="ggregory" due-to="Alex Herbert">CSVParser: Identify duplicates in null, empty and blank header names #279.</action>
+      <action issue="CSV-306" type="fix" dev="ggregory" due-to="Sam Ng, Bruno P. Kinoshita">Replace deprecated method in user guide, update external link #324.</action>
       <!-- REMOVE -->
       <action                 type="remove" dev="ggregory">Serialization in CSVFormat is not supported from one version to the next.</action>
       <!-- ADD -->
