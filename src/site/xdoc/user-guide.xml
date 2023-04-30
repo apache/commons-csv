@@ -44,7 +44,7 @@ limitations under the License.
         <dt><a href="https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#ORACLE">ORACLE<sup>1.6</sup></a></dt><dd>Default Oracle format used by the SQL*Loader utility.</dd>
         <dt><a href="https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#POSTGRESSQL_CSV">POSTGRESSQL_CSV<sup>1.5</sup></a></dt><dd>Default PostgreSQL CSV format used by the COPY operation.</dd>
         <dt><a href="https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#POSTGRESSQL_TEXT">POSTGRESSQL_TEXT<sup>1.5</sup></a></dt><dd>Default PostgreSQL text format used by the COPY operation.</dd>
-        <dt><a href="https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#RFC4180">RFC-4180</a></dt><dd>The RFC-4180 format defined by <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>.</dd>
+        <dt><a href="https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#RFC4180">RFC-4180</a></dt><dd>The RFC-4180 format defined by <a href="https://datatracker.ietf.org/doc/html/rfc4180">RFC-4180</a>.</dd>
         <dt><a href="https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html#TDF">TDF</a></dt><dd>A tab delimited format.</dd>
       </dl>
 
@@ -101,7 +101,7 @@ public InputStreamReader newReader(final InputStream inputStream) {
       Apache Commons CSV provides several ways to access record values.
       The simplest way is to access values by their index in the record.
       However, columns in CSV files often have a name, for example: ID, CustomerNo, Birthday, etc.
-      The CSVFormat class provides an API for specifing these <i>header</i> names and CSVRecord on
+      The CSVFormat class provides an API for specifying these <i>header</i> names and CSVRecord on
       the other hand has methods to access values by their corresponding header name.
 
       <subsection name="Accessing column values by index">
@@ -149,7 +149,7 @@ for (CSVRecord record : records) {
         Some CSV files define header names in their first record. If configured, Apache Commons CSV can parse
         the header names from the first record:
         <source>Reader in = new FileReader(&quot;path/to/file.csv&quot;);
-Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.withHeader().withSkipHeaderRecord(true).parse(in);
 for (CSVRecord record : records) {
     String id = record.get("ID");
     String customerNo = record.get("CustomerNo");
