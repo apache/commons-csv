@@ -29,12 +29,12 @@ limitations under the License.
     <li>Microsoft Excel</li>
     <li><a href="http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">Informix UNLOAD</a></li>
     <li><a href="http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">Informix UNLOAD CSV</a></li>
-    <li><a href="http://dev.mysql.com/doc/refman/5.0/en/mysqldump-delimited-text.html">MySQL</a></li>
+    <li><a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump-delimited-text.html">MySQL</a></li>
     <li><a href="https://docs.oracle.com/database/121/SUTIL/GUID-D1762699-8154-40F6-90DE-EFB8EB6A9AB0.htm#SUTIL4217">Oracle</a></li>
     <li><a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL CSV</a></li>
     <li><a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL Text</a></li>
-    <li><a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a></li>
-    <li><a href="http://en.wikipedia.org/wiki/Tab-separated_values">TDF</a></li>
+    <li><a href="https://datatracker.ietf.org/doc/html/rfc4180">RFC 4180</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/Tab-separated_values">TDF</a></li>
   </ul>
   </p>
   <p>Custom formats can be created using a fluent style API.</p>
@@ -117,13 +117,13 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
   <p>Commons CSV was started to unify a common and simple interface for reading and writing CSV files under an ASL license. It has been bootstrapped by a code donation from Netcetera in Switzerland. There are three pre-existing BSD compatible CSV parsers which this component will hopefully make redundant (authors willing): </p>
   <ul>
     <li><a href="http://kasparov.skife.org/csv/">Skife CSV</a></li>
-    <li><a href="http://opencsv.sourceforge.net/">Open CSV</a></li>
+    <li><a href="https://opencsv.sourceforge.net/">Open CSV</a></li>
     <li><a href="http://www.osjava.org/genjava/multiproject/gj-csv/">Genjava CSV</a></li>
   </ul>
   <p>In addition to the code from Netcetera (org.apache.commons.csv), Martin van den Bemt has added an additional writer API. </p>
   <p>Other CSV implementations: </p>
   <ul>
-    <li><a href="http://supercsv.sourceforge.net/">Super CSV</a></li>
+    <li><a href="https://super-csv.github.io/super-csv/index.html">Super CSV</a></li>
   </ul>
 </section>
 
