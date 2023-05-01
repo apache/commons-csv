@@ -41,6 +41,7 @@
   </properties>
   <body>
     <release version="1.10.1" date="2023-MM-DD" description="Feature and bug fix release (Java 8)">
+      <action issue="CSV-306" type="fix" dev="ggregory" due-to="Sam Ng, Bruno P. Kinoshita">Replace deprecated method in user guide, update external link #324, #325.</action>
     </release>
     <release version="1.10.0" date="2023-01-28" description="Feature and bug fix release (Java 8)">
       <!-- FIX -->
@@ -56,7 +57,6 @@
       <action                 type="fix" dev="ggregory" due-to="Mykola Faryma">Validate input to setDelimiter(String) for empty string #266.</action>
       <action                 type="fix" dev="ggregory" due-to="Dependabot">Bump CSVFormat#serialVersionUID from 1 to 2.</action>
       <action                 type="fix" dev="ggregory" due-to="Alex Herbert">CSVParser: Identify duplicates in null, empty and blank header names #279.</action>
-      <action issue="CSV-306" type="fix" dev="ggregory" due-to="Sam Ng, Bruno P. Kinoshita">Replace deprecated method in user guide, update external link #324, #325.</action>
       <!-- REMOVE -->
       <action                 type="remove" dev="ggregory">Serialization in CSVFormat is not supported from one version to the next.</action>
       <!-- ADD -->
