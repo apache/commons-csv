@@ -72,7 +72,7 @@ for (CSVRecord record : records) {
         </p>
         <source>final URL url = ...;
 final Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
-final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
+final CSVParser parser = CSVFormat.EXCEL.builder().setHeader().build().parse(reader);
 try {
     for (final CSVRecord record : parser) {
         final String string = record.get("SomeColumn");
@@ -118,7 +118,7 @@ for (CSVRecord record : records) {
         Indices may not be the most intuitive way to access record values. For this reason it is possible to
         assign names to each column in the file:
         <source>Reader in = new FileReader(&quot;path/to/file.csv&quot;);
-Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.withHeader("ID", "CustomerNo", "Name").parse(in);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.builder().setHeader("ID", "CustomerNo", "Name").build().parse(in);
 for (CSVRecord record : records) {
     String id = record.get("ID");
     String customerNo = record.get("CustomerNo");
@@ -136,7 +136,7 @@ for (CSVRecord record : records) {
     ID, CustomerNo, Name
 }
 Reader in = new FileReader(&quot;path/to/file.csv&quot;);
-Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.withHeader(Headers.class).parse(in);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.builder().setHeader(Headers.class).build().parse(in);
 for (CSVRecord record : records) {
     String id = record.get(Headers.ID);
     String customerNo = record.get(Headers.CustomerNo);
@@ -149,7 +149,7 @@ for (CSVRecord record : records) {
         Some CSV files define header names in their first record. If configured, Apache Commons CSV can parse
         the header names from the first record:
         <source>Reader in = new FileReader(&quot;path/to/file.csv&quot;);
-Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.withHeader().withSkipHeaderRecord(true).parse(in);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.builder().setHeader().setSkipHeaderRecord(true).build().parse(in);
 for (CSVRecord record : records) {
     String id = record.get("ID");
     String customerNo = record.get("CustomerNo");
@@ -163,13 +163,13 @@ for (CSVRecord record : records) {
           To print a CSV file with headers, you specify the headers in the format:
         </p>
         <source>final Appendable out = ...;
-          final CSVPrinter printer = CSVFormat.DEFAULT.withHeader("H1", "H2").print(out)
+          final CSVPrinter printer = CSVFormat.DEFAULT.builder().setHeader("H1", "H2").build().print(out);
         </source>
         <p>
           To print a CSV file with JDBC column labels, you specify the ResultSet in the format:
         </p>
         <source>final ResultSet resultSet = ...;
-          final CSVPrinter printer = CSVFormat.DEFAULT.withHeader(resultSet).print(out)
+          final CSVPrinter printer = CSVFormat.DEFAULT.builder().setHeader(resultSet).build().print(out);
         </source>
       </subsection>
     </section>
