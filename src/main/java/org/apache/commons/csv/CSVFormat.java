@@ -1383,12 +1383,12 @@ public final class CSVFormat implements Serializable {
      * @param nullString              the line separator to use for output.
      * @param headerComments          the comments to be printed by the Printer before the actual CSV data.
      * @param header                  the header
-     * @param skipHeaderRecord        TODO Doc me.
-     * @param allowMissingColumnNames TODO Doc me.
-     * @param ignoreHeaderCase        TODO Doc me.
-     * @param trim                    TODO Doc me.
-     * @param trailingDelimiter       TODO Doc me.
-     * @param autoFlush               TODO Doc me.
+     * @param skipHeaderRecord        if {@code true} the header row will be skipped
+     * @param allowMissingColumnNames if {@code true} the missing column names are allowed when parsing the header line
+     * @param ignoreHeaderCase        if {@code true} header names will be accessed ignoring case when parsing input
+     * @param trim                    if {@code true} next record value will be trimmed
+     * @param trailingDelimiter       if {@code true} the trailing delimiter wil be added before record separator (if set)
+     * @param autoFlush               if {@code true} the underlying stream will be flushed before closing
      * @param duplicateHeaderMode     the behavior when handling duplicate headers
      * @throws IllegalArgumentException if the delimiter is a line break character.
      */
@@ -1601,7 +1601,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Gets whether header names will be accessed ignoring case when parsing input.
      *
-     * @return {@code true} if header names cases are ignored, {@code false} if they are case sensitive.
+     * @return {@code true} if header names cases are ignored, {@code false} if they are case-sensitive.
      * @since 1.3
      */
     public boolean getIgnoreHeaderCase() {
@@ -1797,7 +1797,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Prints to the specified output.
+     * Prints to the specified {@code File} with given {@code Charset}.
      *
      * <p>
      * See also {@link CSVPrinter}.
@@ -1869,7 +1869,8 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Prints to the specified output, returns a {@code CSVPrinter} which the caller MUST close.
+     * Prints to the specified {@code Path} with given {@code Charset},
+     * returns a {@code CSVPrinter} which the caller MUST close.
      *
      * <p>
      * See also {@link CSVPrinter}.

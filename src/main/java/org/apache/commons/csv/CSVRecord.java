@@ -88,7 +88,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a value by name. If multiple instances of the header name exists, only the last occurence is returned.
+     * Returns a value by name. If multiple instances of the header name exists, only the last occurrence is returned.
      *
      * <p>
      * Note: This requires a field mapping obtained from the original parser.
@@ -312,7 +312,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     /**
      * Copies this record into a new Map of header name to record value. If multiple instances of a header name exists,
-     * only the last occurence is mapped.
+     * only the last occurrence is mapped.
      *
      * <p>
      * Editing the map does not update this instance.
