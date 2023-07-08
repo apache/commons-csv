@@ -44,7 +44,7 @@ public class JiraCsv148Test {
     /**
      * The difference between withTrim()and withIgnoreSurroundingSpace()： difference: withTrim() can remove the leading
      * and trailing spaces and newlines in quotation marks, while withIgnoreSurroundingSpace() cannot The same point:
-     * you can remove the leading and trailing spaces,tabs and other symbols.
+     * you can remove the leading and trailing spaces, tabs and other symbols.
      */
     @Test
     public void testWithTrimEmpty() {
