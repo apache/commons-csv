@@ -33,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.zip.GZIPInputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -82,7 +83,7 @@ public class PerformanceTest {
 
     private static final String TEST_RESRC = "org/apache/commons/csv/perf/worldcitiespop.txt.gz";
 
-    private static final File BIG_FILE = new File(System.getProperty("java.io.tmpdir"), "worldcitiespop.txt");
+    private static final File BIG_FILE = new File(FileUtils.getTempDirectoryPath(), "worldcitiespop.txt");
 
     private static Reader createReader() throws IOException {
         return new InputStreamReader(new FileInputStream(BIG_FILE), StandardCharsets.ISO_8859_1);
