@@ -48,7 +48,7 @@
       <action type="fix" dev="ggregory" due-to="step-security-bot">[StepSecurity] ci: Harden GitHub Actions #329, #330.</action>
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-io:commons-io: from 2.11.0 to 2.13.0.</action>
-      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 57 to 58.</action>
+      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 57 to 59.</action>
       <action type="update" dev="ggregory" due-to="Dependabot">Bump h2 from 2.1.214 to 2.2.220 #333.</action>
     </release>
     <release version="1.10.0" date="2023-01-28" description="Feature and bug fix release (Java 8)">
