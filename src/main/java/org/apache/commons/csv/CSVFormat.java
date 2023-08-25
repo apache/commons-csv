@@ -521,7 +521,7 @@ public final class CSVFormat implements Serializable {
         }
 
         /**
-         * Sets the header comments set to the given values. The comments will be printed first, before the headers. This setting is ignored by the parser.
+         * Sets the header comments to the given values. The comments will be printed first, before the headers. This setting is ignored by the parser.
          *
          * <p>
          * Use {@link Builder#setCommentMarker(char)} or {@link Builder#setCommentMarker(Character)} to set the comment marker to be used with each comment.
@@ -553,7 +553,7 @@ public final class CSVFormat implements Serializable {
         }
 
         /**
-         * Sets the header comments set to the given values. The comments will be printed first, before the headers. This setting is ignored by the parser.
+         * Sets the header comments to the given values. The comments will be printed first, before the headers. This setting is ignored by the parser.
          *
          * <p>
          * Use {@link Builder#setCommentMarker(char)} or {@link Builder#setCommentMarker(Character)} to set the comment marker to be used with each comment.
