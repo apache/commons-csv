@@ -41,6 +41,8 @@
   </properties>
   <body>
     <release version="1.10.1" date="2023-MM-DD" description="Feature and bug fix release (Java 8)">
+      <!-- ADD -->
+      <action type="fix" dev="ggregory" due-to="Buddhi De Silva, Gary Gregory">[Javadoc] Add example to CSVFormat#setHeaderComments() #344.</action>
       <!-- FIX -->
       <action issue="CSV-306" type="fix" dev="ggregory" due-to="Sam Ng, Bruno P. Kinoshita">Replace deprecated method in user guide, update external link #324, #325.</action>
       <action type="fix" dev="ggregory" due-to="Seth Falco, Bruno P. Kinoshita">Document duplicate header behavior #309.</action>
