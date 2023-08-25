@@ -1524,6 +1524,19 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Gets the character marking the start of a line comment.
+     * <p>
+     * The comment format for each line is:
+     * </p>
+     * <pre>
+     * CommentMarker SPACE CommentArrayElement
+     * </pre>
+     * <p>
+     * For example, using a comment marker {@code '#'} and a comment array {@code comments ["line 1", "line 2"]}:
+     * </p>
+     * <pre>
+     * # line 1
+     * # line 2
+     * </pre>
      *
      * @return the comment start marker, may be {@code null}
      */
