@@ -41,13 +41,13 @@ final class ExtendedBufferedReader extends BufferedReader {
     /** The count of EOLs (CR/LF/CRLF) seen so far */
     private long eolCounter;
 
-    /** The position, which is number of characters read so far */
+    /** The position, which is the number of characters read so far */
     private long position;
 
     private boolean closed;
 
     /**
-     * Created extended buffered reader using default buffer-size
+     * Constructs a new instance using the default buffer size.
      */
     ExtendedBufferedReader(final Reader reader) {
         super(reader);
@@ -107,7 +107,7 @@ final class ExtendedBufferedReader extends BufferedReader {
 
     /**
      * Returns the next character in the current reader without consuming it. So the next call to {@link #read()} will
-     * still return this value. Does not affect line number or last character.
+     * still return this value. Does not affect the line number or the last character.
      *
      * @return the next character
      *
@@ -125,7 +125,7 @@ final class ExtendedBufferedReader extends BufferedReader {
     /**
      * Populates the buffer with the next {@code buf.length} characters in the
      * current reader without consuming them. The next call to {@link #read()} will
-     * still return the next value. This doesn't affect line number or last
+     * still return the next value. This doesn't affect the line number or the last
      * character.
      *
      * @param buf the buffer to fill for the look ahead.
@@ -199,7 +199,7 @@ final class ExtendedBufferedReader extends BufferedReader {
 
     /**
      * Gets the next line, dropping the line terminator(s). This method should only be called when processing a
-     * comment, otherwise information can be lost.
+     * comment, otherwise, information can be lost.
      * <p>
      * Increments {@link #eolCounter} and updates {@link #position}.
      * </p>

@@ -53,7 +53,7 @@ import java.util.stream.StreamSupport;
  * Because CSV appears in many different dialects, the parser supports many formats by allowing the
  * specification of a {@link CSVFormat}.
  *
- * The parser works record wise. It is not possible to go back, once a record has been parsed from the input stream.
+ * The parser works record-wise. It is not possible to go back, once a record has been parsed from the input stream.
  *
  * <h2>Creating instances</h2>
  * <p>
@@ -105,13 +105,13 @@ import java.util.stream.StreamSupport;
  * </pre>
  *
  * <p>
- * If the predefined formats don't match the format at hands, custom formats can be defined. More information about
- * customising CSVFormats is available in {@link CSVFormat CSVFormat Javadoc}.
+ * If the predefined formats don't match the format at hand, custom formats can be defined. More information about
+ * customizing CSVFormats is available in {@link CSVFormat CSVFormat Javadoc}.
  * </p>
  *
  * <h2>Parsing into memory</h2>
  * <p>
- * If parsing record wise is not desired, the contents of the input can be read completely into memory.
+ * If parsing record-wise is not desired, the contents of the input can be read completely into memory.
  * </p>
  *
  * <pre>
@@ -126,14 +126,14 @@ import java.util.stream.StreamSupport;
  *
  * <ol>
  *     <li>Parsing into memory starts at the current position of the parser. If you have already parsed records from
- *     the input, those records will not end up in the in memory representation of your CSV data.</li>
- *     <li>Parsing into memory may consume a lot of system resources depending on the input. For example if you're
+ *     the input, those records will not end up in the in-memory representation of your CSV data.</li>
+ *     <li>Parsing into memory may consume a lot of system resources depending on the input. For example, if you're
  *     parsing a 150MB file of CSV data the contents will be read completely into memory.</li>
  * </ol>
  *
  * <h2>Notes</h2>
  * <p>
- * Internal parser state is completely covered by the format and the reader-state.
+ * The internal parser state is completely covered by the format and the reader state.
  * </p>
  *
  * @see <a href="package-summary.html">package documentation for more details</a>
@@ -147,7 +147,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             try {
                 return CSVParser.this.nextRecord();
             } catch (final IOException e) {
-                throw new UncheckedIOException(e.getClass().getSimpleName() + " reading next record: " + e.toString(), e);
+                throw new UncheckedIOException("Exception reading next record: " + e.toString(), e);
             }
         }
 
@@ -304,8 +304,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         return new CSVParser(reader, format);
     }
 
-    // the following objects are shared to reduce garbage
-
     /**
      * Creates a parser for the given {@link String}.
      *
@@ -423,7 +421,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param recordNumber
      *            The next record number to assign
      * @throws IllegalArgumentException
-     *             If the parameters of the format are inconsistent or if either reader or format are null.
+     *             If the parameters of the format are inconsistent or if either the reader or format is null.
      * @throws IOException
      *             If there is a problem reading the header or skipping the first record
      * @since 1.1
@@ -702,11 +700,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Handle whether input is parsed as null
+     * Handles whether the input is parsed as null
      *
      * @param input
      *           the cell data to further processed
-     * @return null if input is parsed as null, or input itself if input isn't parsed as null
+     * @return null if input is parsed as null, or input itself if the input isn't parsed as null
      */
     private String handleNull(final String input) {
         final boolean isQuoted = this.reusableToken.isQuoted;
@@ -773,7 +771,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Returns the record iterator.
      *
      * <p>
-     * An {@link IOException} caught during the iteration are re-thrown as an
+     * An {@link IOException} caught during the iteration is re-thrown as an
      * {@link IllegalStateException}.
      * </p>
      * <p>
