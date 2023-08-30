@@ -18,14 +18,14 @@
 /**
  * Apache Commons CSV Format Support.
  *
- * <p>CSV are widely used as interfaces to legacy systems or manual data-imports.
+ * <p>CSV are widely used as interfaces to legacy systems or manual data imports.
  *    CSV stands for "Comma Separated Values" (or sometimes "Character Separated
  *    Values"). The CSV data format is defined in
  *    <a href="http://tools.ietf.org/html/rfc4180" target="_blank">RFC 4180</a>
  *    but many dialects exist.</p>
  *
  * <p>Common to all file dialects is its basic structure: The CSV data-format
- *    is record oriented, whereas each record starts on a new textual line. A
+ *    is record-oriented, whereas each record starts on a new textual line. A
  *    record is build of a list of values. Keep in mind that not all records
  *    must have an equal number of values:</p>
  * <pre>
@@ -36,28 +36,28 @@
  * <p>The following list contains the CSV aspects the Commons CSV parser supports:</p>
  * <dl>
  *   <dt>Separators (for lines)</dt>
- *   <dd>The record separators are hardcoded and cannot be changed. The must be '\r', '\n' or '\r\n'.</dd>
+ *   <dd>The record separators are hardcoded and cannot be changed. The must be '\r', '\n', or '\r\n'.</dd>
  *
  *   <dt>Delimiter (for values)</dt>
  *   <dd>The delimiter for values is freely configurable (default ',').</dd>
  *
  *   <dt>Comments</dt>
- *   <dd>Some CSV-dialects support a simple comment syntax. A comment is a record
+ *   <dd>Some CSV dialects support a simple comment syntax. A comment is a record
  *       which must start with a designated character (the commentStarter). A record
- *       of this kind is treated as comment and gets removed from the input (default none)</dd>
+ *       of this kind is treated as a comment and gets removed from the input (default none)</dd>
  *
  *   <dt>Encapsulator</dt>
  *  <dd>Two encapsulator characters (default '"') are used to enclose -&gt; complex values.</dd>
  *
  *   <dt>Simple values</dt>
- *   <dd>A simple value consist of all characters (except the delimiter) until
- *       (but not including) the next delimiter or a record-terminator. Optionally
+ *   <dd>A simple value consists of all characters (except the delimiter) until
+ *       (but not including) the next delimiter or a record terminator. Optionally
  *       all surrounding whitespaces of a simple value can be ignored (default: true).</dd>
  *
  *   <dt>Complex values</dt>
  *   <dd>Complex values are encapsulated within a pair of the defined encapsulator characters.
  *       The encapsulator itself must be escaped or doubled when used inside complex values.
- *       Complex values preserve all kind of formatting (including newlines -&gt; multiline-values)</dd>
+ *       Complex values preserve all kinds of formatting (including newlines -&gt; multiline-values)</dd>
  *
  *  <dt>Empty line skipping</dt>
  *   <dd>Optionally empty lines in CSV files can be skipped.
