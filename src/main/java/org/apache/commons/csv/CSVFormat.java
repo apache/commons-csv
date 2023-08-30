@@ -2417,8 +2417,8 @@ public final class CSVFormat implements Serializable {
     /**
      * Verifies the validity and consistency of the attributes, and throws an {@link IllegalArgumentException} if necessary.
      * <p>
-     * Because an instance can be used for both writing and parsing, not all conditions can be tested here. For example, allowMissingColumnNames is only used for
-     * parsing, so it cannot be used here.
+     * Because an instance can be used for both writing and parsing, not all conditions can be tested here. For example, allowMissingColumnNames is only used
+     * for parsing, so it cannot be used here.
      * </p>
      *
      * @throws IllegalArgumentException Throw when any attribute is invalid or inconsistent with other attributes.
