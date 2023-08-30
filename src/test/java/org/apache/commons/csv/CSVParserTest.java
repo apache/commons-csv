@@ -1642,4 +1642,30 @@ public class CSVParserTest {
         parser.close();
     }
 
+    @Test
+    public void testFaultyCSVShouldThrowErrorWithDetailedMessage() {
+
+        String csvContent = "col1,col2,col3,col4,col5,col6,col7,col8,col9,col10\n" +
+                "rec1,rec2,rec3,rec4,rec5,rec6,rec7,rec8,\"\"rec9\"\",rec10";
+
+        StringReader stringReader = new StringReader(csvContent);
+        CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
+                .setHeader()
+                .setSkipHeaderRecord(true)
+                .build();
+
+        Exception exception = assertThrows(UncheckedIOException.class, ()-> {
+            Iterable<CSVRecord> records = csvFormat.parse(stringReader);
+            for (CSVRecord record : records) {
+                System.out.println(record.get(0) + " " + record.get(1) + " " + record.get(2) + " " + record.get(3) + " " + record.get(4) + " " + record.get(5) + " " + record.get(6) + " " + record.get(7) + " " + record.get(8) + " " + record.get(9));
+            }
+        });
+        String expectedErrorMessage = "IOException reading next record: java.io.IOException: An error occurred while tying to parse the CSV content. Error in line: 2, position: 94, last parsed content: ...rec4,rec5,rec6,rec7,rec8";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedErrorMessage));
+
+
+    }
+
 }
