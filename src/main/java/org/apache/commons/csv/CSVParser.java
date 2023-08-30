@@ -464,11 +464,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * </pre>
      * @return parsed CSV content of current reading line
      */
-    private String getLastParsedContent(){
+    private String getLastParsedContent() {
         String parsedContent = "";
         int recordListSize = this.recordList.size();
-        if(recordListSize > 0) {
-            if(recordListSize <= this.maxParsedTokenCount) {
+        if (recordListSize > 0) {
+            if (recordListSize <= this.maxParsedTokenCount) {
                 parsedContent = String.join("", this.recordList.toArray(Constants.EMPTY_STRING_ARRAY));
             } else {
                 // number of parsed token exceed required token count. Take the expected tokens from the end.
@@ -808,9 +808,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         do {
             this.reusableToken.reset();
             // https://issues.apache.org/jira/browse/CSV-147
-            try{
+            try {
                 this.lexer.nextToken(this.reusableToken);
-            } catch (IOException ioe){
+            } catch (IOException ioe) {
                 String errorMessage = "An error occurred while tying to parse the CSV content. Error in line: "
                         + this.lexer.getCurrentLineNumber() + ", position: " + this.lexer.getCharacterPosition()
                         + ", last parsed content: " + this.getLastParsedContent();
