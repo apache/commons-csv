@@ -1661,8 +1661,8 @@ public class CSVParserTest {
                         + " " + record.get(8) + " " + record.get(9));
             }
         });
-        String expectedErrorMessage = "IOException reading next record: java.io.IOException: An error occurred while " +
-                "tying to parse the CSV content. Error in line: 2, position: 94, last parsed content: " +
+        String expectedErrorMessage = "Exception reading next record: java.io.IOException: An exception occurred " +
+                "while tying to parse the CSV content. Issue in line: 2, position: 94, last parsed content: " +
                 "...rec4,rec5,rec6,rec7,rec8";
         String actualMessage = exception.getMessage();
 
