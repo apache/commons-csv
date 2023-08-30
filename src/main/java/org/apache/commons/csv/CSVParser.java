@@ -147,7 +147,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             try {
                 return CSVParser.this.nextRecord();
             } catch (final IOException e) {
-                throw new UncheckedIOException(e.getClass().getSimpleName() + " reading next record: " + e.toString(), e);
+                throw new UncheckedIOException("Exception reading next record: " + e.toString(), e);
             }
         }
 
