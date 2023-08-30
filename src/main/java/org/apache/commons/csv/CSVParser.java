@@ -811,7 +811,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             try {
                 this.lexer.nextToken(this.reusableToken);
             } catch (IOException ioe) {
-                String errorMessage = "An error occurred while tying to parse the CSV content. Error in line: "
+                String errorMessage = "An exception occurred while tying to parse the CSV content. Issue in line: "
                         + this.lexer.getCurrentLineNumber() + ", position: " + this.lexer.getCharacterPosition()
                         + ", last parsed content: " + this.getLastParsedContent();
                 throw new IOException(errorMessage, ioe);
