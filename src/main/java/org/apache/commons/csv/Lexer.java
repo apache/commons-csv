@@ -42,7 +42,7 @@ final class Lexer implements Closeable {
     private static final String LF_STRING = Character.toString(LF);
 
     /**
-     * Constant char to use for disabling comments, escapes and encapsulation. The value -2 is used because it
+     * Constant char to use for disabling comments, escapes, and encapsulation. The value -2 is used because it
      * won't be confused with an EOF signal (-1), and because the Unicode value {@code FFFE} would be encoded as two
      * chars (using surrogates) and thus there should never be a collision with a real text char.
      */
@@ -146,9 +146,9 @@ final class Lexer implements Closeable {
     }
 
     /**
-     * Tests if the given character indicates end of file.
+     * Tests if the given character indicates the end of the file.
      *
-     * @return true if the given character indicates end of file.
+     * @return true if the given character indicates the end of the file.
      */
     boolean isEndOfFile(final int ch) {
         return ch == END_OF_STREAM;
@@ -168,7 +168,7 @@ final class Lexer implements Closeable {
      *
      * For example, for delimiter "[|]" and escape '!', return true if the next characters constitute "![!|!]".
      *
-     * @return true if the next characters constitute a escape delimiter.
+     * @return true if the next characters constitute an escape delimiter.
      * @throws IOException If an I/O error occurs.
      */
     boolean isEscapeDelimiter() throws IOException {
@@ -194,7 +194,7 @@ final class Lexer implements Closeable {
     }
 
     /**
-     * Tests if the current character represents the start of a line: a CR, LF or is at the start of the file.
+     * Tests if the current character represents the start of a line: a CR, LF, or is at the start of the file.
      *
      * @param ch the character to check
      * @return true if the character is at the start of a line.
@@ -214,13 +214,13 @@ final class Lexer implements Closeable {
      * </p>
      *
      * @param token
-     *            an existing Token object to reuse. The caller is responsible to initialize the Token.
+     *            an existing Token object to reuse. The caller is responsible for initializing the Token.
      * @return the next token found.
      * @throws IOException on stream access error.
      */
     Token nextToken(final Token token) throws IOException {
 
-        // get the last read char (required for empty line detection)
+        // Get the last read char (required for empty line detection)
         int lastChar = reader.getLastChar();
 
         // read the next char and set eol
@@ -234,11 +234,11 @@ final class Lexer implements Closeable {
         // empty line detection: eol AND (last char was EOL or beginning)
         if (ignoreEmptyLines) {
             while (eol && isStartOfLine(lastChar)) {
-                // go on char ahead ...
+                // Go on char ahead ...
                 lastChar = c;
                 c = reader.read();
                 eol = readEndOfLine(c);
-                // reached end of file without any content (empty line at the end)
+                // reached the end of the file without any content (empty line at the end)
                 if (isEndOfFile(c)) {
                     token.type = EOF;
                     // don't set token.isReady here because no content
@@ -247,7 +247,7 @@ final class Lexer implements Closeable {
             }
         }
 
-        // did we reach eof during the last iteration already ? EOF
+        // Did we reach EOF during the last iteration already? EOF
         if (isEndOfFile(lastChar) || !isLastTokenDelimiter && isEndOfFile(c)) {
             token.type = EOF;
             // don't set token.isReady here because no content
@@ -267,7 +267,7 @@ final class Lexer implements Closeable {
             return token;
         }
 
-        // important: make sure a new char gets consumed in each iteration
+        // Important: make sure a new char gets consumed in each iteration
         while (token.type == INVALID) {
             // ignore whitespaces at beginning of a token
             if (ignoreSurroundingSpaces) {
@@ -305,12 +305,12 @@ final class Lexer implements Closeable {
     /**
      * Parses an encapsulated token.
      * <p>
-     * Encapsulated tokens are surrounded by the given encapsulating-string. The encapsulator itself might be included
+     * Encapsulated tokens are surrounded by the given encapsulating string. The encapsulator itself might be included
      * in the token using a doubling syntax (as "", '') or using escaping (as in \", \'). Whitespaces before and after
-     * an encapsulated token are ignored. The token is finished when one of the following conditions become true:
+     * an encapsulated token is ignored. The token is finished when one of the following conditions becomes true:
      * </p>
      * <ul>
-     * <li>an unescaped encapsulator has been reached, and is followed by optional whitespace then:</li>
+     * <li>An unescaped encapsulator has been reached and is followed by optional whitespace then:</li>
      * <ul>
      * <li>delimiter (TOKEN)</li>
      * <li>end of line (EORECORD)</li>
@@ -321,11 +321,12 @@ final class Lexer implements Closeable {
      *            the current token
      * @return a valid token object
      * @throws IOException
-     *             on invalid state: EOF before closing encapsulator or invalid character before delimiter or EOL
+     *             Thrown when in an invalid state: EOF before closing encapsulator or invalid character before 
+     *             delimiter or EOL.
      */
     private Token parseEncapsulatedToken(final Token token) throws IOException {
         token.isQuoted = true;
-        // save current line number in case needed for IOE
+        // Save current line number in case needed for IOE
         final long startLineNumber = getCurrentLineNumber();
         int c;
         while (true) {
@@ -385,13 +386,13 @@ final class Lexer implements Closeable {
     /**
      * Parses a simple token.
      * <p>
-     * Simple token are tokens which are not surrounded by encapsulators. A simple token might contain escaped
-     * delimiters (as \, or \;). The token is finished when one of the following conditions become true:
+     * Simple tokens are tokens that are not surrounded by encapsulators. A simple token might contain escaped
+     * delimiters (as \, or \;). The token is finished when one of the following conditions becomes true:
      * </p>
      * <ul>
-     * <li>end of line has been reached (EORECORD)</li>
-     * <li>end of stream has been reached (EOF)</li>
-     * <li>an unescaped delimiter has been reached (TOKEN)</li>
+     * <li>The end of line has been reached (EORECORD)</li>
+     * <li>The end of stream has been reached (EOF)</li>
+     * <li>An unescaped delimiter has been reached (TOKEN)</li>
      * </ul>
      *
      * @param token
