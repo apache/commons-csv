@@ -21,8 +21,9 @@ import static org.apache.commons.csv.Token.Type.INVALID;
 
 /**
  * Internal token representation.
- * <p/>
- * It is used as contract between the lexer and the parser.
+ * <p>
+ * It is used as a contract between the lexer and the parser.
+ * </p>
  */
 final class Token {
 
@@ -30,7 +31,7 @@ final class Token {
         /** Token has no valid content, i.e. is in its initialized state. */
         INVALID,
 
-        /** Token with content, at beginning or in the middle of a line. */
+        /** Token with content, at the beginning or in the middle of a line. */
         TOKEN,
 
         /** Token (which can have content) when the end of file is reached. */
