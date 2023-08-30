@@ -32,10 +32,10 @@ import java.util.stream.Stream;
  * <p>
  * Note: Support for {@link Serializable} is scheduled to be removed in version 2.0.
  * In version 1.8 the mapping between the column header and the column index was
- * removed from the serialised state. The class maintains serialization compatibility
+ * removed from the serialized state. The class maintains serialization compatibility
  * with versions pre-1.8 for the record values; these must be accessed by index
- * following deserialization. There will be loss of any functionally linked to the header
- * mapping when transferring serialised forms pre-1.8 to 1.8 and vice versa.
+ * following deserialization. There will be a loss of any functionally linked to the header
+ * mapping when transferring serialized forms pre-1.8 to 1.8 and vice versa.
  * </p>
  */
 public final class CSVRecord implements Serializable, Iterable<String> {
@@ -143,8 +143,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Returns the comment for this record, if any.
      * Note that comments are attached to the following record.
-     * If there is no following record (i.e. the comment is at EOF)
-     * the comment will be ignored.
+     * If there is no following record (i.e. the comment is at EOF),
+     * then the comment will be ignored.
      *
      * @return the comment for this record, or null if no comment for this record is available.
      */
@@ -189,8 +189,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Checks whether this record has a comment, false otherwise.
      * Note that comments are attached to the following record.
-     * If there is no following record (i.e. the comment is at EOF)
-     * the comment will be ignored.
+     * If there is no following record (i.e. the comment is at EOF),
+     * then the comment will be ignored.
      *
      * @return true if this record has a comment, false otherwise
      * @since 1.3
@@ -227,22 +227,22 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Checks whether a column with given index has a value.
+     * Checks whether a column with a given index has a value.
      *
      * @param index
      *         a column index (0-based)
-     * @return whether a column with given index has a value
+     * @return whether a column with a given index has a value
      */
     public boolean isSet(final int index) {
         return 0 <= index && index < values.length;
     }
 
     /**
-     * Checks whether a given columns is mapped and has a value.
+     * Checks whether a given column is mapped and has a value.
      *
      * @param name
      *            the name of the column to be retrieved.
-     * @return whether a given columns is mapped and has a value
+     * @return whether a given column is mapped and has a value
      */
     public boolean isSet(final String name) {
         return isMapped(name) && getHeaderMapRaw().get(name).intValue() < values.length;
@@ -311,8 +311,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Copies this record into a new Map of header name to record value. If multiple instances of a header name exists,
-     * only the last occurrence is mapped.
+     * Copies this record into a new Map of header name to record value. If multiple instances of a header name exist,
+     * then only the last occurrence is mapped.
      *
      * <p>
      * Editing the map does not update this instance.
