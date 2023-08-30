@@ -477,7 +477,7 @@ public final class CSVFormat implements Serializable {
          * The header is also used by the {@link CSVPrinter}.
          * </p>
          *
-         * @param headerEnum the enum defining the header, {@code null} if disabled, empty if parsed automatically, user specified otherwise.
+         * @param headerEnum the enum defining the header, {@code null} if disabled, empty if parsed automatically, user-specified otherwise.
          * @return This instance.
          */
         public Builder setHeader(final Class<? extends Enum<?>> headerEnum) {
@@ -491,7 +491,7 @@ public final class CSVFormat implements Serializable {
         }
 
         /**
-         * Sets the header from the result set metadata. The header can either be parsed automatically from the input file with:
+         * Sets the header from the result set metadata. The header can be parsed automatically from the input file with:
          *
          * <pre>
          * builder.setHeader();
@@ -506,7 +506,7 @@ public final class CSVFormat implements Serializable {
          * The header is also used by the {@link CSVPrinter}.
          * </p>
          *
-         * @param resultSet the resultSet for the header, {@code null} if disabled, empty if parsed automatically, user specified otherwise.
+         * @param resultSet the resultSet for the header, {@code null} if disabled, empty if parsed automatically, user-specified otherwise.
          * @return This instance.
          * @throws SQLException SQLException if a database access error occurs or this method is called on a closed result set.
          */
@@ -515,7 +515,7 @@ public final class CSVFormat implements Serializable {
         }
 
         /**
-         * Sets the header from the result set metadata. The header can either be parsed automatically from the input file with:
+         * Sets the header from the result set metadata. The header can be parsed automatically from the input file with:
          *
          * <pre>
          * builder.setHeader();
@@ -530,7 +530,7 @@ public final class CSVFormat implements Serializable {
          * The header is also used by the {@link CSVPrinter}.
          * </p>
          *
-         * @param resultSetMetaData the metaData for the header, {@code null} if disabled, empty if parsed automatically, user specified otherwise.
+         * @param resultSetMetaData the metaData for the header, {@code null} if disabled, empty if parsed automatically, user-specified otherwise.
          * @return This instance.
          * @throws SQLException SQLException if a database access error occurs or this method is called on a closed result set.
          */
@@ -547,7 +547,7 @@ public final class CSVFormat implements Serializable {
         }
 
         /**
-         * Sets the header to the given values. The header can either be parsed automatically from the input file with:
+         * Sets the header to the given values. The header can be parsed automatically from the input file with:
          *
          * <pre>
          * builder.setHeader();
@@ -562,7 +562,7 @@ public final class CSVFormat implements Serializable {
          * The header is also used by the {@link CSVPrinter}.
          * </p>
          *
-         * @param header the header, {@code null} if disabled, empty if parsed automatically, user specified otherwise.
+         * @param header the header, {@code null} if disabled, empty if parsed automatically, user-specified otherwise.
          * @return This instance.
          */
         public Builder setHeader(final String... header) {
@@ -909,8 +909,8 @@ public final class CSVFormat implements Serializable {
             false, false, false, DuplicateHeaderMode.ALLOW_ALL);
 
     /**
-     * Excel file format (using a comma as the value delimiter). Note that the actual value delimiter used by Excel is locale dependent, it might be necessary
-     * to customize this format to accommodate to your regional settings.
+     * Excel file format (using a comma as the value delimiter). Note that the actual value delimiter used by Excel is locale-dependent, it might be necessary
+     * to customize this format to accommodate your regional settings.
      *
      * <p>
      * For example for parsing or generating a CSV file on a French system the following format will be used:
@@ -949,7 +949,7 @@ public final class CSVFormat implements Serializable {
      * Default Informix CSV UNLOAD format used by the {@code UNLOAD TO file_name} operation.
      *
      * <p>
-     * This is a comma-delimited format with a LF character as the line separator. Values are not quoted and special characters are escaped with {@code '\'}.
+     * This is a comma-delimited format with an LF character as the line separator. Values are not quoted and special characters are escaped with {@code '\'}.
      * The default NULL string is {@code "\\N"}.
      * </p>
      *
@@ -981,7 +981,7 @@ public final class CSVFormat implements Serializable {
      * Default Informix CSV UNLOAD format used by the {@code UNLOAD TO file_name} operation (escaping is disabled.)
      *
      * <p>
-     * This is a comma-delimited format with a LF character as the line separator. Values are not quoted and special characters are escaped with {@code '\'}.
+     * This is a comma-delimited format with an LF character as the line separator. Values are not quoted and special characters are escaped with {@code '\'}.
      * The default NULL string is {@code "\\N"}.
      * </p>
      *
@@ -1084,7 +1084,7 @@ public final class CSVFormat implements Serializable {
      * Default MySQL format used by the {@code SELECT INTO OUTFILE} and {@code LOAD DATA INFILE} operations.
      *
      * <p>
-     * This is a tab-delimited format with a LF character as the line separator. Values are not quoted and special
+     * This is a tab-delimited format with an LF character as the line separator. Values are not quoted and special
      * characters are escaped with {@code '\'}. The default NULL string is {@code "\\N"}.
      * </p>
      *
@@ -1121,7 +1121,7 @@ public final class CSVFormat implements Serializable {
      * Default Oracle format used by the SQL*Loader utility.
      *
      * <p>
-     * This is a comma-delimited format with the system line separator character as the record separator.Values are
+     * This is a comma-delimited format with the system line separator character as the record separator. Values are
      * double quoted when needed and special characters are escaped with {@code '"'}. The default NULL string is
      * {@code ""}. Values are trimmed.
      * </p>
@@ -1161,7 +1161,7 @@ public final class CSVFormat implements Serializable {
      * Default PostgreSQL CSV format used by the {@code COPY} operation.
      *
      * <p>
-     * This is a comma-delimited format with a LF character as the line separator. Values are double quoted and special
+     * This is a comma-delimited format with an LF character as the line separator. Values are double quoted and special
      * characters are not escaped. The default NULL string is {@code ""}.
      * </p>
      *
@@ -1199,7 +1199,7 @@ public final class CSVFormat implements Serializable {
      * Default PostgreSQL text format used by the {@code COPY} operation.
      *
      * <p>
-     * This is a tab-delimited format with a LF character as the line separator. Values are not quoted and special
+     * This is a tab-delimited format with an LF character as the line separator. Values are not quoted and special
      * characters are escaped with {@code '\\'}. The default NULL string is {@code "\\N"}.
      * </p>
      *
@@ -1890,7 +1890,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Tests whether escape are being processed.
+     * Tests whether escapes are being processed.
      *
      * @return {@code true} if escapes are processed
      */
@@ -1899,7 +1899,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Tests whether a nullString has been defined.
+     * Tests whether a null string has been defined.
      *
      * @return {@code true} if a nullString is defined
      */
@@ -2009,7 +2009,7 @@ public final class CSVFormat implements Serializable {
         if (object == null) {
             out.append(value);
         } else if (isQuoteCharacterSet()) {
-            // the original object is needed so can check for Number
+            // The original object is needed so can check for Number
             printWithQuotes(object, value, out, newRecord);
         } else if (isEscapeCharacterSet()) {
             printWithEscapes(value, out);
@@ -2086,7 +2086,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Prints the given {@code values} to {@code out} as a single record of delimiter separated values followed by the record separator.
+     * Prints the given {@code values} to {@code out} as a single record of delimiter-separated values followed by the record separator.
      *
      * <p>
      * The values will be quoted if needed. Quotes and new-line characters will be escaped. This method adds the record separator to the output after printing
@@ -2241,7 +2241,7 @@ public final class CSVFormat implements Serializable {
             return;
         case MINIMAL:
             if (len <= 0) {
-                // always quote an empty token that is the first
+                // Always quote an empty token that is the first
                 // on the line, as it may be the only thing on the
                 // line. If it were not quoted in that case,
                 // an empty line has no tokens.
@@ -2279,7 +2279,7 @@ public final class CSVFormat implements Serializable {
             }
 
             if (!quote) {
-                // no encapsulation needed - write out the original value
+                // No encapsulation needed - write out the original value
                 out.append(charSeq, start, len);
                 return;
             }
@@ -2289,12 +2289,12 @@ public final class CSVFormat implements Serializable {
         }
 
         if (!quote) {
-            // no encapsulation needed - write out the original value
+            // No encapsulation needed - write out the original value
             out.append(charSeq, start, len);
             return;
         }
 
-        // we hit something that needed encapsulation
+        // We hit something that needed encapsulation
         out.append(quoteChar);
 
         // Pick up where we left off: pos should be positioned on the first character that caused
@@ -2310,13 +2310,13 @@ public final class CSVFormat implements Serializable {
             pos++;
         }
 
-        // write the last segment
+        // Write the last segment
         out.append(charSeq, start, pos);
         out.append(quoteChar);
     }
 
     /**
-     * Always use quotes unless QuoteMode is NONE, so we not have to look ahead.
+     * Always use quotes unless QuoteMode is NONE, so we do not have to look ahead.
      *
      * @param reader What to print
      * @param appendable Where to print it
@@ -2417,7 +2417,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Verifies the validity and consistency of the attributes, and throws an {@link IllegalArgumentException} if necessary.
      * <p>
-     * Because an instance can be used for both writing an parsing, not all conditions can be tested here. For example allowMissingColumnNames is only used for
+     * Because an instance can be used for both writing and parsing, not all conditions can be tested here. For example, allowMissingColumnNames is only used for
      * parsing, so it cannot be used here.
      * </p>
      *
@@ -2570,7 +2570,7 @@ public final class CSVFormat implements Serializable {
      * Builds a new {@code CSVFormat} with the delimiter of the format set to the specified character.
      *
      * @param delimiter the delimiter character
-     * @return A new CSVFormat that is equal to this with the specified character as delimiter
+     * @return A new CSVFormat that is equal to this with the specified character as a delimiter
      * @throws IllegalArgumentException thrown if the specified character is a line break
      * @deprecated Use {@link Builder#setDelimiter(char)}
      */
@@ -2679,7 +2679,7 @@ public final class CSVFormat implements Serializable {
      * The header is also used by the {@link CSVPrinter}.
      * </p>
      *
-     * @param resultSet the resultSet for the header, {@code null} if disabled, empty if parsed automatically, user specified otherwise.
+     * @param resultSet the resultSet for the header, {@code null} if disabled, empty if parsed automatically, user-specified otherwise.
      * @return A new CSVFormat that is equal to this but with the specified header
      * @throws SQLException SQLException if a database access error occurs or this method is called on a closed result set.
      * @since 1.1
@@ -2735,7 +2735,7 @@ public final class CSVFormat implements Serializable {
      * The header is also used by the {@link CSVPrinter}.
      * </p>
      *
-     * @param header the header, {@code null} if disabled, empty if parsed automatically, user specified otherwise.
+     * @param header the header, {@code null} if disabled, empty if parsed automatically, user-specified otherwise.
      * @return A new CSVFormat that is equal to this but with the specified header
      * @see Builder#setSkipHeaderRecord(boolean)
      * @deprecated Use {@link Builder#setHeader(String...)}
@@ -2793,7 +2793,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Builds a new {@code CSVFormat} with the header ignore case behavior set to {@code true}.
      *
-     * @return A new CSVFormat that will ignore case header name.
+     * @return A new CSVFormat that will ignore the new case header name behavior.
      * @see Builder#setIgnoreHeaderCase(boolean)
      * @since 1.3
      * @deprecated Use {@link Builder#setIgnoreHeaderCase(boolean) Builder#setIgnoreHeaderCase(true)}
