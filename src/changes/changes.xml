@@ -41,14 +41,16 @@
   </properties>
   <body>
     <release version="1.10.1" date="2023-MM-DD" description="Feature and bug fix release (Java 8)">
+      <!-- ADD -->
+      <action issue="CSV-308" type="fix" dev="ggregory" due-to="Buddhi De Silva, Gary Gregory">[Javadoc] Add example to CSVFormat#setHeaderComments() #344.</action>
       <!-- FIX -->
       <action issue="CSV-306" type="fix" dev="ggregory" due-to="Sam Ng, Bruno P. Kinoshita">Replace deprecated method in user guide, update external link #324, #325.</action>
       <action type="fix" dev="ggregory" due-to="Seth Falco, Bruno P. Kinoshita">Document duplicate header behavior #309.</action>
       <action type="fix" dev="ggregory" due-to="jkbkupczyk">Add missing docs #328.</action>
-      <action type="fix" dev="ggregory" due-to="step-security-bot">[StepSecurity] ci: Harden GitHub Actions #329, #330.</action>
+      <action type="fix" dev="ggregory" due-to="step-security-bot">[StepSecurity] CI: Harden GitHub Actions #329, #330.</action>
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-io:commons-io: from 2.11.0 to 2.13.0.</action>
-      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 57 to 59.</action>
+      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 57 to 60.</action>
       <action type="update" dev="ggregory" due-to="Dependabot">Bump h2 from 2.1.214 to 2.2.220 #333.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-lang3 from 3.12.0 to 3.13.0.</action>
     </release>
