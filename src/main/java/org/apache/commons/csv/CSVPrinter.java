@@ -171,7 +171,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Prints a comment on a new line among the delimiter separated values.
+     * Prints a comment on a new line among the delimiter-separated values.
      *
      * <p>
      * Comments will always begin on a new line and occupy at least one full line. The character specified to start
@@ -184,7 +184,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *
      * <p>This method detects line breaks inside the comment string and inserts {@link CSVFormat#getRecordSeparator()}
      * to start a new line of the comment. Note that this might produce unexpected results for formats that do not use
-     * line breaks as record separator.</p>
+     * line breaks as record separators.</p>
      *
      * @param comment
      *            the comment to output
@@ -224,7 +224,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     /**
      * Prints headers for a result set based on its metadata.
      *
-     * @param resultSet The result set to query for metadata.
+     * @param resultSet The ResultSet to query for metadata.
      * @throws IOException If an I/O error occurs.
      * @throws SQLException If a database access error occurs or this method is called on a closed result set.
      * @since 1.9.0
@@ -245,7 +245,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Prints the given values as a single record of delimiter separated values followed by the record separator.
+     * Prints the given values as a single record of delimiter-separated values followed by the record separator.
      *
      * <p>
      * The values will be quoted if needed. Quotes and newLine characters will be escaped. This method adds the record
@@ -265,7 +265,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Prints the given values as a single record of delimiter separated values followed by the record separator.
+     * Prints the given values as a single record of delimiter-separated values followed by the record separator.
      *
      * <p>
      * The values will be quoted if needed. Quotes and newLine characters will be escaped. This method adds the record
@@ -282,7 +282,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Prints the given values as a single record of delimiter separated values followed by the record separator.
+     * Prints the given values as a single record of delimiter-separated values followed by the record separator.
      *
      * <p>
      * The values will be quoted if needed. Quotes and newLine characters will be escaped. This method adds the record
@@ -366,7 +366,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *
      * <p>
      * If the given array only contains simple objects, this method will print a single record like
-     * {@link #printRecord(Object...)}. If the given collections contains nested collections/arrays those nested
+     * {@link #printRecord(Object...)}. If the given collections contain nested collections or arrays, those nested
      * elements will each be printed as records using {@link #printRecord(Object...)}.
      * </p>
      *
@@ -408,11 +408,11 @@ public final class CSVPrinter implements Flushable, Closeable {
      * Prints all the objects in the given JDBC result set.
      *
      * @param resultSet
-     *            result set the values to print.
+     *             The values to print.
      * @throws IOException
-     *             If an I/O error occurs
+     *             If an I/O error occurs.
      * @throws SQLException
-     *             if a database access error occurs
+     *             Thrown when a database access error occurs.
      */
     public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
         final int columnCount = resultSet.getMetaData().getColumnCount();
