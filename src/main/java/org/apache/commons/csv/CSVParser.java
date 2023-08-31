@@ -462,12 +462,12 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * </pre>
      * @return parsed CSV content of current reading line
      */
-    private String getLastParsedContent() {
+    public String getLastParsedContent() {
         String parsedContent = "";
         int recordListSize = this.recordList.size();
         if (recordListSize > 0) {
             if (recordListSize <= this.maxParsedTokenCount) {
-                parsedContent = String.join("", this.recordList.toArray(Constants.EMPTY_STRING_ARRAY));
+                parsedContent = String.join(this.format.getDelimiterString(), this.recordList.toArray(Constants.EMPTY_STRING_ARRAY));
             } else {
                 // number of parsed token exceed required token count. Take the expected tokens from the end.
                 int startIndex = recordListSize - maxParsedTokenCount;
@@ -810,8 +810,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 this.lexer.nextToken(this.reusableToken);
             } catch (IOException ioe) {
                 String errorMessage = "An exception occurred while tying to parse the CSV content. Issue in line: "
-                        + this.lexer.getCurrentLineNumber() + ", position: " + this.lexer.getCharacterPosition()
-                        + ", last parsed content: " + this.getLastParsedContent();
+                        + this.lexer.getCurrentLineNumber() + ", position: " + this.lexer.getCharacterPosition();
                 throw new IOException(errorMessage, ioe);
             }
             switch (this.reusableToken.type) {

@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -1643,7 +1644,7 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testFaultyCSVShouldThrowErrorWithDetailedMessage() {
+    public void testFaultyCSVShouldThrowErrorAndDetailedMessageShouldBeAvailable_1() {
         String csvContent = "col1,col2,col3,col4,col5,col6,col7,col8,col9,col10\n" +
                 "rec1,rec2,rec3,rec4,rec5,rec6,rec7,rec8,\"\"rec9\"\",rec10";
 
@@ -1653,20 +1654,59 @@ public class CSVParserTest {
                 .setSkipHeaderRecord(true)
                 .build();
 
+        CSVParser csvParser = null;
+        try {
+            csvParser = csvFormat.parse(stringReader);
+        } catch (IOException e) {
+            fail("Failed to parse the CSV content");
+        }
+        final Iterable<CSVRecord> finalRecords = csvParser;
         Exception exception = assertThrows(UncheckedIOException.class, () -> {
-            Iterable<CSVRecord> records = csvFormat.parse(stringReader);
-            for (CSVRecord record : records) {
+            for (CSVRecord record : finalRecords) {
                 System.out.println(record.get(0) + " " + record.get(1) + " " + record.get(2) + " " + record.get(3)
                         + " " + record.get(4) + " " + record.get(5) + " " + record.get(6) + " " + record.get(7)
                         + " " + record.get(8) + " " + record.get(9));
             }
         });
         String expectedErrorMessage = "Exception reading next record: java.io.IOException: An exception occurred " +
-                "while tying to parse the CSV content. Issue in line: 2, position: 94, last parsed content: " +
-                "...rec4,rec5,rec6,rec7,rec8";
+                "while tying to parse the CSV content. Issue in line: 2, position: 94";
         String actualMessage = exception.getMessage();
-
         assertTrue(actualMessage.contains(expectedErrorMessage));
+        assertNotNull(csvParser);
+        String expectedLastParsedContent = "...rec4,rec5,rec6,rec7,rec8";
+        assertEquals(expectedLastParsedContent, csvParser.getLastParsedContent());
     }
 
+    @Test
+    public void testFaultyCSVShouldThrowErrorAndDetailedMessageShouldBeAvailable_2() {
+        String csvContent = "col1,col2,col3,col4,col5,col6,col7,col8\n" +
+                "rec1,rec2,rec3,rec4,\"\"rec5\"\",rec6,rec7,rec8";
+
+        StringReader stringReader = new StringReader(csvContent);
+        CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
+                .setHeader()
+                .setSkipHeaderRecord(true)
+                .build();
+
+        CSVParser csvParser = null;
+        try {
+            csvParser = csvFormat.parse(stringReader);
+        } catch (IOException e) {
+            fail("Failed to parse the CSV content");
+        }
+        final Iterable<CSVRecord> finalRecords = csvParser;
+        Exception exception = assertThrows(UncheckedIOException.class, () -> {
+            for (CSVRecord record : finalRecords) {
+                System.out.println(record.get(0) + " " + record.get(1) + " " + record.get(2) + " " + record.get(3)
+                        + " " + record.get(4) + " " + record.get(5) + " " + record.get(6) + " " + record.get(7));
+            }
+        });
+        String expectedErrorMessage = "Exception reading next record: java.io.IOException: An exception occurred " +
+                "while tying to parse the CSV content. Issue in line: 2, position: 63";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedErrorMessage));
+        assertNotNull(csvParser);
+        String expectedLastParsedContent = "rec1,rec2,rec3,rec4";
+        assertEquals(expectedLastParsedContent, csvParser.getLastParsedContent());
+    }
 }
