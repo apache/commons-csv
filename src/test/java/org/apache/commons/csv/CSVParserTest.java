@@ -1667,7 +1667,6 @@ public class CSVParserTest {
                 "line: 2, position: 94";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedErrorMessage));
-        assertNotNull(csvParser);
         String expectedLastParsedContent = "...rec4,rec5,rec6,rec7,rec8";
         assertEquals(expectedLastParsedContent, csvParser.getLastParsedContent());
     }
@@ -1695,7 +1694,6 @@ public class CSVParserTest {
                 "line: 2, position: 63";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedErrorMessage));
-        assertNotNull(csvParser);
         String expectedLastParsedContent = "rec1,rec2,rec3,rec4";
         assertEquals(expectedLastParsedContent, csvParser.getLastParsedContent());
     }
