@@ -441,7 +441,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Return the parsed CSV content of current reading line up until this method is called.
+     * Return the parsed CSV content of currently parsed line up until this method is called.
      * <p>
      * Maximum parsed token length set by the 'maxParsedTokenCount' is considered during the construction of return string.
      * </p>
@@ -455,7 +455,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * col1, col2, col3, col4, col5, col6, col7
      * </pre>
      * <p>
-     * then this would return following
+     * then method returns following
      * </p>
      * <pre>
      * col3, col4, col5, col6, col7
@@ -809,7 +809,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             try {
                 this.lexer.nextToken(this.reusableToken);
             } catch (IOException ioe) {
-                String errorMessage = "An exception occurred while tying to parse the CSV content. Issue in line: "
+                String errorMessage = "An exception occurred while parsing the CSV content. Issue in line: "
                         + this.lexer.getCurrentLineNumber() + ", position: " + this.lexer.getCharacterPosition();
                 throw new IOException(errorMessage, ioe);
             }

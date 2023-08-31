@@ -1669,7 +1669,7 @@ public class CSVParserTest {
             }
         });
         String expectedErrorMessage = "Exception reading next record: java.io.IOException: An exception occurred " +
-                "while tying to parse the CSV content. Issue in line: 2, position: 94";
+                "while parsing the CSV content. Issue in line: 2, position: 94";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedErrorMessage));
         assertNotNull(csvParser);
@@ -1702,7 +1702,7 @@ public class CSVParserTest {
             }
         });
         String expectedErrorMessage = "Exception reading next record: java.io.IOException: An exception occurred " +
-                "while tying to parse the CSV content. Issue in line: 2, position: 63";
+                "while parsing the CSV content. Issue in line: 2, position: 63";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedErrorMessage));
         assertNotNull(csvParser);
