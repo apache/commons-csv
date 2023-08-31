@@ -1644,7 +1644,7 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testFaultyCSVShouldThrowErrorAndDetailedMessageShouldBeAvailable_1() {
+    public void testFaultyCSVShouldThrowErrorAndDetailedMessageShouldBeAvailable_1() throws IOException {
         String csvContent = "col1,col2,col3,col4,col5,col6,col7,col8,col9,col10\n" +
                 "rec1,rec2,rec3,rec4,rec5,rec6,rec7,rec8,\"\"rec9\"\",rec10";
 
@@ -1654,22 +1654,17 @@ public class CSVParserTest {
                 .setSkipHeaderRecord(true)
                 .build();
 
-        CSVParser csvParser = null;
-        try {
-            csvParser = csvFormat.parse(stringReader);
-        } catch (IOException e) {
-            fail("Failed to parse the CSV content");
-        }
-        final Iterable<CSVRecord> finalRecords = csvParser;
+        CSVParser csvParser = csvFormat.parse(stringReader);
         Exception exception = assertThrows(UncheckedIOException.class, () -> {
-            for (CSVRecord record : finalRecords) {
-                System.out.println(record.get(0) + " " + record.get(1) + " " + record.get(2) + " " + record.get(3)
+            for (CSVRecord record : csvParser) {
+                String content = record.get(0) + " " + record.get(1) + " " + record.get(2) + " " + record.get(3)
                         + " " + record.get(4) + " " + record.get(5) + " " + record.get(6) + " " + record.get(7)
-                        + " " + record.get(8) + " " + record.get(9));
+                        + " " + record.get(8) + " " + record.get(9);
+                assertNotNull(content);
             }
         });
-        String expectedErrorMessage = "Exception reading next record: java.io.IOException: An exception occurred " +
-                "while parsing the CSV content. Issue in line: 2, position: 94";
+        String expectedErrorMessage = "Exception reading next record: java.io.IOException: Exception during parsing at " +
+                "line: 2, position: 94";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedErrorMessage));
         assertNotNull(csvParser);
@@ -1678,7 +1673,7 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testFaultyCSVShouldThrowErrorAndDetailedMessageShouldBeAvailable_2() {
+    public void testFaultyCSVShouldThrowErrorAndDetailedMessageShouldBeAvailable_2() throws IOException {
         String csvContent = "col1,col2,col3,col4,col5,col6,col7,col8\n" +
                 "rec1,rec2,rec3,rec4,\"\"rec5\"\",rec6,rec7,rec8";
 
@@ -1688,21 +1683,16 @@ public class CSVParserTest {
                 .setSkipHeaderRecord(true)
                 .build();
 
-        CSVParser csvParser = null;
-        try {
-            csvParser = csvFormat.parse(stringReader);
-        } catch (IOException e) {
-            fail("Failed to parse the CSV content");
-        }
-        final Iterable<CSVRecord> finalRecords = csvParser;
+        CSVParser csvParser = csvFormat.parse(stringReader);
         Exception exception = assertThrows(UncheckedIOException.class, () -> {
-            for (CSVRecord record : finalRecords) {
-                System.out.println(record.get(0) + " " + record.get(1) + " " + record.get(2) + " " + record.get(3)
-                        + " " + record.get(4) + " " + record.get(5) + " " + record.get(6) + " " + record.get(7));
+            for (CSVRecord record : csvParser) {
+                String content = record.get(0) + " " + record.get(1) + " " + record.get(2) + " " + record.get(3)
+                        + " " + record.get(4) + " " + record.get(5) + " " + record.get(6) + " " + record.get(7);
+                assertNotNull(content);
             }
         });
-        String expectedErrorMessage = "Exception reading next record: java.io.IOException: An exception occurred " +
-                "while parsing the CSV content. Issue in line: 2, position: 63";
+        String expectedErrorMessage = "Exception reading next record: java.io.IOException: Exception during parsing at " +
+                "line: 2, position: 63";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedErrorMessage));
         assertNotNull(csvParser);

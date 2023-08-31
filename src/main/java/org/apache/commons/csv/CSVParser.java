@@ -805,11 +805,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         final long startCharPosition = lexer.getCharacterPosition() + this.characterOffset;
         do {
             this.reusableToken.reset();
-            // https://issues.apache.org/jira/browse/CSV-147
             try {
                 this.lexer.nextToken(this.reusableToken);
             } catch (IOException ioe) {
-                String errorMessage = "An exception occurred while parsing the CSV content. Issue in line: "
+                String errorMessage = "Exception during parsing at line: "
                         + this.lexer.getCurrentLineNumber() + ", position: " + this.lexer.getCharacterPosition();
                 throw new IOException(errorMessage, ioe);
             }
