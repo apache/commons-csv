@@ -440,44 +440,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         this.recordNumber = recordNumber - 1;
     }
 
-    /**
-     * Return the parsed CSV content of currently parsed line up until this method is called.
-     * <p>
-     * Maximum parsed token length set by the 'maxParsedTokenCount' is considered during the construction of return string.
-     * </p>
-     * <p>
-     * Example:
-     * </p>
-     * </p>
-     * If currently reading CSV record row contains following data and 'maxParsedTokenCount' is set to 5 and current reading position is col7
-     * </p>
-     * <pre>
-     * col1, col2, col3, col4, col5, col6, col7
-     * </pre>
-     * <p>
-     * then method returns following
-     * </p>
-     * <pre>
-     * col3, col4, col5, col6, col7
-     * </pre>
-     * @return parsed CSV content of current reading line
-     */
-    public String getLastParsedContent() {
-        String parsedContent = "";
-        int recordListSize = this.recordList.size();
-        if (recordListSize > 0) {
-            if (recordListSize <= this.maxParsedTokenCount) {
-                parsedContent = String.join(this.format.getDelimiterString(), this.recordList.toArray(Constants.EMPTY_STRING_ARRAY));
-            } else {
-                // number of parsed token exceed required token count. Take the expected tokens from the end.
-                int startIndex = recordListSize - maxParsedTokenCount;
-                List<String> lastParsedTokenList = this.recordList.subList(startIndex, recordListSize);
-                parsedContent = "..." + String.join(this.format.getDelimiterString(), lastParsedTokenList.toArray(Constants.EMPTY_STRING_ARRAY));
-            }
-        }
-        return parsedContent;
-    }
-
     private void addRecordValue(final boolean lastRecord) {
         final String input = this.format.trim(this.reusableToken.content.toString());
         if (lastRecord && input.isEmpty() && this.format.getTrailingDelimiter()) {
