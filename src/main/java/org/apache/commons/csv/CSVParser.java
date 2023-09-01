@@ -353,8 +353,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         return new CSVParser(new InputStreamReader(url.openStream(), charset), format);
     }
 
-    private int maxParsedTokenCount = 5;
-
     private String headerComment;
 
     private String trailerComment;
