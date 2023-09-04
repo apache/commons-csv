@@ -1975,7 +1975,7 @@ public final class CSVFormat implements Serializable {
      * @throws IOException If an I/O error occurs.
      * @since 1.4
      */
-    public synchronized void print(final Object value, final Appendable out, final boolean newRecord) throws IOException {
+    public synchronized void print(final Object value, final Appendable out, final boolean newRecord, int itemSize) throws IOException {
         // null values are considered empty
         // Only call CharSequence.toString() if you have to, helps GC-free use cases.
         CharSequence charSequence;
@@ -2000,7 +2000,7 @@ public final class CSVFormat implements Serializable {
         print(value, charSequence, out, newRecord);
     }
 
-    private synchronized void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord) throws IOException {
+    private synchronized void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord, int itemSize) throws IOException {
         final int offset = 0;
         final int len = value.length();
         if (!newRecord) {
@@ -2209,7 +2209,7 @@ public final class CSVFormat implements Serializable {
      * Note: must only be called if quoting is enabled, otherwise will generate NPE
      */
     // the original object is needed so can check for Number
-    private void printWithQuotes(final Object object, final CharSequence charSeq, final Appendable out, final boolean newRecord) throws IOException {
+    private void printWithQuotes(final Object object, final CharSequence charSeq, final Appendable out, final boolean newRecord, int itemSize) throws IOException {
         boolean quote = false;
         int start = 0;
         int pos = 0;
@@ -2245,7 +2245,7 @@ public final class CSVFormat implements Serializable {
                 // on the line, as it may be the only thing on the
                 // line. If it were not quoted in that case,
                 // an empty line has no tokens.
-                if (newRecord) {
+                if (newRecord && itemSize <= 1) {
                     quote = true;
                 }
             } else {

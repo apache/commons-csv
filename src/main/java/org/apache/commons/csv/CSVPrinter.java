@@ -165,8 +165,8 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public synchronized void print(final Object value) throws IOException {
-        format.print(value, appendable, newRecord);
+    public synchronized void print(final Object value, int itemSize) throws IOException {
+        format.print(value, appendable, newRecord, itemSize);
         newRecord = false;
     }
 
@@ -257,9 +257,9 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public synchronized void printRecord(final Iterable<?> values) throws IOException {
+    public synchronized void printRecord(final Iterable<?> values, int itemSize) throws IOException {
         for (final Object value : values) {
-            print(value);
+            print(value, itemSize);
         }
         println();
     }
@@ -278,7 +278,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void printRecord(final Object... values) throws IOException {
-        printRecord(Arrays.asList(values));
+        printRecord(Arrays.asList(values), values.length);
     }
 
     /**

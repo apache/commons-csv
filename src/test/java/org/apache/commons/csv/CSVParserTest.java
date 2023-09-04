@@ -1642,4 +1642,24 @@ public class CSVParserTest {
         parser.close();
     }
 
+
+    @Test
+    public void test_empty_columns() throws IOException {
+        CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
+                .setHeader()
+                .setQuoteMode(QuoteMode.MINIMAL)
+                .build();
+
+        CSVPrinter printer = new CSVPrinter(System.out, csvFormat);
+
+        List<String[]> tempStrList = new ArrayList<>();
+        tempStrList.add(new String[] { "", "col2", "", "col4" });
+        tempStrList.add(new String[] { "col1", "col2", "", "" });
+
+        for (String[] temp1 : tempStrList) {
+            printer.printRecord(temp1);
+        }
+        printer.close();
+    }
+
 }
