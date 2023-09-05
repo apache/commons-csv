@@ -1642,4 +1642,26 @@ public class CSVParserTest {
         parser.close();
     }
 
+    @Test
+    public void testFaultyCSVShouldThrowExceptionWithLineAndPosition() throws IOException {
+        String csvContent = "col1,col2,col3,col4,col5,col6,col7,col8,col9,col10\n" +
+                "rec1,rec2,rec3,rec4,rec5,rec6,rec7,rec8,\"\"rec9\"\",rec10";
+
+        StringReader stringReader = new StringReader(csvContent);
+        CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
+                .setHeader()
+                .setSkipHeaderRecord(true)
+                .build();
+
+        CSVParser csvParser = csvFormat.parse(stringReader);
+        Exception exception = assertThrows(UncheckedIOException.class, () -> {
+            for (CSVRecord record : csvParser) {
+                // this will result in exception due to parsing issue
+            }
+        });
+        String expectedErrorMessage = "Invalid char between encapsulated token and delimiter at " +
+                "line: 2, position: 94";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedErrorMessage));
+    }
 }
