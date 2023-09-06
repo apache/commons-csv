@@ -1477,4 +1477,17 @@ public class CSVFormatTest {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withSystemRecordSeparator();
         assertEquals(System.lineSeparator(), formatWithRecordSeparator.getRecordSeparator());
     }
+
+    @Test
+    public void testQuoteModeNoneShouldReturnMeaningfulExceptionMessage() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            CSVFormat.DEFAULT.builder()
+                    .setHeader("Col1", "Col2", "Col3", "Col4")
+                    .setQuoteMode(QuoteMode.NONE)
+                    .build();
+        });
+        String actualMessage = exception.getMessage();
+        String expectedMessage = "Quote mode set to NONE but no escape character is set";
+        assertEquals(expectedMessage, actualMessage);
+    }
 }
