@@ -367,8 +367,8 @@ final class Lexer implements Closeable {
                         }
                         if (!Character.isWhitespace((char)c)) {
                             // error invalid char between token and next delimiter
-                            throw new IOException("(line " + getCurrentLineNumber() +
-                                    ") invalid char between encapsulated token and delimiter");
+                            throw new IOException("Invalid char between encapsulated token and delimiter at line: " +
+                                    getCurrentLineNumber() + ", position: " + getCharacterPosition());
                         }
                     }
                 }
