@@ -1524,6 +1524,23 @@ public class CSVParserTest {
         }}
 
     @Test
+    public void testThrowExceptionWithLineAndPosition() throws IOException {
+        final String csvContent = "col1,col2,col3,col4,col5,col6,col7,col8,col9,col10\nrec1,rec2,rec3,rec4,rec5,rec6,rec7,rec8,\"\"rec9\"\",rec10";
+        final StringReader stringReader = new StringReader(csvContent);
+        // @formatter:off
+        final CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
+                .setHeader()
+                .setSkipHeaderRecord(true)
+                .build();
+        // @formatter:on
+
+        try (CSVParser csvParser = csvFormat.parse(stringReader)) {
+            final Exception exception = assertThrows(UncheckedIOException.class, csvParser::getRecords);
+            assertTrue(exception.getMessage().contains("Invalid char between encapsulated token and delimiter at line: 2, position: 94"));
+        }
+    }
+
+    @Test
     public void testTrailingDelimiter() throws Exception {
         final Reader in = new StringReader("a,a,a,\n\"1\",\"2\",\"3\",\nx,y,z,");
         try (final CSVParser parser = CSVFormat.DEFAULT.withHeader("X", "Y", "Z").withSkipHeaderRecord().withTrailingDelimiter().parse(in)) {
@@ -1640,28 +1657,5 @@ public class CSVParserTest {
         assertEquals("\u00c4", record.get(0));
 
         parser.close();
-    }
-
-    @Test
-    public void testFaultyCSVShouldThrowExceptionWithLineAndPosition() throws IOException {
-        String csvContent = "col1,col2,col3,col4,col5,col6,col7,col8,col9,col10\n" +
-                "rec1,rec2,rec3,rec4,rec5,rec6,rec7,rec8,\"\"rec9\"\",rec10";
-
-        StringReader stringReader = new StringReader(csvContent);
-        CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
-                .setHeader()
-                .setSkipHeaderRecord(true)
-                .build();
-
-        CSVParser csvParser = csvFormat.parse(stringReader);
-        Exception exception = assertThrows(UncheckedIOException.class, () -> {
-            for (CSVRecord record : csvParser) {
-                // this will result in exception due to parsing issue
-            }
-        });
-        String expectedErrorMessage = "Invalid char between encapsulated token and delimiter at " +
-                "line: 2, position: 94";
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(expectedErrorMessage));
     }
 }
