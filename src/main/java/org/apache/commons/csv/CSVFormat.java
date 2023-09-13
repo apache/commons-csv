@@ -2449,7 +2449,7 @@ public final class CSVFormat implements Serializable {
         }
 
         if (escapeCharacter == null && quoteMode == QuoteMode.NONE) {
-            throw new IllegalArgumentException("No quotes mode set but no escape character is set");
+            throw new IllegalArgumentException("Quote mode set to NONE but no escape character is set");
         }
 
         // Validate headers
