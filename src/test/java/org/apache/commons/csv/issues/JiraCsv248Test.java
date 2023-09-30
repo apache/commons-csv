@@ -20,6 +20,7 @@ package org.apache.commons.csv.issues;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -70,12 +71,7 @@ public class JiraCsv248Test {
             assertFalse(rec.isSet("A"));
             assertEquals(0, rec.toMap().size());
             // This will throw
-            try {
-                rec.get("A");
-                org.junit.jupiter.api.Assertions.fail("Access by name is not expected after deserialisation");
-            } catch (final IllegalStateException expected) {
-                // OK
-            }
+            assertThrows(IllegalStateException.class, () -> rec.get("A"));
         }
     }
 }
