@@ -31,6 +31,8 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import org.apache.commons.io.function.IOStream;
+
 /**
  * Prints values in a {@link CSVFormat CSV format}.
  *
@@ -69,19 +71,6 @@ import java.util.stream.Stream;
  * </pre>
  */
 public final class CSVPrinter implements Flushable, Closeable {
-
-    /**
-     * Throws the given throwable.
-     *
-     * @param <T> The throwable cast type.
-     * @param throwable The throwable to rethrow.
-     * @return nothing because we throw.
-     * @throws T Always thrown.
-     */
-    @SuppressWarnings("unchecked")
-    private static <T extends Throwable> RuntimeException rethrow(final Throwable throwable) throws T {
-        throw (T) throwable;
-    }
 
     /** The place that the values get written. */
     private final Appendable appendable;
@@ -308,14 +297,9 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      * @since 1.10.0
      */
+    @SuppressWarnings("resource") // caller closes.
     public synchronized void printRecord(final Stream<?> values) throws IOException {
-        values.forEachOrdered(t -> {
-            try {
-                print(t);
-            } catch (final IOException e) {
-                throw rethrow(e);
-            }
-        });
+        IOStream.adapt(values).forEachOrdered(this::print);
         println();
     }
 
@@ -496,14 +480,8 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      * @since 1.10.0
      */
-    @SuppressWarnings("unused") // rethrow() throws IOException
+    @SuppressWarnings({ "resource" }) // Caller closes.
     public void printRecords(final Stream<?> values) throws IOException {
-        values.forEachOrdered(t -> {
-            try {
-                printRecordObject(t);
-            } catch (final IOException e) {
-                throw rethrow(e);
-            }
-        });
+        IOStream.adapt(values).forEachOrdered(this::printRecordObject);
     }
 }

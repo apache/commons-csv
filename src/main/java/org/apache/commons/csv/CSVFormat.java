@@ -49,6 +49,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.function.Uncheck;
 
 /**
  * Specifies the format of a CSV file for parsing and writing.
@@ -1577,15 +1578,16 @@ public final class CSVFormat implements Serializable {
      * @return the formatted values
      */
     public String format(final Object... values) {
+        return Uncheck.get(() -> format_(values));
+    }
+
+    private String format_(final Object... values) throws IOException {
         final StringWriter out = new StringWriter();
         try (CSVPrinter csvPrinter = new CSVPrinter(out, this)) {
             csvPrinter.printRecord(values);
             final String res = out.toString();
             final int len = recordSeparator != null ? res.length() - recordSeparator.length() : res.length();
             return res.substring(0, len);
-        } catch (final IOException e) {
-            // should not happen because a StringWriter does not do IO.
-            throw new IllegalStateException(e);
         }
     }
 
