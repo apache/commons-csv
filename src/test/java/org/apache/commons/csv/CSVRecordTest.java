@@ -255,12 +255,7 @@ public class CSVRecordTest {
             assertFalse(rec.isSet("A"));
             assertEquals(0, rec.toMap().size());
             // This will throw
-            try {
-                rec.get("A");
-                org.junit.jupiter.api.Assertions.fail("Access by name is not expected after deserialisation");
-            } catch (final IllegalStateException expected) {
-                // OK
-            }
+            assertThrows(IllegalStateException.class, () -> rec.get("A"));
         }
     }
 
