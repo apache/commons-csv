@@ -47,6 +47,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.io.function.Uncheck;
+
 /**
  * Parses CSV files according to the specified format.
  *
@@ -144,11 +146,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         private CSVRecord current;
 
         private CSVRecord getNextRecord() {
-            try {
-                return CSVParser.this.nextRecord();
-            } catch (final IOException e) {
-                throw new UncheckedIOException("Exception reading next record: " + e.toString(), e);
-            }
+            return Uncheck.get(CSVParser.this::nextRecord);
         }
 
         @Override

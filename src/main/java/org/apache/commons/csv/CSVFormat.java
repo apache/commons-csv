@@ -48,6 +48,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
+
 /**
  * Specifies the format of a CSV file for parsing and writing.
  *
