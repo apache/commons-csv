@@ -1413,31 +1413,40 @@ public final class CSVFormat implements Serializable {
 
     private final boolean autoFlush;
 
-    private final Character commentMarker; // null if commenting is disabled
+    /** null if commenting is disabled. */
+    private final Character commentMarker;
 
     private final String delimiter;
 
-    private final Character escapeCharacter; // null if escaping is disabled
+    /** null if escaping is disabled. */
+    private final Character escapeCharacter;
 
-    private final String[] headers; // array of header column names
+    /** Array of header column names. */
+    private final String[] headers;
 
-    private final String[] headerComments; // array of header comment lines
+    /** Array of header comment lines. */
+    private final String[] headerComments;
 
     private final boolean ignoreEmptyLines;
 
-    private final boolean ignoreHeaderCase; // should ignore header names case
+    /** Should ignore header names case. */
+    private final boolean ignoreHeaderCase;
 
-    private final boolean ignoreSurroundingSpaces; // Should leading/trailing spaces be ignored around values?
+    /** TODO Should leading/trailing spaces be ignored around values?. */
+    private final boolean ignoreSurroundingSpaces;
 
-    private final String nullString; // the string to be used for null values
+    /** The string to be used for null values. */
+    private final String nullString;
 
-    private final Character quoteCharacter; // null if quoting is disabled
+    /** null if quoting is disabled. */
+    private final Character quoteCharacter;
 
     private final String quotedNullString;
 
     private final QuoteMode quoteMode;
 
-    private final String recordSeparator; // for outputs
+    /** For output. */
+    private final String recordSeparator;
 
     private final boolean skipHeaderRecord;
 
