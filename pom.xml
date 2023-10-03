@@ -175,8 +175,6 @@
     <japicmp.skip>false</japicmp.skip>
 
     <commons.release.isDistModule>true</commons.release.isDistModule>
-    <commons.releaseManagerName>Gary Gregory</commons.releaseManagerName>
-    <commons.releaseManagerKey>86fdc7e2a11262cb</commons.releaseManagerKey>
   </properties>
 
   <build>
