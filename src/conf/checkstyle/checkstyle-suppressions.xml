@@ -20,4 +20,6 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 <suppressions>
   <suppress checks="LineLength" files="[\\/]CSVParser\.java$" lines="515"/>
+  <!-- target/classes/META-INF/maven/org.apache.commons/commons-csv/pom.properties -->
+  <suppress checks="Header" files="target[/\\]classes[/\\]META-INF[/\\]maven[/\\]org.apache.commons[/\\]commons-csv[/\\]pom.properties" />
 </suppressions>
