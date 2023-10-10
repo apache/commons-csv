@@ -48,7 +48,7 @@ public class PerformanceTest {
     }
 
     // Container for basic statistics
-    private static class Stats {
+    private static final class Stats {
         final int count;
         final int fields;
         Stats(final int c, final int f) {

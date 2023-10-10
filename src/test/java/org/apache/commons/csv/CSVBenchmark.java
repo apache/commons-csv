@@ -202,7 +202,7 @@ public class CSVBenchmark {
         return callback.count;
     }
 
-    private static class CountingReaderCallback implements org.skife.csv.ReaderCallback {
+    private static final class CountingReaderCallback implements org.skife.csv.ReaderCallback {
         public int count;
 
         @Override
