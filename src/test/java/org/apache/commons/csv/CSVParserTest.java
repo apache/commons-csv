@@ -220,7 +220,7 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testBOMInputStream_ParserWithInputStream() throws IOException {
+    public void testBOMInputStreamParserWithInputStream() throws IOException {
         try (final BOMInputStream inputStream = createBOMInputStream("org/apache/commons/csv/CSVFileParser/bom.csv");
             final CSVParser parser = CSVParser.parse(inputStream, UTF_8, CSVFormat.EXCEL.withHeader())) {
             parser.forEach(record -> assertNotNull(record.get("Date")));
@@ -228,7 +228,7 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testBOMInputStream_ParserWithReader() throws IOException {
+    public void testBOMInputStreamParserWithReader() throws IOException {
         try (final Reader reader = new InputStreamReader(createBOMInputStream("org/apache/commons/csv/CSVFileParser/bom.csv"), UTF_8_NAME);
             final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader())) {
             parser.forEach(record -> assertNotNull(record.get("Date")));
@@ -236,7 +236,7 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testBOMInputStream_parseWithReader() throws IOException {
+    public void testBOMInputStreamParseWithReader() throws IOException {
         try (final Reader reader = new InputStreamReader(createBOMInputStream("org/apache/commons/csv/CSVFileParser/bom.csv"), UTF_8_NAME);
             final CSVParser parser = CSVParser.parse(reader, CSVFormat.EXCEL.withHeader())) {
             parser.forEach(record -> assertNotNull(record.get("Date")));
