@@ -43,11 +43,11 @@
 Apache Commons CSV
 ===================
 
-[![GitHub Actions Status](https://github.com/apache/commons-csv/workflows/Java%20CI/badge.svg)](https://github.com/apache/commons-csv/actions)
+[![Java CI](https://github.com/apache/commons-csv/actions/workflows/maven.yml/badge.svg)](https://github.com/apache/commons-csv/actions/workflows/maven.yml)
 [![Coverage Status](https://codecov.io/gh/apache/commons-csv/branch/master/graph/badge.svg)](https://app.codecov.io/gh/apache/commons-csv)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/badge.svg?gav=true)](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/?gav=true)
 [![Javadocs](https://javadoc.io/badge/org.apache.commons/commons-csv/1.10.0.svg)](https://javadoc.io/doc/org.apache.commons/commons-csv/1.10.0)
-[![CodeQL](https://github.com/apache/commons-csv/workflows/CodeQL/badge.svg)](https://github.com/apache/commons-csv/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL)
+[![CodeQL](https://github.com/apache/commons-csv/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/apache/commons-csv/actions/workflows/codeql-analysis.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/commons-text/badge)](https://api.securityscorecards.dev/projects/github.com/apache/commons-text)
 
 The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
