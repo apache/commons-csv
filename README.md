@@ -48,7 +48,7 @@ Apache Commons CSV
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/badge.svg?gav=true)](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/?gav=true)
 [![Javadocs](https://javadoc.io/badge/org.apache.commons/commons-csv/1.10.0.svg)](https://javadoc.io/doc/org.apache.commons/commons-csv/1.10.0)
 [![CodeQL](https://github.com/apache/commons-csv/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/apache/commons-csv/actions/workflows/codeql-analysis.yml)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/commons-text/badge)](https://api.securityscorecards.dev/projects/github.com/apache/commons-text)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/commons-csv/badge)](https://api.securityscorecards.dev/projects/github.com/apache/commons-csv)
 
 The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
 
