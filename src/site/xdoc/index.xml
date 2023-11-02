@@ -61,7 +61,7 @@ The <a href="scm.html">git repository</a> can be
 <!-- ================================================== -->
 <section name="Releases">
 <ul>
-  <li><a href="https://commons.apache.org/csv/download_csv.cgi">Download Apache Commons CSV current (mirrors)</a> requires Java 8</li>
+  <li><a href="https://commons.apache.org/csv/download_csv.cgi">Download Apache Commons CSV current (mirrors)</a>, requires Java 8 or above</li>
   <li><a href="https://archive.apache.org/dist/commons/csv/">Download Apache Commons CSV archived releases</a></li>
 </ul>
 <p>
