@@ -12,7 +12,7 @@ Commons CSV requires at least Java 8.
 
 The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
 
-Feature and bug fix release (Java 8)
+Feature and bug fix release (Java 8 or above)
 
 Changes in this version include:
 
@@ -98,7 +98,7 @@ Commons CSV requires at least Java 8.
 
 The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
 
-Feature and bug fix release (Java 8)
+Feature and bug fix release (Java 8 or above)
 
 Changes in this version include:
 
@@ -264,7 +264,7 @@ Commons CSV reads and writes files in variations of the Comma Separated Value (C
 The Apache Commons CSV library provides a simple interface for reading and writing
 CSV files of various types.
 
-Feature and bug fix release (Java 8)
+Feature and bug fix release (Java 8 or above)
 
 Changes in this version include:
 

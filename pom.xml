@@ -151,7 +151,7 @@
 
   <properties>
     <commons.release.version>1.10.0</commons.release.version>
-    <commons.release.desc>(Java 8)</commons.release.desc>
+    <commons.release.desc>(Java 8 or above)</commons.release.desc>
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC1</commons.rc.version>
     <commons.bc.version>1.9.0</commons.bc.version>
