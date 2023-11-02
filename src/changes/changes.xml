@@ -203,7 +203,7 @@ removed in version 2.0.
       <action issue="CSV-239" type="add" dev="ggregory" due-to="Gary Gregory, Dave Moten">Cannot get headers in column order from CSVRecord.</action>
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Update tests from H2 1.4.198 to 1.4.199.</action>
     </release>
-    <release version="1.6" date="2018-09-22" description="Feature and bug fix release (Java 7)">
+    <release version="1.6" date="2018-09-22" description="Feature and bug fix release (Java 7 or above)">
       <action issue="CSV-231" type="update" dev="britter">Add more documentation to CSVPrinter.</action>
       <action issue="CSV-217" type="add" dev="ggregory" due-to="Korolyov Alexei">Add autoFlush option for CsvPrinter. PR #24.</action>
       <action issue="CSV-219" type="fix" dev="ggregory" due-to="Zhang Hongda">The behavior of quote char using is not similar as Excel does when the first string contains CJK char(s).</action>
@@ -215,7 +215,7 @@ removed in version 2.0.
       <action issue="CSV-225" type="fix" dev="ggregory" due-to="Anson Schwabecher">Parse method should avoid creating a redundant BufferedReader.</action>
       <action issue="CSV-233" type="fix" dev="ggregory" due-to="Gary Gregory">Add predefined CSVFormats for printing MongoDB CSV and TSV.</action>
     </release>
-    <release version="1.5" date="2017-09-03" description="Feature and bug fix release (Java 7)">
+    <release version="1.5" date="2017-09-03" description="Feature and bug fix release (Java 7 or above)">
       <action issue="CSV-203" type="fix" dev="ggregory" due-to="Richard Wheeldon, Kai Paroth">withNullString value is printed without quotes when QuoteMode.ALL is specified; add QuoteMode.ALL_NON_NULL. PR #17.</action>
       <action issue="CSV-194" type="fix" dev="ggregory" due-to="Marc Prud'hommeaux">Fix outdated comments about FileReader in CSVParser #13</action>
       <action issue="CSV-193" type="fix" dev="ggregory" due-to="Matthias Wiehl">Fix incorrect method name 'withFirstRowAsHeader' in user guide.</action>
@@ -230,12 +230,12 @@ removed in version 2.0.
       <action issue="CSV-207" type="add" dev="ggregory" due-to="Gary Gregory">Provide a CSV Format for printing PostgreSQL CSV and Text formats.</action>
       <action issue="CSV-214" type="add" dev="ggregory" due-to="Nitin Mahendru, Gary Gregory">Adding a placeholder in the Lexer and CSV parser to store the end-of-line string.</action>
     </release>
-    <release version="1.4" date="2016-05-28" description="Feature and bug fix release (Java 6)">
+    <release version="1.4" date="2016-05-28" description="Feature and bug fix release (Java 6 or above)">
       <action issue="CSV-181" type="update" dev="ggregory" due-to="Gary Gregory">Make CSVPrinter.print(Object) GC-free.</action>
       <action issue="CSV-182" type="add" dev="ggregory" due-to="Gary Gregory">Allow some printing operations directly from CSVFormat.</action>
       <action issue="CSV-183" type="update" dev="ggregory">Drop ferc.gov tests.</action>
     </release>
-    <release version="1.3" date="2016-05-09" description="Feature and bug fix release (Java 6)">
+    <release version="1.3" date="2016-05-09" description="Feature and bug fix release (Java 6 or above)">
       <action issue="CSV-179" type="add" dev="britter">Add shortcut method for using first record as header to CSVFormat</action>
       <action issue="CSV-180" type="add" dev="britter">Add withHeader(Class&lt;? extends Enum&gt;) to CSVFormat</action>
       <action issue="CSV-167" type="update" dev="sebb" due-to="Rene">Comment line hides next record; update Javadoc to make behavior clear</action>
@@ -249,12 +249,12 @@ removed in version 2.0.
       <action issue="CSV-177" type="add" dev="ggregory" due-to="Gary Gregory">Support trimming leading and trailing blanks.</action>
       <action issue="CSV-178" type="add" dev="ggregory" due-to="Gary Gregory">Create default formats for Informix UNLOAD and UNLOAD CSV.</action>
     </release>
-    <release version="1.2" date="2015-08-24" description="Feature and bug fix release (Java 6)">
+    <release version="1.2" date="2015-08-24" description="Feature and bug fix release (Java 6 or above)">
       <action issue="CSV-145" type="fix" dev="ggregory" due-to="Frank Ulbricht">CSVFormat.with* methods clear the header comments</action>
       <action issue="CSV-156" type="fix" dev="ggregory" due-to="Jason Steenstra-Pickens">Incorrect Javadoc on QuoteMode.NONE</action>
       <action issue="CSV-157" type="add" dev="ggregory">Add enum CSVFormat.Predefined that contains the default CSVFormat values.</action>
     </release>
-    <release version="1.1" date="2014-11-16" description="Feature and bug fix release (Java 6)">
+    <release version="1.1" date="2014-11-16" description="Feature and bug fix release (Java 6 or above)">
       <action issue="CSV-140" type="fix" dev="ggregory" due-to="Damjan Jovanovic">QuoteMode.NON_NUMERIC doesn't work with CSVPrinter.printRecords(ResultSet)</action>
       <action issue="CSV-130" type="fix" dev="ggregory" due-to="Sergei Lebedev">CSVFormat#withHeader doesn't work well with #printComment, add withHeaderComments(String...)</action>
       <action issue="CSV-128" type="fix" dev="ggregory">CSVFormat.EXCEL should ignore empty header names</action>
@@ -265,7 +265,7 @@ removed in version 2.0.
       <action issue="CSV-131" type="add" dev="ggregory" due-to="Holger Stratmann">Save positions of records to enable random access</action>
       <action issue="CSV-139" type="add" dev="ggregory">CSVPrinter.printRecord(ResultSet) with metadata</action>
     </release>
-    <release version="1.0" date="2014-08-14" description="First release (Java 6)">
+    <release version="1.0" date="2014-08-14" description="First release (Java 6 or above)">
       <action issue="CSV-125" type="fix" dev="britter">No longer works with Java 6</action>
       <action issue="CSV-122" type="fix" dev="britter" due-to="Mike Lewis">NullPointerException when empty header string and null string of ""</action>
       <action issue="CSV-117" type="update" dev="sebb">Validate format parameters in constructor</action>
