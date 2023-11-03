@@ -58,7 +58,20 @@ import org.supercsv.prefs.CsvPreference;
 @State(Scope.Benchmark)
 public class CSVBenchmark {
 
+    private static final class CountingReaderCallback implements org.skife.csv.ReaderCallback {
+        public int count;
+
+        @Override
+        public void onRow(final String[] fields) {
+            count++;
+        }
+    }
+
     private String data;
+
+    private Reader getReader() {
+        return new StringReader(data);
+    }
 
     /**
      * Load the data in memory before running the benchmarks, this takes out IO from the results.
@@ -70,55 +83,6 @@ public class CSVBenchmark {
         try (final InputStream gzin = new GZIPInputStream(in, 8192)) {
             this.data = IOUtils.toString(gzin, StandardCharsets.ISO_8859_1);
         }
-    }
-
-    private Reader getReader() {
-        return new StringReader(data);
-    }
-
-    @Benchmark
-    public int read(final Blackhole bh) throws Exception {
-        int count = 0;
-
-        try (BufferedReader reader = new BufferedReader(getReader())) {
-            while (reader.readLine() != null) {
-              count++;
-            }
-        }
-
-        bh.consume(count);
-        return count;
-    }
-
-    @Benchmark
-    public int scan(final Blackhole bh) throws Exception {
-        int count = 0;
-
-        try (Scanner scanner = new Scanner(getReader())) {
-            while (scanner.hasNextLine()) {
-              scanner.nextLine();
-              count++;
-            }
-        }
-
-        bh.consume(count);
-        return count;
-    }
-
-    @Benchmark
-    public int split(final Blackhole bh) throws Exception {
-      int count = 0;
-
-      try (BufferedReader reader = new BufferedReader(getReader())) {
-          String line;
-          while ((line = reader.readLine()) != null) {
-            final String[] values = StringUtils.split(line, ',');
-            count += values.length;
-          }
-      }
-
-      bh.consume(count);
-      return count;
     }
 
     @Benchmark
@@ -202,15 +166,6 @@ public class CSVBenchmark {
         return callback.count;
     }
 
-    private static final class CountingReaderCallback implements org.skife.csv.ReaderCallback {
-        public int count;
-
-        @Override
-        public void onRow(final String[] fields) {
-            count++;
-        }
-    }
-
     @Benchmark
     public int parseSuperCSV(final Blackhole bh) throws Exception {
         int count = 0;
@@ -223,5 +178,50 @@ public class CSVBenchmark {
 
         bh.consume(count);
         return count;
+    }
+
+    @Benchmark
+    public int read(final Blackhole bh) throws Exception {
+        int count = 0;
+
+        try (BufferedReader reader = new BufferedReader(getReader())) {
+            while (reader.readLine() != null) {
+              count++;
+            }
+        }
+
+        bh.consume(count);
+        return count;
+    }
+
+    @Benchmark
+    public int scan(final Blackhole bh) throws Exception {
+        int count = 0;
+
+        try (Scanner scanner = new Scanner(getReader())) {
+            while (scanner.hasNextLine()) {
+              scanner.nextLine();
+              count++;
+            }
+        }
+
+        bh.consume(count);
+        return count;
+    }
+
+    @Benchmark
+    public int split(final Blackhole bh) throws Exception {
+      int count = 0;
+
+      try (BufferedReader reader = new BufferedReader(getReader())) {
+          String line;
+          while ((line = reader.readLine()) != null) {
+            final String[] values = StringUtils.split(line, ',');
+            count += values.length;
+          }
+      }
+
+      bh.consume(count);
+      return count;
     }
 }

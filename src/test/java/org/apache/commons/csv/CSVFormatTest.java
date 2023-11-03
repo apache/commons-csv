@@ -936,6 +936,19 @@ public class CSVFormatTest {
     }
 
     @Test
+    public void testQuoteModeNoneShouldReturnMeaningfulExceptionMessage() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            CSVFormat.DEFAULT.builder()
+                    .setHeader("Col1", "Col2", "Col3", "Col4")
+                    .setQuoteMode(QuoteMode.NONE)
+                    .build();
+        });
+        String actualMessage = exception.getMessage();
+        String expectedMessage = "Quote mode set to NONE but no escape character is set";
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
     public void testQuotePolicyNoneWithoutEscapeThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> CSVFormat.newFormat('!').builder().setQuoteMode(QuoteMode.NONE).build());
     }
@@ -1476,18 +1489,5 @@ public class CSVFormatTest {
     public void testWithSystemRecordSeparator() {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withSystemRecordSeparator();
         assertEquals(System.lineSeparator(), formatWithRecordSeparator.getRecordSeparator());
-    }
-
-    @Test
-    public void testQuoteModeNoneShouldReturnMeaningfulExceptionMessage() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            CSVFormat.DEFAULT.builder()
-                    .setHeader("Col1", "Col2", "Col3", "Col4")
-                    .setQuoteMode(QuoteMode.NONE)
-                    .build();
-        });
-        String actualMessage = exception.getMessage();
-        String expectedMessage = "Quote mode set to NONE but no escape character is set";
-        assertEquals(expectedMessage, actualMessage);
     }
 }
