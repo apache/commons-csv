@@ -37,7 +37,7 @@ public class JiraCsv167Test {
     }
 
     @Test
-    public void parse() throws IOException {
+    public void testParse() throws IOException {
         int totcomment = 0;
         int totrecs = 0;
         try (final Reader reader = getTestReader(); final BufferedReader br = new BufferedReader(reader)) {
