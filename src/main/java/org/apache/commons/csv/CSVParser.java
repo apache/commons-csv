@@ -142,7 +142,7 @@ import org.apache.commons.io.function.Uncheck;
  */
 public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
-    class CSVRecordIterator implements Iterator<CSVRecord> {
+    final class CSVRecordIterator implements Iterator<CSVRecord> {
         private CSVRecord current;
 
         private CSVRecord getNextRecord() {
