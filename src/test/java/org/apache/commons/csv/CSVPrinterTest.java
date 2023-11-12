@@ -1516,7 +1516,7 @@ public class CSVPrinterTest {
     public void testPrintRecordsWithEmptyVector() throws IOException {
         final PrintStream out = System.out;
         try {
-            System.setOut(new PrintStream(NullOutputStream.NULL_OUTPUT_STREAM));
+            System.setOut(new PrintStream(NullOutputStream.INSTANCE));
             try (CSVPrinter csvPrinter = CSVFormat.POSTGRESQL_TEXT.printer()) {
                 final Vector<CSVFormatTest.EmptyEnum> vector = new Vector<>();
                 final int expectedCapacity = 23;
