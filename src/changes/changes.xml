@@ -56,6 +56,7 @@
       <action type="update" dev="ggregory" due-to="Dependabot">Bump h2 from 2.1.214 to 2.2.224 #333, #349, #359.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-lang3 from 3.12.0 to 3.14.0.</action>
       <action type="update" dev="ggregory" due-to="Buddhi De Silva, Michael Osipov, Gary Gregory">Update exception message in CSVRecord#getNextRecord() #348.</action>
+      <action type="update" dev="ggregory" due-to="Dependabot">Bump tests using com.opencsv:opencsv from 5.8 to 5.9 #373.</action>
     </release>
     <release version="1.10.0" date="2023-01-28" description="Feature and bug fix release (Java 8 or above)">
       <!-- FIX -->
