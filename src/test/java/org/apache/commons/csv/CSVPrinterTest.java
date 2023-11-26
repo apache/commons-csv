@@ -1644,7 +1644,6 @@ public class CSVPrinterTest {
         doRandom(CSVFormat.POSTGRESQL_TEXT, ITERATIONS_FOR_RANDOM_TEST);
     }
 
-
     @Test
     public void testRandomRfc4180() throws Exception {
         doRandom(CSVFormat.RFC4180, ITERATIONS_FOR_RANDOM_TEST);

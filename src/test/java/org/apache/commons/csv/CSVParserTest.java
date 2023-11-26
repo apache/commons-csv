@@ -293,7 +293,6 @@ public class CSVParserTest {
         testCSV141Failure(CSVFormat.ORACLE, 2);
     }
 
-
     @Test
     public void testCSV141CSVFormat_POSTGRESQL_CSV() throws Exception {
         testCSV141Failure(CSVFormat.POSTGRESQL_CSV, 3);
