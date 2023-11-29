@@ -51,7 +51,7 @@
       <action type="fix" issue="CSV-147" dev="ggregory" due-to="Steven Peterson, Benedikt Ritter, Gary Gregory, Joerg Schaible, Buddhi De Silva, Elliotte Rusty Harold">Better error message during faulty CSV record read #347.</action>
       <action type="fix" issue="CSV-310" dev="ggregory" due-to="Buddhi De Silva">Misleading error message when QuoteMode set to None #352.</action>
       <!-- UPDATE -->
-      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-io:commons-io: from 2.11.0 to 2.15.0.</action>
+      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-io:commons-io: from 2.11.0 to 2.15.1.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 57 to 64.</action>
       <action type="update" dev="ggregory" due-to="Dependabot">Bump h2 from 2.1.214 to 2.2.224 #333, #349, #359.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-lang3 from 3.12.0 to 3.14.0.</action>
