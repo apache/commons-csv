@@ -214,7 +214,7 @@ public class CSVParserTest {
     @Disabled("CSV-107")
     public void testBOM() throws IOException {
         final URL url = ClassLoader.getSystemClassLoader().getResource("org/apache/commons/csv/CSVFileParser/bom.csv");
-        try (final CSVParser parser = CSVParser.parse(url, Charset.forName(UTF_8_NAME), CSVFormat.EXCEL.withHeader())) {
+        try (final CSVParser parser = CSVParser.parse(url, StandardCharsets.UTF_8, CSVFormat.EXCEL.withHeader())) {
             parser.forEach(record -> assertNotNull(record.get("Date")));
         }
     }
