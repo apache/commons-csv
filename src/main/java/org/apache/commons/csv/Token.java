@@ -44,7 +44,7 @@ final class Token {
         COMMENT
     }
 
-    /** length of the initial token (content-)buffer */
+    /** Length of the initial token (content-)buffer */
     private static final int INITIAL_TOKEN_LENGTH = 50;
 
     /** Token type */

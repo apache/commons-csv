@@ -1413,12 +1413,12 @@ public final class CSVFormat implements Serializable {
 
     private final boolean autoFlush;
 
-    /** null if commenting is disabled. */
+    /** Set to null if commenting is disabled. */
     private final Character commentMarker;
 
     private final String delimiter;
 
-    /** null if escaping is disabled. */
+    /** Set to null if escaping is disabled. */
     private final Character escapeCharacter;
 
     /** Array of header column names. */
@@ -1438,7 +1438,7 @@ public final class CSVFormat implements Serializable {
     /** The string to be used for null values. */
     private final String nullString;
 
-    /** null if quoting is disabled. */
+    /** Set to null if quoting is disabled. */
     private final Character quoteCharacter;
 
     private final String quotedNullString;
