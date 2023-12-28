@@ -313,8 +313,34 @@
       <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
+        <configuration>
+          <consoleOutput>true</consoleOutput>
+          <excludes>
+            <exclude>**/revapi*.json</exclude>
+          </excludes>
+        </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.14.7</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-java</artifactId>
+            <version>0.27.0</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <failSeverity>breaking</failSeverity>
+          <checkDependencies>false</checkDependencies>
+          <failOnMissingConfigurationFiles>true</failOnMissingConfigurationFiles>
+          <analysisConfigurationFiles>
+            <path>src/test/resources/revapi-config.json</path>
+          </analysisConfigurationFiles>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
