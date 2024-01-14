@@ -92,7 +92,7 @@ import org.apache.commons.io.function.Uncheck;
  *
  * <p>
  * This will read the parse the contents of the file using the
- * <a href="http://tools.ietf.org/html/rfc4180" target="_blank">RFC 4180</a> format.
+ * <a href="https://tools.ietf.org/html/rfc4180" target="_blank">RFC 4180</a> format.
  * </p>
  *
  * <p>

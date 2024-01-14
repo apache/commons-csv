@@ -1105,7 +1105,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#MySQL
-     * @see <a href="http://dev.mysql.com/doc/refman/5.1/en/load-data.html"> http://dev.mysql.com/doc/refman/5.1/en/load
+     * @see <a href="https://dev.mysql.com/doc/refman/5.1/en/load-data.html"> https://dev.mysql.com/doc/refman/5.1/en/load
      *      -data.html</a>
      */
     // @formatter:off
@@ -1237,7 +1237,7 @@ public final class CSVFormat implements Serializable {
     // @formatter:off
 
     /**
-     * Comma separated format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
+     * Comma separated format as defined by <a href="https://tools.ietf.org/html/rfc4180">RFC 4180</a>.
      *
      * <p>
      * The {@link Builder} settings are:
