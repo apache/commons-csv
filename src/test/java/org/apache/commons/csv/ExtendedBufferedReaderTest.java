@@ -49,7 +49,6 @@ public class ExtendedBufferedReaderTest {
 
     /*
      * Test to illustrate https://issues.apache.org/jira/browse/CSV-75
-     *
      */
     @Test
     public void testReadChar() throws Exception {
