@@ -572,6 +572,33 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testExcelPrintAllArrayOfArraysWithFirstEmptyValue2() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
+            printer.printRecords((Object[]) new String[][] { { "" } });
+            assertEquals("\"\"" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
+    public void testExcelPrintAllArrayOfArraysWithFirstSpaceValue1() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
+            printer.printRecords((Object[]) new String[][] { { " ", "r1c2" } });
+            assertEquals("\" \",r1c2" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
+    public void testExcelPrintAllArrayOfArraysWithFirstTabValue1() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
+            printer.printRecords((Object[]) new String[][] { { "\t", "r1c2" } });
+            assertEquals("\"\t\",r1c2" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
     public void testExcelPrintAllArrayOfLists() throws IOException {
         final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
@@ -582,11 +609,30 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testExcelPrintAllArrayOfListsWithFirstEmptyValue2() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
+            printer.printRecords(
+                    (Object[]) new List[] { Arrays.asList("") });
+            assertEquals("\"\"" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
     public void testExcelPrintAllIterableOfArrays() throws IOException {
         final StringWriter sw = new StringWriter();
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
             printer.printRecords(Arrays.asList(new String[][] { { "r1c1", "r1c2" }, { "r2c1", "r2c2" } }));
             assertEquals("r1c1,r1c2" + recordSeparator + "r2c1,r2c2" + recordSeparator, sw.toString());
+        }
+    }
+
+    @Test
+    public void testExcelPrintAllIterableOfArraysWithFirstEmptyValue2() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL)) {
+            printer.printRecords(Arrays.asList(new String[][] { { "" } }));
+            assertEquals("\"\"" + recordSeparator, sw.toString());
         }
     }
 
@@ -690,9 +736,21 @@ public class CSVPrinterTest {
     }
 
     @Test
+    public void testJdbcPrinterWithFirstEmptyValue2() throws IOException, ClassNotFoundException, SQLException {
+        final StringWriter sw = new StringWriter();
+        try (final Connection connection = getH2Connection()) {
+            try (final Statement stmt = connection.createStatement();
+                    final ResultSet resultSet = stmt.executeQuery("select '' AS EMPTYVALUE from DUAL");
+                    final CSVPrinter printer = CSVFormat.DEFAULT.withHeader(resultSet).print(sw)) {
+                printer.printRecords(resultSet);
+            }
+        }
+        assertEquals("EMPTYVALUE" + recordSeparator + "\"\"" + recordSeparator, sw.toString());
+    }
+
+    @Test
     public void testJdbcPrinterWithResultSet() throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
-        Class.forName("org.h2.Driver");
         try (final Connection connection = getH2Connection()) {
             setUpTable(connection);
             try (final Statement stmt = connection.createStatement();
@@ -729,7 +787,6 @@ public class CSVPrinterTest {
     @Test
     public void testJdbcPrinterWithResultSetMetaData() throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
-        Class.forName("org.h2.Driver");
         try (final Connection connection = getH2Connection()) {
             setUpTable(connection);
             try (final Statement stmt = connection.createStatement();
@@ -1748,4 +1805,5 @@ public class CSVPrinterTest {
         }
         assertEquals(expected, out.toString());
     }
+
 }
