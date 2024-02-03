@@ -937,14 +937,14 @@ public class CSVFormatTest {
 
     @Test
     public void testQuoteModeNoneShouldReturnMeaningfulExceptionMessage() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             CSVFormat.DEFAULT.builder()
                     .setHeader("Col1", "Col2", "Col3", "Col4")
                     .setQuoteMode(QuoteMode.NONE)
                     .build();
         });
-        String actualMessage = exception.getMessage();
-        String expectedMessage = "Quote mode set to NONE but no escape character is set";
+        final String actualMessage = exception.getMessage();
+        final String expectedMessage = "Quote mode set to NONE but no escape character is set";
         assertEquals(expectedMessage, actualMessage);
     }
 
