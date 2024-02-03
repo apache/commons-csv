@@ -259,10 +259,9 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
+    @SuppressWarnings("resource")
     public synchronized void printRecord(final Iterable<?> values) throws IOException {
-        for (final Object value : values) {
-            print(value);
-        }
+        IOStream.of(values).forEachOrdered(this::print);
         println();
     }
 
@@ -352,10 +351,9 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
+    @SuppressWarnings("resource")
     public void printRecords(final Iterable<?> values) throws IOException {
-        for (final Object value : values) {
-            printRecordObject(value);
-        }
+        IOStream.of(values).forEachOrdered(this::printRecordObject);
     }
 
     /**
