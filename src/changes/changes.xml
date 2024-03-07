@@ -40,7 +40,7 @@
     <title>Apache Commons CSV Release Notes</title>
   </properties>
   <body>
-    <release version="1.10.1" date="2023-MM-DD" description="Feature and bug fix release (Java 8 or above)">
+    <release version="1.10.1" date="YYYY-MM-DD" description="Feature and bug fix release (Java 8 or above)">
       <!-- ADD -->
       <action issue="CSV-308" type="fix" dev="ggregory" due-to="Buddhi De Silva, Gary Gregory">[Javadoc] Add example to CSVFormat#setHeaderComments() #344.</action>
       <!-- FIX -->
