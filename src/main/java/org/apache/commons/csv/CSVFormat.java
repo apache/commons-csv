@@ -2325,28 +2325,13 @@ public final class CSVFormat implements Serializable {
         final char quote = getQuoteCharacter().charValue();
         // (1) Append opening quote
         append(quote, appendable);
-        // (2) Append Reader content
-        final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
+        // (2) Append Reader contents, doubling quotes
         int c;
-        int pos = 0;
         while (EOF != (c = reader.read())) {
-            builder.append((char) c);
+            append((char) c, appendable);
             if (c == quote) {
-                // Append current segment
-                if (pos > 0) {
-                    append(builder.toString(), appendable);
-                    // Recycle builder
-                    builder.setLength(0);
-                    pos = -1;
-                }
-                // Append nested quote
                 append(quote, appendable);
             }
-            pos++;
-        }
-        // Append last segment
-        if (pos > 0) {
-            append(builder.substring(0, pos), appendable);
         }
         // (3) Append closing quote
         append(quote, appendable);
