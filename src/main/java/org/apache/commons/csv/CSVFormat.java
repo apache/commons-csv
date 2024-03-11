@@ -1581,6 +1581,11 @@ public final class CSVFormat implements Serializable {
                 skipHeaderRecord == other.skipHeaderRecord && trailingDelimiter == other.trailingDelimiter && trim == other.trim;
     }
 
+    private void escape(char c, final Appendable appendable) throws IOException {
+        append(escapeCharacter.charValue(), appendable);
+        append(c, appendable);
+    }
+
     /**
      * Formats the specified values.
      *
@@ -1711,19 +1716,19 @@ public final class CSVFormat implements Serializable {
     /**
      * Gets the escape character.
      *
-     * @return the escape character, may be {@code null}
+     * @return the escape character, may be {@code 0}
      */
-    public Character getEscapeCharacter() {
-        return escapeCharacter;
+    char getEscapeChar() {
+        return escapeCharacter != null ? escapeCharacter.charValue() : 0;
     }
 
     /**
      * Gets the escape character.
      *
-     * @return the escape character, may be {@code 0}
+     * @return the escape character, may be {@code null}
      */
-    char getEscapeChar() {
-        return escapeCharacter != null ? escapeCharacter.charValue() : 0;
+    public Character getEscapeCharacter() {
+        return escapeCharacter;
     }
 
     /**
@@ -2162,14 +2167,13 @@ public final class CSVFormat implements Serializable {
                 } else if (isCr) {
                     c = 'r';
                 }
-                appendable.append(escape);
-                appendable.append(c);
+                escape(c, appendable);
                 if (isDelimiterStart) {
                     for (int i = 1; i < delimLength; i++) {
                         pos++;
                         c = charSeq.charAt(pos);
-                        appendable.append(escape);
-                        appendable.append(c);
+                        escape(c, appendable);
+
                     }
                 }
                 start = pos + 1; // start on the current char after this one
@@ -2216,13 +2220,11 @@ public final class CSVFormat implements Serializable {
                 } else if (isCr) {
                     c = 'r';
                 }
-                append(escape, appendable);
-                append((char) c, appendable);
+                escape((char) c, appendable);
                 if (isDelimiterStart) {
                     for (int i = 1; i < delimLength; i++) {
                         c = bufferedReader.read();
-                        append(escape, appendable);
-                        append((char) c, appendable);
+                        escape((char) c, appendable);
                     }
                 }
                 start = pos + 1; // start on the current char after this one
@@ -2231,7 +2233,7 @@ public final class CSVFormat implements Serializable {
         }
         // write last segment
         if (pos > start) {
-            append(builder.substring(start, pos), appendable);
+            appendable.append(builder, start, pos);
         }
     }
 
