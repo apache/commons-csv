@@ -2149,12 +2149,12 @@ public final class CSVFormat implements Serializable {
         int start = 0;
         int pos = 0;
         final int end = charSeq.length();
-        final char[] delim = getDelimiterCharArray();
-        final int delimLength = delim.length;
+        final char[] delimArray = getDelimiterCharArray();
+        final int delimLength = delimArray.length;
         final char escape = getEscapeChar();
         while (pos < end) {
             char c = charSeq.charAt(pos);
-            final boolean isDelimiterStart = isDelimiter(c, charSeq, pos, delim, delimLength);
+            final boolean isDelimiterStart = isDelimiter(c, charSeq, pos, delimArray, delimLength);
             final boolean isCr = c == CR;
             final boolean isLf = c == LF;
             if (isCr || isLf || c == escape || isDelimiterStart) {
@@ -2171,8 +2171,7 @@ public final class CSVFormat implements Serializable {
                 if (isDelimiterStart) {
                     for (int i = 1; i < delimLength; i++) {
                         pos++;
-                        c = charSeq.charAt(pos);
-                        escape(c, appendable);
+                        escape(charSeq.charAt(pos), appendable);
 
                     }
                 }
@@ -2223,8 +2222,7 @@ public final class CSVFormat implements Serializable {
                 escape((char) c, appendable);
                 if (isDelimiterStart) {
                     for (int i = 1; i < delimLength; i++) {
-                        c = bufferedReader.read();
-                        escape((char) c, appendable);
+                        escape((char) bufferedReader.read(), appendable);
                     }
                 }
                 start = pos + 1; // start on the current char after this one
