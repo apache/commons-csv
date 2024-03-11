@@ -2172,7 +2172,6 @@ public final class CSVFormat implements Serializable {
                     for (int i = 1; i < delimLength; i++) {
                         pos++;
                         escape(charSeq.charAt(pos), appendable);
-
                     }
                 }
                 start = pos + 1; // start on the current char after this one
