@@ -118,7 +118,6 @@ final class ExtendedBufferedReader extends BufferedReader {
         super.mark(1);
         final int c = super.read();
         super.reset();
-
         return c;
     }
 
@@ -137,7 +136,6 @@ final class ExtendedBufferedReader extends BufferedReader {
         super.mark(n);
         super.read(buf, 0, n);
         super.reset();
-
         return buf;
     }
 
@@ -171,11 +169,8 @@ final class ExtendedBufferedReader extends BufferedReader {
         if (length == 0) {
             return 0;
         }
-
         final int len = super.read(buf, offset, length);
-
         if (len > 0) {
-
             for (int i = offset; i < offset + len; i++) {
                 final char ch = buf[i];
                 if (ch == LF) {
@@ -186,13 +181,10 @@ final class ExtendedBufferedReader extends BufferedReader {
                     eolCounter++;
                 }
             }
-
             lastChar = buf[offset + len - 1];
-
         } else if (len == EOF) {
             lastChar = EOF;
         }
-
         position += len;
         return len;
     }
