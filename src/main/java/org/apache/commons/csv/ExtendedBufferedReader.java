@@ -139,19 +139,6 @@ final class ExtendedBufferedReader extends BufferedReader {
         return buf;
     }
 
-    /**
-     * Returns the next n characters in the current reader without consuming them. The next call to {@link #read()} will still return the next value. This
-     * doesn't affect line number or last character.
-     *
-     * @param n the number characters look ahead.
-     * @return the next n characters.
-     * @throws IOException If an I/O error occurs
-     */
-    char[] lookAhead(final int n) throws IOException {
-        final char[] buf = new char[n];
-        return lookAhead(buf);
-    }
-
     @Override
     public int read() throws IOException {
         final int current = super.read();

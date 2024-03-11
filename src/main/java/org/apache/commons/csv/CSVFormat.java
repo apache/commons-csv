@@ -2191,15 +2191,17 @@ public final class CSVFormat implements Serializable {
         int pos = 0;
         @SuppressWarnings("resource") // Temp reader on input reader.
         final ExtendedBufferedReader bufferedReader = new ExtendedBufferedReader(reader);
-        final char[] delim = getDelimiterCharArray();
-        final int delimLength = delim.length;
+        final char[] delimArray = getDelimiterCharArray();
+        final int delimLength = delimArray.length;
         final char escape = getEscapeChar();
         final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
         int c;
+        final char[] lookAheadBuffer = new char[delimLength - 1];
         while (EOF != (c = bufferedReader.read())) {
             builder.append((char) c);
-            final boolean isDelimiterStart = isDelimiter((char) c, builder.toString() + new String(bufferedReader.lookAhead(delimLength - 1)), pos, delim,
-                    delimLength);
+            Arrays.fill(lookAheadBuffer, (char) 0);
+            final String test = builder.toString() + new String(bufferedReader.lookAhead(lookAheadBuffer));
+            final boolean isDelimiterStart = isDelimiter((char) c, test, pos, delimArray, delimLength);
             final boolean isCr = c == CR;
             final boolean isLf = c == LF;
             if (isCr || isLf || c == escape || isDelimiterStart) {
