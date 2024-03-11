@@ -2125,11 +2125,9 @@ public final class CSVFormat implements Serializable {
         int start = 0;
         int pos = 0;
         final int end = charSeq.length();
-
         final char[] delim = getDelimiterString().toCharArray();
         final int delimLength = delim.length;
         final char escape = getEscapeCharacter().charValue();
-
         while (pos < end) {
             char c = charSeq.charAt(pos);
             final boolean isDelimiterStart = isDelimiter(c, charSeq, pos, delim, delimLength);
@@ -2143,10 +2141,8 @@ public final class CSVFormat implements Serializable {
                 } else if (c == CR) {
                     c = 'r';
                 }
-
                 appendable.append(escape);
                 appendable.append(c);
-
                 if (isDelimiterStart) {
                     for (int i = 1; i < delimLength; i++) {
                         pos++;
@@ -2155,7 +2151,6 @@ public final class CSVFormat implements Serializable {
                         appendable.append(c);
                     }
                 }
-
                 start = pos + 1; // start on the current char after this one
             }
             pos++;
@@ -2170,14 +2165,12 @@ public final class CSVFormat implements Serializable {
     private void printWithEscapes(final Reader reader, final Appendable appendable) throws IOException {
         int start = 0;
         int pos = 0;
-
         @SuppressWarnings("resource") // Temp reader on input reader.
         final ExtendedBufferedReader bufferedReader = new ExtendedBufferedReader(reader);
         final char[] delim = getDelimiterString().toCharArray();
         final int delimLength = delim.length;
         final char escape = getEscapeCharacter().charValue();
         final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
-
         int c;
         while (-1 != (c = bufferedReader.read())) {
             builder.append((char) c);
@@ -2195,10 +2188,8 @@ public final class CSVFormat implements Serializable {
                 } else if (c == CR) {
                     c = 'r';
                 }
-
                 append(escape, appendable);
                 append((char) c, appendable);
-
                 if (isDelimiterStart) {
                     for (int i = 1; i < delimLength; i++) {
                         c = bufferedReader.read();
@@ -2206,12 +2197,10 @@ public final class CSVFormat implements Serializable {
                         append((char) c, appendable);
                     }
                 }
-
                 start = pos + 1; // start on the current char after this one
             }
             pos++;
         }
-
         // write last segment
         if (pos > start) {
             append(builder.substring(start, pos), appendable);
@@ -2227,7 +2216,6 @@ public final class CSVFormat implements Serializable {
         int start = 0;
         int pos = 0;
         final int len = charSeq.length();
-
         final char[] delim = getDelimiterString().toCharArray();
         final int delimLength = delim.length;
         final char quoteChar = getQuoteCharacter().charValue();
@@ -2235,7 +2223,6 @@ public final class CSVFormat implements Serializable {
         // This avoids having to keep checking whether there is an escape character
         // at the cost of checking against quote twice
         final char escapeChar = isEscapeCharacterSet() ? getEscapeCharacter().charValue() : quoteChar;
-
         QuoteMode quoteModePolicy = getQuoteMode();
         if (quoteModePolicy == null) {
             quoteModePolicy = QuoteMode.MINIMAL;
@@ -2263,7 +2250,6 @@ public final class CSVFormat implements Serializable {
                 }
             } else {
                 char c = charSeq.charAt(pos);
-
                 if (c <= COMMENT) {
                     // Some other chars at the start of a value caused the parser to fail, so for now
                     // encapsulate if we start in anything less than '#'. We are being conservative
@@ -2290,7 +2276,6 @@ public final class CSVFormat implements Serializable {
                     }
                 }
             }
-
             if (!quote) {
                 // No encapsulation needed - write out the original value
                 out.append(charSeq, start, len);
@@ -2300,16 +2285,13 @@ public final class CSVFormat implements Serializable {
         default:
             throw new IllegalStateException("Unexpected Quote value: " + quoteModePolicy);
         }
-
         if (!quote) {
             // No encapsulation needed - write out the original value
             out.append(charSeq, start, len);
             return;
         }
-
         // We hit something that needed encapsulation
         out.append(quoteChar);
-
         // Pick up where we left off: pos should be positioned on the first character that caused
         // the need for encapsulation.
         while (pos < len) {
@@ -2322,7 +2304,6 @@ public final class CSVFormat implements Serializable {
             }
             pos++;
         }
-
         // Write the last segment
         out.append(charSeq, start, pos);
         out.append(quoteChar);
@@ -2336,19 +2317,14 @@ public final class CSVFormat implements Serializable {
      * @throws IOException If an I/O error occurs
      */
     private void printWithQuotes(final Reader reader, final Appendable appendable) throws IOException {
-
         if (getQuoteMode() == QuoteMode.NONE) {
             printWithEscapes(reader, appendable);
             return;
         }
-
         int pos = 0;
-
         final char quote = getQuoteCharacter().charValue();
         final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
-
         append(quote, appendable);
-
         int c;
         while (-1 != (c = reader.read())) {
             builder.append((char) c);
@@ -2360,17 +2336,14 @@ public final class CSVFormat implements Serializable {
                     builder.setLength(0);
                     pos = -1;
                 }
-
                 append((char) c, appendable);
             }
             pos++;
         }
-
         // write last segment
         if (pos > 0) {
             append(builder.substring(0, pos), appendable);
         }
-
         append(quote, appendable);
     }
 
@@ -2440,31 +2413,24 @@ public final class CSVFormat implements Serializable {
         if (containsLineBreak(delimiter)) {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
-
         if (quoteCharacter != null && contains(delimiter, quoteCharacter.charValue())) {
             throw new IllegalArgumentException("The quoteChar character and the delimiter cannot be the same ('" + quoteCharacter + "')");
         }
-
         if (escapeCharacter != null && contains(delimiter, escapeCharacter.charValue())) {
             throw new IllegalArgumentException("The escape character and the delimiter cannot be the same ('" + escapeCharacter + "')");
         }
-
         if (commentMarker != null && contains(delimiter, commentMarker.charValue())) {
             throw new IllegalArgumentException("The comment start character and the delimiter cannot be the same ('" + commentMarker + "')");
         }
-
         if (quoteCharacter != null && quoteCharacter.equals(commentMarker)) {
             throw new IllegalArgumentException("The comment start character and the quoteChar cannot be the same ('" + commentMarker + "')");
         }
-
         if (escapeCharacter != null && escapeCharacter.equals(commentMarker)) {
             throw new IllegalArgumentException("The comment start and the escape character cannot be the same ('" + commentMarker + "')");
         }
-
         if (escapeCharacter == null && quoteMode == QuoteMode.NONE) {
             throw new IllegalArgumentException("Quote mode set to NONE but no escape character is set");
         }
-
         // Validate headers
         if (headers != null && duplicateHeaderMode != DuplicateHeaderMode.ALLOW_ALL) {
             final Set<String> dupCheckSet = new HashSet<>(headers.length);
