@@ -19,16 +19,15 @@ package org.apache.commons.csv;
 
 import static org.apache.commons.csv.Constants.BACKSPACE;
 import static org.apache.commons.csv.Constants.CR;
-import static org.apache.commons.csv.Constants.END_OF_STREAM;
 import static org.apache.commons.csv.Constants.FF;
 import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.TAB;
 import static org.apache.commons.csv.Constants.UNDEFINED;
 import static org.apache.commons.csv.Token.Type.COMMENT;
-import static org.apache.commons.csv.Token.Type.EOF;
 import static org.apache.commons.csv.Token.Type.EORECORD;
 import static org.apache.commons.csv.Token.Type.INVALID;
 import static org.apache.commons.csv.Token.Type.TOKEN;
+import static org.apache.commons.io.IOUtils.EOF;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -141,7 +140,7 @@ final class Lexer implements Closeable {
             }
         }
         final int count = reader.read(delimiterBuf, 0, delimiterBuf.length);
-        isLastTokenDelimiter = count != END_OF_STREAM;
+        isLastTokenDelimiter = count != EOF;
         return isLastTokenDelimiter;
     }
 
@@ -151,7 +150,7 @@ final class Lexer implements Closeable {
      * @return true if the given character indicates the end of the file.
      */
     boolean isEndOfFile(final int ch) {
-        return ch == END_OF_STREAM;
+        return ch == EOF;
     }
 
     /**
@@ -182,7 +181,7 @@ final class Lexer implements Closeable {
             }
         }
         final int count = reader.read(escapeDelimiterBuf, 0, escapeDelimiterBuf.length);
-        return count != END_OF_STREAM;
+        return count != EOF;
     }
 
     private boolean isMetaChar(final int ch) {
@@ -240,7 +239,7 @@ final class Lexer implements Closeable {
                 eol = readEndOfLine(c);
                 // reached the end of the file without any content (empty line at the end)
                 if (isEndOfFile(c)) {
-                    token.type = EOF;
+                    token.type = Token.Type.EOF;
                     // don't set token.isReady here because no content
                     return token;
                 }
@@ -249,7 +248,7 @@ final class Lexer implements Closeable {
 
         // Did we reach EOF during the last iteration already? EOF
         if (isEndOfFile(lastChar) || !isLastTokenDelimiter && isEndOfFile(c)) {
-            token.type = EOF;
+            token.type = Token.Type.EOF;
             // don't set token.isReady here because no content
             return token;
         }
@@ -257,7 +256,7 @@ final class Lexer implements Closeable {
         if (isStartOfLine(lastChar) && isCommentStart(c)) {
             final String line = reader.readLine();
             if (line == null) {
-                token.type = EOF;
+                token.type = Token.Type.EOF;
                 // don't set token.isReady here because no content
                 return token;
             }
@@ -291,7 +290,7 @@ final class Lexer implements Closeable {
             } else if (isEndOfFile(c)) {
                 // end of file return EOF()
                 // noop: token.content.append("");
-                token.type = EOF;
+                token.type = Token.Type.EOF;
                 token.isReady = true; // there is data at EOF
             } else {
                 // next token must be a simple token
@@ -337,7 +336,7 @@ final class Lexer implements Closeable {
                     token.content.append(delimiter);
                 } else {
                     final int unescaped = readEscape();
-                    if (unescaped == END_OF_STREAM) { // unexpected char after escape
+                    if (unescaped == EOF) { // unexpected char after escape
                         token.content.append((char) c).append((char) reader.getLastChar());
                     } else {
                         token.content.append((char) unescaped);
@@ -357,7 +356,7 @@ final class Lexer implements Closeable {
                             return token;
                         }
                         if (isEndOfFile(c)) {
-                            token.type = EOF;
+                            token.type = Token.Type.EOF;
                             token.isReady = true; // There is data at EOF
                             return token;
                         }
@@ -411,7 +410,7 @@ final class Lexer implements Closeable {
                 break;
             }
             if (isEndOfFile(ch)) {
-                token.type = EOF;
+                token.type = Token.Type.EOF;
                 token.isReady = true; // There is data at EOF
                 break;
             }
@@ -425,7 +424,7 @@ final class Lexer implements Closeable {
                     token.content.append(delimiter);
                 } else {
                     final int unescaped = readEscape();
-                    if (unescaped == END_OF_STREAM) { // unexpected char after escape
+                    if (unescaped == EOF) { // unexpected char after escape
                         token.content.append((char) ch).append((char) reader.getLastChar());
                     } else {
                         token.content.append((char) unescaped);
@@ -478,7 +477,7 @@ final class Lexer implements Closeable {
      * On return, the next character is available by calling {@link ExtendedBufferedReader#getLastChar()}
      * on the input stream.
      *
-     * @return the unescaped character (as an int) or {@link Constants#END_OF_STREAM} if char following the escape is
+     * @return the unescaped character (as an int) or {@link Constants#EOF} if char following the escape is
      *      invalid.
      * @throws IOException if there is a problem reading the stream or the end of stream is detected:
      *      the escape character is not allowed at end of stream
@@ -503,7 +502,7 @@ final class Lexer implements Closeable {
         case TAB: // TODO is this correct? Do tabs need to be escaped?
         case BACKSPACE: // TODO is this correct?
             return ch;
-        case END_OF_STREAM:
+        case EOF:
             throw new IOException("EOF whilst processing escape sequence");
         default:
             // Now check for meta-characters
@@ -511,7 +510,7 @@ final class Lexer implements Closeable {
                 return ch;
             }
             // indicate unexpected char - available from in.getLastChar()
-            return END_OF_STREAM;
+            return EOF;
         }
     }
 

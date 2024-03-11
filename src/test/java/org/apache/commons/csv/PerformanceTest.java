@@ -17,6 +17,8 @@
 
 package org.apache.commons.csv;
 
+import static org.apache.commons.io.IOUtils.EOF;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -258,7 +260,7 @@ public class PerformanceTest {
                 int read;
                 if (makeString) {
                     StringBuilder sb = new StringBuilder();
-                    while ((read = in.read()) != -1) {
+                    while ((read = in.read()) != EOF) {
                         sb.append((char) read);
                         if (read == ',') { // count delimiters
                             sb.toString();
@@ -271,7 +273,7 @@ public class PerformanceTest {
                         }
                     }
                 } else {
-                    while ((read = in.read()) != -1) {
+                    while ((read = in.read()) != EOF) {
                         if (read == ',') { // count delimiters
                             fields++;
                         } else if (read == '\n') {

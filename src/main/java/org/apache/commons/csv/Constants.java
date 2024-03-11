@@ -18,7 +18,7 @@
 package org.apache.commons.csv;
 
 /**
- * Constants for this package.
+ * Private constants to this package.
  */
 final class Constants {
 
@@ -43,9 +43,6 @@ final class Constants {
     static final String EMPTY = "";
 
     static final String[] EMPTY_STRING_ARRAY = {};
-
-    /** The end of stream symbol */
-    static final int END_OF_STREAM = -1;
 
     static final char FF = '\f';
 

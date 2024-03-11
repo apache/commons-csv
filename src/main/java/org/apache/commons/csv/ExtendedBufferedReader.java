@@ -18,9 +18,9 @@
 package org.apache.commons.csv;
 
 import static org.apache.commons.csv.Constants.CR;
-import static org.apache.commons.csv.Constants.END_OF_STREAM;
 import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.UNDEFINED;
+import static org.apache.commons.io.IOUtils.EOF;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -63,7 +63,7 @@ final class ExtendedBufferedReader extends BufferedReader {
     public void close() throws IOException {
         // Set ivars before calling super close() in case close() throws an IOException.
         closed = true;
-        lastChar = END_OF_STREAM;
+        lastChar = EOF;
         super.close();
     }
 
@@ -74,7 +74,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      */
     long getCurrentLineNumber() {
         // Check if we are at EOL or EOF or just starting
-        if (lastChar == CR || lastChar == LF || lastChar == UNDEFINED || lastChar == END_OF_STREAM) {
+        if (lastChar == CR || lastChar == LF || lastChar == UNDEFINED || lastChar == EOF) {
             return eolCounter; // counter is accurate
         }
         return eolCounter + 1; // Allow for counter being incremented only at EOL
@@ -84,7 +84,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by
      * any of the read methods. This will not include a character read using the {@link #lookAhead()} method. If no
      * character has been read then this will return {@link Constants#UNDEFINED}. If the end of the stream was reached
-     * on the last read then this will return {@link Constants#END_OF_STREAM}.
+     * on the last read then this will return {@link Constants#EOF}.
      *
      * @return the last character that was read
      */
@@ -158,7 +158,7 @@ final class ExtendedBufferedReader extends BufferedReader {
     public int read() throws IOException {
         final int current = super.read();
         if (current == CR || current == LF && lastChar != CR ||
-            current == END_OF_STREAM && lastChar != CR && lastChar != LF && lastChar != END_OF_STREAM) {
+            current == EOF && lastChar != CR && lastChar != LF && lastChar != EOF) {
             eolCounter++;
         }
         lastChar = current;
@@ -189,8 +189,8 @@ final class ExtendedBufferedReader extends BufferedReader {
 
             lastChar = buf[offset + len - 1];
 
-        } else if (len == -1) {
-            lastChar = END_OF_STREAM;
+        } else if (len == EOF) {
+            lastChar = EOF;
         }
 
         position += len;
@@ -204,14 +204,14 @@ final class ExtendedBufferedReader extends BufferedReader {
      * Increments {@link #eolCounter} and updates {@link #position}.
      * </p>
      * <p>
-     * Sets {@link #lastChar} to {@link Constants#END_OF_STREAM} at EOF, otherwise the last EOL character.
+     * Sets {@link #lastChar} to {@link Constants#EOF} at EOF, otherwise the last EOL character.
      * </p>
      *
      * @return the line that was read, or null if reached EOF.
      */
     @Override
     public String readLine() throws IOException {
-        if (lookAhead() == END_OF_STREAM) {
+        if (lookAhead() == EOF) {
             return null;
         }
         final StringBuilder buffer = new StringBuilder();
@@ -223,7 +223,7 @@ final class ExtendedBufferedReader extends BufferedReader {
                     read();
                 }
             }
-            if (current == END_OF_STREAM || current == LF || current == CR) {
+            if (current == EOF || current == LF || current == CR) {
                 break;
             }
             buffer.append((char) current);

@@ -17,7 +17,7 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.Constants.END_OF_STREAM;
+import static org.apache.commons.io.IOUtils.EOF;
 import static org.apache.commons.csv.Constants.UNDEFINED;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,9 +39,9 @@ public class ExtendedBufferedReaderTest {
     @Test
     public void testEmptyInput() throws Exception {
         try (final ExtendedBufferedReader br = createBufferedReader("")) {
-            assertEquals(END_OF_STREAM, br.read());
-            assertEquals(END_OF_STREAM, br.lookAhead());
-            assertEquals(END_OF_STREAM, br.getLastChar());
+            assertEquals(EOF, br.read());
+            assertEquals(EOF, br.lookAhead());
+            assertEquals(EOF, br.getLastChar());
             assertNull(br.readLine());
             assertEquals(0, br.read(new char[10], 0, 0));
         }
@@ -69,7 +69,7 @@ public class ExtendedBufferedReaderTest {
         }
         try (final ExtendedBufferedReader br = createBufferedReader(test)) {
             assertEquals(0, br.getCurrentLineNumber());
-            while (br.read() != -1) {
+            while (br.read() != EOF) {
                 // consume all
             }
             assertEquals(EOLeolct, br.getCurrentLineNumber());
@@ -77,7 +77,7 @@ public class ExtendedBufferedReaderTest {
         try (final ExtendedBufferedReader br = createBufferedReader(test)) {
             assertEquals(0, br.getCurrentLineNumber());
             final char[] buff = new char[10];
-            while (br.read(buff, 0, 3) != -1) {
+            while (br.read(buff, 0, 3) != EOF) {
                 // consume all
             }
             assertEquals(EOLeolct, br.getCurrentLineNumber());
@@ -185,12 +185,12 @@ public class ExtendedBufferedReaderTest {
             assertEquals('\n', br.getLastChar());
             assertEquals(3, br.getCurrentLineNumber());
 
-            assertEquals(END_OF_STREAM, br.lookAhead());
+            assertEquals(EOF, br.lookAhead());
             assertEquals('\n', br.getLastChar());
-            assertEquals(END_OF_STREAM, br.read());
-            assertEquals(END_OF_STREAM, br.getLastChar());
-            assertEquals(END_OF_STREAM, br.read());
-            assertEquals(END_OF_STREAM, br.lookAhead());
+            assertEquals(EOF, br.read());
+            assertEquals(EOF, br.getLastChar());
+            assertEquals(EOF, br.read());
+            assertEquals(EOF, br.lookAhead());
             assertEquals(3, br.getCurrentLineNumber());
 
         }

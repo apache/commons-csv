@@ -28,6 +28,7 @@ import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.PIPE;
 import static org.apache.commons.csv.Constants.SP;
 import static org.apache.commons.csv.Constants.TAB;
+import static org.apache.commons.io.IOUtils.EOF;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -2172,7 +2173,7 @@ public final class CSVFormat implements Serializable {
         final char escape = getEscapeCharacter().charValue();
         final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
         int c;
-        while (-1 != (c = bufferedReader.read())) {
+        while (EOF != (c = bufferedReader.read())) {
             builder.append((char) c);
             final boolean isDelimiterStart = isDelimiter((char) c, builder.toString() + new String(bufferedReader.lookAhead(delimLength - 1)), pos, delim,
                     delimLength);
@@ -2321,12 +2322,12 @@ public final class CSVFormat implements Serializable {
             printWithEscapes(reader, appendable);
             return;
         }
-        int pos = 0;
         final char quote = getQuoteCharacter().charValue();
-        final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
         append(quote, appendable);
+        final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
         int c;
-        while (-1 != (c = reader.read())) {
+        int pos = 0;
+        while (EOF != (c = reader.read())) {
             builder.append((char) c);
             if (c == quote) {
                 // write out segment up until this char
