@@ -393,6 +393,7 @@ public class CSVFormatTest {
         final CSVFormat csvFormatTwo = CSVFormat.MYSQL;
 
         assertEquals('\\', (char) csvFormatOne.getEscapeCharacter());
+        assertEquals('\\', csvFormatOne.getEscapeChar());
         assertNull(csvFormatOne.getQuoteMode());
 
         assertTrue(csvFormatOne.getIgnoreEmptyLines());
@@ -426,6 +427,8 @@ public class CSVFormatTest {
         assertEquals(QuoteMode.ALL_NON_NULL, csvFormatTwo.getQuoteMode());
 
         assertEquals('\t', csvFormatTwo.getDelimiter());
+        assertArrayEquals(new char[] { '\t' }, csvFormatTwo.getDelimiterCharArray());
+        assertEquals("\t", csvFormatTwo.getDelimiterString());
         assertEquals("\n", csvFormatTwo.getRecordSeparator());
 
         assertFalse(csvFormatTwo.isQuoteCharacterSet());

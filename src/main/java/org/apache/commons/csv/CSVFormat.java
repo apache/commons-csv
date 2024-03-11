@@ -1718,6 +1718,15 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Gets the escape character.
+     *
+     * @return the escape character, may be {@code 0}
+     */
+    char getEscapeChar() {
+        return escapeCharacter != null ? escapeCharacter.charValue() : 0;
+    }
+
+    /**
      * Gets a copy of the header array.
      *
      * @return a copy of the header array; {@code null} if disabled, the empty array if to be read from the file
@@ -2129,7 +2138,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /*
-     * Note: Must only be called if escaping is enabled, otherwise will generate NPE.
+     * Note: Must only be called if escaping is enabled, otherwise can throw exceptions.
      */
     private void printWithEscapes(final CharSequence charSeq, final Appendable appendable) throws IOException {
         int start = 0;
@@ -2137,18 +2146,20 @@ public final class CSVFormat implements Serializable {
         final int end = charSeq.length();
         final char[] delim = getDelimiterCharArray();
         final int delimLength = delim.length;
-        final char escape = getEscapeCharacter().charValue();
+        final char escape = getEscapeChar();
         while (pos < end) {
             char c = charSeq.charAt(pos);
             final boolean isDelimiterStart = isDelimiter(c, charSeq, pos, delim, delimLength);
-            if (c == CR || c == LF || c == escape || isDelimiterStart) {
+            final boolean isCr = c == CR;
+            final boolean isLf = c == LF;
+            if (isCr || isLf || c == escape || isDelimiterStart) {
                 // write out segment up until this char
                 if (pos > start) {
                     appendable.append(charSeq, start, pos);
                 }
-                if (c == LF) {
+                if (isLf) {
                     c = 'n';
-                } else if (c == CR) {
+                } else if (isCr) {
                     c = 'r';
                 }
                 appendable.append(escape);
@@ -2172,6 +2183,9 @@ public final class CSVFormat implements Serializable {
         }
     }
 
+    /*
+     * Note: Must only be called if escaping is enabled, otherwise can throw exceptions.
+     */
     private void printWithEscapes(final Reader reader, final Appendable appendable) throws IOException {
         int start = 0;
         int pos = 0;
@@ -2179,23 +2193,25 @@ public final class CSVFormat implements Serializable {
         final ExtendedBufferedReader bufferedReader = new ExtendedBufferedReader(reader);
         final char[] delim = getDelimiterCharArray();
         final int delimLength = delim.length;
-        final char escape = getEscapeCharacter().charValue();
+        final char escape = getEscapeChar();
         final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
         int c;
         while (EOF != (c = bufferedReader.read())) {
             builder.append((char) c);
             final boolean isDelimiterStart = isDelimiter((char) c, builder.toString() + new String(bufferedReader.lookAhead(delimLength - 1)), pos, delim,
                     delimLength);
-            if (c == CR || c == LF || c == escape || isDelimiterStart) {
+            final boolean isCr = c == CR;
+            final boolean isLf = c == LF;
+            if (isCr || isLf || c == escape || isDelimiterStart) {
                 // write out segment up until this char
                 if (pos > start) {
                     append(builder.substring(start, pos), appendable);
                     builder.setLength(0);
                     pos = -1;
                 }
-                if (c == LF) {
+                if (isLf) {
                     c = 'n';
-                } else if (c == CR) {
+                } else if (isCr) {
                     c = 'r';
                 }
                 append(escape, appendable);
@@ -2232,7 +2248,7 @@ public final class CSVFormat implements Serializable {
         // If escape char not specified, default to the quote char
         // This avoids having to keep checking whether there is an escape character
         // at the cost of checking against quote twice
-        final char escapeChar = isEscapeCharacterSet() ? getEscapeCharacter().charValue() : quoteChar;
+        final char escapeChar = isEscapeCharacterSet() ? getEscapeChar() : quoteChar;
         QuoteMode quoteModePolicy = getQuoteMode();
         if (quoteModePolicy == null) {
             quoteModePolicy = QuoteMode.MINIMAL;
@@ -2436,7 +2452,7 @@ public final class CSVFormat implements Serializable {
             final boolean emptyDuplicatesAllowed = duplicateHeaderMode == DuplicateHeaderMode.ALLOW_EMPTY;
             for (final String header : headers) {
                 final boolean blank = isBlank(header);
-                // Sanitise all empty headers to the empty string "" when checking duplicates
+                // Sanitize all empty headers to the empty string "" when checking duplicates
                 final boolean containsHeader = !dupCheckSet.add(blank ? "" : header);
                 if (containsHeader && !(blank && emptyDuplicatesAllowed)) {
                     throw new IllegalArgumentException(
