@@ -65,7 +65,7 @@ final class Lexer implements Closeable {
 
     Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
         this.reader = reader;
-        this.delimiter = format.getDelimiterString().toCharArray();
+        this.delimiter = format.getDelimiterCharArray();
         this.escape = mapNullToDisabled(format.getEscapeCharacter());
         this.quoteChar = mapNullToDisabled(format.getQuoteCharacter());
         this.commentStart = mapNullToDisabled(format.getCommentMarker());

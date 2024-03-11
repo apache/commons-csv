@@ -1683,6 +1683,15 @@ public final class CSVFormat implements Serializable {
      * Gets the character delimiting the values (typically ";", "," or "\t").
      *
      * @return the delimiter.
+     */
+    char[] getDelimiterCharArray() {
+        return delimiter.toCharArray();
+    }
+
+    /**
+     * Gets the character delimiting the values (typically ";", "," or "\t").
+     *
+     * @return the delimiter.
      * @since 1.9.0
      */
     public String getDelimiterString() {
@@ -2126,7 +2135,7 @@ public final class CSVFormat implements Serializable {
         int start = 0;
         int pos = 0;
         final int end = charSeq.length();
-        final char[] delim = getDelimiterString().toCharArray();
+        final char[] delim = getDelimiterCharArray();
         final int delimLength = delim.length;
         final char escape = getEscapeCharacter().charValue();
         while (pos < end) {
@@ -2168,7 +2177,7 @@ public final class CSVFormat implements Serializable {
         int pos = 0;
         @SuppressWarnings("resource") // Temp reader on input reader.
         final ExtendedBufferedReader bufferedReader = new ExtendedBufferedReader(reader);
-        final char[] delim = getDelimiterString().toCharArray();
+        final char[] delim = getDelimiterCharArray();
         final int delimLength = delim.length;
         final char escape = getEscapeCharacter().charValue();
         final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
@@ -2217,7 +2226,7 @@ public final class CSVFormat implements Serializable {
         int start = 0;
         int pos = 0;
         final int len = charSeq.length();
-        final char[] delim = getDelimiterString().toCharArray();
+        final char[] delim = getDelimiterCharArray();
         final int delimLength = delim.length;
         final char quoteChar = getQuoteCharacter().charValue();
         // If escape char not specified, default to the quote char
