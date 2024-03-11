@@ -1893,8 +1893,8 @@ public final class CSVFormat implements Serializable {
     /**
      * Tests whether the next characters constitute a delimiter
      *
-     * @param ch
-     *            the current char
+     * @param ch0
+     *            the first char (index 0).
      * @param charSeq
      *            the match char sequence
      * @param startIndex
@@ -1905,8 +1905,8 @@ public final class CSVFormat implements Serializable {
      *            the delimiter length
      * @return true if the match is successful
      */
-    private boolean isDelimiter(final char ch, final CharSequence charSeq, final int startIndex, final char[] delimiter, final int delimiterLength) {
-        if (ch != delimiter[0]) {
+    private boolean isDelimiter(final char ch0, final CharSequence charSeq, final int startIndex, final char[] delimiter, final int delimiterLength) {
+        if (ch0 != delimiter[0]) {
             return false;
         }
         final int len = charSeq.length();
