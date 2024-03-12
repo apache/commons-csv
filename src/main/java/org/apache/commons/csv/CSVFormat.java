@@ -55,7 +55,6 @@ import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.function.Uncheck;
 import org.apache.commons.io.output.AppendableOutputStream;
-import org.apache.commons.io.output.CloseShieldOutputStream;
 
 /**
  * Specifies the format of a CSV file for parsing and writing.
@@ -1586,7 +1585,7 @@ public final class CSVFormat implements Serializable {
                 skipHeaderRecord == other.skipHeaderRecord && trailingDelimiter == other.trailingDelimiter && trim == other.trim;
     }
 
-    private void escape(char c, final Appendable appendable) throws IOException {
+    private void escape(final char c, final Appendable appendable) throws IOException {
         append(escapeCharacter.charValue(), appendable);
         append(c, appendable);
     }
@@ -2092,7 +2091,7 @@ public final class CSVFormat implements Serializable {
         if (quoteCharacterSet) {
             append(getQuoteCharacter().charValue(), out);
         }
-        // Stream the input to the output without reading or holding the whole value in memory. 
+        // Stream the input to the output without reading or holding the whole value in memory.
         // AppendableOutputStream cannot "close" an Appendable.
         try (OutputStream outputStream = new Base64OutputStream(new AppendableOutputStream<>(out))) {
             IOUtils.copy(inputStream, outputStream);
