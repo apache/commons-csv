@@ -24,6 +24,7 @@ import static org.apache.commons.csv.Constants.SP;
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
+import java.io.Reader;
 import java.sql.Clob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -414,8 +415,13 @@ public final class CSVPrinter implements Flushable, Closeable {
         while (resultSet.next()) {
             for (int i = 1; i <= columnCount; i++) {
                 final Object object = resultSet.getObject(i);
-                // TODO Who manages the Clob? The JDBC driver or must we close it? Is it driver-dependent?
-                print(object instanceof Clob ? ((Clob) object).getCharacterStream() : object);
+                if (object instanceof Clob) {
+                    try (Reader reader = ((Clob) object).getCharacterStream()) {
+                        print(reader);
+                    }
+                } else {
+                    print(object);
+                }
             }
             println();
         }

@@ -44,13 +44,14 @@
       <!-- ADD -->
       <action issue="CSV-308" type="fix" dev="ggregory" due-to="Buddhi De Silva, Gary Gregory">[Javadoc] Add example to CSVFormat#setHeaderComments() #344.</action>
       <!-- FIX -->
-      <action issue="CSV-306" type="fix" dev="ggregory" due-to="Sam Ng, Bruno P. Kinoshita">Replace deprecated method in user guide, update external link #324, #325.</action>
+      <action type="fix" issue="CSV-306" dev="ggregory" due-to="Sam Ng, Bruno P. Kinoshita">Replace deprecated method in user guide, update external link #324, #325.</action>
       <action type="fix" dev="ggregory" due-to="Seth Falco, Bruno P. Kinoshita">Document duplicate header behavior #309.</action>
       <action type="fix" dev="ggregory" due-to="jkbkupczyk">Add missing docs #328.</action>
       <action type="fix" dev="ggregory" due-to="step-security-bot">[StepSecurity] CI: Harden GitHub Actions #329, #330.</action>
       <action type="fix" issue="CSV-147" dev="ggregory" due-to="Steven Peterson, Benedikt Ritter, Gary Gregory, Joerg Schaible, Buddhi De Silva, Elliotte Rusty Harold">Better error message during faulty CSV record read #347.</action>
       <action type="fix" issue="CSV-310" dev="ggregory" due-to="Buddhi De Silva">Misleading error message when QuoteMode set to None #352.</action>
       <action type="fix" issue="CSV-311" dev="ggregory" due-to="Christian Feuersaenger, Gary Gregory">OutOfMemory for very long rows despite using column value of type Reader.</action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">Use try-with-resources to manage JDBC Clob in CSVPrinter.printRecords(ResultSet).</action>
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-io:commons-io: from 2.11.0 to 2.15.1.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump commons-parent from 57 to 67.</action>
