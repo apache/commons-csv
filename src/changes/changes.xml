@@ -52,6 +52,7 @@
       <action type="fix" issue="CSV-310" dev="ggregory" due-to="Buddhi De Silva">Misleading error message when QuoteMode set to None #352.</action>
       <action type="fix" issue="CSV-311" dev="ggregory" due-to="Christian Feuersaenger, Gary Gregory">OutOfMemory for very long rows despite using column value of type Reader.</action>
       <action type="fix" dev="ggregory" due-to="Gary Gregory">Use try-with-resources to manage JDBC Clob in CSVPrinter.printRecords(ResultSet).</action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">JDBC Blob columns are now output as Base64 instead of Object#toString(), which usually is InputStream#toString().</action>
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-io:commons-io: from 2.11.0 to 2.15.1.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump commons-parent from 57 to 67.</action>

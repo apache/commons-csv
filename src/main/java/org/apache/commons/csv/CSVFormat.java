@@ -33,6 +33,8 @@ import static org.apache.commons.io.IOUtils.EOF;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Serializable;
@@ -49,8 +51,11 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.function.Uncheck;
+import org.apache.commons.io.output.AppendableOutputStream;
+import org.apache.commons.io.output.CloseShieldOutputStream;
 
 /**
  * Specifies the format of a CSV file for parsing and writing.
@@ -2030,6 +2035,9 @@ public final class CSVFormat implements Serializable {
         } else if (value instanceof Reader) {
             print((Reader) value, out, newRecord);
             return;
+        } else if (value instanceof InputStream) {
+            print((InputStream) value, out, newRecord);
+            return;
         } else {
             charSequence = value.toString();
         }
@@ -2074,8 +2082,28 @@ public final class CSVFormat implements Serializable {
         return print(Files.newBufferedWriter(out, charset));
     }
 
+    private void print(final InputStream inputStream, final Appendable out, final boolean newRecord) throws IOException {
+        // InputStream is never null here
+        // There is nothing to escape when quoting is used which is the default.
+        if (!newRecord) {
+            append(getDelimiterString(), out);
+        }
+        final boolean quoteCharacterSet = isQuoteCharacterSet();
+        if (quoteCharacterSet) {
+            append(getQuoteCharacter().charValue(), out);
+        }
+        // Stream the input to the output without reading or holding the whole value in memory. 
+        // AppendableOutputStream cannot "close" an Appendable.
+        try (OutputStream outputStream = new Base64OutputStream(new AppendableOutputStream<>(out))) {
+            IOUtils.copy(inputStream, outputStream);
+        }
+        if (quoteCharacterSet) {
+            append(getQuoteCharacter().charValue(), out);
+        }
+    }
+
     private void print(final Reader reader, final Appendable out, final boolean newRecord) throws IOException {
-        // Reader is never null
+        // Reader is never null here
         if (!newRecord) {
             append(getDelimiterString(), out);
         }
@@ -2088,7 +2116,6 @@ public final class CSVFormat implements Serializable {
         } else {
             IOUtils.copy(reader, out);
         }
-
     }
 
     /**
