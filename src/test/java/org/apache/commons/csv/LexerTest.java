@@ -196,6 +196,19 @@ public class LexerTest {
         }
     }
 
+    @Test
+    public void testEOFWithoutClosingQuote() throws Exception {
+        final String code = "a,\"b";
+        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setLenientEof(true).build())) {
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
+            assertThat(parser.nextToken(new Token()), matches(EOF, "b"));
+        }
+        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setLenientEof(false).build())) {
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
+            assertThrows(IOException.class, () -> parser.nextToken(new Token()));
+        }
+    }
+
     @Test // TODO is this correct? Do we expect <esc>BACKSPACE to be unescaped?
     public void testEscapedBackspace() throws Exception {
         try (final Lexer lexer = createLexer("character\\" + BACKSPACE + "Escaped", formatWithEscaping)) {
@@ -420,6 +433,19 @@ public class LexerTest {
     public void testTab() throws Exception {
         try (final Lexer lexer = createLexer("character" + TAB + "NotEscaped", formatWithEscaping)) {
             assertThat(lexer.nextToken(new Token()), hasContent("character" + TAB + "NotEscaped"));
+        }
+    }
+
+    @Test
+    public void testTrailingTextAfterQuote() throws Exception {
+        final String code = "\"a\" b,\"a\" \" b,\"a\" b \"\"";
+        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setTrailingData(true).build())) {
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "a b"));
+            assertThat(parser.nextToken(new Token()), matches(TOKEN, "a \" b"));
+            assertThat(parser.nextToken(new Token()), matches(EOF, "a b \"\""));
+        }
+        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setTrailingData(false).build())) {
+            assertThrows(IOException.class, () -> parser.nextToken(new Token()));
         }
     }
 

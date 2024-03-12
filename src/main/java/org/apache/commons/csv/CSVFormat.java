@@ -248,6 +248,10 @@ public final class CSVFormat implements Serializable {
 
         private boolean skipHeaderRecord;
 
+        private boolean lenientEof;
+
+        private boolean trailingData;
+
         private boolean trailingDelimiter;
 
         private boolean trim;
@@ -267,6 +271,8 @@ public final class CSVFormat implements Serializable {
             this.headers = csvFormat.headers;
             this.skipHeaderRecord = csvFormat.skipHeaderRecord;
             this.ignoreHeaderCase = csvFormat.ignoreHeaderCase;
+            this.lenientEof = csvFormat.lenientEof;
+            this.trailingData = csvFormat.trailingData;
             this.trailingDelimiter = csvFormat.trailingDelimiter;
             this.trim = csvFormat.trim;
             this.autoFlush = csvFormat.autoFlush;
@@ -690,6 +696,18 @@ public final class CSVFormat implements Serializable {
         }
 
         /**
+         * Sets whether reading end-of-file is allowed even when input is malformed, helps Excel compatibility.
+         *
+         * @param lenientEof whether reading end-of-file is allowed even when input is malformed, helps Excel compatibility.
+         * @return This instance.
+         * @since 1.11.0
+         */
+        public Builder setLenientEof(final boolean lenientEof) {
+            this.lenientEof = lenientEof;
+            return this;
+        }
+
+        /**
          * Sets the String to convert to and from {@code null}. No substitution occurs if {@code null}.
          *
          * <ul>
@@ -782,6 +800,18 @@ public final class CSVFormat implements Serializable {
          */
         public Builder setSkipHeaderRecord(final boolean skipHeaderRecord) {
             this.skipHeaderRecord = skipHeaderRecord;
+            return this;
+        }
+
+        /**
+         * Sets whether reading trailing data is allowed in records, helps Excel compatibility.
+         *
+         * @param trailingData whether reading trailing data is allowed in records, helps Excel compatibility.
+         * @return This instance.
+         * @since 1.11.0
+         */
+        public Builder setTrailingData(final boolean trailingData) {
+            this.trailingData = trailingData;
             return this;
         }
 
@@ -914,7 +944,7 @@ public final class CSVFormat implements Serializable {
      * @see Predefined#Default
      */
     public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, null, null, null, false, false, false,
-            false, false, false, DuplicateHeaderMode.ALLOW_ALL);
+            false, false, false, DuplicateHeaderMode.ALLOW_ALL, false, false);
 
     /**
      * Excel file format (using a comma as the value delimiter). Note that the actual value delimiter used by Excel is locale-dependent, it might be necessary
@@ -935,9 +965,11 @@ public final class CSVFormat implements Serializable {
      * <li>{@code setDelimiter(',')}</li>
      * <li>{@code setQuote('"')}</li>
      * <li>{@code setRecordSeparator("\r\n")}</li>
+     * <li>{@code setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL)}</li>
      * <li>{@code setIgnoreEmptyLines(false)}</li>
      * <li>{@code setAllowMissingColumnNames(true)}</li>
-     * <li>{@code setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL)}</li>
+     * <li>{@code setTrailingData(true)}</li>
+     * <li>{@code setLenientEof(true)}</li>
      * </ul>
      * <p>
      * Note: This is currently like {@link #RFC4180} plus {@link Builder#setAllowMissingColumnNames(boolean) Builder#setAllowMissingColumnNames(true)} and
@@ -950,6 +982,8 @@ public final class CSVFormat implements Serializable {
     public static final CSVFormat EXCEL = DEFAULT.builder()
             .setIgnoreEmptyLines(false)
             .setAllowMissingColumnNames(true)
+            .setTrailingData(true)
+            .setLenientEof(true)
             .build();
     // @formatter:on
 
@@ -1372,7 +1406,7 @@ public final class CSVFormat implements Serializable {
      */
     public static CSVFormat newFormat(final char delimiter) {
         return new CSVFormat(String.valueOf(delimiter), null, null, null, null, false, false, null, null, null, null, false, false, false, false, false, false,
-                DuplicateHeaderMode.ALLOW_ALL);
+                DuplicateHeaderMode.ALLOW_ALL, false, false);
     }
 
     static String[] toStringArray(final Object[] values) {
@@ -1455,6 +1489,10 @@ public final class CSVFormat implements Serializable {
 
     private final boolean skipHeaderRecord;
 
+    private final boolean lenientEof;
+
+    private final boolean trailingData;
+
     private final boolean trailingDelimiter;
 
     private final boolean trim;
@@ -1474,6 +1512,8 @@ public final class CSVFormat implements Serializable {
         this.headers = builder.headers;
         this.skipHeaderRecord = builder.skipHeaderRecord;
         this.ignoreHeaderCase = builder.ignoreHeaderCase;
+        this.lenientEof = builder.lenientEof;
+        this.trailingData = builder.trailingData;
         this.trailingDelimiter = builder.trailingDelimiter;
         this.trim = builder.trim;
         this.autoFlush = builder.autoFlush;
@@ -1494,22 +1534,24 @@ public final class CSVFormat implements Serializable {
      * @param ignoreEmptyLines        {@code true} when the parser should skip empty lines.
      * @param recordSeparator         the line separator to use for output.
      * @param nullString              the line separator to use for output.
-     * @param headerComments          the comments to be printed by the Printer before the actual CSV data.
-     * @param header                  the header
-     * @param skipHeaderRecord        if {@code true} the header row will be skipped
-     * @param allowMissingColumnNames if {@code true} the missing column names are allowed when parsing the header line
-     * @param ignoreHeaderCase        if {@code true} header names will be accessed ignoring case when parsing input
-     * @param trim                    if {@code true} next record value will be trimmed
-     * @param trailingDelimiter       if {@code true} the trailing delimiter wil be added before record separator (if set)
-     * @param autoFlush               if {@code true} the underlying stream will be flushed before closing
-     * @param duplicateHeaderMode     the behavior when handling duplicate headers
+     * @param headerComments          the comments to be printed by the Printer before the actual CSV data..
+     * @param header                  the header.
+     * @param skipHeaderRecord        if {@code true} the header row will be skipped.
+     * @param allowMissingColumnNames if {@code true} the missing column names are allowed when parsing the header line.
+     * @param ignoreHeaderCase        if {@code true} header names will be accessed ignoring case when parsing input.
+     * @param trim                    if {@code true} next record value will be trimmed.
+     * @param trailingDelimiter       if {@code true} the trailing delimiter wil be added before record separator (if set)..
+     * @param autoFlush               if {@code true} the underlying stream will be flushed before closing.
+     * @param duplicateHeaderMode     the behavior when handling duplicate headers.
+     * @param trailingData            whether reading trailing data is allowed in records, helps Excel compatibility.
+     * @param lenientEof              whether reading end-of-file is allowed even when input is malformed, helps Excel compatibility.
      * @throws IllegalArgumentException if the delimiter is a line break character.
      */
     private CSVFormat(final String delimiter, final Character quoteChar, final QuoteMode quoteMode, final Character commentStart, final Character escape,
             final boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String recordSeparator, final String nullString,
             final Object[] headerComments, final String[] header, final boolean skipHeaderRecord, final boolean allowMissingColumnNames,
             final boolean ignoreHeaderCase, final boolean trim, final boolean trailingDelimiter, final boolean autoFlush,
-            final DuplicateHeaderMode duplicateHeaderMode) {
+            final DuplicateHeaderMode duplicateHeaderMode, final boolean trailingData, final boolean lenientEof) {
         this.delimiter = delimiter;
         this.quoteCharacter = quoteChar;
         this.quoteMode = quoteMode;
@@ -1524,6 +1566,8 @@ public final class CSVFormat implements Serializable {
         this.headers = clone(header);
         this.skipHeaderRecord = skipHeaderRecord;
         this.ignoreHeaderCase = ignoreHeaderCase;
+        this.lenientEof = lenientEof;
+        this.trailingData = trailingData;
         this.trailingDelimiter = trailingDelimiter;
         this.trim = trim;
         this.autoFlush = autoFlush;
@@ -1571,18 +1615,23 @@ public final class CSVFormat implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
             return false;
         }
         final CSVFormat other = (CSVFormat) obj;
-        return duplicateHeaderMode == other.duplicateHeaderMode && allowMissingColumnNames == other.allowMissingColumnNames &&
-                autoFlush == other.autoFlush && Objects.equals(commentMarker, other.commentMarker) && Objects.equals(delimiter, other.delimiter) &&
-                Objects.equals(escapeCharacter, other.escapeCharacter) && Arrays.equals(headers, other.headers) &&
-                Arrays.equals(headerComments, other.headerComments) && ignoreEmptyLines == other.ignoreEmptyLines &&
-                ignoreHeaderCase == other.ignoreHeaderCase && ignoreSurroundingSpaces == other.ignoreSurroundingSpaces &&
-                Objects.equals(nullString, other.nullString) && Objects.equals(quoteCharacter, other.quoteCharacter) && quoteMode == other.quoteMode &&
-                Objects.equals(quotedNullString, other.quotedNullString) && Objects.equals(recordSeparator, other.recordSeparator) &&
-                skipHeaderRecord == other.skipHeaderRecord && trailingDelimiter == other.trailingDelimiter && trim == other.trim;
+        return allowMissingColumnNames == other.allowMissingColumnNames && autoFlush == other.autoFlush &&
+                Objects.equals(commentMarker, other.commentMarker) && Objects.equals(delimiter, other.delimiter) &&
+                duplicateHeaderMode == other.duplicateHeaderMode && Objects.equals(escapeCharacter, other.escapeCharacter) &&
+                Arrays.equals(headerComments, other.headerComments) && Arrays.equals(headers, other.headers) &&
+                ignoreEmptyLines == other.ignoreEmptyLines && ignoreHeaderCase == other.ignoreHeaderCase &&
+                ignoreSurroundingSpaces == other.ignoreSurroundingSpaces && lenientEof == other.lenientEof &&
+                Objects.equals(nullString, other.nullString) && Objects.equals(quoteCharacter, other.quoteCharacter) &&
+                quoteMode == other.quoteMode && Objects.equals(quotedNullString, other.quotedNullString) &&
+                Objects.equals(recordSeparator, other.recordSeparator) && skipHeaderRecord == other.skipHeaderRecord &&
+                trailingData == other.trailingData && trailingDelimiter == other.trailingDelimiter && trim == other.trim;
     }
 
     private void escape(final char c, final Appendable appendable) throws IOException {
@@ -1809,6 +1858,16 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Gets whether reading end-of-file is allowed even when input is malformed, helps Excel compatibility.
+     *
+     * @return whether reading end-of-file is allowed even when input is malformed, helps Excel compatibility.
+     * @since 1.11.0
+     */
+    public boolean getLenientEof() {
+        return lenientEof;
+    }
+
+    /**
      * Gets the String to convert to and from {@code null}.
      * <ul>
      * <li><strong>Reading:</strong> Converts strings equal to the given {@code nullString} to {@code null} when reading records.</li>
@@ -1858,6 +1917,16 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Gets whether reading trailing data is allowed in records, helps Excel compatibility.
+     *
+     * @return whether reading trailing data is allowed in records, helps Excel compatibility.
+     * @since 1.11.0
+     */
+    public boolean getTrailingData() {
+        return trailingData;
+    }
+
+    /**
      * Gets whether to add a trailing delimiter.
      *
      * @return whether to add a trailing delimiter.
@@ -1881,11 +1950,12 @@ public final class CSVFormat implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + Arrays.hashCode(headers);
         result = prime * result + Arrays.hashCode(headerComments);
-        return prime * result + Objects.hash(duplicateHeaderMode, allowMissingColumnNames, autoFlush, commentMarker, delimiter, escapeCharacter,
-                ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, nullString, quoteCharacter, quoteMode, quotedNullString, recordSeparator,
-                skipHeaderRecord, trailingDelimiter, trim);
+        result = prime * result + Arrays.hashCode(headers);
+        result = prime * result + Objects.hash(allowMissingColumnNames, autoFlush, commentMarker, delimiter, duplicateHeaderMode, escapeCharacter,
+                ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, lenientEof, nullString, quoteCharacter, quoteMode, quotedNullString,
+                recordSeparator, skipHeaderRecord, trailingData, trailingDelimiter, trim);
+        return result;
     }
 
     /**
@@ -2006,6 +2076,26 @@ public final class CSVFormat implements Serializable {
         return new CSVPrinter(new OutputStreamWriter(new FileOutputStream(out), charset), this);
     }
 
+    private void print(final InputStream inputStream, final Appendable out, final boolean newRecord) throws IOException {
+        // InputStream is never null here
+        // There is nothing to escape when quoting is used which is the default.
+        if (!newRecord) {
+            append(getDelimiterString(), out);
+        }
+        final boolean quoteCharacterSet = isQuoteCharacterSet();
+        if (quoteCharacterSet) {
+            append(getQuoteCharacter().charValue(), out);
+        }
+        // Stream the input to the output without reading or holding the whole value in memory.
+        // AppendableOutputStream cannot "close" an Appendable.
+        try (OutputStream outputStream = new Base64OutputStream(new AppendableOutputStream<>(out))) {
+            IOUtils.copy(inputStream, outputStream);
+        }
+        if (quoteCharacterSet) {
+            append(getQuoteCharacter().charValue(), out);
+        }
+    }
+
     /**
      * Prints the {@code value} as the next value on the line to {@code out}. The value will be escaped or encapsulated as needed. Useful when one wants to
      * avoid creating CSVPrinters. Trims the value if {@link #getTrim()} is true.
@@ -2079,26 +2169,6 @@ public final class CSVFormat implements Serializable {
     @SuppressWarnings("resource")
     public CSVPrinter print(final Path out, final Charset charset) throws IOException {
         return print(Files.newBufferedWriter(out, charset));
-    }
-
-    private void print(final InputStream inputStream, final Appendable out, final boolean newRecord) throws IOException {
-        // InputStream is never null here
-        // There is nothing to escape when quoting is used which is the default.
-        if (!newRecord) {
-            append(getDelimiterString(), out);
-        }
-        final boolean quoteCharacterSet = isQuoteCharacterSet();
-        if (quoteCharacterSet) {
-            append(getQuoteCharacter().charValue(), out);
-        }
-        // Stream the input to the output without reading or holding the whole value in memory.
-        // AppendableOutputStream cannot "close" an Appendable.
-        try (OutputStream outputStream = new Base64OutputStream(new AppendableOutputStream<>(out))) {
-            IOUtils.copy(inputStream, outputStream);
-        }
-        if (quoteCharacterSet) {
-            append(getQuoteCharacter().charValue(), out);
-        }
     }
 
     private void print(final Reader reader, final Appendable out, final boolean newRecord) throws IOException {

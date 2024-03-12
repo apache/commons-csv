@@ -53,9 +53,10 @@ final class Lexer implements Closeable {
     private final char escape;
     private final char quoteChar;
     private final char commentStart;
-
     private final boolean ignoreSurroundingSpaces;
     private final boolean ignoreEmptyLines;
+    private final boolean lenientEof;
+    private final boolean trailingData;
 
     /** The input stream */
     private final ExtendedBufferedReader reader;
@@ -71,6 +72,8 @@ final class Lexer implements Closeable {
         this.commentStart = mapNullToDisabled(format.getCommentMarker());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
+        this.lenientEof = format.getLenientEof();
+        this.trailingData = format.getTrailingData();
         this.delimiterBuf = new char[delimiter.length - 1];
         this.escapeDelimiterBuf = new char[2 * delimiter.length - 1];
     }
@@ -364,14 +367,21 @@ final class Lexer implements Closeable {
                             token.type = EORECORD;
                             return token;
                         }
-                        if (!Character.isWhitespace((char)c)) {
+                        if (trailingData) {
+                            token.content.append((char) c);
+                        } else if (!Character.isWhitespace((char) c)) {
                             // error invalid char between token and next delimiter
-                            throw new IOException("Invalid char between encapsulated token and delimiter at line: " +
-                                    getCurrentLineNumber() + ", position: " + getCharacterPosition());
+                            throw new IOException(String.format("Invalid char between encapsulated token and delimiter at line: %,d, position: %,d",
+                                    getCurrentLineNumber(), getCharacterPosition()));
                         }
                     }
                 }
             } else if (isEndOfFile(c)) {
+                if (lenientEof) {
+                    token.type = Token.Type.EOF;
+                    token.isReady = true; // There is data at EOF
+                    return token;
+                }
                 // error condition (end of file before end of token)
                 throw new IOException("(startline " + startLineNumber +
                         ") EOF reached before encapsulated token finished");
