@@ -19,6 +19,7 @@ package org.apache.commons.csv.issues;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -69,7 +70,7 @@ public class JiraCsv290Test {
         assertEquals("1", content.get(0).get(0));
         assertEquals("abc", content.get(0).get(1));
         assertEquals("test line 1\ntest line 2", content.get(0).get(2)); // new line
-        assertEquals(null, content.get(0).get(3)); // null
+        assertNull(content.get(0).get(3)); // null
         assertEquals("", content.get(0).get(4));
 
         assertEquals("2", content.get(1).get(0));
