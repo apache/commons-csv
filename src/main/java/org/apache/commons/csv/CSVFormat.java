@@ -70,11 +70,13 @@ import org.apache.commons.io.output.AppendableOutputStream;
  * <li>{@link #EXCEL}</li>
  * <li>{@link #INFORMIX_UNLOAD}</li>
  * <li>{@link #INFORMIX_UNLOAD_CSV}</li>
+ * <li>{@link #MONGODB_CSV}</li>
+ * <li>{@link #MONGODB_TSV}</li>
  * <li>{@link #MYSQL}</li>
- * <li>{@link #RFC4180}</li>
  * <li>{@link #ORACLE}</li>
  * <li>{@link #POSTGRESQL_CSV}</li>
  * <li>{@link #POSTGRESQL_TEXT}</li>
+ * <li>{@link #RFC4180}</li>
  * <li>{@link #TDF}</li>
  * </ul>
  *
@@ -1059,7 +1061,13 @@ public final class CSVFormat implements Serializable {
      * This is a comma-delimited format. Values are double quoted only if needed and special characters are escaped with {@code '"'}. A header line with field
      * names is expected.
      * </p>
-     *
+     * <p>
+     * As of 2024-04-05, the MongoDB documentation for {@code mongoimport} states:
+     * </p>
+     * <blockquote>The csv parser accepts that data that complies with RFC <a href="https://tools.ietf.org/html/4180">RFC-4180</a>.
+     * As a result, backslashes are not a valid escape character. If you use double-quotes to enclose fields in the CSV data, you must escape
+     * internal double-quote marks by prepending another double-quote.
+     * </blockquote>
      * <p>
      * The {@link Builder} settings are:
      * </p>
