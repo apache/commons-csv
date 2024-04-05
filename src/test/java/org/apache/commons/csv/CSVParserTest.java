@@ -1562,6 +1562,35 @@ public class CSVParserTest {
             assertEquals(3, record.size());
         }}
 
+    @Test
+    public void testParsingPrintedEmptyFirstColumn() throws Exception {
+        Exception firstException = null;
+        for (CSVFormat.Predefined format : CSVFormat.Predefined.values()) {
+            try {
+                StringWriter buf = new StringWriter();
+                try (CSVPrinter printer = new CSVPrinter(buf, format.getFormat())) {
+                    printer.printRecord("a", "b"); // header
+                    printer.printRecord("", "x");  // empty first column
+                }
+                try (CSVParser csvRecords = new CSVParser(new StringReader(buf.toString()), format.getFormat().builder().setHeader().build())) {
+                    for (CSVRecord csvRecord : csvRecords) {
+                        assertNotNull(csvRecord);
+                    }
+                }
+            } catch (Exception | Error e) {
+                Exception detailedException = new RuntimeException("format: " + format, e);
+                if (firstException == null) {
+                    firstException = detailedException;
+                } else {
+                    firstException.addSuppressed(detailedException);
+                }
+            }
+        }
+
+        if (firstException != null)
+            throw firstException;
+    }
+
     private void validateLineNumbers(final String lineSeparator) throws IOException {
         try (final CSVParser parser = CSVParser.parse("a" + lineSeparator + "b" + lineSeparator + "c", CSVFormat.DEFAULT.withRecordSeparator(lineSeparator))) {
             assertEquals(0, parser.getCurrentLineNumber());
