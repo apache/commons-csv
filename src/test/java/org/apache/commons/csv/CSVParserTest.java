@@ -1564,18 +1564,24 @@ public class CSVParserTest {
 
     @Test
     public void testParsingPrintedEmptyFirstColumn() throws Exception {
+        String[][] lines = new String[][] {
+                {"a", "b"},
+                {"", "x"}
+        };
         Exception firstException = null;
         for (CSVFormat.Predefined format : CSVFormat.Predefined.values()) {
             try {
                 StringWriter buf = new StringWriter();
                 try (CSVPrinter printer = new CSVPrinter(buf, format.getFormat())) {
-                    printer.printRecord("a", "b"); // header
-                    printer.printRecord("", "x");  // empty first column
-                }
-                try (CSVParser csvRecords = new CSVParser(new StringReader(buf.toString()), format.getFormat().builder().setHeader().build())) {
-                    for (CSVRecord csvRecord : csvRecords) {
-                        assertNotNull(csvRecord);
+                    for (String[] line : lines) {
+                        printer.printRecord((Object[]) line);
                     }
+                }
+                try (CSVParser csvRecords = new CSVParser(new StringReader(buf.toString()), format.getFormat())) {
+                    for (String[] line : lines) {
+                        assertArrayEquals(line, csvRecords.nextRecord().values());
+                    }
+                    assertNull(csvRecords.nextRecord());
                 }
             } catch (Exception | Error e) {
                 Exception detailedException = new RuntimeException("format: " + format, e);
