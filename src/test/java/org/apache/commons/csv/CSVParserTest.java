@@ -1375,6 +1375,41 @@ public class CSVParserTest {
         }
     }
     @Test
+    public void testParsingPrintedEmptyFirstColumn() throws Exception {
+        String[][] lines = new String[][] {
+                {"a", "b"},
+                {"", "x"}
+        };
+        Exception firstException = null;
+        for (CSVFormat.Predefined format : CSVFormat.Predefined.values()) {
+            try {
+                StringWriter buf = new StringWriter();
+                try (CSVPrinter printer = new CSVPrinter(buf, format.getFormat())) {
+                    for (String[] line : lines) {
+                        printer.printRecord((Object[]) line);
+                    }
+                }
+                try (CSVParser csvRecords = new CSVParser(new StringReader(buf.toString()), format.getFormat())) {
+                    for (String[] line : lines) {
+                        assertArrayEquals(line, csvRecords.nextRecord().values());
+                    }
+                    assertNull(csvRecords.nextRecord());
+                }
+            } catch (Exception | Error e) {
+                Exception detailedException = new RuntimeException("format: " + format, e);
+                if (firstException == null) {
+                    firstException = detailedException;
+                } else {
+                    firstException.addSuppressed(detailedException);
+                }
+            }
+        }
+
+        if (firstException != null)
+            throw firstException;
+    }
+
+    @Test
     public void testProvidedHeader() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
 
@@ -1561,41 +1596,6 @@ public class CSVParserTest {
             assertEquals("3", record.get("Z"));
             assertEquals(3, record.size());
         }}
-
-    @Test
-    public void testParsingPrintedEmptyFirstColumn() throws Exception {
-        String[][] lines = new String[][] {
-                {"a", "b"},
-                {"", "x"}
-        };
-        Exception firstException = null;
-        for (CSVFormat.Predefined format : CSVFormat.Predefined.values()) {
-            try {
-                StringWriter buf = new StringWriter();
-                try (CSVPrinter printer = new CSVPrinter(buf, format.getFormat())) {
-                    for (String[] line : lines) {
-                        printer.printRecord((Object[]) line);
-                    }
-                }
-                try (CSVParser csvRecords = new CSVParser(new StringReader(buf.toString()), format.getFormat())) {
-                    for (String[] line : lines) {
-                        assertArrayEquals(line, csvRecords.nextRecord().values());
-                    }
-                    assertNull(csvRecords.nextRecord());
-                }
-            } catch (Exception | Error e) {
-                Exception detailedException = new RuntimeException("format: " + format, e);
-                if (firstException == null) {
-                    firstException = detailedException;
-                } else {
-                    firstException.addSuppressed(detailedException);
-                }
-            }
-        }
-
-        if (firstException != null)
-            throw firstException;
-    }
 
     private void validateLineNumbers(final String lineSeparator) throws IOException {
         try (final CSVParser parser = CSVParser.parse("a" + lineSeparator + "b" + lineSeparator + "c", CSVFormat.DEFAULT.withRecordSeparator(lineSeparator))) {
