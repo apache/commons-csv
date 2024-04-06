@@ -1393,11 +1393,11 @@ public class CSVParserTest {
         try (CSVPrinter printer = new CSVPrinter(buf, format.getFormat())) {
             printer.printRecords(Stream.of(lines));
         }
-        try (CSVParser parser = new CSVParser(new StringReader(buf.toString()), format.getFormat())) {
+        try (CSVParser csvRecords = new CSVParser(new StringReader(buf.toString()), format.getFormat())) {
             for (final String[] line : lines) {
-                assertArrayEquals(line, parser.nextRecord().values());
+                assertArrayEquals(line, csvRecords.nextRecord().values());
             }
-            assertNull(parser.nextRecord());
+            assertNull(csvRecords.nextRecord());
         }
     }
 
