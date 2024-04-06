@@ -50,12 +50,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.io.input.BrokenInputStream;
+import org.apache.commons.lang3.stream.Streams.FailableStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * CSVParserTest
@@ -1380,36 +1385,19 @@ public class CSVParserTest {
         }
     }
     
-    @Test
-    public void testParsingPrintedEmptyFirstColumn() throws Exception {
+    @ParameterizedTest
+    @EnumSource(CSVFormat.Predefined.class)
+    public void testParsingPrintedEmptyFirstColumn(final CSVFormat.Predefined format) throws Exception {
         final String[][] lines = { { "a", "b" }, { "", "x" } };
-        Exception firstException = null;
-        for (final CSVFormat.Predefined format : CSVFormat.Predefined.values()) {
-            try {
-                final StringWriter buf = new StringWriter();
-                try (CSVPrinter printer = new CSVPrinter(buf, format.getFormat())) {
-                    for (final String[] line : lines) {
-                        printer.printRecord((Object[]) line);
-                    }
-                }
-                try (CSVParser csvRecords = new CSVParser(new StringReader(buf.toString()), format.getFormat())) {
-                    for (final String[] line : lines) {
-                        assertArrayEquals(line, csvRecords.nextRecord().values());
-                    }
-                    assertNull(csvRecords.nextRecord());
-                }
-            } catch (Exception | Error e) {
-                final Exception detailedException = new RuntimeException("format: " + format, e);
-                if (firstException == null) {
-                    firstException = detailedException;
-                } else {
-                    firstException.addSuppressed(detailedException);
-                }
-            }
+        final StringWriter buf = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(buf, format.getFormat())) {
+            printer.printRecords(Stream.of(lines));
         }
-
-        if (firstException != null) {
-            throw firstException;
+        try (CSVParser parser = new CSVParser(new StringReader(buf.toString()), format.getFormat())) {
+            for (final String[] line : lines) {
+                assertArrayEquals(line, parser.nextRecord().values());
+            }
+            assertNull(parser.nextRecord());
         }
     }
 
