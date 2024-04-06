@@ -451,9 +451,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     @Override
     public void close() throws IOException {
-        if (lexer != null) {
-            lexer.close();
-        }
+        lexer.close();
     }
 
     private Map<String, Integer> createEmptyHeaderMap() {
