@@ -56,6 +56,7 @@
       <action type="fix" dev="ggregory" due-to="Gary Gregory">Use try-with-resources to manage JDBC Clob in CSVPrinter.printRecords(ResultSet).</action>
       <action type="fix" dev="ggregory" due-to="Gary Gregory">JDBC Blob columns are now output as Base64 instead of Object#toString(), which usually is InputStream#toString().</action>
       <action type="fix" dev="ggregory" due-to="DamjanJovanovic, Gary Gregory">Support unusual Excel use cases: Add support for trailing data after the closing quote, and EOF without a final closing quote #303.</action>
+      <action type="fix" dev="ggregory" due-to="Igor Kamyshnikov, Gary Gregory">MongoDB CSV empty first column parsing fix #412.</action>
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-io:commons-io: from 2.11.0 to 2.16.0 #408.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump commons-parent from 57 to 69 #410.</action>
