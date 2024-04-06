@@ -183,7 +183,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      * Increments {@link #eolCounter} and updates {@link #position}.
      * </p>
      * <p>
-     * Sets {@link #lastChar} to {@link Constants#EOF} at EOF, otherwise the last EOL character.
+     * Sets {@link #lastChar} to {@code Constants.EOF} at EOF, otherwise the last EOL character.
      * </p>
      *
      * @return the line that was read, or null if reached EOF.
