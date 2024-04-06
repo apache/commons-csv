@@ -154,11 +154,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             if (CSVParser.this.isClosed()) {
                 return false;
             }
-            if (this.current == null) {
-                this.current = this.getNextRecord();
+            if (current == null) {
+                current = getNextRecord();
             }
 
-            return this.current != null;
+            return current != null;
         }
 
         @Override
@@ -166,12 +166,12 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             if (CSVParser.this.isClosed()) {
                 throw new NoSuchElementException("CSVParser has been closed");
             }
-            CSVRecord next = this.current;
-            this.current = null;
+            CSVRecord next = current;
+            current = null;
 
             if (next == null) {
                 // hasNext() wasn't called before
-                next = this.getNextRecord();
+                next = getNextRecord();
                 if (next == null) {
                     throw new NoSuchElementException("No more CSV records available");
                 }
@@ -427,7 +427,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         throws IOException {
         Objects.requireNonNull(reader, "reader");
         Objects.requireNonNull(format, "format");
-
         this.format = format.copy();
         this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
         this.csvRecordIterator = new CSVRecordIterator();
@@ -437,11 +436,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     private void addRecordValue(final boolean lastRecord) {
-        final String input = this.format.trim(this.reusableToken.content.toString());
-        if (lastRecord && input.isEmpty() && this.format.getTrailingDelimiter()) {
+        final String input = format.trim(reusableToken.content.toString());
+        if (lastRecord && input.isEmpty() && format.getTrailingDelimiter()) {
             return;
         }
-        this.recordList.add(handleNull(input));
+        recordList.add(handleNull(input));
     }
 
     /**
@@ -452,13 +451,13 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     @Override
     public void close() throws IOException {
-        if (this.lexer != null) {
-            this.lexer.close();
+        if (lexer != null) {
+            lexer.close();
         }
     }
 
     private Map<String, Integer> createEmptyHeaderMap() {
-        return this.format.getIgnoreHeaderCase() ?
+        return format.getIgnoreHeaderCase() ?
                 new TreeMap<>(String.CASE_INSENSITIVE_ORDER) :
                 new LinkedHashMap<>();
     }
@@ -472,20 +471,20 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private Headers createHeaders() throws IOException {
         Map<String, Integer> hdrMap = null;
         List<String> headerNames = null;
-        final String[] formatHeader = this.format.getHeader();
+        final String[] formatHeader = format.getHeader();
         if (formatHeader != null) {
             hdrMap = createEmptyHeaderMap();
             String[] headerRecord = null;
             if (formatHeader.length == 0) {
                 // read the header from the first line of the file
-                final CSVRecord nextRecord = this.nextRecord();
+                final CSVRecord nextRecord = nextRecord();
                 if (nextRecord != null) {
                     headerRecord = nextRecord.values();
                     headerComment = nextRecord.getComment();
                 }
             } else {
-                if (this.format.getSkipHeaderRecord()) {
-                    final CSVRecord nextRecord = this.nextRecord();
+                if (format.getSkipHeaderRecord()) {
+                    final CSVRecord nextRecord = nextRecord();
                     if (nextRecord != null) {
                         headerComment = nextRecord.getComment();
                     }
@@ -500,13 +499,13 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 for (int i = 0; i < headerRecord.length; i++) {
                     final String header = headerRecord[i];
                     final boolean blankHeader = CSVFormat.isBlank(header);
-                    if (blankHeader && !this.format.getAllowMissingColumnNames()) {
+                    if (blankHeader && !format.getAllowMissingColumnNames()) {
                         throw new IllegalArgumentException(
                             "A header name is missing in " + Arrays.toString(headerRecord));
                     }
 
                     final boolean containsHeader = blankHeader ? observedMissing : hdrMap.containsKey(header);
-                    final DuplicateHeaderMode headerMode = this.format.getDuplicateHeaderMode();
+                    final DuplicateHeaderMode headerMode = format.getDuplicateHeaderMode();
                     final boolean duplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_ALL;
                     final boolean emptyDuplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_EMPTY;
 
@@ -546,7 +545,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @return current line number
      */
     public long getCurrentLineNumber() {
-        return this.lexer.getCurrentLineNumber();
+        return lexer.getCurrentLineNumber();
     }
 
     /**
@@ -583,11 +582,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @return a copy of the header map.
      */
     public Map<String, Integer> getHeaderMap() {
-        if (this.headers.headerMap == null) {
+        if (headers.headerMap == null) {
             return null;
         }
         final Map<String, Integer> map = createEmptyHeaderMap();
-        map.putAll(this.headers.headerMap);
+        map.putAll(headers.headerMap);
         return map;
     }
 
@@ -597,7 +596,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @return the underlying header map.
      */
     Map<String, Integer> getHeaderMapRaw() {
-        return this.headers.headerMap;
+        return headers.headerMap;
     }
 
     /**
@@ -627,7 +626,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @return current record number
      */
     public long getRecordNumber() {
-        return this.recordNumber;
+        return recordNumber;
     }
 
     /**
@@ -665,7 +664,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @return null if input is parsed as null, or input itself if the input isn't parsed as null
      */
     private String handleNull(final String input) {
-        final boolean isQuoted = this.reusableToken.isQuoted;
+        final boolean isQuoted = reusableToken.isQuoted;
         final String nullString = format.getNullString();
         final boolean strictQuoteMode = isStrictQuoteMode();
         if (input.equals(nullString)) {
@@ -711,7 +710,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @return whether this parser is closed.
      */
     public boolean isClosed() {
-        return this.lexer.isClosed();
+        return lexer.isClosed();
     }
 
     /**
@@ -721,8 +720,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *         {@link QuoteMode#NON_NUMERIC}.
      */
     private boolean isStrictQuoteMode() {
-        return this.format.getQuoteMode() == QuoteMode.ALL_NON_NULL ||
-               this.format.getQuoteMode() == QuoteMode.NON_NUMERIC;
+        return format.getQuoteMode() == QuoteMode.ALL_NON_NULL ||
+               format.getQuoteMode() == QuoteMode.NON_NUMERIC;
     }
 
     /**
@@ -758,47 +757,47 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     CSVRecord nextRecord() throws IOException {
         CSVRecord result = null;
-        this.recordList.clear();
+        recordList.clear();
         StringBuilder sb = null;
-        final long startCharPosition = lexer.getCharacterPosition() + this.characterOffset;
+        final long startCharPosition = lexer.getCharacterPosition() + characterOffset;
         do {
-            this.reusableToken.reset();
-            this.lexer.nextToken(this.reusableToken);
-            switch (this.reusableToken.type) {
+            reusableToken.reset();
+            lexer.nextToken(reusableToken);
+            switch (reusableToken.type) {
             case TOKEN:
-                this.addRecordValue(false);
+                addRecordValue(false);
                 break;
             case EORECORD:
-                this.addRecordValue(true);
+                addRecordValue(true);
                 break;
             case EOF:
-                if (this.reusableToken.isReady) {
-                    this.addRecordValue(true);
+                if (reusableToken.isReady) {
+                    addRecordValue(true);
                 } else if (sb != null) {
                     trailerComment = sb.toString();
                 }
                 break;
             case INVALID:
-                throw new IOException("(line " + this.getCurrentLineNumber() + ") invalid parse sequence");
+                throw new IOException("(line " + getCurrentLineNumber() + ") invalid parse sequence");
             case COMMENT: // Ignored currently
                 if (sb == null) { // first comment for this record
                     sb = new StringBuilder();
                 } else {
                     sb.append(Constants.LF);
                 }
-                sb.append(this.reusableToken.content);
-                this.reusableToken.type = TOKEN; // Read another token
+                sb.append(reusableToken.content);
+                reusableToken.type = TOKEN; // Read another token
                 break;
             default:
-                throw new IllegalStateException("Unexpected Token type: " + this.reusableToken.type);
+                throw new IllegalStateException("Unexpected Token type: " + reusableToken.type);
             }
-        } while (this.reusableToken.type == TOKEN);
+        } while (reusableToken.type == TOKEN);
 
-        if (!this.recordList.isEmpty()) {
-            this.recordNumber++;
+        if (!recordList.isEmpty()) {
+            recordNumber++;
             final String comment = sb == null ? null : sb.toString();
-            result = new CSVRecord(this, this.recordList.toArray(Constants.EMPTY_STRING_ARRAY), comment,
-                this.recordNumber, startCharPosition);
+            result = new CSVRecord(this, recordList.toArray(Constants.EMPTY_STRING_ARRAY), comment,
+                recordNumber, startCharPosition);
         }
         return result;
     }
