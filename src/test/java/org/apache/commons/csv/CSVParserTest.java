@@ -1324,6 +1324,7 @@ public class CSVParserTest {
             assertEquals("xyz", csvRecord.get(1));
         }
     }
+    
     @Test
     public void testParseWithDelimiterStringWithQuote() throws IOException {
         final String source = "'a[|]b[|]c'[|]xyz\r\nabc[abc][|]xyz";
@@ -1337,6 +1338,7 @@ public class CSVParserTest {
             assertEquals("xyz", csvRecord.get(1));
         }
     }
+    
     @Test
     public void testParseWithDelimiterWithEscape() throws IOException {
         final String source = "a!,b!,c,xyz";
@@ -1347,6 +1349,7 @@ public class CSVParserTest {
             assertEquals("xyz", csvRecord.get(1));
         }
     }
+    
     @Test
     public void testParseWithDelimiterWithQuote() throws IOException {
         final String source = "'a,b,c',xyz";
@@ -1357,6 +1360,7 @@ public class CSVParserTest {
             assertEquals("xyz", csvRecord.get(1));
         }
     }
+    
     @Test
     public void testParseWithQuoteThrowsException() {
         final CSVFormat csvFormat = CSVFormat.DEFAULT.withQuote('\'');
@@ -1364,6 +1368,7 @@ public class CSVParserTest {
         assertThrows(IOException.class, () -> csvFormat.parse(new StringReader("'a,b,c'abc,xyz")).nextRecord());
         assertThrows(IOException.class, () -> csvFormat.parse(new StringReader("'abc'a,b,c',xyz")).nextRecord());
     }
+    
     @Test
     public void testParseWithQuoteWithEscape() throws IOException {
         final String source = "'a?,b?,c?d',xyz";
@@ -1374,6 +1379,7 @@ public class CSVParserTest {
             assertEquals("xyz", csvRecord.get(1));
         }
     }
+    
     @Test
     public void testParsingPrintedEmptyFirstColumn() throws Exception {
         final String[][] lines = { { "a", "b" }, { "", "x" } };
