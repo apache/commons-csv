@@ -1,9 +1,66 @@
-                        Apache Commons CSV
-                        Version 1.10.0
-                        Release Notes
+Apache Commons CSV Version 1.11.0
+Release Notes
+
+This document contains the release notes for the 1.11.0 version of Apache Commons CSV.
+Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
+
+Commons CSV requires at least Java 8.
+
+The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
+
+Feature and bug fix release (Java 8 or above)
+
+Changes in this version include:
+
+New Features
+------------
+
+* CSV-308:  [Javadoc] Add example to CSVFormat#setHeaderComments() #344. Thanks to Buddhi De Silva, Gary Gregory.
+*           Add and use CSVFormat#setTrailingData(boolean) in CSVFormat.EXCEL for Excel compatibility #303. Thanks to DamjanJovanovic, Gary Gregory.
+*           Add and use CSVFormat#setLenientEof(boolean) in CSVFormat.EXCEL for Excel compatibility #303. Thanks to DamjanJovanovic, Gary Gregory.
+
+Fixed Bugs
+----------
+
+* CSV-306:  Replace deprecated method in user guide, update external link #324, #325. Thanks to Sam Ng, Bruno P. Kinoshita.
+*           Document duplicate header behavior #309. Thanks to Seth Falco, Bruno P. Kinoshita.
+*           Add missing docs #328. Thanks to jkbkupczyk.
+*           [StepSecurity] CI: Harden GitHub Actions #329, #330. Thanks to step-security-bot.
+* CSV-147:  Better error message during faulty CSV record read #347. Thanks to Steven Peterson, Benedikt Ritter, Gary Gregory, Joerg Schaible, Buddhi De Silva, Elliotte Rusty Harold.
+* CSV-310:  Misleading error message when QuoteMode set to None #352. Thanks to Buddhi De Silva.
+* CSV-311:  OutOfMemory for very long rows despite using column value of type Reader. Thanks to Christian Feuersaenger, Gary Gregory.
+*           Use try-with-resources to manage JDBC Clob in CSVPrinter.printRecords(ResultSet). Thanks to Gary Gregory.
+*           JDBC Blob columns are now output as Base64 instead of Object#toString(), which usually is InputStream#toString(). Thanks to Gary Gregory.
+*           Support unusual Excel use cases: Add support for trailing data after the closing quote, and EOF without a final closing quote #303. Thanks to DamjanJovanovic, Gary Gregory.
+*           MongoDB CSV empty first column parsing fix #412. Thanks to Igor Kamyshnikov, Gary Gregory.
+
+Changes
+-------
+
+*           Bump commons-io:commons-io: from 2.11.0 to 2.16.1 #408, #413. Thanks to Gary Gregory.
+*           Bump commons-parent from 57 to 69 #410. Thanks to Gary Gregory, Dependabot.
+*           Bump h2 from 2.1.214 to 2.2.224 #333, #349, #359. Thanks to Dependabot.
+*           Bump commons-lang3 from 3.12.0 to 3.14.0. Thanks to Gary Gregory.
+*           Update exception message in CSVRecord#getNextRecord() #348. Thanks to Buddhi De Silva, Michael Osipov, Gary Gregory.
+*           Bump tests using com.opencsv:opencsv from 5.8 to 5.9 #373. Thanks to Dependabot.
 
 
-INTRODUCTION:
+Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
+
+For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Commons CSV website:
+
+https://commons.apache.org/proper/commons-csv/
+
+Download page: https://commons.apache.org/proper/commons-csv/download_csv.cgi
+
+Have fun!
+-Apache Commons CSV team
+
+------------------------------------------------------------------------------
+
+Apache Commons CSV Version 1.10.0
+Release Notes
 
 This document contains the release notes for the 1.10.0 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -16,59 +73,59 @@ Feature and bug fix release (Java 8 or above)
 
 Changes in this version include:
 
-NEW FEATURES
-============
+New Features
+------------
 
-o CSV-291:  Make CSVRecord#values() public. Thanks to Gary Gregory.
-o CSV-264:  Add DuplicateHeaderMode for flexibility with header strictness. #114. Thanks to Sagar Tiwari, Seth Falco, Alex Herbert, Gary Gregory.
-o CSV-295:  Support for parallelism in CSVPrinter. Thanks to Gary Gregory.
-o CSV-295:  Add CSVPrinter.printRecord[s](Stream). Thanks to Gary Gregory.
-o CSV-304:  Add accessors for header/trailer comments #257. Thanks to Peter Hull, Bruno P. Kinoshita, Gary Gregory.
-o           Add github/codeql-action.
+* CSV-291:  Make CSVRecord#values() public. Thanks to Gary Gregory.
+* CSV-264:  Add DuplicateHeaderMode for flexibility with header strictness. #114. Thanks to Sagar Tiwari, Seth Falco, Alex Herbert, Gary Gregory.
+* CSV-295:  Support for parallelism in CSVPrinter. Thanks to Gary Gregory.
+* CSV-295:  Add CSVPrinter.printRecord[s](Stream). Thanks to Gary Gregory.
+* CSV-304:  Add accessors for header/trailer comments #257. Thanks to Peter Hull, Bruno P. Kinoshita, Gary Gregory.
+*           Add github/codeql-action.
 
-FIXED BUGS
-==========
+Fixed Bugs
+----------
 
-o           Minor changes #172. Thanks to Arturo Bernal.
-o CSV-292:  No Automatic-Module-Name prevents usage in JPMS projects without repacking the JAR. Thanks to Rob Vesse.
-o CSV-288:  Fix for multi-char delimiter not working as expected #218. Thanks to Santhsoh, Angus.
-o CSV-269:  CSVRecord.get(Enum) should use Enum.name() instead of Enum.toString(). Thanks to Auke te Winkel, Gary Gregory.
-o           Allow org.apache.commons.csv.IOUtils.copy(Reader, Appendable, CharBuffer) to compile on Java 11 and run on Java 8. Thanks to Gary Gregory.
-o CSV-300:  CSVRecord.toList() does not give write access to the new List. Thanks to Markus Spann, Gary Gregory.
-o           CSVParser.getRecords() now throws UncheckedIOException instead of IOException. Thanks to Gary Gregory.
-o CSV-274:  Add comments to iterator() and stream() #270. Thanks to Peter Hull, Bruno P. Kinoshita, Gary Gregory.
-o CSV-290:  Fix wrong assumptions in PostgreSQL formats #265. Thanks to angusdev, Gary Gregory.
-o           Validate input to setDelimiter(String) for empty string #266. Thanks to Mykola Faryma.
-o           Bump CSVFormat#serialVersionUID from 1 to 2. Thanks to Dependabot.
-o           CSVParser: Identify duplicates in null, empty and blank header names #279. Thanks to Alex Herbert.
+*           Minor changes #172. Thanks to Arturo Bernal.
+* CSV-292:  No Automatic-Module-Name prevents usage in JPMS projects without repacking the JAR. Thanks to Rob Vesse.
+* CSV-288:  Fix for multi-char delimiter not working as expected #218. Thanks to Santhsoh, Angus.
+* CSV-269:  CSVRecord.get(Enum) should use Enum.name() instead of Enum.toString(). Thanks to Auke te Winkel, Gary Gregory.
+*           Allow org.apache.commons.csv.IOUtils.copy(Reader, Appendable, CharBuffer) to compile on Java 11 and run on Java 8. Thanks to Gary Gregory.
+* CSV-300:  CSVRecord.toList() does not give write access to the new List. Thanks to Markus Spann, Gary Gregory.
+*           CSVParser.getRecords() now throws UncheckedIOException instead of IOException. Thanks to Gary Gregory.
+* CSV-274:  Add comments to iterator() and stream() #270. Thanks to Peter Hull, Bruno P. Kinoshita, Gary Gregory.
+* CSV-290:  Fix wrong assumptions in PostgreSQL formats #265. Thanks to angusdev, Gary Gregory.
+*           Validate input to setDelimiter(String) for empty string #266. Thanks to Mykola Faryma.
+*           Bump CSVFormat#serialVersionUID from 1 to 2. Thanks to Dependabot.
+*           CSVParser: Identify duplicates in null, empty and blank header names #279. Thanks to Alex Herbert.
 
-CHANGES
-=======
+Changes
+-------
 
-o           Bump actions/cache from 2.1.6 to 3.0.10 #196, #233, #243, #267, #271. Thanks to Dependabot, Gary Gregory.
-o           Bump actions/checkout from 2.3.4 to 3.1.0 #188, #195, #220, #272. Thanks to Dependabot, Gary Gregory.
-o           Bump actions/setup-java from 2 to 3.5.1. Thanks to Gary Gregory.
-o           Bump actions/upload-artifact from 3.1.0 to 3.1.1 #280. Thanks to Dependabot.
-o           Bump commons-parent from 52 to 56 #264, #288, #298. Thanks to Gary Gregory.
-o           Bump checkstyle from 8.44 to 9.2.1 #180, #190, #194, #202, #207. Thanks to Dependabot.
-o           Bump junit-jupiter from 5.8.0-M1 to 5.9.1 #179, #186, #201, #244, #263. Thanks to Dependabot.
-o           Bump jmh-core from 1.32 to 1.36 #176, #208, #229, #285. Thanks to Dependabot.
-o           Bump jmh-generator-annprocess from 1.32 to 1.36 #175, #206, #226, #283. Thanks to Dependabot.
-o           Bump mockito-core from 3.11.2 to 4.11.0 #187, #197, #204, #212, #230, #237, #251, #259, #284, #292, #297. Thanks to Dependabot, Gary Gregory.
-o           Bump maven-pmd-plugin from 3.14.0 to 3.19.0 #184, #219, #238, #254, #258. Thanks to Dependabot.
-o           Bump pmd from 6.36.0 to 6.52.0 #173, #189, #193, #199, #227, #233, #214, #236, #240, #247, #255, #273. Thanks to Dependabot, Gary Gregory.
-o           Bump opencsv from 5.5.1 to 5.7.1 #182, #221, #260, #281. Thanks to Gary Gregory.
-o           Bump spotbugs-maven-plugin from 4.3.0 to 4.7.3.0 #192, #198, #203, #211, #225, #234, #242, #245, #261, #275, #282. Thanks to Dependabot.
-o           Bump com.github.spotbugs:spotbugs from 4.5.3 to 4.7.2. Thanks to Gary Gregory.
-o           Bump h2 from 1.4.200 to 2.1.214 #200, #205, #213, #239. Thanks to Dependabot.
-o           Bump maven-javadoc-plugin from 3.3.0 to 3.4.1. Thanks to Gary Gregory.
-o           Bump biz.aQute.bnd:biz.aQute.bndlib from 5.3.0 to 6.3.1. Thanks to Gary Gregory.
-o           Bump jacoco-maven-plugin from 0.8.7 to 0.8.8. Thanks to Gary Gregory.
-o           Bump japicmp-maven-plugin from 0.15.3 to 0.16.0. Thanks to Gary Gregory.
-o           Bump maven-checkstyle-plugin from 3.1.2 to 3.2.0 #253. Thanks to Dependabot.
+*           Bump actions/cache from 2.1.6 to 3.0.10 #196, #233, #243, #267, #271. Thanks to Dependabot, Gary Gregory.
+*           Bump actions/checkout from 2.3.4 to 3.1.0 #188, #195, #220, #272. Thanks to Dependabot, Gary Gregory.
+*           Bump actions/setup-java from 2 to 3.5.1. Thanks to Gary Gregory.
+*           Bump actions/upload-artifact from 3.1.0 to 3.1.1 #280. Thanks to Dependabot.
+*           Bump commons-parent from 52 to 56 #264, #288, #298. Thanks to Gary Gregory.
+*           Bump checkstyle from 8.44 to 9.2.1 #180, #190, #194, #202, #207. Thanks to Dependabot.
+*           Bump junit-jupiter from 5.8.0-M1 to 5.9.1 #179, #186, #201, #244, #263. Thanks to Dependabot.
+*           Bump jmh-core from 1.32 to 1.36 #176, #208, #229, #285. Thanks to Dependabot.
+*           Bump jmh-generator-annprocess from 1.32 to 1.36 #175, #206, #226, #283. Thanks to Dependabot.
+*           Bump mockito-core from 3.11.2 to 4.11.0 #187, #197, #204, #212, #230, #237, #251, #259, #284, #292, #297. Thanks to Dependabot, Gary Gregory.
+*           Bump maven-pmd-plugin from 3.14.0 to 3.19.0 #184, #219, #238, #254, #258. Thanks to Dependabot.
+*           Bump pmd from 6.36.0 to 6.52.0 #173, #189, #193, #199, #227, #233, #214, #236, #240, #247, #255, #273. Thanks to Dependabot, Gary Gregory.
+*           Bump opencsv from 5.5.1 to 5.7.1 #182, #221, #260, #281. Thanks to Gary Gregory.
+*           Bump spotbugs-maven-plugin from 4.3.0 to 4.7.3.0 #192, #198, #203, #211, #225, #234, #242, #245, #261, #275, #282. Thanks to Dependabot.
+*           Bump com.github.spotbugs:spotbugs from 4.5.3 to 4.7.2. Thanks to Gary Gregory.
+*           Bump h2 from 1.4.200 to 2.1.214 #200, #205, #213, #239. Thanks to Dependabot.
+*           Bump maven-javadoc-plugin from 3.3.0 to 3.4.1. Thanks to Gary Gregory.
+*           Bump biz.aQute.bnd:biz.aQute.bndlib from 5.3.0 to 6.3.1. Thanks to Gary Gregory.
+*           Bump jacoco-maven-plugin from 0.8.7 to 0.8.8. Thanks to Gary Gregory.
+*           Bump japicmp-maven-plugin from 0.15.3 to 0.16.0. Thanks to Gary Gregory.
+*           Bump maven-checkstyle-plugin from 3.1.2 to 3.2.0 #253. Thanks to Dependabot.
 
 Removed:
-o           Serialization in CSVFormat is not supported from one version to the next.
+*           Serialization in CSVFormat is not supported from one version to the next.
 
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
@@ -84,12 +141,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-                        Apache Commons CSV
-                        Version 1.9.0
-                        Release Notes
-
-
-INTRODUCTION:
+Apache Commons CSV Version 1.9.0
+Release Notes
 
 This document contains the release notes for the 1.9.0 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -102,79 +155,79 @@ Feature and bug fix release (Java 8 or above)
 
 Changes in this version include:
 
-NEW FEATURES
-============
+New Features
+------------
 
-o CSV-275:  Make CSVRecord#toList() public. Thanks to Michael Wyraz, Gary Gregory.
-o           Add CSVRecord#stream(). Thanks to Gary Gregory.
-o           Add CSVParser#stream(). Thanks to Gary Gregory.
-o CSV-184:  Make the method CSVRecord.putIn(Map) public. Thanks to Gaurav Agarwal, M. Steiger, Gary Gregory.
-o           Add test cases for CSVRecord with get(Enum) and toString. #54. Thanks to dota17.
-o           Add and use CSVFormat.Builder, deprecated CSVFormat#with methods, based on #73. Thanks to Gary Gregory, dota17.
-o CSV-206:  Add support for String delimiters #76. Thanks to Gary Gregory, dota17.
+* CSV-275:  Make CSVRecord#toList() public. Thanks to Michael Wyraz, Gary Gregory.
+*           Add CSVRecord#stream(). Thanks to Gary Gregory.
+*           Add CSVParser#stream(). Thanks to Gary Gregory.
+* CSV-184:  Make the method CSVRecord.putIn(Map) public. Thanks to Gaurav Agarwal, M. Steiger, Gary Gregory.
+*           Add test cases for CSVRecord with get(Enum) and toString. #54. Thanks to dota17.
+*           Add and use CSVFormat.Builder, deprecated CSVFormat#with methods, based on #73. Thanks to Gary Gregory, dota17.
+* CSV-206:  Add support for String delimiters #76. Thanks to Gary Gregory, dota17.
 
-FIXED BUGS
-==========
+Fixed Bugs
+----------
 
-o           Replace FindBugs with SpotBugs #56. Thanks to Amey Jadiye.
-o           Javadoc typo in CSVFormat let's -> lets #57. Thanks to Chen.
-o CSV-259:  CSVFormat.printWithEscapes throws StringIndexOutOfBoundsException when value is Reader #61. Thanks to Chen.
-o           Improve CSVFormat test coverage #63. Thanks to Chen.
-o           Fix CSVFileParserTest.java to allow for a null return value from record.getComment() #62. Thanks to Chen.
-o           Improve test coverage in CSVFormatTest #65. Thanks to Chen.
-o           Removed invalid Javadoc markup for CSVFormat EXCEL #64. Thanks to Chen.
-o           Improve CSVRecord and CSVPrinter code coverage #66. Thanks to Chen.
-o           Improve lexer and token coverage #67. Thanks to Chen.
-o CSV-211:  CSVFormat.format trims last delimiter if the delimiter is a white space #71. Thanks to Alpesh Kulkarni, Chen.
-o           Replace org.apache.commons.csv.Assertions.notNull() with Objects.requireNonNull(). Thanks to Gary Gregory.
-o CSV-149:  Line number is not proper at EOF. Thanks to Kranthi, Gary Gregory, Brent Worden, dota17.
-o CSV-195:  Parser iterates over the last CSV Record twice. Thanks to Rodolfo Duldulao, Rodolfo Duldulao, Michael Vitz, dota17.
-o CSV-267:  Minor improvements #126, #127, #130. Thanks to Arturo Bernal.
-o CSV-123:  Add possibility to use ResultSet header meta data as CSV header #11. Thanks to Emmanuel Bourg, Benedikt Ritter, shivakrishnaah, Gary Gregory.
-o CSV-148:  Add test cases for withIgnoreSurroundingSpaces() and withTrim() #70. Thanks to dota17.
-o           Update CSVParser.parse(File, Charset, CSVFormat) from IO to NIO. Thanks to Gary Gregory.
-o CSV-271:  Missing separator with print(object) followed by printRecord(Object[]) #157. Thanks to Amar Prakash Pandey.
-o CSV-158:  Fix EOL checking for read array in ExtendedBufferedReader #5. Thanks to Alexander Bondarev, Benedikt Ritter, Gary Gregory, Chen.
-o CSV-263:  Print from Reader with embedded quotes generates incorrect output #78. Thanks to Jason A. Guild, Gary Gregory.
-o           Replace JUnit assert by simpler but equivalent calls. #159. Thanks to Arturo Bernal.
-o           Update gitignore to ignore idea and vscode #160. Thanks to Seth Falco.
-o CSV-281:  Update CSVBenchmark #165. Thanks to belugabehr.
-o CSV-283:  Remove Whitespace Check Determines Delimiter Twice #167. Thanks to belugabehr.
-o CSV-283:  Document and Automate CSV Benchmark Harness #166. Thanks to belugabehr.
-o CSV-279:  Optimize Lexer Delimiter Check for One Character Delimiter #163. Thanks to belugabehr.
-o           SpotBugs Error: Medium: org.apache.commons.csv.CSVParser.getHeaderNames() may expose internal representation by returning CSVParser.headerNames [org.apache.commons.csv.CSVParser] At CSVParser.java:[line 599] EI_EXPOSE_REP. Thanks to Gary Gregory.
-o           SpotBugs Error: Medium: new org.apache.commons.csv.CSVParser(Reader, CSVFormat, long, long) may expose internal representation by storing an externally mutable object into CSVParser.format [org.apache.commons.csv.CSVParser] At CSVParser.java:[line 433] EI_EXPOSE_REP2. Thanks to Gary Gregory.
-o           SpotBugs Error: Medium: new org.apache.commons.csv.CSVParser(Reader, CSVFormat, long, long) may expose internal representation by storing an externally mutable object into CSVParser.headerMap [org.apache.commons.csv.CSVParser] At CSVParser.java:[line 437] EI_EXPOSE_REP2. Thanks to Gary Gregory.
-o           SpotBugs Error: Medium: new org.apache.commons.csv.CSVParser(Reader, CSVFormat, long, long) may expose internal representation by storing an externally mutable object into CSVParser.headerNames [org.apache.commons.csv.CSVParser] At CSVParser.java:[line 438] EI_EXPOSE_REP2. Thanks to Gary Gregory.
-o           SpotBugs Error: Medium: new org.apache.commons.csv.CSVPrinter(Appendable, CSVFormat) may expose internal representation by storing an externally mutable object into CSVPrinter.format [org.apache.commons.csv.CSVPrinter] At CSVPrinter.java:[line 100] EI_EXPOSE_REP2. Thanks to Gary Gregory.
-o CSV-284:  Formalize PerformanceTest #168. Thanks to belugabehr.
-o CSV-278:  Reuse Buffers in Lexer for Delimiter Detection #162. Thanks to belugabehr.
-o CSV-286:  Cleanup and Document Performance Test Harness #170. Thanks to belugabehr.
-o CSV-265:  Update buffer position when reading line comment #120. Thanks to belugabehr.
+*           Replace FindBugs with SpotBugs #56. Thanks to Amey Jadiye.
+*           Javadoc typo in CSVFormat let's -> lets #57. Thanks to Chen.
+* CSV-259:  CSVFormat.printWithEscapes throws StringIndexOutOfBoundsException when value is Reader #61. Thanks to Chen.
+*           Improve CSVFormat test coverage #63. Thanks to Chen.
+*           Fix CSVFileParserTest.java to allow for a null return value from record.getComment() #62. Thanks to Chen.
+*           Improve test coverage in CSVFormatTest #65. Thanks to Chen.
+*           Removed invalid Javadoc markup for CSVFormat EXCEL #64. Thanks to Chen.
+*           Improve CSVRecord and CSVPrinter code coverage #66. Thanks to Chen.
+*           Improve lexer and token coverage #67. Thanks to Chen.
+* CSV-211:  CSVFormat.format trims last delimiter if the delimiter is a white space #71. Thanks to Alpesh Kulkarni, Chen.
+*           Replace org.apache.commons.csv.Assertions.notNull() with Objects.requireNonNull(). Thanks to Gary Gregory.
+* CSV-149:  Line number is not proper at EOF. Thanks to Kranthi, Gary Gregory, Brent Worden, dota17.
+* CSV-195:  Parser iterates over the last CSV Record twice. Thanks to Rodolfo Duldulao, Rodolfo Duldulao, Michael Vitz, dota17.
+* CSV-267:  Minor improvements #126, #127, #130. Thanks to Arturo Bernal.
+* CSV-123:  Add possibility to use ResultSet header meta data as CSV header #11. Thanks to Emmanuel Bourg, Benedikt Ritter, shivakrishnaah, Gary Gregory.
+* CSV-148:  Add test cases for withIgnoreSurroundingSpaces() and withTrim() #70. Thanks to dota17.
+*           Update CSVParser.parse(File, Charset, CSVFormat) from IO to NIO. Thanks to Gary Gregory.
+* CSV-271:  Missing separator with print(object) followed by printRecord(Object[]) #157. Thanks to Amar Prakash Pandey.
+* CSV-158:  Fix EOL checking for read array in ExtendedBufferedReader #5. Thanks to Alexander Bondarev, Benedikt Ritter, Gary Gregory, Chen.
+* CSV-263:  Print from Reader with embedded quotes generates incorrect output #78. Thanks to Jason A. Guild, Gary Gregory.
+*           Replace JUnit assert by simpler but equivalent calls. #159. Thanks to Arturo Bernal.
+*           Update gitignore to ignore idea and vscode #160. Thanks to Seth Falco.
+* CSV-281:  Update CSVBenchmark #165. Thanks to belugabehr.
+* CSV-283:  Remove Whitespace Check Determines Delimiter Twice #167. Thanks to belugabehr.
+* CSV-283:  Document and Automate CSV Benchmark Harness #166. Thanks to belugabehr.
+* CSV-279:  Optimize Lexer Delimiter Check for One Character Delimiter #163. Thanks to belugabehr.
+*           SpotBugs Error: Medium: org.apache.commons.csv.CSVParser.getHeaderNames() may expose internal representation by returning CSVParser.headerNames [org.apache.commons.csv.CSVParser] At CSVParser.java:[line 599] EI_EXPOSE_REP. Thanks to Gary Gregory.
+*           SpotBugs Error: Medium: new org.apache.commons.csv.CSVParser(Reader, CSVFormat, long, long) may expose internal representation by storing an externally mutable object into CSVParser.format [org.apache.commons.csv.CSVParser] At CSVParser.java:[line 433] EI_EXPOSE_REP2. Thanks to Gary Gregory.
+*           SpotBugs Error: Medium: new org.apache.commons.csv.CSVParser(Reader, CSVFormat, long, long) may expose internal representation by storing an externally mutable object into CSVParser.headerMap [org.apache.commons.csv.CSVParser] At CSVParser.java:[line 437] EI_EXPOSE_REP2. Thanks to Gary Gregory.
+*           SpotBugs Error: Medium: new org.apache.commons.csv.CSVParser(Reader, CSVFormat, long, long) may expose internal representation by storing an externally mutable object into CSVParser.headerNames [org.apache.commons.csv.CSVParser] At CSVParser.java:[line 438] EI_EXPOSE_REP2. Thanks to Gary Gregory.
+*           SpotBugs Error: Medium: new org.apache.commons.csv.CSVPrinter(Appendable, CSVFormat) may expose internal representation by storing an externally mutable object into CSVPrinter.format [org.apache.commons.csv.CSVPrinter] At CSVPrinter.java:[line 100] EI_EXPOSE_REP2. Thanks to Gary Gregory.
+* CSV-284:  Formalize PerformanceTest #168. Thanks to belugabehr.
+* CSV-278:  Reuse Buffers in Lexer for Delimiter Detection #162. Thanks to belugabehr.
+* CSV-286:  Cleanup and Document Performance Test Harness #170. Thanks to belugabehr.
+* CSV-265:  Update buffer position when reading line comment #120. Thanks to belugabehr.
 
-CHANGES
-=======
+Changes
+-------
 
-o           Update org.junit.jupiter:junit-jupiter from 5.6.0 to 5.7.0, #84 #109 Thanks to Gary Gregory.
-o           Update tests from Apache Commons Lang 3.9 to 3.12.0. Thanks to Gary Gregory.
-o           Update tests from commons-io:commons-io 2.6 to 2.11.0, #108. Thanks to Gary Gregory.
-o           Bump actions/checkout from v1 to v2.3.4, #79, #92, #121. Thanks to Dependabot.
-o           Bump commons-parent from 50 to 51 #80. Thanks to Dependabot.
-o           Bump tests from opencsv from 3.1 to 5.5.1 #81, #137, #158. Thanks to Dependabot, Gary Gregory.
-o           Update tests from super-csv from 2.2.1 to 2.4.0 #86. Thanks to Gary Gregory.
-o           Bump build actions/setup-java from v1.4.0 to v2, #101, #113. Thanks to Dependabot, Gary Gregory.
-o           Bump maven-pmd-plugin from 3.13.0 to 3.14.0 #122. Thanks to Dependabot.
-o           Bump tests from org.mockito:mockito-core 3.2.4 -> 3.11.2; #88, #107, #110, #123, #128, #129, #156. Thanks to Gary Gregory, Dependabot.
-o           Bump actions/cache from v2 to v2.1.6 #132, #153. Thanks to Dependabot.
-o           Bump maven-checkstyle-plugin from 3.0.0 to 3.1.2 #131. Thanks to Gary Gregory, Dependabot.
-o           Bump checkstyle from 8.29 to 8.44. Thanks to Gary Gregory.
-o           Bump junit-jupiter from 5.7.0 to 5.8.0-M1 #133, #149. Thanks to Dependabot, Gary Gregory.
-o           Bump commons.jacoco.version from 0.8.5 to 0.8.7 (Java 16). Thanks to Dependabot.
-o           Bump commons.spotbugs.version from 4.0.4 to 4.3.0 (Java 16). Thanks to Dependabot.
-o           Bump maven-javadoc-plugin from 3.2.0 to 3.3.0. Thanks to Gary Gregory.
-o           Bump jmh-generator-annprocess from 1.5.2 to 1.32 #151. Thanks to Dependabot.
-o           Bump PMD core from 6.29.0 to 6.36.0. Thanks to Dependabot.
-o           Bump biz.aQute.bnd:biz.aQute.bndlib from 5.1.2 to 5.3.0. Thanks to Dependabot.
+*           Update org.junit.jupiter:junit-jupiter from 5.6.0 to 5.7.0, #84 #109 Thanks to Gary Gregory.
+*           Update tests from Apache Commons Lang 3.9 to 3.12.0. Thanks to Gary Gregory.
+*           Update tests from commons-io:commons-io 2.6 to 2.11.0, #108. Thanks to Gary Gregory.
+*           Bump actions/checkout from v1 to v2.3.4, #79, #92, #121. Thanks to Dependabot.
+*           Bump commons-parent from 50 to 51 #80. Thanks to Dependabot.
+*           Bump tests from opencsv from 3.1 to 5.5.1 #81, #137, #158. Thanks to Dependabot, Gary Gregory.
+*           Update tests from super-csv from 2.2.1 to 2.4.0 #86. Thanks to Gary Gregory.
+*           Bump build actions/setup-java from v1.4.0 to v2, #101, #113. Thanks to Dependabot, Gary Gregory.
+*           Bump maven-pmd-plugin from 3.13.0 to 3.14.0 #122. Thanks to Dependabot.
+*           Bump tests from org.mockito:mockito-core 3.2.4 -> 3.11.2; #88, #107, #110, #123, #128, #129, #156. Thanks to Gary Gregory, Dependabot.
+*           Bump actions/cache from v2 to v2.1.6 #132, #153. Thanks to Dependabot.
+*           Bump maven-checkstyle-plugin from 3.0.0 to 3.1.2 #131. Thanks to Gary Gregory, Dependabot.
+*           Bump checkstyle from 8.29 to 8.44. Thanks to Gary Gregory.
+*           Bump junit-jupiter from 5.7.0 to 5.8.0-M1 #133, #149. Thanks to Dependabot, Gary Gregory.
+*           Bump commons.jacoco.version from 0.8.5 to 0.8.7 (Java 16). Thanks to Dependabot.
+*           Bump commons.spotbugs.version from 4.0.4 to 4.3.0 (Java 16). Thanks to Dependabot.
+*           Bump maven-javadoc-plugin from 3.2.0 to 3.3.0. Thanks to Gary Gregory.
+*           Bump jmh-generator-annprocess from 1.5.2 to 1.32 #151. Thanks to Dependabot.
+*           Bump PMD core from 6.29.0 to 6.36.0. Thanks to Dependabot.
+*           Bump biz.aQute.bnd:biz.aQute.bndlib from 5.1.2 to 5.3.0. Thanks to Dependabot.
 
 
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
@@ -191,12 +244,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-                        Apache Commons CSV
-                        Version 1.8
-                        Release Notes
-
-
-INTRODUCTION:
+Apache Commons CSV Version 1.8
+Release Notes
 
 This document contains the release notes for the 1.8 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -208,33 +257,33 @@ This release fixes serialization compatibility of CSVRecord with versions 1.0 to
 
 Changes in this version include:
 
-NEW FEATURES
-==============
+New Features
+------------==
 
-o CSV-255:  Add CSVRecord.isSet(int) method #52. Thanks to 0x100.
+* CSV-255:  Add CSVRecord.isSet(int) method #52. Thanks to 0x100.
 
-FIXED BUGS
-============
+Fixed Bugs
+----------==
 
-o CSV-135:  Char escape doesn't work properly with quoting. Thanks to Mateusz Zakarczemny.
-o CSV-244:  Test case failures following CSVFormat#equals() update.
-o CSV-243:  CSVFormat withTrim() and withIgnoreSurroundingSpaces() need better docs.
-o CSV-242:  CSVFormat equals() and hashCode() don't use all fields.
-o CSV-241:  CSVFormat#validate() does not account for allowDuplicateHeaderNames #43. Thanks to LuckyIlam, Gary Gregory.
-o CSV-245:  Post 1.7 release fixes. Thanks to Alex Herbert.
-o CSV-252:  Upgrade test framework to JUnit 5 Jupiter #49, #50. Thanks to Alex Herbert.
-o CSV-247:  A single empty header is allowed when not allowing empty column headers. #47. Thanks to Alex Herbert, Gary Gregory.
-o CSV-248:  CSVRecord is not Serializable. Thanks to Alex Herbert.
-o           Use test scope for supercsv #48. Thanks to Alex Herbert.
+* CSV-135:  Char escape doesn't work properly with quoting. Thanks to Mateusz Zakarczemny.
+* CSV-244:  Test case failures following CSVFormat#equals() update.
+* CSV-243:  CSVFormat withTrim() and withIgnoreSurroundingSpaces() need better docs.
+* CSV-242:  CSVFormat equals() and hashCode() don't use all fields.
+* CSV-241:  CSVFormat#validate() does not account for allowDuplicateHeaderNames #43. Thanks to LuckyIlam, Gary Gregory.
+* CSV-245:  Post 1.7 release fixes. Thanks to Alex Herbert.
+* CSV-252:  Upgrade test framework to JUnit 5 Jupiter #49, #50. Thanks to Alex Herbert.
+* CSV-247:  A single empty header is allowed when not allowing empty column headers. #47. Thanks to Alex Herbert, Gary Gregory.
+* CSV-248:  CSVRecord is not Serializable. Thanks to Alex Herbert.
+*           Use test scope for supercsv #48. Thanks to Alex Herbert.
 
-CHANGES
-=========
+Changes
+-------==
 
-o           Update tests from H2 1.4.199 to 1.4.200. Thanks to Gary Gregory.
-o           Update tests from Hamcrest 2.1 to 2.2. Thanks to Gary Gregory.
-o           Update tests from Mockito 3.1.0 to 3.2.4. Thanks to Gary Gregory.
-o           Fix typos in site and test #53. Thanks to Chen.
-o           Fix typo performance test #55. Thanks to Chen.
+*           Update tests from H2 1.4.199 to 1.4.200. Thanks to Gary Gregory.
+*           Update tests from Hamcrest 2.1 to 2.2. Thanks to Gary Gregory.
+*           Update tests from Mockito 3.1.0 to 3.2.4. Thanks to Gary Gregory.
+*           Fix typos in site and test #53. Thanks to Chen.
+*           Fix typo performance test #55. Thanks to Chen.
 
 
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
@@ -251,12 +300,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-                        Apache Commons CSV
-                        Version 1.7
-                        Release Notes
-
-
-INTRODUCTION:
+Apache Commons CSV Version 1.7
+Release Notes
 
 This document contains the release notes for the 1.7 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -268,25 +313,25 @@ Feature and bug fix release (Java 8 or above)
 
 Changes in this version include:
 
-NEW FEATURES
-==============
+New Features
+------------==
 
-o CSV-233:  Add predefined CSVFormats for printing MongoDB CSV and TSV. Thanks to Gary Gregory.
-o CSV-234:  Add support for java.sql.Clob. Thanks to Roberto Benedetti, Gary Gregory.
-o CSV-239:  Cannot get headers in column order from CSVRecord. Thanks to Gary Gregory, Dave Moten.
+* CSV-233:  Add predefined CSVFormats for printing MongoDB CSV and TSV. Thanks to Gary Gregory.
+* CSV-234:  Add support for java.sql.Clob. Thanks to Roberto Benedetti, Gary Gregory.
+* CSV-239:  Cannot get headers in column order from CSVRecord. Thanks to Gary Gregory, Dave Moten.
 
-FIXED BUGS
-============
+Fixed Bugs
+----------==
 
-o CSV-208:  Fix escape character for POSTGRESQL_TEXT and POSTGRESQL_CSV formats. Thanks to Jurrie Overgoor.
-o CSV-232:  Site link "Source Repository" does not work. Thanks to Jurrie Overgoor, Gary Gregory.
-o CSV-238:  Escape quotes in CLOBs #39. Thanks to Stephen Olander-Waters.
+* CSV-208:  Fix escape character for POSTGRESQL_TEXT and POSTGRESQL_CSV formats. Thanks to Jurrie Overgoor.
+* CSV-232:  Site link "Source Repository" does not work. Thanks to Jurrie Overgoor, Gary Gregory.
+* CSV-238:  Escape quotes in CLOBs #39. Thanks to Stephen Olander-Waters.
 
-CHANGES
-=========
+Changes
+-------==
 
-o CSV-237:  Update to Java 8. Thanks to Gary Gregory.
-o           Update tests from H2 1.4.198 to 1.4.199. Thanks to Gary Gregory.
+* CSV-237:  Update to Java 8. Thanks to Gary Gregory.
+*           Update tests from H2 1.4.198 to 1.4.199. Thanks to Gary Gregory.
 
 
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
@@ -303,12 +348,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-                        Apache Commons CSV
-                        Version 1.6
-                        Release Notes
-
-
-INTRODUCTION:
+Apache Commons CSV Version 1.6
+Release Notes
 
 This document contains the release notes for the 1.6 version of
 Apache Commons CSV. Commons CSV reads and writes files in variations of the
@@ -323,33 +364,33 @@ Feature and bug fix release.
 
 Changes in this version include:
 
-NEW FEATURES
-==============
+New Features
+------------==
 
-o CSV-217:  Add autoFlush option for CsvPrinter. PR #24.
+* CSV-217:  Add autoFlush option for CsvPrinter. PR #24.
             Thanks to Korolyov Alexei.
-o CSV-220:  Add API org.apache.commons.csv.CSVFormat.withSystemRecordSeparator().
+* CSV-220:  Add API org.apache.commons.csv.CSVFormat.withSystemRecordSeparator().
             Thanks to Gary Gregory.
 
-FIXED BUGS
-============
+Fixed Bugs
+----------==
 
-o CSV-219:  The behavior of quote char using is not similar as Excel does when
+* CSV-219:  The behavior of quote char using is not similar as Excel does when
             the first string contains CJK char(s). Thanks to Zhang Hongda.
-o CSV-172:  Don't quote cells just because they have UTF-8 encoded characters.
+* CSV-172:  Don't quote cells just because they have UTF-8 encoded characters.
             Thanks to Andrew Pennebaker.
-o CSV-223:  Inconsistency between Javadoc of CSVFormat DEFAULT EXCEL.
+* CSV-223:  Inconsistency between Javadoc of CSVFormat DEFAULT EXCEL.
             Thanks to Samuel Martin.
-o CSV-209:  Create CSVFormat.ORACLE preset. Thanks to Gary Gregory.
-o CSV-224:  Some multi-iterator parsing peek sequences incorrectly consume
+* CSV-209:  Create CSVFormat.ORACLE preset. Thanks to Gary Gregory.
+* CSV-224:  Some multi-iterator parsing peek sequences incorrectly consume
             elements. Thanks to David Warshaw.
-o CSV-225:  Parse method should avoid creating a redundant BufferedReader.
+* CSV-225:  Parse method should avoid creating a redundant BufferedReader.
             Thanks to Anson Schwabecher.
 
-CHANGES
-=========
+Changes
+-------==
 
-o CSV-231:  Add more documentation to CSVPrinter.
+* CSV-231:  Add more documentation to CSVPrinter.
 
 
 Have fun!
@@ -357,12 +398,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-                        Apache Commons CSV
-                        Version 1.5
-                        Release Notes
-
-
-INTRODUCTION:
+Apache Commons CSV Version 1.5
+Release Notes
 
 This document contains the release notes for the 1.5 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -376,30 +413,30 @@ Feature and bug fix release
 
 Changes in this version include:
 
-NEW FEATURES
-==============
+New Features
+------------==
 
-o CSV-189:  CSVParser: Add factory method accepting InputStream. Thanks to Peter Holzwarth, Gary Gregory.
-o CSV-190:  Add convenience API CSVFormat.print(File, Charset). Thanks to Gary Gregory.
-o CSV-191:  Add convenience API CSVFormat.print(Path, Charset). Thanks to Gary Gregory.
-o CSV-192:  Add convenience API CSVParser.parse(Path, Charset, CSVFormat). Thanks to Gary Gregory.
-o CSV-205:  Add convenience API CSVFormat#printer() to print to System.out. Thanks to Gary Gregory.
-o CSV-207:  Provide a CSV Format for printing PostgreSQL CSV and Text formats. Thanks to Gary Gregory.
-o CSV-214:  Adding a placeholder in the Lexer and CSV parser to store the end-of-line string. Thanks to Nitin Mahendru, Gary Gregory.
+* CSV-189:  CSVParser: Add factory method accepting InputStream. Thanks to Peter Holzwarth, Gary Gregory.
+* CSV-190:  Add convenience API CSVFormat.print(File, Charset). Thanks to Gary Gregory.
+* CSV-191:  Add convenience API CSVFormat.print(Path, Charset). Thanks to Gary Gregory.
+* CSV-192:  Add convenience API CSVParser.parse(Path, Charset, CSVFormat). Thanks to Gary Gregory.
+* CSV-205:  Add convenience API CSVFormat#printer() to print to System.out. Thanks to Gary Gregory.
+* CSV-207:  Provide a CSV Format for printing PostgreSQL CSV and Text formats. Thanks to Gary Gregory.
+* CSV-214:  Adding a placeholder in the Lexer and CSV parser to store the end-of-line string. Thanks to Nitin Mahendru, Gary Gregory.
 
-FIXED BUGS
-============
+Fixed Bugs
+----------==
 
-o CSV-203:  withNullString value is printed without quotes when QuoteMode.ALL is specified; add QuoteMode.ALL_NON_NULL. PR #17. Thanks to Richard Wheeldon, Kai Paroth.
-o CSV-194:  Fix outdated comments about FileReader in CSVParser #13. Thanks to Marc Prud'hommeaux.
-o CSV-193:  Fix incorrect method name 'withFirstRowAsHeader' in user guide. Thanks to Matthias Wiehl.
-o CSV-171:  Negative numeric values in the first column are always quoted in minimal mode. Thanks to Gary Gregory, Michael Graessle, Adrian Bridgett.
+* CSV-203:  withNullString value is printed without quotes when QuoteMode.ALL is specified; add QuoteMode.ALL_NON_NULL. PR #17. Thanks to Richard Wheeldon, Kai Paroth.
+* CSV-194:  Fix outdated comments about FileReader in CSVParser #13. Thanks to Marc Prud'hommeaux.
+* CSV-193:  Fix incorrect method name 'withFirstRowAsHeader' in user guide. Thanks to Matthias Wiehl.
+* CSV-171:  Negative numeric values in the first column are always quoted in minimal mode. Thanks to Gary Gregory, Michael Graessle, Adrian Bridgett.
 
-CHANGES
-=========
+Changes
+-------==
 
-o CSV-187: Update platform requirement from Java 6 to 7. Thanks to Gary Gregory.
-o CSV-201: Do not use RuntimeException in CSVParser.iterator().new Iterator() {...}.getNextRecord(). Thanks to Benedikt Ritter, Gary Gregory.
+* CSV-187: Update platform requirement from Java 6 to 7. Thanks to Gary Gregory.
+* CSV-201: Do not use RuntimeException in CSVParser.iterator().new Iterator() {...}.getNextRecord(). Thanks to Benedikt Ritter, Gary Gregory.
 
 
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
@@ -414,12 +451,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-                        Apache Commons CSV
-                        Version 1.4
-                        Release Notes
-
-
-INTRODUCTION:
+Apache Commons CSV Version 1.4
+Release Notes
 
 This document contains the release notes for the 1.4 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -433,17 +466,17 @@ Feature and bug fix release
 
 Changes in this version include:
 
-NEW FEATURES
-==============
+New Features
+------------==
 
-o CSV-182:  Allow some printing operations directly from CSVFormat. Thanks to Gary Gregory.
+* CSV-182:  Allow some printing operations directly from CSVFormat. Thanks to Gary Gregory.
 
 
-CHANGES
-=========
+Changes
+-------==
 
-o CSV-181:  Make CSVPrinter.print(Object) GC-free. Thanks to Gary Gregory.
-o CSV-183:  Drop ferc.gov tests.  
+* CSV-181:  Make CSVPrinter.print(Object) GC-free. Thanks to Gary Gregory.
+* CSV-183:  Drop ferc.gov tests.  
 
 
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
@@ -458,12 +491,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-                        Apache Commons CSV
-                        Version 1.3
-                        Release Notes
-
-
-INTRODUCTION:
+Apache Commons CSV Version 1.3
+Release Notes
 
 This document contains the release notes for the 1.3 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -477,29 +506,29 @@ Feature and bug fix release.
 
 Changes in this version include:
 
-NEW FEATURES
-==============
+New Features
+------------==
 
-o CSV-179:  Add shortcut method for using first record as header to CSVFormat.
-o CSV-180:  Add withHeader(Class? extends Enum>) to CSVFormat.
-o CSV-159:  Add IgnoreCase option for accessing header names. Thanks to Yamil Medina.
-o CSV-169:  The null string should be case-sensitive when reading records. Thanks to Gary Gregory.
-o CSV-175:  Support for ignoring trailing delimiter. Thanks to Gary Gregory, Chris Jones.
-o CSV-177:  Support trimming leading and trailing blanks. Thanks to Gary Gregory.
-o CSV-178:  Create default formats for Informix UNLOAD and UNLOAD CSV. Thanks to Gary Gregory.
+* CSV-179:  Add shortcut method for using first record as header to CSVFormat.
+* CSV-180:  Add withHeader(Class? extends Enum>) to CSVFormat.
+* CSV-159:  Add IgnoreCase option for accessing header names. Thanks to Yamil Medina.
+* CSV-169:  The null string should be case-sensitive when reading records. Thanks to Gary Gregory.
+* CSV-175:  Support for ignoring trailing delimiter. Thanks to Gary Gregory, Chris Jones.
+* CSV-177:  Support trimming leading and trailing blanks. Thanks to Gary Gregory.
+* CSV-178:  Create default formats for Informix UNLOAD and UNLOAD CSV. Thanks to Gary Gregory.
 
-FIXED BUGS
-============
+Fixed Bugs
+----------==
 
-o CSV-168:  CSVFormat.nullString should not be escaped. Thanks to Gary Gregory, cornel creanga.
-o CSV-170:  CSVFormat.MYSQL nullString should be "\N". Thanks to Gary Gregory, cornel creanga.
-o CSV-161:  Fix Javadoc to say CSVFormat with() methods return a new CSVFormat. Thanks to Gary Gregory, Kristof Meixner, Emmanuel Bourg.
+* CSV-168:  CSVFormat.nullString should not be escaped. Thanks to Gary Gregory, cornel creanga.
+* CSV-170:  CSVFormat.MYSQL nullString should be "\N". Thanks to Gary Gregory, cornel creanga.
+* CSV-161:  Fix Javadoc to say CSVFormat with() methods return a new CSVFormat. Thanks to Gary Gregory, Kristof Meixner, Emmanuel Bourg.
 
-CHANGES
-============
+Changes
+-------=====
 
-o CSV-167:  Comment line hides next record; update Javadoc to make behavior clear. Thanks to Rene.
-o CSV-153:  CSVPrinter doesn't skip creation of header record if skipHeaderRecord is set to true. Thanks to Wren.
+* CSV-167:  Comment line hides next record; update Javadoc to make behavior clear. Thanks to Rene.
+* CSV-153:  CSVPrinter doesn't skip creation of header record if skipHeaderRecord is set to true. Thanks to Wren.
 
 
 Have fun!
@@ -507,12 +536,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-                        Apache Commons CSV
-                        Version 1.2
-                        Release Notes
-
-
-INTRODUCTION:
+Apache Commons CSV Version 1.2
+Release Notes
 
 This document contains the release notes for the 1.2 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -526,16 +551,16 @@ Feature and bug fix release
 
 Changes in this version include:
 
-NEW FEATURES
-==============
+New Features
+------------==
 
-o CSV-157:  Add enum CSVFormat.Predefined that contains the default CSVFormat values.
+* CSV-157:  Add enum CSVFormat.Predefined that contains the default CSVFormat values.
 
-FIXED BUGS
-============
+Fixed Bugs
+----------==
 
-o CSV-145:  CSVFormat.with* methods clear the header comments. Thanks to Frank Ulbricht.
-o CSV-156:  Incorrect Javadoc on QuoteMode.NONE. Thanks to Jason Steenstra-Pickens.
+* CSV-145:  CSVFormat.with* methods clear the header comments. Thanks to Frank Ulbricht.
+* CSV-156:  Incorrect Javadoc on QuoteMode.NONE. Thanks to Jason Steenstra-Pickens.
 
 
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
@@ -550,12 +575,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-                        Apache Commons CSV
-                        Version 1.1
-                        Release Notes
-
-
-INTRODUCTION:
+Apache Commons CSV Version 1.1
+Release Notes
 
 This document contains the release notes for the 1.1 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -570,19 +591,19 @@ This is our second release.
 Changes in this version include:
 
 New features:
-o [CSV-129] Add CSVFormat#with 0-arg methods matching boolean arg methods. 
-o [CSV-131] Save positions of records to enable random access. Thanks to Holger Stratmann. 
-o [CSV-139] CSVPrinter.printRecord(ResultSet) with metadata. 
+* [CSV-129] Add CSVFormat#with 0-arg methods matching boolean arg methods. 
+* [CSV-131] Save positions of records to enable random access. Thanks to Holger Stratmann. 
+* [CSV-139] CSVPrinter.printRecord(ResultSet) with metadata. 
 
 Fixed Bugs:
-o [CSV-140] QuoteMode.NON_NUMERIC doesn't work with CSVPrinter.printRecords(ResultSet). Thanks to Damjan Jovanovic. 
-o [CSV-130] CSVFormat#withHeader doesn't work well with #printComment, add withHeaderComments(String...). Thanks to Sergei Lebedev. 
-o [CSV-128] CSVFormat.EXCEL should ignore empty header names. 
-o [CSV-132] Incorrect Javadoc referencing org.apache.commons.csv.CSVFormat withQuote(). Thanks to Sascha Szott. 
+* [CSV-140] QuoteMode.NON_NUMERIC doesn't work with CSVPrinter.printRecords(ResultSet). Thanks to Damjan Jovanovic. 
+* [CSV-130] CSVFormat#withHeader doesn't work well with #printComment, add withHeaderComments(String...). Thanks to Sergei Lebedev. 
+* [CSV-128] CSVFormat.EXCEL should ignore empty header names. 
+* [CSV-132] Incorrect Javadoc referencing org.apache.commons.csv.CSVFormat withQuote(). Thanks to Sascha Szott. 
 
 Changes:
-o [CSV-124] Improve toString() implementation of CSVRecord. Thanks to Kalyan. 
-o [CSV-134] Unified parameter validation. Thanks to wu wen. 
+* [CSV-124] Improve toString() implementation of CSVRecord. Thanks to Kalyan. 
+* [CSV-134] Unified parameter validation. Thanks to wu wen. 
 
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
 
@@ -596,12 +617,8 @@ Have fun!
 
 -------------------------------------------------------------------------------
 
-                        Apache Commons CSV
-                        Version 1.0
-                        Release Notes
-
-
-INTRODUCTION:
+Apache Commons CSV Version 1.0
+Release Notes
 
 This document contains the release notes for the 1.0 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -615,68 +632,68 @@ First release
 
 Changes in this version include:
 
-NEW FEATURES
-============
+New Features
+------------
 
-o CSV-121:  IllegalArgumentException thrown when the header contains duplicate names when the column names are empty.
+* CSV-121:  IllegalArgumentException thrown when the header contains duplicate names when the column names are empty.
             Thanks to Sebastian Hardt.
-o CSV-120:  CSVFormat#withHeader doesn't work with CSVPrinter Thanks to Sergei Lebedev.
-o CSV-119:  CSVFormat is missing a print(...) method Thanks to Sergei Lebedev.
-o CSV-105:  Add Map conversion API to CSVRecord
-o CSV-52:   Keep track of record number
-o CSV-92:   Need a way to extract parsed headers, e.g. for use in formatting
+* CSV-120:  CSVFormat#withHeader doesn't work with CSVPrinter Thanks to Sergei Lebedev.
+* CSV-119:  CSVFormat is missing a print(...) method Thanks to Sergei Lebedev.
+* CSV-105:  Add Map conversion API to CSVRecord
+* CSV-52:   Keep track of record number
+* CSV-92:   Need a way to extract parsed headers, e.g. for use in formatting
             output
-o CSV-65:   Header support
-o CSV-48:   Predefined format for MYSQL
+* CSV-65:   Header support
+* CSV-48:   Predefined format for MYSQL
 
-FIXED BUGS
-==========
+Fixed Bugs
+----------
 
-o CSV-125:  No longer works with Java 6
-o CSV-122:  NullPointerException when empty header string and null string of "".
+* CSV-125:  No longer works with Java 6
+* CSV-122:  NullPointerException when empty header string and null string of "".
             Thanks to Mike Lewis.
-o CSV-118:  CSVRecord.toMap() throws NPE on formats with no
+* CSV-118:  CSVRecord.toMap() throws NPE on formats with no
             headers. Thanks to Enrique Lara.
-o CSV-113:  Check whether ISE/IAE are being used appropriately
-o CSV-114:  CSVFormat constructor should reject a header array with duplicate
+* CSV-113:  Check whether ISE/IAE are being used appropriately
+* CSV-114:  CSVFormat constructor should reject a header array with duplicate
             entries
-o CSV-112:  HeaderMap is inconsistent when it is parsed from an input with
+* CSV-112:  HeaderMap is inconsistent when it is parsed from an input with
             duplicate columns names
-o CSV-111:  CSVRecord.toMap() fails if row length shorter than header length
-o CSV-106:  CSVFormat.format allways append null
-o CSV-100:  CSVParser: getHeaderMap throws NPE
-o CSV-53:   CSVRecord does not verify that the length of the header mapping
+* CSV-111:  CSVRecord.toMap() fails if row length shorter than header length
+* CSV-106:  CSVFormat.format allways append null
+* CSV-100:  CSVParser: getHeaderMap throws NPE
+* CSV-53:   CSVRecord does not verify that the length of the header mapping
             matches the number of values
-o CSV-54:   Confusing semantic of the ignore leading/trailing spaces parameters
-o CSV-34:   CSVFormat describes itself as immutable, but it is not - in
+* CSV-54:   Confusing semantic of the ignore leading/trailing spaces parameters
+* CSV-34:   CSVFormat describes itself as immutable, but it is not - in
             particular it is not thread-safe
-o CSV-36:   Endless loops in CSV parser
-o CSV-13:   NullPointerException in CSVPrinter.print()/println()
-o CSV-23:   Excel strategy uses wrong separator
+* CSV-36:   Endless loops in CSV parser
+* CSV-13:   NullPointerException in CSVPrinter.print()/println()
+* CSV-23:   Excel strategy uses wrong separator
 
-CHANGES
-=======
+Changes
+-------
 
-o CSV-117:  Validate format parameters in constructor
-o CSV-42:   Lots of possible changes Thanks to Bob Smith.
-o CSV-78:   Use Character instead of char for char fields except delimiter
-o CSV-99:   Revert Builder implementation in CSVFormat
-o CSV-93:   Allow the handling of NULL values
-o CSV-68:   Use the Builder pattern for CSVFormat
-o CSV-84:   Clarify comment handling
-o CSV-25:   CSVParser.nextValue() seems pointless
-o CSV-97:   Allow the String value for null to be customized for the CSV
+* CSV-117:  Validate format parameters in constructor
+* CSV-42:   Lots of possible changes Thanks to Bob Smith.
+* CSV-78:   Use Character instead of char for char fields except delimiter
+* CSV-99:   Revert Builder implementation in CSVFormat
+* CSV-93:   Allow the handling of NULL values
+* CSV-68:   Use the Builder pattern for CSVFormat
+* CSV-84:   Clarify comment handling
+* CSV-25:   CSVParser.nextValue() seems pointless
+* CSV-97:   Allow the String value for null to be customized for the CSV
             printer
-o CSV-88:   Not possible to create a CSVFormat from scratch
-o CSV-94:   Lexer should only use char fields
-o CSV-71:   Add convenience methods to CSVLexer
-o CSV-59:   Is CharBuffer really needed, now that StringBuilder is available?
-o CSV-55:   Replace while(true)-loop in CSVParser.getRecord with do-while-loop
-o CSV-45:   CSVPrinter overhaul
-o CSV-49:   CSVStrategy has modifiable public static variables Thanks to Bob Smith.
-o CSV-46:   Reduce visibility of methods in internal classes
-o CSV-26:   ExtendedBufferedReader does too much
-o CSV-27:   Decide whether to keep the csv.writer subpackage
+* CSV-88:   Not possible to create a CSVFormat from scratch
+* CSV-94:   Lexer should only use char fields
+* CSV-71:   Add convenience methods to CSVLexer
+* CSV-59:   Is CharBuffer really needed, now that StringBuilder is available?
+* CSV-55:   Replace while(true)-loop in CSVParser.getRecord with do-while-loop
+* CSV-45:   CSVPrinter overhaul
+* CSV-49:   CSVStrategy has modifiable public static variables Thanks to Bob Smith.
+* CSV-46:   Reduce visibility of methods in internal classes
+* CSV-26:   ExtendedBufferedReader does too much
+* CSV-27:   Decide whether to keep the csv.writer subpackage
 
 
 Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html

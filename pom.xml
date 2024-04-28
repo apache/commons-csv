@@ -166,6 +166,7 @@
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC1</commons.rc.version>
     <commons.bc.version>1.10.0</commons.bc.version>
+    <commons.release.next>1.11.1</commons.release.next>
     <commons.componentid>csv</commons.componentid>
     <commons.module.name>org.apache.commons.csv</commons.module.name>
     <commons.jira.id>CSV</commons.jira.id>

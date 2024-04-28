@@ -15,12 +15,9 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
-                        ${project.name}
-                        Version ${version}
-                        Release Notes
-
-
-INTRODUCTION:
+${project.name}
+Version ${version}
+Release Notes
 
 This document contains the release notes for the ${version} version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -68,7 +65,7 @@ $release.description.replaceAll("  ", "
 #else
 #set($dueto="")
 #end
-o $issue ${action}$dueto
+* $issue ${action}$dueto
 #set($action="")
 #set($issue="")
 #set($dueto="")
@@ -80,8 +77,8 @@ No changes defined in this version.
 Changes in this version include:
 
 #if ($release.getActions('add').size() !=0)
-NEW FEATURES
-============
+New Features
+------------
 
 #foreach($actionItem in $release.getActions('add'))
 #processaction()
@@ -89,8 +86,8 @@ NEW FEATURES
 #end
 
 #if ($release.getActions('fix').size() !=0)
-FIXED BUGS
-==========
+Fixed Bugs
+----------
 
 #foreach($actionItem in $release.getActions('fix'))
 #processaction()
@@ -98,8 +95,8 @@ FIXED BUGS
 #end
 
 #if ($release.getActions('update').size() !=0)
-CHANGES
-=======
+Changes
+-------
 
 #foreach($actionItem in $release.getActions('update'))
 #processaction()
@@ -107,7 +104,9 @@ CHANGES
 #end
 
 #if ($release.getActions('remove').size() !=0)
-Removed:
+Removals
+--------
+
 #foreach($actionItem in $release.getActions('remove'))
 #processaction()
 #end
