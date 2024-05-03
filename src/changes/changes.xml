@@ -44,6 +44,7 @@
       <!-- ADD -->
       <!-- FIX -->
       <!-- UPDATE -->
+      <action type="update" dev="ggregory" due-to="Dependabot">Bump commons-codec:commons-codec from 1.16.1 to 1.17.0 #422.</action>
     </release>
     <release version="1.11.0" date="2024-04-28" description="Feature and bug fix release (Java 8 or above)">
       <!-- ADD -->
