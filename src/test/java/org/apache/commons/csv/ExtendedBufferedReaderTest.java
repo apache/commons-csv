@@ -55,7 +55,7 @@ public class ExtendedBufferedReaderTest {
         final String LF = "\n";
         final String CR = "\r";
         final String CRLF = CR + LF;
-        final String LFCR = LF + CR;// easier to read the string below
+        final String LFCR = LF + CR; // easier to read the string below
         final String test = "a" + LF + "b" + CR + "c" + LF + LF + "d" + CR + CR + "e" + LFCR + "f " + CRLF;
         // EOL eol EOL EOL eol eol EOL+CR EOL
         final int EOLeolct = 9;
