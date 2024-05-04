@@ -107,7 +107,7 @@ final class Lexer implements Closeable {
         return reader.getCurrentLineNumber();
     }
 
-    String getFirstEol(){
+    String getFirstEol() {
         return firstEol;
     }
 
@@ -138,7 +138,7 @@ final class Lexer implements Closeable {
         }
         reader.lookAhead(delimiterBuf);
         for (int i = 0; i < delimiterBuf.length; i++) {
-            if (delimiterBuf[i] != delimiter[i+1]) {
+            if (delimiterBuf[i] != delimiter[i + 1]) {
                 return false;
             }
         }
@@ -221,18 +221,12 @@ final class Lexer implements Closeable {
      * @throws IOException on stream access error.
      */
     Token nextToken(final Token token) throws IOException {
-
         // Get the last read char (required for empty line detection)
         int lastChar = reader.getLastChar();
-
         // read the next char and set eol
         int c = reader.read();
-        /*
-         * Note: The following call will swallow LF if c == CR. But we don't need to know if the last char was CR or LF
-         * - they are equivalent here.
-         */
+        // Note: The following call will swallow LF if c == CR. But we don't need to know if the last char was CR or LF - they are equivalent here.
         boolean eol = readEndOfLine(c);
-
         // empty line detection: eol AND (last char was EOL or beginning)
         if (ignoreEmptyLines) {
             while (eol && isStartOfLine(lastChar)) {
@@ -248,14 +242,12 @@ final class Lexer implements Closeable {
                 }
             }
         }
-
         // Did we reach EOF during the last iteration already? EOF
         if (isEndOfFile(lastChar) || !isLastTokenDelimiter && isEndOfFile(c)) {
             token.type = Token.Type.EOF;
             // don't set token.isReady here because no content
             return token;
         }
-
         if (isStartOfLine(lastChar) && isCommentStart(c)) {
             final String line = reader.readLine();
             if (line == null) {
@@ -268,17 +260,15 @@ final class Lexer implements Closeable {
             token.type = COMMENT;
             return token;
         }
-
         // Important: make sure a new char gets consumed in each iteration
         while (token.type == INVALID) {
             // ignore whitespaces at beginning of a token
             if (ignoreSurroundingSpaces) {
-                while (Character.isWhitespace((char)c) && !isDelimiter(c) && !eol) {
+                while (Character.isWhitespace((char) c) && !isDelimiter(c) && !eol) {
                     c = reader.read();
                     eol = readEndOfLine(c);
                 }
             }
-
             // ok, start of token reached: encapsulated, or token
             if (isDelimiter(c)) {
                 // empty token return TOKEN("")
