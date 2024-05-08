@@ -183,13 +183,18 @@
     <checkstyle.config.file>${basedir}/src/conf/checkstyle/checkstyle.xml</checkstyle.config.file>
     <checkstyle.suppress.file>${basedir}/src/conf/checkstyle/checkstyle-suppressions.xml</checkstyle.suppress.file>
     <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt, **/maven-archiver/pom.properties</checkstyle.resourceExcludes>
-
     <japicmp.skip>false</japicmp.skip>
-
     <commons.release.isDistModule>true</commons.release.isDistModule>
     <project.build.outputTimestamp>2024-05-02T22:04:50Z</project.build.outputTimestamp>
+    <!-- JaCoCo: Don't make code coverage worse than: -->
+    <commons.jacoco.haltOnFailure>true</commons.jacoco.haltOnFailure>
+    <commons.jacoco.classRatio>1.00</commons.jacoco.classRatio>
+    <commons.jacoco.instructionRatio>0.98</commons.jacoco.instructionRatio>
+    <commons.jacoco.methodRatio>1.00</commons.jacoco.methodRatio>
+    <commons.jacoco.branchRatio>0.97</commons.jacoco.branchRatio>
+    <commons.jacoco.lineRatio>0.99</commons.jacoco.lineRatio>
+    <commons.jacoco.complexityRatio>0.96</commons.jacoco.complexityRatio>
 </properties>
-
   <build>
     <defaultGoal>clean verify apache-rat:check japicmp:cmp spotbugs:check pmd:check pmd:cpd-check javadoc:javadoc checkstyle:check</defaultGoal>
     <pluginManagement>
