@@ -17,17 +17,6 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.Constants.BACKSLASH;
-import static org.apache.commons.csv.Constants.COMMA;
-import static org.apache.commons.csv.Constants.COMMENT;
-import static org.apache.commons.csv.Constants.CR;
-import static org.apache.commons.csv.Constants.CRLF;
-import static org.apache.commons.csv.Constants.DOUBLE_QUOTE_CHAR;
-import static org.apache.commons.csv.Constants.EMPTY;
-import static org.apache.commons.csv.Constants.LF;
-import static org.apache.commons.csv.Constants.PIPE;
-import static org.apache.commons.csv.Constants.SP;
-import static org.apache.commons.csv.Constants.TAB;
 import static org.apache.commons.io.IOUtils.EOF;
 
 import java.io.File;
@@ -203,7 +192,7 @@ public final class CSVFormat implements Serializable {
          * @return a copy of the builder
          */
         public static Builder create() {
-            return new Builder(CSVFormat.DEFAULT);
+            return new Builder(DEFAULT);
         }
 
         /**
@@ -850,57 +839,57 @@ public final class CSVFormat implements Serializable {
         /**
          * @see CSVFormat#DEFAULT
          */
-        Default(CSVFormat.DEFAULT),
+        Default(DEFAULT),
 
         /**
          * @see CSVFormat#EXCEL
          */
-        Excel(CSVFormat.EXCEL),
+        Excel(EXCEL),
 
         /**
          * @see CSVFormat#INFORMIX_UNLOAD
          * @since 1.3
          */
-        InformixUnload(CSVFormat.INFORMIX_UNLOAD),
+        InformixUnload(INFORMIX_UNLOAD),
 
         /**
          * @see CSVFormat#INFORMIX_UNLOAD_CSV
          * @since 1.3
          */
-        InformixUnloadCsv(CSVFormat.INFORMIX_UNLOAD_CSV),
+        InformixUnloadCsv(INFORMIX_UNLOAD_CSV),
 
         /**
          * @see CSVFormat#MONGODB_CSV
          * @since 1.7
          */
-        MongoDBCsv(CSVFormat.MONGODB_CSV),
+        MongoDBCsv(MONGODB_CSV),
 
         /**
          * @see CSVFormat#MONGODB_TSV
          * @since 1.7
          */
-        MongoDBTsv(CSVFormat.MONGODB_TSV),
+        MongoDBTsv(MONGODB_TSV),
 
         /**
          * @see CSVFormat#MYSQL
          */
-        MySQL(CSVFormat.MYSQL),
+        MySQL(MYSQL),
 
         /**
          * @see CSVFormat#ORACLE
          */
-        Oracle(CSVFormat.ORACLE),
+        Oracle(ORACLE),
 
         /**
          * @see CSVFormat#POSTGRESQL_CSV
          * @since 1.5
          */
-        PostgreSQLCsv(CSVFormat.POSTGRESQL_CSV),
+        PostgreSQLCsv(POSTGRESQL_CSV),
 
         /**
          * @see CSVFormat#POSTGRESQL_CSV
          */
-        PostgreSQLText(CSVFormat.POSTGRESQL_TEXT),
+        PostgreSQLText(POSTGRESQL_TEXT),
 
         /**
          * @see CSVFormat#RFC4180
@@ -945,8 +934,8 @@ public final class CSVFormat implements Serializable {
      *
      * @see Predefined#Default
      */
-    public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, null, null, null, false, false, false,
-            false, false, false, DuplicateHeaderMode.ALLOW_ALL, false, false);
+    public static final CSVFormat DEFAULT = new CSVFormat(Constants.COMMA, Constants.DOUBLE_QUOTE_CHAR, null, null, null, false, true, Constants.CRLF, null,
+            null, null, false, false, false, false, false, false, DuplicateHeaderMode.ALLOW_ALL, false, false);
 
     /**
      * Excel file format (using a comma as the value delimiter). Note that the actual value delimiter used by Excel is locale-dependent, it might be necessary
@@ -1014,10 +1003,10 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat INFORMIX_UNLOAD = DEFAULT.builder()
-            .setDelimiter(PIPE)
-            .setEscape(BACKSLASH)
-            .setQuote(DOUBLE_QUOTE_CHAR)
-            .setRecordSeparator(LF)
+            .setDelimiter(Constants.PIPE)
+            .setEscape(Constants.BACKSLASH)
+            .setQuote(Constants.DOUBLE_QUOTE_CHAR)
+            .setRecordSeparator(Constants.LF)
             .build();
     // @formatter:on
 
@@ -1045,9 +1034,9 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat INFORMIX_UNLOAD_CSV = DEFAULT.builder()
-            .setDelimiter(COMMA)
-            .setQuote(DOUBLE_QUOTE_CHAR)
-            .setRecordSeparator(LF)
+            .setDelimiter(Constants.COMMA)
+            .setQuote(Constants.DOUBLE_QUOTE_CHAR)
+            .setRecordSeparator(Constants.LF)
             .build();
     // @formatter:on
 
@@ -1085,9 +1074,9 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat MONGODB_CSV = DEFAULT.builder()
-            .setDelimiter(COMMA)
-            .setEscape(DOUBLE_QUOTE_CHAR)
-            .setQuote(DOUBLE_QUOTE_CHAR)
+            .setDelimiter(Constants.COMMA)
+            .setEscape(Constants.DOUBLE_QUOTE_CHAR)
+            .setQuote(Constants.DOUBLE_QUOTE_CHAR)
             .setQuoteMode(QuoteMode.MINIMAL)
             .setSkipHeaderRecord(false)
             .build();
@@ -1122,9 +1111,9 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat MONGODB_TSV = DEFAULT.builder()
-            .setDelimiter(TAB)
-            .setEscape(DOUBLE_QUOTE_CHAR)
-            .setQuote(DOUBLE_QUOTE_CHAR)
+            .setDelimiter(Constants.TAB)
+            .setEscape(Constants.DOUBLE_QUOTE_CHAR)
+            .setQuote(Constants.DOUBLE_QUOTE_CHAR)
             .setQuoteMode(QuoteMode.MINIMAL)
             .setSkipHeaderRecord(false)
             .build();
@@ -1157,11 +1146,11 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat MYSQL = DEFAULT.builder()
-            .setDelimiter(TAB)
-            .setEscape(BACKSLASH)
+            .setDelimiter(Constants.TAB)
+            .setEscape(Constants.BACKSLASH)
             .setIgnoreEmptyLines(false)
             .setQuote(null)
-            .setRecordSeparator(LF)
+            .setRecordSeparator(Constants.LF)
             .setNullString(Constants.SQL_NULL_STRING)
             .setQuoteMode(QuoteMode.ALL_NON_NULL)
             .build();
@@ -1196,10 +1185,10 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat ORACLE = DEFAULT.builder()
-            .setDelimiter(COMMA)
-            .setEscape(BACKSLASH)
+            .setDelimiter(Constants.COMMA)
+            .setEscape(Constants.BACKSLASH)
             .setIgnoreEmptyLines(false)
-            .setQuote(DOUBLE_QUOTE_CHAR)
+            .setQuote(Constants.DOUBLE_QUOTE_CHAR)
             .setNullString(Constants.SQL_NULL_STRING)
             .setTrim(true)
             .setRecordSeparator(System.lineSeparator())
@@ -1235,12 +1224,12 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat POSTGRESQL_CSV = DEFAULT.builder()
-            .setDelimiter(COMMA)
+            .setDelimiter(Constants.COMMA)
             .setEscape(null)
             .setIgnoreEmptyLines(false)
-            .setQuote(DOUBLE_QUOTE_CHAR)
-            .setRecordSeparator(LF)
-            .setNullString(EMPTY)
+            .setQuote(Constants.DOUBLE_QUOTE_CHAR)
+            .setRecordSeparator(Constants.LF)
+            .setNullString(Constants.EMPTY)
             .setQuoteMode(QuoteMode.ALL_NON_NULL)
             .build();
     // @formatter:off
@@ -1273,11 +1262,11 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat POSTGRESQL_TEXT = DEFAULT.builder()
-            .setDelimiter(TAB)
-            .setEscape(BACKSLASH)
+            .setDelimiter(Constants.TAB)
+            .setEscape(Constants.BACKSLASH)
             .setIgnoreEmptyLines(false)
             .setQuote(null)
-            .setRecordSeparator(LF)
+            .setRecordSeparator(Constants.LF)
             .setNullString(Constants.SQL_NULL_STRING)
             .setQuoteMode(QuoteMode.ALL_NON_NULL)
             .build();
@@ -1319,7 +1308,7 @@ public final class CSVFormat implements Serializable {
      */
     // @formatter:off
     public static final CSVFormat TDF = DEFAULT.builder()
-            .setDelimiter(TAB)
+            .setDelimiter(Constants.TAB)
             .setIgnoreSurroundingSpaces(true)
             .build();
     // @formatter:on
@@ -1356,7 +1345,7 @@ public final class CSVFormat implements Serializable {
      * @return true if {@code c} contains a line break character.
      */
     private static boolean containsLineBreak(final String source) {
-        return contains(source, CR) || contains(source, LF);
+        return contains(source, Constants.CR) || contains(source, Constants.LF);
     }
 
     static boolean isBlank(final String value) {
@@ -1371,7 +1360,7 @@ public final class CSVFormat implements Serializable {
      * @return true if {@code c} is a line break character.
      */
     private static boolean isLineBreak(final char c) {
-        return c == LF || c == CR;
+        return c == Constants.LF || c == Constants.CR;
     }
 
     /**
@@ -1387,7 +1376,7 @@ public final class CSVFormat implements Serializable {
 
     /** Same test as in as {@link String#trim()}. */
     private static boolean isTrimChar(final char ch) {
-        return ch <= SP;
+        return ch <= Constants.SP;
     }
 
     /** Same test as in as {@link String#trim()}. */
@@ -2121,7 +2110,7 @@ public final class CSVFormat implements Serializable {
         if (value == null) {
             // https://issues.apache.org/jira/browse/CSV-203
             if (null == nullString) {
-                charSequence = EMPTY;
+                charSequence = Constants.EMPTY;
             } else if (QuoteMode.ALL == quoteMode) {
                 charSequence = quotedNullString;
             } else {
@@ -2259,8 +2248,8 @@ public final class CSVFormat implements Serializable {
         while (pos < end) {
             char c = charSeq.charAt(pos);
             final boolean isDelimiterStart = isDelimiter(c, charSeq, pos, delimArray, delimLength);
-            final boolean isCr = c == CR;
-            final boolean isLf = c == LF;
+            final boolean isCr = c == Constants.CR;
+            final boolean isLf = c == Constants.LF;
             if (isCr || isLf || c == escape || isDelimiterStart) {
                 // write out segment up until this char
                 if (pos > start) {
@@ -2308,8 +2297,8 @@ public final class CSVFormat implements Serializable {
             Arrays.fill(lookAheadBuffer, (char) 0);
             final String test = builder.toString() + new String(bufferedReader.lookAhead(lookAheadBuffer));
             final boolean isDelimiterStart = isDelimiter((char) c, test, pos, delimArray, delimLength);
-            final boolean isCr = c == CR;
-            final boolean isLf = c == LF;
+            final boolean isCr = c == Constants.CR;
+            final boolean isLf = c == Constants.LF;
             if (isCr || isLf || c == escape || isDelimiterStart) {
                 // write out segment up until this char
                 if (pos > start) {
@@ -2381,7 +2370,7 @@ public final class CSVFormat implements Serializable {
                 }
             } else {
                 char c = charSeq.charAt(pos);
-                if (c <= COMMENT) {
+                if (c <= Constants.COMMENT) {
                     // Some other chars at the start of a value caused the parser to fail, so for now
                     // encapsulate if we start in anything less than '#'. We are being conservative
                     // by including the default comment char too.
@@ -2389,7 +2378,7 @@ public final class CSVFormat implements Serializable {
                 } else {
                     while (pos < len) {
                         c = charSeq.charAt(pos);
-                        if (c == LF || c == CR || c == quoteChar || c == escapeChar || isDelimiter(c, charSeq, pos, delim, delimLength)) {
+                        if (c == Constants.LF || c == Constants.CR || c == quoteChar || c == escapeChar || isDelimiter(c, charSeq, pos, delim, delimLength)) {
                             quote = true;
                             break;
                         }

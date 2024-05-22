@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>69</version>
+    <version>70</version>
   </parent>
   <artifactId>commons-csv</artifactId>
   <version>1.11.1-SNAPSHOT</version>
@@ -216,9 +216,6 @@
           <configuration>
             <targetJdk>${maven.compiler.target}</targetJdk>
             <skipEmptyReport>false</skipEmptyReport>
-            <rulesets>
-              <ruleset>${basedir}/src/site/resources/pmd/pmd-ruleset.xml</ruleset>
-            </rulesets>
           </configuration>
         </plugin>
         <!-- We need to add our test data files to rat exclusions -->

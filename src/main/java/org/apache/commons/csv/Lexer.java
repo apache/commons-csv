@@ -17,16 +17,6 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.csv.Constants.BACKSPACE;
-import static org.apache.commons.csv.Constants.CR;
-import static org.apache.commons.csv.Constants.FF;
-import static org.apache.commons.csv.Constants.LF;
-import static org.apache.commons.csv.Constants.TAB;
-import static org.apache.commons.csv.Constants.UNDEFINED;
-import static org.apache.commons.csv.Token.Type.COMMENT;
-import static org.apache.commons.csv.Token.Type.EORECORD;
-import static org.apache.commons.csv.Token.Type.INVALID;
-import static org.apache.commons.csv.Token.Type.TOKEN;
 import static org.apache.commons.io.IOUtils.EOF;
 
 import java.io.Closeable;
@@ -37,8 +27,8 @@ import java.io.IOException;
  */
 final class Lexer implements Closeable {
 
-    private static final String CR_STRING = Character.toString(CR);
-    private static final String LF_STRING = Character.toString(LF);
+    private static final String CR_STRING = Character.toString(Constants.CR);
+    private static final String LF_STRING = Character.toString(Constants.LF);
 
     /**
      * Constant char to use for disabling comments, escapes, and encapsulation. The value -2 is used because it
@@ -202,7 +192,7 @@ final class Lexer implements Closeable {
      * @return true if the character is at the start of a line.
      */
     boolean isStartOfLine(final int ch) {
-        return ch == LF || ch == CR || ch == UNDEFINED;
+        return ch == Constants.LF || ch == Constants.CR || ch == Constants.UNDEFINED;
     }
 
     private char mapNullToDisabled(final Character c) {
@@ -257,11 +247,11 @@ final class Lexer implements Closeable {
             }
             final String comment = line.trim();
             token.content.append(comment);
-            token.type = COMMENT;
+            token.type = Token.Type.COMMENT;
             return token;
         }
         // Important: make sure a new char gets consumed in each iteration
-        while (token.type == INVALID) {
+        while (token.type == Token.Type.INVALID) {
             // ignore whitespaces at beginning of a token
             if (ignoreSurroundingSpaces) {
                 while (Character.isWhitespace((char) c) && !isDelimiter(c) && !eol) {
@@ -272,11 +262,11 @@ final class Lexer implements Closeable {
             // ok, start of token reached: encapsulated, or token
             if (isDelimiter(c)) {
                 // empty token return TOKEN("")
-                token.type = TOKEN;
+                token.type = Token.Type.TOKEN;
             } else if (eol) {
                 // empty token return EORECORD("")
                 // noop: token.content.append("");
-                token.type = EORECORD;
+                token.type = Token.Type.EORECORD;
             } else if (isQuoteChar(c)) {
                 // consume encapsulated token
                 parseEncapsulatedToken(token);
@@ -334,7 +324,7 @@ final class Lexer implements Closeable {
                     while (true) {
                         c = reader.read();
                         if (isDelimiter(c)) {
-                            token.type = TOKEN;
+                            token.type = Token.Type.TOKEN;
                             return token;
                         }
                         if (isEndOfFile(c)) {
@@ -343,7 +333,7 @@ final class Lexer implements Closeable {
                             return token;
                         }
                         if (readEndOfLine(c)) {
-                            token.type = EORECORD;
+                            token.type = Token.Type.EORECORD;
                             return token;
                         }
                         if (trailingData) {
@@ -406,7 +396,7 @@ final class Lexer implements Closeable {
         // Faster to use while(true)+break than while(token.type == INVALID)
         while (true) {
             if (readEndOfLine(ch)) {
-                token.type = EORECORD;
+                token.type = Token.Type.EORECORD;
                 break;
             }
             if (isEndOfFile(ch)) {
@@ -415,7 +405,7 @@ final class Lexer implements Closeable {
                 break;
             }
             if (isDelimiter(ch)) {
-                token.type = TOKEN;
+                token.type = Token.Type.TOKEN;
                 break;
             }
             // continue
@@ -450,7 +440,7 @@ final class Lexer implements Closeable {
      */
     boolean readEndOfLine(int ch) throws IOException {
         // check if we have \r\n...
-        if (ch == CR && reader.lookAhead() == LF) {
+        if (ch == Constants.CR && reader.lookAhead() == Constants.LF) {
             // note: does not change ch outside of this method!
             ch = reader.read();
             // Save the EOL state
@@ -460,14 +450,14 @@ final class Lexer implements Closeable {
         }
         // save EOL state here.
         if (firstEol == null) {
-            if (ch == LF) {
+            if (ch == Constants.LF) {
                 this.firstEol = LF_STRING;
-            } else if (ch == CR) {
+            } else if (ch == Constants.CR) {
                 this.firstEol = CR_STRING;
             }
         }
 
-        return ch == LF || ch == CR;
+        return ch == Constants.LF || ch == Constants.CR;
     }
 
     // TODO escape handling needs more work
@@ -487,20 +477,20 @@ final class Lexer implements Closeable {
         final int ch = reader.read();
         switch (ch) {
         case 'r':
-            return CR;
+            return Constants.CR;
         case 'n':
-            return LF;
+            return Constants.LF;
         case 't':
-            return TAB;
+            return Constants.TAB;
         case 'b':
-            return BACKSPACE;
+            return Constants.BACKSPACE;
         case 'f':
-            return FF;
-        case CR:
-        case LF:
-        case FF: // TODO is this correct?
-        case TAB: // TODO is this correct? Do tabs need to be escaped?
-        case BACKSPACE: // TODO is this correct?
+            return Constants.FF;
+        case Constants.CR:
+        case Constants.LF:
+        case Constants.FF: // TODO is this correct?
+        case Constants.TAB: // TODO is this correct? Do tabs need to be escaped?
+        case Constants.BACKSPACE: // TODO is this correct?
             return ch;
         case EOF:
             throw new IOException("EOF whilst processing escape sequence");
