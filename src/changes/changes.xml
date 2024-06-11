@@ -46,7 +46,7 @@
       <action type="update" dev="ggregory" due-to="Gary Gregory">Fix PMD issues for port to PMD 7.1.0.</action>
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Dependabot">Bump commons-codec:commons-codec from 1.16.1 to 1.17.0 #422.</action>
-      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 69 to 70.</action>
+      <action type="update" dev="ggregory" due-to="Gary Gregory"> Bump org.apache.commons:commons-parent from 69 to 71 #435.</action>
     </release>
     <release version="1.11.0" date="2024-04-28" description="Feature and bug fix release (Java 8 or above)">
       <!-- ADD -->
