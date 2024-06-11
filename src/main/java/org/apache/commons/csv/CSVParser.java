@@ -789,7 +789,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
         if (!recordList.isEmpty()) {
             recordNumber++;
-            final String comment = sb == null ? null : sb.toString();
+            final String comment = Objects.toString(sb, null);
             result = new CSVRecord(this, recordList.toArray(Constants.EMPTY_STRING_ARRAY), comment,
                 recordNumber, startCharPosition);
         }
