@@ -135,7 +135,7 @@
       <action issue="CSV-149" type="fix" dev="ggregory" due-to="Kranthi, Gary Gregory, Brent Worden, dota17">Line number is not proper at EOF.</action>
       <action issue="CSV-195" type="fix" dev="ggregory" due-to="Rodolfo Duldulao, Rodolfo Duldulao, Michael Vitz, dota17">Parser iterates over the last CSV Record twice.</action>
       <action issue="CSV-267" type="fix" dev="ggregory" due-to="Arturo Bernal">Minor improvements #126, #127, #130.</action>
-      <action issue="CSV-123" type="fix" dev="ggregory" due-to="Emmanuel Bourg, Benedikt Ritter, shivakrishnaah, Gary Gregory">Add possibility to use ResultSet header meta data as CSV header #11.</action>
+      <action issue="CSV-123" type="fix" dev="ggregory" due-to="Emmanuel Bourg, Benedikt Ritter, shivakrishnaah, Gary Gregory">Add possibility to use ResultSet header metadata as CSV header #11.</action>
       <action issue="CSV-148" type="fix" dev="ggregory" due-to="dota17">Add test cases for withIgnoreSurroundingSpaces() and withTrim() #70.</action>
       <action                 type="fix" dev="ggregory" due-to="Gary Gregory">Update CSVParser.parse(File, Charset, CSVFormat) from IO to NIO.</action>
       <action issue="CSV-271" type="fix" dev="ggregory" due-to="Amar Prakash Pandey">Missing separator with print(object) followed by printRecord(Object[]) #157.</action>

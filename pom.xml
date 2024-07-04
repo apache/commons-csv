@@ -219,7 +219,7 @@
           </configuration>
         </plugin>
         <!-- We need to add our test data files to rat exclusions -->
-        <!-- Needed for command-line access, e.g mvn apache-rat:rat and mvn apache-rat:check -->
+        <!-- Needed for command-line access, e.g. mvn apache-rat:rat and mvn apache-rat:check -->
         <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>

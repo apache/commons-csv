@@ -120,7 +120,7 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
     <li><a href="https://opencsv.sourceforge.net/">Open CSV</a></li>
     <li><a href="http://www.osjava.org/genjava/multiproject/gj-csv/">Genjava CSV</a></li>
   </ul>
-  <p>In addition to the code from Netcetera (org.apache.commons.csv), Martin van den Bemt has added an additional writer API. </p>
+  <p>In addition to the code from Netcetera (org.apache.commons.csv), Martin van den Bemt has added a writer API. </p>
   <p>Other CSV implementations: </p>
   <ul>
     <li><a href="https://super-csv.github.io/super-csv/index.html">Super CSV</a></li>

@@ -130,7 +130,7 @@ for (CSVRecord record : records) {
         Note that column values can still be accessed using their index.
       </subsection>
       <subsection name="Using an enum to define a header">
-        Using String values all over the code to reference columns can be error prone. For this reason,
+        Using String values all over the code to reference columns can be error-prone. For this reason,
         it is possible to define an enum to specify header names. Note that the enum constant names are
         used to access column values. This may lead to enums constant names which do not follow the Java
         coding standard of defining constants in upper case with underscores:

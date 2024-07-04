@@ -1531,13 +1531,13 @@ public final class CSVFormat implements Serializable {
      * @param ignoreEmptyLines        {@code true} when the parser should skip empty lines.
      * @param recordSeparator         the line separator to use for output.
      * @param nullString              the line separator to use for output.
-     * @param headerComments          the comments to be printed by the Printer before the actual CSV data..
+     * @param headerComments          the comments to be printed by the Printer before the actual CSV data.
      * @param header                  the header.
      * @param skipHeaderRecord        if {@code true} the header row will be skipped.
      * @param allowMissingColumnNames if {@code true} the missing column names are allowed when parsing the header line.
      * @param ignoreHeaderCase        if {@code true} header names will be accessed ignoring case when parsing input.
      * @param trim                    if {@code true} next record value will be trimmed.
-     * @param trailingDelimiter       if {@code true} the trailing delimiter wil be added before record separator (if set)..
+     * @param trailingDelimiter       if {@code true} the trailing delimiter wil be added before record separator (if set).
      * @param autoFlush               if {@code true} the underlying stream will be flushed before closing.
      * @param duplicateHeaderMode     the behavior when handling duplicate headers.
      * @param trailingData            whether reading trailing data is allowed in records, helps Excel compatibility.

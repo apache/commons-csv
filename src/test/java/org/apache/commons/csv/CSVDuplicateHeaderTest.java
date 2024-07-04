@@ -225,7 +225,7 @@ public class CSVDuplicateHeaderTest {
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  false, new String[] {"A", " ", "   "}, true),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  false, new String[] {"A", " ", "   "}, true),
 
-            // Duplicate names (case insensitive)
+            // Duplicate names (case-insensitive)
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, true , new String[] {"A", "a"}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, true , new String[] {"A", "a"}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, true , new String[] {"A", "a"}, true),
@@ -233,7 +233,7 @@ public class CSVDuplicateHeaderTest {
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  true , new String[] {"A", "a"}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  true , new String[] {"A", "a"}, true),
 
-            // Duplicate non-empty (case insensitive) and empty names
+            // Duplicate non-empty (case-insensitive) and empty names
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, true, new String[] {"A", "a", "", ""}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, true, new String[] {"A", "a", "", ""}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, true, new String[] {"A", "a", "", ""}, false),
@@ -241,7 +241,7 @@ public class CSVDuplicateHeaderTest {
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  true, new String[] {"A", "a", "", ""}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  true, new String[] {"A", "a", "", ""}, true),
 
-            // Duplicate non-empty (case insensitive) and blank names
+            // Duplicate non-empty (case-insensitive) and blank names
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, true, new String[] {"A", "a", " ", " "}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, true, new String[] {"A", "a", " ", " "}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, true, new String[] {"A", "a", " ", " "}, false),
@@ -249,7 +249,7 @@ public class CSVDuplicateHeaderTest {
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, true,  true, new String[] {"A", "a", " ", " "}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   true,  true, new String[] {"A", "a", " ", " "}, true),
 
-            // Duplicate non-empty (case insensitive) and null names
+            // Duplicate non-empty (case-insensitive) and null names
             Arguments.of(DuplicateHeaderMode.DISALLOW,    false, true, new String[] {"A", "a", null, null}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_EMPTY, false, true, new String[] {"A", "a", null, null}, false),
             Arguments.of(DuplicateHeaderMode.ALLOW_ALL,   false, true, new String[] {"A", "a", null, null}, false),

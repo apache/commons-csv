@@ -705,7 +705,7 @@ public class CSVParserTest {
             assertEquals("C", columnNames.next());
             final Iterator<CSVRecord> records = parser.iterator();
 
-            // Parse to make sure getHeaderMap did not have a side-effect.
+            // Parse to make sure getHeaderMap did not have a side effect.
             for (int i = 0; i < 3; i++) {
                 assertTrue(records.hasNext());
                 final CSVRecord record = records.next();
