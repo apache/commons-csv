@@ -236,10 +236,10 @@ public class CSVRecordTest {
     public void testPutInMap() {
         final Map<String, String> map = new ConcurrentHashMap<>();
         this.recordWithHeader.putIn(map);
-        this.validateMap(map, false);
+        validateMap(map, false);
         // Test that we can compile with assignment to the same map as the param.
         final TreeMap<String, String> map2 = recordWithHeader.putIn(new TreeMap<>());
-        this.validateMap(map2, false);
+        validateMap(map2, false);
     }
 
     @Test
@@ -339,7 +339,7 @@ public class CSVRecordTest {
     @Test
     public void testToMap() {
         final Map<String, String> map = this.recordWithHeader.toMap();
-        this.validateMap(map, true);
+        validateMap(map, true);
     }
 
     @Test

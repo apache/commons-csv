@@ -100,10 +100,10 @@ public class PerformanceTest {
 
     public long testParseBigFile(final boolean traverseColumns) throws Exception {
         final long startMillis = System.currentTimeMillis();
-        try (final BufferedReader reader = this.createBufferedReader()) {
-            final long count = this.parse(reader, traverseColumns);
+        try (final BufferedReader reader = createBufferedReader()) {
+            final long count = parse(reader, traverseColumns);
             final long totalMillis = System.currentTimeMillis() - startMillis;
-            this.println(
+            println(
                 String.format("File parsed in %,d milliseconds with Commons CSV: %,d lines.", totalMillis, count));
             return totalMillis;
         }
@@ -113,9 +113,9 @@ public class PerformanceTest {
     public void testParseBigFileRepeat() throws Exception {
         long bestTime = Long.MAX_VALUE;
         for (int i = 0; i < this.max; i++) {
-            bestTime = Math.min(this.testParseBigFile(false), bestTime);
+            bestTime = Math.min(testParseBigFile(false), bestTime);
         }
-        this.println(String.format("Best time out of %,d is %,d milliseconds.", this.max, bestTime));
+        println(String.format("Best time out of %,d is %,d milliseconds.", this.max, bestTime));
     }
 
     @Test
@@ -124,14 +124,14 @@ public class PerformanceTest {
         long count;
         for (int i = 0; i < this.max; i++) {
             final long startMillis;
-            try (final BufferedReader in = this.createBufferedReader()) {
+            try (final BufferedReader in = createBufferedReader()) {
                 startMillis = System.currentTimeMillis();
-                count = this.readAll(in);
+                count = readAll(in);
             }
             final long totalMillis = System.currentTimeMillis() - startMillis;
             bestTime = Math.min(totalMillis, bestTime);
-            this.println(String.format("File read in %,d milliseconds: %,d lines.", totalMillis, count));
+            println(String.format("File read in %,d milliseconds: %,d lines.", totalMillis, count));
         }
-        this.println(String.format("Best time out of %,d is %,d milliseconds.", this.max, bestTime));
+        println(String.format("Best time out of %,d is %,d milliseconds.", this.max, bestTime));
     }
 }

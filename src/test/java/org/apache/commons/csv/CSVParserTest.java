@@ -54,13 +54,11 @@ import java.util.stream.Stream;
 
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.io.input.BrokenInputStream;
-import org.apache.commons.lang3.stream.Streams.FailableStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * CSVParserTest
@@ -754,17 +752,17 @@ public class CSVParserTest {
 
     @Test
     public void testGetLineNumberWithCR() throws Exception {
-        this.validateLineNumbers(String.valueOf(CR));
+        validateLineNumbers(String.valueOf(CR));
     }
 
     @Test
     public void testGetLineNumberWithCRLF() throws Exception {
-        this.validateLineNumbers(CRLF);
+        validateLineNumbers(CRLF);
     }
 
     @Test
     public void testGetLineNumberWithLF() throws Exception {
-        this.validateLineNumbers(String.valueOf(LF));
+        validateLineNumbers(String.valueOf(LF));
     }
 
     @Test
@@ -797,27 +795,27 @@ public class CSVParserTest {
 
     @Test
     public void testGetRecordNumberWithCR() throws Exception {
-        this.validateRecordNumbers(String.valueOf(CR));
+        validateRecordNumbers(String.valueOf(CR));
     }
 
     @Test
     public void testGetRecordNumberWithCRLF() throws Exception {
-        this.validateRecordNumbers(CRLF);
+        validateRecordNumbers(CRLF);
     }
 
     @Test
     public void testGetRecordNumberWithLF() throws Exception {
-        this.validateRecordNumbers(String.valueOf(LF));
+        validateRecordNumbers(String.valueOf(LF));
     }
 
     @Test
     public void testGetRecordPositionWithCRLF() throws Exception {
-        this.validateRecordPosition(CRLF);
+        validateRecordPosition(CRLF);
     }
 
     @Test
     public void testGetRecordPositionWithLF() throws Exception {
-        this.validateRecordPosition(String.valueOf(LF));
+        validateRecordPosition(String.valueOf(LF));
     }
 
     @Test
@@ -1329,7 +1327,7 @@ public class CSVParserTest {
             assertEquals("xyz", csvRecord.get(1));
         }
     }
-    
+
     @Test
     public void testParseWithDelimiterStringWithQuote() throws IOException {
         final String source = "'a[|]b[|]c'[|]xyz\r\nabc[abc][|]xyz";
@@ -1343,7 +1341,7 @@ public class CSVParserTest {
             assertEquals("xyz", csvRecord.get(1));
         }
     }
-    
+
     @Test
     public void testParseWithDelimiterWithEscape() throws IOException {
         final String source = "a!,b!,c,xyz";
@@ -1354,7 +1352,7 @@ public class CSVParserTest {
             assertEquals("xyz", csvRecord.get(1));
         }
     }
-    
+
     @Test
     public void testParseWithDelimiterWithQuote() throws IOException {
         final String source = "'a,b,c',xyz";
@@ -1365,7 +1363,7 @@ public class CSVParserTest {
             assertEquals("xyz", csvRecord.get(1));
         }
     }
-    
+
     @Test
     public void testParseWithQuoteThrowsException() {
         final CSVFormat csvFormat = CSVFormat.DEFAULT.withQuote('\'');
@@ -1373,7 +1371,7 @@ public class CSVParserTest {
         assertThrows(IOException.class, () -> csvFormat.parse(new StringReader("'a,b,c'abc,xyz")).nextRecord());
         assertThrows(IOException.class, () -> csvFormat.parse(new StringReader("'abc'a,b,c',xyz")).nextRecord());
     }
-    
+
     @Test
     public void testParseWithQuoteWithEscape() throws IOException {
         final String source = "'a?,b?,c?d',xyz";
@@ -1384,7 +1382,7 @@ public class CSVParserTest {
             assertEquals("xyz", csvRecord.get(1));
         }
     }
-    
+
     @ParameterizedTest
     @EnumSource(CSVFormat.Predefined.class)
     public void testParsingPrintedEmptyFirstColumn(final CSVFormat.Predefined format) throws Exception {

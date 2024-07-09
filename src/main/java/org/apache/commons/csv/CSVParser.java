@@ -151,7 +151,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
         @Override
         public boolean hasNext() {
-            if (CSVParser.this.isClosed()) {
+            if (isClosed()) {
                 return false;
             }
             if (current == null) {
@@ -163,7 +163,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
         @Override
         public CSVRecord next() {
-            if (CSVParser.this.isClosed()) {
+            if (isClosed()) {
                 throw new NoSuchElementException("CSVParser has been closed");
             }
             CSVRecord next = current;
