@@ -198,7 +198,7 @@ final class Lexer implements Closeable {
     }
 
     private char mapNullToDisabled(final Character c) {
-        return c == null ? DISABLED : c.charValue();
+        return c == null ? DISABLED : c;
     }
 
     /**
