@@ -125,8 +125,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
             return values[index.intValue()];
         } catch (final ArrayIndexOutOfBoundsException e) {
             throw new IllegalArgumentException(String.format(
-                "Index for header '%s' is %d but CSVRecord only has %d values!", name, index,
-                Integer.valueOf(values.length)));
+                "Index for header '%s' is %d but CSVRecord only has %d values!", name, index, values.length));
         }
     }
 

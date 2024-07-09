@@ -515,7 +515,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     }
                     observedMissing |= blankHeader;
                     if (header != null) {
-                        hdrMap.put(header, Integer.valueOf(i));
+                        hdrMap.put(header, i);
                         if (headerNames == null) {
                             headerNames = new ArrayList<>(headerRecord.length);
                         }
