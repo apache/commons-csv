@@ -203,7 +203,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         if (!newRecord) {
             println();
         }
-        appendable.append(format.getCommentMarker().charValue());
+        appendable.append(format.getCommentMarker().charValue()); // N.B. Explicit (un)boxing is intentional
         appendable.append(SP);
         for (int i = 0; i < comment.length(); i++) {
             final char c = comment.charAt(i);
@@ -215,7 +215,7 @@ public final class CSVPrinter implements Flushable, Closeable {
                 //$FALL-THROUGH$ break intentionally excluded.
             case LF:
                 println();
-                appendable.append(format.getCommentMarker().charValue());
+                appendable.append(format.getCommentMarker().charValue()); // N.B. Explicit (un)boxing is intentional
                 appendable.append(SP);
                 break;
             default:
