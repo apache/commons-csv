@@ -26,6 +26,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
+import org.apache.commons.io.IOUtils;
+
 /**
  * A special buffered reader which supports sophisticated read access.
  * <p>
@@ -84,7 +86,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by
      * any of the read methods. This will not include a character read using the {@link #lookAhead()} method. If no
      * character has been read then this will return {@link Constants#UNDEFINED}. If the end of the stream was reached
-     * on the last read then this will return {@link Constants#EOF}.
+     * on the last read then this will return {@link IOUtils#EOF}.
      *
      * @return the last character that was read
      */

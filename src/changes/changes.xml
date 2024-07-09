@@ -44,6 +44,7 @@
       <!-- ADD -->
       <!-- FIX -->
       <action type="update" dev="ggregory" due-to="Gary Gregory">Fix PMD issues for port to PMD 7.1.0.</action>
+      <action type="update" dev="ggregory" due-to="Dávid Szigecsán, Gary Gregory">Fix some Javadoc links #442.</action> 
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Dependabot">Bump commons-codec:commons-codec from 1.16.1 to 1.17.0 #422.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory"> Bump org.apache.commons:commons-parent from 69 to 71 #435.</action>

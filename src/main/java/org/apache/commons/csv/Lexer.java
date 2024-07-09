@@ -22,6 +22,8 @@ import static org.apache.commons.io.IOUtils.EOF;
 import java.io.Closeable;
 import java.io.IOException;
 
+import org.apache.commons.io.IOUtils;
+
 /**
  * Lexical analyzer.
  */
@@ -467,7 +469,7 @@ final class Lexer implements Closeable {
      * On return, the next character is available by calling {@link ExtendedBufferedReader#getLastChar()}
      * on the input stream.
      *
-     * @return the unescaped character (as an int) or {@link Constants#EOF} if char following the escape is
+     * @return the unescaped character (as an int) or {@link IOUtils#EOF} if char following the escape is
      *      invalid.
      * @throws IOException if there is a problem reading the stream or the end of stream is detected:
      *      the escape character is not allowed at end of stream
