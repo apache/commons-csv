@@ -348,16 +348,7 @@ final class Lexer implements Closeable {
                     }
                 }
             } else if (isEscape(c)) {
-                if (isEscapeDelimiter()) {
-                    token.content.append(delimiter);
-                } else {
-                    final int unescaped = readEscape();
-                    if (unescaped == EOF) { // unexpected char after escape
-                        token.content.append((char) c).append((char) reader.getLastChar());
-                    } else {
-                        token.content.append((char) unescaped);
-                    }
-                }
+                appendNextEscapedCharacterToToken(token);
             } else if (isEndOfFile(c)) {
                 if (lenientEof) {
                     token.type = Token.Type.EOF;
@@ -412,16 +403,7 @@ final class Lexer implements Closeable {
             }
             // continue
             if (isEscape(ch)) {
-                if (isEscapeDelimiter()) {
-                    token.content.append(delimiter);
-                } else {
-                    final int unescaped = readEscape();
-                    if (unescaped == EOF) { // unexpected char after escape
-                        token.content.append((char) ch).append((char) reader.getLastChar());
-                    } else {
-                        token.content.append((char) unescaped);
-                    }
-                }
+                appendNextEscapedCharacterToToken(token);
             } else {
                 token.content.append((char) ch);
             }
@@ -433,6 +415,27 @@ final class Lexer implements Closeable {
         }
 
         return token;
+    }
+
+    /**
+     * Appends the next escaped character to the token's content.
+     *
+     * @param token
+     *            the current token
+     * @throws IOException
+     *            on stream access error
+     */
+    private void appendNextEscapedCharacterToToken(final Token token) throws IOException {
+        if (isEscapeDelimiter()) {
+            token.content.append(delimiter);
+        } else {
+            final int unescaped = readEscape();
+            if (unescaped == EOF) { // unexpected char after escape
+                token.content.append(escape).append((char) reader.getLastChar());
+            } else {
+                token.content.append((char) unescaped);
+            }
+        }
     }
 
     /**
