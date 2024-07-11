@@ -20,11 +20,9 @@ package org.apache.commons.csv;
 import static org.apache.commons.io.IOUtils.EOF;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringWriter;
@@ -2069,8 +2067,7 @@ public final class CSVFormat implements Serializable {
      */
     @SuppressWarnings("resource")
     public CSVPrinter print(final File out, final Charset charset) throws IOException {
-        // The writer will be closed when close() is called.
-        return new CSVPrinter(new OutputStreamWriter(new FileOutputStream(out), charset), this);
+        return print(out.toPath(), charset);
     }
 
     private void print(final InputStream inputStream, final Appendable out, final boolean newRecord) throws IOException {
