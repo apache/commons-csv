@@ -2065,7 +2065,6 @@ public final class CSVFormat implements Serializable {
      * @throws IOException thrown if the optional header cannot be printed.
      * @since 1.5
      */
-    @SuppressWarnings("resource")
     public CSVPrinter print(final File out, final Charset charset) throws IOException {
         return print(out.toPath(), charset);
     }
