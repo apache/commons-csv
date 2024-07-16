@@ -48,7 +48,7 @@
       <action type="update" dev="ggregory" due-to="Dávid Szigecsán">Extract duplicated code into a method #444.</action>
       <action type="update" dev="ggregory" due-to="Dávid Szigecsán">Migrate CSVFormat#print(File, Charset) to NIO #445.</action> 
       <!-- UPDATE -->
-      <action type="update" dev="ggregory" due-to="Dependabot">Bump commons-codec:commons-codec from 1.16.1 to 1.17.0 #422.</action>
+      <action type="update" dev="ggregory" due-to="Dependabot">Bump commons-codec:commons-codec from 1.16.1 to 1.17.1 #422, #449.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-parent from 69 to 71 #435.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.codehaus.mojo:taglist-maven-plugin from 3.0.0 to 3.1.0 #441.</action> 
     </release>
