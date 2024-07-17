@@ -50,7 +50,8 @@
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Dependabot">Bump commons-codec:commons-codec from 1.16.1 to 1.17.1 #422, #449.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-parent from 69 to 71 #435.</action>
-      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.codehaus.mojo:taglist-maven-plugin from 3.0.0 to 3.1.0 #441.</action> 
+      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.codehaus.mojo:taglist-maven-plugin from 3.0.0 to 3.1.0 #441.</action>
+      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-lang3 from 3.14.0 to 3.15.0 #450.</action>
     </release>
     <release version="1.11.0" date="2024-04-28" description="Feature and bug fix release (Java 8 or above)">
       <!-- ADD -->
