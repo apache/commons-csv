@@ -1506,7 +1506,7 @@ public class CSVPrinterTest {
      * Test to target the use of {@link IOUtils#copy(java.io.Reader, Appendable)} which directly buffers the value from the Reader to the Appendable.
      *
      * <p>
-     * Requires the format to have no quote or escape character, value to be a {@link Reader Reader} and the output <i>MUST NOT</i> be a
+     * Requires the format to have no quote or escape character, value to be a {@link Reader Reader} and the output <em>MUST NOT</em> be a
      * {@link Writer Writer} but some other Appendable.
      * </p>
      *
@@ -1527,7 +1527,7 @@ public class CSVPrinterTest {
      * Test to target the use of {@link IOUtils#copyLarge(java.io.Reader, Writer)} which directly buffers the value from the Reader to the Writer.
      *
      * <p>
-     * Requires the format to have no quote or escape character, value to be a {@link Reader Reader} and the output <i>MUST</i> be a
+     * Requires the format to have no quote or escape character, value to be a {@link Reader Reader} and the output <em>MUST</em> be a
      * {@link Writer Writer}.
      * </p>
      *
