@@ -328,13 +328,12 @@ public final class CSVPrinter implements Flushable, Closeable {
      * Given the following data structure:
      * </p>
      *
-     * <pre>
-     * <code>
+     * <pre>{@code
      * List<String[]> data = new ArrayList<>();
      * data.add(new String[]{ "A", "B", "C" });
      * data.add(new String[]{ "1", "2", "3" });
      * data.add(new String[]{ "A1", "B2", "C3" });
-     * </code>
+     * }
      * </pre>
      *
      * <p>
@@ -372,21 +371,19 @@ public final class CSVPrinter implements Flushable, Closeable {
      * Given the following data structure:
      * </p>
      *
-     * <pre>
-     * <code>
+     * <pre>{@code
      * String[][] data = new String[3][]
      * data[0] = String[]{ "A", "B", "C" };
      * data[1] = new String[]{ "1", "2", "3" };
      * data[2] = new String[]{ "A1", "B2", "C3" };
-     * </code>
+     * }
      * </pre>
      *
      * <p>
      * Calling this method will print:
      * </p>
      *
-     * <pre>
-     * {@code 
+     * <pre>{@code 
      * A, B, C
      * 1, 2, 3
      * A1, B2, C3
@@ -462,14 +459,13 @@ public final class CSVPrinter implements Flushable, Closeable {
      * Given the following data structure:
      * </p>
      *
-     * <pre>
-     * <code>
+     * <pre>{@code
      * List<String[]> data = new ArrayList<>();
      * data.add(new String[]{ "A", "B", "C" });
      * data.add(new String[]{ "1", "2", "3" });
      * data.add(new String[]{ "A1", "B2", "C3" });
      * Stream&lt;String[]&gt; stream = data.stream();
-     * </code>
+     * }
      * </pre>
      *
      * <p>
