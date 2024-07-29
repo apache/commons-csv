@@ -330,7 +330,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *
      * <pre>
      * <code>
-     * List&lt;String[]&gt; data = new ArrayList&lt;&gt;();
+     * List<String[]> data = new ArrayList<>();
      * data.add(new String[]{ "A", "B", "C" });
      * data.add(new String[]{ "1", "2", "3" });
      * data.add(new String[]{ "A1", "B2", "C3" });
@@ -342,11 +342,11 @@ public final class CSVPrinter implements Flushable, Closeable {
      * </p>
      *
      * <pre>
-     * <code>
+     * {@code 
      * A, B, C
      * 1, 2, 3
      * A1, B2, C3
-     * </code>
+     * }
      * </pre>
      *
      * @param values
@@ -386,11 +386,11 @@ public final class CSVPrinter implements Flushable, Closeable {
      * </p>
      *
      * <pre>
-     * <code>
+     * {@code 
      * A, B, C
      * 1, 2, 3
      * A1, B2, C3
-     * </code>
+     * }
      * </pre>
      *
      * @param values
@@ -464,7 +464,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      *
      * <pre>
      * <code>
-     * List&lt;String[]&gt; data = new ArrayList&lt;&gt;();
+     * List<String[]> data = new ArrayList<>();
      * data.add(new String[]{ "A", "B", "C" });
      * data.add(new String[]{ "1", "2", "3" });
      * data.add(new String[]{ "A1", "B2", "C3" });
@@ -477,11 +477,11 @@ public final class CSVPrinter implements Flushable, Closeable {
      * </p>
      *
      * <pre>
-     * <code>
+     * {@code 
      * A, B, C
      * 1, 2, 3
      * A1, B2, C3
-     * </code>
+     * }
      * </pre>
      *
      * @param values
