@@ -341,7 +341,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * </p>
      *
      * <pre>
-     * {@code 
+     * {@code
      * A, B, C
      * 1, 2, 3
      * A1, B2, C3
@@ -383,7 +383,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * Calling this method will print:
      * </p>
      *
-     * <pre>{@code 
+     * <pre>{@code
      * A, B, C
      * 1, 2, 3
      * A1, B2, C3
@@ -473,7 +473,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * </p>
      *
      * <pre>
-     * {@code 
+     * {@code
      * A, B, C
      * 1, 2, 3
      * A1, B2, C3
