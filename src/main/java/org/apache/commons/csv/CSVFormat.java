@@ -225,11 +225,11 @@ public final class CSVFormat implements Serializable {
 
         private boolean ignoreSurroundingSpaces;
 
-        private String nullString;
+        private String[] nullStrings;
 
         private Character quoteCharacter;
 
-        private String quotedNullString;
+        private String[] quotedNullStrings;
 
         private QuoteMode quoteMode;
 
@@ -255,7 +255,7 @@ public final class CSVFormat implements Serializable {
             this.allowMissingColumnNames = csvFormat.allowMissingColumnNames;
             this.ignoreEmptyLines = csvFormat.ignoreEmptyLines;
             this.recordSeparator = csvFormat.recordSeparator;
-            this.nullString = csvFormat.nullString;
+            this.nullStrings = csvFormat.nullStrings;
             this.headerComments = csvFormat.headerComments;
             this.headers = csvFormat.headers;
             this.skipHeaderRecord = csvFormat.skipHeaderRecord;
@@ -265,7 +265,7 @@ public final class CSVFormat implements Serializable {
             this.trailingDelimiter = csvFormat.trailingDelimiter;
             this.trim = csvFormat.trim;
             this.autoFlush = csvFormat.autoFlush;
-            this.quotedNullString = csvFormat.quotedNullString;
+            this.quotedNullStrings = csvFormat.quotedNullStrings;
             this.duplicateHeaderMode = csvFormat.duplicateHeaderMode;
         }
 
@@ -708,8 +708,29 @@ public final class CSVFormat implements Serializable {
          * @return This instance.
          */
         public Builder setNullString(final String nullString) {
-            this.nullString = nullString;
-            this.quotedNullString = quoteCharacter + nullString + quoteCharacter;
+            this.nullStrings = new String[]{nullString};
+            this.quotedNullStrings = new String[]{quoteCharacter + nullString + quoteCharacter};
+            return this;
+        }
+
+        /**
+         * Sets the Strings to convert to and from {@code null}. No substitution occurs if {@code null}.
+         *
+         * <ul>
+         * <li><strong>Reading:</strong> Converts strings equal to the given {@code nullString} to {@code null} when reading records.</li>
+         * <li><strong>Writing:</strong> Writes {@code null} as the given {@code nullString} when writing records.</li>
+         * </ul>
+         *
+         * @param nullStrings the Strings to convert to and from {@code null}. No substitution occurs if {@code null}.
+         * @return This instance.
+         */
+        public Builder setNullStrings(final String[] nullStrings) {
+            this.nullStrings = CSVFormat.clone(nullStrings);
+            if (nullStrings != null) {
+                this.quotedNullStrings = Arrays.stream(nullStrings).map(str -> quoteCharacter + str + quoteCharacter).toArray(String[]::new);
+            } else {
+                this.quotedNullStrings = new String[]{quoteCharacter + "" + quoteCharacter};
+            }
             return this;
         }
 
@@ -1469,13 +1490,13 @@ public final class CSVFormat implements Serializable {
     /** TODO Should leading/trailing spaces be ignored around values?. */
     private final boolean ignoreSurroundingSpaces;
 
-    /** The string to be used for null values. */
-    private final String nullString;
+    /** The strings to be used for null values. */
+    private final String[] nullStrings;
 
     /** Set to null if quoting is disabled. */
     private final Character quoteCharacter;
 
-    private final String quotedNullString;
+    private final String[] quotedNullStrings;
 
     private final QuoteMode quoteMode;
 
@@ -1502,7 +1523,7 @@ public final class CSVFormat implements Serializable {
         this.allowMissingColumnNames = builder.allowMissingColumnNames;
         this.ignoreEmptyLines = builder.ignoreEmptyLines;
         this.recordSeparator = builder.recordSeparator;
-        this.nullString = builder.nullString;
+        this.nullStrings = builder.nullStrings;
         this.headerComments = builder.headerComments;
         this.headers = builder.headers;
         this.skipHeaderRecord = builder.skipHeaderRecord;
@@ -1512,7 +1533,7 @@ public final class CSVFormat implements Serializable {
         this.trailingDelimiter = builder.trailingDelimiter;
         this.trim = builder.trim;
         this.autoFlush = builder.autoFlush;
-        this.quotedNullString = builder.quotedNullString;
+        this.quotedNullStrings = builder.quotedNullStrings;
         this.duplicateHeaderMode = builder.duplicateHeaderMode;
         validate();
     }
@@ -1528,7 +1549,7 @@ public final class CSVFormat implements Serializable {
      * @param ignoreSurroundingSpaces {@code true} when whitespaces enclosing values should be ignored.
      * @param ignoreEmptyLines        {@code true} when the parser should skip empty lines.
      * @param recordSeparator         the line separator to use for output.
-     * @param nullString              the line separator to use for output.
+     * @param nullStrings             the null strings to use for null value.
      * @param headerComments          the comments to be printed by the Printer before the actual CSV data..
      * @param header                  the header.
      * @param skipHeaderRecord        if {@code true} the header row will be skipped.
@@ -1543,7 +1564,7 @@ public final class CSVFormat implements Serializable {
      * @throws IllegalArgumentException if the delimiter is a line break character.
      */
     private CSVFormat(final String delimiter, final Character quoteChar, final QuoteMode quoteMode, final Character commentStart, final Character escape,
-            final boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String recordSeparator, final String nullString,
+            final boolean ignoreSurroundingSpaces, final boolean ignoreEmptyLines, final String recordSeparator, final String[] nullStrings,
             final Object[] headerComments, final String[] header, final boolean skipHeaderRecord, final boolean allowMissingColumnNames,
             final boolean ignoreHeaderCase, final boolean trim, final boolean trailingDelimiter, final boolean autoFlush,
             final DuplicateHeaderMode duplicateHeaderMode, final boolean trailingData, final boolean lenientEof) {
@@ -1556,7 +1577,7 @@ public final class CSVFormat implements Serializable {
         this.allowMissingColumnNames = allowMissingColumnNames;
         this.ignoreEmptyLines = ignoreEmptyLines;
         this.recordSeparator = recordSeparator;
-        this.nullString = nullString;
+        this.nullStrings = nullStrings;
         this.headerComments = toStringArray(headerComments);
         this.headers = clone(header);
         this.skipHeaderRecord = skipHeaderRecord;
@@ -1566,7 +1587,14 @@ public final class CSVFormat implements Serializable {
         this.trailingDelimiter = trailingDelimiter;
         this.trim = trim;
         this.autoFlush = autoFlush;
-        this.quotedNullString = quoteCharacter + nullString + quoteCharacter;
+        if (nullStrings != null) {
+            this.quotedNullStrings = new String[nullStrings.length];
+            for (int i = 0; i < nullStrings.length; i++) {
+                this.quotedNullStrings[i] = quoteCharacter + nullStrings[i] + quoteCharacter;
+            }
+        } else {
+            this.quotedNullStrings = new String[]{quoteCharacter + "" + quoteCharacter};
+        }
         this.duplicateHeaderMode = duplicateHeaderMode;
         validate();
     }
@@ -1623,8 +1651,8 @@ public final class CSVFormat implements Serializable {
                 Arrays.equals(headerComments, other.headerComments) && Arrays.equals(headers, other.headers) &&
                 ignoreEmptyLines == other.ignoreEmptyLines && ignoreHeaderCase == other.ignoreHeaderCase &&
                 ignoreSurroundingSpaces == other.ignoreSurroundingSpaces && lenientEof == other.lenientEof &&
-                Objects.equals(nullString, other.nullString) && Objects.equals(quoteCharacter, other.quoteCharacter) &&
-                quoteMode == other.quoteMode && Objects.equals(quotedNullString, other.quotedNullString) &&
+                Arrays.equals(nullStrings, other.nullStrings) && Objects.equals(quoteCharacter, other.quoteCharacter) &&
+                quoteMode == other.quoteMode && Arrays.equals(quotedNullStrings, other.quotedNullStrings) &&
                 Objects.equals(recordSeparator, other.recordSeparator) && skipHeaderRecord == other.skipHeaderRecord &&
                 trailingData == other.trailingData && trailingDelimiter == other.trailingDelimiter && trim == other.trim;
     }
@@ -1872,7 +1900,23 @@ public final class CSVFormat implements Serializable {
      * @return the String to convert to and from {@code null}. No substitution occurs if {@code null}
      */
     public String getNullString() {
-        return nullString;
+        if (nullStrings != null) {
+            return nullStrings[0];
+        }
+        return null;
+    }
+
+    /**
+     * Gets the Strings to convert to {@code null}.
+     * <ul>
+     * <li><strong>Reading:</strong> Converts strings equal to the given {@code nullString} to {@code null} when reading records.</li>
+     * <li><strong>Writing:</strong> Writes {@code null} as the given {@code nullString} when writing records.</li>
+     * </ul>
+     *
+     * @return the Strings to convert to  {@code null}. No substitution occurs if {@code null}
+     */
+    public String[] getNullStrings() {
+        return CSVFormat.clone(nullStrings);
     }
 
     /**
@@ -1947,8 +1991,10 @@ public final class CSVFormat implements Serializable {
         int result = 1;
         result = prime * result + Arrays.hashCode(headerComments);
         result = prime * result + Arrays.hashCode(headers);
+        result = prime * result + Arrays.hashCode(nullStrings);
+        result = prime * result + Arrays.hashCode(quotedNullStrings);
         result = prime * result + Objects.hash(allowMissingColumnNames, autoFlush, commentMarker, delimiter, duplicateHeaderMode, escapeCharacter,
-                ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, lenientEof, nullString, quoteCharacter, quoteMode, quotedNullString,
+                ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, lenientEof, quoteCharacter, quoteMode,
                 recordSeparator, skipHeaderRecord, trailingData, trailingDelimiter, trim);
         return result;
     }
@@ -2010,7 +2056,7 @@ public final class CSVFormat implements Serializable {
      * @return {@code true} if a nullString is defined
      */
     public boolean isNullStringSet() {
-        return nullString != null;
+        return nullStrings != null;
     }
 
     /**
@@ -2105,12 +2151,12 @@ public final class CSVFormat implements Serializable {
         CharSequence charSequence;
         if (value == null) {
             // https://issues.apache.org/jira/browse/CSV-203
-            if (null == nullString) {
+            if (null == nullStrings) {
                 charSequence = Constants.EMPTY;
             } else if (QuoteMode.ALL == quoteMode) {
-                charSequence = quotedNullString;
+                charSequence = quotedNullStrings[0];
             } else {
-                charSequence = nullString;
+                charSequence = nullStrings[0];
             }
         } else if (value instanceof CharSequence) {
             charSequence = (CharSequence) value;
@@ -2474,7 +2520,7 @@ public final class CSVFormat implements Serializable {
         }
         if (isNullStringSet()) {
             sb.append(' ');
-            sb.append("NullString=<").append(nullString).append('>');
+            sb.append("NullStrings=<").append(Arrays.toString(nullStrings)).append('>');
         }
         if (recordSeparator != null) {
             sb.append(' ');

@@ -698,7 +698,7 @@ public class CSVFormatTest {
         final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',').withQuoteMode(QuoteMode.MINIMAL).withRecordSeparator(CRLF).withQuote('"')
                 .withNullString("").withIgnoreHeaderCase(true).withHeaderComments("This is HeaderComments").withHeader("col1", "col2", "col3");
         assertEquals(
-                "Delimiter=<,> Escape=<?> QuoteChar=<\"> QuoteMode=<MINIMAL> NullString=<> RecordSeparator=<" + CRLF
+                "Delimiter=<,> Escape=<?> QuoteChar=<\"> QuoteMode=<MINIMAL> NullStrings=<[]> RecordSeparator=<" + CRLF
                         + "> IgnoreHeaderCase:ignored SkipHeaderRecord:false HeaderComments:[This is HeaderComments] Header:[col1, col2, col3]",
                 format.toString());
     }
