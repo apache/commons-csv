@@ -52,6 +52,7 @@
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-parent from 69 to 72 #435, #452.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.codehaus.mojo:taglist-maven-plugin from 3.0.0 to 3.1.0 #441.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-lang3 from 3.14.0 to 3.15.0 #450.</action>
+      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.hamcrest:hamcrest from 2.2 to 3.0 #455.</action>
     </release>
     <release version="1.11.0" date="2024-04-28" description="Feature and bug fix release (Java 8 or above)">
       <!-- ADD -->
