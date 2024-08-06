@@ -390,15 +390,18 @@ final class Lexer implements Closeable {
         while (true) {
             if (readEndOfLine(ch)) {
                 token.type = Token.Type.EORECORD;
-                break;
+
             }
-            if (isEndOfFile(ch)) {
+            else if (isEndOfFile(ch)) {
                 token.type = Token.Type.EOF;
                 token.isReady = true; // There is data at EOF
-                break;
+
             }
-            if (isDelimiter(ch)) {
+            else if (isDelimiter(ch)) {
                 token.type = Token.Type.TOKEN;
+
+            }
+            if (token.type == Token.Type.EORECORD || token.type == Token.Type.EOF || token.type == Token.Type.TOKEN){
                 break;
             }
             // continue
