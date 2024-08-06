@@ -30,7 +30,15 @@
   <description>The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.</description>
 
   <dependencies>
+      <dependency>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.12</version>
+      </dependency>
+
     <dependency>
+      <!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
+
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>

@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CSVPrinter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons CSV</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.csv</a> &gt; <span class="el_source">CSVPrinter.java</span></div><h1>CSVPrinter.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.apache.commons.csv;
+
+import static org.apache.commons.csv.Constants.CR;
+import static org.apache.commons.csv.Constants.LF;
+import static org.apache.commons.csv.Constants.SP;
+
+import java.io.Closeable;
+import java.io.Flushable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Stream;
+
+import org.apache.commons.io.function.IOStream;
+
+/**
+ * Prints values in a {@link CSVFormat CSV format}.
+ *
+ * &lt;p&gt;Values can be appended to the output by calling the {@link #print(Object)} method.
+ * Values are printed according to {@link String#valueOf(Object)}.
+ * To complete a record the {@link #println()} method has to be called.
+ * Comments can be appended by calling {@link #printComment(String)}.
+ * However a comment will only be written to the output if the {@link CSVFormat} supports comments.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;The printer also supports appending a complete record at once by calling {@link #printRecord(Object...)}
+ * or {@link #printRecord(Iterable)}.
+ * Furthermore {@link #printRecords(Object...)}, {@link #printRecords(Iterable)} and {@link #printRecords(ResultSet)}
+ * methods can be used to print several records at once.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;Example:&lt;/p&gt;
+ *
+ * &lt;pre&gt;
+ * try (CSVPrinter printer = new CSVPrinter(new FileWriter(&quot;csv.txt&quot;), CSVFormat.EXCEL)) {
+ *     printer.printRecord(&quot;id&quot;, &quot;userName&quot;, &quot;firstName&quot;, &quot;lastName&quot;, &quot;birthday&quot;);
+ *     printer.printRecord(1, &quot;john73&quot;, &quot;John&quot;, &quot;Doe&quot;, LocalDate.of(1973, 9, 15));
+ *     printer.println();
+ *     printer.printRecord(2, &quot;mary&quot;, &quot;Mary&quot;, &quot;Meyer&quot;, LocalDate.of(1985, 3, 29));
+ * } catch (IOException ex) {
+ *     ex.printStackTrace();
+ * }
+ * &lt;/pre&gt;
+ *
+ * &lt;p&gt;This code will write the following to csv.txt:&lt;/p&gt;
+ * &lt;pre&gt;
+ * id,userName,firstName,lastName,birthday
+ * 1,john73,John,Doe,1973-09-15
+ *
+ * 2,mary,Mary,Meyer,1985-03-29
+ * &lt;/pre&gt;
+ */
+public final class CSVPrinter implements Flushable, Closeable {
+
+    /** The place that the values get written. */
+    private final Appendable appendable;
+
+    private final CSVFormat format;
+
+    /** True if we just began a new record. */
+<span class="fc" id="L84">    private boolean newRecord = true;</span>
+
+    /**
+     * Creates a printer that will print values to the given stream following the CSVFormat.
+     * &lt;p&gt;
+     * Currently, only a pure encapsulation format or a pure escaping format is supported. Hybrid formats (encapsulation
+     * and escaping with a different character) are not supported.
+     * &lt;/p&gt;
+     *
+     * @param appendable
+     *            stream to which to print. Must not be null.
+     * @param format
+     *            the CSV format. Must not be null.
+     * @throws IOException
+     *             thrown if the optional header cannot be printed.
+     * @throws IllegalArgumentException
+     *             thrown if the parameters of the format are inconsistent or if either out or format are null.
+     */
+<span class="fc" id="L102">    public CSVPrinter(final Appendable appendable, final CSVFormat format) throws IOException {</span>
+<span class="fc" id="L103">        Objects.requireNonNull(appendable, &quot;appendable&quot;);</span>
+<span class="fc" id="L104">        Objects.requireNonNull(format, &quot;format&quot;);</span>
+
+<span class="fc" id="L106">        this.appendable = appendable;</span>
+<span class="fc" id="L107">        this.format = format.copy();</span>
+        // TODO: Is it a good idea to do this here instead of on the first call to a print method?
+        // It seems a pain to have to track whether the header has already been printed or not.
+<span class="fc" id="L110">        final String[] headerComments = format.getHeaderComments();</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (headerComments != null) {</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">            for (final String line : headerComments) {</span>
+<span class="fc" id="L113">                printComment(line);</span>
+            }
+        }
+<span class="fc bfc" id="L116" title="All 4 branches covered.">        if (format.getHeader() != null &amp;&amp; !format.getSkipHeaderRecord()) {</span>
+<span class="fc" id="L117">            this.printRecord((Object[]) format.getHeader());</span>
+        }
+<span class="fc" id="L119">    }</span>
+
+    @Override
+    public void close() throws IOException {
+<span class="fc" id="L123">        close(false);</span>
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * Closes the underlying stream with an optional flush first.
+     * @param flush whether to flush before the actual close.
+     *
+     * @throws IOException
+     *             If an I/O error occurs
+     * @since 1.6
+     */
+    public void close(final boolean flush) throws IOException {
+<span class="fc bfc" id="L135" title="All 4 branches covered.">        if (flush || format.getAutoFlush()) {</span>
+<span class="fc" id="L136">            flush();</span>
+        }
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        if (appendable instanceof Closeable) {</span>
+<span class="fc" id="L139">            ((Closeable) appendable).close();</span>
+        }
+<span class="fc" id="L141">    }</span>
+
+    /**
+     * Flushes the underlying stream.
+     *
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    @Override
+    public void flush() throws IOException {
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        if (appendable instanceof Flushable) {</span>
+<span class="fc" id="L152">            ((Flushable) appendable).flush();</span>
+        }
+<span class="fc" id="L154">    }</span>
+
+    /**
+     * Gets the target Appendable.
+     *
+     * @return the target Appendable.
+     */
+    public Appendable getOut() {
+<span class="fc" id="L162">        return this.appendable;</span>
+    }
+
+    /**
+     * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
+     *
+     * @param value
+     *            value to be output.
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    public synchronized void print(final Object value) throws IOException {
+<span class="fc" id="L174">        format.print(value, appendable, newRecord);</span>
+<span class="fc" id="L175">        newRecord = false;</span>
+<span class="fc" id="L176">    }</span>
+
+    /**
+     * Prints a comment on a new line among the delimiter-separated values.
+     *
+     * &lt;p&gt;
+     * Comments will always begin on a new line and occupy at least one full line. The character specified to start
+     * comments and a space will be inserted at the beginning of each new line in the comment.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * If comments are disabled in the current CSV format this method does nothing.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;This method detects line breaks inside the comment string and inserts {@link CSVFormat#getRecordSeparator()}
+     * to start a new line of the comment. Note that this might produce unexpected results for formats that do not use
+     * line breaks as record separators.&lt;/p&gt;
+     *
+     * @param comment
+     *            the comment to output
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    public synchronized void printComment(final String comment) throws IOException {
+<span class="fc bfc" id="L200" title="All 4 branches covered.">        if (comment == null || !format.isCommentMarkerSet()) {</span>
+<span class="fc" id="L201">            return;</span>
+        }
+<span class="fc bfc" id="L203" title="All 2 branches covered.">        if (!newRecord) {</span>
+<span class="fc" id="L204">            println();</span>
+        }
+<span class="fc" id="L206">        appendable.append(format.getCommentMarker().charValue()); // N.B. Explicit (un)boxing is intentional</span>
+<span class="fc" id="L207">        appendable.append(SP);</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        for (int i = 0; i &lt; comment.length(); i++) {</span>
+<span class="fc" id="L209">            final char c = comment.charAt(i);</span>
+<span class="fc bfc" id="L210" title="All 3 branches covered.">            switch (c) {</span>
+            case CR:
+<span class="fc bfc" id="L212" title="All 4 branches covered.">                if (i + 1 &lt; comment.length() &amp;&amp; comment.charAt(i + 1) == LF) {</span>
+<span class="fc" id="L213">                    i++;</span>
+                }
+                //$FALL-THROUGH$ break intentionally excluded.
+            case LF:
+<span class="fc" id="L217">                println();</span>
+<span class="fc" id="L218">                appendable.append(format.getCommentMarker().charValue()); // N.B. Explicit (un)boxing is intentional</span>
+<span class="fc" id="L219">                appendable.append(SP);</span>
+<span class="fc" id="L220">                break;</span>
+            default:
+<span class="fc" id="L222">                appendable.append(c);</span>
+                break;
+            }
+        }
+<span class="fc" id="L226">        println();</span>
+<span class="fc" id="L227">    }</span>
+
+    /**
+     * Prints headers for a result set based on its metadata.
+     *
+     * @param resultSet The ResultSet to query for metadata.
+     * @throws IOException If an I/O error occurs.
+     * @throws SQLException If a database access error occurs or this method is called on a closed result set.
+     * @since 1.9.0
+     */
+    public synchronized void printHeaders(final ResultSet resultSet) throws IOException, SQLException {
+<span class="fc" id="L238">        printRecord((Object[]) format.builder().setHeader(resultSet).build().getHeader());</span>
+<span class="fc" id="L239">    }</span>
+
+    /**
+     * Outputs the record separator.
+     *
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    public synchronized void println() throws IOException {
+<span class="fc" id="L248">        format.println(appendable);</span>
+<span class="fc" id="L249">        newRecord = true;</span>
+<span class="fc" id="L250">    }</span>
+
+    /**
+     * Prints the given values as a single record of delimiter-separated values followed by the record separator.
+     *
+     * &lt;p&gt;
+     * The values will be quoted if needed. Quotes and newLine characters will be escaped. This method adds the record
+     * separator to the output after printing the record, so there is no need to call {@link #println()}.
+     * &lt;/p&gt;
+     *
+     * @param values
+     *            values to output.
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    @SuppressWarnings(&quot;resource&quot;)
+    public synchronized void printRecord(final Iterable&lt;?&gt; values) throws IOException {
+<span class="fc" id="L267">        IOStream.of(values).forEachOrdered(this::print);</span>
+<span class="fc" id="L268">        println();</span>
+<span class="fc" id="L269">    }</span>
+
+    /**
+     * Prints the given values as a single record of delimiter-separated values followed by the record separator.
+     *
+     * &lt;p&gt;
+     * The values will be quoted if needed. Quotes and newLine characters will be escaped. This method adds the record
+     * separator to the output after printing the record, so there is no need to call {@link #println()}.
+     * &lt;/p&gt;
+     *
+     * @param values
+     *            values to output.
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    public void printRecord(final Object... values) throws IOException {
+<span class="fc" id="L285">        printRecord(Arrays.asList(values));</span>
+<span class="fc" id="L286">    }</span>
+
+    /**
+     * Prints the given values as a single record of delimiter-separated values followed by the record separator.
+     *
+     * &lt;p&gt;
+     * The values will be quoted if needed. Quotes and newLine characters will be escaped. This method adds the record
+     * separator to the output after printing the record, so there is no need to call {@link #println()}.
+     * &lt;/p&gt;
+     *
+     * @param values
+     *            values to output.
+     * @throws IOException
+     *             If an I/O error occurs
+     * @since 1.10.0
+     */
+    @SuppressWarnings(&quot;resource&quot;) // caller closes.
+    public synchronized void printRecord(final Stream&lt;?&gt; values) throws IOException {
+<span class="fc" id="L304">        IOStream.adapt(values).forEachOrdered(this::print);</span>
+<span class="fc" id="L305">        println();</span>
+<span class="fc" id="L306">    }</span>
+
+    private void printRecordObject(final Object value) throws IOException {
+<span class="fc bfc" id="L309" title="All 2 branches covered.">        if (value instanceof Object[]) {</span>
+<span class="fc" id="L310">            this.printRecord((Object[]) value);</span>
+<span class="fc bfc" id="L311" title="All 2 branches covered.">        } else if (value instanceof Iterable) {</span>
+<span class="fc" id="L312">            this.printRecord((Iterable&lt;?&gt;) value);</span>
+        } else {
+<span class="fc" id="L314">            this.printRecord(value);</span>
+        }
+<span class="fc" id="L316">    }</span>
+
+    /**
+     * Prints all the objects in the given {@link Iterable} handling nested collections/arrays as records.
+     *
+     * &lt;p&gt;
+     * If the given Iterable only contains simple objects, this method will print a single record like
+     * {@link #printRecord(Iterable)}. If the given Iterable contains nested collections/arrays those nested elements
+     * will each be printed as records using {@link #printRecord(Object...)}.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * Given the following data structure:
+     * &lt;/p&gt;
+     *
+     * &lt;pre&gt;{@code
+     * List&lt;String[]&gt; data = new ArrayList&lt;&gt;();
+     * data.add(new String[]{ &quot;A&quot;, &quot;B&quot;, &quot;C&quot; });
+     * data.add(new String[]{ &quot;1&quot;, &quot;2&quot;, &quot;3&quot; });
+     * data.add(new String[]{ &quot;A1&quot;, &quot;B2&quot;, &quot;C3&quot; });
+     * }
+     * &lt;/pre&gt;
+     *
+     * &lt;p&gt;
+     * Calling this method will print:
+     * &lt;/p&gt;
+     *
+     * &lt;pre&gt;
+     * {@code
+     * A, B, C
+     * 1, 2, 3
+     * A1, B2, C3
+     * }
+     * &lt;/pre&gt;
+     *
+     * @param values
+     *            the values to print.
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    @SuppressWarnings(&quot;resource&quot;)
+    public void printRecords(final Iterable&lt;?&gt; values) throws IOException {
+<span class="fc" id="L358">        IOStream.of(values).forEachOrdered(this::printRecordObject);</span>
+<span class="fc" id="L359">    }</span>
+
+    /**
+     * Prints all the objects in the given array handling nested collections/arrays as records.
+     *
+     * &lt;p&gt;
+     * If the given array only contains simple objects, this method will print a single record like
+     * {@link #printRecord(Object...)}. If the given collections contain nested collections or arrays, those nested
+     * elements will each be printed as records using {@link #printRecord(Object...)}.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * Given the following data structure:
+     * &lt;/p&gt;
+     *
+     * &lt;pre&gt;{@code
+     * String[][] data = new String[3][]
+     * data[0] = String[]{ &quot;A&quot;, &quot;B&quot;, &quot;C&quot; };
+     * data[1] = new String[]{ &quot;1&quot;, &quot;2&quot;, &quot;3&quot; };
+     * data[2] = new String[]{ &quot;A1&quot;, &quot;B2&quot;, &quot;C3&quot; };
+     * }
+     * &lt;/pre&gt;
+     *
+     * &lt;p&gt;
+     * Calling this method will print:
+     * &lt;/p&gt;
+     *
+     * &lt;pre&gt;{@code
+     * A, B, C
+     * 1, 2, 3
+     * A1, B2, C3
+     * }
+     * &lt;/pre&gt;
+     *
+     * @param values
+     *            the values to print.
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    public void printRecords(final Object... values) throws IOException {
+<span class="fc" id="L399">        printRecords(Arrays.asList(values));</span>
+<span class="fc" id="L400">    }</span>
+
+    /**
+     * Prints all the objects in the given JDBC result set.
+     *
+     * @param resultSet
+     *             The values to print.
+     * @throws IOException
+     *             If an I/O error occurs.
+     * @throws SQLException
+     *             Thrown when a database access error occurs.
+     */
+    public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
+<span class="fc" id="L413">        final int columnCount = resultSet.getMetaData().getColumnCount();</span>
+<span class="fc bfc" id="L414" title="All 2 branches covered.">        while (resultSet.next()) {</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">            for (int i = 1; i &lt;= columnCount; i++) {</span>
+<span class="fc" id="L416">                final Object object = resultSet.getObject(i);</span>
+<span class="fc bfc" id="L417" title="All 2 branches covered.">                if (object instanceof Clob) {</span>
+<span class="fc" id="L418">                    try (Reader reader = ((Clob) object).getCharacterStream()) {</span>
+<span class="fc" id="L419">                        print(reader);</span>
+                    }
+<span class="fc bfc" id="L421" title="All 2 branches covered.">                } else if (object instanceof Blob) {</span>
+<span class="fc" id="L422">                    try (InputStream inputStream = ((Blob) object).getBinaryStream()) {</span>
+<span class="fc" id="L423">                        print(inputStream);</span>
+                    }
+                } else {
+<span class="fc" id="L426">                    print(object);</span>
+                }
+            }
+<span class="fc" id="L429">            println();</span>
+        }
+<span class="fc" id="L431">    }</span>
+
+    /**
+     * Prints all the objects with metadata in the given JDBC result set based on the header boolean.
+     *
+     * @param resultSet source of row data.
+     * @param printHeader whether to print headers.
+     * @throws IOException If an I/O error occurs
+     * @throws SQLException if a database access error occurs
+     * @since 1.9.0
+     */
+    public void printRecords(final ResultSet resultSet, final boolean printHeader) throws SQLException, IOException {
+<span class="fc bfc" id="L443" title="All 2 branches covered.">        if (printHeader) {</span>
+<span class="fc" id="L444">            printHeaders(resultSet);</span>
+        }
+<span class="fc" id="L446">        printRecords(resultSet);</span>
+<span class="fc" id="L447">    }</span>
+
+    /**
+     * Prints all the objects in the given {@link Stream} handling nested collections/arrays as records.
+     *
+     * &lt;p&gt;
+     * If the given Stream only contains simple objects, this method will print a single record like
+     * {@link #printRecord(Iterable)}. If the given Stream contains nested collections/arrays those nested elements
+     * will each be printed as records using {@link #printRecord(Object...)}.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * Given the following data structure:
+     * &lt;/p&gt;
+     *
+     * &lt;pre&gt;{@code
+     * List&lt;String[]&gt; data = new ArrayList&lt;&gt;();
+     * data.add(new String[]{ &quot;A&quot;, &quot;B&quot;, &quot;C&quot; });
+     * data.add(new String[]{ &quot;1&quot;, &quot;2&quot;, &quot;3&quot; });
+     * data.add(new String[]{ &quot;A1&quot;, &quot;B2&quot;, &quot;C3&quot; });
+     * Stream&amp;lt;String[]&amp;gt; stream = data.stream();
+     * }
+     * &lt;/pre&gt;
+     *
+     * &lt;p&gt;
+     * Calling this method will print:
+     * &lt;/p&gt;
+     *
+     * &lt;pre&gt;
+     * {@code
+     * A, B, C
+     * 1, 2, 3
+     * A1, B2, C3
+     * }
+     * &lt;/pre&gt;
+     *
+     * @param values
+     *            the values to print.
+     * @throws IOException
+     *             If an I/O error occurs
+     * @since 1.10.0
+     */
+    @SuppressWarnings({ &quot;resource&quot; }) // Caller closes.
+    public void printRecords(final Stream&lt;?&gt; values) throws IOException {
+<span class="fc" id="L491">        IOStream.adapt(values).forEachOrdered(this::printRecordObject);</span>
+<span class="fc" id="L492">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
