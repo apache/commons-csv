@@ -229,8 +229,6 @@ public final class CSVFormat implements Serializable {
 
         private Character quoteCharacter;
 
-        private String[] quotedNullStrings;
-
         private QuoteMode quoteMode;
 
         private String recordSeparator;
@@ -265,7 +263,6 @@ public final class CSVFormat implements Serializable {
             this.trailingDelimiter = csvFormat.trailingDelimiter;
             this.trim = csvFormat.trim;
             this.autoFlush = csvFormat.autoFlush;
-            this.quotedNullStrings = csvFormat.quotedNullStrings;
             this.duplicateHeaderMode = csvFormat.duplicateHeaderMode;
         }
 
@@ -709,7 +706,6 @@ public final class CSVFormat implements Serializable {
          */
         public Builder setNullString(final String nullString) {
             this.nullStrings = new String[]{nullString};
-            this.quotedNullStrings = new String[]{quoteCharacter + nullString + quoteCharacter};
             return this;
         }
 
@@ -726,11 +722,6 @@ public final class CSVFormat implements Serializable {
          */
         public Builder setNullStrings(final String[] nullStrings) {
             this.nullStrings = CSVFormat.clone(nullStrings);
-            if (nullStrings != null) {
-                this.quotedNullStrings = Arrays.stream(nullStrings).map(str -> quoteCharacter + str + quoteCharacter).toArray(String[]::new);
-            } else {
-                this.quotedNullStrings = new String[]{quoteCharacter + "" + quoteCharacter};
-            }
             return this;
         }
 
@@ -1496,8 +1487,6 @@ public final class CSVFormat implements Serializable {
     /** Set to null if quoting is disabled. */
     private final Character quoteCharacter;
 
-    private final String[] quotedNullStrings;
-
     private final QuoteMode quoteMode;
 
     /** For output. */
@@ -1533,7 +1522,6 @@ public final class CSVFormat implements Serializable {
         this.trailingDelimiter = builder.trailingDelimiter;
         this.trim = builder.trim;
         this.autoFlush = builder.autoFlush;
-        this.quotedNullStrings = builder.quotedNullStrings;
         this.duplicateHeaderMode = builder.duplicateHeaderMode;
         validate();
     }
@@ -1587,14 +1575,6 @@ public final class CSVFormat implements Serializable {
         this.trailingDelimiter = trailingDelimiter;
         this.trim = trim;
         this.autoFlush = autoFlush;
-        if (nullStrings != null) {
-            this.quotedNullStrings = new String[nullStrings.length];
-            for (int i = 0; i < nullStrings.length; i++) {
-                this.quotedNullStrings[i] = quoteCharacter + nullStrings[i] + quoteCharacter;
-            }
-        } else {
-            this.quotedNullStrings = new String[]{quoteCharacter + "" + quoteCharacter};
-        }
         this.duplicateHeaderMode = duplicateHeaderMode;
         validate();
     }
@@ -1652,9 +1632,9 @@ public final class CSVFormat implements Serializable {
                 ignoreEmptyLines == other.ignoreEmptyLines && ignoreHeaderCase == other.ignoreHeaderCase &&
                 ignoreSurroundingSpaces == other.ignoreSurroundingSpaces && lenientEof == other.lenientEof &&
                 Arrays.equals(nullStrings, other.nullStrings) && Objects.equals(quoteCharacter, other.quoteCharacter) &&
-                quoteMode == other.quoteMode && Arrays.equals(quotedNullStrings, other.quotedNullStrings) &&
-                Objects.equals(recordSeparator, other.recordSeparator) && skipHeaderRecord == other.skipHeaderRecord &&
-                trailingData == other.trailingData && trailingDelimiter == other.trailingDelimiter && trim == other.trim;
+                quoteMode == other.quoteMode && Objects.equals(recordSeparator, other.recordSeparator) &&
+                skipHeaderRecord == other.skipHeaderRecord && trailingData == other.trailingData &&
+                trailingDelimiter == other.trailingDelimiter && trim == other.trim;
     }
 
     private void escape(final char c, final Appendable appendable) throws IOException {
@@ -1992,7 +1972,6 @@ public final class CSVFormat implements Serializable {
         result = prime * result + Arrays.hashCode(headerComments);
         result = prime * result + Arrays.hashCode(headers);
         result = prime * result + Arrays.hashCode(nullStrings);
-        result = prime * result + Arrays.hashCode(quotedNullStrings);
         result = prime * result + Objects.hash(allowMissingColumnNames, autoFlush, commentMarker, delimiter, duplicateHeaderMode, escapeCharacter,
                 ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, lenientEof, quoteCharacter, quoteMode,
                 recordSeparator, skipHeaderRecord, trailingData, trailingDelimiter, trim);
@@ -2154,7 +2133,7 @@ public final class CSVFormat implements Serializable {
             if (null == nullStrings) {
                 charSequence = Constants.EMPTY;
             } else if (QuoteMode.ALL == quoteMode) {
-                charSequence = quotedNullStrings[0];
+                charSequence = quoteCharacter.charValue() + nullStrings[0] + quoteCharacter.charValue();
             } else {
                 charSequence = nullStrings[0];
             }
