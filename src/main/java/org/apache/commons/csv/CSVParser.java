@@ -659,14 +659,14 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     private String handleNull(final String input) {
         final boolean isQuoted = reusableToken.isQuoted;
-        final String nullString = format.getNullString();
+        final String[] nullStrings = format.getNullStrings();
         final boolean strictQuoteMode = isStrictQuoteMode();
-        if (input.equals(nullString)) {
+        if (nullStrings != null && Arrays.asList(nullStrings).contains(input)) {
             // nullString = NULL(String), distinguish between "NULL" and NULL in ALL_NON_NULL or NON_NUMERIC quote mode
             return strictQuoteMode && isQuoted ? input : null;
         }
         // don't set nullString, distinguish between "" and ,, (absent values) in All_NON_NULL or NON_NUMERIC quote mode
-        return strictQuoteMode && nullString == null && input.isEmpty() && !isQuoted ? null : input;
+        return strictQuoteMode && nullStrings == null && input.isEmpty() && !isQuoted ? null : input;
     }
 
     /**
