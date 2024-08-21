@@ -46,7 +46,8 @@
       <action type="update" dev="ggregory" due-to="Gary Gregory">Fix PMD issues for port to PMD 7.1.0.</action>
       <action type="update" dev="ggregory" due-to="Dávid Szigecsán, Gary Gregory">Fix some Javadoc links #442.</action>
       <action type="update" dev="ggregory" due-to="Dávid Szigecsán">Extract duplicated code into a method #444.</action>
-      <action type="update" dev="ggregory" due-to="Dávid Szigecsán">Migrate CSVFormat#print(File, Charset) to NIO #445.</action> 
+      <action type="update" dev="ggregory" due-to="Dávid Szigecsán">Migrate CSVFormat#print(File, Charset) to NIO #445.</action>
+      <action type="update" dev="ggregory" due-to="Dávid Szigecsán">Fix documentation for CSVFormat private constructor #466.</action> 
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Dependabot">Bump commons-codec:commons-codec from 1.16.1 to 1.17.1 #422, #449.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-parent from 69 to 73 #435, #452, #465.</action>
