@@ -50,7 +50,7 @@ final class Lexer implements Closeable {
     private final boolean lenientEof;
     private final boolean trailingData;
 
-    /** The input stream */
+    /** The buffered reader. */
     private final ExtendedBufferedReader reader;
     private String firstEol;
 
