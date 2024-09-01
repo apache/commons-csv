@@ -17,8 +17,8 @@
 
 package org.apache.commons.csv;
 
-import static org.apache.commons.io.IOUtils.EOF;
 import static org.apache.commons.csv.Constants.UNDEFINED;
+import static org.apache.commons.io.IOUtils.EOF;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;

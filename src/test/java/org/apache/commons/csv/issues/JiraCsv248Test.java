@@ -19,6 +19,7 @@ package org.apache.commons.csv.issues;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -54,7 +55,7 @@ public class JiraCsv248Test {
         // }
         try (InputStream in = getTestInput(); final ObjectInputStream ois = new ObjectInputStream(in)) {
             final Object object = ois.readObject();
-            assertTrue(object instanceof CSVRecord);
+            assertInstanceOf(CSVRecord.class, object);
             final CSVRecord rec = (CSVRecord) object;
             assertEquals(1L, rec.getRecordNumber());
             assertEquals("One", rec.get(0));

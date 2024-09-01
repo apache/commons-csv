@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -270,7 +271,7 @@ public class CSVRecordTest {
         final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
         try (ObjectInputStream ois = new ObjectInputStream(in)) {
             final Object object = ois.readObject();
-            assertTrue(object instanceof CSVRecord);
+            assertInstanceOf(CSVRecord.class, object);
             final CSVRecord rec = (CSVRecord) object;
             assertEquals(1L, rec.getRecordNumber());
             assertEquals("One", rec.get(0));
