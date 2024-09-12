@@ -143,30 +143,42 @@ public class PerformanceTest {
         System.out.printf("Max count: %d%n%n", max);
 
         for (final String test : tests) {
-            if ("file".equals(test)) {
+            switch (test) {
+            case "file":
                 testReadBigFile(false);
-            } else if ("split".equals(test)) {
+                break;
+            case "split":
                 testReadBigFile(true);
-            } else if ("csv".equals(test)) {
+                break;
+            case "csv":
                 testParseCommonsCSV();
-            } else if ("csv-path".equals(test)) {
+                break;
+            case "csv-path":
                 testParsePath();
-            } else if ("csv-path-db".equals(test)) {
+                break;
+            case "csv-path-db":
                 testParsePathDoubleBuffering();
-            } else if ("csv-url".equals(test)) {
+                break;
+            case "csv-url":
                 testParseURL();
-            } else if ("lexreset".equals(test)) {
+                break;
+            case "lexreset":
                 testCSVLexer(false, test);
-            } else if ("lexnew".equals(test)) {
+                break;
+            case "lexnew":
                 testCSVLexer(true, test);
-            } else if (test.startsWith("CSVLexer")) {
-                testCSVLexer(false, test);
-            } else if ("extb".equals(test)) {
-                testExtendedBuffer(false);
-            } else if ("exts".equals(test)) {
-                testExtendedBuffer(true);
-            } else {
-                System.out.printf("Invalid test name: %s%n", test);
+                break;
+            default:
+                if (test.startsWith("CSVLexer")) {
+                    testCSVLexer(false, test);
+                } else if ("extb".equals(test)) {
+                    testExtendedBuffer(false);
+                } else if ("exts".equals(test)) {
+                    testExtendedBuffer(true);
+                } else {
+                    System.out.printf("Invalid test name: %s%n", test);
+                }
+                break;
             }
         }
     }
