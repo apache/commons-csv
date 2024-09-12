@@ -233,42 +233,62 @@ public class CSVFormatTest {
                 if (name.startsWith("with")) {
                     for (final Class<?> cls : method.getParameterTypes()) {
                         final String type = cls.getCanonicalName();
-                        if ("boolean".equals(type)) {
+                        switch (type) {
+                        case "boolean": {
                             final Object defTrue = method.invoke(CSVFormat.DEFAULT, Boolean.TRUE);
                             final Object defFalse = method.invoke(CSVFormat.DEFAULT, Boolean.FALSE);
                             assertNotEquals(name, type, defTrue, defFalse);
-                        } else if ("char".equals(type)) {
+                            break;
+                        }
+                        case "char": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, 'a');
                             final Object b = method.invoke(CSVFormat.DEFAULT, 'b');
                             assertNotEquals(name, type, a, b);
-                        } else if ("java.lang.Character".equals(type)) {
+                            break;
+                        }
+                        case "java.lang.Character": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] { null });
                             final Object b = method.invoke(CSVFormat.DEFAULT, Character.valueOf('d'));
                             assertNotEquals(name, type, a, b);
-                        } else if ("java.lang.String".equals(type)) {
+                            break;
+                        }
+                        case "java.lang.String": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] { null });
                             final Object b = method.invoke(CSVFormat.DEFAULT, "e");
                             assertNotEquals(name, type, a, b);
-                        } else if ("java.lang.String[]".equals(type)) {
+                            break;
+                        }
+                        case "java.lang.String[]": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] { new String[] { null, null } });
                             final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] { new String[] { "f", "g" } });
                             assertNotEquals(name, type, a, b);
-                        } else if ("org.apache.commons.csv.QuoteMode".equals(type)) {
+                            break;
+                        }
+                        case "org.apache.commons.csv.QuoteMode": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, QuoteMode.MINIMAL);
                             final Object b = method.invoke(CSVFormat.DEFAULT, QuoteMode.ALL);
                             assertNotEquals(name, type, a, b);
-                        } else if ("org.apache.commons.csv.DuplicateHeaderMode".equals(type)) {
+                            break;
+                        }
+                        case "org.apache.commons.csv.DuplicateHeaderMode": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, DuplicateHeaderMode.ALLOW_ALL);
                             final Object b = method.invoke(CSVFormat.DEFAULT, DuplicateHeaderMode.DISALLOW);
                             assertNotEquals(name, type, a, b);
-                        } else if ("java.lang.Object[]".equals(type)) {
+                            break;
+                        }
+                        case "java.lang.Object[]": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] { new Object[] { null, null } });
                             final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] { new Object[] { new Object(), new Object() } });
                             assertNotEquals(name, type, a, b);
-                        } else if ("withHeader".equals(name)) { // covered above by String[]
-                            // ignored
-                        } else {
-                            fail("Unhandled method: " + name + "(" + type + ")");
+                            break;
+                        }
+                        default:
+                            if ("withHeader".equals(name)) { // covered above by String[]
+                                // ignored
+                            } else {
+                                fail("Unhandled method: " + name + "(" + type + ")");
+                            }
+                            break;
                         }
                     }
                 }
