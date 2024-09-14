@@ -90,7 +90,7 @@ public class PerformanceTest {
         System.out.println(s);
     }
 
-    private long readAll(final BufferedReader in) throws IOException {
+    private long readLines(final BufferedReader in) throws IOException {
         long count = 0;
         while (in.readLine() != null) {
             count++;
@@ -126,7 +126,7 @@ public class PerformanceTest {
             final long startMillis;
             try (final BufferedReader in = createBufferedReader()) {
                 startMillis = System.currentTimeMillis();
-                count = readAll(in);
+                count = readLines(in);
             }
             final long totalMillis = System.currentTimeMillis() - startMillis;
             bestTime = Math.min(totalMillis, bestTime);
