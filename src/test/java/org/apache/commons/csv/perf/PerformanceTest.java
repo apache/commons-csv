@@ -41,7 +41,6 @@ import org.junit.jupiter.api.Test;
  *
  * To run this test, use: mvn test -Dtest=PerformanceTest
  */
-@SuppressWarnings("boxing") // test code
 public class PerformanceTest {
 
     private static final String TEST_RESRC = "org/apache/commons/csv/perf/worldcitiespop.txt.gz";
