@@ -464,7 +464,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * data.add(new String[]{ "A", "B", "C" });
      * data.add(new String[]{ "1", "2", "3" });
      * data.add(new String[]{ "A1", "B2", "C3" });
-     * Stream&lt;String[]&gt; stream = data.stream();
+     * Stream<String[]> stream = data.stream();
      * }
      * </pre>
      *

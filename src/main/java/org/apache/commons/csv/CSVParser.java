@@ -82,12 +82,12 @@ import org.apache.commons.io.function.Uncheck;
  * To parse a CSV input from a file, you write:
  * </p>
  *
- * <pre>
- * File csvData = new File(&quot;/path/to/csv&quot;);
+ * <pre>{@code
+ * File csvData = new File("/path/to/csv");
  * CSVParser parser = CSVParser.parse(csvData, CSVFormat.RFC4180);
  * for (CSVRecord csvRecord : parser) {
  *     ...
- * }
+ * }}
  * </pre>
  *
  * <p>
@@ -116,11 +116,11 @@ import org.apache.commons.io.function.Uncheck;
  * If parsing record-wise is not desired, the contents of the input can be read completely into memory.
  * </p>
  *
- * <pre>
- * Reader in = new StringReader(&quot;a;b\nc;d&quot;);
+ * <pre>{@code
+ * Reader in = new StringReader("a;b\nc;d");
  * CSVParser parser = new CSVParser(in, CSVFormat.EXCEL);
- * List&lt;CSVRecord&gt; list = parser.getRecords();
- * </pre>
+ * List<CSVRecord> list = parser.getRecords();
+ * }</pre>
  *
  * <p>
  * There are two constraints that have to be kept in mind:
