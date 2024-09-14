@@ -1623,61 +1623,57 @@ public class CSVParserTest {
 
     private void validateRecordPosition(final String lineSeparator) throws IOException {
         final String nl = lineSeparator; // used as linebreak in values for better distinction
-
         final String code = "a,b,c" + lineSeparator + "1,2,3" + lineSeparator +
         // to see if recordPosition correctly points to the enclosing quote
-            "'A" + nl + "A','B" + nl + "B',CC" + lineSeparator +
-            // unicode test... not very relevant while operating on strings instead of bytes, but for
-            // completeness...
-            "\u00c4,\u00d6,\u00dc" + lineSeparator + "EOF,EOF,EOF";
-
+                "'A" + nl + "A','B" + nl + "B',CC" + lineSeparator +
+                // unicode test... not very relevant while operating on strings instead of bytes, but for
+                // completeness...
+                "\u00c4,\u00d6,\u00dc" + lineSeparator + "EOF,EOF,EOF";
         final CSVFormat format = CSVFormat.newFormat(',').withQuote('\'').withRecordSeparator(lineSeparator);
-        CSVParser parser = CSVParser.parse(code, format);
-
-        CSVRecord record;
-        assertEquals(0, parser.getRecordNumber());
-
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(1, record.getRecordNumber());
-        assertEquals(code.indexOf('a'), record.getCharacterPosition());
-
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(2, record.getRecordNumber());
-        assertEquals(code.indexOf('1'), record.getCharacterPosition());
-
-        assertNotNull(record = parser.nextRecord());
-        final long positionRecord3 = record.getCharacterPosition();
-        assertEquals(3, record.getRecordNumber());
-        assertEquals(code.indexOf("'A"), record.getCharacterPosition());
-        assertEquals("A" + lineSeparator + "A", record.get(0));
-        assertEquals("B" + lineSeparator + "B", record.get(1));
-        assertEquals("CC", record.get(2));
-
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(4, record.getRecordNumber());
-        assertEquals(code.indexOf('\u00c4'), record.getCharacterPosition());
-
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(5, record.getRecordNumber());
-        assertEquals(code.indexOf("EOF"), record.getCharacterPosition());
-
-        parser.close();
-
+        final long positionRecord3;
+        try (CSVParser parser = CSVParser.parse(code, format)) {
+            CSVRecord record;
+            assertEquals(0, parser.getRecordNumber());
+            // nextRecord
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(1, record.getRecordNumber());
+            assertEquals(code.indexOf('a'), record.getCharacterPosition());
+            // nextRecord
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(2, record.getRecordNumber());
+            assertEquals(code.indexOf('1'), record.getCharacterPosition());
+            // nextRecord
+            assertNotNull(record = parser.nextRecord());
+            positionRecord3 = record.getCharacterPosition();
+            assertEquals(3, record.getRecordNumber());
+            assertEquals(code.indexOf("'A"), record.getCharacterPosition());
+            assertEquals("A" + lineSeparator + "A", record.get(0));
+            assertEquals("B" + lineSeparator + "B", record.get(1));
+            assertEquals("CC", record.get(2));
+            // nextRecord
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(4, record.getRecordNumber());
+            assertEquals(code.indexOf('\u00c4'), record.getCharacterPosition());
+            // nextRecord
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(5, record.getRecordNumber());
+            assertEquals(code.indexOf("EOF"), record.getCharacterPosition());
+        }
         // now try to read starting at record 3
-        parser = new CSVParser(new StringReader(code.substring((int) positionRecord3)), format, positionRecord3, 3);
-
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(3, record.getRecordNumber());
-        assertEquals(code.indexOf("'A"), record.getCharacterPosition());
-        assertEquals("A" + lineSeparator + "A", record.get(0));
-        assertEquals("B" + lineSeparator + "B", record.get(1));
-        assertEquals("CC", record.get(2));
-
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(4, record.getRecordNumber());
-        assertEquals(code.indexOf('\u00c4'), record.getCharacterPosition());
-        assertEquals("\u00c4", record.get(0));
-
-        parser.close();
+        try (CSVParser parser = new CSVParser(new StringReader(code.substring((int) positionRecord3)), format, positionRecord3, 3)) {
+            CSVRecord record;
+            // nextRecord
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(3, record.getRecordNumber());
+            assertEquals(code.indexOf("'A"), record.getCharacterPosition());
+            assertEquals("A" + lineSeparator + "A", record.get(0));
+            assertEquals("B" + lineSeparator + "B", record.get(1));
+            assertEquals("CC", record.get(2));
+            // nextRecord
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(4, record.getRecordNumber());
+            assertEquals(code.indexOf('\u00c4'), record.getCharacterPosition());
+            assertEquals("\u00c4", record.get(0));
+        }
     }
 }
