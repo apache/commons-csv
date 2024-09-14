@@ -452,8 +452,9 @@ public class LexerTest {
     @Test
     public void testTrimTrailingSpacesZeroLength() throws Exception {
         final StringBuilder buffer = new StringBuilder("");
-        final Lexer lexer = createLexer(buffer.toString(), CSVFormat.DEFAULT);
-        lexer.trimTrailingSpaces(buffer);
-        assertThat(lexer.nextToken(new Token()), matches(EOF, ""));
+        try (Lexer lexer = createLexer(buffer.toString(), CSVFormat.DEFAULT)) {
+            lexer.trimTrailingSpaces(buffer);
+            assertThat(lexer.nextToken(new Token()), matches(EOF, ""));
+        }
     }
 }
