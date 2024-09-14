@@ -32,19 +32,12 @@ final class Lexer implements Closeable {
     private static final String CR_STRING = Character.toString(Constants.CR);
     private static final String LF_STRING = Character.toString(Constants.LF);
 
-    /**
-     * Constant char to use for disabling comments, escapes, and encapsulation. The value -2 is used because it
-     * won't be confused with an EOF signal (-1), and because the Unicode value {@code FFFE} would be encoded as two
-     * chars (using surrogates) and thus there should never be a collision with a real text char.
-     */
-    private static final char DISABLED = '\ufffe';
-
     private final char[] delimiter;
     private final char[] delimiterBuf;
     private final char[] escapeDelimiterBuf;
-    private final char escape;
-    private final char quoteChar;
-    private final char commentStart;
+    private final int escape;
+    private final int quoteChar;
+    private final int commentStart;
     private final boolean ignoreSurroundingSpaces;
     private final boolean ignoreEmptyLines;
     private final boolean lenientEof;
@@ -59,9 +52,9 @@ final class Lexer implements Closeable {
     Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {
         this.reader = reader;
         this.delimiter = format.getDelimiterCharArray();
-        this.escape = mapNullToDisabled(format.getEscapeCharacter());
-        this.quoteChar = mapNullToDisabled(format.getQuoteCharacter());
-        this.commentStart = mapNullToDisabled(format.getCommentMarker());
+        this.escape = nullToDisabled(format.getEscapeCharacter());
+        this.quoteChar = nullToDisabled(format.getQuoteCharacter());
+        this.commentStart = nullToDisabled(format.getCommentMarker());
         this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
         this.ignoreEmptyLines = format.getIgnoreEmptyLines();
         this.lenientEof = format.getLenientEof();
@@ -197,8 +190,8 @@ final class Lexer implements Closeable {
         return ch == Constants.LF || ch == Constants.CR || ch == Constants.UNDEFINED;
     }
 
-    private char mapNullToDisabled(final Character c) {
-        return c == null ? DISABLED : c.charValue(); // N.B. Explicit (un)boxing is intentional
+    private int nullToDisabled(final Character c) {
+        return c == null ? Constants.UNDEFINED : c.charValue(); // Explicit unboxing
     }
 
     /**
@@ -428,7 +421,7 @@ final class Lexer implements Closeable {
         } else {
             final int unescaped = readEscape();
             if (unescaped == EOF) { // unexpected char after escape
-                token.content.append(escape).append((char) reader.getLastChar());
+                token.content.append((char) escape).append((char) reader.getLastChar());
             } else {
                 token.content.append((char) unescaped);
             }
