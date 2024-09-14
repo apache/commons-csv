@@ -84,7 +84,7 @@ final class ExtendedBufferedReader extends BufferedReader {
 
     /**
      * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by
-     * any of the read methods. This will not include a character read using the {@link #lookAhead()} method. If no
+     * any of the read methods. This will not include a character read using the {@link #peek()} method. If no
      * character has been read then this will return {@link Constants#UNDEFINED}. If the end of the stream was reached
      * on the last read then this will return {@link IOUtils#EOF}.
      *
@@ -116,7 +116,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      * @throws IOException
      *             If an I/O error occurs
      */
-    int lookAhead() throws IOException {
+    int peek() throws IOException {
         super.mark(1);
         final int c = super.read();
         super.reset();
@@ -133,7 +133,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      * @return the buffer itself
      * @throws IOException If an I/O error occurs
      */
-    char[] lookAhead(final char[] buf) throws IOException {
+    char[] peek(final char[] buf) throws IOException {
         final int n = buf.length;
         super.mark(n);
         super.read(buf, 0, n);
@@ -192,14 +192,14 @@ final class ExtendedBufferedReader extends BufferedReader {
      */
     @Override
     public String readLine() throws IOException {
-        if (lookAhead() == EOF) {
+        if (peek() == EOF) {
             return null;
         }
         final StringBuilder buffer = new StringBuilder();
         while (true) {
             final int current = read();
             if (current == CR) {
-                final int next = lookAhead();
+                final int next = peek();
                 if (next == LF) {
                     read();
                 }

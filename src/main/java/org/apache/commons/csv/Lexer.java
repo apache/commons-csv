@@ -105,7 +105,7 @@ final class Lexer implements Closeable {
     }
 
     /**
-     * Determine whether the next characters constitute a delimiter through {@link ExtendedBufferedReader#lookAhead(char[])}.
+     * Determine whether the next characters constitute a delimiter through {@link ExtendedBufferedReader#peek(char[])}.
      *
      * @param ch
      *             the current character.
@@ -121,7 +121,7 @@ final class Lexer implements Closeable {
             isLastTokenDelimiter = true;
             return true;
         }
-        reader.lookAhead(delimiterBuf);
+        reader.peek(delimiterBuf);
         for (int i = 0; i < delimiterBuf.length; i++) {
             if (delimiterBuf[i] != delimiter[i + 1]) {
                 return false;
@@ -151,7 +151,7 @@ final class Lexer implements Closeable {
     }
 
     /**
-     * Tests if the next characters constitute a escape delimiter through {@link ExtendedBufferedReader#lookAhead(char[])}.
+     * Tests if the next characters constitute a escape delimiter through {@link ExtendedBufferedReader#peek(char[])}.
      *
      * For example, for delimiter "[|]" and escape '!', return true if the next characters constitute "![!|!]".
      *
@@ -159,7 +159,7 @@ final class Lexer implements Closeable {
      * @throws IOException If an I/O error occurs.
      */
     boolean isEscapeDelimiter() throws IOException {
-        reader.lookAhead(escapeDelimiterBuf);
+        reader.peek(escapeDelimiterBuf);
         if (escapeDelimiterBuf[0] != delimiter[0]) {
             return false;
         }
@@ -311,7 +311,7 @@ final class Lexer implements Closeable {
             c = reader.read();
 
             if (isQuoteChar(c)) {
-                if (isQuoteChar(reader.lookAhead())) {
+                if (isQuoteChar(reader.peek())) {
                     // double or escaped encapsulator -> add single encapsulator to token
                     c = reader.read();
                     token.content.append((char) c);
@@ -435,7 +435,7 @@ final class Lexer implements Closeable {
      */
     boolean readEndOfLine(int ch) throws IOException {
         // check if we have \r\n...
-        if (ch == Constants.CR && reader.lookAhead() == Constants.LF) {
+        if (ch == Constants.CR && reader.peek() == Constants.LF) {
             // note: does not change ch outside of this method!
             ch = reader.read();
             // Save the EOL state

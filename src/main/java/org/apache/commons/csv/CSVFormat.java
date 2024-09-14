@@ -2292,7 +2292,7 @@ public final class CSVFormat implements Serializable {
         while (EOF != (c = bufferedReader.read())) {
             builder.append((char) c);
             Arrays.fill(lookAheadBuffer, (char) 0);
-            final String test = builder.toString() + new String(bufferedReader.lookAhead(lookAheadBuffer));
+            final String test = builder.toString() + new String(bufferedReader.peek(lookAheadBuffer));
             final boolean isDelimiterStart = isDelimiter((char) c, test, pos, delimArray, delimLength);
             final boolean isCr = c == Constants.CR;
             final boolean isLf = c == Constants.LF;
