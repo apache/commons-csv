@@ -42,6 +42,7 @@
   <body>
     <release version="1.11.1" date="YYYY-MM-DD" description="Feature and bug fix release (Java 8 or above)">
       <!-- ADD -->
+      <action type="add" dev="ggregory" due-to="Gary Gregory">Add CSVException that extends IOException thrown on invalid input instead of IOException.</action>
       <!-- FIX -->
       <action type="fix" dev="ggregory" due-to="Gary Gregory">Fix PMD issues for port to PMD 7.1.0.</action>
       <action type="fix" dev="ggregory" due-to="Dávid Szigecsán, Gary Gregory">Fix some Javadoc links #442.</action>

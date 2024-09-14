@@ -207,10 +207,10 @@ final class Lexer implements Closeable {
      * A token corresponds to a term, a record change or an end-of-file indicator.
      * </p>
      *
-     * @param token
-     *            an existing Token object to reuse. The caller is responsible for initializing the Token.
+     * @param token an existing Token object to reuse. The caller is responsible for initializing the Token.
      * @return the next token found.
-     * @throws IOException on stream access error.
+     * @throws IOException  on stream access error.
+     * @throws CSVException Thrown on invalid input.
      */
     Token nextToken(final Token token) throws IOException {
         // Get the last read char (required for empty line detection)
@@ -307,6 +307,7 @@ final class Lexer implements Closeable {
      * @throws IOException
      *             Thrown when in an invalid state: EOF before closing encapsulator or invalid character before
      *             delimiter or EOL.
+     * @throws CSVException Thrown on invalid input.
      */
     private Token parseEncapsulatedToken(final Token token) throws IOException {
         token.isQuoted = true;
@@ -342,8 +343,8 @@ final class Lexer implements Closeable {
                             token.content.append((char) c);
                         } else if (!Character.isWhitespace((char) c)) {
                             // error invalid char between token and next delimiter
-                            throw new IOException(String.format("Invalid char between encapsulated token and delimiter at line: %,d, position: %,d",
-                                    getCurrentLineNumber(), getCharacterPosition()));
+                            throw new CSVException("Invalid character between encapsulated token and delimiter at line: %,d, position: %,d",
+                                    getCurrentLineNumber(), getCharacterPosition());
                         }
                     }
                 }
@@ -356,8 +357,7 @@ final class Lexer implements Closeable {
                     return token;
                 }
                 // error condition (end of file before end of token)
-                throw new IOException("(startline " + startLineNumber +
-                        ") EOF reached before encapsulated token finished");
+                throw new CSVException("(startline %,d) EOF reached before encapsulated token finished", startLineNumber);
             } else {
                 // consume character
                 token.content.append((char) c);
@@ -368,8 +368,8 @@ final class Lexer implements Closeable {
     /**
      * Parses a simple token.
      * <p>
-     * Simple tokens are tokens that are not surrounded by encapsulators. A simple token might contain escaped
-     * delimiters (as \, or \;). The token is finished when one of the following conditions becomes true:
+     * Simple tokens are tokens that are not surrounded by encapsulators. A simple token might contain escaped delimiters (as \, or \;). The token is finished
+     * when one of the following conditions becomes true:
      * </p>
      * <ul>
      * <li>The end of line has been reached (EORECORD)</li>
@@ -377,13 +377,11 @@ final class Lexer implements Closeable {
      * <li>An unescaped delimiter has been reached (TOKEN)</li>
      * </ul>
      *
-     * @param token
-     *            the current token
-     * @param ch
-     *            the current character
+     * @param token the current token
+     * @param ch    the current character
      * @return the filled token
-     * @throws IOException
-     *             on stream access error
+     * @throws IOException  on stream access error
+     * @throws CSVException Thrown on invalid input.
      */
     private Token parseSimpleToken(final Token token, int ch) throws IOException {
         // Faster to use while(true)+break than while(token.type == INVALID)
@@ -420,10 +418,9 @@ final class Lexer implements Closeable {
     /**
      * Appends the next escaped character to the token's content.
      *
-     * @param token
-     *            the current token
-     * @throws IOException
-     *            on stream access error
+     * @param token the current token
+     * @throws IOException  on stream access error
+     * @throws CSVException Thrown on invalid input.
      */
     private void appendNextEscapedCharacterToToken(final Token token) throws IOException {
         if (isEscapeDelimiter()) {
@@ -467,15 +464,12 @@ final class Lexer implements Closeable {
 
     // TODO escape handling needs more work
     /**
-     * Handle an escape sequence.
-     * The current character must be the escape character.
-     * On return, the next character is available by calling {@link ExtendedBufferedReader#getLastChar()}
-     * on the input stream.
+     * Handle an escape sequence. The current character must be the escape character. On return, the next character is available by calling
+     * {@link ExtendedBufferedReader#getLastChar()} on the input stream.
      *
-     * @return the unescaped character (as an int) or {@link IOUtils#EOF} if char following the escape is
-     *      invalid.
-     * @throws IOException if there is a problem reading the stream or the end of stream is detected:
-     *      the escape character is not allowed at end of stream
+     * @return the unescaped character (as an int) or {@link IOUtils#EOF} if char following the escape is invalid.
+     * @throws IOException  if there is a problem reading the stream or the end of stream is detected: the escape character is not allowed at end of stream
+     * @throws CSVException Thrown on invalid input.
      */
     int readEscape() throws IOException {
         // the escape char has just been read (normally a backslash)
@@ -498,7 +492,7 @@ final class Lexer implements Closeable {
         case Constants.BACKSPACE: // TODO is this correct?
             return ch;
         case EOF:
-            throw new IOException("EOF whilst processing escape sequence");
+            throw new CSVException("EOF while processing escape sequence");
         default:
             // Now check for meta-characters
             if (isMetaChar(ch)) {

@@ -2032,6 +2032,7 @@ public final class CSVFormat implements Serializable {
      * @param reader the input stream
      * @return a parser over a stream of {@link CSVRecord}s.
      * @throws IOException If an I/O error occurs
+     * @throws CSVException Thrown on invalid input.
      */
     public CSVParser parse(final Reader reader) throws IOException {
         return new CSVParser(reader, this);

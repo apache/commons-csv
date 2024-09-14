@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import java.io.File;
 import java.io.IOException;
@@ -1555,10 +1556,11 @@ public class CSVParserTest {
                 .setSkipHeaderRecord(true)
                 .build();
         // @formatter:on
-
         try (CSVParser csvParser = csvFormat.parse(stringReader)) {
-            final Exception exception = assertThrows(UncheckedIOException.class, csvParser::getRecords);
-            assertTrue(exception.getMessage().contains("Invalid char between encapsulated token and delimiter at line: 2, position: 94"));
+            final UncheckedIOException exception = assertThrows(UncheckedIOException.class, csvParser::getRecords);
+            assertInstanceOf(CSVException.class, exception.getCause());
+            assertTrue(exception.getMessage().contains("Invalid character between encapsulated token and delimiter at line: 2, position: 94"),
+                    exception::getMessage);
         }
     }
 
