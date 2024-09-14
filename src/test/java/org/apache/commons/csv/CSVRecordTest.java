@@ -84,10 +84,11 @@ public class CSVRecordTest {
 
     @Test
     public void testCSVRecordNULLValues() throws IOException {
-        final CSVParser parser = CSVParser.parse("A,B\r\nONE,TWO", CSVFormat.DEFAULT.withHeader());
-        final CSVRecord csvRecord = new CSVRecord(parser, null, null, 0L, 0L);
-        assertEquals(0, csvRecord.size());
-        assertThrows(IllegalArgumentException.class, () -> csvRecord.get("B"));
+        try (CSVParser parser = CSVParser.parse("A,B\r\nONE,TWO", CSVFormat.DEFAULT.withHeader())) {
+            final CSVRecord csvRecord = new CSVRecord(parser, null, null, 0L, 0L);
+            assertEquals(0, csvRecord.size());
+            assertThrows(IllegalArgumentException.class, () -> csvRecord.get("B"));
+        }
     }
 
     @Test
