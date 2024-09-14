@@ -32,12 +32,19 @@ final class Lexer implements Closeable {
     private static final String CR_STRING = Character.toString(Constants.CR);
     private static final String LF_STRING = Character.toString(Constants.LF);
 
+    /**
+     * Constant char to use for disabling comments, escapes, and encapsulation. The value -2 is used because it
+     * won't be confused with an EOF signal (-1), and because the Unicode value {@code FFFE} would be encoded as two
+     * chars (using surrogates) and thus there should never be a collision with a real text char.
+     */
+    private static final char DISABLED = '\ufffe';
+
     private final char[] delimiter;
     private final char[] delimiterBuf;
     private final char[] escapeDelimiterBuf;
-    private final int escape;
-    private final int quoteChar;
-    private final int commentStart;
+    private final char escape;
+    private final char quoteChar;
+    private final char commentStart;
     private final boolean ignoreSurroundingSpaces;
     private final boolean ignoreEmptyLines;
     private final boolean lenientEof;
@@ -190,8 +197,8 @@ final class Lexer implements Closeable {
         return ch == Constants.LF || ch == Constants.CR || ch == Constants.UNDEFINED;
     }
 
-    private int mapNullToDisabled(final Character c) {
-        return c == null ? -1 : c.charValue(); // Explicit unboxing is intentional
+    private char mapNullToDisabled(final Character c) {
+        return c == null ? DISABLED : c.charValue(); // N.B. Explicit (un)boxing is intentional
     }
 
     /**
@@ -505,5 +512,4 @@ final class Lexer implements Closeable {
             buffer.setLength(length);
         }
     }
-
 }

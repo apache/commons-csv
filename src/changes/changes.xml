@@ -50,7 +50,6 @@
       <action type="fix" dev="ggregory" due-to="Dávid Szigecsán">Migrate CSVFormat#print(File, Charset) to NIO #445.</action>
       <action type="fix" dev="ggregory" due-to="Dávid Szigecsán">Fix documentation for CSVFormat private constructor #466.</action>
       <action type="fix" issue="CSV-294" dev="ggregory" due-to="Joern Huxhorn, Gary Gregory">CSVFormat does not support explicit " as escape char.</action>
-      <action type="fix" issue="CSV-150" dev="ggregory" due-to="dota17, Gary Gregory, Jörn Huxhorn">Escaping is not disableable.</action>
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Dependabot">Bump commons-codec:commons-codec from 1.16.1 to 1.17.1 #422, #449.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-parent from 69 to 74 #435, #452, #465, #468.</action>

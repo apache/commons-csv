@@ -23,8 +23,10 @@ import java.io.StringReader;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 public class JiraCsv150Test {
 
     private void testDisable(final CSVFormat csvFormat, final StringReader stringReader) throws IOException {
