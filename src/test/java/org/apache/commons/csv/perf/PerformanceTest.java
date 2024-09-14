@@ -46,6 +46,7 @@ public class PerformanceTest {
     private static final String TEST_RESRC = "org/apache/commons/csv/perf/worldcitiespop.txt.gz";
 
     private static final File BIG_FILE = new File(FileUtils.getTempDirectoryPath(), "worldcitiespop.txt");
+
     @BeforeAll
     public static void setUpClass() throws FileNotFoundException, IOException {
         if (BIG_FILE.exists()) {
