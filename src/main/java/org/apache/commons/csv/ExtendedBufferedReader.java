@@ -41,7 +41,7 @@ final class ExtendedBufferedReader extends BufferedReader {
     private int lastChar = UNDEFINED;
 
     /** The count of EOLs (CR/LF/CRLF) seen so far */
-    private long eolCounter;
+    private long lineNumber;
 
     /** The position, which is the number of characters read so far */
     private long position;
@@ -77,9 +77,9 @@ final class ExtendedBufferedReader extends BufferedReader {
     long getCurrentLineNumber() {
         // Check if we are at EOL or EOF or just starting
         if (lastChar == CR || lastChar == LF || lastChar == UNDEFINED || lastChar == EOF) {
-            return eolCounter; // counter is accurate
+            return lineNumber; // counter is accurate
         }
-        return eolCounter + 1; // Allow for counter being incremented only at EOL
+        return lineNumber + 1; // Allow for counter being incremented only at EOL
     }
 
     /**
@@ -144,7 +144,7 @@ final class ExtendedBufferedReader extends BufferedReader {
         final int current = super.read();
         if (current == CR || current == LF && lastChar != CR ||
             current == EOF && lastChar != CR && lastChar != LF && lastChar != EOF) {
-            eolCounter++;
+            lineNumber++;
         }
         lastChar = current;
         position++;
@@ -162,10 +162,10 @@ final class ExtendedBufferedReader extends BufferedReader {
                 final char ch = buf[i];
                 if (ch == LF) {
                     if (CR != (i > offset ? buf[i - 1] : lastChar)) {
-                        eolCounter++;
+                        lineNumber++;
                     }
                 } else if (ch == CR) {
-                    eolCounter++;
+                    lineNumber++;
                 }
             }
             lastChar = buf[offset + len - 1];
@@ -180,7 +180,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      * Gets the next line, dropping the line terminator(s). This method should only be called when processing a
      * comment, otherwise, information can be lost.
      * <p>
-     * Increments {@link #eolCounter} and updates {@link #position}.
+     * Increments {@link #lineNumber} and updates {@link #position}.
      * </p>
      * <p>
      * Sets {@link #lastChar} to {@code Constants.EOF} at EOF, otherwise the last EOL character.
