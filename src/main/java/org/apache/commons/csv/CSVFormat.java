@@ -1441,15 +1441,19 @@ public final class CSVFormat implements Serializable {
         return CSVFormat.Predefined.valueOf(format).getFormat();
     }
 
+    /** How duplicate headers are handled. */
     private final DuplicateHeaderMode duplicateHeaderMode;
 
+    /** Whether missing column names are allowed when parsing the header line. */
     private final boolean allowMissingColumnNames;
 
+    /** Whether to flush on close. */
     private final boolean autoFlush;
 
     /** Set to null if commenting is disabled. */
     private final Character commentMarker;
 
+    /** The character delimiting the values (typically ";", "," or "\t"). */
     private final String delimiter;
 
     /** Set to null if escaping is disabled. */
@@ -1461,12 +1465,13 @@ public final class CSVFormat implements Serializable {
     /** Array of header comment lines. */
     private final String[] headerComments;
 
+    /** Whether empty lines between records are ignored when parsing input. */
     private final boolean ignoreEmptyLines;
 
     /** Should ignore header names case. */
     private final boolean ignoreHeaderCase;
 
-    /** TODO Should leading/trailing spaces be ignored around values?. */
+    /** Should leading/trailing spaces be ignored around values?. */
     private final boolean ignoreSurroundingSpaces;
 
     /** The string to be used for null values. */
@@ -1475,21 +1480,28 @@ public final class CSVFormat implements Serializable {
     /** Set to null if quoting is disabled. */
     private final Character quoteCharacter;
 
+    /** Set to {@code quoteCharacter + nullString + quoteCharacter} */
     private final String quotedNullString;
 
+    /** The quote policy output fields. */
     private final QuoteMode quoteMode;
 
     /** For output. */
     private final String recordSeparator;
 
+    /** Whether to skip the header record. */
     private final boolean skipHeaderRecord;
 
+    /** Whether reading end-of-file is allowed even when input is malformed, helps Excel compatibility. */
     private final boolean lenientEof;
 
+    /** Whether reading trailing data is allowed in records, helps Excel compatibility. */
     private final boolean trailingData;
 
+    /** Whether to add a trailing delimiter. */
     private final boolean trailingDelimiter;
 
+    /** Whether to trim leading and trailing blanks. */
     private final boolean trim;
 
     private CSVFormat(final Builder builder) {

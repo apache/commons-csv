@@ -42,6 +42,10 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The start position of this record as a character position in the source stream. This may or may not correspond to the byte position depending on the
+     * character set.
+     */
     private final long characterPosition;
 
     /** The accumulated comments (if any) */
