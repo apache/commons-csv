@@ -124,21 +124,19 @@ final class ExtendedBufferedReader extends BufferedReader {
     }
 
     /**
-     * Populates the buffer with the next {@code buf.length} characters in the
-     * current reader without consuming them. The next call to {@link #read()} will
-     * still return the next value. This doesn't affect the line number or the last
-     * character.
+     * Populates the buffer with the next {@code buf.length} characters in the current reader without consuming them. The next call to {@link #read()} will
+     * still return the next value. This doesn't affect the line number or the last character.
      *
      * @param buf the buffer to fill for the look ahead.
-     * @return the buffer itself
+     * @return The number of characters peeked, or -1 if the end of the stream has been reached.
      * @throws IOException If an I/O error occurs
      */
-    char[] peek(final char[] buf) throws IOException {
+    int peek(final char[] buf) throws IOException {
         final int n = buf.length;
         super.mark(n);
-        super.read(buf, 0, n);
+        final int c = super.read(buf, 0, n);
         super.reset();
-        return buf;
+        return c;
     }
 
     @Override
