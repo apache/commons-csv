@@ -62,17 +62,23 @@ public class ExtendedBufferedReaderTest {
 
         try (final ExtendedBufferedReader br = createBufferedReader(test)) {
             assertEquals(0, br.getCurrentLineNumber());
+            int lineCount = 0;
             while (br.readLine() != null) {
                 // consume all
+                lineCount++;
             }
             assertEquals(EOLeolct, br.getCurrentLineNumber());
+            assertEquals(lineCount, br.getCurrentLineNumber());
         }
         try (final ExtendedBufferedReader br = createBufferedReader(test)) {
             assertEquals(0, br.getCurrentLineNumber());
+            int readCount = 0;
             while (br.read() != EOF) {
                 // consume all
+                readCount++;
             }
             assertEquals(EOLeolct, br.getCurrentLineNumber());
+            assertEquals(readCount, test.length());
         }
         try (final ExtendedBufferedReader br = createBufferedReader(test)) {
             assertEquals(0, br.getCurrentLineNumber());
