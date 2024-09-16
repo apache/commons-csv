@@ -22,7 +22,6 @@ import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.UNDEFINED;
 import static org.apache.commons.io.IOUtils.EOF;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -35,7 +34,7 @@ import org.apache.commons.io.IOUtils;
  * {@link #read()}. This reader also tracks how many characters have been read with {@link #getPosition()}.
  * </p>
  */
-final class ExtendedBufferedReader extends BufferedReader {
+final class ExtendedBufferedReader extends BufferedReaderFork {
 
     /** The last char returned */
     private int lastChar = UNDEFINED;
