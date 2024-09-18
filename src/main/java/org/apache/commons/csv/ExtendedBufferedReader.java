@@ -57,7 +57,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     }
 
     @Override
-    public void mark(int readAheadLimit) throws IOException {
+    public void mark(final int readAheadLimit) throws IOException {
         lineNumberMark = lineNumber;
         lastCharMark = lastChar;
         positionMark = position;
@@ -71,7 +71,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         position = positionMark;
         super.reset();
     }
-    
+
     /**
      * Closes the stream.
      *
