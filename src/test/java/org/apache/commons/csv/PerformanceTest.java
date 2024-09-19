@@ -53,28 +53,28 @@ public class PerformanceTest {
     private static final class Stats {
         final int count;
         final int fields;
+
         Stats(final int c, final int f) {
             count = c;
             fields = f;
         }
     }
 
-    private static final String[] PROPERTY_NAMES = {
-        "java.version",                  // Java Runtime Environment version
-        "java.vendor",                   // Java Runtime Environment vendor
+    private static final String[] PROPERTY_NAMES = { "java.version", // Java Runtime Environment version
+            "java.vendor", // Java Runtime Environment vendor
 //        "java.vm.specification.version", // Java Virtual Machine specification version
 //        "java.vm.specification.vendor",  // Java Virtual Machine specification vendor
 //        "java.vm.specification.name",    // Java Virtual Machine specification name
-        "java.vm.version",               // Java Virtual Machine implementation version
+            "java.vm.version", // Java Virtual Machine implementation version
 //        "java.vm.vendor",                // Java Virtual Machine implementation vendor
-        "java.vm.name",                  // Java Virtual Machine implementation name
+            "java.vm.name", // Java Virtual Machine implementation name
 //        "java.specification.version",    // Java Runtime Environment specification version
 //        "java.specification.vendor",     // Java Runtime Environment specification vendor
 //        "java.specification.name",       // Java Runtime Environment specification name
 
-        "os.name",                       // Operating system name
-        "os.arch",                       // Operating system architecture
-        "os.version",                    // Operating system version
+            "os.name", // Operating system name
+            "os.arch", // Operating system architecture
+            "os.version", // Operating system version
     };
     private static int max = 11; // skip first test
 
@@ -112,18 +112,16 @@ public class PerformanceTest {
         return new Stats(count, fields);
     }
 
-    public static void main(final String [] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         if (BIG_FILE.exists()) {
             System.out.printf("Found test fixture %s: %,d bytes.%n", BIG_FILE, BIG_FILE.length());
         } else {
-          System.out.println("Decompressing test fixture to: " + BIG_FILE + "...");
-          try (
-              final InputStream input = new GZIPInputStream(
-                  PerformanceTest.class.getClassLoader().getResourceAsStream(TEST_RESRC));
-              final OutputStream output = new FileOutputStream(BIG_FILE)) {
-              IOUtils.copy(input, output);
-              System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
-          }
+            System.out.println("Decompressing test fixture to: " + BIG_FILE + "...");
+            try (final InputStream input = new GZIPInputStream(PerformanceTest.class.getClassLoader().getResourceAsStream(TEST_RESRC));
+                    final OutputStream output = new FileOutputStream(BIG_FILE)) {
+                IOUtils.copy(input, output);
+                System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
+            }
         }
         final int argc = args.length;
         if (argc > 0) {
@@ -195,7 +193,7 @@ public class PerformanceTest {
     }
 
     // calculate and show average
-    private static void show(){
+    private static void show() {
         if (num > 1) {
             long tot = 0;
             for (int i = 1; i < num; i++) { // skip first test
@@ -341,5 +339,5 @@ public class PerformanceTest {
         }
         show();
     }
-
 }
+

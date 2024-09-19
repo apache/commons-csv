@@ -36,13 +36,14 @@ public class JiraCsv265Test {
     @Test
     public void testCharacterPositionWithComments() throws IOException {
         // @formatter:off
-        final String csv = "# Comment1\n"
-                         + "Header1,Header2\n"
-                         + "# Comment2\n"
-                         + "Value1,Value2\n"
-                         + "# Comment3\n"
-                         + "Value3,Value4\n"
-                         + "# Comment4\n";
+        final String csv =
+                "# Comment1\n" +
+                "Header1,Header2\n" +
+                "# Comment2\n" +
+                "Value1,Value2\n" +
+                "# Comment3\n" +
+                "Value3,Value4\n" +
+                "# Comment4\n";
         final CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
             .setCommentMarker('#')
             .setHeader()
@@ -61,15 +62,16 @@ public class JiraCsv265Test {
     @Test
     public void testCharacterPositionWithCommentsSpanningMultipleLines() throws IOException {
         // @formatter:off
-        final String csv = "# Comment1\n"
-                         + "# Comment2\n"
-                         + "Header1,Header2\n"
-                         + "# Comment3\n"
-                         + "# Comment4\n"
-                         + "Value1,Value2\n"
-                         + "# Comment5\n"
-                         + "# Comment6\n"
-                         + "Value3,Value4";
+        final String csv =
+                "# Comment1\n" +
+                "# Comment2\n" +
+                "Header1,Header2\n" +
+                "# Comment3\n" +
+                "# Comment4\n" +
+                "Value1,Value2\n" +
+                "# Comment5\n" +
+                "# Comment6\n" +
+                "Value3,Value4";
         final CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
             .setCommentMarker('#')
             .setHeader()

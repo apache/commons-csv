@@ -28,10 +28,6 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 
-import com.generationjava.io.CsvReader;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReaderBuilder;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -48,6 +44,10 @@ import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.infra.Blackhole;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;
+
+import com.generationjava.io.CsvReader;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReaderBuilder;
 
 @BenchmarkMode(Mode.AverageTime)
 @Fork(value = 1, jvmArgs = {"-server", "-Xms1024M", "-Xmx1024M"})

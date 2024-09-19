@@ -307,25 +307,24 @@ public class CSVDuplicateHeaderTest {
                               final boolean allowMissingColumnNames,
                               final boolean ignoreHeaderCase,
                               final String[] headers,
-                              final boolean valid) throws IOException {
-        final CSVFormat format =
-            CSVFormat.DEFAULT.builder()
-                             .setDuplicateHeaderMode(duplicateHeaderMode)
-                             .setAllowMissingColumnNames(allowMissingColumnNames)
-                             .setIgnoreHeaderCase(ignoreHeaderCase)
-                             .setNullString("NULL")
-                             .setHeader()
-                             .build();
+            final boolean valid) throws IOException {
+        // @formatter:off
+        final CSVFormat format = CSVFormat.DEFAULT.builder()
+                .setDuplicateHeaderMode(duplicateHeaderMode)
+                .setAllowMissingColumnNames(allowMissingColumnNames)
+                .setIgnoreHeaderCase(ignoreHeaderCase)
+                .setNullString("NULL")
+                .setHeader()
+                .build();
+        // @formatter:on
         final String input = Arrays.stream(headers)
                 .map(s -> s == null ? format.getNullString() : s)
                 .collect(Collectors.joining(format.getDelimiterString()));
+        // @formatter:off
         if (valid) {
-            try(CSVParser parser = CSVParser.parse(input, format)) {
+            try (CSVParser parser = CSVParser.parse(input, format)) {
                 // Parser ignores null headers
-                final List<String> expected =
-                    Arrays.stream(headers)
-                          .filter(s -> s != null)
-                          .collect(Collectors.toList());
+                final List<String> expected = Arrays.stream(headers).filter(s -> s != null).collect(Collectors.toList());
                 Assertions.assertEquals(expected, parser.getHeaderNames(), "HeaderNames");
             }
         } else {

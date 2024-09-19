@@ -314,8 +314,8 @@ public class CSVPrinterTest {
         try (final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withCommentMarker('#'))) {
             printer.print(value);
             printer.printComment("This is a comment\r\non multiple lines\rthis is next comment\r");
-            assertEquals("abc" + recordSeparator + "# This is a comment" + recordSeparator + "# on multiple lines" + recordSeparator + "# this is next comment"
-                    + recordSeparator + "# " + recordSeparator, sw.toString());
+            assertEquals("abc" + recordSeparator + "# This is a comment" + recordSeparator + "# on multiple lines" + recordSeparator +
+                    "# this is next comment" + recordSeparator + "# " + recordSeparator, sw.toString());
         }
     }
 
@@ -729,8 +729,8 @@ public class CSVPrinterTest {
             }
         }
         final String csv = sw.toString();
-        assertEquals("1,r1,\"long text 1\",\"YmluYXJ5IGRhdGEgMQ==\r\n\"" + recordSeparator + "2,r2,\"" + longText2 + "\",\"YmluYXJ5IGRhdGEgMg==\r\n\""
-                + recordSeparator, csv);
+        assertEquals("1,r1,\"long text 1\",\"YmluYXJ5IGRhdGEgMQ==\r\n\"" + recordSeparator + "2,r2,\"" + longText2 + "\",\"YmluYXJ5IGRhdGEgMg==\r\n\"" +
+                recordSeparator, csv);
         // Round trip the data
         try (StringReader reader = new StringReader(csv);
                 final CSVParser csvParser = csvFormat.parse(reader)) {
@@ -1349,11 +1349,12 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintCSVParser() throws IOException {
-        final String code = "a1,b1\n" // 1)
-                + "a2,b2\n" // 2)
-                + "a3,b3\n" // 3)
-                + "a4,b4\n"// 4)
-        ;
+        // @formatter:off
+        final String code = "a1,b1\n" + // 1)
+                "a2,b2\n" + // 2)
+                "a3,b3\n" + // 3)
+                "a4,b4\n";  // 4)
+        // @formatter:on
         final String[][] res = { { "a1", "b1" }, { "a2", "b2" }, { "a3", "b3" }, { "a4", "b4" } };
         final CSVFormat format = CSVFormat.DEFAULT;
         final StringWriter sw = new StringWriter();
@@ -1370,11 +1371,12 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintCSVRecord() throws IOException {
-        final String code = "a1,b1\n" // 1)
-                + "a2,b2\n" // 2)
-                + "a3,b3\n" // 3)
-                + "a4,b4\n"// 4)
-        ;
+        // @formatter:off
+        final String code = "a1,b1\n" + // 1)
+                "a2,b2\n" +  // 2)
+                "a3,b3\n" +  // 3)
+                "a4,b4\n";   // 4)
+        // @formatter:on
         final String[][] res = { { "a1", "b1" }, { "a2", "b2" }, { "a3", "b3" }, { "a4", "b4" } };
         final CSVFormat format = CSVFormat.DEFAULT;
         final StringWriter sw = new StringWriter();
@@ -1393,11 +1395,12 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintCSVRecords() throws IOException {
-        final String code = "a1,b1\n" // 1)
-                + "a2,b2\n" // 2)
-                + "a3,b3\n" // 3)
-                + "a4,b4\n"// 4)
-        ;
+        // @formatter:off
+        final String code = "a1,b1\n" + // 1)
+                "a2,b2\n" + // 2)
+                "a3,b3\n" + // 3)
+                "a4,b4\n";  // 4)
+        // @formatter:on
         final String[][] res = { { "a1", "b1" }, { "a2", "b2" }, { "a3", "b3" }, { "a4", "b4" } };
         final CSVFormat format = CSVFormat.DEFAULT;
         final StringWriter sw = new StringWriter();
@@ -1506,8 +1509,8 @@ public class CSVPrinterTest {
      * Test to target the use of {@link IOUtils#copy(java.io.Reader, Appendable)} which directly buffers the value from the Reader to the Appendable.
      *
      * <p>
-     * Requires the format to have no quote or escape character, value to be a {@link Reader Reader} and the output <em>MUST NOT</em> be a
-     * {@link Writer Writer} but some other Appendable.
+     * Requires the format to have no quote or escape character, value to be a {@link Reader Reader} and the output <em>MUST NOT</em> be a {@link Writer Writer}
+     * but some other Appendable.
      * </p>
      *
      * @throws IOException Not expected to happen
@@ -1527,8 +1530,7 @@ public class CSVPrinterTest {
      * Test to target the use of {@link IOUtils#copyLarge(java.io.Reader, Writer)} which directly buffers the value from the Reader to the Writer.
      *
      * <p>
-     * Requires the format to have no quote or escape character, value to be a {@link Reader Reader} and the output <em>MUST</em> be a
-     * {@link Writer Writer}.
+     * Requires the format to have no quote or escape character, value to be a {@link Reader Reader} and the output <em>MUST</em> be a {@link Writer Writer}.
      * </p>
      *
      * @throws IOException Not expected to happen
@@ -1546,11 +1548,12 @@ public class CSVPrinterTest {
 
     @Test
     public void testPrintRecordStream() throws IOException {
-        final String code = "a1,b1\n" // 1)
-                + "a2,b2\n" // 2)
-                + "a3,b3\n" // 3)
-                + "a4,b4\n"// 4)
-        ;
+        // @formatter:off
+        final String code = "a1,b1\n" + // 1)
+                "a2,b2\n" + // 2)
+                "a3,b3\n" + // 3)
+                "a4,b4\n";  // 4)
+        // @formatter:on
         final String[][] res = { { "a1", "b1" }, { "a2", "b2" }, { "a3", "b3" }, { "a4", "b4" } };
         final CSVFormat format = CSVFormat.DEFAULT;
         final StringWriter sw = new StringWriter();
