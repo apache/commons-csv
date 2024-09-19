@@ -481,11 +481,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws CSVException Thrown on invalid input.
      */
     private Headers createHeaders() throws IOException {
-        Map<String, Integer> hdrMap = null;
+        Map<String, Integer> headerMap = null;
         List<String> headerNames = null;
         final String[] formatHeader = format.getHeader();
         if (formatHeader != null) {
-            hdrMap = createEmptyHeaderMap();
+            headerMap = createEmptyHeaderMap();
             String[] headerRecord = null;
             if (formatHeader.length == 0) {
                 // read the header from the first line of the file
@@ -504,10 +504,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 headerRecord = formatHeader;
             }
 
-            headerNames = getHeaderNames(headerRecord, hdrMap);
+            headerNames = getHeaderNames(headerRecord, headerMap);
         }
         // Make header names Collection immutable
-        return new Headers(hdrMap, headerNames == null ? Collections.emptyList() : Collections.unmodifiableList(headerNames));
+        return new Headers(headerMap, headerNames == null ? Collections.emptyList() : Collections.unmodifiableList(headerNames));
     }
 
     /**
