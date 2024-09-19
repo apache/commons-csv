@@ -56,22 +56,6 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         super(reader);
     }
 
-    @Override
-    public void mark(final int readAheadLimit) throws IOException {
-        lineNumberMark = lineNumber;
-        lastCharMark = lastChar;
-        positionMark = position;
-        super.mark(readAheadLimit);
-    }
-
-    @Override
-    public void reset() throws IOException {
-        lineNumber = lineNumberMark;
-        lastChar = lastCharMark;
-        position = positionMark;
-        super.reset();
-    }
-
     /**
      * Closes the stream.
      *
@@ -83,6 +67,18 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         // Set ivars before calling super close() in case close() throws an IOException.
         lastChar = EOF;
         super.close();
+    }
+
+    /**
+     * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by
+     * any of the read methods. This will not include a character read using the {@link #peek()} method. If no
+     * character has been read then this will return {@link Constants#UNDEFINED}. If the end of the stream was reached
+     * on the last read then this will return {@link IOUtils#EOF}.
+     *
+     * @return the last character that was read
+     */
+    int getLastChar() {
+        return lastChar;
     }
 
     /**
@@ -99,24 +95,20 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     }
 
     /**
-     * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by
-     * any of the read methods. This will not include a character read using the {@link #peek()} method. If no
-     * character has been read then this will return {@link Constants#UNDEFINED}. If the end of the stream was reached
-     * on the last read then this will return {@link IOUtils#EOF}.
-     *
-     * @return the last character that was read
-     */
-    int getLastChar() {
-        return lastChar;
-    }
-
-    /**
      * Gets the character position in the reader.
      *
      * @return the current position in the reader (counting characters, not bytes since this is a Reader)
      */
     long getPosition() {
         return this.position;
+    }
+
+    @Override
+    public void mark(final int readAheadLimit) throws IOException {
+        lineNumberMark = lineNumber;
+        lastCharMark = lastChar;
+        positionMark = position;
+        super.mark(readAheadLimit);
     }
 
     @Override
@@ -188,6 +180,14 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
             buffer.append((char) current);
         }
         return buffer.toString();
+    }
+
+    @Override
+    public void reset() throws IOException {
+        lineNumber = lineNumberMark;
+        lastChar = lastCharMark;
+        position = positionMark;
+        super.reset();
     }
 
 }
