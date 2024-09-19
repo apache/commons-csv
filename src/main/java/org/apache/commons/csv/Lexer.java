@@ -89,7 +89,7 @@ final class Lexer implements Closeable {
      * @return the current line number
      */
     long getCurrentLineNumber() {
-        return reader.getCurrentLineNumber();
+        return reader.getLineNumber();
     }
 
     String getFirstEol() {

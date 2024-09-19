@@ -835,66 +835,90 @@ public final class CSVFormat implements Serializable {
     public enum Predefined {
 
         /**
+         * The DEFAULT predefined format.
+         *
          * @see CSVFormat#DEFAULT
          */
         Default(DEFAULT),
 
         /**
+         * The EXCEL predefined format.
+         *
          * @see CSVFormat#EXCEL
          */
         Excel(EXCEL),
 
         /**
+         * The INFORMIX_UNLOAD predefined format.
+         *
          * @see CSVFormat#INFORMIX_UNLOAD
          * @since 1.3
          */
         InformixUnload(INFORMIX_UNLOAD),
 
         /**
+         * The INFORMIX_UNLOAD_CSV predefined format.
+         *
          * @see CSVFormat#INFORMIX_UNLOAD_CSV
          * @since 1.3
          */
         InformixUnloadCsv(INFORMIX_UNLOAD_CSV),
 
         /**
+         * The MONGODB_CSV predefined format.
+         *
          * @see CSVFormat#MONGODB_CSV
          * @since 1.7
          */
         MongoDBCsv(MONGODB_CSV),
 
         /**
+         * The MONGODB_TSV predefined format.
+         *
          * @see CSVFormat#MONGODB_TSV
          * @since 1.7
          */
         MongoDBTsv(MONGODB_TSV),
 
         /**
+         * The MYSQL predefined format.
+         *
          * @see CSVFormat#MYSQL
          */
         MySQL(MYSQL),
 
         /**
+         * The ORACLE predefined format.
+         *
          * @see CSVFormat#ORACLE
          */
         Oracle(ORACLE),
 
         /**
+         * The POSTGRESQL_CSV predefined format.
+         *
          * @see CSVFormat#POSTGRESQL_CSV
          * @since 1.5
          */
         PostgreSQLCsv(POSTGRESQL_CSV),
 
         /**
-         * @see CSVFormat#POSTGRESQL_CSV
+         * The POSTGRESQL_TEXT predefined format.
+         *
+         * @see CSVFormat#POSTGRESQL_TEXT
          */
         PostgreSQLText(POSTGRESQL_TEXT),
 
         /**
+         * The RFC4180 predefined format.
+         *
          * @see CSVFormat#RFC4180
          */
         RFC4180(CSVFormat.RFC4180),
 
         /**
+         * The TDF predefined format.
+         *
          * @see CSVFormat#TDF
          */
         TDF(CSVFormat.TDF);

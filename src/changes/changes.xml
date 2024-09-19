@@ -51,12 +51,15 @@
       <action type="fix" dev="ggregory" due-to="Dávid Szigecsán">Fix documentation for CSVFormat private constructor #466.</action>
       <action type="fix" issue="CSV-294" dev="ggregory" due-to="Joern Huxhorn, Gary Gregory">CSVFormat does not support explicit " as escape char.</action>
       <action type="fix" issue="CSV-150" dev="ggregory" due-to="dota17, Gary Gregory, Jörn Huxhorn">Escaping is not disableable.</action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">Fix Javadoc warnings on Java 23.</action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">Improve parser performance by up to 20%, YMMV.</action>
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Dependabot">Bump commons-codec:commons-codec from 1.16.1 to 1.17.1 #422, #449.</action>
-      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-parent from 69 to 74 #435, #452, #465, #468.</action>
+      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-parent from 69 to 75 #435, #452, #465, #468, #475.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.codehaus.mojo:taglist-maven-plugin from 3.0.0 to 3.1.0 #441.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-lang3 from 3.14.0 to 3.17.0 #450, #459, #470.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.hamcrest:hamcrest from 2.2 to 3.0 #455.</action>
+      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump commons-io:commons-io from 2.16.1 to 2.17.0 #476.</action>
     </release>
     <release version="1.11.0" date="2024-04-28" description="Feature and bug fix release (Java 8 or above)">
       <!-- ADD -->

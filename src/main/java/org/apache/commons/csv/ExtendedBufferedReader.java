@@ -22,11 +22,11 @@ import static org.apache.commons.csv.Constants.LF;
 import static org.apache.commons.csv.Constants.UNDEFINED;
 import static org.apache.commons.io.IOUtils.EOF;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.UnsynchronizedBufferedReader;
 
 /**
  * A special buffered reader which supports sophisticated read access.
@@ -35,24 +35,41 @@ import org.apache.commons.io.IOUtils;
  * {@link #read()}. This reader also tracks how many characters have been read with {@link #getPosition()}.
  * </p>
  */
-final class ExtendedBufferedReader extends BufferedReader {
+final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
 
     /** The last char returned */
     private int lastChar = UNDEFINED;
+    private int lastCharMark = UNDEFINED;
 
     /** The count of EOLs (CR/LF/CRLF) seen so far */
     private long lineNumber;
+    private long lineNumberMark;
 
     /** The position, which is the number of characters read so far */
     private long position;
-
-    private boolean closed;
+    private long positionMark;
 
     /**
      * Constructs a new instance using the default buffer size.
      */
     ExtendedBufferedReader(final Reader reader) {
         super(reader);
+    }
+
+    @Override
+    public void mark(final int readAheadLimit) throws IOException {
+        lineNumberMark = lineNumber;
+        lastCharMark = lastChar;
+        positionMark = position;
+        super.mark(readAheadLimit);
+    }
+
+    @Override
+    public void reset() throws IOException {
+        lineNumber = lineNumberMark;
+        lastChar = lastCharMark;
+        position = positionMark;
+        super.reset();
     }
 
     /**
@@ -64,7 +81,6 @@ final class ExtendedBufferedReader extends BufferedReader {
     @Override
     public void close() throws IOException {
         // Set ivars before calling super close() in case close() throws an IOException.
-        closed = true;
         lastChar = EOF;
         super.close();
     }
@@ -74,7 +90,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      *
      * @return the current line number
      */
-    long getCurrentLineNumber() {
+    long getLineNumber() {
         // Check if we are at EOL or EOF or just starting
         if (lastChar == CR || lastChar == LF || lastChar == UNDEFINED || lastChar == EOF) {
             return lineNumber; // counter is accurate
@@ -101,42 +117,6 @@ final class ExtendedBufferedReader extends BufferedReader {
      */
     long getPosition() {
         return this.position;
-    }
-
-    public boolean isClosed() {
-        return closed;
-    }
-
-    /**
-     * Returns the next character in the current reader without consuming it. So the next call to {@link #read()} will
-     * still return this value. Does not affect the line number or the last character.
-     *
-     * @return the next character
-     *
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    int peek() throws IOException {
-        super.mark(1);
-        final int c = super.read();
-        super.reset();
-        return c;
-    }
-
-    /**
-     * Populates the buffer with the next {@code buf.length} characters in the current reader without consuming them. The next call to {@link #read()} will
-     * still return the next value. This doesn't affect the line number or the last character.
-     *
-     * @param buf the buffer to fill for the look ahead.
-     * @return The number of characters peeked, or -1 if the end of the stream has been reached.
-     * @throws IOException If an I/O error occurs
-     */
-    int peek(final char[] buf) throws IOException {
-        final int n = buf.length;
-        super.mark(n);
-        final int c = super.read(buf, 0, n);
-        super.reset();
-        return c;
     }
 
     @Override
