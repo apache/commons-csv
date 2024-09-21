@@ -49,8 +49,12 @@ public class JiraCsv206Test {
             assertEquals("123 Main St.", record.get(2));
         }
         // Write with multiple character delimiter
-        final String outString = "# Change delimiter to [I]\r\n" + "first name[I]last name[I]address\r\n"
-            + "John[I]Smith[I]123 Main St.";
+        // @formatter:off
+        final String outString =
+                "# Change delimiter to [I]\r\n" +
+                "first name[I]last name[I]address\r\n" +
+                "John[I]Smith[I]123 Main St.";
+        // @formatter:on
         final String comment = "Change delimiter to [I]";
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()

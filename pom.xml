@@ -206,6 +206,7 @@
             <configLocation>${checkstyle.config.file}</configLocation>
             <enableRulesSummary>false</enableRulesSummary>
             <suppressionsLocation>${checkstyle.suppress.file}</suppressionsLocation>
+            <includeTestSourceDirectory>true</includeTestSourceDirectory>
           </configuration>
         </plugin>
         <plugin>

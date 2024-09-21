@@ -72,7 +72,7 @@ import org.apache.commons.io.function.Uncheck;
  * For those who like fluent APIs, parsers can be created using {@link CSVFormat#parse(java.io.Reader)} as a shortcut:
  * </p>
  * <pre>
- * for(CSVRecord record : CSVFormat.EXCEL.parse(in)) {
+ * for (CSVRecord record : CSVFormat.EXCEL.parse(in)) {
  *     ...
  * }
  * </pre>

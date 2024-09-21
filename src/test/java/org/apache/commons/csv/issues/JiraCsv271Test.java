@@ -35,7 +35,7 @@ public class JiraCsv271Test {
         final StringWriter stringWriter = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(stringWriter, csvFormat)) {
             printer.print("a");
-            printer.printRecord("b","c");
+            printer.printRecord("b", "c");
         }
         assertEquals("a,b,c\r\n", stringWriter.toString());
     }
@@ -46,7 +46,7 @@ public class JiraCsv271Test {
         final StringWriter stringWriter = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(stringWriter, csvFormat)) {
             printer.print("a");
-            printer.printRecord(Arrays.asList("b","c"));
+            printer.printRecord(Arrays.asList("b", "c"));
         }
         assertEquals("a,b,c\r\n", stringWriter.toString());
     }

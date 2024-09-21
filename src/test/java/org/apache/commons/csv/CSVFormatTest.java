@@ -715,11 +715,21 @@ public class CSVFormatTest {
 
     @Test
     public void testFormatToString() {
-        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',').withQuoteMode(QuoteMode.MINIMAL).withRecordSeparator(CRLF).withQuote('"')
-                .withNullString("").withIgnoreHeaderCase(true).withHeaderComments("This is HeaderComments").withHeader("col1", "col2", "col3");
+        // @formatter:off
+        final CSVFormat format = CSVFormat.RFC4180
+                .withEscape('?')
+                .withDelimiter(',')
+                .withQuoteMode(QuoteMode.MINIMAL)
+                .withRecordSeparator(CRLF)
+                .withQuote('"')
+                .withNullString("")
+                .withIgnoreHeaderCase(true)
+                .withHeaderComments("This is HeaderComments")
+                .withHeader("col1", "col2", "col3");
+        // @formatter:on
         assertEquals(
-                "Delimiter=<,> Escape=<?> QuoteChar=<\"> QuoteMode=<MINIMAL> NullString=<> RecordSeparator=<" + CRLF
-                        + "> IgnoreHeaderCase:ignored SkipHeaderRecord:false HeaderComments:[This is HeaderComments] Header:[col1, col2, col3]",
+                "Delimiter=<,> Escape=<?> QuoteChar=<\"> QuoteMode=<MINIMAL> NullString=<> RecordSeparator=<" + CRLF +
+                        "> IgnoreHeaderCase:ignored SkipHeaderRecord:false HeaderComments:[This is HeaderComments] Header:[col1, col2, col3]",
                 format.toString());
     }
 
@@ -960,12 +970,14 @@ public class CSVFormatTest {
 
     @Test
     public void testQuoteModeNoneShouldReturnMeaningfulExceptionMessage() {
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        final Exception exception = assertThrows(IllegalArgumentException.class, () ->
+        // @formatter:off
             CSVFormat.DEFAULT.builder()
                     .setHeader("Col1", "Col2", "Col3", "Col4")
                     .setQuoteMode(QuoteMode.NONE)
-                    .build();
-        });
+                    .build()
+        // @formatter:on
+        );
         final String actualMessage = exception.getMessage();
         final String expectedMessage = "Quote mode set to NONE but no escape character is set";
         assertEquals(expectedMessage, actualMessage);
