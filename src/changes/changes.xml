@@ -40,7 +40,7 @@
     <title>Apache Commons CSV Release Notes</title>
   </properties>
   <body>
-    <release version="1.12.0" date="YYYY-MM-DD" description="Feature and bug fix release (Java 8 or above)">
+    <release version="1.12.0" date="2024-09-21" description="Feature and bug fix release (Java 8 or above)">
       <!-- ADD -->
       <action type="add" issue="CSV-270" dev="ggregory" due-to="Thomas Kamps, Gary Gregory">Add CSVException that extends IOException thrown on invalid input instead of IOException.</action>
       <!-- FIX -->

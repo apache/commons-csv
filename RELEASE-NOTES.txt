@@ -1,3 +1,61 @@
+Apache Commons CSV
+Version 1.12.0
+Release Notes
+
+This document contains the release notes for the 1.12.0 version of Apache Commons CSV.
+Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
+
+Commons CSV requires at least Java 8.
+
+The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
+
+Feature and bug fix release (Java 8 or above)
+
+Changes in this version include:
+
+New Features
+------------
+
+* CSV-270:  Add CSVException that extends IOException thrown on invalid input instead of IOException. Thanks to Thomas Kamps, Gary Gregory.
+
+Fixed Bugs
+----------
+
+*           Fix PMD issues for port to PMD 7.1.0. Thanks to Gary Gregory.
+*           Fix some Javadoc links #442. Thanks to Dávid Szigecsán, Gary Gregory.
+*           Extract duplicated code into a method #444. Thanks to Dávid Szigecsán.
+*           Migrate CSVFormat#print(File, Charset) to NIO #445. Thanks to Dávid Szigecsán.
+*           Fix documentation for CSVFormat private constructor #466. Thanks to Dávid Szigecsán.
+* CSV-294:  CSVFormat does not support explicit " as escape char. Thanks to Joern Huxhorn, Gary Gregory.
+* CSV-150:  Escaping is not disableable. Thanks to dota17, Gary Gregory, Jörn Huxhorn.
+*           Fix Javadoc warnings on Java 23. Thanks to Gary Gregory.
+*           Improve parser performance by up to 20%, YMMV. Thanks to Gary Gregory.
+
+Changes
+-------
+
+*           Bump commons-codec:commons-codec from 1.16.1 to 1.17.1 #422, #449. Thanks to Dependabot.
+*           Bump org.apache.commons:commons-parent from 69 to 75 #435, #452, #465, #468, #475. Thanks to Gary Gregory.
+*           Bump org.codehaus.mojo:taglist-maven-plugin from 3.0.0 to 3.1.0 #441. Thanks to Gary Gregory.
+*           Bump org.apache.commons:commons-lang3 from 3.14.0 to 3.17.0 #450, #459, #470. Thanks to Gary Gregory.
+*           Bump org.hamcrest:hamcrest from 2.2 to 3.0 #455. Thanks to Gary Gregory.
+*           Bump commons-io:commons-io from 2.16.1 to 2.17.0 #476. Thanks to Gary Gregory, Dependabot.
+
+
+Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
+
+For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Commons CSV website:
+
+https://commons.apache.org/proper/commons-csv/
+
+Download page: https://commons.apache.org/proper/commons-csv/download_csv.cgi
+
+Have fun!
+-Apache Commons CSV team
+
+------------------------------------------------------------------------------
+
 Apache Commons CSV Version 1.11.0
 Release Notes
 
