@@ -23,7 +23,7 @@
     <version>75</version>
   </parent>
   <artifactId>commons-csv</artifactId>
-  <version>1.12.0-SNAPSHOT</version>
+  <version>1.12.0</version>
   <name>Apache Commons CSV</name>
   <url>https://commons.apache.org/proper/commons-csv/</url>
   <inceptionYear>2005</inceptionYear>
@@ -184,7 +184,7 @@
     <checkstyle.resourceExcludes>LICENSE.txt, NOTICE.txt, **/maven-archiver/pom.properties</checkstyle.resourceExcludes>
     <japicmp.skip>false</japicmp.skip>
     <commons.release.isDistModule>true</commons.release.isDistModule>
-    <project.build.outputTimestamp>2024-05-02T22:04:50Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2024-09-21T01:55:30Z</project.build.outputTimestamp>
     <!-- JaCoCo: Don't make code coverage worse than: -->
     <commons.jacoco.haltOnFailure>true</commons.jacoco.haltOnFailure>
     <commons.jacoco.classRatio>1.00</commons.jacoco.classRatio>
