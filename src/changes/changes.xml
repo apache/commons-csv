@@ -40,7 +40,12 @@
     <title>Apache Commons CSV Release Notes</title>
   </properties>
   <body>
-    <release version="1.12.0" date="2024-09-21" description="Feature and bug fix release (Java 8 or above)">
+    <release version="1.12.1" date="YYYY-MM-DD" description="This is a feature and maintenance release. Java 8 or later is required.">
+      <!-- FIX -->
+      <!-- ADD -->
+      <!-- UPDATE -->
+    </release>
+    <release version="1.12.0" date="2024-09-21" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- ADD -->
       <action type="add" issue="CSV-270" dev="ggregory" due-to="Thomas Kamps, Gary Gregory">Add CSVException that extends IOException thrown on invalid input instead of IOException.</action>
       <!-- FIX -->
@@ -61,7 +66,7 @@
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.hamcrest:hamcrest from 2.2 to 3.0 #455.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump commons-io:commons-io from 2.16.1 to 2.17.0 #476.</action>
     </release>
-    <release version="1.11.0" date="2024-04-28" description="Feature and bug fix release (Java 8 or above)">
+    <release version="1.11.0" date="2024-04-28" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- ADD -->
       <action issue="CSV-308" type="add" dev="ggregory" due-to="Buddhi De Silva, Gary Gregory">[Javadoc] Add example to CSVFormat#setHeaderComments() #344.</action>
       <action type="add" dev="ggregory" due-to="DamjanJovanovic, Gary Gregory">Add and use CSVFormat#setTrailingData(boolean) in CSVFormat.EXCEL for Excel compatibility #303.</action>
@@ -86,7 +91,7 @@
       <action type="update" dev="ggregory" due-to="Buddhi De Silva, Michael Osipov, Gary Gregory">Update exception message in CSVRecord#getNextRecord() #348.</action>
       <action type="update" dev="ggregory" due-to="Dependabot">Bump tests using com.opencsv:opencsv from 5.8 to 5.9 #373.</action>
     </release>
-    <release version="1.10.0" date="2023-01-28" description="Feature and bug fix release (Java 8 or above)">
+    <release version="1.10.0" date="2023-01-28" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- FIX -->
       <action                 type="fix" dev="ggregory" due-to="Arturo Bernal">Minor changes #172.</action>
       <action issue="CSV-292" type="fix" dev="kinow" due-to="Rob Vesse">No Automatic-Module-Name prevents usage in JPMS projects without repacking the JAR.</action>
@@ -132,7 +137,7 @@
       <action                 type="update" dev="ggregory" due-to="Gary Gregory">Bump japicmp-maven-plugin from 0.15.3 to 0.16.0.</action>
       <action                 type="update" dev="kinow" due-to="Dependabot">Bump maven-checkstyle-plugin from 3.1.2 to 3.2.0 #253.</action>
     </release>
-    <release version="1.9.0" date="2021-07-24" description="Feature and bug fix release (Java 8 or above)">
+    <release version="1.9.0" date="2021-07-24" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- FIX -->
       <action                 type="fix" dev="ggregory" due-to="Amey Jadiye">Replace FindBugs with SpotBugs #56.</action>
       <action                 type="fix" dev="ggregory" due-to="Chen">Javadoc typo in CSVFormat let's -> lets #57.</action>
@@ -199,7 +204,7 @@
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump PMD core from 6.29.0 to 6.36.0.</action>
       <action                 type="update" dev="ggregory" due-to="Dependabot">Bump biz.aQute.bnd:biz.aQute.bndlib from 5.1.2 to 5.3.0.</action>
     </release>
-    <release version="1.8" date="2020-02-01" description="Feature and bug fix release (Java 8 or above).
+    <release version="1.8" date="2020-02-01" description="This is a feature and maintenance release. Java 8 or later is required.
 
 This release fixes serialization compatibility of CSVRecord with versions 1.0 to 1.6.
 New fields added since 1.7 are not serialized. Support for Serializable is scheduled to be
@@ -222,7 +227,7 @@ removed in version 2.0.
       <action                 type="update" dev="ggregory" due-to="Chen">Fix typos in site and test #53.</action>
       <action                 type="update" dev="ggregory" due-to="Chen">Fix typo performance test #55.</action>
     </release>
-    <release version="1.7" date="2019-06-01" description="Feature and bug fix release (Java 8 or above)">
+    <release version="1.7" date="2019-06-01" description="This is a feature and maintenance release. Java 8 or later is required.">
       <action issue="CSV-233" type="add" dev="ggregory" due-to="Gary Gregory">Add predefined CSVFormats for printing MongoDB CSV and TSV.</action>
       <action issue="CSV-208" type="fix" dev="ggregory" due-to="Jurrie Overgoor">Fix escape character for POSTGRESQL_TEXT and POSTGRESQL_CSV formats.</action>
       <action issue="CSV-232" type="fix" dev="ggregory" due-to="Jurrie Overgoor, Gary Gregory">Site link "Source Repository" does not work.</action>
