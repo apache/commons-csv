@@ -83,6 +83,8 @@ public final class CSVPrinter implements Flushable, Closeable {
     /** True if we just began a new record. */
     private boolean newRecord = true;
 
+    private long recordCount;
+
     /**
      * Creates a printer that will print values to the given stream following the CSVFormat.
      * <p>
@@ -141,6 +143,17 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
+     * Outputs the record separator and increments the record count.
+     *
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    private synchronized void endOfRecord() throws IOException {
+        println();
+        recordCount++;
+    }
+
+    /**
      * Flushes the underlying stream.
      *
      * @throws IOException
@@ -160,6 +173,16 @@ public final class CSVPrinter implements Flushable, Closeable {
      */
     public Appendable getOut() {
         return this.appendable;
+    }
+
+    /**
+     * Gets the record count printed, this does not include comments or headers.
+     *
+     * @return the record count, this does not include comments or headers.
+     * @since 1.13.0
+     */
+    public long getRecordCount() {
+        return recordCount;
     }
 
     /**
@@ -235,7 +258,10 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @since 1.9.0
      */
     public synchronized void printHeaders(final ResultSet resultSet) throws IOException, SQLException {
-        printRecord((Object[]) format.builder().setHeader(resultSet).build().getHeader());
+        try (IOStream<String> stream = IOStream.of(format.builder().setHeader(resultSet).build().getHeader())) {
+            stream.forEachOrdered(this::print);
+        }
+        println();
     }
 
     /**
@@ -265,7 +291,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     @SuppressWarnings("resource")
     public synchronized void printRecord(final Iterable<?> values) throws IOException {
         IOStream.of(values).forEachOrdered(this::print);
-        println();
+        endOfRecord();
     }
 
     /**
@@ -302,7 +328,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     @SuppressWarnings("resource") // caller closes.
     public synchronized void printRecord(final Stream<?> values) throws IOException {
         IOStream.adapt(values).forEachOrdered(this::print);
-        println();
+        endOfRecord();
     }
 
     private void printRecordObject(final Object value) throws IOException {
@@ -426,7 +452,7 @@ public final class CSVPrinter implements Flushable, Closeable {
                     print(object);
                 }
             }
-            println();
+            endOfRecord();
         }
     }
 
