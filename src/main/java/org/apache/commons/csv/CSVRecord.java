@@ -26,6 +26,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+class ImmutableRecordCantBeSetException extends Exception{
+    public ImmutableRecordCantBeSetException(String message){
+        super(message);
+    }
+}
 /**
  * A CSV record parsed from a CSV file.
  *
@@ -56,6 +61,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     /** The values of the record */
     private final String[] values;
+    /** Determines the mutability of the record*/
+    private boolean isMutable;
 
     /** The parser that originates this record. This is not serialized. */
     private final transient CSVParser parser;
@@ -67,6 +74,34 @@ public final class CSVRecord implements Serializable, Iterable<String> {
         this.parser = parser;
         this.comment = comment;
         this.characterPosition = characterPosition;
+        /** By default records are immutable*/
+        this.isMutable = false;
+
+    }
+    /**
+    * Make this instance Mutable.
+    * */
+    public void  makeCSVRecordMutable(){
+        this.isMutable = true;
+    }
+    public boolean isCSVRecordMutable(){
+        return this.isMutable;
+    }
+    /**
+     * Sets a value by index.
+     *
+     * @param index index
+     *            a column index (0-based)
+     * @param value
+     *            a string value to replace the current data
+     *
+     * @throws ImmutableRecordCantBeSetException incase it's called on an immutable instance.
+     */
+    public void set(int index, String value) throws ImmutableRecordCantBeSetException {
+        if(!isMutable){
+            throw new ImmutableRecordCantBeSetException("Attempt to change Immutable CSV Record");
+        }
+        values[index] = value;
     }
 
     /**
