@@ -476,7 +476,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException
      *             If there is a problem reading the header or skipping the first record
      * @throws CSVException Thrown on invalid input.
+     * @deprecated Will be removed in the next major version, use {@link Builder#get()}.
      */
+    @Deprecated
     public CSVParser(final Reader reader, final CSVFormat format) throws IOException {
         this(reader, format, 0, 1);
     }
@@ -503,7 +505,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If there is a problem reading the header or skipping the first record
      * @throws CSVException Thrown on invalid input.
      * @since 1.1
+     * @deprecated Will be private in the next major version, use {@link Builder#get()}.
      */
+    @Deprecated
     @SuppressWarnings("resource")
     public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber)
         throws IOException {
