@@ -70,7 +70,7 @@ public class JiraCsv167Test {
             .setQuoteMode(QuoteMode.ALL)
             .setRecordSeparator('\n')
             .setSkipHeaderRecord(false)
-            .build();
+            .get();
         // @formatter:on
         int comments = 0;
         int records = 0;

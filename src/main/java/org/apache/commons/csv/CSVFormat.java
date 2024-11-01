@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.commons.io.IOUtils;
@@ -182,7 +183,7 @@ public final class CSVFormat implements Serializable {
      *
      * @since 1.9.0
      */
-    public static class Builder {
+    public static class Builder implements Supplier<CSVFormat> {
 
         /**
          * Creates a new default builder.
@@ -273,8 +274,21 @@ public final class CSVFormat implements Serializable {
          * Builds a new CSVFormat instance.
          *
          * @return a new CSVFormat instance.
+         * @deprecated Use {@link #get()}.
          */
+        @Deprecated
         public CSVFormat build() {
+            return get();
+        }
+
+        /**
+         * Builds a new CSVFormat instance.
+         *
+         * @return a new CSVFormat instance.
+         * @since 1.13.0
+         */
+        @Override
+        public CSVFormat get() {
             return new CSVFormat(this);
         }
 
@@ -997,7 +1011,7 @@ public final class CSVFormat implements Serializable {
             .setAllowMissingColumnNames(true)
             .setTrailingData(true)
             .setLenientEof(true)
-            .build();
+            .get();
     // @formatter:on
 
     /**
@@ -1029,7 +1043,7 @@ public final class CSVFormat implements Serializable {
             .setEscape(Constants.BACKSLASH)
             .setQuote(Constants.DOUBLE_QUOTE_CHAR)
             .setRecordSeparator(Constants.LF)
-            .build();
+            .get();
     // @formatter:on
 
     /**
@@ -1059,7 +1073,7 @@ public final class CSVFormat implements Serializable {
             .setDelimiter(Constants.COMMA)
             .setQuote(Constants.DOUBLE_QUOTE_CHAR)
             .setRecordSeparator(Constants.LF)
-            .build();
+            .get();
     // @formatter:on
 
     /**
@@ -1101,7 +1115,7 @@ public final class CSVFormat implements Serializable {
             .setQuote(Constants.DOUBLE_QUOTE_CHAR)
             .setQuoteMode(QuoteMode.MINIMAL)
             .setSkipHeaderRecord(false)
-            .build();
+            .get();
     // @formatter:off
 
     /**
@@ -1138,7 +1152,7 @@ public final class CSVFormat implements Serializable {
             .setQuote(Constants.DOUBLE_QUOTE_CHAR)
             .setQuoteMode(QuoteMode.MINIMAL)
             .setSkipHeaderRecord(false)
-            .build();
+            .get();
     // @formatter:off
 
     /**
@@ -1175,7 +1189,7 @@ public final class CSVFormat implements Serializable {
             .setRecordSeparator(Constants.LF)
             .setNullString(Constants.SQL_NULL_STRING)
             .setQuoteMode(QuoteMode.ALL_NON_NULL)
-            .build();
+            .get();
     // @formatter:off
 
     /**
@@ -1215,7 +1229,7 @@ public final class CSVFormat implements Serializable {
             .setTrim(true)
             .setRecordSeparator(System.lineSeparator())
             .setQuoteMode(QuoteMode.MINIMAL)
-            .build();
+            .get();
     // @formatter:off
 
     /**
@@ -1253,7 +1267,7 @@ public final class CSVFormat implements Serializable {
             .setRecordSeparator(Constants.LF)
             .setNullString(Constants.EMPTY)
             .setQuoteMode(QuoteMode.ALL_NON_NULL)
-            .build();
+            .get();
     // @formatter:off
 
     /**
@@ -1291,7 +1305,7 @@ public final class CSVFormat implements Serializable {
             .setRecordSeparator(Constants.LF)
             .setNullString(Constants.SQL_NULL_STRING)
             .setQuoteMode(QuoteMode.ALL_NON_NULL)
-            .build();
+            .get();
     // @formatter:off
 
     /**
@@ -1309,7 +1323,7 @@ public final class CSVFormat implements Serializable {
      *
      * @see Predefined#RFC4180
      */
-    public static final CSVFormat RFC4180 = DEFAULT.builder().setIgnoreEmptyLines(false).build();
+    public static final CSVFormat RFC4180 = DEFAULT.builder().setIgnoreEmptyLines(false).get();
 
     private static final long serialVersionUID = 2L;
 
@@ -1332,7 +1346,7 @@ public final class CSVFormat implements Serializable {
     public static final CSVFormat TDF = DEFAULT.builder()
             .setDelimiter(Constants.TAB)
             .setIgnoreSurroundingSpaces(true)
-            .build();
+            .get();
     // @formatter:on
 
     /**
@@ -1647,7 +1661,7 @@ public final class CSVFormat implements Serializable {
      * @return a copy of this instance.
      */
     CSVFormat copy() {
-        return builder().build();
+        return builder().get();
     }
 
     @Override
@@ -2610,7 +2624,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withAllowDuplicateHeaderNames() {
-        return builder().setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL).build();
+        return builder().setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL).get();
     }
 
     /**
@@ -2624,7 +2638,7 @@ public final class CSVFormat implements Serializable {
     @Deprecated
     public CSVFormat withAllowDuplicateHeaderNames(final boolean allowDuplicateHeaderNames) {
         final DuplicateHeaderMode mode = allowDuplicateHeaderNames ? DuplicateHeaderMode.ALLOW_ALL : DuplicateHeaderMode.ALLOW_EMPTY;
-        return builder().setDuplicateHeaderMode(mode).build();
+        return builder().setDuplicateHeaderMode(mode).get();
     }
 
     /**
@@ -2637,7 +2651,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withAllowMissingColumnNames() {
-        return builder().setAllowMissingColumnNames(true).build();
+        return builder().setAllowMissingColumnNames(true).get();
     }
 
     /**
@@ -2650,7 +2664,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withAllowMissingColumnNames(final boolean allowMissingColumnNames) {
-        return builder().setAllowMissingColumnNames(allowMissingColumnNames).build();
+        return builder().setAllowMissingColumnNames(allowMissingColumnNames).get();
     }
 
     /**
@@ -2664,7 +2678,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withAutoFlush(final boolean autoFlush) {
-        return builder().setAutoFlush(autoFlush).build();
+        return builder().setAutoFlush(autoFlush).get();
     }
 
     /**
@@ -2679,7 +2693,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withCommentMarker(final char commentMarker) {
-        return builder().setCommentMarker(commentMarker).build();
+        return builder().setCommentMarker(commentMarker).get();
     }
 
     /**
@@ -2694,7 +2708,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withCommentMarker(final Character commentMarker) {
-        return builder().setCommentMarker(commentMarker).build();
+        return builder().setCommentMarker(commentMarker).get();
     }
 
     /**
@@ -2707,7 +2721,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withDelimiter(final char delimiter) {
-        return builder().setDelimiter(delimiter).build();
+        return builder().setDelimiter(delimiter).get();
     }
 
     /**
@@ -2720,7 +2734,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withEscape(final char escape) {
-        return builder().setEscape(escape).build();
+        return builder().setEscape(escape).get();
     }
 
     /**
@@ -2733,7 +2747,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withEscape(final Character escape) {
-        return builder().setEscape(escape).build();
+        return builder().setEscape(escape).get();
     }
 
     /**
@@ -2759,7 +2773,7 @@ public final class CSVFormat implements Serializable {
         return builder()
                 .setHeader()
                 .setSkipHeaderRecord(true)
-                .build();
+                .get();
         // @formatter:on
     }
 
@@ -2790,7 +2804,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withHeader(final Class<? extends Enum<?>> headerEnum) {
-        return builder().setHeader(headerEnum).build();
+        return builder().setHeader(headerEnum).get();
     }
 
     /**
@@ -2818,7 +2832,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withHeader(final ResultSet resultSet) throws SQLException {
-        return builder().setHeader(resultSet).build();
+        return builder().setHeader(resultSet).get();
     }
 
     /**
@@ -2846,7 +2860,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withHeader(final ResultSetMetaData resultSetMetaData) throws SQLException {
-        return builder().setHeader(resultSetMetaData).build();
+        return builder().setHeader(resultSetMetaData).get();
     }
 
     /**
@@ -2873,7 +2887,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withHeader(final String... header) {
-        return builder().setHeader(header).build();
+        return builder().setHeader(header).get();
     }
 
     /**
@@ -2892,7 +2906,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withHeaderComments(final Object... headerComments) {
-        return builder().setHeaderComments(headerComments).build();
+        return builder().setHeaderComments(headerComments).get();
     }
 
     /**
@@ -2905,7 +2919,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withIgnoreEmptyLines() {
-        return builder().setIgnoreEmptyLines(true).build();
+        return builder().setIgnoreEmptyLines(true).get();
     }
 
     /**
@@ -2918,7 +2932,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withIgnoreEmptyLines(final boolean ignoreEmptyLines) {
-        return builder().setIgnoreEmptyLines(ignoreEmptyLines).build();
+        return builder().setIgnoreEmptyLines(ignoreEmptyLines).get();
     }
 
     /**
@@ -2931,7 +2945,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withIgnoreHeaderCase() {
-        return builder().setIgnoreHeaderCase(true).build();
+        return builder().setIgnoreHeaderCase(true).get();
     }
 
     /**
@@ -2944,7 +2958,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withIgnoreHeaderCase(final boolean ignoreHeaderCase) {
-        return builder().setIgnoreHeaderCase(ignoreHeaderCase).build();
+        return builder().setIgnoreHeaderCase(ignoreHeaderCase).get();
     }
 
     /**
@@ -2957,7 +2971,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withIgnoreSurroundingSpaces() {
-        return builder().setIgnoreSurroundingSpaces(true).build();
+        return builder().setIgnoreSurroundingSpaces(true).get();
     }
 
     /**
@@ -2969,7 +2983,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withIgnoreSurroundingSpaces(final boolean ignoreSurroundingSpaces) {
-        return builder().setIgnoreSurroundingSpaces(ignoreSurroundingSpaces).build();
+        return builder().setIgnoreSurroundingSpaces(ignoreSurroundingSpaces).get();
     }
 
     /**
@@ -2985,7 +2999,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withNullString(final String nullString) {
-        return builder().setNullString(nullString).build();
+        return builder().setNullString(nullString).get();
     }
 
     /**
@@ -2998,7 +3012,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withQuote(final char quoteChar) {
-        return builder().setQuote(quoteChar).build();
+        return builder().setQuote(quoteChar).get();
     }
 
     /**
@@ -3011,7 +3025,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withQuote(final Character quoteChar) {
-        return builder().setQuote(quoteChar).build();
+        return builder().setQuote(quoteChar).get();
     }
 
     /**
@@ -3024,7 +3038,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withQuoteMode(final QuoteMode quoteMode) {
-        return builder().setQuoteMode(quoteMode).build();
+        return builder().setQuoteMode(quoteMode).get();
     }
 
     /**
@@ -3041,7 +3055,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withRecordSeparator(final char recordSeparator) {
-        return builder().setRecordSeparator(recordSeparator).build();
+        return builder().setRecordSeparator(recordSeparator).get();
     }
 
     /**
@@ -3059,7 +3073,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withRecordSeparator(final String recordSeparator) {
-        return builder().setRecordSeparator(recordSeparator).build();
+        return builder().setRecordSeparator(recordSeparator).get();
     }
 
     /**
@@ -3073,7 +3087,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withSkipHeaderRecord() {
-        return builder().setSkipHeaderRecord(true).build();
+        return builder().setSkipHeaderRecord(true).get();
     }
 
     /**
@@ -3086,7 +3100,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withSkipHeaderRecord(final boolean skipHeaderRecord) {
-        return builder().setSkipHeaderRecord(skipHeaderRecord).build();
+        return builder().setSkipHeaderRecord(skipHeaderRecord).get();
     }
 
     /**
@@ -3104,7 +3118,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withSystemRecordSeparator() {
-        return builder().setRecordSeparator(System.lineSeparator()).build();
+        return builder().setRecordSeparator(System.lineSeparator()).get();
     }
 
     /**
@@ -3116,7 +3130,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withTrailingDelimiter() {
-        return builder().setTrailingDelimiter(true).build();
+        return builder().setTrailingDelimiter(true).get();
     }
 
     /**
@@ -3129,7 +3143,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withTrailingDelimiter(final boolean trailingDelimiter) {
-        return builder().setTrailingDelimiter(trailingDelimiter).build();
+        return builder().setTrailingDelimiter(trailingDelimiter).get();
     }
 
     /**
@@ -3141,7 +3155,7 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withTrim() {
-        return builder().setTrim(true).build();
+        return builder().setTrim(true).get();
     }
 
     /**
@@ -3154,6 +3168,6 @@ public final class CSVFormat implements Serializable {
      */
     @Deprecated
     public CSVFormat withTrim(final boolean trim) {
-        return builder().setTrim(trim).build();
+        return builder().setTrim(trim).get();
     }
 }

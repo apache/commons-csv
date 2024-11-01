@@ -48,7 +48,7 @@ public class JiraCsv265Test {
             .setCommentMarker('#')
             .setHeader()
             .setSkipHeaderRecord(true)
-            .build();
+            .get();
         // @formatter:on
         try (final CSVParser parser = csvFormat.parse(new StringReader(csv))) {
             final Iterator<CSVRecord> itr = parser.iterator();
@@ -76,7 +76,7 @@ public class JiraCsv265Test {
             .setCommentMarker('#')
             .setHeader()
             .setSkipHeaderRecord(true)
-            .build();
+            .get();
         // @formatter:on
         try (final CSVParser parser = csvFormat.parse(new StringReader(csv))) {
             final Iterator<CSVRecord> itr = parser.iterator();

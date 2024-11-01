@@ -53,7 +53,7 @@ public class JiraCsv264Test {
             .setHeader()
             .setDuplicateHeaderMode(DuplicateHeaderMode.DISALLOW)
             .setAllowMissingColumnNames(true)
-            .build();
+            .get();
 
         try (StringReader reader = new StringReader(CSV_STRING)) {
             assertThrows(IllegalArgumentException.class, () -> csvFormat.parse(reader));
@@ -67,7 +67,7 @@ public class JiraCsv264Test {
             .setHeader()
             .setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_EMPTY)
             .setAllowMissingColumnNames(true)
-            .build();
+            .get();
 
         try (StringReader reader = new StringReader(CSV_STRING_GAP); final CSVParser parser = csvFormat.parse(reader)) {
             // empty
@@ -81,7 +81,7 @@ public class JiraCsv264Test {
             .setHeader()
             .setDuplicateHeaderMode(DuplicateHeaderMode.DISALLOW)
             .setAllowMissingColumnNames(true)
-            .build();
+            .get();
 
         try (StringReader reader = new StringReader(CSV_STRING_GAP)) {
             assertThrows(IllegalArgumentException.class, () -> csvFormat.parse(reader));

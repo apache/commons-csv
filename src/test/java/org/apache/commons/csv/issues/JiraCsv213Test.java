@@ -46,7 +46,7 @@ public class JiraCsv213Test {
                     .setSkipHeaderRecord(true)
                     .setRecordSeparator('\n')
                     .setQuoteMode(QuoteMode.ALL)
-                    .build();
+                    .get();
         // @formatter:on
         try (Reader reader = Files.newBufferedReader(csvFile.toPath(), StandardCharsets.UTF_8);
             CSVParser parser = csvFormat.parse(reader)) {

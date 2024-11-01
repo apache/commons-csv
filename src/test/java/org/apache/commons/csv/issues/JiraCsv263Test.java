@@ -40,7 +40,7 @@ public class JiraCsv263Test {
             .setQuote('"')
             .setEscape('?')
             .setQuoteMode(QuoteMode.NON_NUMERIC)
-            .build();
+            .get();
         // @formatter:on
         final StringBuilder out = new StringBuilder();
 

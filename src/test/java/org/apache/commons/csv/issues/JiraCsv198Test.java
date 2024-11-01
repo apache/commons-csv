@@ -35,7 +35,7 @@ public class JiraCsv198Test {
         .setDelimiter('^')
         .setHeader()
         .setSkipHeaderRecord(true)
-        .build();
+        .get();
     // @formatter:on
 
     @Test

@@ -94,7 +94,7 @@ public class JiraCsv290Test {
     @Test
     public void testWriteThenRead() throws Exception {
         final StringWriter sw = new StringWriter();
-        final CSVFormat format = CSVFormat.POSTGRESQL_CSV.builder().setHeader().setSkipHeaderRecord(true).build();
+        final CSVFormat format = CSVFormat.POSTGRESQL_CSV.builder().setHeader().setSkipHeaderRecord(true).get();
         try (CSVPrinter printer = new CSVPrinter(sw, format)) {
             printer.printRecord("column1", "column2");
             printer.printRecord("v11", "v12");

@@ -34,7 +34,7 @@ public class JiraCsv154Test {
             .setHeader("H1", "H2")
             .setCommentMarker('#')
             .setHeaderComments(comment)
-            .build();
+            .get();
         // @formatter:on
         final StringBuilder out = new StringBuilder();
         try (final CSVPrinter printer = format.print(out)) {
@@ -53,7 +53,7 @@ public class JiraCsv154Test {
             .setHeader("H1", "H2")
             .setHeaderComments(comment)
             .setCommentMarker('#')
-            .build();
+            .get();
         // @formatter:on
         final StringBuilder out = new StringBuilder();
         try (final CSVPrinter printer = format.print(out)) {

@@ -282,12 +282,12 @@ public class CSVDuplicateHeaderTest {
                              .setIgnoreHeaderCase(ignoreHeaderCase)
                              .setHeader(headers);
         if (valid) {
-            final CSVFormat format = builder.build();
+            final CSVFormat format = builder.get();
             Assertions.assertEquals(duplicateHeaderMode, format.getDuplicateHeaderMode(), "DuplicateHeaderMode");
             Assertions.assertEquals(allowMissingColumnNames, format.getAllowMissingColumnNames(), "AllowMissingColumnNames");
             Assertions.assertArrayEquals(headers, format.getHeader(), "Header");
         } else {
-            Assertions.assertThrows(IllegalArgumentException.class, builder::build);
+            Assertions.assertThrows(IllegalArgumentException.class, builder::get);
         }
     }
 
@@ -315,7 +315,7 @@ public class CSVDuplicateHeaderTest {
                 .setIgnoreHeaderCase(ignoreHeaderCase)
                 .setNullString("NULL")
                 .setHeader()
-                .build();
+                .get();
         // @formatter:on
         final String input = Arrays.stream(headers)
                 .map(s -> s == null ? format.getNullString() : s)

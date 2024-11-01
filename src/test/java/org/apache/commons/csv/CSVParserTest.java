@@ -99,7 +99,7 @@ public class CSVParserTest {
             "# multi-line" + CRLF + "# comment";
 
     // Format with auto-detected header
-    static private final CSVFormat FORMAT_AUTO_HEADER = CSVFormat.Builder.create(CSVFormat.DEFAULT).setCommentMarker('#').setHeader().build();
+    static private final CSVFormat FORMAT_AUTO_HEADER = CSVFormat.Builder.create(CSVFormat.DEFAULT).setCommentMarker('#').setHeader().get();
 
     // Format with explicit header
     // @formatter:off
@@ -107,7 +107,7 @@ public class CSVParserTest {
             .setSkipHeaderRecord(true)
             .setCommentMarker('#')
             .setHeader("A", "B")
-            .build();
+            .get();
     // @formatter:on
 
     // Format with explicit header that does not skip the header line
@@ -115,7 +115,7 @@ public class CSVParserTest {
     CSVFormat FORMAT_EXPLICIT_HEADER_NOSKIP = CSVFormat.Builder.create(CSVFormat.DEFAULT)
             .setCommentMarker('#')
             .setHeader("A", "B")
-            .build();
+            .get();
     // @formatter:on
 
     @SuppressWarnings("resource") // caller releases
@@ -1243,7 +1243,7 @@ public class CSVParserTest {
     public void testParse() throws Exception {
         final ClassLoader loader = ClassLoader.getSystemClassLoader();
         final URL url = loader.getResource("org/apache/commons/csv/CSVFileParser/test.csv");
-        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader("A", "B", "C", "D").build();
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader("A", "B", "C", "D").get();
         final Charset charset = StandardCharsets.UTF_8;
         // Reader
         try (final CSVParser parser = CSVParser.parse(new InputStreamReader(url.openStream(), charset), format)) {
@@ -1350,7 +1350,7 @@ public class CSVParserTest {
     @Test
     public void testParseWithDelimiterStringWithEscape() throws IOException {
         final String source = "a![!|!]b![|]c[|]xyz\r\nabc[abc][|]xyz";
-        final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setEscape('!').build();
+        final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setEscape('!').get();
         try (CSVParser csvParser = csvFormat.parse(new StringReader(source))) {
             CSVRecord csvRecord = csvParser.nextRecord();
             assertEquals("a[|]b![|]c", csvRecord.get(0));
@@ -1364,7 +1364,7 @@ public class CSVParserTest {
     @Test
     public void testParseWithDelimiterStringWithQuote() throws IOException {
         final String source = "'a[|]b[|]c'[|]xyz\r\nabc[abc][|]xyz";
-        final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setQuote('\'').build();
+        final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setQuote('\'').get();
         try (CSVParser csvParser = csvFormat.parse(new StringReader(source))) {
             CSVRecord csvRecord = csvParser.nextRecord();
             assertEquals("a[|]b[|]c", csvRecord.get(0));
@@ -1592,7 +1592,7 @@ public class CSVParserTest {
         final CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
                 .setHeader()
                 .setSkipHeaderRecord(true)
-                .build();
+                .get();
         // @formatter:on
         try (CSVParser csvParser = csvFormat.parse(stringReader)) {
             final UncheckedIOException exception = assertThrows(UncheckedIOException.class, csvParser::getRecords);

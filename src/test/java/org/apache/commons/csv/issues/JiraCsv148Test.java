@@ -30,7 +30,7 @@ public class JiraCsv148Test {
         final CSVFormat format = CSVFormat.DEFAULT.builder()
             .setQuoteMode(QuoteMode.ALL)
             .setIgnoreSurroundingSpaces(true)
-            .build();
+            .get();
         // @formatter:on
         assertEquals(
                 "\"\",\" \",\" Single space on the left\",\"Single space on the right \"," +
@@ -50,7 +50,7 @@ public class JiraCsv148Test {
         final CSVFormat format = CSVFormat.DEFAULT.builder()
             .setQuoteMode(QuoteMode.ALL)
             .setTrim(true)
-            .build();
+            .get();
         // @formatter:on
         assertEquals(
                 "\"\",\"\",\"Single space on the left\",\"Single space on the right\"," + "\"Single spaces on both sides\",\"Multiple spaces on the left\"," +

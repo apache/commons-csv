@@ -44,7 +44,7 @@ public class JiraCsv288Test {
         final Reader in = new StringReader("a|~|b|~|c|~|d|~||~|f");
         final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
-                CSVParser parser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|~|").build())) {
+                CSVParser parser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|~|").get())) {
             for (final CSVRecord csvRecord : parser) {
                 print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f", stringBuilder.toString());
@@ -59,7 +59,7 @@ public class JiraCsv288Test {
         final Reader in = new StringReader("a||b||c||d||||f");
         final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
-                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").build())) {
+                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").get())) {
             for (final CSVRecord csvRecord : csvParser) {
                 print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f", stringBuilder.toString());
@@ -74,7 +74,7 @@ public class JiraCsv288Test {
         final Reader in = new StringReader("a||bb||cc||dd||f");
         final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
-                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").build())) {
+                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").get())) {
             for (final CSVRecord csvRecord : csvParser) {
                 print(csvRecord, csvPrinter);
                 assertEquals("a,bb,cc,dd,f", stringBuilder.toString());
@@ -89,7 +89,7 @@ public class JiraCsv288Test {
         final Reader in = new StringReader("a||b||c||d||||f||");
         final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
-                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").build())) {
+                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").get())) {
             for (final CSVRecord csvRecord : csvParser) {
                 print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f,", stringBuilder.toString());
@@ -104,7 +104,7 @@ public class JiraCsv288Test {
         final Reader in = new StringReader("a||\"b||c\"||d||||f");
         final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
-                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").build())) {
+                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("||").get())) {
             for (final CSVRecord csvRecord : csvParser) {
                 print(csvRecord, csvPrinter);
                 assertEquals("a,b||c,d,,f", stringBuilder.toString());
@@ -118,7 +118,7 @@ public class JiraCsv288Test {
         final Reader in = new StringReader("a|b|c|d||f|");
         final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
-                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|").build())) {
+                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|").get())) {
             for (final CSVRecord csvRecord : csvParser) {
                 print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f,", stringBuilder.toString());
@@ -133,7 +133,7 @@ public class JiraCsv288Test {
         final Reader in = new StringReader("a|||b|||c|||d||||||f");
         final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
-                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|||").build())) {
+                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("|||").get())) {
             for (final CSVRecord csvRecord : csvParser) {
                 print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f", stringBuilder.toString());
@@ -147,7 +147,7 @@ public class JiraCsv288Test {
         final Reader in = new StringReader("a~|b~|c~|d~|~|f");
         final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
-                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
+                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").get())) {
             for (final CSVRecord csvRecord : csvParser) {
                 print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f", stringBuilder.toString());
@@ -161,7 +161,7 @@ public class JiraCsv288Test {
         final Reader in = new StringReader("a~|b~|c~|d~|~|f~");
         final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
-                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
+                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").get())) {
             for (final CSVRecord csvRecord : csvParser) {
                 print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f~", stringBuilder.toString());
@@ -175,7 +175,7 @@ public class JiraCsv288Test {
         final Reader in = new StringReader("a~|b~|c~|d~|~|f|");
         final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
-                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
+                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").get())) {
             for (final CSVRecord csvRecord : csvParser) {
                 print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f|", stringBuilder.toString());
@@ -189,7 +189,7 @@ public class JiraCsv288Test {
         final Reader in = new StringReader("a~|b~|c~|d~|~|f~~||g");
         final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
-                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
+                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").get())) {
             for (final CSVRecord csvRecord : csvParser) {
                 print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f~,|g", stringBuilder.toString());
@@ -204,7 +204,7 @@ public class JiraCsv288Test {
         final Reader in = new StringReader("a~|b~|c~|d~|~|f~|");
         final StringBuilder stringBuilder = new StringBuilder();
         try (CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.EXCEL);
-                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").build())) {
+                CSVParser csvParser = CSVParser.parse(in, CSVFormat.Builder.create().setDelimiter("~|").get())) {
             for (final CSVRecord csvRecord : csvParser) {
                 print(csvRecord, csvPrinter);
                 assertEquals("a,b,c,d,,f,", stringBuilder.toString());

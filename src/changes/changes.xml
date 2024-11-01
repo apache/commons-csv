@@ -45,6 +45,8 @@
       <!-- ADD -->
       <action type="add" issue="CSV-313" dev="ggregory" due-to="Gary Gregory">Add CSVPrinter.getRecordCount().</action>
       <action type="add" dev="ggregory" due-to="Gary Gregory">Add and use CSVParser.Builder and builder() and deprecate CSVParser constructors.</action>
+      <action type="add" dev="ggregory" due-to="Gary Gregory">CSVFormat.Builder implements Supplier&lt;CSVFormat&gt;.</action>
+      <action type="add" dev="ggregory" due-to="Gary Gregory">Deprecate CSVFormat.Builder.build() for get().</action>
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 76 to 78 #486, #495.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.codehaus.mojo:taglist-maven-plugin from 3.1.0 to 3.2.1 #493.</action> 

@@ -199,11 +199,11 @@ public class LexerTest {
     @Test
     public void testEOFWithoutClosingQuote() throws Exception {
         final String code = "a,\"b";
-        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setLenientEof(true).build())) {
+        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setLenientEof(true).get())) {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
             assertThat(parser.nextToken(new Token()), matches(EOF, "b"));
         }
-        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setLenientEof(false).build())) {
+        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setLenientEof(false).get())) {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "a"));
             assertThrows(IOException.class, () -> parser.nextToken(new Token()));
         }
@@ -439,12 +439,12 @@ public class LexerTest {
     @Test
     public void testTrailingTextAfterQuote() throws Exception {
         final String code = "\"a\" b,\"a\" \" b,\"a\" b \"\"";
-        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setTrailingData(true).build())) {
+        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setTrailingData(true).get())) {
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "a b"));
             assertThat(parser.nextToken(new Token()), matches(TOKEN, "a \" b"));
             assertThat(parser.nextToken(new Token()), matches(EOF, "a b \"\""));
         }
-        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setTrailingData(false).build())) {
+        try (final Lexer parser = createLexer(code, CSVFormat.Builder.create().setTrailingData(false).get())) {
             assertThrows(IOException.class, () -> parser.nextToken(new Token()));
         }
     }

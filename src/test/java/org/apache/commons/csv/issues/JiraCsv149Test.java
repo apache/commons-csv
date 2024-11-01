@@ -47,7 +47,7 @@ public class JiraCsv149Test {
             .setHeader()
             .setSkipHeaderRecord(true)
             .setQuote('"')
-            .build();
+            .get();
         // @formatter:on
         int lineCounter = 2;
         try (final CSVParser parser = CSVParser.builder().setReader(reader).setFormat(format).get()) {

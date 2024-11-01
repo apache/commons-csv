@@ -76,7 +76,7 @@ public class CSVRecordTest {
         try (final CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(rowData))) {
             record = parser.iterator().next();
         }
-        try (final CSVParser parser = CSVFormat.DEFAULT.builder().setHeader(EnumHeader.class).build().parse(new StringReader(rowData))) {
+        try (final CSVParser parser = CSVFormat.DEFAULT.builder().setHeader(EnumHeader.class).get().parse(new StringReader(rowData))) {
             recordWithHeader = parser.iterator().next();
             headerMap = parser.getHeaderMap();
         }
@@ -94,7 +94,7 @@ public class CSVRecordTest {
     @Test
     public void testDuplicateHeaderGet() throws IOException {
         final String csv = "A,A,B,B\n1,2,5,6\n";
-        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().build();
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().get();
 
         try (final CSVParser parser = CSVParser.parse(csv, format)) {
             final CSVRecord record = parser.nextRecord();
@@ -109,7 +109,7 @@ public class CSVRecordTest {
     @Test
     public void testDuplicateHeaderToMap() throws IOException {
         final String csv = "A,A,B,B\n1,2,5,6\n";
-        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().build();
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().get();
 
         try (final CSVParser parser = CSVParser.parse(csv, format)) {
             final CSVRecord record = parser.nextRecord();

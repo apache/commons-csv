@@ -36,18 +36,18 @@ public class JiraCsv150Test {
     @Test
     public void testDisableComment() throws IOException {
         final StringReader stringReader = new StringReader("\"66\u2441\",,\"\",\"DeutscheBK\ufffe\",\"000\"\r\n");
-        testDisable(CSVFormat.DEFAULT.builder().setCommentMarker(null).build(), stringReader);
+        testDisable(CSVFormat.DEFAULT.builder().setCommentMarker(null).get(), stringReader);
     }
 
     @Test
     public void testDisableEncapsulation() throws IOException {
         final StringReader stringReader = new StringReader("66\u2441,,\"\",\ufffeDeutscheBK,\"000\"\r\n");
-        testDisable(CSVFormat.DEFAULT.builder().setQuote(null).build(), stringReader);
+        testDisable(CSVFormat.DEFAULT.builder().setQuote(null).get(), stringReader);
     }
 
     @Test
     public void testDisableEscaping() throws IOException {
         final StringReader stringReader = new StringReader("\"66\u2441\",,\"\",\"DeutscheBK\ufffe\",\"000\"\r\n");
-        testDisable(CSVFormat.DEFAULT.builder().setEscape(null).build(), stringReader);
+        testDisable(CSVFormat.DEFAULT.builder().setEscape(null).get(), stringReader);
     }
 }

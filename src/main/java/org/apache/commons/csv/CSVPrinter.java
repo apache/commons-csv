@@ -258,7 +258,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @since 1.9.0
      */
     public synchronized void printHeaders(final ResultSet resultSet) throws IOException, SQLException {
-        try (IOStream<String> stream = IOStream.of(format.builder().setHeader(resultSet).build().getHeader())) {
+        try (IOStream<String> stream = IOStream.of(format.builder().setHeader(resultSet).get().getHeader())) {
             stream.forEachOrdered(this::print);
         }
         println();

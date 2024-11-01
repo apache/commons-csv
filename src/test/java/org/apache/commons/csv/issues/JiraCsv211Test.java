@@ -33,12 +33,12 @@ public class JiraCsv211Test {
         final CSVFormat printFormat = CSVFormat.DEFAULT.builder()
             .setDelimiter('\t')
             .setHeader("ID", "Name", "Country", "Age")
-            .build();
+            .get();
         // @formatter:on
         final String formatted = printFormat.format("1", "Jane Doe", "USA", "");
         assertEquals("ID\tName\tCountry\tAge\r\n1\tJane Doe\tUSA\t", formatted);
 
-        final CSVFormat parseFormat = CSVFormat.DEFAULT.builder().setDelimiter('\t').setHeader().setSkipHeaderRecord(true).build();
+        final CSVFormat parseFormat = CSVFormat.DEFAULT.builder().setDelimiter('\t').setHeader().setSkipHeaderRecord(true).get();
         try (final CSVParser parser = parseFormat.parse(new StringReader(formatted))) {
             parser.forEach(record -> {
                 assertEquals("1", record.get(0));

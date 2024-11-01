@@ -36,7 +36,7 @@ public class JiraCsv203Test {
                 .setNullString("N/A")
                 .setIgnoreSurroundingSpaces(true)
                 .setQuoteMode(QuoteMode.ALL)
-                .build();
+                .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
@@ -52,7 +52,7 @@ public class JiraCsv203Test {
                 .setNullString("N/A")
                 .setIgnoreSurroundingSpaces(true)
                 .setQuoteMode(QuoteMode.ALL_NON_NULL)
-                .build();
+                .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
@@ -68,7 +68,7 @@ public class JiraCsv203Test {
                 .setNullString("N/A")
                 .setIgnoreSurroundingSpaces(true)
                 .setQuoteMode(QuoteMode.MINIMAL)
-                .build();
+                .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
@@ -84,7 +84,7 @@ public class JiraCsv203Test {
                 .setNullString("N/A")
                 .setIgnoreSurroundingSpaces(true)
                 .setQuoteMode(QuoteMode.NON_NUMERIC)
-                .build();
+                .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
@@ -100,7 +100,7 @@ public class JiraCsv203Test {
                 .setNullString("N/A")
                 .setIgnoreSurroundingSpaces(true)
                 .setQuoteMode(QuoteMode.ALL)
-                .build();
+                .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
@@ -117,7 +117,7 @@ public class JiraCsv203Test {
                 //.setNullString("N/A")
                 .setIgnoreSurroundingSpaces(true)
                 .setQuoteMode(QuoteMode.ALL)
-                .build();
+                .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
@@ -132,7 +132,7 @@ public class JiraCsv203Test {
         final CSVFormat format = CSVFormat.EXCEL.builder()
                 .setNullString("N/A")
                 .setIgnoreSurroundingSpaces(true)
-                .build();
+                .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
         try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
