@@ -69,13 +69,15 @@ import org.junit.jupiter.params.provider.EnumSource;
  */
 public class CSVParserTest {
 
+    private static final CSVFormat EXCEL_WITH_HEADER = CSVFormat.EXCEL.withHeader();
+
     private static final Charset UTF_8 = StandardCharsets.UTF_8;
 
     private static final String UTF_8_NAME = UTF_8.name();
 
     private static final String CSV_INPUT = "a,b,c,d\n" + " a , b , 1 2 \n" + "\"foo baar\", b,\n" +
-    // + " \"foo\n,,\n\"\",,\n\\\"\",d,e\n";
-        "   \"foo\n,,\n\"\",,\n\"\"\",d,e\n"; // changed to use standard CSV escaping
+            // + " \"foo\n,,\n\"\",,\n\\\"\",d,e\n";
+            "   \"foo\n,,\n\"\",,\n\"\"\",d,e\n"; // changed to use standard CSV escaping
 
     private static final String CSV_INPUT_1 = "a,b,c,d";
 
@@ -220,7 +222,7 @@ public class CSVParserTest {
     @Disabled("CSV-107")
     public void testBOM() throws IOException {
         final URL url = ClassLoader.getSystemClassLoader().getResource("org/apache/commons/csv/CSVFileParser/bom.csv");
-        try (final CSVParser parser = CSVParser.parse(url, StandardCharsets.UTF_8, CSVFormat.EXCEL.withHeader())) {
+        try (final CSVParser parser = CSVParser.parse(url, StandardCharsets.UTF_8, EXCEL_WITH_HEADER)) {
             parser.forEach(record -> assertNotNull(record.get("Date")));
         }
     }
@@ -228,7 +230,7 @@ public class CSVParserTest {
     @Test
     public void testBOMInputStreamParserWithInputStream() throws IOException {
         try (final BOMInputStream inputStream = createBOMInputStream("org/apache/commons/csv/CSVFileParser/bom.csv");
-                final CSVParser parser = CSVParser.parse(inputStream, UTF_8, CSVFormat.EXCEL.withHeader())) {
+                final CSVParser parser = CSVParser.parse(inputStream, UTF_8, EXCEL_WITH_HEADER)) {
             parser.forEach(record -> assertNotNull(record.get("Date")));
         }
     }
@@ -236,7 +238,10 @@ public class CSVParserTest {
     @Test
     public void testBOMInputStreamParserWithReader() throws IOException {
         try (final Reader reader = new InputStreamReader(createBOMInputStream("org/apache/commons/csv/CSVFileParser/bom.csv"), UTF_8_NAME);
-                final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader())) {
+                final CSVParser parser = CSVParser.builder()
+                        .setReader(reader)
+                        .setFormat(EXCEL_WITH_HEADER)
+                        .get()) {
             parser.forEach(record -> assertNotNull(record.get("Date")));
         }
     }
@@ -244,15 +249,18 @@ public class CSVParserTest {
     @Test
     public void testBOMInputStreamParseWithReader() throws IOException {
         try (final Reader reader = new InputStreamReader(createBOMInputStream("org/apache/commons/csv/CSVFileParser/bom.csv"), UTF_8_NAME);
-                final CSVParser parser = CSVParser.parse(reader, CSVFormat.EXCEL.withHeader())) {
+                final CSVParser parser = CSVParser.builder()
+                        .setReader(reader)
+                        .setFormat(EXCEL_WITH_HEADER)
+                        .get()) {
             parser.forEach(record -> assertNotNull(record.get("Date")));
         }
     }
 
     @Test
     public void testCarriageReturnEndings() throws IOException {
-        final String code = "foo\rbaar,\rhello,world\r,kanu";
-        try (final CSVParser parser = CSVParser.parse(code, CSVFormat.DEFAULT)) {
+        final String string = "foo\rbaar,\rhello,world\r,kanu";
+        try (final CSVParser parser = CSVParser.builder().setCharSequence(string).get()) {
             final List<CSVRecord> records = parser.getRecords();
             assertEquals(4, records.size());
         }
@@ -260,8 +268,8 @@ public class CSVParserTest {
 
     @Test
     public void testCarriageReturnLineFeedEndings() throws IOException {
-        final String code = "foo\r\nbaar,\r\nhello,world\r\n,kanu";
-        try (final CSVParser parser = CSVParser.parse(code, CSVFormat.DEFAULT)) {
+        final String string = "foo\r\nbaar,\r\nhello,world\r\n,kanu";
+        try (final CSVParser parser = CSVParser.builder().setCharSequence(string).get()) {
             final List<CSVRecord> records = parser.getRecords();
             assertEquals(4, records.size());
         }
@@ -569,7 +577,7 @@ public class CSVParserTest {
     @Test
     public void testExcelHeaderCountLessThanData() throws Exception {
         final String code = "A,B,C,,\r\na,b,c,d,e\r\n";
-        try (final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL.withHeader())) {
+        try (final CSVParser parser = CSVParser.parse(code, EXCEL_WITH_HEADER)) {
             parser.getRecords().forEach(record -> {
                 assertEquals("a", record.get("A"));
                 assertEquals("b", record.get("B"));
@@ -783,7 +791,10 @@ public class CSVParserTest {
     public void testGetOneLineOneParser() throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT;
         try (final PipedWriter writer = new PipedWriter();
-                final CSVParser parser = new CSVParser(new PipedReader(writer), format)) {
+                final CSVParser parser = CSVParser.builder()
+                        .setReader(new PipedReader(writer))
+                        .setFormat(format)
+                        .get()) {
             writer.append(CSV_INPUT_1);
             writer.append(format.getRecordSeparator());
             final CSVRecord record1 = parser.nextRecord();
@@ -1232,33 +1243,66 @@ public class CSVParserTest {
     public void testParse() throws Exception {
         final ClassLoader loader = ClassLoader.getSystemClassLoader();
         final URL url = loader.getResource("org/apache/commons/csv/CSVFileParser/test.csv");
-        final CSVFormat format = CSVFormat.DEFAULT.withHeader("A", "B", "C", "D");
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader("A", "B", "C", "D").build();
         final Charset charset = StandardCharsets.UTF_8;
-
-        try (@SuppressWarnings("resource") // CSVParser closes the input resource
-        final CSVParser parser = CSVParser.parse(new InputStreamReader(url.openStream(), charset), format)) {
+        // Reader
+        try (final CSVParser parser = CSVParser.parse(new InputStreamReader(url.openStream(), charset), format)) {
             parseFully(parser);
         }
-        try (final CSVParser parser = CSVParser.parse(new String(Files.readAllBytes(Paths.get(url.toURI())), charset), format)) {
+        try (final CSVParser parser = CSVParser.builder().setReader(new InputStreamReader(url.openStream(), charset)).setFormat(format).get()) {
             parseFully(parser);
         }
-        try (final CSVParser parser = CSVParser.parse(new File(url.toURI()), charset, format)) {
+        // String
+        final Path path = Paths.get(url.toURI());
+        final String string = new String(Files.readAllBytes(path), charset);
+        try (final CSVParser parser = CSVParser.parse(string, format)) {
             parseFully(parser);
         }
-        try (@SuppressWarnings("resource") // CSVParser closes the input resource
-        final CSVParser parser = CSVParser.parse(url.openStream(), charset, format)) {
+        try (final CSVParser parser = CSVParser.builder().setCharSequence(string).setFormat(format).get()) {
             parseFully(parser);
         }
-        try (final CSVParser parser = CSVParser.parse(Paths.get(url.toURI()), charset, format)) {
+        // File
+        final File file = new File(url.toURI());
+        try (final CSVParser parser = CSVParser.parse(file, charset, format)) {
             parseFully(parser);
         }
+        try (final CSVParser parser = CSVParser.builder().setFile(file).setCharset(charset).setFormat(format).get()) {
+            parseFully(parser);
+        }
+        // InputStream
+        try (final CSVParser parser = CSVParser.parse(url.openStream(), charset, format)) {
+            parseFully(parser);
+        }
+        try (final CSVParser parser = CSVParser.builder().setInputStream(url.openStream()).setCharset(charset).setFormat(format).get()) {
+            parseFully(parser);
+        }
+        // Path
+        try (final CSVParser parser = CSVParser.parse(path, charset, format)) {
+            parseFully(parser);
+        }
+        try (final CSVParser parser = CSVParser.builder().setPath(path).setCharset(charset).setFormat(format).get()) {
+            parseFully(parser);
+        }
+        // URL
         try (final CSVParser parser = CSVParser.parse(url, charset, format)) {
             parseFully(parser);
         }
+        try (final CSVParser parser = CSVParser.builder().setURI(url.toURI()).setCharset(charset).setFormat(format).get()) {
+            parseFully(parser);
+        }
+        // InputStreamReader
         try (final CSVParser parser = new CSVParser(new InputStreamReader(url.openStream(), charset), format)) {
             parseFully(parser);
         }
+        try (final CSVParser parser = CSVParser.builder().setReader(new InputStreamReader(url.openStream(), charset)).setFormat(format).get()) {
+            parseFully(parser);
+        }
+        // InputStreamReader with longs
         try (final CSVParser parser = new CSVParser(new InputStreamReader(url.openStream(), charset), format, /* characterOffset= */0, /* recordNumber= */1)) {
+            parseFully(parser);
+        }
+        try (final CSVParser parser = CSVParser.builder().setReader(new InputStreamReader(url.openStream(), charset)).setFormat(format).setCharacterOffset(0)
+                .setRecordNumber(0).get()) {
             parseFully(parser);
         }
     }
@@ -1380,7 +1424,10 @@ public class CSVParserTest {
         try (CSVPrinter printer = new CSVPrinter(buf, format.getFormat())) {
             printer.printRecords(Stream.of(lines));
         }
-        try (CSVParser csvRecords = new CSVParser(new StringReader(buf.toString()), format.getFormat())) {
+        try (CSVParser csvRecords = CSVParser.builder()
+                .setReader(new StringReader(buf.toString()))
+                .setFormat(format.getFormat())
+                .get()) {
             for (final String[] line : lines) {
                 assertArrayEquals(line, csvRecords.nextRecord().values());
             }
@@ -1654,6 +1701,26 @@ public class CSVParserTest {
             assertEquals(code.indexOf("EOF"), record.getCharacterPosition());
         }
         // now try to read starting at record 3
+        try (CSVParser parser = CSVParser.builder()
+                .setReader(new StringReader(code.substring((int) positionRecord3)))
+                .setFormat(format)
+                .setCharacterOffset(positionRecord3)
+                .setRecordNumber(3)
+                .get()) {
+            CSVRecord record;
+            // nextRecord
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(3, record.getRecordNumber());
+            assertEquals(code.indexOf("'A"), record.getCharacterPosition());
+            assertEquals("A" + lineSeparator + "A", record.get(0));
+            assertEquals("B" + lineSeparator + "B", record.get(1));
+            assertEquals("CC", record.get(2));
+            // nextRecord
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(4, record.getRecordNumber());
+            assertEquals(code.indexOf('\u00c4'), record.getCharacterPosition());
+            assertEquals("\u00c4", record.get(0));
+        } // again with ctor
         try (CSVParser parser = new CSVParser(new StringReader(code.substring((int) positionRecord3)), format, positionRecord3, 3)) {
             CSVRecord record;
             // nextRecord

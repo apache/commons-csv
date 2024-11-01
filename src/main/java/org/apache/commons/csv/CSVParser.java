@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.io.build.AbstractStreamBuilder;
 import org.apache.commons.io.function.Uncheck;
 
 /**
@@ -142,6 +143,65 @@ import org.apache.commons.io.function.Uncheck;
  */
 public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
+    /**
+     * Builds a new {@link CSVParser}.
+     *
+     * @since 1.13.0
+     */
+    public static class Builder extends AbstractStreamBuilder<CSVParser, Builder> {
+
+        private CSVFormat format;
+        private long characterOffset;
+        private long recordNumber;
+
+        /**
+         * Constructs a new instance.
+         */
+        protected Builder() {
+            // empty
+        }
+
+        @SuppressWarnings("resource")
+        @Override
+        public CSVParser get() throws IOException {
+            return new CSVParser(getReader(), format != null ? format : CSVFormat.DEFAULT, characterOffset, recordNumber);
+        }
+
+        /**
+         * Sets the lexer offset when the parser does not start parsing at the beginning of the source.
+         *
+         * @param characterOffset the lexer offset.
+         * @return this instance.
+         */
+        public Builder setCharacterOffset(final long characterOffset) {
+            this.characterOffset = characterOffset;
+            return asThis();
+        }
+
+        /**
+         * Sets the CSV format. A copy of the given format is kept.
+         *
+         * @param format the CSV format, null is equivalent to {@link CSVFormat#DEFAULT}.
+         * @return this instance.
+         */
+        public Builder setFormat(final CSVFormat format) {
+            this.format = CSVFormat.copy(format);
+            return asThis();
+        }
+
+        /**
+         * Sets the next record number to assign.
+         *
+         * @param recordNumber the next record number to assign.
+         * @return this instance.
+         */
+        public Builder setRecordNumber(final long recordNumber) {
+            this.recordNumber = recordNumber;
+            return asThis();
+        }
+
+    }
+
     final class CSVRecordIterator implements Iterator<CSVRecord> {
         private CSVRecord current;
 
@@ -190,7 +250,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             throw new UnsupportedOperationException();
         }
     }
-
     /**
      * Header information based on name and position.
      */
@@ -210,6 +269,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             this.headerMap = headerMap;
             this.headerNames = headerNames;
         }
+    }
+
+    /**
+     * Creates a new builder.
+     *
+     * @return a new builder.
+     * @since 1.13.0
+     */
+    public static Builder builder() {
+        return new Builder();
     }
 
     /**
@@ -427,7 +496,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param characterOffset
      *            Lexer offset when the parser does not start parsing at the beginning of the source.
      * @param recordNumber
-     *            The next record number to assign
+     *            The next record number to assign.
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either the reader or format is null.
      * @throws IOException

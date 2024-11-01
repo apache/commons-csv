@@ -27,8 +27,8 @@ import org.junit.jupiter.api.Test;
 
 public class JiraCsv150Test {
 
-    private void testDisable(final CSVFormat csvFormat, final StringReader stringReader) throws IOException {
-        try (CSVParser csvParser = new CSVParser(stringReader, csvFormat)) {
+    private void testDisable(final CSVFormat format, final StringReader reader) throws IOException {
+        try (CSVParser csvParser = CSVParser.builder().setReader(reader).setFormat(format).get()) {
             assertEquals(1, csvParser.getRecords().size());
         }
     }

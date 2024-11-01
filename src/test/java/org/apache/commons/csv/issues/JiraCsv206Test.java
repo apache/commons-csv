@@ -35,9 +35,9 @@ public class JiraCsv206Test {
         // Read with multiple character delimiter
         final String source = "FirstName[|]LastName[|]Address\r\nJohn[|]Smith[|]123 Main St.";
         final StringReader reader = new StringReader(source);
-        final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setDelimiter("[|]").build();
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").build();
         CSVRecord record = null;
-        try (final CSVParser csvParser = new CSVParser(reader, csvFormat)) {
+        try (final CSVParser csvParser = CSVParser.builder().setReader(reader).setFormat(format).get()) {
             final Iterator<CSVRecord> iterator = csvParser.iterator();
             record = iterator.next();
             assertEquals("FirstName", record.get(0));
@@ -57,13 +57,13 @@ public class JiraCsv206Test {
         // @formatter:on
         final String comment = "Change delimiter to [I]";
         // @formatter:off
-        final CSVFormat format = CSVFormat.EXCEL.builder()
+        final CSVFormat formatExcel = CSVFormat.EXCEL.builder()
                 .setDelimiter("[I]").setHeader("first name", "last name", "address")
                 .setCommentMarker('#')
                 .setHeaderComments(comment).build();
         // @formatter:on
         final StringBuilder out = new StringBuilder();
-        try (final CSVPrinter printer = format.print(out)) {
+        try (final CSVPrinter printer = formatExcel.print(out)) {
             printer.print(record.get(0));
             printer.print(record.get(1));
             printer.print(record.get(2));

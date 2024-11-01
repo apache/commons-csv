@@ -1370,6 +1370,15 @@ public final class CSVFormat implements Serializable {
         return contains(source, Constants.CR) || contains(source, Constants.LF);
     }
 
+    /**
+     * Creates a null-safe copy of the given instance.
+     *
+     * @return a copy of the given instance or null if the input is null.
+     */
+    static CSVFormat copy(final CSVFormat format) {
+        return format != null ? format.copy() : null;
+    }
+
     static boolean isBlank(final String value) {
         return value == null || value.trim().isEmpty();
     }

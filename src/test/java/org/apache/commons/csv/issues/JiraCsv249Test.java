@@ -34,14 +34,14 @@ public class JiraCsv249Test {
 
     @Test
     public void testJiraCsv249() throws IOException {
-        final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setEscape('\\').build();
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setEscape('\\').build();
         final StringWriter stringWriter = new StringWriter();
-        try (CSVPrinter printer = new CSVPrinter(stringWriter, csvFormat)) {
+        try (CSVPrinter printer = new CSVPrinter(stringWriter, format)) {
             printer.printRecord("foo \\", "bar");
         }
-        final StringReader stringReader = new StringReader(stringWriter.toString());
+        final StringReader reader = new StringReader(stringWriter.toString());
         final List<CSVRecord> records;
-        try (CSVParser parser = new CSVParser(stringReader, csvFormat)) {
+        try (CSVParser parser = CSVParser.builder().setReader(reader).setFormat(format).get()) {
             records = parser.getRecords();
         }
         records.forEach(record -> {

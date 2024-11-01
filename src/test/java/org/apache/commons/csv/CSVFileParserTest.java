@@ -58,8 +58,8 @@ public class CSVFileParserTest {
     @ParameterizedTest
     @MethodSource("generateData")
     public void testCSVFile(final File testFile) throws Exception {
-        try (FileReader fr = new FileReader(testFile); BufferedReader testData = new BufferedReader(fr)) {
-            String line = readTestData(testData);
+        try (FileReader fr = new FileReader(testFile); BufferedReader testDataReader = new BufferedReader(fr)) {
+            String line = readTestData(testDataReader);
             assertNotNull("file must contain config line", line);
             final String[] split = line.split(" ");
             assertTrue(split.length >= 1, testFile.getName() + " require 1 param");
@@ -81,7 +81,7 @@ public class CSVFileParserTest {
                     fail(testFile.getName() + " unexpected option: " + option);
                 }
             }
-            line = readTestData(testData); // get string version of format
+            line = readTestData(testDataReader); // get string version of format
             assertEquals(line, format.toString(), testFile.getName() + " Expected format ");
 
             // Now parse the file and compare against the expected results
@@ -94,7 +94,7 @@ public class CSVFileParserTest {
                         parsed += "#" + comment.replace("\n", "\\n");
                     }
                     final int count = record.size();
-                    assertEquals(readTestData(testData), count + ":" + parsed, testFile.getName());
+                    assertEquals(readTestData(testDataReader), count + ":" + parsed, testFile.getName());
                 }
             }
         }

@@ -299,7 +299,7 @@ public class PerformanceTest {
     }
 
     private static void testParseCommonsCSV() throws Exception {
-        testParser("CSV", () -> new CSVParser(createReader(), format));
+        testParser("CSV", () -> CSVParser.builder().setReader(createReader()).setFormat(format).get());
     }
 
     private static void testParsePath() throws Exception {

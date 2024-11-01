@@ -41,7 +41,7 @@ public class JiraCsv149Test {
         if (eolAtEof) {
             source += CR_LF;
         }
-        final StringReader records = new StringReader(source);
+        final StringReader reader = new StringReader(source);
         // @formatter:off
         final CSVFormat format = CSVFormat.RFC4180.builder()
             .setHeader()
@@ -50,7 +50,7 @@ public class JiraCsv149Test {
             .build();
         // @formatter:on
         int lineCounter = 2;
-        try (final CSVParser parser = new CSVParser(records, format)) {
+        try (final CSVParser parser = CSVParser.builder().setReader(reader).setFormat(format).get()) {
             for (final CSVRecord record : parser) {
                 assertNotNull(record);
                 assertEquals(lineCounter++, parser.getCurrentLineNumber());
