@@ -2098,6 +2098,30 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Parses the specified content.
+     *
+     * <p>
+     * This method provides a way to parse CSV data from an input stream, starting at a specified character offset and record number,
+     * using a specified encoding. It returns a {@link CSVParser} that can be used to iterate over the parsed {@link CSVRecord}s.
+     * </p>
+     *
+     * <p>
+     * For additional parsing options, see the various static parse methods available on {@link CSVParser}.
+     * </p>
+     *
+     * @param reader the input stream
+     * @param characterOffset the character offset to start parsing from
+     * @param recordNumber the initial record number to start counting from
+     * @param encoding the character encoding of the input stream
+     * @return a parser over a stream of {@link CSVRecord}s.
+     * @throws IOException If an I/O error occurs
+     * @throws CSVException Thrown on invalid input.
+     */
+    public CSVParser parse(final Reader reader, final long characterOffset, final long recordNumber, String encoding) throws IOException {
+        return new CSVParser(reader, this, characterOffset, recordNumber, encoding);
+    }
+
+    /**
      * Prints to the specified output.
      *
      * <p>
