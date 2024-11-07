@@ -152,7 +152,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
 
         private CSVFormat format;
         private long characterOffset;
-        private long recordNumber;
+        private long recordNumber = 1;
 
         /**
          * Constructs a new instance.
@@ -190,7 +190,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         }
 
         /**
-         * Sets the next record number to assign.
+         * Sets the next record number to assign, defaults to {@code 1}.
          *
          * @param recordNumber the next record number to assign.
          * @return this instance.
@@ -377,7 +377,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @since 1.5
      */
     public static CSVParser parse(final Reader reader, final CSVFormat format) throws IOException {
-        return new CSVParser(reader, format);
+        return builder().setReader(reader).setFormat(format).get();
     }
 
     /**
@@ -397,8 +397,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public static CSVParser parse(final String string, final CSVFormat format) throws IOException {
         Objects.requireNonNull(string, "string");
         Objects.requireNonNull(format, "format");
-
-        return new CSVParser(new StringReader(string), format);
+        return parse(new StringReader(string), format);
     }
 
     /**
@@ -425,10 +424,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     @SuppressWarnings("resource")
     public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException {
         Objects.requireNonNull(url, "url");
-        Objects.requireNonNull(charset, "charset");
-        Objects.requireNonNull(format, "format");
-
-        return new CSVParser(new InputStreamReader(url.openStream(), charset), format);
+        return parse(url.openStream(), charset, format);
     }
 
     private String headerComment;
