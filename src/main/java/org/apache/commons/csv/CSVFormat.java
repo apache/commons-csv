@@ -2094,7 +2094,7 @@ public final class CSVFormat implements Serializable {
      * @throws CSVException Thrown on invalid input.
      */
     public CSVParser parse(final Reader reader) throws IOException {
-        return new CSVParser(reader, this);
+        return CSVParser.builder().setReader(reader).setFormat(this).get();
     }
 
     /**
