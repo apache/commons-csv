@@ -50,12 +50,12 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.17.0</version>
+      <version>${commons.io.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.17.1</version>
+      <version>${commons.codec.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -185,6 +185,21 @@
     <japicmp.skip>false</japicmp.skip>
     <commons.release.isDistModule>true</commons.release.isDistModule>
     <project.build.outputTimestamp>2024-09-25T02:03:48Z</project.build.outputTimestamp>
+
+    <commons.codec.version>1.17.1</commons.codec.version>
+    <commons.io.version>2.17.0</commons.io.version>
+
+    <!-- Apache Felix maven-bundle-plugin -->
+    <commons.osgi.import>
+    org.apache.commons.codec.binary;version="${commons.codec.version}",
+    org.apache.commons.io;version="${commons.io.version}",
+    org.apache.commons.io.build;version="${commons.io.version}",
+    org.apache.commons.io.function;version="${commons.io.version}",
+    org.apache.commons.io.input;version="${commons.io.version}",
+    org.apache.commons.io.output;version="${commons.io.version}",
+    *
+    </commons.osgi.import>
+
     <!-- JaCoCo: Don't make code coverage worse than: -->
     <commons.jacoco.haltOnFailure>true</commons.jacoco.haltOnFailure>
     <commons.jacoco.classRatio>1.00</commons.jacoco.classRatio>
