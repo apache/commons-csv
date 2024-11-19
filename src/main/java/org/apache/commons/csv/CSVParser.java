@@ -153,6 +153,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         private CSVFormat format;
         private long characterOffset;
         private long recordNumber = 1;
+        private Charset charset;
 
         /**
          * Constructs a new instance.
@@ -164,7 +165,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         @SuppressWarnings("resource")
         @Override
         public CSVParser get() throws IOException {
-            return new CSVParser(getReader(), format != null ? format : CSVFormat.DEFAULT, characterOffset, recordNumber);
+            return new CSVParser(getReader(), format != null ? format : CSVFormat.DEFAULT, characterOffset, recordNumber, charset);
         }
 
         /**
@@ -200,6 +201,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             return asThis();
         }
 
+        /**
+         * Sets the character encoding to be used for the reader.
+         *
+         * @param charset the character encoding.
+         * @return this instance.
+         */
+        public Builder setCharset(final Charset charset) {
+            this.charset = charset;
+            return asThis();
+        }
     }
 
     final class CSVRecordIterator implements Iterator<CSVRecord> {
@@ -510,7 +521,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             this(reader, format, characterOffset, recordNumber, null);
         }
 
-        /**
+    /**
      * Constructs a new instance using the given {@link CSVFormat}
      *
      * <p>
@@ -525,21 +536,22 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param characterOffset
      *            Lexer offset when the parser does not start parsing at the beginning of the source.
      * @param recordNumber
-     *            The next record number to assign
-     * @param encoding
-     *            The encoding to use for the reader
+     *            The next record number to assign.
+     * @param charset
+     *            The character encoding to be used for the reader.
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either the reader or format is null.
      * @throws IOException
-     *             If there is a problem reading the header or skipping the first record
+     *             If there is a problem reading the header or skipping the first record.
      * @throws CSVException Thrown on invalid input.
+     * @since 1.13.0.
      */
-    public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber,
-        String encoding) throws IOException {
+    private CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber, final Charset charset)
+        throws IOException {
         Objects.requireNonNull(reader, "reader");
         Objects.requireNonNull(format, "format");
         this.format = format.copy();
-        this.lexer = new Lexer(format, new ExtendedBufferedReader(reader, encoding));
+        this.lexer = new Lexer(format, new ExtendedBufferedReader(reader, charset));
         this.csvRecordIterator = new CSVRecordIterator();
         this.headers = createHeaders();
         this.characterOffset = characterOffset;

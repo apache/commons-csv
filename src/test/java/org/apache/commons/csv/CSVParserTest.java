@@ -707,38 +707,34 @@ public class CSVParserTest {
             "11111111111111,'4017-09-01',きちんと節分近くには咲いてる～,v4\n" +
             "22222222222222,'4017-01-01',おはよう私の友人～,v4\n" +
             "33333333333333,'4017-01-01',きる自然の力ってすごいな～,v4\n";
-        // String code = "'1',4";
-        // final CSVFormat format = CSVFormat.newFormat(',').withQuote('\'');
         final CSVFormat format = CSVFormat.Builder.create()
-                               .setDelimiter(',')
-                               .setQuote('\'')
-                               .build();
-        // CSVParser parser = new CSVParser(new StringReader(code), format, 0L, 1L, "UTF-8");
-        CSVParser parser =  format.parse(new StringReader(code), 0L, 1L, "UTF-8");
+            .setDelimiter(',')
+            .setQuote('\'')
+            .get();
+        try (CSVParser parser = CSVParser.builder().setReader(new StringReader(code)).setFormat(format).setCharset(UTF_8).get() ) {
+            CSVRecord record = new CSVRecord(parser, null, null, 1L, 0L, 0L);
 
-        CSVRecord record = new CSVRecord(parser, null, null, 1L, 0L, 0L);
-        assertEquals(0, parser.getRecordNumber());
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(1, record.getRecordNumber());
-        assertEquals(code.indexOf('i'), record.getCharacterPosition());
-        assertEquals(record.getCharacterByte(), record.getCharacterPosition());
+            assertEquals(0, parser.getRecordNumber());
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(1, record.getRecordNumber());
+            assertEquals(code.indexOf('i'), record.getCharacterPosition());
+            assertEquals(record.getCharacterByte(), record.getCharacterPosition());
 
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(2, record.getRecordNumber());
-        assertEquals(code.indexOf('1'), record.getCharacterPosition());
-        assertEquals(record.getCharacterByte(), record.getCharacterPosition());
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(2, record.getRecordNumber());
+            assertEquals(code.indexOf('1'), record.getCharacterPosition());
+            assertEquals(record.getCharacterByte(), record.getCharacterPosition());
 
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(3, record.getRecordNumber());
-        assertEquals(code.indexOf('2'), record.getCharacterPosition());
-        assertEquals(record.getCharacterByte(), 95);
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(3, record.getRecordNumber());
+            assertEquals(code.indexOf('2'), record.getCharacterPosition());
+            assertEquals(record.getCharacterByte(), 95);
 
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(4, record.getRecordNumber());
-        assertEquals(code.indexOf('3'), record.getCharacterPosition());
-        assertEquals(record.getCharacterByte(), 154);
-
-        parser.close();
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(4, record.getRecordNumber());
+            assertEquals(code.indexOf('3'), record.getCharacterPosition());
+            assertEquals(record.getCharacterByte(), 154);
+        };
 
     }
 
@@ -748,35 +744,32 @@ public class CSVParserTest {
             "1,😊,🤔,😂\n" +
             "2,😊,🤔,😂\n" +
             "3,😊,🤔,😂\n";
-        // final CSVFormat format = CSVFormat.newFormat(',').withQuote('\'');
         final CSVFormat format = CSVFormat.Builder.create()
             .setDelimiter(',')
             .setQuote('\'')
-            .build();
+            .get();
+        try (CSVParser parser = CSVParser.builder().setReader(new StringReader(code)).setFormat(format).setCharset(UTF_8).get()) {
+            CSVRecord record = new CSVRecord(parser, null, null, 1L, 0L, 0L);
 
-        // CSVParser parser = new CSVParser(new StringReader(code), format, 0L, 1L, "UTF-8");
-        CSVParser parser =  format.parse(new StringReader(code), 0L, 1L, "UTF-8");
+            assertEquals(0, parser.getRecordNumber());
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(1, record.getRecordNumber());
+            assertEquals(code.indexOf('i'), record.getCharacterPosition());
+            assertEquals(record.getCharacterByte(), record.getCharacterPosition());
 
-        CSVRecord record;
-        assertEquals(0, parser.getRecordNumber());
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(1, record.getRecordNumber());
-        assertEquals(code.indexOf('i'), record.getCharacterPosition());
-        assertEquals(record.getCharacterByte(), record.getCharacterPosition());
-
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(2, record.getRecordNumber());
-        assertEquals(code.indexOf('1'), record.getCharacterPosition());
-        assertEquals(record.getCharacterByte(), record.getCharacterPosition());
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(3, record.getRecordNumber());
-        assertEquals(code.indexOf('2'), record.getCharacterPosition());
-        assertEquals(record.getCharacterByte(), 26);
-        assertNotNull(record = parser.nextRecord());
-        assertEquals(4, record.getRecordNumber());
-        assertEquals(code.indexOf('3'), record.getCharacterPosition());
-        assertEquals(record.getCharacterByte(), 43);
-        parser.close();
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(2, record.getRecordNumber());
+            assertEquals(code.indexOf('1'), record.getCharacterPosition());
+            assertEquals(record.getCharacterByte(), record.getCharacterPosition());
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(3, record.getRecordNumber());
+            assertEquals(code.indexOf('2'), record.getCharacterPosition());
+            assertEquals(record.getCharacterByte(), 26);
+            assertNotNull(record = parser.nextRecord());
+            assertEquals(4, record.getRecordNumber());
+            assertEquals(code.indexOf('3'), record.getCharacterPosition());
+            assertEquals(record.getCharacterByte(), 43);
+        }
     }
 
     @Test

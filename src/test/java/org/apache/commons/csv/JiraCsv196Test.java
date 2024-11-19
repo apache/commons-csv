@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-
+import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
 
@@ -29,16 +29,15 @@ import org.junit.jupiter.api.Test;
 public class JiraCsv196Test {
     @Test
     public void parseThreeBytes() throws IOException {
-
-        // final CSVFormat format = CSVFormat.newFormat(',').withQuote('\'');
         final CSVFormat format = CSVFormat.Builder.create()
-                               .setDelimiter(',')
-                               .setQuote('\'')
-                               .build();
-        // CSVParser parser = new CSVParser(getTestInput(
-            // "org/apache/commons/csv/CSV-196/japanese.csv"), format, 0L, 1L, "UTF-8");
-        CSVParser parser =  format.parse(getTestInput(
-            "org/apache/commons/csv/CSV-196/japanese.csv"), 0L, 1L, "UTF-8");
+            .setDelimiter(',')
+            .setQuote('\'')
+            .get();
+        CSVParser parser = new CSVParser.Builder()
+            .setFormat(format)
+            .setReader(getTestInput("org/apache/commons/csv/CSV-196/japanese.csv"))
+            .setCharset(StandardCharsets.UTF_8)
+            .get();
         long[] charByteKey = {0, 89, 242, 395};
         int idx = 0;
         for (CSVRecord record : parser) {
@@ -50,15 +49,15 @@ public class JiraCsv196Test {
 
     @Test
     public void parseFourBytes() throws IOException {
-        // final CSVFormat format = CSVFormat.newFormat(',').withQuote('\'');
         final CSVFormat format = CSVFormat.Builder.create()
             .setDelimiter(',')
             .setQuote('\'')
-            .build();
-
-        CSVParser parser =  format.parse(getTestInput(
-                "org/apache/commons/csv/CSV-196/emoji.csv"), 0L, 1L, "UTF-8");
-
+            .get();
+        CSVParser parser = new CSVParser.Builder()
+            .setFormat(format)
+            .setReader(getTestInput("org/apache/commons/csv/CSV-196/emoji.csv"))
+            .setCharset(StandardCharsets.UTF_8)
+            .get();
         long[] charByteKey = {0, 84, 701, 1318, 1935};
         int idx = 0;
         for (CSVRecord record : parser) {
@@ -66,7 +65,6 @@ public class JiraCsv196Test {
         }
         parser.close();
     }
-
 
     private Reader getTestInput(String path) {
         return new InputStreamReader(

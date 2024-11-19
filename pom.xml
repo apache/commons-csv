@@ -28,7 +28,6 @@
   <url>https://commons.apache.org/proper/commons-csv/</url>
   <inceptionYear>2005</inceptionYear>
   <description>The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.</description>
-  <packaging>jar</packaging>
 
   <dependencies>
     <dependency>

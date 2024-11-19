@@ -53,12 +53,12 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     private long position;
     private long positionMark;
 
-    /** The number of bytes read so far */
+    /** The number of bytes read so far. */
     private long bytesRead;
     private long bytesReadMark;
 
-    /** Encoder used to calculate the bytes of characters */
-    CharsetEncoder encoder;
+    /** Encoder for calculating the number of bytes for each character read. */
+    private CharsetEncoder encoder;
 
     /**
      * Constructs a new instance using the default buffer size.
@@ -67,10 +67,10 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         super(reader);
     }
 
-    ExtendedBufferedReader(final Reader reader, String encoding) {
+    ExtendedBufferedReader(final Reader reader, Charset charset) {
         super(reader);
-        if (encoding != null) {
-            encoder = Charset.forName(encoding).newEncoder();
+        if (charset != null) {
+            encoder = charset.newEncoder();
         }
     }
 
@@ -146,20 +146,30 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     }
 
     /**
-     *  In Java, a char data type are based on the original Unicode
-     *  specification, which defined characters as fixed-width 16-bit entities.
-     *   U+0000 to U+FFFF:
-     *     - BMP, represented using 1 16-bit char
-     *     - Consists of UTF-8 1-byte, 2-byte, some 3-byte chars
-     *   U+10000 to U+10FFFF:
-     *     - Supplementary characters, represented as a pair of characters,
-     *     the first char from the high-surrogates range (\uD800-\uDBFF),
-     *     and the second char from the low-surrogates range (uDC00-\uDFFF).
-     *     - Consists of UTF-8 some 3-byte chars and 4-byte chars
+     * In Java, the {@code char} data type is based on the original Unicode
+     * specification, which defined characters as fixed-width 16-bit entities.
+     * <p>
+     * The Unicode characters are divided into two main ranges:
+     * <ul>
+     *   <li><b>U+0000 to U+FFFF (Basic Multilingual Plane, BMP):</b>
+     *     <ul>
+     *       <li>Represented using a single 16-bit {@code char}.</li>
+     *       <li>Includes UTF-8 encodings of 1-byte, 2-byte, and some 3-byte characters.</li>
+     *     </ul>
+     *   </li>
+     *   <li><b>U+10000 to U+10FFFF (Supplementary Characters):</b>
+     *     <ul>
+     *       <li>Represented as a pair of {@code char}s:</li>
+     *       <li>The first {@code char} is from the high-surrogates range (\uD800-\uDBFF).</li>
+     *       <li>The second {@code char} is from the low-surrogates range (\uDC00-\uDFFF).</li>
+     *       <li>Includes UTF-8 encodings of some 3-byte characters and all 4-byte characters.</li>
+     *     </ul>
+     *   </li>
+     * </ul>
      */
     private long getCharBytes(int current) throws CharacterCodingException {
-        char cChar = (char) current;
-        char lChar = (char) lastChar;
+        final char cChar = (char) current;
+        final char lChar = (char) lastChar;
         if (!Character.isSurrogate(cChar)) {
             return encoder.encode(
                 CharBuffer.wrap(new char[] {cChar})).limit();
