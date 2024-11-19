@@ -153,7 +153,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         private CSVFormat format;
         private long characterOffset;
         private long recordNumber = 1;
-        private Charset charset;
 
         /**
          * Constructs a new instance.
@@ -165,7 +164,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         @SuppressWarnings("resource")
         @Override
         public CSVParser get() throws IOException {
-            return new CSVParser(getReader(), format != null ? format : CSVFormat.DEFAULT, characterOffset, recordNumber, charset);
+            return new CSVParser(getReader(), format != null ? format : CSVFormat.DEFAULT, characterOffset, recordNumber, getCharset());
         }
 
         /**
@@ -201,16 +200,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             return asThis();
         }
 
-        /**
-         * Sets the character encoding to be used for the reader.
-         *
-         * @param charset the character encoding.
-         * @return this instance.
-         */
-        public Builder setCharset(final Charset charset) {
-            this.charset = charset;
-            return asThis();
-        }
     }
 
     final class CSVRecordIterator implements Iterator<CSVRecord> {
