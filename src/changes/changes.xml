@@ -50,7 +50,8 @@
       <action type="add" dev="ggregory" due-to="Gary Gregory">Deprecate CSVFormat.Builder.build() for get().</action>
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 76 to 78 #486, #495.</action>
-      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.codehaus.mojo:taglist-maven-plugin from 3.1.0 to 3.2.1 #493.</action> 
+      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.codehaus.mojo:taglist-maven-plugin from 3.1.0 to 3.2.1 #493.</action>
+      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump commons-io:commons-io from 2.17.0 to 2.18.0 #505.</action> 
     </release>
     <release version="1.12.0" date="2024-09-21" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- ADD -->
