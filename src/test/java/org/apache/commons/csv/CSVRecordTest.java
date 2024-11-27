@@ -369,6 +369,28 @@ public class CSVRecordTest {
         assertTrue(recordWithHeader.toString().contains("recordNumber="));
         assertTrue(recordWithHeader.toString().contains("values="));
     }
+    @Test
+    public void testSettingRecordMutable() throws Exception{
+        try(final CSVParser parser = CSVParser.parse("a,b", CSVFormat.newFormat(','))){
+            final CSVRecord shortRec = parser.iterator().next();
+            shortRec.makeCSVRecordMutable();
+            assertTrue(shortRec.isCSVRecordMutable());
+        }
+    }
+    @Test
+    public void testDefaultImmutability() throws Exception{
+        try(final CSVParser parser = CSVParser.parse("a,b", CSVFormat.newFormat(','))){
+            final CSVRecord shortRec = parser.iterator().next();
+            assertFalse(shortRec.isCSVRecordMutable());
+        }
+    }
+    @Test(expected = ImmutableRecordCantBeSetException.class)
+    public void testImmutableRecordSetException() throws Exception{
+        try(final CSVParser parser = CSVParser.parse("a,b", CSVFormat.newFormat(','))){
+            final CSVRecord shortRec = parser.iterator().next();
+            shortRec.set(0,"new value");
+        }
+    }
 
     private void validateMap(final Map<String, String> map, final boolean allowsNulls) {
         assertTrue(map.containsKey(EnumHeader.FIRST.name()));
