@@ -1366,7 +1366,6 @@ public final class CSVFormat implements Serializable {
      *
      * @param source the string to check.
      * @param searchCh the character to search.
-     *
      * @return true if {@code c} contains a line break character
      */
     private static boolean contains(final String source, final char searchCh) {
@@ -1377,7 +1376,6 @@ public final class CSVFormat implements Serializable {
      * Returns true if the given string contains a line break character.
      *
      * @param source the string to check.
-     *
      * @return true if {@code c} contains a line break character.
      */
     private static boolean containsLineBreak(final String source) {
@@ -1401,7 +1399,6 @@ public final class CSVFormat implements Serializable {
      * Returns true if the given character is a line break character.
      *
      * @param c the character to check.
-     *
      * @return true if {@code c} is a line break character.
      */
     private static boolean isLineBreak(final char c) {
@@ -1412,7 +1409,6 @@ public final class CSVFormat implements Serializable {
      * Returns true if the given character is a line break character.
      *
      * @param c the character to check, may be null.
-     *
      * @return true if {@code c} is a line break character (and not null).
      */
     private static boolean isLineBreak(final Character c) {
@@ -1439,7 +1435,6 @@ public final class CSVFormat implements Serializable {
      * @param delimiter the char used for value separation, must not be a line break character
      * @return a new CSV format.
      * @throws IllegalArgumentException if the delimiter is a line break character
-     *
      * @see #DEFAULT
      * @see #RFC4180
      * @see #MYSQL
@@ -2671,7 +2666,6 @@ public final class CSVFormat implements Serializable {
      * Builds a new {@code CSVFormat} with whether to flush on close.
      *
      * @param autoFlush whether to flush on close.
-     *
      * @return A new CSVFormat that is equal to this but with the specified autoFlush setting.
      * @since 1.6
      * @deprecated Use {@link Builder#setAutoFlush(boolean)}
@@ -3032,7 +3026,6 @@ public final class CSVFormat implements Serializable {
      * Builds a new {@code CSVFormat} with the output quote policy of the format set to the specified value.
      *
      * @param quoteMode the quote policy to use for output.
-     *
      * @return A new CSVFormat that is equal to this but with the specified quote policy
      * @deprecated Use {@link Builder#setQuoteMode(QuoteMode)}
      */

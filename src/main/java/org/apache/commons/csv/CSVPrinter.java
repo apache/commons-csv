@@ -128,7 +128,6 @@ public final class CSVPrinter implements Flushable, Closeable {
     /**
      * Closes the underlying stream with an optional flush first.
      * @param flush whether to flush before the actual close.
-     *
      * @throws IOException
      *             If an I/O error occurs
      * @since 1.6
