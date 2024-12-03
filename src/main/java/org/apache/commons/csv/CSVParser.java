@@ -153,6 +153,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         private CSVFormat format;
         private long characterOffset;
         private long recordNumber = 1;
+        private boolean enableByteTracking = false;
 
         /**
          * Constructs a new instance.
@@ -164,7 +165,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         @SuppressWarnings("resource")
         @Override
         public CSVParser get() throws IOException {
-            return new CSVParser(getReader(), format != null ? format : CSVFormat.DEFAULT, characterOffset, recordNumber, getCharset());
+            return new CSVParser(getReader(), format != null ? format : CSVFormat.DEFAULT, characterOffset, recordNumber, getCharset(), enableByteTracking);
         }
 
         /**
@@ -197,6 +198,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          */
         public Builder setRecordNumber(final long recordNumber) {
             this.recordNumber = recordNumber;
+            return asThis();
+        }
+
+        public Builder setEnableByteTracking(final boolean enableByteTracking) {
+            this.enableByteTracking = enableByteTracking;
             return asThis();
         }
 
@@ -507,7 +513,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     @SuppressWarnings("resource")
     public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber)
         throws IOException {
-            this(reader, format, characterOffset, recordNumber, null);
+            this(reader, format, characterOffset, recordNumber, null, false);
         }
 
     /**
@@ -535,12 +541,13 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws CSVException Thrown on invalid input.
      * @since 1.13.0.
      */
-    private CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber, final Charset charset)
+    private CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber,
+        final Charset charset, final boolean enableByteTracking)
         throws IOException {
         Objects.requireNonNull(reader, "reader");
         Objects.requireNonNull(format, "format");
         this.format = format.copy();
-        this.lexer = new Lexer(format, new ExtendedBufferedReader(reader, charset));
+        this.lexer = new Lexer(format, new ExtendedBufferedReader(reader, charset, enableByteTracking));
         this.csvRecordIterator = new CSVRecordIterator();
         this.headers = createHeaders();
         this.characterOffset = characterOffset;

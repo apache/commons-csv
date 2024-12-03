@@ -37,6 +37,7 @@ public class JiraCsv196Test {
             .setFormat(format)
             .setReader(getTestInput("org/apache/commons/csv/CSV-196/japanese.csv"))
             .setCharset(StandardCharsets.UTF_8)
+            .setEnableByteTracking(true)
             .get();
         long[] charByteKey = {0, 89, 242, 395};
         int idx = 0;
@@ -57,6 +58,7 @@ public class JiraCsv196Test {
             .setFormat(format)
             .setReader(getTestInput("org/apache/commons/csv/CSV-196/emoji.csv"))
             .setCharset(StandardCharsets.UTF_8)
+            .setEnableByteTracking(true)
             .get();
         long[] charByteKey = {0, 84, 701, 1318, 1935};
         int idx = 0;
