@@ -24,6 +24,10 @@ import static org.apache.commons.io.IOUtils.EOF;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.UnsynchronizedBufferedReader;
@@ -49,11 +53,25 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     private long position;
     private long positionMark;
 
+    /** The number of bytes read so far. */
+    private long bytesRead;
+    private long bytesReadMark;
+
+    /** Encoder for calculating the number of bytes for each character read. */
+    private CharsetEncoder encoder;
+
     /**
      * Constructs a new instance using the default buffer size.
      */
     ExtendedBufferedReader(final Reader reader) {
         super(reader);
+    }
+
+    ExtendedBufferedReader(final Reader reader, Charset charset, boolean enableByteTracking) {
+        super(reader);
+        if (charset != null && enableByteTracking) {
+            encoder = charset.newEncoder();
+        }
     }
 
     /**
@@ -108,6 +126,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         lineNumberMark = lineNumber;
         lastCharMark = lastChar;
         positionMark = position;
+        bytesReadMark = bytesRead;
         super.mark(readAheadLimit);
     }
 
@@ -118,9 +137,51 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
             current == EOF && lastChar != CR && lastChar != LF && lastChar != EOF) {
             lineNumber++;
         }
+        if (encoder != null) {
+            this.bytesRead += getCharBytes(current);
+        }
         lastChar = current;
         position++;
         return lastChar;
+    }
+
+    /**
+     * In Java, the {@code char} data type is based on the original Unicode
+     * specification, which defined characters as fixed-width 16-bit entities.
+     * <p>
+     * The Unicode characters are divided into two main ranges:
+     * <ul>
+     *   <li><b>U+0000 to U+FFFF (Basic Multilingual Plane, BMP):</b>
+     *     <ul>
+     *       <li>Represented using a single 16-bit {@code char}.</li>
+     *       <li>Includes UTF-8 encodings of 1-byte, 2-byte, and some 3-byte characters.</li>
+     *     </ul>
+     *   </li>
+     *   <li><b>U+10000 to U+10FFFF (Supplementary Characters):</b>
+     *     <ul>
+     *       <li>Represented as a pair of {@code char}s:</li>
+     *       <li>The first {@code char} is from the high-surrogates range (\uD800-\uDBFF).</li>
+     *       <li>The second {@code char} is from the low-surrogates range (\uDC00-\uDFFF).</li>
+     *       <li>Includes UTF-8 encodings of some 3-byte characters and all 4-byte characters.</li>
+     *     </ul>
+     *   </li>
+     * </ul>
+     */
+    private long getCharBytes(int current) throws CharacterCodingException {
+        final char cChar = (char) current;
+        final char lChar = (char) lastChar;
+        if (!Character.isSurrogate(cChar)) {
+            return encoder.encode(
+                CharBuffer.wrap(new char[] {cChar})).limit();
+        } else {
+            if (Character.isHighSurrogate(cChar)) {
+                // Move on to the next char (low surrogate)
+                return 0;
+            } else if (Character.isSurrogatePair(lChar, cChar)) {
+                return encoder.encode(
+                    CharBuffer.wrap(new char[] {lChar, cChar})).limit();
+            } else throw new CharacterCodingException();
+        }
     }
 
     @Override
@@ -187,7 +248,17 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         lineNumber = lineNumberMark;
         lastChar = lastCharMark;
         position = positionMark;
+        bytesRead = bytesReadMark;
         super.reset();
+    }
+
+    /**
+     * Gets the number of bytes read by the reader.
+     *
+     * @return the number of bytes read by the read
+     */
+    long getBytesRead() {
+        return this.bytesRead;
     }
 
 }

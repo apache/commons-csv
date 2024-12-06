@@ -153,6 +153,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         private CSVFormat format;
         private long characterOffset;
         private long recordNumber = 1;
+        private boolean enableByteTracking = false;
 
         /**
          * Constructs a new instance.
@@ -164,7 +165,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         @SuppressWarnings("resource")
         @Override
         public CSVParser get() throws IOException {
-            return new CSVParser(getReader(), format != null ? format : CSVFormat.DEFAULT, characterOffset, recordNumber);
+            return new CSVParser(getReader(), format != null ? format : CSVFormat.DEFAULT, characterOffset, recordNumber, getCharset(), enableByteTracking);
         }
 
         /**
@@ -197,6 +198,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          */
         public Builder setRecordNumber(final long recordNumber) {
             this.recordNumber = recordNumber;
+            return asThis();
+        }
+
+        public Builder setEnableByteTracking(final boolean enableByteTracking) {
+            this.enableByteTracking = enableByteTracking;
             return asThis();
         }
 
@@ -507,10 +513,41 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     @SuppressWarnings("resource")
     public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber)
         throws IOException {
+            this(reader, format, characterOffset, recordNumber, null, false);
+        }
+
+    /**
+     * Constructs a new instance using the given {@link CSVFormat}
+     *
+     * <p>
+     * If you do not read all records from the given {@code reader}, you should call {@link #close()} on the parser,
+     * unless you close the {@code reader}.
+     * </p>
+     *
+     * @param reader
+     *            a Reader containing CSV-formatted input. Must not be null.
+     * @param format
+     *            the CSVFormat used for CSV parsing. Must not be null.
+     * @param characterOffset
+     *            Lexer offset when the parser does not start parsing at the beginning of the source.
+     * @param recordNumber
+     *            The next record number to assign.
+     * @param charset
+     *            The character encoding to be used for the reader.
+     * @throws IllegalArgumentException
+     *             If the parameters of the format are inconsistent or if either the reader or format is null.
+     * @throws IOException
+     *             If there is a problem reading the header or skipping the first record.
+     * @throws CSVException Thrown on invalid input.
+     * @since 1.13.0.
+     */
+    private CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber,
+        final Charset charset, final boolean enableByteTracking)
+        throws IOException {
         Objects.requireNonNull(reader, "reader");
         Objects.requireNonNull(format, "format");
         this.format = format.copy();
-        this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));
+        this.lexer = new Lexer(format, new ExtendedBufferedReader(reader, charset, enableByteTracking));
         this.csvRecordIterator = new CSVRecordIterator();
         this.headers = createHeaders();
         this.characterOffset = characterOffset;
@@ -837,6 +874,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         recordList.clear();
         StringBuilder sb = null;
         final long startCharPosition = lexer.getCharacterPosition() + characterOffset;
+        final long startCharByte = lexer.getBytesRead() + this.characterOffset;
         do {
             reusableToken.reset();
             lexer.nextToken(reusableToken);
@@ -874,7 +912,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             recordNumber++;
             final String comment = Objects.toString(sb, null);
             result = new CSVRecord(this, recordList.toArray(Constants.EMPTY_STRING_ARRAY), comment,
-                recordNumber, startCharPosition);
+                recordNumber, startCharPosition, startCharByte);
         }
         return result;
     }
