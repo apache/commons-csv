@@ -703,7 +703,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetRecordThreeBytesRead() throws Exception {
-        String code = "id,date,val5,val4\n" +
+        final String code = "id,date,val5,val4\n" +
             "11111111111111,'4017-09-01',きちんと節分近くには咲いてる～,v4\n" +
             "22222222222222,'4017-01-01',おはよう私の友人～,v4\n" +
             "33333333333333,'4017-01-01',きる自然の力ってすごいな～,v4\n";
@@ -740,7 +740,7 @@ public class CSVParserTest {
 
     @Test
     public void testGetRecordFourBytesRead() throws Exception {
-        String code = "id,a,b,c\n" +
+        final String code = "id,a,b,c\n" +
             "1,😊,🤔,😂\n" +
             "2,😊,🤔,😂\n" +
             "3,😊,🤔,😂\n";

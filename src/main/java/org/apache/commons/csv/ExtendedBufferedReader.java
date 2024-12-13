@@ -67,6 +67,15 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         super(reader);
     }
 
+    /**
+     * Constructs a new instance with the specified reader, character set,
+     * and byte tracking option. Initializes an encoder if byte tracking is enabled
+     * and a character set is provided.
+     *
+     * @param reader the reader supports a look-ahead option.
+     * @param charset the character set for encoding, or {@code null} if not applicable.
+     * @param enableByteTracking {@code true} to enable byte tracking; {@code false} to disable it.
+     */
     ExtendedBufferedReader(final Reader reader, Charset charset, boolean enableByteTracking) {
         super(reader);
         if (charset != null && enableByteTracking) {
@@ -146,7 +155,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     }
 
     /**
-     * In Java, the {@code char} data type is based on the original Unicode
+     * Gets the byte length of the given character based on the the original Unicode
      * specification, which defined characters as fixed-width 16-bit entities.
      * <p>
      * The Unicode characters are divided into two main ranges:
@@ -166,6 +175,10 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      *     </ul>
      *   </li>
      * </ul>
+     *
+     * @param current the current character to process.
+     * @return the byte length of the character.
+     * @throws CharacterCodingException if the character cannot be encoded.
      */
     private long getCharBytes(int current) throws CharacterCodingException {
         final char cChar = (char) current;

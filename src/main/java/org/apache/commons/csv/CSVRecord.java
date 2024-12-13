@@ -160,7 +160,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns the start byte of this record as a character byte in the source stream.
+     * Gets the start byte of this record as a character byte in the source stream
      *
      * @return the start byte of this record as a character byte in the source stream.
      */

@@ -104,7 +104,7 @@ final class Lexer implements Closeable {
     }
 
     /**
-     * Returns the number of bytes read
+     * Gets the number of bytes read
      *
      * @return the number of bytes read
      */
