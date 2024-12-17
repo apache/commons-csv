@@ -208,6 +208,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         /**
          * Gets the next record.
          *
+         * @throws IOException  on parse error or input read-failure
+         * @throws CSVException on invalid input.
          * @return the next record.
          */
         private CSVRecord getNextRecord() {
@@ -498,8 +500,8 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either the reader or format is null.
      * @throws IOException
-     *             If there is a problem reading the header or skipping the first record
-     * @throws CSVException Thrown on invalid input.
+     *             if there is a problem reading the header or skipping the first record
+     * @throws CSVException on invalid input.
      * @since 1.1
      * @deprecated Will be private in the next major version, use {@link Builder#get()}.
      */
@@ -547,7 +549,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *
      * @return null if the format has no header.
      * @throws IOException if there is a problem reading the header or skipping the first record
-     * @throws CSVException Thrown on invalid input.
+     * @throws CSVException on invalid input.
      */
     private Headers createHeaders() throws IOException {
         Map<String, Integer> hdrMap = null;
@@ -830,7 +832,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *
      * @return the record as an array of values, or {@code null} if the end of the stream has been reached
      * @throws IOException  on parse error or input read-failure
-     * @throws CSVException Thrown on invalid input.
+     * @throws CSVException on invalid input.
      */
     CSVRecord nextRecord() throws IOException {
         CSVRecord result = null;
@@ -855,7 +857,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 }
                 break;
             case INVALID:
-                throw new IOException("(line " + getCurrentLineNumber() + ") invalid parse sequence");
+                throw new CSVException("(line %,d) invalid parse sequence", getCurrentLineNumber());
             case COMMENT: // Ignored currently
                 if (sb == null) { // first comment for this record
                     sb = new StringBuilder();
@@ -866,7 +868,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 reusableToken.type = TOKEN; // Read another token
                 break;
             default:
-                throw new IllegalStateException("Unexpected Token type: " + reusableToken.type);
+                throw new CSVException("Unexpected Token type: %s", reusableToken.type);
             }
         } while (reusableToken.type == TOKEN);
 

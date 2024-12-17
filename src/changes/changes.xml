@@ -43,6 +43,7 @@
     <release version="1.13.0" date="YYYY-MM-DD" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- FIX -->
       <action type="fix" issue="CSV-314" dev="ggregory" due-to="Gary Gregory">Required OSGi Import-Package version numbers in MANIFEST.MF #504.</action>
+      <action type="fix" issue="CSV-314" dev="ggregory" due-to="Gary Gregory">CSVParser.nextRecord() should throw CSVException (an IOException subclass) instead of IOException and IllegalStateException, no method signature changes needed.</action>
       <!-- ADD -->
       <action type="add" issue="CSV-313" dev="ggregory" due-to="Gary Gregory">Add CSVPrinter.getRecordCount().</action>
       <action type="add" dev="ggregory" due-to="Gary Gregory">Add and use CSVParser.Builder and builder() and deprecate CSVParser constructors.</action>
