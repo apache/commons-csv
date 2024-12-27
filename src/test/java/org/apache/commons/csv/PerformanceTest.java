@@ -117,8 +117,8 @@ public class PerformanceTest {
             System.out.printf("Found test fixture %s: %,d bytes.%n", BIG_FILE, BIG_FILE.length());
         } else {
             System.out.println("Decompressing test fixture to: " + BIG_FILE + "...");
-            try (final InputStream input = new GZIPInputStream(PerformanceTest.class.getClassLoader().getResourceAsStream(TEST_RESRC));
-                    final OutputStream output = new FileOutputStream(BIG_FILE)) {
+            try (InputStream input = new GZIPInputStream(PerformanceTest.class.getClassLoader().getResourceAsStream(TEST_RESRC));
+                    OutputStream output = new FileOutputStream(BIG_FILE)) {
                 IOUtils.copy(input, output);
                 System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
             }
@@ -219,8 +219,8 @@ public class PerformanceTest {
             final String simpleName;
             final Stats stats;
             final long startMillis;
-            try (final ExtendedBufferedReader input = new ExtendedBufferedReader(createReader());
-                    final Lexer lexer = createTestCSVLexer(test, input)) {
+            try (ExtendedBufferedReader input = new ExtendedBufferedReader(createReader());
+                    Lexer lexer = createTestCSVLexer(test, input)) {
                 if (test.startsWith("CSVLexer")) {
                     dynamic = "!";
                 }
@@ -265,7 +265,7 @@ public class PerformanceTest {
             int fields = 0;
             int lines = 0;
             final long startMillis;
-            try (final ExtendedBufferedReader in = new ExtendedBufferedReader(createReader())) {
+            try (ExtendedBufferedReader in = new ExtendedBufferedReader(createReader())) {
                 startMillis = System.currentTimeMillis();
                 int read;
                 if (makeString) {
@@ -314,7 +314,7 @@ public class PerformanceTest {
         for (int i = 0; i < max; i++) {
             final long startMillis;
             final Stats stats;
-            try (final CSVParser parser = fac.createParser()) {
+            try (CSVParser parser = fac.createParser()) {
                 startMillis = System.currentTimeMillis();
                 stats = iterate(parser);
             }
@@ -331,7 +331,7 @@ public class PerformanceTest {
         for (int i = 0; i < max; i++) {
             final long startMillis;
             final Stats stats;
-            try (final BufferedReader in = new BufferedReader(createReader())) {
+            try (BufferedReader in = new BufferedReader(createReader())) {
                 startMillis = System.currentTimeMillis();
                 stats = readAll(in, split);
             }

@@ -50,7 +50,7 @@ public class JiraCsv149Test {
             .get();
         // @formatter:on
         int lineCounter = 2;
-        try (final CSVParser parser = CSVParser.builder().setReader(reader).setFormat(format).get()) {
+        try (CSVParser parser = CSVParser.builder().setReader(reader).setFormat(format).get()) {
             for (final CSVRecord record : parser) {
                 assertNotNull(record);
                 assertEquals(lineCounter++, parser.getCurrentLineNumber());

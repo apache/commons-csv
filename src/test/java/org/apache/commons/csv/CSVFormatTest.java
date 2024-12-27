@@ -1013,7 +1013,7 @@ public class CSVFormatTest {
     public void testSerialization() throws Exception {
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        try (final ObjectOutputStream oos = new ObjectOutputStream(out)) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(out)) {
             oos.writeObject(CSVFormat.DEFAULT);
             oos.flush();
         }
@@ -1043,8 +1043,8 @@ public class CSVFormatTest {
     @Test
     public void testToStringAndWithCommentMarkerTakingCharacter() {
 
-        final CSVFormat.Predefined csvFormat_Predefined = CSVFormat.Predefined.Default;
-        final CSVFormat csvFormat = csvFormat_Predefined.getFormat();
+        final CSVFormat.Predefined csvFormatPredefined = CSVFormat.Predefined.Default;
+        final CSVFormat csvFormat = csvFormatPredefined.getFormat();
 
         assertNull(csvFormat.getEscapeCharacter());
         assertTrue(csvFormat.isQuoteCharacterSet());

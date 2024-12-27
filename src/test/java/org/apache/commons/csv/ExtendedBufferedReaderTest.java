@@ -32,13 +32,18 @@ import org.junit.jupiter.api.Test;
  */
 public class ExtendedBufferedReaderTest {
 
+    static final String LF = "\n";
+    static final String CR = "\r";
+    static final String CRLF = CR + LF;
+    static final String LFCR = LF + CR; // easier to read the string below
+
     private ExtendedBufferedReader createBufferedReader(final String s) {
         return new ExtendedBufferedReader(new StringReader(s));
     }
 
     @Test
     public void testEmptyInput() throws Exception {
-        try (final ExtendedBufferedReader br = createBufferedReader("")) {
+        try (ExtendedBufferedReader br = createBufferedReader("")) {
             assertEquals(EOF, br.read());
             assertEquals(EOF, br.peek());
             assertEquals(EOF, br.getLastChar());
@@ -52,41 +57,37 @@ public class ExtendedBufferedReaderTest {
      */
     @Test
     public void testReadChar() throws Exception {
-        final String LF = "\n";
-        final String CR = "\r";
-        final String CRLF = CR + LF;
-        final String LFCR = LF + CR; // easier to read the string below
         final String test = "a" + LF + "b" + CR + "c" + LF + LF + "d" + CR + CR + "e" + LFCR + "f " + CRLF;
         // EOL eol EOL EOL eol eol EOL+CR EOL
-        final int EOLeolct = 9;
+        final int eolCount = 9;
 
-        try (final ExtendedBufferedReader br = createBufferedReader(test)) {
+        try (ExtendedBufferedReader br = createBufferedReader(test)) {
             assertEquals(0, br.getLineNumber());
             int lineCount = 0;
             while (br.readLine() != null) {
                 // consume all
                 lineCount++;
             }
-            assertEquals(EOLeolct, br.getLineNumber());
+            assertEquals(eolCount, br.getLineNumber());
             assertEquals(lineCount, br.getLineNumber());
         }
-        try (final ExtendedBufferedReader br = createBufferedReader(test)) {
+        try (ExtendedBufferedReader br = createBufferedReader(test)) {
             assertEquals(0, br.getLineNumber());
             int readCount = 0;
             while (br.read() != EOF) {
                 // consume all
                 readCount++;
             }
-            assertEquals(EOLeolct, br.getLineNumber());
+            assertEquals(eolCount, br.getLineNumber());
             assertEquals(readCount, test.length());
         }
-        try (final ExtendedBufferedReader br = createBufferedReader(test)) {
+        try (ExtendedBufferedReader br = createBufferedReader(test)) {
             assertEquals(0, br.getLineNumber());
             final char[] buff = new char[10];
             while (br.read(buff, 0, 3) != EOF) {
                 // consume all
             }
-            assertEquals(EOLeolct, br.getLineNumber());
+            assertEquals(eolCount, br.getLineNumber());
         }
     }
 
@@ -102,14 +103,14 @@ public class ExtendedBufferedReaderTest {
 
     @Test
     public void testReadLine() throws Exception {
-        try (final ExtendedBufferedReader br = createBufferedReader("")) {
+        try (ExtendedBufferedReader br = createBufferedReader("")) {
             assertNull(br.readLine());
         }
-        try (final ExtendedBufferedReader br = createBufferedReader("\n")) {
+        try (ExtendedBufferedReader br = createBufferedReader("\n")) {
             assertEquals("", br.readLine());
             assertNull(br.readLine());
         }
-        try (final ExtendedBufferedReader br = createBufferedReader("foo\n\nhello")) {
+        try (ExtendedBufferedReader br = createBufferedReader("foo\n\nhello")) {
             assertEquals(0, br.getLineNumber());
             assertEquals("foo", br.readLine());
             assertEquals(1, br.getLineNumber());
@@ -120,7 +121,7 @@ public class ExtendedBufferedReaderTest {
             assertNull(br.readLine());
             assertEquals(3, br.getLineNumber());
         }
-        try (final ExtendedBufferedReader br = createBufferedReader("foo\n\nhello")) {
+        try (ExtendedBufferedReader br = createBufferedReader("foo\n\nhello")) {
             assertEquals('f', br.read());
             assertEquals('o', br.peek());
             assertEquals("oo", br.readLine());
@@ -133,7 +134,7 @@ public class ExtendedBufferedReaderTest {
             assertNull(br.readLine());
             assertEquals(3, br.getLineNumber());
         }
-        try (final ExtendedBufferedReader br = createBufferedReader("foo\rbaar\r\nfoo")) {
+        try (ExtendedBufferedReader br = createBufferedReader("foo\rbaar\r\nfoo")) {
             assertEquals("foo", br.readLine());
             assertEquals('b', br.peek());
             assertEquals("baar", br.readLine());
@@ -145,7 +146,7 @@ public class ExtendedBufferedReaderTest {
 
     @Test
     public void testReadLookahead1() throws Exception {
-        try (final ExtendedBufferedReader br = createBufferedReader("1\n2\r3\n")) {
+        try (ExtendedBufferedReader br = createBufferedReader("1\n2\r3\n")) {
             assertEquals(0, br.getLineNumber());
             assertEquals('1', br.peek());
             assertEquals(UNDEFINED, br.getLastChar());
@@ -207,7 +208,7 @@ public class ExtendedBufferedReaderTest {
         final char[] ref = new char[5];
         final char[] res = new char[5];
 
-        try (final ExtendedBufferedReader br = createBufferedReader("abcdefg")) {
+        try (ExtendedBufferedReader br = createBufferedReader("abcdefg")) {
             ref[0] = 'a';
             ref[1] = 'b';
             ref[2] = 'c';

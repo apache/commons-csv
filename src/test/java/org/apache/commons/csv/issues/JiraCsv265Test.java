@@ -50,7 +50,7 @@ public class JiraCsv265Test {
             .setSkipHeaderRecord(true)
             .get();
         // @formatter:on
-        try (final CSVParser parser = csvFormat.parse(new StringReader(csv))) {
+        try (CSVParser parser = csvFormat.parse(new StringReader(csv))) {
             final Iterator<CSVRecord> itr = parser.iterator();
             final CSVRecord record1 = itr.next();
             assertEquals(csv.indexOf("# Comment2"), record1.getCharacterPosition());
@@ -78,7 +78,7 @@ public class JiraCsv265Test {
             .setSkipHeaderRecord(true)
             .get();
         // @formatter:on
-        try (final CSVParser parser = csvFormat.parse(new StringReader(csv))) {
+        try (CSVParser parser = csvFormat.parse(new StringReader(csv))) {
             final Iterator<CSVRecord> itr = parser.iterator();
             final CSVRecord record1 = itr.next();
             assertEquals(csv.indexOf("# Comment3"), record1.getCharacterPosition());

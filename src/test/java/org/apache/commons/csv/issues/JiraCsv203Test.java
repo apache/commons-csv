@@ -39,7 +39,7 @@ public class JiraCsv203Test {
                 .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
-        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+        try (CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
         }
         assertEquals("\"N/A\",\"Hello\",\"N/A\",\"World\"\r\n", buffer.toString());
@@ -55,7 +55,7 @@ public class JiraCsv203Test {
                 .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
-        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+        try (CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
         }
         assertEquals("N/A,\"Hello\",N/A,\"World\"\r\n", buffer.toString());
@@ -71,7 +71,7 @@ public class JiraCsv203Test {
                 .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
-        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+        try (CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
         }
         assertEquals("N/A,Hello,N/A,World\r\n", buffer.toString());
@@ -87,7 +87,7 @@ public class JiraCsv203Test {
                 .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
-        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+        try (CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
         }
         assertEquals("N/A,\"Hello\",N/A,\"World\"\r\n", buffer.toString());
@@ -103,7 +103,7 @@ public class JiraCsv203Test {
                 .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
-        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+        try (CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord("", "Hello", "", "World");
             // printer.printRecord(new Object[] { null, "Hello", null, "World" });
         }
@@ -120,7 +120,7 @@ public class JiraCsv203Test {
                 .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
-        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+        try (CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
         }
         assertEquals(",\"Hello\",,\"World\"\r\n", buffer.toString());
@@ -135,7 +135,7 @@ public class JiraCsv203Test {
                 .get();
         // @formatter:on
         final StringBuilder buffer = new StringBuilder();
-        try (final CSVPrinter printer = new CSVPrinter(buffer, format)) {
+        try (CSVPrinter printer = new CSVPrinter(buffer, format)) {
             printer.printRecord(null, "Hello", null, "World");
         }
         assertEquals("N/A,Hello,N/A,World\r\n", buffer.toString());

@@ -68,14 +68,14 @@ public class CSVFileParserTest {
             boolean checkComments = false;
             for (int i = 1; i < split.length; i++) {
                 final String option = split[i];
-                final String[] option_parts = option.split("=", 2);
-                if ("IgnoreEmpty".equalsIgnoreCase(option_parts[0])) {
-                    format = format.withIgnoreEmptyLines(Boolean.parseBoolean(option_parts[1]));
-                } else if ("IgnoreSpaces".equalsIgnoreCase(option_parts[0])) {
-                    format = format.withIgnoreSurroundingSpaces(Boolean.parseBoolean(option_parts[1]));
-                } else if ("CommentStart".equalsIgnoreCase(option_parts[0])) {
-                    format = format.withCommentMarker(option_parts[1].charAt(0));
-                } else if ("CheckComments".equalsIgnoreCase(option_parts[0])) {
+                final String[] optionParts = option.split("=", 2);
+                if ("IgnoreEmpty".equalsIgnoreCase(optionParts[0])) {
+                    format = format.withIgnoreEmptyLines(Boolean.parseBoolean(optionParts[1]));
+                } else if ("IgnoreSpaces".equalsIgnoreCase(optionParts[0])) {
+                    format = format.withIgnoreSurroundingSpaces(Boolean.parseBoolean(optionParts[1]));
+                } else if ("CommentStart".equalsIgnoreCase(optionParts[0])) {
+                    format = format.withCommentMarker(optionParts[1].charAt(0));
+                } else if ("CheckComments".equalsIgnoreCase(optionParts[0])) {
                     checkComments = true;
                 } else {
                     fail(testFile.getName() + " unexpected option: " + option);
@@ -86,7 +86,7 @@ public class CSVFileParserTest {
 
             // Now parse the file and compare against the expected results
             // We use a buffered reader internally so no need to create one here.
-            try (final CSVParser parser = CSVParser.parse(new File(BASE_DIR, split[0]), Charset.defaultCharset(), format)) {
+            try (CSVParser parser = CSVParser.parse(new File(BASE_DIR, split[0]), Charset.defaultCharset(), format)) {
                 for (final CSVRecord record : parser) {
                     String parsed = Arrays.toString(record.values());
                     final String comment = record.getComment();
@@ -113,14 +113,14 @@ public class CSVFileParserTest {
             boolean checkComments = false;
             for (int i = 1; i < split.length; i++) {
                 final String option = split[i];
-                final String[] option_parts = option.split("=", 2);
-                if ("IgnoreEmpty".equalsIgnoreCase(option_parts[0])) {
-                    format = format.withIgnoreEmptyLines(Boolean.parseBoolean(option_parts[1]));
-                } else if ("IgnoreSpaces".equalsIgnoreCase(option_parts[0])) {
-                    format = format.withIgnoreSurroundingSpaces(Boolean.parseBoolean(option_parts[1]));
-                } else if ("CommentStart".equalsIgnoreCase(option_parts[0])) {
-                    format = format.withCommentMarker(option_parts[1].charAt(0));
-                } else if ("CheckComments".equalsIgnoreCase(option_parts[0])) {
+                final String[] optionParts = option.split("=", 2);
+                if ("IgnoreEmpty".equalsIgnoreCase(optionParts[0])) {
+                    format = format.withIgnoreEmptyLines(Boolean.parseBoolean(optionParts[1]));
+                } else if ("IgnoreSpaces".equalsIgnoreCase(optionParts[0])) {
+                    format = format.withIgnoreSurroundingSpaces(Boolean.parseBoolean(optionParts[1]));
+                } else if ("CommentStart".equalsIgnoreCase(optionParts[0])) {
+                    format = format.withCommentMarker(optionParts[1].charAt(0));
+                } else if ("CheckComments".equalsIgnoreCase(optionParts[0])) {
                     checkComments = true;
                 } else {
                     fail(testFile.getName() + " unexpected option: " + option);
@@ -131,7 +131,7 @@ public class CSVFileParserTest {
 
             // Now parse the file and compare against the expected results
             final URL resource = ClassLoader.getSystemResource("org/apache/commons/csv/CSVFileParser/" + split[0]);
-            try (final CSVParser parser = CSVParser.parse(resource, StandardCharsets.UTF_8, format)) {
+            try (CSVParser parser = CSVParser.parse(resource, StandardCharsets.UTF_8, format)) {
                 for (final CSVRecord record : parser) {
                     String parsed = Arrays.toString(record.values());
                     final String comment = record.getComment();

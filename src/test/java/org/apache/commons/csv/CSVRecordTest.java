@@ -73,10 +73,10 @@ public class CSVRecordTest {
     public void setUp() throws Exception {
         values = new String[] { "A", "B", "C" };
         final String rowData = StringUtils.join(values, ',');
-        try (final CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(rowData))) {
+        try (CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(rowData))) {
             record = parser.iterator().next();
         }
-        try (final CSVParser parser = CSVFormat.DEFAULT.builder().setHeader(EnumHeader.class).get().parse(new StringReader(rowData))) {
+        try (CSVParser parser = CSVFormat.DEFAULT.builder().setHeader(EnumHeader.class).get().parse(new StringReader(rowData))) {
             recordWithHeader = parser.iterator().next();
             headerMap = parser.getHeaderMap();
         }
@@ -96,7 +96,7 @@ public class CSVRecordTest {
         final String csv = "A,A,B,B\n1,2,5,6\n";
         final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().get();
 
-        try (final CSVParser parser = CSVParser.parse(csv, format)) {
+        try (CSVParser parser = CSVParser.parse(csv, format)) {
             final CSVRecord record = parser.nextRecord();
 
             assertAll("Test that it gets the last instance of a column when there are duplicate headings",
@@ -111,7 +111,7 @@ public class CSVRecordTest {
         final String csv = "A,A,B,B\n1,2,5,6\n";
         final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().get();
 
-        try (final CSVParser parser = CSVParser.parse(csv, format)) {
+        try (CSVParser parser = CSVParser.parse(csv, format)) {
             final CSVRecord record = parser.nextRecord();
             final Map<String, String> map = record.toMap();
 
@@ -193,7 +193,7 @@ public class CSVRecordTest {
     public void testIsInconsistent() throws IOException {
         final String[] headers = { "first", "second", "third" };
         final String rowData = StringUtils.join(values, ',');
-        try (final CSVParser parser = CSVFormat.DEFAULT.withHeader(headers).parse(new StringReader(rowData))) {
+        try (CSVParser parser = CSVFormat.DEFAULT.withHeader(headers).parse(new StringReader(rowData))) {
             final Map<String, Integer> map = parser.getHeaderMapRaw();
             final CSVRecord record1 = parser.iterator().next();
             map.put("fourth", Integer.valueOf(4));
@@ -247,7 +247,7 @@ public class CSVRecordTest {
     @Test
     public void testRemoveAndAddColumns() throws IOException {
         // do:
-        try (final CSVPrinter printer = new CSVPrinter(new StringBuilder(), CSVFormat.DEFAULT)) {
+        try (CSVPrinter printer = new CSVPrinter(new StringBuilder(), CSVFormat.DEFAULT)) {
             final Map<String, String> map = recordWithHeader.toMap();
             map.remove("OldColumn");
             map.put("ZColumn", "NewValue");
@@ -262,7 +262,7 @@ public class CSVRecordTest {
     @Test
     public void testSerialization() throws IOException, ClassNotFoundException {
         final CSVRecord shortRec;
-        try (final CSVParser parser = CSVParser.parse("A,B\n#my comment\nOne,Two", CSVFormat.DEFAULT.withHeader().withCommentMarker('#'))) {
+        try (CSVParser parser = CSVParser.parse("A,B\n#my comment\nOne,Two", CSVFormat.DEFAULT.withHeader().withCommentMarker('#'))) {
             shortRec = parser.iterator().next();
         }
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -346,7 +346,7 @@ public class CSVRecordTest {
 
     @Test
     public void testToMapWithNoHeader() throws Exception {
-        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.newFormat(','))) {
+        try (CSVParser parser = CSVParser.parse("a,b", CSVFormat.newFormat(','))) {
             final CSVRecord shortRec = parser.iterator().next();
             final Map<String, String> map = shortRec.toMap();
             assertNotNull(map, "Map is not null.");
@@ -356,7 +356,7 @@ public class CSVRecordTest {
 
     @Test
     public void testToMapWithShortRecord() throws Exception {
-        try (final CSVParser parser = CSVParser.parse("a,b", CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
+        try (CSVParser parser = CSVParser.parse("a,b", CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
             final CSVRecord shortRec = parser.iterator().next();
             shortRec.toMap();
         }

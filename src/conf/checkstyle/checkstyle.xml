@@ -53,19 +53,32 @@ limitations under the License.
     <property name="max" value="160"/>
   </module>
   <module name="TreeWalker">
+    <module name="AvoidStarImport" />
+    <module name="FinalLocalVariable" />
+    <module name="IllegalImport" />
+    <module name="ImportOrder">
+      <property name="option" value="top" />
+      <property name="groups" value="java,javax,org" />
+      <property name="ordered" value="true" />
+      <property name="separated" value="true" />
+    </module>
+    <module name="LeftCurly" />
+    <module name="LocalFinalVariableName" />
+    <module name="MissingOverride" />
+    <module name="ModifierOrder" />
+    <module name="NeedBraces" />
+    <module name="NeedBraces" />
     <module name="OperatorWrap">
       <property name="option" value="eol" />
     </module>
-    <module name="ImportOrder">
-      <property name="option" value="top"/>
-      <property name="groups" value="java,javax,org"/>
-      <property name="ordered" value="true"/>
-      <property name="separated" value="true"/>
-    </module>
+    <module name="RedundantImport" />
+    <module name="RedundantModifier" />
+    <module name="RightCurly" />
+    <module name="UnusedImports" />
+    <module name="UpperEll" />
     <module name="WhitespaceAfter" />
     <module name="WhitespaceAround" />
-    <module name="WhitespaceAroundCheck" />
+    <module name="WhitespaceAroundCheck" />  
   </module>
-
 </module>
 

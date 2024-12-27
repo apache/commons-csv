@@ -39,7 +39,7 @@ public class JiraCsv211Test {
         assertEquals("ID\tName\tCountry\tAge\r\n1\tJane Doe\tUSA\t", formatted);
 
         final CSVFormat parseFormat = CSVFormat.DEFAULT.builder().setDelimiter('\t').setHeader().setSkipHeaderRecord(true).get();
-        try (final CSVParser parser = parseFormat.parse(new StringReader(formatted))) {
+        try (CSVParser parser = parseFormat.parse(new StringReader(formatted))) {
             parser.forEach(record -> {
                 assertEquals("1", record.get(0));
                 assertEquals("Jane Doe", record.get(1));

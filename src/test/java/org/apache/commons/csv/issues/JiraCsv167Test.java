@@ -40,7 +40,7 @@ public class JiraCsv167Test {
     public void testParse() throws IOException {
         int totcomment = 0;
         int totrecs = 0;
-        try (final Reader reader = getTestReader(); final BufferedReader br = new BufferedReader(reader)) {
+        try (Reader reader = getTestReader(); BufferedReader br = new BufferedReader(reader)) {
             String s = null;
             boolean lastWasComment = false;
             while ((s = br.readLine()) != null) {
@@ -74,8 +74,8 @@ public class JiraCsv167Test {
         // @formatter:on
         int comments = 0;
         int records = 0;
-        try (final Reader reader = getTestReader(); final CSVParser parser = format.parse(reader)) {
-            for (final CSVRecord csvRecord : parser) {
+        try (Reader reader = getTestReader(); CSVParser parser = format.parse(reader)) {
+            for (CSVRecord csvRecord : parser) {
                 records++;
                 if (csvRecord.hasComment()) {
                     comments++;

@@ -37,7 +37,7 @@ public class JiraCsv206Test {
         final StringReader reader = new StringReader(source);
         final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").get();
         CSVRecord record = null;
-        try (final CSVParser csvParser = CSVParser.builder().setReader(reader).setFormat(format).get()) {
+        try (CSVParser csvParser = CSVParser.builder().setReader(reader).setFormat(format).get()) {
             final Iterator<CSVRecord> iterator = csvParser.iterator();
             record = iterator.next();
             assertEquals("FirstName", record.get(0));
@@ -63,7 +63,7 @@ public class JiraCsv206Test {
                 .setHeaderComments(comment).get();
         // @formatter:on
         final StringBuilder out = new StringBuilder();
-        try (final CSVPrinter printer = formatExcel.print(out)) {
+        try (CSVPrinter printer = formatExcel.print(out)) {
             printer.print(record.get(0));
             printer.print(record.get(1));
             printer.print(record.get(2));
