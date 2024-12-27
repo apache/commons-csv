@@ -25,7 +25,6 @@ limitations under the License.
   <module name="Header">
     <property name="headerFile" value="${checkstyle.header.file}" />
   </module>
-  <property name="localeLanguage" value="en" />
   <module name="LineLength">
     <property name="max" value="160"/>
   </module>
@@ -69,5 +68,6 @@ limitations under the License.
     <module name="WhitespaceAround" />
     <module name="WhitespaceAroundCheck" />  
   </module>
+  <property name="localeLanguage" value="en" />
 </module>
 
