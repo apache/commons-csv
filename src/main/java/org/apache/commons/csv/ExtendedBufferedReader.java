@@ -147,7 +147,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
             lineNumber++;
         }
         if (encoder != null) {
-            this.bytesRead += getCharBytes(current);
+            this.bytesRead += getEncodedCharLength(current);
         }
         lastChar = current;
         position++;
@@ -180,7 +180,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      * @return the byte length of the character.
      * @throws CharacterCodingException if the character cannot be encoded.
      */
-    private long getCharBytes(int current) throws CharacterCodingException {
+    private int getEncodedCharLength(int current) throws CharacterCodingException {
         final char cChar = (char) current;
         final char lChar = (char) lastChar;
         if (!Character.isSurrogate(cChar)) {

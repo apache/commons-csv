@@ -42,7 +42,7 @@ public class JiraCsv196Test {
         long[] charByteKey = {0, 89, 242, 395};
         int idx = 0;
         for (CSVRecord record : parser) {
-            assertEquals(charByteKey[idx++], record.getCharacterByte());
+            assertEquals(charByteKey[idx++], record.getBytePosition());
         }
         parser.close();
     }
@@ -63,7 +63,7 @@ public class JiraCsv196Test {
         long[] charByteKey = {0, 84, 701, 1318, 1935};
         int idx = 0;
         for (CSVRecord record : parser) {
-            assertEquals(charByteKey[idx++], record.getCharacterByte());
+            assertEquals(charByteKey[idx++], record.getBytePosition());
         }
         parser.close();
     }

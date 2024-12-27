@@ -718,22 +718,22 @@ public class CSVParserTest {
             assertNotNull(record = parser.nextRecord());
             assertEquals(1, record.getRecordNumber());
             assertEquals(code.indexOf('i'), record.getCharacterPosition());
-            assertEquals(record.getCharacterByte(), record.getCharacterPosition());
+            assertEquals(record.getBytePosition(), record.getCharacterPosition());
 
             assertNotNull(record = parser.nextRecord());
             assertEquals(2, record.getRecordNumber());
             assertEquals(code.indexOf('1'), record.getCharacterPosition());
-            assertEquals(record.getCharacterByte(), record.getCharacterPosition());
+            assertEquals(record.getBytePosition(), record.getCharacterPosition());
 
             assertNotNull(record = parser.nextRecord());
             assertEquals(3, record.getRecordNumber());
             assertEquals(code.indexOf('2'), record.getCharacterPosition());
-            assertEquals(record.getCharacterByte(), 95);
+            assertEquals(record.getBytePosition(), 95);
 
             assertNotNull(record = parser.nextRecord());
             assertEquals(4, record.getRecordNumber());
             assertEquals(code.indexOf('3'), record.getCharacterPosition());
-            assertEquals(record.getCharacterByte(), 154);
+            assertEquals(record.getBytePosition(), 154);
         };
 
     }
@@ -755,20 +755,20 @@ public class CSVParserTest {
             assertNotNull(record = parser.nextRecord());
             assertEquals(1, record.getRecordNumber());
             assertEquals(code.indexOf('i'), record.getCharacterPosition());
-            assertEquals(record.getCharacterByte(), record.getCharacterPosition());
+            assertEquals(record.getBytePosition(), record.getCharacterPosition());
 
             assertNotNull(record = parser.nextRecord());
             assertEquals(2, record.getRecordNumber());
             assertEquals(code.indexOf('1'), record.getCharacterPosition());
-            assertEquals(record.getCharacterByte(), record.getCharacterPosition());
+            assertEquals(record.getBytePosition(), record.getCharacterPosition());
             assertNotNull(record = parser.nextRecord());
             assertEquals(3, record.getRecordNumber());
             assertEquals(code.indexOf('2'), record.getCharacterPosition());
-            assertEquals(record.getCharacterByte(), 26);
+            assertEquals(record.getBytePosition(), 26);
             assertNotNull(record = parser.nextRecord());
             assertEquals(4, record.getRecordNumber());
             assertEquals(code.indexOf('3'), record.getCharacterPosition());
-            assertEquals(record.getCharacterByte(), 43);
+            assertEquals(record.getBytePosition(), 43);
         }
     }
 

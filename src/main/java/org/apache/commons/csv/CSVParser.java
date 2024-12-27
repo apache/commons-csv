@@ -539,13 +539,14 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param recordNumber
      *            The next record number to assign.
      * @param charset
-     *            The character encoding to be used for the reader.
+     *            The character encoding to be used for the reader when enableByteTracking is true.
+     * @param enableByteTracking
+     *           {@code true} to enable byte tracking for the parser; {@code false} to disable it.
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either the reader or format is null.
      * @throws IOException
      *             If there is a problem reading the header or skipping the first record.
      * @throws CSVException Thrown on invalid input.
-     * @since 1.13.0.
      */
     private CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber,
         final Charset charset, final boolean enableByteTracking)
