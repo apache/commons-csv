@@ -1,18 +1,20 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *   https://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.apache.commons.csv;
@@ -117,8 +119,8 @@ public class PerformanceTest {
             System.out.printf("Found test fixture %s: %,d bytes.%n", BIG_FILE, BIG_FILE.length());
         } else {
             System.out.println("Decompressing test fixture to: " + BIG_FILE + "...");
-            try (final InputStream input = new GZIPInputStream(PerformanceTest.class.getClassLoader().getResourceAsStream(TEST_RESRC));
-                    final OutputStream output = new FileOutputStream(BIG_FILE)) {
+            try (InputStream input = new GZIPInputStream(PerformanceTest.class.getClassLoader().getResourceAsStream(TEST_RESRC));
+                    OutputStream output = new FileOutputStream(BIG_FILE)) {
                 IOUtils.copy(input, output);
                 System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
             }
@@ -219,8 +221,8 @@ public class PerformanceTest {
             final String simpleName;
             final Stats stats;
             final long startMillis;
-            try (final ExtendedBufferedReader input = new ExtendedBufferedReader(createReader());
-                    final Lexer lexer = createTestCSVLexer(test, input)) {
+            try (ExtendedBufferedReader input = new ExtendedBufferedReader(createReader());
+                    Lexer lexer = createTestCSVLexer(test, input)) {
                 if (test.startsWith("CSVLexer")) {
                     dynamic = "!";
                 }
@@ -265,7 +267,7 @@ public class PerformanceTest {
             int fields = 0;
             int lines = 0;
             final long startMillis;
-            try (final ExtendedBufferedReader in = new ExtendedBufferedReader(createReader())) {
+            try (ExtendedBufferedReader in = new ExtendedBufferedReader(createReader())) {
                 startMillis = System.currentTimeMillis();
                 int read;
                 if (makeString) {
@@ -314,7 +316,7 @@ public class PerformanceTest {
         for (int i = 0; i < max; i++) {
             final long startMillis;
             final Stats stats;
-            try (final CSVParser parser = fac.createParser()) {
+            try (CSVParser parser = fac.createParser()) {
                 startMillis = System.currentTimeMillis();
                 stats = iterate(parser);
             }
@@ -331,7 +333,7 @@ public class PerformanceTest {
         for (int i = 0; i < max; i++) {
             final long startMillis;
             final Stats stats;
-            try (final BufferedReader in = new BufferedReader(createReader())) {
+            try (BufferedReader in = new BufferedReader(createReader())) {
                 startMillis = System.currentTimeMillis();
                 stats = readAll(in, split);
             }

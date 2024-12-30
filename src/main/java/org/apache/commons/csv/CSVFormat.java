@@ -1,18 +1,20 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *   https://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.apache.commons.csv;
@@ -1079,7 +1081,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Default MongoDB CSV format used by the {@code mongoexport} operation.
      * <p>
-     * <b>Parsing is not supported yet.</b>
+     * <strong>Parsing is not supported yet.</strong>
      * </p>
      *
      * <p>
@@ -1121,7 +1123,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Default MongoDB TSV format used by the {@code mongoexport} operation.
      * <p>
-     * <b>Parsing is not supported yet.</b>
+     * <strong>Parsing is not supported yet.</strong>
      * </p>
      *
      * <p>
@@ -1366,7 +1368,6 @@ public final class CSVFormat implements Serializable {
      *
      * @param source the string to check.
      * @param searchCh the character to search.
-     *
      * @return true if {@code c} contains a line break character
      */
     private static boolean contains(final String source, final char searchCh) {
@@ -1377,7 +1378,6 @@ public final class CSVFormat implements Serializable {
      * Returns true if the given string contains a line break character.
      *
      * @param source the string to check.
-     *
      * @return true if {@code c} contains a line break character.
      */
     private static boolean containsLineBreak(final String source) {
@@ -1401,7 +1401,6 @@ public final class CSVFormat implements Serializable {
      * Returns true if the given character is a line break character.
      *
      * @param c the character to check.
-     *
      * @return true if {@code c} is a line break character.
      */
     private static boolean isLineBreak(final char c) {
@@ -1412,7 +1411,6 @@ public final class CSVFormat implements Serializable {
      * Returns true if the given character is a line break character.
      *
      * @param c the character to check, may be null.
-     *
      * @return true if {@code c} is a line break character (and not null).
      */
     private static boolean isLineBreak(final Character c) {
@@ -1439,7 +1437,6 @@ public final class CSVFormat implements Serializable {
      * @param delimiter the char used for value separation, must not be a line break character
      * @return a new CSV format.
      * @throws IllegalArgumentException if the delimiter is a line break character
-     *
      * @see #DEFAULT
      * @see #RFC4180
      * @see #MYSQL
@@ -2671,7 +2668,6 @@ public final class CSVFormat implements Serializable {
      * Builds a new {@code CSVFormat} with whether to flush on close.
      *
      * @param autoFlush whether to flush on close.
-     *
      * @return A new CSVFormat that is equal to this but with the specified autoFlush setting.
      * @since 1.6
      * @deprecated Use {@link Builder#setAutoFlush(boolean)}
@@ -3032,7 +3028,6 @@ public final class CSVFormat implements Serializable {
      * Builds a new {@code CSVFormat} with the output quote policy of the format set to the specified value.
      *
      * @param quoteMode the quote policy to use for output.
-     *
      * @return A new CSVFormat that is equal to this but with the specified quote policy
      * @deprecated Use {@link Builder#setQuoteMode(QuoteMode)}
      */

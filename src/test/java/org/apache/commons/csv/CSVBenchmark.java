@@ -1,18 +1,20 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *   https://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.apache.commons.csv;
@@ -78,9 +80,8 @@ public class CSVBenchmark {
      */
     @Setup
     public void init() throws IOException {
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream(
-            "org/apache/commons/csv/perf/worldcitiespop.txt.gz");
-        try (final InputStream gzin = new GZIPInputStream(in, 8192)) {
+        try (InputStream in = this.getClass().getClassLoader().getResourceAsStream("org/apache/commons/csv/perf/worldcitiespop.txt.gz");
+                InputStream gzin = new GZIPInputStream(in, 8192)) {
             this.data = IOUtils.toString(gzin, StandardCharsets.ISO_8859_1);
         }
     }
@@ -89,9 +90,9 @@ public class CSVBenchmark {
     public int parseCommonsCSV(final Blackhole bh) throws Exception {
         int count = 0;
 
-        try (final Reader in = getReader()) {
+        try (Reader in = getReader()) {
             final CSVFormat format = CSVFormat.Builder.create().setSkipHeaderRecord(true).build();
-            Iterator<CSVRecord> iter = format.parse(in).iterator();
+            final Iterator<CSVRecord> iter = format.parse(in).iterator();
             while (iter.hasNext()) {
                 count++;
                 iter.next();
@@ -106,7 +107,7 @@ public class CSVBenchmark {
     public int parseGenJavaCSV(final Blackhole bh) throws Exception {
         int count = 0;
 
-        try (final Reader in = getReader()) {
+        try (Reader in = getReader()) {
             final CsvReader reader = new CsvReader(in);
             reader.setFieldDelimiter(',');
             while (reader.readLine() != null) {
@@ -122,7 +123,7 @@ public class CSVBenchmark {
     public int parseJavaCSV(final Blackhole bh) throws Exception {
         int count = 0;
 
-        try (final Reader in = getReader()) {
+        try (Reader in = getReader()) {
             final com.csvreader.CsvReader reader = new com.csvreader.CsvReader(in, ',');
             reader.setRecordDelimiter('\n');
             while (reader.readRecord()) {
@@ -141,7 +142,7 @@ public class CSVBenchmark {
         final com.opencsv.CSVParser parser = new CSVParserBuilder()
           .withSeparator(',').withIgnoreQuotations(true).build();
 
-        try (final Reader in = getReader()) {
+        try (Reader in = getReader()) {
             final com.opencsv.CSVReader reader = new CSVReaderBuilder(in).withSkipLines(1).withCSVParser(parser).build();
             while (reader.readNext() != null) {
                 count++;
@@ -158,7 +159,7 @@ public class CSVBenchmark {
         reader.setSeperator(',');
         final CountingReaderCallback callback = new CountingReaderCallback();
 
-        try (final Reader in = getReader()) {
+        try (Reader in = getReader()) {
           reader.parse(in, callback);
         }
 
@@ -170,7 +171,7 @@ public class CSVBenchmark {
     public int parseSuperCSV(final Blackhole bh) throws Exception {
         int count = 0;
 
-        try (final CsvListReader reader = new CsvListReader(getReader(), CsvPreference.STANDARD_PREFERENCE)) {
+        try (CsvListReader reader = new CsvListReader(getReader(), CsvPreference.STANDARD_PREFERENCE)) {
             while (reader.read() != null) {
                 count++;
             }

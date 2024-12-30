@@ -1,18 +1,20 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *   https://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.apache.commons.csv.perf;
@@ -54,10 +56,8 @@ public class PerformanceTest {
             return;
         }
         System.out.println("Decompressing test fixture to: " + BIG_FILE + "...");
-        try (
-            final InputStream input = new GZIPInputStream(
-                PerformanceTest.class.getClassLoader().getResourceAsStream(TEST_RESRC));
-            final OutputStream output = new FileOutputStream(BIG_FILE)) {
+        try (InputStream input = new GZIPInputStream(PerformanceTest.class.getClassLoader().getResourceAsStream(TEST_RESRC));
+                OutputStream output = new FileOutputStream(BIG_FILE)) {
             IOUtils.copy(input, output);
             System.out.println(String.format("Decompressed test fixture %s: %,d bytes.", BIG_FILE, BIG_FILE.length()));
         }
@@ -72,7 +72,7 @@ public class PerformanceTest {
     private long parse(final Reader reader, final boolean traverseColumns) throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.builder().setIgnoreSurroundingSpaces(false).get();
         long recordCount = 0;
-        try (final CSVParser parser = format.parse(reader)) {
+        try (CSVParser parser = format.parse(reader)) {
             for (final CSVRecord record : parser) {
                 recordCount++;
                 if (traverseColumns) {
@@ -100,7 +100,7 @@ public class PerformanceTest {
 
     public long testParseBigFile(final boolean traverseColumns) throws Exception {
         final long startMillis = System.currentTimeMillis();
-        try (final BufferedReader reader = createBufferedReader()) {
+        try (BufferedReader reader = createBufferedReader()) {
             final long count = parse(reader, traverseColumns);
             final long totalMillis = System.currentTimeMillis() - startMillis;
             println(
@@ -124,7 +124,7 @@ public class PerformanceTest {
         long count;
         for (int i = 0; i < this.max; i++) {
             final long startMillis;
-            try (final BufferedReader in = createBufferedReader()) {
+            try (BufferedReader in = createBufferedReader()) {
                 startMillis = System.currentTimeMillis();
                 count = readLines(in);
             }

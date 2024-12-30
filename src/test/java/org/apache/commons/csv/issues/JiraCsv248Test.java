@@ -1,18 +1,20 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *   https://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.apache.commons.csv.issues;
@@ -32,6 +34,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 
 public class JiraCsv248Test {
+
     private static InputStream getTestInput() {
         return ClassLoader.getSystemClassLoader().getResourceAsStream("org/apache/commons/csv/CSV-248/csvRecord.bin");
     }
@@ -49,11 +52,11 @@ public class JiraCsv248Test {
     @Test
     public void testJiraCsv248() throws IOException, ClassNotFoundException {
         // Record was originally created using CSV version 1.6 with the following code:
-        // try (final CSVParser parser = CSVParser.parse("A,B\n#my comment\nOne,Two",
+        // try (CSVParser parser = CSVParser.parse("A,B\n#my comment\nOne,Two",
         // CSVFormat.DEFAULT.builder().setHeader().setCommentMarker('#'))) {
         // CSVRecord rec = parser.iterator().next();
         // }
-        try (InputStream in = getTestInput(); final ObjectInputStream ois = new ObjectInputStream(in)) {
+        try (InputStream in = getTestInput(); ObjectInputStream ois = new ObjectInputStream(in)) {
             final Object object = ois.readObject();
             assertInstanceOf(CSVRecord.class, object);
             final CSVRecord rec = (CSVRecord) object;
