@@ -736,8 +736,7 @@ public class CSVParserTest {
             assertEquals(4, record.getRecordNumber());
             assertEquals(code.indexOf('3'), record.getCharacterPosition());
             assertEquals(record.getBytePosition(), 154);
-        };
-
+        }
     }
 
     @Test

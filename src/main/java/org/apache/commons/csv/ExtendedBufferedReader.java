@@ -195,7 +195,9 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
             } else if (Character.isSurrogatePair(lChar, cChar)) {
                 return encoder.encode(
                     CharBuffer.wrap(new char[] {lChar, cChar})).limit();
-            } else throw new CharacterCodingException();
+            } else {
+                throw new CharacterCodingException();
+            }
         }
     }
 

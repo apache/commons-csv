@@ -208,6 +208,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          *
          * @param enableByteTracking {@code true} to enable byte tracking; {@code false} to disable it.
          * @return this instance.
+         * @since 1.13.0
          */
         public Builder setEnableByteTracking(final boolean enableByteTracking) {
             this.enableByteTracking = enableByteTracking;
@@ -885,7 +886,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         recordList.clear();
         StringBuilder sb = null;
         final long startCharPosition = lexer.getCharacterPosition() + characterOffset;
-        final long startCharByte = lexer.getBytesRead() + this.characterOffset;
+        final long startBytePosition = lexer.getBytesRead() + this.characterOffset;
         do {
             reusableToken.reset();
             lexer.nextToken(reusableToken);
@@ -923,7 +924,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             recordNumber++;
             final String comment = Objects.toString(sb, null);
             result = new CSVRecord(this, recordList.toArray(Constants.EMPTY_STRING_ARRAY), comment,
-                recordNumber, startCharPosition, startCharByte);
+                recordNumber, startCharPosition, startBytePosition);
         }
         return result;
     }
