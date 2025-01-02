@@ -155,7 +155,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         private CSVFormat format;
         private long characterOffset;
         private long recordNumber = 1;
-        private boolean enableByteTracking;
+        private boolean trackBytes;
 
         /**
          * Constructs a new instance.
@@ -167,7 +167,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         @SuppressWarnings("resource")
         @Override
         public CSVParser get() throws IOException {
-            return new CSVParser(getReader(), format != null ? format : CSVFormat.DEFAULT, characterOffset, recordNumber, getCharset(), enableByteTracking);
+            return new CSVParser(getReader(), format != null ? format : CSVFormat.DEFAULT, characterOffset, recordNumber, getCharset(), trackBytes);
         }
 
         /**
@@ -178,18 +178,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          */
         public Builder setCharacterOffset(final long characterOffset) {
             this.characterOffset = characterOffset;
-            return asThis();
-        }
-
-        /**
-         * Sets whether to enable byte tracking for the parser.
-         *
-         * @param enableByteTracking {@code true} to enable byte tracking; {@code false} to disable it.
-         * @return this instance.
-         * @since 1.13.0
-         */
-        public Builder setEnableByteTracking(final boolean enableByteTracking) {
-            this.enableByteTracking = enableByteTracking;
             return asThis();
         }
 
@@ -212,6 +200,18 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          */
         public Builder setRecordNumber(final long recordNumber) {
             this.recordNumber = recordNumber;
+            return asThis();
+        }
+
+        /**
+         * Sets whether to enable byte tracking for the parser.
+         *
+         * @param trackBytes {@code true} to enable byte tracking; {@code false} to disable it.
+         * @return this instance.
+         * @since 1.13.0
+         */
+        public Builder setTrackBytes(final boolean trackBytes) {
+            this.trackBytes = trackBytes;
             return asThis();
         }
 
@@ -544,7 +544,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *            The next record number to assign.
      * @param charset
      *            The character encoding to be used for the reader when enableByteTracking is true.
-     * @param enableByteTracking
+     * @param trackBytes
      *           {@code true} to enable byte tracking for the parser; {@code false} to disable it.
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either the reader or format is null.
@@ -553,12 +553,12 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws CSVException Thrown on invalid input.
      */
     private CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber,
-        final Charset charset, final boolean enableByteTracking)
+        final Charset charset, final boolean trackBytes)
         throws IOException {
         Objects.requireNonNull(reader, "reader");
         Objects.requireNonNull(format, "format");
         this.format = format.copy();
-        this.lexer = new Lexer(format, new ExtendedBufferedReader(reader, charset, enableByteTracking));
+        this.lexer = new Lexer(format, new ExtendedBufferedReader(reader, charset, trackBytes));
         this.csvRecordIterator = new CSVRecordIterator();
         this.headers = createHeaders();
         this.characterOffset = characterOffset;

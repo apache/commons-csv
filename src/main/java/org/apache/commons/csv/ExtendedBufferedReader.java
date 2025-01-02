@@ -76,11 +76,11 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      *
      * @param reader the reader supports a look-ahead option.
      * @param charset the character set for encoding, or {@code null} if not applicable.
-     * @param enableByteTracking {@code true} to enable byte tracking; {@code false} to disable it.
+     * @param trackBytes {@code true} to enable byte tracking; {@code false} to disable it.
      */
-    ExtendedBufferedReader(final Reader reader, final Charset charset, final boolean enableByteTracking) {
+    ExtendedBufferedReader(final Reader reader, final Charset charset, final boolean trackBytes) {
         super(reader);
-        if (charset != null && enableByteTracking) {
+        if (charset != null && trackBytes) {
             encoder = charset.newEncoder();
         }
     }

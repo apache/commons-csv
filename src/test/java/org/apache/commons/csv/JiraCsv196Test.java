@@ -37,7 +37,7 @@ public class JiraCsv196Test {
     public void testParseFourBytes() throws IOException {
         final CSVFormat format = CSVFormat.Builder.create().setDelimiter(',').setQuote('\'').get();
         try (CSVParser parser = new CSVParser.Builder().setFormat(format).setReader(getTestInput("org/apache/commons/csv/CSV-196/emoji.csv"))
-                .setCharset(StandardCharsets.UTF_8).setEnableByteTracking(true).get()) {
+                .setCharset(StandardCharsets.UTF_8).setTrackBytes(true).get()) {
             final long[] charByteKey = { 0, 84, 701, 1318, 1935 };
             int idx = 0;
             for (CSVRecord record : parser) {
@@ -50,7 +50,7 @@ public class JiraCsv196Test {
     public void testParseThreeBytes() throws IOException {
         final CSVFormat format = CSVFormat.Builder.create().setDelimiter(',').setQuote('\'').get();
         try (CSVParser parser = new CSVParser.Builder().setFormat(format).setReader(getTestInput("org/apache/commons/csv/CSV-196/japanese.csv"))
-                .setCharset(StandardCharsets.UTF_8).setEnableByteTracking(true).get()) {
+                .setCharset(StandardCharsets.UTF_8).setTrackBytes(true).get()) {
             final long[] charByteKey = { 0, 89, 242, 395 };
             int idx = 0;
             for (CSVRecord record : parser) {
