@@ -78,7 +78,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      * @param charset the character set for encoding, or {@code null} if not applicable.
      * @param enableByteTracking {@code true} to enable byte tracking; {@code false} to disable it.
      */
-    ExtendedBufferedReader(final Reader reader, Charset charset, boolean enableByteTracking) {
+    ExtendedBufferedReader(final Reader reader, final Charset charset, final boolean enableByteTracking) {
         super(reader);
         if (charset != null && enableByteTracking) {
             encoder = charset.newEncoder();
@@ -133,22 +133,21 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      * @return the byte length of the character.
      * @throws CharacterCodingException if the character cannot be encoded.
      */
-    private int getEncodedCharLength(int current) throws CharacterCodingException {
+    private int getEncodedCharLength(final int current) throws CharacterCodingException {
         final char cChar = (char) current;
         final char lChar = (char) lastChar;
         if (!Character.isSurrogate(cChar)) {
             return encoder.encode(
                 CharBuffer.wrap(new char[] {cChar})).limit();
+        }
+        if (Character.isHighSurrogate(cChar)) {
+            // Move on to the next char (low surrogate)
+            return 0;
+        } else if (Character.isSurrogatePair(lChar, cChar)) {
+            return encoder.encode(
+                CharBuffer.wrap(new char[] {lChar, cChar})).limit();
         } else {
-            if (Character.isHighSurrogate(cChar)) {
-                // Move on to the next char (low surrogate)
-                return 0;
-            } else if (Character.isSurrogatePair(lChar, cChar)) {
-                return encoder.encode(
-                    CharBuffer.wrap(new char[] {lChar, cChar})).limit();
-            } else {
-                throw new CharacterCodingException();
-            }
+            throw new CharacterCodingException();
         }
     }
 

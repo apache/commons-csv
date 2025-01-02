@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 
 public class JiraCsv196Test {
 
-    private Reader getTestInput(String path) {
+    private Reader getTestInput(final String path) {
         return new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream(path));
     }
 
