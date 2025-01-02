@@ -245,6 +245,8 @@
               <exclude>src/test/resources/org/apache/commons/csv/CSV-141/csv-141.csv</exclude>
               <exclude>src/test/resources/org/apache/commons/csv/csv-167/sample1.csv</exclude>
               <exclude>src/test/resources/org/apache/commons/csv/CSV-198/optd_por_public.csv</exclude>
+              <exclude>src/test/resources/org/apache/commons/csv/CSV-196/emoji.csv</exclude>
+              <exclude>src/test/resources/org/apache/commons/csv/CSV-196/japanese.csv</exclude>
               <exclude>src/test/resources/org/apache/commons/csv/CSV-213/999751170.patch.csv</exclude>
               <exclude>src/test/resources/org/apache/commons/csv/CSVFileParser/bom.csv</exclude>
               <exclude>src/test/resources/org/apache/commons/csv/CSVFileParser/test.csv</exclude>

@@ -50,6 +50,11 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     private final long characterPosition;
 
+    /**
+     * The starting position of this record in the source stream, measured in bytes.
+     */
+    private final long bytePosition;
+
     /** The accumulated comments (if any) */
     private final String comment;
 
@@ -62,15 +67,15 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /** The parser that originates this record. This is not serialized. */
     private final transient CSVParser parser;
 
-    CSVRecord(final CSVParser parser, final String[] values, final String comment, final long recordNumber,
-            final long characterPosition) {
+    CSVRecord(final CSVParser parser, final String[] values,  final String comment, final long recordNumber,
+            final long characterPosition, final long bytePosition) {
         this.recordNumber = recordNumber;
         this.values = values != null ? values : Constants.EMPTY_STRING_ARRAY;
         this.parser = parser;
         this.comment = comment;
         this.characterPosition = characterPosition;
+        this.bytePosition = bytePosition;
     }
-
     /**
      * Returns a value by {@link Enum}.
      *
@@ -144,6 +149,16 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     public long getCharacterPosition() {
         return characterPosition;
+    }
+
+    /**
+     * Returns the starting position of this record in the source stream, measured in bytes.
+     *
+     * @return the byte position of this record in the source stream.
+     * @since 1.13.0
+     */
+    public long getBytePosition() {
+        return bytePosition;
     }
 
     /**

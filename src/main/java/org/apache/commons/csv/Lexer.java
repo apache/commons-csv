@@ -106,6 +106,15 @@ final class Lexer implements Closeable {
     }
 
     /**
+     * Gets the number of bytes read
+     *
+     * @return the number of bytes read
+     */
+    long getBytesRead() {
+        return reader.getBytesRead();
+    }
+
+    /**
      * Returns the current line number
      *
      * @return the current line number
