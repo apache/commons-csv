@@ -521,7 +521,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @deprecated Will be private in the next major version, use {@link Builder#get()}.
      */
     @Deprecated
-    @SuppressWarnings("resource")
     public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber)
         throws IOException {
             this(reader, format, characterOffset, recordNumber, null, false);
