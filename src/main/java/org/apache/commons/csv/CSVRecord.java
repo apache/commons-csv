@@ -142,16 +142,6 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns the start position of this record as a character position in the source stream. This may or may not
-     * correspond to the byte position depending on the character set.
-     *
-     * @return the position of this record in the source stream.
-     */
-    public long getCharacterPosition() {
-        return characterPosition;
-    }
-
-    /**
      * Returns the starting position of this record in the source stream, measured in bytes.
      *
      * @return the byte position of this record in the source stream.
@@ -159,6 +149,16 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     public long getBytePosition() {
         return bytePosition;
+    }
+
+    /**
+     * Returns the start position of this record as a character position in the source stream. This may or may not
+     * correspond to the byte position depending on the character set.
+     *
+     * @return the position of this record in the source stream.
+     */
+    public long getCharacterPosition() {
+        return characterPosition;
     }
 
     /**

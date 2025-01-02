@@ -97,21 +97,21 @@ final class Lexer implements Closeable {
     }
 
     /**
-     * Returns the current character position
-     *
-     * @return the current character position
-     */
-    long getCharacterPosition() {
-        return reader.getPosition();
-    }
-
-    /**
      * Gets the number of bytes read
      *
      * @return the number of bytes read
      */
     long getBytesRead() {
         return reader.getBytesRead();
+    }
+
+    /**
+     * Returns the current character position
+     *
+     * @return the current character position
+     */
+    long getCharacterPosition() {
+        return reader.getPosition();
     }
 
     /**

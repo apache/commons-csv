@@ -99,6 +99,60 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     }
 
     /**
+     * Gets the number of bytes read by the reader.
+     *
+     * @return the number of bytes read by the read
+     */
+    long getBytesRead() {
+        return this.bytesRead;
+    }
+
+    /**
+     * Gets the byte length of the given character based on the the original Unicode
+     * specification, which defined characters as fixed-width 16-bit entities.
+     * <p>
+     * The Unicode characters are divided into two main ranges:
+     * <ul>
+     *   <li><b>U+0000 to U+FFFF (Basic Multilingual Plane, BMP):</b>
+     *     <ul>
+     *       <li>Represented using a single 16-bit {@code char}.</li>
+     *       <li>Includes UTF-8 encodings of 1-byte, 2-byte, and some 3-byte characters.</li>
+     *     </ul>
+     *   </li>
+     *   <li><b>U+10000 to U+10FFFF (Supplementary Characters):</b>
+     *     <ul>
+     *       <li>Represented as a pair of {@code char}s:</li>
+     *       <li>The first {@code char} is from the high-surrogates range (\uD800-\uDBFF).</li>
+     *       <li>The second {@code char} is from the low-surrogates range (\uDC00-\uDFFF).</li>
+     *       <li>Includes UTF-8 encodings of some 3-byte characters and all 4-byte characters.</li>
+     *     </ul>
+     *   </li>
+     * </ul>
+     *
+     * @param current the current character to process.
+     * @return the byte length of the character.
+     * @throws CharacterCodingException if the character cannot be encoded.
+     */
+    private int getEncodedCharLength(int current) throws CharacterCodingException {
+        final char cChar = (char) current;
+        final char lChar = (char) lastChar;
+        if (!Character.isSurrogate(cChar)) {
+            return encoder.encode(
+                CharBuffer.wrap(new char[] {cChar})).limit();
+        } else {
+            if (Character.isHighSurrogate(cChar)) {
+                // Move on to the next char (low surrogate)
+                return 0;
+            } else if (Character.isSurrogatePair(lChar, cChar)) {
+                return encoder.encode(
+                    CharBuffer.wrap(new char[] {lChar, cChar})).limit();
+            } else {
+                throw new CharacterCodingException();
+            }
+        }
+    }
+
+    /**
      * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by
      * any of the read methods. This will not include a character read using the {@link #peek()} method. If no
      * character has been read then this will return {@link Constants#UNDEFINED}. If the end of the stream was reached
@@ -154,51 +208,6 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         lastChar = current;
         position++;
         return lastChar;
-    }
-
-    /**
-     * Gets the byte length of the given character based on the the original Unicode
-     * specification, which defined characters as fixed-width 16-bit entities.
-     * <p>
-     * The Unicode characters are divided into two main ranges:
-     * <ul>
-     *   <li><b>U+0000 to U+FFFF (Basic Multilingual Plane, BMP):</b>
-     *     <ul>
-     *       <li>Represented using a single 16-bit {@code char}.</li>
-     *       <li>Includes UTF-8 encodings of 1-byte, 2-byte, and some 3-byte characters.</li>
-     *     </ul>
-     *   </li>
-     *   <li><b>U+10000 to U+10FFFF (Supplementary Characters):</b>
-     *     <ul>
-     *       <li>Represented as a pair of {@code char}s:</li>
-     *       <li>The first {@code char} is from the high-surrogates range (\uD800-\uDBFF).</li>
-     *       <li>The second {@code char} is from the low-surrogates range (\uDC00-\uDFFF).</li>
-     *       <li>Includes UTF-8 encodings of some 3-byte characters and all 4-byte characters.</li>
-     *     </ul>
-     *   </li>
-     * </ul>
-     *
-     * @param current the current character to process.
-     * @return the byte length of the character.
-     * @throws CharacterCodingException if the character cannot be encoded.
-     */
-    private int getEncodedCharLength(int current) throws CharacterCodingException {
-        final char cChar = (char) current;
-        final char lChar = (char) lastChar;
-        if (!Character.isSurrogate(cChar)) {
-            return encoder.encode(
-                CharBuffer.wrap(new char[] {cChar})).limit();
-        } else {
-            if (Character.isHighSurrogate(cChar)) {
-                // Move on to the next char (low surrogate)
-                return 0;
-            } else if (Character.isSurrogatePair(lChar, cChar)) {
-                return encoder.encode(
-                    CharBuffer.wrap(new char[] {lChar, cChar})).limit();
-            } else {
-                throw new CharacterCodingException();
-            }
-        }
     }
 
     @Override
@@ -267,15 +276,6 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         position = positionMark;
         bytesRead = bytesReadMark;
         super.reset();
-    }
-
-    /**
-     * Gets the number of bytes read by the reader.
-     *
-     * @return the number of bytes read by the read
-     */
-    long getBytesRead() {
-        return this.bytesRead;
     }
 
 }

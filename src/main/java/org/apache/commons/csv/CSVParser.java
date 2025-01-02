@@ -182,6 +182,18 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         }
 
         /**
+         * Sets whether to enable byte tracking for the parser.
+         *
+         * @param enableByteTracking {@code true} to enable byte tracking; {@code false} to disable it.
+         * @return this instance.
+         * @since 1.13.0
+         */
+        public Builder setEnableByteTracking(final boolean enableByteTracking) {
+            this.enableByteTracking = enableByteTracking;
+            return asThis();
+        }
+
+        /**
          * Sets the CSV format. A copy of the given format is kept.
          *
          * @param format the CSV format, null is equivalent to {@link CSVFormat#DEFAULT}.
@@ -200,18 +212,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          */
         public Builder setRecordNumber(final long recordNumber) {
             this.recordNumber = recordNumber;
-            return asThis();
-        }
-
-        /**
-         * Sets whether to enable byte tracking for the parser.
-         *
-         * @param enableByteTracking {@code true} to enable byte tracking; {@code false} to disable it.
-         * @return this instance.
-         * @since 1.13.0
-         */
-        public Builder setEnableByteTracking(final boolean enableByteTracking) {
-            this.enableByteTracking = enableByteTracking;
             return asThis();
         }
 
