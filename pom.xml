@@ -28,7 +28,6 @@
   <url>https://commons.apache.org/proper/commons-csv/</url>
   <inceptionYear>2005</inceptionYear>
   <description>The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.</description>
-
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -76,7 +75,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
   <developers>
     <developer>
       <id>bayard</id>
@@ -135,23 +133,19 @@
       <name>Bob Smith</name>
     </contributor>
   </contributors>
-
   <scm>
     <connection>scm:git:http://gitbox.apache.org/repos/asf/commons-csv.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/commons-csv.git</developerConnection>
     <url>https://gitbox.apache.org/repos/asf?p=commons-csv.git</url>
   </scm>
-
   <issueManagement>
     <system>jira</system>
     <url>https://issues.apache.org/jira/browse/CSV</url>
   </issueManagement>
-
   <ciManagement>
     <system>github</system>
     <url>https://github.com/apache/commons-csv/actions</url>
   </ciManagement>
-
   <distributionManagement>
     <site>
       <id>apache.website</id>
@@ -159,7 +153,6 @@
       <url>scm:svn:https://svn.apache.org/repos/infra/websites/production/commons/content/proper/commons-csv/</url>
     </site>
   </distributionManagement>
-
   <properties>
     <commons.release.version>1.13.0</commons.release.version>
     <commons.release.desc>(Java 8 or above)</commons.release.desc>
@@ -180,10 +173,8 @@
     <japicmp.skip>false</japicmp.skip>
     <commons.release.isDistModule>true</commons.release.isDistModule>
     <project.build.outputTimestamp>2024-09-25T02:03:48Z</project.build.outputTimestamp>
-
     <commons.codec.version>1.17.1</commons.codec.version>
     <commons.io.version>2.18.0</commons.io.version>
-
     <!-- Apache Felix maven-bundle-plugin -->
     <commons.osgi.import>
     org.apache.commons.codec.binary;version="${commons.codec.version}",
@@ -195,6 +186,7 @@
     *
     </commons.osgi.import>
     <!-- JaCoCo: Don't make code coverage worse than: -->
+    <!-- To examine the JaCoCo report for a failure, run 'mvn clean install site -Dcommons.jacoco.haltOnFailure=false' -->
     <commons.jacoco.haltOnFailure>true</commons.jacoco.haltOnFailure>
     <commons.jacoco.classRatio>1.00</commons.jacoco.classRatio>
     <commons.jacoco.instructionRatio>0.98</commons.jacoco.instructionRatio>
