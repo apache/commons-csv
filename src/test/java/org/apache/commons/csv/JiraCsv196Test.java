@@ -17,8 +17,8 @@
  * under the License.
  */
 package org.apache.commons.csv;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,51 +27,35 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
 
-
 public class JiraCsv196Test {
-    @Test
-    public void parseThreeBytes() throws IOException {
-        final CSVFormat format = CSVFormat.Builder.create()
-            .setDelimiter(',')
-            .setQuote('\'')
-            .get();
-        final CSVParser parser = new CSVParser.Builder()
-            .setFormat(format)
-            .setReader(getTestInput("org/apache/commons/csv/CSV-196/japanese.csv"))
-            .setCharset(StandardCharsets.UTF_8)
-            .setEnableByteTracking(true)
-            .get();
-        final long[] charByteKey = {0, 89, 242, 395};
-        int idx = 0;
-        for (CSVRecord record : parser) {
-            assertEquals(charByteKey[idx++], record.getBytePosition());
-        }
-        parser.close();
-    }
-
-
-    @Test
-    public void parseFourBytes() throws IOException {
-        final CSVFormat format = CSVFormat.Builder.create()
-            .setDelimiter(',')
-            .setQuote('\'')
-            .get();
-        final CSVParser parser = new CSVParser.Builder()
-            .setFormat(format)
-            .setReader(getTestInput("org/apache/commons/csv/CSV-196/emoji.csv"))
-            .setCharset(StandardCharsets.UTF_8)
-            .setEnableByteTracking(true)
-            .get();
-        final long[] charByteKey = {0, 84, 701, 1318, 1935};
-        int idx = 0;
-        for (CSVRecord record : parser) {
-            assertEquals(charByteKey[idx++], record.getBytePosition());
-        }
-        parser.close();
-    }
 
     private Reader getTestInput(String path) {
-        return new InputStreamReader(
-            ClassLoader.getSystemClassLoader().getResourceAsStream(path));
+        return new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream(path));
+    }
+
+    @Test
+    public void testParseFourBytes() throws IOException {
+        final CSVFormat format = CSVFormat.Builder.create().setDelimiter(',').setQuote('\'').get();
+        try (CSVParser parser = new CSVParser.Builder().setFormat(format).setReader(getTestInput("org/apache/commons/csv/CSV-196/emoji.csv"))
+                .setCharset(StandardCharsets.UTF_8).setEnableByteTracking(true).get()) {
+            final long[] charByteKey = { 0, 84, 701, 1318, 1935 };
+            int idx = 0;
+            for (CSVRecord record : parser) {
+                assertEquals(charByteKey[idx++], record.getBytePosition());
+            }
+        }
+    }
+
+    @Test
+    public void testParseThreeBytes() throws IOException {
+        final CSVFormat format = CSVFormat.Builder.create().setDelimiter(',').setQuote('\'').get();
+        try (CSVParser parser = new CSVParser.Builder().setFormat(format).setReader(getTestInput("org/apache/commons/csv/CSV-196/japanese.csv"))
+                .setCharset(StandardCharsets.UTF_8).setEnableByteTracking(true).get()) {
+            final long[] charByteKey = { 0, 89, 242, 395 };
+            int idx = 0;
+            for (CSVRecord record : parser) {
+                assertEquals(charByteKey[idx++], record.getBytePosition());
+            }
+        }
     }
 }
