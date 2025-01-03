@@ -60,13 +60,13 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     private long bytesReadMark;
 
     /** Encoder for calculating the number of bytes for each character read. */
-    private CharsetEncoder encoder;
+    private final CharsetEncoder encoder;
 
     /**
      * Constructs a new instance using the default buffer size.
      */
     ExtendedBufferedReader(final Reader reader) {
-        super(reader);
+        this(reader, null, false);
     }
 
     /**
@@ -80,9 +80,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      */
     ExtendedBufferedReader(final Reader reader, final Charset charset, final boolean trackBytes) {
         super(reader);
-        if (charset != null && trackBytes) {
-            encoder = charset.newEncoder();
-        }
+        encoder = charset != null && trackBytes ? charset.newEncoder() : null;
     }
 
     /**
@@ -137,15 +135,13 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         final char cChar = (char) current;
         final char lChar = (char) lastChar;
         if (!Character.isSurrogate(cChar)) {
-            return encoder.encode(
-                CharBuffer.wrap(new char[] {cChar})).limit();
+            return encoder.encode(CharBuffer.wrap(new char[] { cChar })).limit();
         }
         if (Character.isHighSurrogate(cChar)) {
             // Move on to the next char (low surrogate)
             return 0;
         } else if (Character.isSurrogatePair(lChar, cChar)) {
-            return encoder.encode(
-                CharBuffer.wrap(new char[] {lChar, cChar})).limit();
+            return encoder.encode(CharBuffer.wrap(new char[] { lChar, cChar })).limit();
         } else {
             throw new CharacterCodingException();
         }
