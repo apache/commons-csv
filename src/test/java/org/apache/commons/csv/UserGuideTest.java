@@ -58,10 +58,10 @@ public class UserGuideTest {
         final Path path = tempDir.resolve("test1.csv");
         Files.copy(Utils.createUtf8Input("ColumnA, ColumnB, ColumnC\r\nA, B, C\r\n".getBytes(StandardCharsets.UTF_8), true), path);
         // @formatter:off
-        try (final Reader reader = new InputStreamReader(BOMInputStream.builder()
+        try (Reader reader = new InputStreamReader(BOMInputStream.builder()
                 .setPath(path)
                 .get(), "UTF-8");
-                final CSVParser parser = CSVFormat.EXCEL.builder()
+                CSVParser parser = CSVFormat.EXCEL.builder()
                         .setHeader()
                         .get()
                         .parse(reader)) {
@@ -72,14 +72,14 @@ public class UserGuideTest {
             }
         }
     }
-    
+
     @Test
     public void testBomUtil() throws UnsupportedEncodingException, IOException {
         final Path path = tempDir.resolve("test2.csv");
         Files.copy(Utils.createUtf8Input("ColumnA, ColumnB, ColumnC\r\nA, B, C\r\n".getBytes(StandardCharsets.UTF_8), true), path);
-        try (final Reader reader = newReader(path);
+        try (Reader reader = newReader(path);
                 // @formatter:off
-                final CSVParser parser = CSVFormat.EXCEL.builder()
+                CSVParser parser = CSVFormat.EXCEL.builder()
                         .setHeader()
                         .get()
                         .parse(reader)) {

@@ -71,10 +71,10 @@ for (CSVRecord record : records) {
           for example:
         </p>
         <source>
-try (final Reader reader = new InputStreamReader(BOMInputStream.builder()
+try (Reader reader = new InputStreamReader(BOMInputStream.builder()
         .setPath(path)
         .get(), "UTF-8");
-        final CSVParser parser = CSVFormat.EXCEL.builder()
+        CSVParser parser = CSVFormat.EXCEL.builder()
                 .setHeader()
                 .get()
                 .parse(reader)) {
