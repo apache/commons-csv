@@ -70,39 +70,45 @@ for (CSVRecord record : records) {
           <a href="https://commons.apache.org/proper/commons-io/">Apache Commons IO</a>
           for example:
         </p>
-        <source>final URL url = ...;
-try (final Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
-     final CSVParser parser = CSVFormat.EXCEL.builder()
-       .setHeader()
-       .build()
-       .parse(reader)) {
+        <source>
+try (final Reader reader = new InputStreamReader(BOMInputStream.builder()
+        .setPath(path)
+        .get(), "UTF-8");
+        final CSVParser parser = CSVFormat.EXCEL.builder()
+                .setHeader()
+                .get()
+                .parse(reader)) {
     for (final CSVRecord record : parser) {
-        final String string = record.get("SomeColumn");
-        ...
+        final String string = record.get("ColumnA");
+        // ...
     }
 }
         </source>
         <p>
           You might find it handy to create something like this:
         </p>
-        <source>/**
+        <source>
+/**
  * Creates a reader capable of handling BOMs.
+ *
+ * @param path The path to read.
+ * @return a new InputStreamReader for UTF-8 bytes.
+ * @throws IOException if an I/O error occurs.
  */
-public InputStreamReader newReader(final InputStream inputStream) {
-    return new InputStreamReader(new BOMInputStream(inputStream), StandardCharsets.UTF_8);
+public InputStreamReader newReader(final Path path) throws IOException {
+    return new InputStreamReader(BOMInputStream.builder()
+            .setPath(path)
+            .get(), StandardCharsets.UTF_8);
 }
         </source>
       </subsection>
     </section>
-
     <section name="Working with headers">
-
       Apache Commons CSV provides several ways to access record values.
       The simplest way is to access values by their index in the record.
       However, columns in CSV files often have a name, for example: ID, CustomerNo, Birthday, etc.
       The CSVFormat class provides an API for specifying these <i>header</i> names and CSVRecord on
       the other hand has methods to access values by their corresponding header name.
-
       <subsection name="Accessing column values by index">
         To access a record value by index, no special configuration of the CSVFormat is necessary:
         <source>Reader in = new FileReader(&quot;path/to/file.csv&quot;);
