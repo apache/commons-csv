@@ -27,8 +27,8 @@ limitations under the License.
   <p>The most common CSV formats are predefined in the <a href="apidocs/org/apache/commons/csv/CSVFormat.html">CSVFormat</a> class:
   <ul>
     <li>Microsoft Excel</li>
-    <li><a href="http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">Informix UNLOAD</a></li>
-    <li><a href="http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">Informix UNLOAD CSV</a></li>
+    <li><a href="https://www.ibm.com/docs/en/informix-servers/14.10?topic=statements-unload-statement">Informix UNLOAD</a></li>
+    <li><a href="https://www.ibm.com/docs/en/informix-servers/14.10?topic=statements-unload-statement">Informix UNLOAD CSV</a></li>
     <li><a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump-delimited-text.html">MySQL</a></li>
     <li><a href="https://docs.oracle.com/database/121/SUTIL/GUID-D1762699-8154-40F6-90DE-EFB8EB6A9AB0.htm#SUTIL4217">Oracle</a></li>
     <li><a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL CSV</a></li>
