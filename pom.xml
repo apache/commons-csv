@@ -173,7 +173,7 @@
     <japicmp.skip>false</japicmp.skip>
     <commons.release.isDistModule>true</commons.release.isDistModule>
     <project.build.outputTimestamp>2024-09-25T02:03:48Z</project.build.outputTimestamp>
-    <commons.codec.version>1.17.1</commons.codec.version>
+    <commons.codec.version>1.17.2</commons.codec.version>
     <commons.io.version>2.18.0</commons.io.version>
     <!-- Apache Felix maven-bundle-plugin -->
     <commons.osgi.import>
