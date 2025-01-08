@@ -76,6 +76,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
         this.characterPosition = characterPosition;
         this.bytePosition = bytePosition;
     }
+
     /**
      * Returns a value by {@link Enum}.
      *
