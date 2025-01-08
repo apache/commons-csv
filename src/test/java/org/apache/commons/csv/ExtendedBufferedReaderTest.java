@@ -95,7 +95,8 @@ public class ExtendedBufferedReaderTest {
 
     @Test
     public void testReadingInDifferentBuffer() throws Exception {
-        final char[] tmp1 = new char[2], tmp2 = new char[4];
+        final char[] tmp1 = new char[2];
+        final char[] tmp2 = new char[4];
         try (ExtendedBufferedReader reader = createBufferedReader("1\r\n2\r\n")) {
             reader.read(tmp1, 0, 2);
             reader.read(tmp2, 2, 2);

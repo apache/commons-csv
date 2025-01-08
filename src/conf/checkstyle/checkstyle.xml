@@ -65,6 +65,7 @@ limitations under the License.
     <module name="LocalFinalVariableName" />
     <module name="MissingOverride" />
     <module name="ModifierOrder" />
+    <module name="MultipleVariableDeclarations" />
     <module name="NeedBraces" />
     <module name="OperatorWrap">
       <property name="option" value="eol" />
