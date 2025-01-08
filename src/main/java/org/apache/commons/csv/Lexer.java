@@ -402,34 +402,35 @@ final class Lexer implements Closeable {
      * </ul>
      *
      * @param token the current token
-     * @param ch    the current character
+     * @param ch     the current character
      * @return the filled token
      * @throws IOException  on stream access error
      * @throws CSVException Thrown on invalid input.
      */
-    private Token parseSimpleToken(final Token token, int ch) throws IOException {
+    private Token parseSimpleToken(final Token token, final int ch) throws IOException {
         // Faster to use while(true)+break than while(token.type == INVALID)
+        int cur = ch;
         while (true) {
-            if (readEndOfLine(ch)) {
+            if (readEndOfLine(cur)) {
                 token.type = Token.Type.EORECORD;
                 break;
             }
-            if (isEndOfFile(ch)) {
+            if (isEndOfFile(cur)) {
                 token.type = Token.Type.EOF;
                 token.isReady = true; // There is data at EOF
                 break;
             }
-            if (isDelimiter(ch)) {
+            if (isDelimiter(cur)) {
                 token.type = Token.Type.TOKEN;
                 break;
             }
             // continue
-            if (isEscape(ch)) {
+            if (isEscape(cur)) {
                 appendNextEscapedCharacterToToken(token);
             } else {
-                token.content.append((char) ch);
+                token.content.append((char) cur);
             }
-            ch = reader.read(); // continue
+            cur = reader.read(); // continue
         }
 
         if (ignoreSurroundingSpaces) {
@@ -444,11 +445,12 @@ final class Lexer implements Closeable {
      *
      * @return true if the given or next character is a line-terminator
      */
-    boolean readEndOfLine(int ch) throws IOException {
+    boolean readEndOfLine(final int ch) throws IOException {
         // check if we have \r\n...
-        if (ch == Constants.CR && reader.peek() == Constants.LF) {
+        int cur = ch;
+        if (cur == Constants.CR && reader.peek() == Constants.LF) {
             // note: does not change ch outside of this method!
-            ch = reader.read();
+            cur = reader.read();
             // Save the EOL state
             if (firstEol == null) {
                 this.firstEol = Constants.CRLF;
@@ -456,14 +458,14 @@ final class Lexer implements Closeable {
         }
         // save EOL state here.
         if (firstEol == null) {
-            if (ch == Constants.LF) {
+            if (cur == Constants.LF) {
                 this.firstEol = LF_STRING;
-            } else if (ch == Constants.CR) {
+            } else if (cur == Constants.CR) {
                 this.firstEol = CR_STRING;
             }
         }
 
-        return ch == Constants.LF || ch == Constants.CR;
+        return cur == Constants.LF || cur == Constants.CR;
     }
 
     // TODO escape handling needs more work
