@@ -1,3 +1,55 @@
+Apache Commons CSV Version 1.13.0 Release Notes
+
+This document contains the release notes for the 1.13.0 version of Apache Commons CSV.
+Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
+
+Commons CSV requires at least Java 8.
+
+The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
+
+This is a feature and maintenance release. Java 8 or later is required.
+
+Changes in this version include:
+
+New Features
+------------
+
+* CSV-313:  Add CSVPrinter.getRecordCount(). Thanks to Gary Gregory.
+*           Add and use CSVParser.Builder and builder() and deprecate CSVParser constructors. Thanks to Gary Gregory.
+*           CSVFormat.Builder implements Supplier<CSVFormat>. Thanks to Gary Gregory.
+*           Deprecate CSVFormat.Builder.build() for get(). Thanks to Gary Gregory.
+* CSV-196:  Track byte position #502. Thanks to Yuzhan Jiang, Gary Gregory.
+
+Fixed Bugs
+----------
+
+* CSV-314:  Required OSGi Import-Package version numbers in MANIFEST.MF #504. Thanks to Gary Gregory.
+* CSV-314:  CSVParser.nextRecord() should throw CSVException (an IOException subclass) instead of IOException and IllegalStateException, no method signature changes needed. Thanks to Gary Gregory.
+
+Changes
+-------
+
+*           Bump org.apache.commons:commons-parent from 76 to 78 #486, #495. Thanks to Gary Gregory, Dependabot.
+*           Bump org.codehaus.mojo:taglist-maven-plugin from 3.1.0 to 3.2.1 #493. Thanks to Gary Gregory, Dependabot.
+*           Bump commons-io:commons-io from 2.17.0 to 2.18.0 #505. Thanks to Gary Gregory, Dependabot.
+*           Bump commons-codec:commons-codec from 1.17.1 to 1.17.2. Thanks to Gary Gregory.
+*           Bump org.apache.commons:commons-parent from 78 to 79. Thanks to Gary Gregory.
+
+
+Historical list of changes: https://commons.apache.org/proper/commons-csv/changes-report.html
+
+For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Commons CSV website:
+
+https://commons.apache.org/proper/commons-csv/
+
+Download page: https://commons.apache.org/proper/commons-csv/download_csv.cgi
+
+Have fun!
+-Apache Commons CSV team
+
+------------------------------------------------------------------------------
+
 Apache Commons CSV Version 1.12.0 Release Notes
 
 This document contains the release notes for the 1.12.0 version of Apache Commons CSV.

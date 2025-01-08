@@ -113,32 +113,32 @@ limitations under the License.
       </p>
     </subsection>
     </section>
-    <section name="Apache Commons CSV 1.12.0 (Java 8 or above)">
+    <section name="Apache Commons CSV 1.13.0 (Java 8 or above)">
       <subsection name="Binaries">
         <table>
           <tr>
-              <td><a href="[preferred]/commons/csv/binaries/commons-csv-1.12.0-bin.tar.gz">commons-csv-1.12.0-bin.tar.gz</a></td>
-              <td><a href="https://downloads.apache.org/commons/csv/binaries/commons-csv-1.12.0-bin.tar.gz.sha512">sha512</a></td>
-              <td><a href="https://downloads.apache.org/commons/csv/binaries/commons-csv-1.12.0-bin.tar.gz.asc">pgp</a></td>
+              <td><a href="[preferred]/commons/csv/binaries/commons-csv-1.13.0-bin.tar.gz">commons-csv-1.13.0-bin.tar.gz</a></td>
+              <td><a href="https://downloads.apache.org/commons/csv/binaries/commons-csv-1.13.0-bin.tar.gz.sha512">sha512</a></td>
+              <td><a href="https://downloads.apache.org/commons/csv/binaries/commons-csv-1.13.0-bin.tar.gz.asc">pgp</a></td>
           </tr>
           <tr>
-              <td><a href="[preferred]/commons/csv/binaries/commons-csv-1.12.0-bin.zip">commons-csv-1.12.0-bin.zip</a></td>
-              <td><a href="https://downloads.apache.org/commons/csv/binaries/commons-csv-1.12.0-bin.zip.sha512">sha512</a></td>
-              <td><a href="https://downloads.apache.org/commons/csv/binaries/commons-csv-1.12.0-bin.zip.asc">pgp</a></td>
+              <td><a href="[preferred]/commons/csv/binaries/commons-csv-1.13.0-bin.zip">commons-csv-1.13.0-bin.zip</a></td>
+              <td><a href="https://downloads.apache.org/commons/csv/binaries/commons-csv-1.13.0-bin.zip.sha512">sha512</a></td>
+              <td><a href="https://downloads.apache.org/commons/csv/binaries/commons-csv-1.13.0-bin.zip.asc">pgp</a></td>
           </tr>
         </table>
       </subsection>
       <subsection name="Source">
         <table>
           <tr>
-              <td><a href="[preferred]/commons/csv/source/commons-csv-1.12.0-src.tar.gz">commons-csv-1.12.0-src.tar.gz</a></td>
-              <td><a href="https://downloads.apache.org/commons/csv/source/commons-csv-1.12.0-src.tar.gz.sha512">sha512</a></td>
-              <td><a href="https://downloads.apache.org/commons/csv/source/commons-csv-1.12.0-src.tar.gz.asc">pgp</a></td>
+              <td><a href="[preferred]/commons/csv/source/commons-csv-1.13.0-src.tar.gz">commons-csv-1.13.0-src.tar.gz</a></td>
+              <td><a href="https://downloads.apache.org/commons/csv/source/commons-csv-1.13.0-src.tar.gz.sha512">sha512</a></td>
+              <td><a href="https://downloads.apache.org/commons/csv/source/commons-csv-1.13.0-src.tar.gz.asc">pgp</a></td>
           </tr>
           <tr>
-              <td><a href="[preferred]/commons/csv/source/commons-csv-1.12.0-src.zip">commons-csv-1.12.0-src.zip</a></td>
-              <td><a href="https://downloads.apache.org/commons/csv/source/commons-csv-1.12.0-src.zip.sha512">sha512</a></td>
-              <td><a href="https://downloads.apache.org/commons/csv/source/commons-csv-1.12.0-src.zip.asc">pgp</a></td>
+              <td><a href="[preferred]/commons/csv/source/commons-csv-1.13.0-src.zip">commons-csv-1.13.0-src.zip</a></td>
+              <td><a href="https://downloads.apache.org/commons/csv/source/commons-csv-1.13.0-src.zip.sha512">sha512</a></td>
+              <td><a href="https://downloads.apache.org/commons/csv/source/commons-csv-1.13.0-src.zip.asc">pgp</a></td>
           </tr>
         </table>
       </subsection>
