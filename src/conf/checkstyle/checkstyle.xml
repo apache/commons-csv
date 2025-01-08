@@ -55,7 +55,6 @@ limitations under the License.
     <module name="MissingOverride" />
     <module name="ModifierOrder" />
     <module name="NeedBraces" />
-    <module name="NeedBraces" />
     <module name="OperatorWrap">
       <property name="option" value="eol" />
     </module>
