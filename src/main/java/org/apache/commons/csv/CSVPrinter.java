@@ -236,7 +236,7 @@ public final class CSVPrinter implements Flushable, Closeable {
                 if (i + 1 < comment.length() && comment.charAt(i + 1) == LF) {
                     i++;
                 }
-                //$FALL-THROUGH$ break intentionally excluded.
+                // falls-through: break intentionally excluded.
             case LF:
                 println();
                 appendable.append(format.getCommentMarker().charValue()); // N.B. Explicit (un)boxing is intentional
