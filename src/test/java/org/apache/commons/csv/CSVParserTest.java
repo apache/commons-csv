@@ -897,7 +897,7 @@ public class CSVParserTest {
             .setDelimiter(',')
             .setQuote('\'')
             .get();
-        try (CSVParser parser = CSVParser.builder().setReader(new StringReader(code)).setFormat(format).setCharset(UTF_8).setTrackBytes(true).get() ) {
+        try (CSVParser parser = CSVParser.builder().setReader(new StringReader(code)).setFormat(format).setCharset(UTF_8).setTrackBytes(true).get()) {
             CSVRecord record = new CSVRecord(parser, null, null, 1L, 0L, 0L);
 
             assertEquals(0, parser.getRecordNumber());
