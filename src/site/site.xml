@@ -16,16 +16,13 @@
  limitations under the License.
 -->
 <project name="Commons CSV">
-
   <bannerRight>
     <name>Apache Commons CSV</name>
     <src>/images/logo.png</src>
     <href>/index.html</href>
     <alt>Apache Commons CSV&amp;trade; logo</alt>
   </bannerRight>
-
   <body>
-
     <menu name="Commons CSV">
       <item name="Overview"        href="/index.html"/>
       <item name="Download"        href="/download_csv.cgi"/>
@@ -33,7 +30,6 @@
       <item name="Javadoc"         href="/apidocs/index.html"/>
       <item name="Javadoc Archive" href="https://javadoc.io/doc/org.apache.commons/commons-csv/latest/index.html"/>
     </menu>
-
     <menu name="Development">
       <item name="History"         href="/changes-report.html"/>
       <item name="Mailing Lists"   href="/mail-lists.html"/>
@@ -41,6 +37,5 @@
       <item name="Team"            href="/team.html"/>
       <item name="Source"          href="/scm.html"/>
     </menu>
-
   </body>
 </project>
