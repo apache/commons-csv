@@ -29,6 +29,7 @@
       <item name="User Guide"      href="/user-guide.html"/>
       <item name="Javadoc"         href="/apidocs/index.html"/>
       <item name="Javadoc Archive" href="https://javadoc.io/doc/org.apache.commons/commons-csv/latest/index.html"/>
+      <item name="Release History" href="/changes.html" />
     </menu>
     <menu name="Development">
       <item name="History"         href="/changes-report.html"/>
