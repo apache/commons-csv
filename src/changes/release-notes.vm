@@ -15,7 +15,7 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
-${project.name} Version ${version} Release Notes
+${project.name} ${version} Release Notes
 
 This document contains the release notes for the ${version} version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
