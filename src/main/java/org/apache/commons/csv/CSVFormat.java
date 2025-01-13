@@ -188,7 +188,22 @@ public final class CSVFormat implements Serializable {
     public static class Builder implements Supplier<CSVFormat> {
 
         /**
-         * Creates a new default builder.
+         * Creates a new default builder, as for {@link #RFC4180} but allowing empty lines.
+         *
+         * <p>
+         * The {@link Builder} settings are:
+         * </p>
+         * <ul>
+         * <li>{@code setDelimiter(',')}</li>
+         * <li>{@code setQuote('"')}</li>
+         * <li>{@code setRecordSeparator("\r\n")}</li>
+         * <li>{@code setIgnoreEmptyLines(true)}</li>
+         * <li>{@code setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL)}</li>
+         * <li>All other values take their Java defaults, false for boolean, null for objects.</li>
+         * </ul>
+         *
+         * @see Predefined#Default
+         * @see DuplicateHeaderMode#ALLOW_ALL
          *
          * @return a copy of the builder
          */
@@ -196,18 +211,18 @@ public final class CSVFormat implements Serializable {
             // @formatter:off
             return new Builder()
                     .setDelimiter(Constants.COMMA)
-                    .setRecordSeparator(Constants.CRLF)
                     .setQuote(Constants.DOUBLE_QUOTE_CHAR)
+                    .setRecordSeparator(Constants.CRLF)
                     .setIgnoreEmptyLines(true)
                     .setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL);
                     // @formatter:on
         }
 
         /**
-         * Creates a new builder for the given format.
+         * Creates a new builder from the given format.
          *
          * @param csvFormat the source format.
-         * @return a copy of the builder
+         * @return a new builder.
          */
         public static Builder create(final CSVFormat csvFormat) {
             return new Builder(csvFormat);
@@ -981,6 +996,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#Default
+     * @see DuplicateHeaderMode#ALLOW_ALL
      */
     public static final CSVFormat DEFAULT = new CSVFormat(Builder.create());
 
@@ -997,7 +1013,7 @@ public final class CSVFormat implements Serializable {
      * </pre>
      *
      * <p>
-     * The {@link Builder} settings are:
+     * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
      * <li>{@code setDelimiter(',')}</li>
@@ -1015,6 +1031,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * @see Predefined#Excel
+     * @see DuplicateHeaderMode#ALLOW_ALL
      */
     // @formatter:off
     public static final CSVFormat EXCEL = DEFAULT.builder()
@@ -1034,7 +1051,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * <p>
-     * The {@link Builder} settings are:
+     * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
      * <li>{@code setDelimiter(',')}</li>
@@ -1066,7 +1083,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * <p>
-     * The {@link Builder} settings are:
+     * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
      * <li>{@code setDelimiter(',')}</li>
@@ -1104,7 +1121,7 @@ public final class CSVFormat implements Serializable {
      * not a valid escape character. If you use double-quotes to enclose fields in the CSV data, you must escape internal double-quote marks by prepending
      * another double-quote. </blockquote>
      * <p>
-     * The {@link Builder} settings are:
+     * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
      * <li>{@code setDelimiter(',')}</li>
@@ -1115,6 +1132,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#MongoDBCsv
+     * @see QuoteMode#ALL_NON_NULL
      * @see <a href="https://docs.mongodb.com/manual/reference/program/mongoexport/">MongoDB mongoexport command documentation</a>
      * @since 1.7
      */
@@ -1140,7 +1158,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * <p>
-     * The {@link Builder} settings are:
+     * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
      * <li>{@code setDelimiter('\t')}</li>
@@ -1151,6 +1169,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#MongoDBCsv
+     * @see QuoteMode#ALL_NON_NULL
      * @see <a href="https://docs.mongodb.com/manual/reference/program/mongoexport/">MongoDB mongoexport command
      *          documentation</a>
      * @since 1.7
@@ -1174,7 +1193,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * <p>
-     * The {@link Builder} settings are:
+     * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
      * <li>{@code setDelimiter('\t')}</li>
@@ -1187,6 +1206,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#MySQL
+     * @see QuoteMode#ALL_NON_NULL
      * @see <a href="https://dev.mysql.com/doc/refman/5.1/en/load-data.html"> https://dev.mysql.com/doc/refman/5.1/en/load
      *      -data.html</a>
      */
@@ -1212,7 +1232,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * <p>
-     * The {@link Builder} settings are:
+     * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
      * <li>{@code setDelimiter(',') // default is {@code FIELDS TERMINATED BY ','}}</li>
@@ -1226,6 +1246,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#Oracle
+     * @see QuoteMode#MINIMAL
      * @see <a href="https://s.apache.org/CGXG">Oracle CSV Format Specification</a>
      * @since 1.6
      */
@@ -1251,7 +1272,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * <p>
-     * The {@link Builder} settings are:
+     * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
      * <li>{@code setDelimiter(',')}</li>
@@ -1264,6 +1285,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#MySQL
+     * @see QuoteMode#ALL_NON_NULL
      * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL COPY command
      *          documentation</a>
      * @since 1.5
@@ -1289,7 +1311,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * <p>
-     * The {@link Builder} settings are:
+     * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
      * <li>{@code setDelimiter('\t')}</li>
@@ -1302,6 +1324,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#MySQL
+     * @see QuoteMode#ALL_NON_NULL
      * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL COPY command
      *          documentation</a>
      * @since 1.5
@@ -1322,7 +1345,7 @@ public final class CSVFormat implements Serializable {
      * Comma separated format as defined by <a href="https://tools.ietf.org/html/rfc4180">RFC 4180</a>.
      *
      * <p>
-     * The {@link Builder} settings are:
+     * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
      * <li>{@code setDelimiter(',')}</li>
@@ -1338,15 +1361,13 @@ public final class CSVFormat implements Serializable {
     private static final long serialVersionUID = 2L;
 
     /**
-     * Tab-delimited format.
+     * Tab-delimited format (TDF).
      *
      * <p>
-     * The {@link Builder} settings are:
+     * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
      * <li>{@code setDelimiter('\t')}</li>
-     * <li>{@code setQuote('"')}</li>
-     * <li>{@code setRecordSeparator("\r\n")}</li>
      * <li>{@code setIgnoreSurroundingSpaces(true)}</li>
      * </ul>
      *
