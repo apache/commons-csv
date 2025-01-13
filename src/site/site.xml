@@ -32,7 +32,6 @@
       <item name="Release History" href="/changes.html" />
     </menu>
     <menu name="Development">
-      <item name="History"         href="/changes-report.html"/>
       <item name="Mailing Lists"   href="/mail-lists.html"/>
       <item name="Issue Tracking"  href="/issue-tracking.html"/>
       <item name="Team"            href="/team.html"/>
