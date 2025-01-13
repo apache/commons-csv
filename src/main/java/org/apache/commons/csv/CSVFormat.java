@@ -194,12 +194,12 @@ public final class CSVFormat implements Serializable {
          * The {@link Builder} settings are:
          * </p>
          * <ul>
-         * <li>{@code setDelimiter(',')}</li>
-         * <li>{@code setQuote('"')}</li>
-         * <li>{@code setRecordSeparator("\r\n")}</li>
-         * <li>{@code setIgnoreEmptyLines(true)}</li>
-         * <li>{@code setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL)}</li>
-         * <li>All other values take their Java defaults, false for boolean, null for objects.</li>
+         * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code (',')}</li>
+         * <li>{@link Builder#setQuote(char) setQuote}{@code ('"')}</li>
+         * <li>{@link Builder#setRecordSeparator(String) setRecordSeparator}{@code ("\r\n")}</li>
+         * <li>{@link Builder#setIgnoreEmptyLines(boolean) setIgnoreEmptyLines}{@code (true)}</li>
+         * <li>{@link Builder#setDuplicateHeaderMode(DuplicateHeaderMode) setDuplicateHeaderMode}{@code (DuplicateHeaderMode.ALLOW_ALL)}</li>
+         * <li>All other values take their Java defaults, {@code false} for booleans, {@code null} for object references.</li>
          * </ul>
          *
          * @see Predefined#Default
@@ -774,7 +774,7 @@ public final class CSVFormat implements Serializable {
          */
         public Builder setQuote(final Character quoteCharacter) {
             if (isLineBreak(quoteCharacter)) {
-                throw new IllegalArgumentException("The quoteChar cannot be a line break");
+                throw new IllegalArgumentException("The quoteCharacter cannot be a line break");
             }
             this.quoteCharacter = quoteCharacter;
             return this;
@@ -988,11 +988,11 @@ public final class CSVFormat implements Serializable {
      * The {@link Builder} settings are:
      * </p>
      * <ul>
-     * <li>{@code setDelimiter(',')}</li>
-     * <li>{@code setQuote('"')}</li>
-     * <li>{@code setRecordSeparator("\r\n")}</li>
-     * <li>{@code setIgnoreEmptyLines(true)}</li>
-     * <li>{@code setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL)}</li>
+     * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code (',')}</li>
+     * <li>{@link Builder#setQuote(char) setQuote}{@code ('"')}</li>
+     * <li>{@link Builder#setRecordSeparator(String) setRecordSeparator}{@code ("\r\n")}</li>
+     * <li>{@link Builder#setIgnoreEmptyLines(boolean) setIgnoreEmptyLines}{@code (true)}</li>
+     * <li>{@link Builder#setDuplicateHeaderMode(DuplicateHeaderMode) setDuplicateHeaderMode}{@code (DuplicateHeaderMode.ALLOW_ALL)}</li>
      * </ul>
      *
      * @see Predefined#Default
@@ -1016,14 +1016,14 @@ public final class CSVFormat implements Serializable {
      * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
-     * <li>{@code setDelimiter(',')}</li>
-     * <li>{@code setQuote('"')}</li>
-     * <li>{@code setRecordSeparator("\r\n")}</li>
-     * <li>{@code setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL)}</li>
-     * <li>{@code setIgnoreEmptyLines(false)}</li>
-     * <li>{@code setAllowMissingColumnNames(true)}</li>
-     * <li>{@code setTrailingData(true)}</li>
-     * <li>{@code setLenientEof(true)}</li>
+     * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code (',')}</li>
+     * <li>{@link Builder#setQuote(char) setQuote}{@code ('"')}</li>
+     * <li>{@link Builder#setRecordSeparator(String) setRecordSeparator}{@code ("\r\n")}</li>
+     * <li>{@link Builder#setDuplicateHeaderMode(DuplicateHeaderMode) setDuplicateHeaderMode}{@code (DuplicateHeaderMode.ALLOW_ALL)}</li>
+     * <li>{@link Builder#setIgnoreEmptyLines(boolean) setIgnoreEmptyLines}{@code (false)}</li>
+     * <li>{@link Builder#setAllowMissingColumnNames(boolean) setAllowMissingColumnNames}{@code (true)}</li>
+     * <li>{@link Builder#setTrailingData(boolean) setTrailingData}{@code (true)}</li>
+     * <li>{@link Builder#setLenientEof(boolean) setLenientEof}{@code (true)}</li>
      * </ul>
      * <p>
      * Note: This is currently like {@link #RFC4180} plus {@link Builder#setAllowMissingColumnNames(boolean) Builder#setAllowMissingColumnNames(true)} and
@@ -1054,10 +1054,10 @@ public final class CSVFormat implements Serializable {
      * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
-     * <li>{@code setDelimiter(',')}</li>
-     * <li>{@code setEscape('\\')}</li>
-     * <li>{@code setQuote("\"")}</li>
-     * <li>{@code setRecordSeparator('\n')}</li>
+     * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code (',')}</li>
+     * <li>{@link Builder#setEscape(char) setEscape}{@code ('\\')}</li>
+     * <li>{@link Builder#setQuote(char) setQuote}{@code ('\"')}</li>
+     * <li>{@link Builder#setRecordSeparator(char) setRecordSeparator}{@code ('\n')}</li>
      * </ul>
      *
      * @see Predefined#MySQL
@@ -1086,9 +1086,9 @@ public final class CSVFormat implements Serializable {
      * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
-     * <li>{@code setDelimiter(',')}</li>
-     * <li>{@code setQuote("\"")}</li>
-     * <li>{@code setRecordSeparator('\n')}</li>
+     * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code (',')}</li>
+     * <li>{@link Builder#setQuote(char) setQuote}{@code ('\"')}</li>
+     * <li>{@link Builder#setRecordSeparator(char) setRecordSeparator}{@code ('\n')}</li>
      * </ul>
      *
      * @see Predefined#MySQL
@@ -1124,11 +1124,10 @@ public final class CSVFormat implements Serializable {
      * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
-     * <li>{@code setDelimiter(',')}</li>
-     * <li>{@code setEscape('"')}</li>
-     * <li>{@code setQuote('"')}</li>
-     * <li>{@code setQuoteMode(QuoteMode.ALL_NON_NULL)}</li>
-     * <li>{@code setSkipHeaderRecord(false)}</li>
+     * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code (',')}</li>
+     * <li>{@link Builder#setEscape(char) setEscape}{@code ('"')}</li>
+     * <li>{@link Builder#setQuote(char) setQuote}{@code ('"')}</li>
+     * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.ALL_NON_NULL)}</li>
      * </ul>
      *
      * @see Predefined#MongoDBCsv
@@ -1142,7 +1141,6 @@ public final class CSVFormat implements Serializable {
             .setEscape(Constants.DOUBLE_QUOTE_CHAR)
             .setQuote(Constants.DOUBLE_QUOTE_CHAR)
             .setQuoteMode(QuoteMode.MINIMAL)
-            .setSkipHeaderRecord(false)
             .get();
     // @formatter:off
 
@@ -1161,10 +1159,10 @@ public final class CSVFormat implements Serializable {
      * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
-     * <li>{@code setDelimiter('\t')}</li>
-     * <li>{@code setEscape('"')}</li>
-     * <li>{@code setQuote('"')}</li>
-     * <li>{@code setQuoteMode(QuoteMode.ALL_NON_NULL)}</li>
+     * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code ('\t')}</li>
+     * <li>{@link Builder#setEscape(char) setEscape}{@code ('"')}</li>
+     * <li>{@link Builder#setQuote(char) setQuote}{@code ('"')}</li>
+     * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.ALL_NON_NULL)}</li>
      * <li>{@code setSkipHeaderRecord(false)}</li>
      * </ul>
      *
@@ -1196,13 +1194,13 @@ public final class CSVFormat implements Serializable {
      * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
-     * <li>{@code setDelimiter('\t')}</li>
-     * <li>{@code setEscape('\\')}</li>
-     * <li>{@code setIgnoreEmptyLines(false)}</li>
-     * <li>{@code setQuote(null)}</li>
-     * <li>{@code setRecordSeparator('\n')}</li>
-     * <li>{@code setNullString("\\N")}</li>
-     * <li>{@code setQuoteMode(QuoteMode.ALL_NON_NULL)}</li>
+     * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code ('\t')}</li>
+     * <li>{@link Builder#setEscape(char) setEscape}{@code ('\\')}</li>
+     * <li>{@link Builder#setIgnoreEmptyLines(boolean) setIgnoreEmptyLines}{@code (false)}</li>
+     * <li>{@link Builder#setQuote(Character) setQuote}{@code (null)}</li>
+     * <li>{@link Builder#setRecordSeparator(char) setRecordSeparator}{@code ('\n')}</li>
+     * <li>{@link Builder#setNullString(String) setNullString}{@code ("\\N")}</li>
+     * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.ALL_NON_NULL)}</li>
      * </ul>
      *
      * @see Predefined#MySQL
@@ -1235,14 +1233,14 @@ public final class CSVFormat implements Serializable {
      * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
-     * <li>{@code setDelimiter(',') // default is {@code FIELDS TERMINATED BY ','}}</li>
-     * <li>{@code setEscape('\\')}</li>
-     * <li>{@code setIgnoreEmptyLines(false)}</li>
-     * <li>{@code setQuote('"')  // default is {@code OPTIONALLY ENCLOSED BY '"'}}</li>
-     * <li>{@code setNullString("\\N")}</li>
-     * <li>{@code setTrim()}</li>
-     * <li>{@code setSystemRecordSeparator()}</li>
-     * <li>{@code setQuoteMode(QuoteMode.MINIMAL)}</li>
+     * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code (',')} // default is {@code FIELDS TERMINATED BY ','}}</li>
+     * <li>{@link Builder#setEscape(char) setEscape}{@code ('\\')}</li>
+     * <li>{@link Builder#setIgnoreEmptyLines(boolean) setIgnoreEmptyLines}{@code (false)}</li>
+     * <li>{@link Builder#setQuote(char) setQuote}{@code ('"')} // default is {@code OPTIONALLY ENCLOSED BY '"'}}</li>
+     * <li>{@link Builder#setNullString(String) setNullString}{@code ("\\N")}</li>
+     * <li>{@link Builder#setTrim(boolean) setTrim}{@code (true)}</li>
+     * <li>{@link Builder#setRecordSeparator(String) setRecordSeparator}{@code (System.lineSeparator())}</li>
+     * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.MINIMAL)}</li>
      * </ul>
      *
      * @see Predefined#Oracle
@@ -1275,13 +1273,13 @@ public final class CSVFormat implements Serializable {
      * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
-     * <li>{@code setDelimiter(',')}</li>
-     * <li>{@code setEscape(null)}</li>
-     * <li>{@code setIgnoreEmptyLines(false)}</li>
-     * <li>{@code setQuote('"')}</li>
-     * <li>{@code setRecordSeparator('\n')}</li>
-     * <li>{@code setNullString("")}</li>
-     * <li>{@code setQuoteMode(QuoteMode.ALL_NON_NULL)}</li>
+     * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code (',')}</li>
+     * <li>{@link Builder#setEscape(Character) setEscape}{@code (null)}</li>
+     * <li>{@link Builder#setIgnoreEmptyLines(boolean) setIgnoreEmptyLines}{@code (false)}</li>
+     * <li>{@link Builder#setQuote(char) setQuote}{@code ('"')}</li>
+     * <li>{@link Builder#setRecordSeparator(char) setRecordSeparator}{@code ('\n')}</li>
+     * <li>{@link Builder#setNullString(String) setNullString}{@code ("")}</li>
+     * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.ALL_NON_NULL)}</li>
      * </ul>
      *
      * @see Predefined#MySQL
@@ -1314,13 +1312,13 @@ public final class CSVFormat implements Serializable {
      * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
-     * <li>{@code setDelimiter('\t')}</li>
-     * <li>{@code setEscape('\\')}</li>
-     * <li>{@code setIgnoreEmptyLines(false)}</li>
-     * <li>{@code setQuote(null)}</li>
-     * <li>{@code setRecordSeparator('\n')}</li>
-     * <li>{@code setNullString("\\N")}</li>
-     * <li>{@code setQuoteMode(QuoteMode.ALL_NON_NULL)}</li>
+     * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code ('\t')}</li>
+     * <li>{@link Builder#setEscape(char) setEscape}{@code ('\\')}</li>
+     * <li>{@link Builder#setIgnoreEmptyLines(boolean) setIgnoreEmptyLines}{@code (false)}</li>
+     * <li>{@link Builder#setQuote(Character) setQuote}{@code (null)}</li>
+     * <li>{@link Builder#setRecordSeparator(char) setRecordSeparator}{@code ('\n')}</li>
+     * <li>{@link Builder#setNullString(String) setNullString}{@code ("\\N")}</li>
+     * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.ALL_NON_NULL)}</li>
      * </ul>
      *
      * @see Predefined#MySQL
@@ -1348,10 +1346,10 @@ public final class CSVFormat implements Serializable {
      * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
-     * <li>{@code setDelimiter(',')}</li>
-     * <li>{@code setQuote('"')}</li>
-     * <li>{@code setRecordSeparator("\r\n")}</li>
-     * <li>{@code setIgnoreEmptyLines(false)}</li>
+     * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code (',')}</li>
+     * <li>{@link Builder#setQuote(char) setQuote}{@code ('"')}</li>
+     * <li>{@link Builder#setRecordSeparator(String) setRecordSeparator}{@code ("\r\n")}</li>
+     * <li>{@link Builder#setIgnoreEmptyLines(boolean) setIgnoreEmptyLines}{@code (false)}</li>
      * </ul>
      *
      * @see Predefined#RFC4180
@@ -1367,8 +1365,8 @@ public final class CSVFormat implements Serializable {
      * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
      * </p>
      * <ul>
-     * <li>{@code setDelimiter('\t')}</li>
-     * <li>{@code setIgnoreSurroundingSpaces(true)}</li>
+     * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code ('\t')}</li>
+     * <li>{@link Builder#setIgnoreSurroundingSpaces(boolean) setIgnoreSurroundingSpaces}{@code (true)}</li>
      * </ul>
      *
      * @see Predefined#TDF
