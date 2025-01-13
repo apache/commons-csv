@@ -1001,15 +1001,16 @@ public final class CSVFormat implements Serializable {
     public static final CSVFormat DEFAULT = new CSVFormat(Builder.create());
 
     /**
-     * Excel file format (using a comma as the value delimiter). Note that the actual value delimiter used by Excel is locale-dependent, it might be necessary
-     * to customize this format to accommodate your regional settings.
+     * <a href="https://support.microsoft.com/en-us/office/import-or-export-text-txt-or-csv-files-5250ac4c-663c-47ce-937b-339e391393ba">Microsoft Excel</a> file
+     * format (using a comma as the value delimiter). Note that the actual value delimiter used by Excel is locale-dependent, it might be necessary to customize
+     * this format to accommodate your regional settings.
      *
      * <p>
      * For example for parsing or generating a CSV file on a French system the following format will be used:
      * </p>
      *
      * <pre>
-     * CSVFormat fmt = CSVFormat.EXCEL.builder().setDelimiter(';').get();
+     * CSVFormat format = CSVFormat.EXCEL.builder().setDelimiter(';').get();
      * </pre>
      *
      * <p>
@@ -1032,6 +1033,8 @@ public final class CSVFormat implements Serializable {
      *
      * @see Predefined#Excel
      * @see DuplicateHeaderMode#ALLOW_ALL
+     * @see <a href="https://support.microsoft.com/en-us/office/import-or-export-text-txt-or-csv-files-5250ac4c-663c-47ce-937b-339e391393ba">Microsoft Excel
+     *      </a>
      */
     // @formatter:off
     public static final CSVFormat EXCEL = DEFAULT.builder()
@@ -1043,7 +1046,8 @@ public final class CSVFormat implements Serializable {
     // @formatter:on
 
     /**
-     * Default Informix CSV UNLOAD format used by the {@code UNLOAD TO file_name} operation.
+     * Default <a href="https://www.ibm.com/docs/en/informix-servers/14.10?topic=statements-unload-statement">Informix CSV UNLOAD</a>
+     * format used by the {@code UNLOAD TO file_name} operation.
      *
      * <p>
      * This is a comma-delimited format with an LF character as the line separator. Values are not quoted and special characters are escaped with {@code '\'}.
@@ -1061,8 +1065,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#MySQL
-     * @see <a href= "http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">
-     *      http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm</a>
+     * @see <a href="https://www.ibm.com/docs/en/informix-servers/14.10?topic=statements-unload-statement">Informix CSV UNLOAD</a>
      * @since 1.3
      */
     // @formatter:off
@@ -1075,7 +1078,8 @@ public final class CSVFormat implements Serializable {
     // @formatter:on
 
     /**
-     * Default Informix CSV UNLOAD format used by the {@code UNLOAD TO file_name} operation (escaping is disabled.)
+     * Default <a href="https://www.ibm.com/docs/en/informix-servers/14.10?topic=statements-unload-statement">Informix CSV UNLOAD</a>
+     * format used by the {@code UNLOAD TO file_name} operation (escaping is disabled.)
      *
      * <p>
      * This is a comma-delimited format with an LF character as the line separator. Values are not quoted and special characters are escaped with {@code '\'}.
@@ -1163,7 +1167,7 @@ public final class CSVFormat implements Serializable {
      * <li>{@link Builder#setEscape(char) setEscape}{@code ('"')}</li>
      * <li>{@link Builder#setQuote(char) setQuote}{@code ('"')}</li>
      * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.ALL_NON_NULL)}</li>
-     * <li>{@code setSkipHeaderRecord(false)}</li>
+     * <li>{@link Builder#setSkipHeaderRecord(boolean) setSkipHeaderRecord}{@code (false)}</li>
      * </ul>
      *
      * @see Predefined#MongoDBCsv
@@ -1183,7 +1187,8 @@ public final class CSVFormat implements Serializable {
     // @formatter:off
 
     /**
-     * Default MySQL format used by the {@code SELECT INTO OUTFILE} and {@code LOAD DATA INFILE} operations.
+     * Default <a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump-delimited-text.html">MySQL</a>
+     * format used by the {@code SELECT INTO OUTFILE} and {@code LOAD DATA INFILE} operations.
      *
      * <p>
      * This is a tab-delimited format with an LF character as the line separator. Values are not quoted and special
@@ -1205,8 +1210,7 @@ public final class CSVFormat implements Serializable {
      *
      * @see Predefined#MySQL
      * @see QuoteMode#ALL_NON_NULL
-     * @see <a href="https://dev.mysql.com/doc/refman/5.1/en/load-data.html"> https://dev.mysql.com/doc/refman/5.1/en/load
-     *      -data.html</a>
+     * @see <a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump-delimited-text.html">MySQL</a>
      */
     // @formatter:off
     public static final CSVFormat MYSQL = DEFAULT.builder()
@@ -1221,7 +1225,9 @@ public final class CSVFormat implements Serializable {
     // @formatter:off
 
     /**
-     * Default Oracle format used by the SQL*Loader utility.
+     * Default
+     * <a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/sutil/oracle-sql-loader-control-file-contents.html#GUID-D1762699-8154-40F6-90DE-EFB8EB6A9AB0">Oracle</a>
+     * format used by the SQL*Loader utility.
      *
      * <p>
      * This is a comma-delimited format with the system line separator character as the record separator. Values are
@@ -1245,7 +1251,7 @@ public final class CSVFormat implements Serializable {
      *
      * @see Predefined#Oracle
      * @see QuoteMode#MINIMAL
-     * @see <a href="https://s.apache.org/CGXG">Oracle CSV Format Specification</a>
+     * @see <a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/sutil/oracle-sql-loader-control-file-contents.html#GUID-D1762699-8154-40F6-90DE-EFB8EB6A9AB0">Oracle CSV Format Specification</a>
      * @since 1.6
      */
     // @formatter:off
@@ -1262,7 +1268,7 @@ public final class CSVFormat implements Serializable {
     // @formatter:off
 
     /**
-     * Default PostgreSQL CSV format used by the {@code COPY} operation.
+     * Default <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL CSV</a> format used by the {@code COPY} operation.
      *
      * <p>
      * This is a comma-delimited format with an LF character as the line separator. Values are double quoted and special
@@ -1284,8 +1290,7 @@ public final class CSVFormat implements Serializable {
      *
      * @see Predefined#MySQL
      * @see QuoteMode#ALL_NON_NULL
-     * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL COPY command
-     *          documentation</a>
+     * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL CSV</a>
      * @since 1.5
      */
     // @formatter:off
@@ -1301,7 +1306,7 @@ public final class CSVFormat implements Serializable {
     // @formatter:off
 
     /**
-     * Default PostgreSQL text format used by the {@code COPY} operation.
+     * Default <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL Text</a> format used by the {@code COPY} operation.
      *
      * <p>
      * This is a tab-delimited format with an LF character as the line separator. Values are not quoted and special
@@ -1323,8 +1328,7 @@ public final class CSVFormat implements Serializable {
      *
      * @see Predefined#MySQL
      * @see QuoteMode#ALL_NON_NULL
-     * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL COPY command
-     *          documentation</a>
+     * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL Text</a>
      * @since 1.5
      */
     // @formatter:off
@@ -1353,13 +1357,14 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#RFC4180
+     * @see <a href="https://tools.ietf.org/html/rfc4180">RFC 4180</a>
      */
     public static final CSVFormat RFC4180 = DEFAULT.builder().setIgnoreEmptyLines(false).get();
 
     private static final long serialVersionUID = 2L;
 
     /**
-     * Tab-delimited format (TDF).
+     * Tab-delimited format (<a href="https://en.wikipedia.org/wiki/Tab-separated_values">TDF</a>).
      *
      * <p>
      * The {@link Builder} settings are the {@link #DEFAULT} <em>with</em>:
@@ -1370,6 +1375,7 @@ public final class CSVFormat implements Serializable {
      * </ul>
      *
      * @see Predefined#TDF
+     * @see <a href="https://en.wikipedia.org/wiki/Tab-separated_values">TDF</a>
      */
     // @formatter:off
     public static final CSVFormat TDF = DEFAULT.builder()
