@@ -18,7 +18,7 @@
  */
 
 /**
- * Apache Commons CSV Format Support.
+ * <h2>Apache Commons CSV</h2>
  *
  * <p>CSV are widely used as interfaces to legacy systems or manual data imports.
  *    CSV stands for "Comma Separated Values" (or sometimes "Character Separated
