@@ -1131,7 +1131,7 @@ public final class CSVFormat implements Serializable {
      * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code (',')}</li>
      * <li>{@link Builder#setEscape(char) setEscape}{@code ('"')}</li>
      * <li>{@link Builder#setQuote(char) setQuote}{@code ('"')}</li>
-     * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.ALL_NON_NULL)}</li>
+     * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.MINIMAL)}</li>
      * </ul>
      *
      * @see Predefined#MongoDBCsv
@@ -1166,7 +1166,7 @@ public final class CSVFormat implements Serializable {
      * <li>{@link Builder#setDelimiter(char) setDelimiter}{@code ('\t')}</li>
      * <li>{@link Builder#setEscape(char) setEscape}{@code ('"')}</li>
      * <li>{@link Builder#setQuote(char) setQuote}{@code ('"')}</li>
-     * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.ALL_NON_NULL)}</li>
+     * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.MINIMAL)}</li>
      * <li>{@link Builder#setSkipHeaderRecord(boolean) setSkipHeaderRecord}{@code (false)}</li>
      * </ul>
      *
