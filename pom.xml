@@ -75,64 +75,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <developers>
-    <developer>
-      <id>bayard</id>
-      <name>Henri Yandell</name>
-      <email>bayard@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <name>Martin van den Bemt</name>
-      <id>mvdb</id>
-      <email>mvdb@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <name>Yonik Seeley</name>
-      <id>yonik</id>
-      <email>yonik@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <name>Emmanuel Bourg</name>
-      <id>ebourg</id>
-      <email>ebourg@apache.org</email>
-      <organization>Apache</organization>
-    </developer>
-    <developer>
-      <id>ggregory</id>
-      <name>Gary Gregory</name>
-      <email>ggregory at apache.org</email>
-      <url>https://www.garygregory.com</url>
-      <organization>The Apache Software Foundation</organization>
-      <organizationUrl>https://www.apache.org/</organizationUrl>      
-      <roles>
-        <role>PMC Member</role>
-      </roles>
-      <timezone>America/New_York</timezone>
-      <properties>
-        <picUrl>https://people.apache.org/~ggregory/img/garydgregory80.png</picUrl>
-      </properties>
-    </developer>
-    <developer>
-      <name>Benedikt Ritter</name>
-      <id>britter</id>
-      <email>britter@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <name>Rob Tompkins</name>
-      <id>chtompki</id>
-      <email>chtompki@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-  </developers>
-  <contributors>
-    <contributor>
-      <name>Bob Smith</name>
-    </contributor>
-  </contributors>
   <scm>
     <connection>scm:git:http://gitbox.apache.org/repos/asf/commons-csv.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/commons-csv.git</developerConnection>
@@ -523,5 +465,62 @@
       </build>
     </profile>
   </profiles>
-
+  <developers>
+    <developer>
+      <id>bayard</id>
+      <name>Henri Yandell</name>
+      <email>bayard@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <name>Martin van den Bemt</name>
+      <id>mvdb</id>
+      <email>mvdb@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <name>Yonik Seeley</name>
+      <id>yonik</id>
+      <email>yonik@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <name>Emmanuel Bourg</name>
+      <id>ebourg</id>
+      <email>ebourg@apache.org</email>
+      <organization>Apache</organization>
+    </developer>
+    <developer>
+      <id>ggregory</id>
+      <name>Gary Gregory</name>
+      <email>ggregory at apache.org</email>
+      <url>https://www.garygregory.com</url>
+      <organization>The Apache Software Foundation</organization>
+      <organizationUrl>https://www.apache.org/</organizationUrl>      
+      <roles>
+        <role>PMC Member</role>
+      </roles>
+      <timezone>America/New_York</timezone>
+      <properties>
+        <picUrl>https://people.apache.org/~ggregory/img/garydgregory80.png</picUrl>
+      </properties>
+    </developer>
+    <developer>
+      <name>Benedikt Ritter</name>
+      <id>britter</id>
+      <email>britter@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <name>Rob Tompkins</name>
+      <id>chtompki</id>
+      <email>chtompki@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Bob Smith</name>
+    </contributor>
+  </contributors>
 </project>
