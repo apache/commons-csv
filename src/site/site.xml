@@ -15,27 +15,29 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<project name="Commons CSV">
-  <bannerRight>
-    <name>Apache Commons CSV</name>
-    <src>/images/logo.png</src>
-    <href>/index.html</href>
-    <alt>Apache Commons CSV&amp;trade; logo</alt>
+<site xmlns="http://maven.apache.org/SITE/2.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd"
+  name="Apache Commons CSV">
+  <bannerRight name="Commons CSV" href="/index.html">
+    <image src="/images/logo.png"/>
   </bannerRight>
   <body>
     <menu name="Commons CSV">
-      <item name="Overview"        href="/index.html"/>
-      <item name="Download"        href="/download_csv.cgi"/>
-      <item name="User Guide"      href="/user-guide.html"/>
-      <item name="Javadoc"         href="/apidocs/index.html"/>
-      <item name="Javadoc Archive" href="https://javadoc.io/doc/org.apache.commons/commons-csv/latest/index.html"/>
+      <!-- Start: For all components. -->
+      <item name="About" href="index.html" />
+      <item name="Asking Questions" href="/mail-lists.html" />
       <item name="Release History" href="/changes.html" />
-    </menu>
-    <menu name="Development">
-      <item name="Mailing Lists"   href="/mail-lists.html"/>
-      <item name="Issue Tracking"  href="/issue-tracking.html"/>
-      <item name="Team"            href="/team.html"/>
-      <item name="Source"          href="/scm.html"/>
+      <item name="Issue Tracking" href="/issue-management.html" />
+      <item name="Dependency Management" href="/dependency-info.html" />
+      <item name="Javadoc" href="apidocs/index.html" />
+      <item name="Javadoc Archive" href="https://javadoc.io/doc/org.apache.commons/commons-csv/" />
+      <item name="Sources" href="/scm.html" />
+      <item name="Security" href="security.html" />
+      <item name="License" href="https://www.apache.org/licenses/LICENSE-2.0" />
+      <item name="Code of Conduct" href="https://www.apache.org/foundation/policies/conduct.html" />
+      <item name="Download" href="https://commons.apache.org/proper/commons-csv/download_bcel.cgi" />
+      <!-- End: For all components. -->
     </menu>
   </body>
-</project>
+</site>
