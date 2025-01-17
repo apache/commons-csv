@@ -45,6 +45,7 @@
       <action type="fix" issue="CSV-317" dev="ggregory" due-to="Filipe Roque">Release history link changed from changes-report.html to changes.html #516.</action>
       <!-- ADD -->
       <!-- UPDATE -->
+      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump com.opencsv:opencsv from 5.9 to 5.10.</action>
     </release>
     <release version="1.13.0" date="2025-01-08" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- FIX -->
