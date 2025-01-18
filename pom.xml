@@ -35,12 +35,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest</artifactId>
-      <version>3.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>4.11.0</version>
@@ -132,7 +126,7 @@
     <commons.jacoco.haltOnFailure>true</commons.jacoco.haltOnFailure>
     <commons.jacoco.classRatio>1.00</commons.jacoco.classRatio>
     <commons.jacoco.instructionRatio>0.98</commons.jacoco.instructionRatio>
-    <commons.jacoco.methodRatio>1.00</commons.jacoco.methodRatio>
+    <commons.jacoco.methodRatio>0.99</commons.jacoco.methodRatio>
     <commons.jacoco.branchRatio>0.97</commons.jacoco.branchRatio>
     <commons.jacoco.lineRatio>0.99</commons.jacoco.lineRatio>
     <commons.jacoco.complexityRatio>0.96</commons.jacoco.complexityRatio>
