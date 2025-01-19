@@ -154,6 +154,18 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${commons.javadoc.version}</version>
+          <configuration combine.self="append">
+            <failOnWarnings>true</failOnWarnings>
+            <links combine.self="override">
+              <!-- this link is problematic <link>${commons.javadoc.java.link}</link> -->
+              <link>${commons.javadoc.javaee.link}</link>
+            </links>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-pmd-plugin</artifactId>
           <version>${commons.pmd.version}</version>
           <configuration>
@@ -391,10 +403,10 @@
           <scope>test</scope>
         </dependency>
 
-        <!-- 
+        <!--
              Not in Maven Central, download manually from http://kasparov.skife.org/csv/csv-1.0.jar and install with:
              curl https://repo.marketcetera.org/maven/org/skife/kasparov/csv/1.0/csv-1.0.jar -o $TMPDIR/csv-1.0.jar
-             mvn install:install-file -Dfile=$TMPDIR/csv-1.0.jar -DgroupId=org.skife.kasparov -DartifactId=csv -Dversion=1.0 -Dpackaging=jar 
+             mvn install:install-file -Dfile=$TMPDIR/csv-1.0.jar -DgroupId=org.skife.kasparov -DartifactId=csv -Dversion=1.0 -Dpackaging=jar
          -->
         <dependency>
           <groupId>org.skife.kasparov</groupId>
@@ -491,7 +503,7 @@
       <email>ggregory at apache.org</email>
       <url>https://www.garygregory.com</url>
       <organization>The Apache Software Foundation</organization>
-      <organizationUrl>https://www.apache.org/</organizationUrl>      
+      <organizationUrl>https://www.apache.org/</organizationUrl>
       <roles>
         <role>PMC Member</role>
       </roles>
