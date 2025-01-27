@@ -40,7 +40,7 @@ public class JiraCsv248Test {
     }
 
     /**
-     * Test deserialisation of a CSVRecord created using version 1.6.
+     * Test deserialization of a CSVRecord created using version 1.6.
      *
      * <p>
      * This test asserts that serialization from 1.8 onwards is consistent with previous versions. Serialization was
