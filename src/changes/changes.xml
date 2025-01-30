@@ -48,7 +48,7 @@
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump com.opencsv:opencsv from 5.9 to 5.10.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-codec:commons-codec from 1.17.2 to 1.18.0 #522.</action>
-      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-parent from 79 to 80.</action>
+      <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-parent from 79 to 81.</action>
     </release>
     <release version="1.13.0" date="2025-01-08" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- FIX -->
