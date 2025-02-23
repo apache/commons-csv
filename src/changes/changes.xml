@@ -45,6 +45,7 @@
       <action type="fix" issue="CSV-317" dev="ggregory" due-to="Filipe Roque">Release history link changed from changes-report.html to changes.html #516.</action>
       <action type="fix" dev="ggregory" due-to="Gary Gregory">Remove -nouses directive from maven-bundle-plugin. OSGi package imports now state 'uses' definitions for package imports, this doesn't affect JPMS (from org.apache.commons:commons-parent:80).</action>
       <!-- ADD -->
+      <action type="add" dev="ggregory" due-to="Gary Gregory">Define and use Maven property commons.jmh.version.</action> 
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump com.opencsv:opencsv from 5.9 to 5.10.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-codec:commons-codec from 1.17.2 to 1.18.0 #522.</action>
