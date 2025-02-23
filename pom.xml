@@ -391,13 +391,16 @@
           <version>2.4.0</version>
           <scope>test</scope>
         </dependency>
-
-        <!-- 
-             Not in Maven Central, download manually from http://kasparov.skife.org/csv/csv-1.0.jar and install with:
-             curl https://repo.marketcetera.org/maven/org/skife/kasparov/csv/1.0/csv-1.0.jar -o $TMPDIR/csv-1.0.jar
-             mvn install:install-file -Dfile=$TMPDIR/csv-1.0.jar -DgroupId=org.skife.kasparov -DartifactId=csv -Dversion=1.0 -Dpackaging=jar 
-         -->
         <dependency>
+          <!-- 
+            org.skife.kasparov:csv:1.0 is not in Maven Central, download manually from http://kasparov.skife.org/csv/csv-1.0.jar and install with:
+            - Linux
+              curl https://repo.marketcetera.org/maven/org/skife/kasparov/csv/1.0/csv-1.0.jar -o $TMPDIR/csv-1.0.jar
+              mvn install:install-file -Dfile=$TMPDIR/csv-1.0.jar -DgroupId=org.skife.kasparov -DartifactId=csv -Dversion=1.0 -Dpackaging=jar
+            - Windows
+              curl https://repo.marketcetera.org/maven/org/skife/kasparov/csv/1.0/csv-1.0.jar -o %TMPDIR%/csv-1.0.jar
+              mvn install:install-file -Dfile=%TMPDIR%/csv-1.0.jar -DgroupId=org.skife.kasparov -DartifactId=csv -Dversion=1.0 -Dpackaging=jar
+           -->
           <groupId>org.skife.kasparov</groupId>
           <artifactId>csv</artifactId>
           <version>1.0</version>
