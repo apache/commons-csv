@@ -111,7 +111,6 @@
     <project.build.outputTimestamp>2025-01-11T14:07:50Z</project.build.outputTimestamp>
     <commons.codec.version>1.18.0</commons.codec.version>
     <commons.io.version>2.18.0</commons.io.version>
-    <commons.jmh.version>1.37</commons.jmh.version>
     <!-- Apache Felix maven-bundle-plugin -->
     <commons.osgi.import>
     org.apache.commons.codec.binary;version="${commons.codec.version}",
