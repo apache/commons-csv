@@ -76,9 +76,10 @@ import org.junit.jupiter.api.Test;
 public class CSVPrinterTest {
 
     private static final int TABLE_RECORD_COUNT = 2;
+    private static final int TABLE_AND_HEADER_RECORD_COUNT = TABLE_RECORD_COUNT + 1;
     private static final char DQUOTE_CHAR = '"';
     private static final char EURO_CH = '\u20AC';
-    private static final int ITERATIONS_FOR_RANDOM_TEST = 50000;
+    private static final int ITERATIONS_FOR_RANDOM_TEST = 50_000;
     private static final char QUOTE_CH = '\'';
 
     private static String printable(final String s) {
@@ -100,6 +101,12 @@ public class CSVPrinterTest {
 
     private void assertInitialState(final CSVPrinter printer) {
         assertEquals(0, printer.getRecordCount());
+    }
+
+    private void assertRowCount(final CSVFormat format, final String resultString, final int rowCount) throws IOException {
+        try (CSVParser parser = format.parse(new StringReader(resultString))) {
+            assertEquals(rowCount, parser.getRecords().size());
+        }
     }
 
     private File createTempFile() throws IOException {
@@ -828,16 +835,19 @@ public class CSVPrinterTest {
     @Test
     public void testJdbcPrinterWithResultSet() throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
+        final CSVFormat format = CSVFormat.DEFAULT;
         try (Connection connection = getH2Connection()) {
             setUpTable(connection);
             try (Statement stmt = connection.createStatement();
                     ResultSet resultSet = stmt.executeQuery("select ID, NAME, TEXT from TEST");
-                    CSVPrinter printer = CSVFormat.DEFAULT.withHeader(resultSet).print(sw)) {
+                    CSVPrinter printer = format.withHeader(resultSet).print(sw)) {
                 printer.printRecords(resultSet);
             }
         }
+        final String resultString = sw.toString();
         assertEquals("ID,NAME,TEXT" + recordSeparator + "1,r1,\"long text 1\"" + recordSeparator + "2,r2,\"" + longText2 + "\"" + recordSeparator,
-                sw.toString());
+                resultString);
+        assertRowCount(format, resultString, TABLE_AND_HEADER_RECORD_COUNT);
     }
 
     @Test
@@ -845,18 +855,21 @@ public class CSVPrinterTest {
         final StringWriter sw = new StringWriter();
         try (Connection connection = getH2Connection()) {
             setUpTable(connection);
+            final CSVFormat format = CSVFormat.DEFAULT;
             try (Statement stmt = connection.createStatement();
-                    CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT)) {
+                    CSVPrinter printer = new CSVPrinter(sw, format)) {
                 try (ResultSet resultSet = stmt.executeQuery("select ID, NAME from TEST")) {
                     printer.printRecords(resultSet, true);
                     assertEquals(TABLE_RECORD_COUNT, printer.getRecordCount());
                     assertEquals("ID,NAME" + recordSeparator + "1,r1" + recordSeparator + "2,r2" + recordSeparator, sw.toString());
                 }
+                assertRowCount(format, sw.toString(), TABLE_AND_HEADER_RECORD_COUNT);
                 try (ResultSet resultSet = stmt.executeQuery("select ID, NAME from TEST")) {
                     printer.printRecords(resultSet, false);
                     assertEquals(TABLE_RECORD_COUNT * 2, printer.getRecordCount());
                     assertNotEquals("ID,NAME" + recordSeparator + "1,r1" + recordSeparator + "2,r2" + recordSeparator, sw.toString());
                 }
+                assertRowCount(format, sw.toString(), TABLE_AND_HEADER_RECORD_COUNT + TABLE_RECORD_COUNT);
             }
         }
     }
@@ -866,9 +879,10 @@ public class CSVPrinterTest {
         final StringWriter sw = new StringWriter();
         try (Connection connection = getH2Connection()) {
             setUpTable(connection);
+            final CSVFormat format = CSVFormat.DEFAULT;
             try (Statement stmt = connection.createStatement();
                     ResultSet resultSet = stmt.executeQuery("select ID, NAME, TEXT from TEST");
-                    CSVPrinter printer = CSVFormat.DEFAULT.withHeader(resultSet.getMetaData()).print(sw)) {
+                    CSVPrinter printer = format.withHeader(resultSet.getMetaData()).print(sw)) {
                 // The header is the first record.
                 assertEquals(1, printer.getRecordCount());
                 printer.printRecords(resultSet);
@@ -876,6 +890,7 @@ public class CSVPrinterTest {
                 assertEquals("ID,NAME,TEXT" + recordSeparator + "1,r1,\"long text 1\"" + recordSeparator + "2,r2,\"" + longText2 + "\"" + recordSeparator,
                         sw.toString());
             }
+            assertRowCount(format, sw.toString(), TABLE_AND_HEADER_RECORD_COUNT);
         }
     }
 
