@@ -32,6 +32,7 @@ import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -428,17 +429,19 @@ public final class CSVPrinter implements Flushable, Closeable {
 
     /**
      * Prints all the objects in the given JDBC result set.
+     * <p>
+     * You can use {@link CSVFormat.Builder#setMaxRows(long)} to limit how many rows a result set produces. This is most useful when you cannot limit rows
+     * through {@link Statement#setLargeMaxRows(long)}.
+     * </p>
      *
-     * @param resultSet
-     *             The values to print.
-     * @throws IOException
-     *             If an I/O error occurs.
-     * @throws SQLException
-     *             Thrown when a database access error occurs.
+     * @param resultSet The values to print.
+     * @throws IOException  If an I/O error occurs.
+     * @throws SQLException Thrown when a database access error occurs.
      */
     public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
         final int columnCount = resultSet.getMetaData().getColumnCount();
-        while (resultSet.next()) {
+        final long maxRows = format.getMaxRows();
+        while (resultSet.next() && (maxRows < 1 || resultSet.getRow() <= maxRows)) {
             for (int i = 1; i <= columnCount; i++) {
                 final Object object = resultSet.getObject(i);
                 if (object instanceof Clob) {
@@ -459,6 +462,10 @@ public final class CSVPrinter implements Flushable, Closeable {
 
     /**
      * Prints all the objects with metadata in the given JDBC result set based on the header boolean.
+     * <p>
+     * You can use {@link CSVFormat.Builder#setMaxRows(long)} to limit how many rows a result set produces. This is most useful when you cannot limit rows
+     * through {@link Statement#setLargeMaxRows(long)}.
+     * </p>
      *
      * @param resultSet source of row data.
      * @param printHeader whether to print headers.

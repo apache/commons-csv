@@ -270,32 +270,36 @@ public final class CSVFormat implements Serializable {
 
         private boolean trim;
 
+        /** The maximum number of rows to process, excluding the header row. */
+        private long maxRows;
+
         private Builder() {
             // empty
         }
 
         private Builder(final CSVFormat csvFormat) {
-            this.delimiter = csvFormat.delimiter;
-            this.quoteCharacter = csvFormat.quoteCharacter;
-            this.quoteMode = csvFormat.quoteMode;
-            this.commentMarker = csvFormat.commentMarker;
-            this.escapeCharacter = csvFormat.escapeCharacter;
-            this.ignoreSurroundingSpaces = csvFormat.ignoreSurroundingSpaces;
             this.allowMissingColumnNames = csvFormat.allowMissingColumnNames;
-            this.ignoreEmptyLines = csvFormat.ignoreEmptyLines;
-            this.recordSeparator = csvFormat.recordSeparator;
-            this.nullString = csvFormat.nullString;
+            this.autoFlush = csvFormat.autoFlush;
+            this.commentMarker = csvFormat.commentMarker;
+            this.delimiter = csvFormat.delimiter;
+            this.duplicateHeaderMode = csvFormat.duplicateHeaderMode;
+            this.escapeCharacter = csvFormat.escapeCharacter;
             this.headerComments = csvFormat.headerComments;
             this.headers = csvFormat.headers;
-            this.skipHeaderRecord = csvFormat.skipHeaderRecord;
+            this.ignoreEmptyLines = csvFormat.ignoreEmptyLines;
             this.ignoreHeaderCase = csvFormat.ignoreHeaderCase;
+            this.ignoreSurroundingSpaces = csvFormat.ignoreSurroundingSpaces;
             this.lenientEof = csvFormat.lenientEof;
+            this.maxRows = csvFormat.maxRows;
+            this.nullString = csvFormat.nullString;
+            this.quoteCharacter = csvFormat.quoteCharacter;
+            this.quoteMode = csvFormat.quoteMode;
+            this.quotedNullString = csvFormat.quotedNullString;
+            this.recordSeparator = csvFormat.recordSeparator;
+            this.skipHeaderRecord = csvFormat.skipHeaderRecord;
             this.trailingData = csvFormat.trailingData;
             this.trailingDelimiter = csvFormat.trailingDelimiter;
             this.trim = csvFormat.trim;
-            this.autoFlush = csvFormat.autoFlush;
-            this.quotedNullString = csvFormat.quotedNullString;
-            this.duplicateHeaderMode = csvFormat.duplicateHeaderMode;
         }
 
         /**
@@ -739,6 +743,18 @@ public final class CSVFormat implements Serializable {
         }
 
         /**
+         * Sets the maximum number of rows to process, excluding the header row.
+         *
+         * @param maxRows the maximum number of rows to process, excluding the header row.
+         * @return This instance.
+         * @since 1.14.0
+         */
+        public Builder setMaxRows(final long maxRows) {
+            this.maxRows = maxRows;
+            return this;
+        }
+
+        /**
          * Sets the String to convert to and from {@code null}. No substitution occurs if {@code null}.
          *
          * <ul>
@@ -856,6 +872,7 @@ public final class CSVFormat implements Serializable {
             this.trailingDelimiter = trailingDelimiter;
             return this;
         }
+
 
         /**
          * Sets whether to trim leading and trailing blanks.
@@ -1580,28 +1597,32 @@ public final class CSVFormat implements Serializable {
     /** Whether to trim leading and trailing blanks. */
     private final boolean trim;
 
+    /** The maximum number of rows to process, excluding the header row. */
+    private final long maxRows;
+
     private CSVFormat(final Builder builder) {
-        this.delimiter = builder.delimiter;
-        this.quoteCharacter = builder.quoteCharacter;
-        this.quoteMode = builder.quoteMode;
-        this.commentMarker = builder.commentMarker;
-        this.escapeCharacter = builder.escapeCharacter;
-        this.ignoreSurroundingSpaces = builder.ignoreSurroundingSpaces;
         this.allowMissingColumnNames = builder.allowMissingColumnNames;
-        this.ignoreEmptyLines = builder.ignoreEmptyLines;
-        this.recordSeparator = builder.recordSeparator;
-        this.nullString = builder.nullString;
+        this.autoFlush = builder.autoFlush;
+        this.commentMarker = builder.commentMarker;
+        this.delimiter = builder.delimiter;
+        this.duplicateHeaderMode = builder.duplicateHeaderMode;
+        this.escapeCharacter = builder.escapeCharacter;
         this.headerComments = builder.headerComments;
         this.headers = builder.headers;
-        this.skipHeaderRecord = builder.skipHeaderRecord;
+        this.ignoreEmptyLines = builder.ignoreEmptyLines;
         this.ignoreHeaderCase = builder.ignoreHeaderCase;
+        this.ignoreSurroundingSpaces = builder.ignoreSurroundingSpaces;
         this.lenientEof = builder.lenientEof;
+        this.maxRows = builder.maxRows;
+        this.nullString = builder.nullString;
+        this.quoteCharacter = builder.quoteCharacter;
+        this.quoteMode = builder.quoteMode;
+        this.quotedNullString = builder.quotedNullString;
+        this.recordSeparator = builder.recordSeparator;
+        this.skipHeaderRecord = builder.skipHeaderRecord;
         this.trailingData = builder.trailingData;
         this.trailingDelimiter = builder.trailingDelimiter;
         this.trim = builder.trim;
-        this.autoFlush = builder.autoFlush;
-        this.quotedNullString = builder.quotedNullString;
-        this.duplicateHeaderMode = builder.duplicateHeaderMode;
         validate();
     }
 
@@ -1899,6 +1920,16 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Gets the maximum number of rows to process, excluding the header row.
+     *
+     * @return The maximum number of rows to process, excluding the header row.
+     * @since 1.14.0
+     */
+    public long getMaxRows() {
+        return maxRows;
+    }
+
+    /**
      * Gets the String to convert to and from {@code null}.
      * <ul>
      * <li><strong>Reading:</strong> Converts strings equal to the given {@code nullString} to {@code null} when reading records.</li>
@@ -1982,10 +2013,9 @@ public final class CSVFormat implements Serializable {
         int result = 1;
         result = prime * result + Arrays.hashCode(headerComments);
         result = prime * result + Arrays.hashCode(headers);
-        result = prime * result + Objects.hash(allowMissingColumnNames, autoFlush, commentMarker, delimiter, duplicateHeaderMode, escapeCharacter,
+        return prime * result + Objects.hash(allowMissingColumnNames, autoFlush, commentMarker, delimiter, duplicateHeaderMode, escapeCharacter,
                 ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, lenientEof, nullString, quoteCharacter, quoteMode, quotedNullString,
                 recordSeparator, skipHeaderRecord, trailingData, trailingDelimiter, trim);
-        return result;
     }
 
     /**
