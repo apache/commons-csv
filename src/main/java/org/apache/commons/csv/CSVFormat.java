@@ -744,6 +744,9 @@ public final class CSVFormat implements Serializable {
 
         /**
          * Sets the maximum number of rows to process, excluding the header row.
+         * <p>
+         * Values less than or equal to 0 mean no limit.
+         * </p>
          *
          * @param maxRows the maximum number of rows to process, excluding the header row.
          * @return This instance.
@@ -1921,6 +1924,9 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Gets the maximum number of rows to process, excluding the header row.
+     * <p>
+     * Values less than or equal to 0 mean no limit.
+     * </p>
      *
      * @return The maximum number of rows to process, excluding the header row.
      * @since 1.14.0
