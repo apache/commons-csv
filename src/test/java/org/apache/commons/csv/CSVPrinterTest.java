@@ -146,7 +146,7 @@ public class CSVPrinterTest {
             for (int i = 0; i < expected.length; i++) {
                 expected[i] = expectNulls(expected[i], format);
             }
-            Utils.compare("Printer output :" + printable(result), expected, parseResult);
+            Utils.compare("Printer output :" + printable(result), expected, parseResult, -1);
         }
     }
 
@@ -1470,7 +1470,7 @@ public class CSVPrinterTest {
         try (CSVParser parser = CSVParser.parse(sw.toString(), format)) {
             final List<CSVRecord> records = parser.getRecords();
             assertFalse(records.isEmpty());
-            Utils.compare("Fail", res, records);
+            Utils.compare("Fail", res, records, -1);
         }
     }
 
@@ -1498,20 +1498,21 @@ public class CSVPrinterTest {
         try (CSVParser parser = CSVParser.parse(sw.toString(), format)) {
             final List<CSVRecord> records = parser.getRecords();
             assertFalse(records.isEmpty());
-            Utils.compare("Fail", res, records);
+            Utils.compare("Fail", res, records, -1);
         }
     }
 
-    @Test
-    public void testPrintCSVRecords() throws IOException {
+    @ParameterizedTest
+    @ValueSource(ints = { -1, 0, 3, 4, Integer.MAX_VALUE })
+    public void testPrintCSVRecords(final int maxRows) throws IOException {
         // @formatter:off
         final String code = "a1,b1\n" + // 1)
                 "a2,b2\n" + // 2)
                 "a3,b3\n" + // 3)
                 "a4,b4\n";  // 4)
         // @formatter:on
-        final String[][] res = { { "a1", "b1" }, { "a2", "b2" }, { "a3", "b3" }, { "a4", "b4" } };
-        final CSVFormat format = CSVFormat.DEFAULT;
+        final String[][] expected = { { "a1", "b1" }, { "a2", "b2" }, { "a3", "b3" }, { "a4", "b4" } };
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setMaxRows(maxRows).get();
         final StringWriter sw = new StringWriter();
         try (CSVPrinter printer = format.print(sw);
                 CSVParser parser = CSVParser.parse(code, format)) {
@@ -1521,7 +1522,7 @@ public class CSVPrinterTest {
         try (CSVParser parser = CSVParser.parse(sw.toString(), format)) {
             final List<CSVRecord> records = parser.getRecords();
             assertFalse(records.isEmpty());
-            Utils.compare("Fail", res, records);
+            Utils.compare("Fail", expected, records, maxRows);
         }
     }
 
@@ -1690,7 +1691,7 @@ public class CSVPrinterTest {
         try (CSVParser parser = CSVParser.parse(sw.toString(), format)) {
             final List<CSVRecord> records = parser.getRecords();
             assertFalse(records.isEmpty());
-            Utils.compare("Fail", res, records);
+            Utils.compare("Fail", res, records, -1);
         }
     }
 

@@ -169,7 +169,7 @@ public class CSVParserTest {
         try (CSVParser parser = CSVParser.parse(code, format)) {
             final List<CSVRecord> records = parser.getRecords();
             assertFalse(records.isEmpty());
-            Utils.compare("Records do not match expected result", res, records);
+            Utils.compare("Records do not match expected result", res, records, -1);
         }
     }
 
@@ -192,7 +192,7 @@ public class CSVParserTest {
         try (CSVParser parser = CSVParser.parse(code, format)) {
             final List<CSVRecord> records = parser.getRecords();
             assertFalse(records.isEmpty());
-            Utils.compare("", res, records);
+            Utils.compare("", res, records, -1);
         }
     }
 
@@ -428,12 +428,12 @@ public class CSVParserTest {
         try (CSVParser parser = CSVParser.parse(code, format)) {
             final List<CSVRecord> records = parser.getRecords();
             assertFalse(records.isEmpty());
-            Utils.compare("Failed to parse without comments", res, records);
+            Utils.compare("Failed to parse without comments", res, records, -1);
             format = CSVFormat.DEFAULT.withCommentMarker('#');
         }
         try (CSVParser parser = CSVParser.parse(code, format)) {
             final List<CSVRecord> records = parser.getRecords();
-            Utils.compare("Failed to parse with comments", resComments, records);
+            Utils.compare("Failed to parse with comments", resComments, records, -1);
         }
     }
 

@@ -37,9 +37,10 @@ final class Utils {
      * @param message  the message to be displayed
      * @param expected the 2d array of expected results
      * @param actual   the List of {@link CSVRecord} entries, each containing an array of values
+     * @param maxRows  the maximum number of rows expected, less than or equal to zero means no limit.
      */
-    public static void compare(final String message, final String[][] expected, final List<CSVRecord> actual) {
-        final int expectedLength = expected.length;
+    public static void compare(final String message, final String[][] expected, final List<CSVRecord> actual, final int maxRows) {
+        final int expectedLength = maxRows > 0 ? Math.min(maxRows, expected.length) : expected.length;
         assertEquals(expectedLength, actual.size(), message + "  - outer array size");
         for (int i = 0; i < expectedLength; i++) {
             assertArrayEquals(expected[i], actual.get(i).values(), message + " (entry " + i + ")");
