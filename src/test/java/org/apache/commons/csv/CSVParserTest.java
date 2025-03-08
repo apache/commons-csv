@@ -62,6 +62,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * CSVParserTest
@@ -887,6 +888,20 @@ public class CSVParserTest {
 
     }
 
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0, 1, 2, 3, 4, Long.MAX_VALUE })
+    public void testGetRecordsMaxRows(final long maxRows) throws IOException {
+        try (CSVParser parser = CSVParser.parse(CSV_INPUT, CSVFormat.DEFAULT.builder().setIgnoreSurroundingSpaces(true).setMaxRows(maxRows).get())) {
+            final List<CSVRecord> records = parser.getRecords();
+            final long expectedLength = maxRows <= 0 || maxRows > RESULT.length ? RESULT.length : maxRows;
+            assertEquals(expectedLength, records.size());
+            assertFalse(records.isEmpty());
+            for (int i = 0; i < expectedLength; i++) {
+                assertArrayEquals(RESULT[i], records.get(i).values());
+            }
+        }
+    }
+
     @Test
     public void testGetRecordThreeBytesRead() throws Exception {
         final String code = "id,date,val5,val4\n" +
@@ -1653,6 +1668,23 @@ public class CSVParserTest {
             assertArrayEquals(new String[] { "a", "b", "c" }, list.get(0).values());
             assertArrayEquals(new String[] { "1", "2", "3" }, list.get(1).values());
             assertArrayEquals(new String[] { "x", "y", "z" }, list.get(2).values());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0, 1, 2, 3, 4, Long.MAX_VALUE })
+    public void testStreamMaxRows(final long maxRows) throws Exception {
+        final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
+        try (CSVParser parser = CSVFormat.DEFAULT.builder().setMaxRows(maxRows).get().parse(in)) {
+            final List<CSVRecord> list = parser.stream().collect(Collectors.toList());
+            assertFalse(list.isEmpty());
+            assertArrayEquals(new String[] { "a", "b", "c" }, list.get(0).values());
+            if (maxRows <= 0 || maxRows > 1) {
+                assertArrayEquals(new String[] { "1", "2", "3" }, list.get(1).values());
+            }
+            if (maxRows <= 0 || maxRows > 2) {
+                assertArrayEquals(new String[] { "x", "y", "z" }, list.get(2).values());
+            }
         }
     }
 

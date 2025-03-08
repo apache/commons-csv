@@ -40,9 +40,11 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.function.IOStream;
 import org.apache.commons.io.function.Uncheck;
 import org.apache.commons.io.output.AppendableOutputStream;
 
@@ -2088,6 +2090,14 @@ public final class CSVFormat implements Serializable {
         return quoteCharacter != null;
     }
 
+    <T> IOStream<T> limit(final IOStream<T> stream) {
+        return getMaxRows() > 0 ? stream.limit(getMaxRows()) : stream;
+    }
+
+    <T> Stream<T> limit(final Stream<T> stream) {
+        return getMaxRows() > 0 ? stream.limit(getMaxRows()) : stream;
+    }
+
     /**
      * Parses the specified content.
      *
@@ -3178,4 +3188,5 @@ public final class CSVFormat implements Serializable {
     public CSVFormat withTrim(final boolean trim) {
         return builder().setTrim(trim).get();
     }
+
 }

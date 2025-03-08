@@ -938,7 +938,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @since 1.9.0
      */
     public Stream<CSVRecord> stream() {
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator(), Spliterator.ORDERED), false);
+        return format.limit(StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator(), Spliterator.ORDERED), false));
     }
 
 }

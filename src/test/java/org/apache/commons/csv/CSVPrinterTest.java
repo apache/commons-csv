@@ -710,7 +710,7 @@ public class CSVPrinterTest {
     }
 
     @ParameterizedTest
-    @ValueSource(longs = { -1, 0, 1, 2, Integer.MAX_VALUE })
+    @ValueSource(longs = { -1, 0, 1, 2, Long.MAX_VALUE })
     public void testExcelPrintAllStreamOfArrays(final long maxRows) throws IOException {
         final StringWriter sw = new StringWriter();
         final CSVFormat format = CSVFormat.EXCEL.builder().setMaxRows(maxRows).get();
@@ -840,7 +840,7 @@ public class CSVPrinterTest {
     }
 
     @ParameterizedTest
-    @ValueSource(longs = { -1, 0, 1, 2, 3, 4, Integer.MAX_VALUE })
+    @ValueSource(longs = { -1, 0, 1, 2, 3, 4, Long.MAX_VALUE })
     public void testJdbcPrinterWithResultSet(final long maxRows) throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
         final CSVFormat format = CSVFormat.DEFAULT.builder().setMaxRows(maxRows).get();
@@ -864,11 +864,11 @@ public class CSVPrinterTest {
             assertEquals(allRows, resultString);
             expectedRowsWithHeader = TABLE_AND_HEADER_RECORD_COUNT;
         }
-        assertRowCount(format, resultString, expectedRowsWithHeader);
+        assertRowCount(CSVFormat.DEFAULT, resultString, expectedRowsWithHeader);
     }
 
     @ParameterizedTest
-    @ValueSource(longs = { -1, 0, 3, 4, Integer.MAX_VALUE })
+    @ValueSource(longs = { -1, 0, 3, 4, Long.MAX_VALUE })
     public void testJdbcPrinterWithResultSetHeader(final long maxRows) throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
         try (Connection connection = getH2Connection()) {
@@ -887,13 +887,13 @@ public class CSVPrinterTest {
                     assertEquals(TABLE_RECORD_COUNT * 2, printer.getRecordCount());
                     assertNotEquals("ID,NAME" + RECORD_SEPARATOR + "1,r1" + RECORD_SEPARATOR + "2,r2" + RECORD_SEPARATOR, sw.toString());
                 }
-                assertRowCount(format, sw.toString(), TABLE_AND_HEADER_RECORD_COUNT + TABLE_RECORD_COUNT);
+                assertRowCount(CSVFormat.DEFAULT, sw.toString(), TABLE_AND_HEADER_RECORD_COUNT + TABLE_RECORD_COUNT);
             }
         }
     }
 
     @ParameterizedTest
-    @ValueSource(longs = { -1, 0, 3, 4, Integer.MAX_VALUE })
+    @ValueSource(longs = { -1, 0, 3, 4, Long.MAX_VALUE })
     public void testJdbcPrinterWithResultSetMetaData(final long maxRows) throws IOException, ClassNotFoundException, SQLException {
         final StringWriter sw = new StringWriter();
         try (Connection connection = getH2Connection()) {
@@ -1509,7 +1509,7 @@ public class CSVPrinterTest {
     }
 
     @ParameterizedTest
-    @ValueSource(longs = { -1, 0, 3, 4, Integer.MAX_VALUE })
+    @ValueSource(longs = { -1, 0, 3, 4, Long.MAX_VALUE })
     public void testPrintCSVRecords(final long maxRows) throws IOException {
         // @formatter:off
         final String code = "a1,b1\n" + // 1)

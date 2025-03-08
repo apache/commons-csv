@@ -345,7 +345,7 @@ public final class CSVPrinter implements Flushable, Closeable {
 
     @SuppressWarnings("resource")
     private void printRecords(final IOStream<?> stream) throws IOException {
-        (format.getMaxRows() > 0 ? stream.limit(format.getMaxRows()) : stream).forEachOrdered(this::printRecordObject);
+        format.limit(stream).forEachOrdered(this::printRecordObject);
     }
 
     /**
