@@ -23,7 +23,7 @@
     <version>81</version>
   </parent>
   <artifactId>commons-csv</artifactId>
-  <version>1.13.1-SNAPSHOT</version>
+  <version>1.14.0-SNAPSHOT</version>
   <name>Apache Commons CSV</name>
   <url>https://commons.apache.org/proper/commons-csv/</url>
   <inceptionYear>2005</inceptionYear>
@@ -90,12 +90,12 @@
     </site>
   </distributionManagement>
   <properties>
-    <commons.release.version>1.13.1</commons.release.version>
+    <commons.release.version>1.14.0</commons.release.version>
     <commons.release.desc>(Java 8 or above)</commons.release.desc>
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC1</commons.rc.version>
     <commons.bc.version>1.13.0</commons.bc.version>
-    <commons.release.next>1.13.2</commons.release.next>
+    <commons.release.next>1.14.1</commons.release.next>
     <commons.componentid>csv</commons.componentid>
     <commons.module.name>org.apache.commons.csv</commons.module.name>
     <commons.jira.id>CSV</commons.jira.id>
