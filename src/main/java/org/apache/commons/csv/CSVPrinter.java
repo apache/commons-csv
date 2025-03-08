@@ -343,6 +343,11 @@ public final class CSVPrinter implements Flushable, Closeable {
         }
     }
 
+    @SuppressWarnings("resource")
+    private void printRecords(final IOStream<?> stream) throws IOException {
+        (format.getMaxRows() > 0 ? stream.limit(format.getMaxRows()) : stream).forEachOrdered(this::printRecordObject);
+    }
+
     /**
      * Prints all the objects in the given {@link Iterable} handling nested collections/arrays as records.
      *
@@ -383,11 +388,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      */
     @SuppressWarnings("resource")
     public void printRecords(final Iterable<?> values) throws IOException {
-        IOStream<?> stream = IOStream.of(values);
-        if (format.getMaxRows() > 0) {
-            stream = stream.limit(format.getMaxRows());
-        }
-        stream.forEachOrdered(this::printRecordObject);
+        printRecords(IOStream.of(values));
     }
 
     /**
@@ -526,6 +527,6 @@ public final class CSVPrinter implements Flushable, Closeable {
      */
     @SuppressWarnings({ "resource" }) // Caller closes.
     public void printRecords(final Stream<?> values) throws IOException {
-        IOStream.adapt(values).forEachOrdered(this::printRecordObject);
+        printRecords(IOStream.adapt(values));
     }
 }
