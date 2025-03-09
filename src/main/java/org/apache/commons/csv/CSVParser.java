@@ -221,14 +221,18 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         private CSVRecord current;
 
         /**
-         * Gets the next record.
+         * Gets the next record or null at the end of stream or max rows read.
          *
          * @throws IOException  on parse error or input read-failure
          * @throws CSVException on invalid input.
          * @return the next record, or {@code null} if the end of the stream has been reached.
          */
         private CSVRecord getNextRecord() {
-            return Uncheck.get(CSVParser.this::nextRecord);
+            CSVRecord record = null;
+            if (format.useRow(recordNumber + 1)) {
+                record = Uncheck.get(CSVParser.this::nextRecord);
+            }
+            return record;
         }
 
         @Override
@@ -938,7 +942,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @since 1.9.0
      */
     public Stream<CSVRecord> stream() {
-        return format.limit(StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator(), Spliterator.ORDERED), false));
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator(), Spliterator.ORDERED), false);
     }
 
 }

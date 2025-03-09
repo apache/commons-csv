@@ -53,6 +53,7 @@
       <action type="add" dev="ggregory" due-to="Gary Gregory">CSVPrinter.printRecords(Stream) knows how to use CSVFormat's maxRows.</action>
       <action type="add" dev="ggregory" due-to="Gary Gregory">CSVParser.stream() knows how to use CSVFormat's maxRows.</action>
       <action type="add" dev="ggregory" due-to="Gary Gregory">CSVParser.getRecords() knows how to use CSVFormat's maxRows.</action>
+      <action type="add" dev="ggregory" due-to="Gary Gregory">CSVParser.iterator() knows how to use CSVFormat's maxRows.</action>
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump com.opencsv:opencsv from 5.9 to 5.10.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-codec:commons-codec from 1.17.2 to 1.18.0 #522.</action>

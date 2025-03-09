@@ -2091,11 +2091,11 @@ public final class CSVFormat implements Serializable {
     }
 
     <T> IOStream<T> limit(final IOStream<T> stream) {
-        return getMaxRows() > 0 ? stream.limit(getMaxRows()) : stream;
+        return useMaxRows() ? stream.limit(getMaxRows()) : stream;
     }
 
     <T> Stream<T> limit(final Stream<T> stream) {
-        return getMaxRows() > 0 ? stream.limit(getMaxRows()) : stream;
+        return useMaxRows() ? stream.limit(getMaxRows()) : stream;
     }
 
     /**
@@ -2580,6 +2580,14 @@ public final class CSVFormat implements Serializable {
 
     String trim(final String value) {
         return getTrim() ? value.trim() : value;
+    }
+
+    boolean useMaxRows() {
+        return getMaxRows() > 0;
+    }
+
+    boolean useRow(final long rowNum) {
+        return !useMaxRows() || rowNum <= getMaxRows();
     }
 
     /**

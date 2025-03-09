@@ -1164,6 +1164,34 @@ public class CSVParserTest {
         }
     }
 
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0, 1, 2, 3, 4, 5, Long.MAX_VALUE })
+    public void testIteratorMaxRows(final long maxRows) throws Exception {
+        final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
+        try (CSVParser parser = CSVFormat.DEFAULT.builder().setMaxRows(maxRows).get().parse(in)) {
+            final Iterator<CSVRecord> iterator = parser.iterator();
+            assertTrue(iterator.hasNext());
+            assertThrows(UnsupportedOperationException.class, iterator::remove);
+            assertArrayEquals(new String[] { "a", "b", "c" }, iterator.next().values());
+            final boolean noLimit = maxRows <= 0;
+            final int fixtureLen = 3;
+            final long expectedLen = noLimit ? fixtureLen : Math.min(fixtureLen, maxRows);
+            if (expectedLen > 1) {
+                assertTrue(iterator.hasNext());
+                assertArrayEquals(new String[] { "1", "2", "3" }, iterator.next().values());
+            }
+            assertEquals(expectedLen > 2, iterator.hasNext());
+            // again
+            assertEquals(expectedLen > 2, iterator.hasNext());
+            if (expectedLen == fixtureLen) {
+                assertTrue(iterator.hasNext());
+                assertArrayEquals(new String[] { "x", "y", "z" }, iterator.next().values());
+            }
+            assertFalse(iterator.hasNext());
+            assertThrows(NoSuchElementException.class, iterator::next);
+        }
+    }
+
     @Test
     public void testIteratorSequenceBreaking() throws IOException {
         final String fiveRows = "1\n2\n3\n4\n5\n";

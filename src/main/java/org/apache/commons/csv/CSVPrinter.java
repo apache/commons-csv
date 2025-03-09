@@ -445,8 +445,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      */
     public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
         final int columnCount = resultSet.getMetaData().getColumnCount();
-        final long maxRows = format.getMaxRows();
-        while (resultSet.next() && (maxRows < 1 || resultSet.getRow() <= maxRows)) {
+        while (resultSet.next() && format.useRow(resultSet.getRow())) {
             for (int i = 1; i <= columnCount; i++) {
                 final Object object = resultSet.getObject(i);
                 if (object instanceof Clob) {
