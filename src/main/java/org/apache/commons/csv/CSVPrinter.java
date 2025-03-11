@@ -436,7 +436,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * Prints all the objects in the given JDBC result set.
      * <p>
      * You can use {@link CSVFormat.Builder#setMaxRows(long)} to limit how many rows a result set produces. This is most useful when you cannot limit rows
-     * through {@link Statement#setLargeMaxRows(long)}.
+     * through {@link Statement#setLargeMaxRows(long)} or {@link Statement#setMaxRows(int)}.
      * </p>
      *
      * @param resultSet The values to print.
@@ -468,7 +468,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * Prints all the objects with metadata in the given JDBC result set based on the header boolean.
      * <p>
      * You can use {@link CSVFormat.Builder#setMaxRows(long)} to limit how many rows a result set produces. This is most useful when you cannot limit rows
-     * through {@link Statement#setLargeMaxRows(long)}.
+     * through {@link Statement#setLargeMaxRows(long)} or {@link Statement#setMaxRows(int)}.
      * </p>
      *
      * @param resultSet source of row data.
