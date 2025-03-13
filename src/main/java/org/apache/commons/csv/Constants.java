@@ -37,10 +37,10 @@ final class Constants {
 
     static final char CR = '\r';
 
-    /** RFC 4180 defines line breaks as CRLF */
+    /** RFC 4180 defines line breaks as CRLF. */
     static final String CRLF = "\r\n";
 
-    static final Character DOUBLE_QUOTE_CHAR = Character.valueOf('"');  // Explicit (un)boxing is intentional
+    static final Character DOUBLE_QUOTE_CHAR = Character.valueOf('"');  // Explicit (un)boxing is intentional.
 
     static final String EMPTY = "";
 
@@ -67,7 +67,7 @@ final class Constants {
 
     static final char PIPE = '|';
 
-    /** ASCII record separator */
+    /** ASCII record separator. */
     static final char RS = 30;
 
     static final char SP = ' ';
@@ -76,10 +76,10 @@ final class Constants {
 
     static final char TAB = '\t';
 
-    /** Undefined state for the lookahead char */
+    /** Undefined state for the lookahead char. */
     static final int UNDEFINED = -2;
 
-    /** ASCII unit separator */
+    /** ASCII unit separator. */
     static final char US = 31;
 
     /** No instances. */
