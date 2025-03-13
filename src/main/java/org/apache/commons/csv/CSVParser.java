@@ -765,6 +765,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * <p>
      * The returned content starts at the current parse-position in the stream.
      * </p>
+     * <p>
+     * You can use {@link CSVFormat.Builder#setMaxRows(long)} to limit how many rows this method produces.
+     * </p>
      *
      * @return list of {@link CSVRecord CSVRecords}, may be empty
      * @throws UncheckedIOException
@@ -871,6 +874,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * parser is closed, one option is to extract all records as a list with
      * {@link #getRecords()}, and return an iterator to that list.
      * </p>
+     * <p>
+     * You can use {@link CSVFormat.Builder#setMaxRows(long)} to limit how many rows an Iterator produces.
+     * </p>
      */
     @Override
     public Iterator<CSVRecord> iterator() {
@@ -938,6 +944,10 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * If the parser is closed, the stream will not produce any more values.
      * See the comments in {@link #iterator()}.
      * </p>
+     * <p>
+     * You can use {@link CSVFormat.Builder#setMaxRows(long)} to limit how many rows a Stream produces.
+     * </p>
+     *
      * @return a sequential {@code Stream} with this collection as its source.
      * @since 1.9.0
      */
