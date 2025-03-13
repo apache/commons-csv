@@ -314,15 +314,15 @@ try (ResultSet resultSet = ...) {
       </pre>
   </section>
   <section>
-    <h1>Exporting JDBC Result Sets</h1>
-    <p>
-      To export row data from a JDBC
-      <code>ResultSet</code>
-      , use
-      <code>CSVPrinter.printRecords(ResultSet)</code>
-      :
-    </p>
-    <pre>
+    <h1>Working with JDBC</h1>
+    <section>
+      <h2>Exporting JDBC Result Sets</h2>
+      <p>
+        To export row data from a JDBC
+        <code>ResultSet</code>
+        , use <a href="org/apache/commons/csv/CSVPrinter.html#printRecords(java.sql.ResultSet)">CSVPrinter.printRecords(ResultSet)</a> :
+      </p>
+      <pre>
         <code>
         final StringWriter sw = new StringWriter();
         final CSVFormat csvFormat = CSVFormat.DEFAULT;
@@ -337,6 +337,39 @@ try (ResultSet resultSet = ...) {
         System.out.println(csv);
         </code>
         </pre>
+    </section>
+    <section>
+      <h2>Limiting rows from JDBC Result Sets</h2>
+      <p>SQL lets you limit how many rows a SELECT statement returns with the LIMIT clause.</p>
+      <p>
+        When you can't or don't want to change the SQL used to generate rows, JDBC lets you limit how many rows a JDBC Statement returns with the <a
+          href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/Statement.html#setMaxRows(int)">Statement.setMaxRows(int)</a> method.
+      </p>
+      <p>
+        When you get a JDBC ResultSet from an API like <a
+          href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/DatabaseMetaData.html#getProcedures(java.lang.String,java.lang.String,java.lang.String)">
+          DatabaseMetaData.getProcedures(...)</a>, there is no SQL or JDBC Statement to use to set a limit, the ResultSet class does not have an API to limit rows.
+      </p>
+      <p>
+        To simplify limiting ResultSet rows, Commons CVS offers the <a href="org/apache/commons/csv/CSVFormat.Builder.html#setMaxRows(long)">CSVFormat.Builder.setMaxRows(long)</a>
+        method. For example:
+      </p>
+      <pre>
+        <code>
+        CSVFormat csvFormat = CSVFormat.DEFAULT
+            .setMaxRows(5_000)
+            .get();
+        try (ResultSet resultSet = ...) {
+            csvFormat.printer().printRecords(resultSet);
+        }
+        </code>
+      </pre>
+      <p>
+        Using the above, calling <a href="org/apache/commons/csv/CSVPrinter.html#printRecords(java.sql.ResultSet)">CSVPrinter.printRecords(ResultSet)</a> will
+        limit the row count to the maximum number of rows specified in setMaxRows().
+      </p>
+      <p>Note that setMaxRows() works with the other methods that print a sequence of records.</p>
+    </section>
   </section>
 </body>
 </html>
