@@ -20,7 +20,7 @@
 package org.apache.commons.csv;
 
 /**
- * Private constants to this package.
+ * Private constants for this package.
  */
 final class Constants {
 
