@@ -794,8 +794,9 @@ public class CSVParserTest {
     public void testGetOneLineOneParser() throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT;
         try (PipedWriter writer = new PipedWriter();
+                PipedReader origin = new PipedReader(writer);
                 CSVParser parser = CSVParser.builder()
-                        .setReader(new PipedReader(writer))
+                        .setReader(origin)
                         .setFormat(format)
                         .get()) {
             writer.append(CSV_INPUT_1);
