@@ -40,7 +40,7 @@ final class Constants {
     /** RFC 4180 defines line breaks as CRLF */
     static final String CRLF = "\r\n";
 
-    static final Character DOUBLE_QUOTE_CHAR = Character.valueOf('"');  // N.B. Explicit (un)boxing is intentional
+    static final Character DOUBLE_QUOTE_CHAR = Character.valueOf('"');  // Explicit (un)boxing is intentional
 
     static final String EMPTY = "";
 
