@@ -24,26 +24,13 @@ limitations under the License.
 <!-- ================================================== -->
 <section name="Using Apache Commons CSV">
   <p>Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.</p>
-  <p>The most common CSV formats are predefined in the <a href="apidocs/org/apache/commons/csv/CSVFormat.html">CSVFormat</a> class:
-  <ul>
-    <li><a href="https://support.microsoft.com/en-us/office/import-or-export-text-txt-or-csv-files-5250ac4c-663c-47ce-937b-339e391393ba">Microsoft Excel</a></li>
-    <li><a href="https://www.ibm.com/docs/en/informix-servers/14.10?topic=statements-unload-statement">Informix UNLOAD</a></li>
-    <li><a href="https://www.ibm.com/docs/en/informix-servers/14.10?topic=statements-unload-statement">Informix UNLOAD CSV</a></li>
-    <li><a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump-delimited-text.html">MySQL</a></li>
-    <li><a href="https://docs.oracle.com/database/121/SUTIL/GUID-D1762699-8154-40F6-90DE-EFB8EB6A9AB0.htm#SUTIL4217">Oracle</a></li>
-    <li><a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL CSV</a></li>
-    <li><a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL Text</a></li>
-    <li><a href="https://datatracker.ietf.org/doc/html/rfc4180">RFC 4180</a></li>
-    <li><a href="https://en.wikipedia.org/wiki/Tab-separated_values">TDF</a></li>
-  </ul>
-  </p>
-  <p>Custom formats can be created using a fluent style API.</p>
+  <p>Read the documentation starting with the <a href="apidocs/index.html">Javadoc Overview</a>.</p>
 </section>
 <!-- ================================================== -->
 <section name="Documentation">
 <p>
 An overview of the functionality is provided in the
-<a href="user-guide.html">user guide</a>.
+<a href="apidocs/index.html">user guide</a>.
 Various <a href="project-reports.html">project reports</a> are also available.
 </p>
 <p>

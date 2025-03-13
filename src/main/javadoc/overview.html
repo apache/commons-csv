@@ -1,0 +1,317 @@
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+       https://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<html>
+<head>
+<title>Apache Commons CSV Overview</title>
+</head>
+<body>
+  <img src="../images/commons-logo.png" alt="Apache Commons CSV">
+  <p>
+    You can find the Javadoc package list at the <a href="#all-packages-table">bottom of this page</a>.
+  </p>
+  <section>
+    <h1>Introducing Commons CSV</h1>
+    <p>Apache Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.</p>
+    <p>
+      Common CSV formats are predefined in the <a href="org/apache/commons/csv/CSVFormat.html">CSVFormat</a> class:
+    <table>
+      <caption>CSV Formats</caption>
+      <thead>
+        <tr>
+          <th scope="col">CSVFormat</th>
+          <th scope="col">Description</th>
+          <th scope="col">Since Version</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="org/apache/commons/csv/CSVFormat.html#DEFAULT">DEFAULT</a></td>
+          <td>IO for the Standard Comma Separated Value format, like <a href="https://datatracker.ietf.org/doc/html/rfc4180">RFC 4180</a> but allowing
+            empty lines.
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td><a href="org/apache/commons/csv/CSVFormat.html#EXCEL">EXCEL</a></td>
+          <td>IO for the <a href="https://support.microsoft.com/en-us/office/import-or-export-text-txt-or-csv-files-5250ac4c-663c-47ce-937b-339e391393ba">Microsoft
+              Excel CSV.</a> format.
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td><a href="org/apache/commons/csv/CSVFormat.html#INFORMIX_UNLOAD">INFORMIX_UNLOAD</a></td>
+          <td>IO for the <a href="https://www.ibm.com/docs/en/informix-servers/14.10?topic=statements-unload-statement">Informix UNLOAD TO file_name</a>
+            command.
+          </td>
+          <td>1.3</td>
+        </tr>
+        <tr>
+          <td><a href="org/apache/commons/csv/CSVFormat.html#INFORMIX_UNLOAD_CSV">INFORMIX_UNLOAD_CSV</a></td>
+          <td>IO for the <a href="https://www.ibm.com/docs/en/informix-servers/14.10?topic=statements-unload-statement">Informix UNLOAD CSV TO
+              file_name</a> command with escaping disabled.
+          </td>
+          <td>1.3</td>
+        </tr>
+        <tr>
+          <td><a href="org/apache/commons/csv/CSVFormat.html#MONGODB_CSV">MONGODB_CSV</a></td>
+          <td>IO for the <a href="https://docs.mongodb.com/manual/reference/program/mongoexport/">MongoDB CSV <code>mongoexport</code></a> command.
+          </td>
+          <td>1.7</td>
+        </tr>
+        <tr>
+          <td><a href="org/apache/commons/csv/CSVFormat.html#MONGODB_TSV">MONGODB_TSV</a></td>
+          <td>IO for the <a href="https://docs.mongodb.com/manual/reference/program/mongoexport/">MongoDB Tab Separated Values (TSV)<code>mongoexport</code></a>
+            command.
+          </td>
+          <td>1.7</td>
+        </tr>
+        <tr>
+          <td><a href="org/apache/commons/csv/CSVFormat.html#MYSQL">MYSQL</a></td>
+          <td>IO for the <a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump-delimited-text.html">MySQL CSV</a> format.
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td><a href="org/apache/commons/csv/CSVFormat.html#ORACLE">ORACLE</a></td>
+          <td>IO for the <a href="https://docs.oracle.com/database/121/SUTIL/GUID-D1762699-8154-40F6-90DE-EFB8EB6A9AB0.htm#SUTIL4217">Oracle CSV</a> format
+            of the SQL*Loader utility.
+          </td>
+          <td>1.6</td>
+        </tr>
+        <tr>
+          <td><a href="org/apache/commons/csv/CSVFormat.html#POSTGRESQL_CSV">POSTGRESQL_CSV</a></td>
+          <td>IO for the <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL CSV</a> format used by the <code>COPY</code>
+            operation.
+          </td>
+          <td>1.5</td>
+        </tr>
+        <tr>
+          <td><a href="org/apache/commons/csv/CSVFormat.html#POSTGRESQL_TEXT">POSTGRESQL_TEXT</a></td>
+          <td>IO for the <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL Text</a> format used by the <code>COPY</code>
+            operation.
+          </td>
+          <td>1.5</td>
+        </tr>
+        <tr>
+          <td><a href="org/apache/commons/csv/CSVFormat.html#RFC4180">RFC4180</a></td>
+          <td>IO for the RFC-4180 format defined by<a href="https://datatracker.ietf.org/doc/html/rfc4180">RFC 4180</a>.
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td><a href="org/apache/commons/csv/CSVFormat.html#TDF">TDF</a></td>
+          <td>IO for the <a href="https://en.wikipedia.org/wiki/Tab-separated_values">Tab Delimited Format</a> (also known as Tab Separated Values).
+          </td>
+          <td>1.0</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Custom formats can be created using a fluent style API.</p>
+  </section>
+  <section>
+    <h1>Parsing Standard CSV Files</h1>
+    <p>
+      Parsing files with Apache Commons CSV is relatively straight forward. Pick a
+      <code>CSVFormat</code>
+      and go from there.
+    </p>
+    <section>
+      <h2>Parsing an Excel CSV File</h2>
+      <p>To parse an Excel CSV file, write:</p>
+      <pre>
+        <code>
+Reader in = new FileReader(&quot;path/to/file.csv&quot;);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.EXCEL.parse(in);
+for (CSVRecord record : records) {
+    String lastName = record.get("Last Name");
+    String firstName = record.get("First Name");
+}
+        </code>
+      </pre>
+    </section>
+  </section>
+  <section>
+    <h1>Parsing Custom CSV Files</h1>
+    <p>
+      You can define your own using IO rules by building your own CSVFormat instance. Starting with
+      <code>CSVFormat.builder()</code>
+      lets you start from a predefined format and customize. For example:
+    </p>
+    <pre>
+      <code>
+CSVFormat myFormat = CSVFormat.DEFAULT.builder()
+    .setCommentMarker('#')
+    .setEscape('+')
+    .setIgnoreSurroundingSpaces(true)
+    .setQuote('"')
+    .setQuoteMode(QuoteMode.ALL)
+    .get()
+      </code>
+    </pre>
+  </section>
+  <section>
+    <h1>Handling Byte Order Marks</h1>
+    <p>
+      To handle files that start with a Byte Order Mark (BOM), like some Excel CSV files, you need an extra step to deal with the optional BOM bytes. Using the
+      <a href="https://commons.apache.org/proper/commons-io/apidocs/org/apache/commons/io/input/BOMInputStream.html"> BOMInputStream </a> class from <a
+        href="https://commons.apache.org/proper/commons-io/">Apache Commons IO</a> simplifies this task; for example:
+    </p>
+    <pre>
+        <code>
+try (Reader reader = new InputStreamReader(BOMInputStream.builder()
+        .setPath(path)
+        .get(), "UTF-8");
+        CSVParser parser = CSVFormat.EXCEL.builder()
+                .setHeader()
+                .get()
+                .parse(reader)) {
+    for (CSVRecord record : parser) {
+        String string = record.get("ColumnA");
+        // ...
+    }
+}
+        </code>
+      </pre>
+    <p>You might find it handy to create something like this:</p>
+    <pre>
+        <code>
+/**
+ * Creates a reader capable of handling BOMs.
+ *
+ * @param path The path to read.
+ * @return a new InputStreamReader for UTF-8 bytes.
+ * @throws IOException if an I/O error occurs.
+ */
+public InputStreamReader newReader(final Path path) throws IOException {
+    return new InputStreamReader(BOMInputStream.builder()
+            .setPath(path)
+            .get(), StandardCharsets.UTF_8);
+}
+        </code>
+      </pre>
+  </section>
+  <section>
+    <h1>Using Headers</h1>
+    <p>
+      Apache Commons CSV provides several ways to access record values. The simplest way is to access values by their index in the record. However, columns in
+      CSV files often have a name, for example: ID, CustomerNo, Birthday, etc. The CSVFormat class provides an API for specifying these <i>header</i> names and
+      CSVRecord on the other hand has methods to access values by their corresponding header name.
+    </p>
+    <section>
+      <h2>Accessing column values by index</h2>
+      <p>To access a record value by index, no special configuration of the CSVFormat is necessary:</p>
+      <pre>
+        <code>
+Reader in = new FileReader(&quot;path/to/file.csv&quot;);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.parse(in);
+for (CSVRecord record : records) {
+    String columnOne = record.get(0);
+    String columnTwo = record.get(1);
+}
+        </code>
+      </pre>
+    </section>
+    <section>
+      <h2>Defining a header manually</h2>
+      <p>Indices may not be the most intuitive way to access record values. For this reason it is possible to assign names to each column in the file:</p>
+      <pre>
+        <code>
+Reader in = new FileReader(&quot;path/to/file.csv&quot;);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.builder()
+  .setHeader("ID", "CustomerNo", "Name")
+  .build()
+  .parse(in);
+for (CSVRecord record : records) {
+    String id = record.get("ID");
+    String customerNo = record.get("CustomerNo");
+    String name = record.get("Name");
+}
+        </code>
+      </pre>
+      Note that column values can still be accessed using their index.
+    </section>
+    <section>
+      <h2>Using an enum to define a header</h2>
+      <p>Using String values all over the code to reference columns can be error prone. For this reason, it is possible to define an enum to specify header
+        names. Note that the enum constant names are used to access column values. This may lead to enums constant names which do not follow the Java coding
+        standard of defining constants in upper case with underscores:</p>
+      <pre>
+        <code>
+public enum Headers {
+    ID, CustomerNo, Name
+}
+Reader in = new FileReader(&quot;path/to/file.csv&quot;);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.builder()
+  .setHeader(Headers.class)
+  .build()
+  .parse(in);
+for (CSVRecord record : records) {
+    String id = record.get(Headers.ID);
+    String customerNo = record.get(Headers.CustomerNo);
+    String name = record.get(Headers.Name);
+}
+        </code>
+      </pre>
+      Again it is possible to access values by their index and by using a String (for example "CustomerNo").
+    </section>
+    <section>
+      <h2>Header auto detection</h2>
+      <p>Some CSV files define header names in their first record. If configured, Apache Commons CSV can parse the header names from the first record:</p>
+      <pre>
+        <code>
+Reader in = new FileReader(&quot;path/to/file.csv&quot;);
+Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.builder()
+  .setHeader()
+  .setSkipHeaderRecord(true)
+  .build()
+  .parse(in);
+for (CSVRecord record : records) {
+    String id = record.get("ID");
+    String customerNo = record.get("CustomerNo");
+    String name = record.get("Name");
+}
+        </code>
+      </pre>
+      This will use the values from the first record as header names and skip the first record when iterating.
+    </section>
+    <section>
+      <h2>Printing with headers</h2>
+      <p>To print a CSV file with headers, you specify the headers in the format:</p>
+      <pre>
+        <code>
+Appendable out = ...;
+CSVPrinter printer = CSVFormat.DEFAULT.builder()
+  .setHeader("H1", "H2")
+  .build()
+  .print(out);
+        </code>
+      </pre>
+      <p>To print a CSV file with JDBC column labels, you specify the ResultSet in the format:</p>
+      <pre>
+        <code>
+try (ResultSet resultSet = ...) {
+    CSVPrinter printer = CSVFormat.DEFAULT.builder()
+      .setHeader(resultSet)
+      .build()
+      .print(out);
+}
+        </code>
+      </pre>
+    </section>
+  </section>
+</body>
+</html>
