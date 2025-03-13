@@ -288,10 +288,11 @@ for (CSVRecord record : records) {
       </pre>
       This will use the values from the first record as header names and skip the first record when iterating.
     </section>
-    <section>
-      <h2>Printing with headers</h2>
-      <p>To print a CSV file with headers, you specify the headers in the format:</p>
-      <pre>
+  </section>
+  <section>
+    <h1>Printing with headers</h1>
+    <p>To print a CSV file with headers, you specify the headers in the format:</p>
+    <pre>
         <code>
 Appendable out = ...;
 CSVPrinter printer = CSVFormat.DEFAULT.builder()
@@ -300,8 +301,8 @@ CSVPrinter printer = CSVFormat.DEFAULT.builder()
   .print(out);
         </code>
       </pre>
-      <p>To print a CSV file with JDBC column labels, you specify the ResultSet in the format:</p>
-      <pre>
+    <p>To print a CSV file with JDBC column labels, you specify the ResultSet in the format:</p>
+    <pre>
         <code>
 try (ResultSet resultSet = ...) {
     CSVPrinter printer = CSVFormat.DEFAULT.builder()
@@ -311,7 +312,31 @@ try (ResultSet resultSet = ...) {
 }
         </code>
       </pre>
-    </section>
+  </section>
+  <section>
+    <h1>Exporting JDBC Result Sets</h1>
+    <p>
+      To export row data from a JDBC
+      <code>ResultSet</code>
+      , use
+      <code>CSVPrinter.printRecords(ResultSet)</code>
+      :
+    </p>
+    <pre>
+        <code>
+        final StringWriter sw = new StringWriter();
+        final CSVFormat csvFormat = CSVFormat.DEFAULT;
+        try (Connection connection = DriverManager.getConnection("jdbc:h2:mem:my_test;", "sa", "")) {
+            try (Statement stmt = connection.createStatement();
+                    CSVPrinter printer = new CSVPrinter(sw, csvFormat);
+                    ResultSet resultSet = stmt.executeQuery("select ID, NAME, TEXT, BIN_DATA from TEST")) {
+                printer.printRecords(resultSet);
+            }
+        }
+        final String csv = sw.toString();
+        System.out.println(csv);
+        </code>
+        </pre>
   </section>
 </body>
 </html>
