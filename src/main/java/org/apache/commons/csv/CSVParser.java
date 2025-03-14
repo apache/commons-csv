@@ -184,7 +184,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         /**
          * Sets the CSV format. A copy of the given format is kept.
          *
-         * @param format the CSV format, null is equivalent to {@link CSVFormat#DEFAULT}.
+         * @param format the CSV format, {@code null} resets to {@link CSVFormat#DEFAULT}.
          * @return this instance.
          */
         public Builder setFormat(final CSVFormat format) {
@@ -385,7 +385,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param reader
      *            a Reader containing CSV-formatted input. Must not be null.
      * @param format
-     *            the CSVFormat used for CSV parsing. Must not be null.
+     *            the CSVFormat used for CSV parsing, {@code null} uses {@link CSVFormat#DEFAULT}.
      * @return a new CSVParser configured with the given reader and format.
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either reader or format are null.
