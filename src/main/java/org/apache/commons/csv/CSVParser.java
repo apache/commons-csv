@@ -49,6 +49,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.build.AbstractStreamBuilder;
 import org.apache.commons.io.function.Uncheck;
 
@@ -305,15 +306,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param file
      *            a CSV file. Must not be null.
      * @param charset
-     *            The Charset to decode the given file.
+     *            The Charset to decode the given file, {@code null} maps to the {@link Charset#defaultCharset() default Charset}.
      * @param format
      *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
      * @return a new parser
      * @throws IllegalArgumentException
-     *             If the parameters of the format are inconsistent or if either file or format are null.
+     *             If the parameters of the format are inconsistent.
      * @throws IOException
      *             If an I/O error occurs
-     * @throws CSVException Thrown on invalid input.
+     * @throws CSVException Thrown on invalid CSV input data.
+     * @throws NullPointerException if {@code file} is {@code null}.
      */
     public static CSVParser parse(final File file, final Charset charset, final CSVFormat format) throws IOException {
         Objects.requireNonNull(file, "file");
@@ -331,7 +333,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param inputStream
      *            an InputStream containing CSV-formatted input, {@code null} maps to {@link CSVFormat#DEFAULT}.
      * @param charset
-     *            The Charset to decode the given file.
+     *            The Charset to decode the given file, {@code null} maps to the {@link Charset#defaultCharset() default Charset}.
      * @param format
      *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
      * @return a new CSVParser configured with the given reader and format.
@@ -339,12 +341,12 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If the parameters of the format are inconsistent or if either reader or format are null.
      * @throws IOException
      *             If there is a problem reading the header or skipping the first record
-     * @throws CSVException Thrown on invalid input.
+     * @throws CSVException Thrown on invalid CSV input data.
      * @since 1.5
      */
     public static CSVParser parse(final InputStream inputStream, final Charset charset, final CSVFormat format)
             throws IOException {
-        return parse(new InputStreamReader(inputStream, charset), format);
+        return parse(new InputStreamReader(inputStream, Charsets.toCharset(charset)), format);
     }
 
     /**
@@ -353,15 +355,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param path
      *            a CSV file. Must not be null.
      * @param charset
-     *            The Charset to decode the given file.
+     *            The Charset to decode the given file, {@code null} maps to the {@link Charset#defaultCharset() default Charset}.
      * @param format
      *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
      * @return a new parser
      * @throws IllegalArgumentException
-     *             If the parameters of the format are inconsistent or if either file or format are null.
+     *             If the parameters of the format are inconsistent.
      * @throws IOException
      *             If an I/O error occurs
-     * @throws CSVException Thrown on invalid input.
+     * @throws CSVException Thrown on invalid CSV input data.
+     * @throws NullPointerException if {@code path} is {@code null}.
      * @since 1.5
      */
     @SuppressWarnings("resource")
@@ -387,7 +390,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If the parameters of the format are inconsistent or if either reader or format are null.
      * @throws IOException
      *             If there is a problem reading the header or skipping the first record
-     * @throws CSVException Thrown on invalid input.
+     * @throws CSVException Thrown on invalid CSV input data.
      * @since 1.5
      */
     public static CSVParser parse(final Reader reader, final CSVFormat format) throws IOException {
@@ -403,10 +406,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
      * @return a new parser
      * @throws IllegalArgumentException
-     *             If the parameters of the format are inconsistent or if either string or format are null.
+     *             If the parameters of the format are inconsistent.
      * @throws IOException
      *             If an I/O error occurs
-     * @throws CSVException Thrown on invalid input.
+     * @throws CSVException Thrown on invalid CSV input data.
+     * @throws NullPointerException if {@code string} is {@code null}.
      */
     public static CSVParser parse(final String string, final CSVFormat format) throws IOException {
         Objects.requireNonNull(string, "string");
@@ -424,15 +428,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param url
      *            a URL. Must not be null.
      * @param charset
-     *            the charset for the resource. Must not be null.
+     *            the charset for the resource, {@code null} maps to the {@link Charset#defaultCharset() default Charset}.
      * @param format
      *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
      * @return a new parser
      * @throws IllegalArgumentException
-     *             If the parameters of the format are inconsistent or if either url, charset or format are null.
+     *             If the parameters of the format are inconsistent.
      * @throws IOException
      *             If an I/O error occurs
-     * @throws CSVException Thrown on invalid input.
+     * @throws CSVException Thrown on invalid CSV input data.
+     * @throws NullPointerException if {@code url} is {@code null}.
      */
     @SuppressWarnings("resource")
     public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException {
@@ -484,7 +489,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If the parameters of the format are inconsistent or if either reader or format are null.
      * @throws IOException
      *             If there is a problem reading the header or skipping the first record
-     * @throws CSVException Thrown on invalid input.
+     * @throws CSVException Thrown on invalid CSV input data.
      * @deprecated Will be removed in the next major version, use {@link Builder#get()}.
      */
     @Deprecated
@@ -517,10 +522,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @deprecated Will be private in the next major version, use {@link Builder#get()}.
      */
     @Deprecated
-    public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber)
-        throws IOException {
-            this(reader, format, characterOffset, recordNumber, null, false);
-        }
+    public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber) throws IOException {
+        this(reader, format, characterOffset, recordNumber, null, false);
+    }
 
     /**
      * Constructs a new instance using the given {@link CSVFormat}
@@ -546,7 +550,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If the parameters of the format are inconsistent or if either the reader or format is null.
      * @throws IOException
      *             If there is a problem reading the header or skipping the first record.
-     * @throws CSVException Thrown on invalid input.
+     * @throws CSVException Thrown on invalid CSV input data.
      */
     private CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber,
         final Charset charset, final boolean trackBytes)
@@ -875,7 +879,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *
      * @return the record as an array of values, or {@code null} if the end of the stream has been reached.
      * @throws IOException  on parse error or input read-failure.
-     * @throws CSVException on invalid input.
+     * @throws CSVException on invalid CSV input data.
      */
     CSVRecord nextRecord() throws IOException {
         CSVRecord result = null;

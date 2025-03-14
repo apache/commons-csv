@@ -1358,8 +1358,7 @@ public class CSVParserTest {
 
     @Test
     public void testParse() throws Exception {
-        final ClassLoader loader = ClassLoader.getSystemClassLoader();
-        final URL url = loader.getResource("org/apache/commons/csv/CSVFileParser/test.csv");
+        final URL url = ClassLoader.getSystemClassLoader().getResource("org/apache/commons/csv/CSVFileParser/test.csv");
         final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader("A", "B", "C", "D").get();
         final Charset charset = StandardCharsets.UTF_8;
         // Reader
@@ -1472,8 +1471,12 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testParserUrlNullCharsetFormat() {
-        assertThrows(NullPointerException.class, () -> CSVParser.parse(new URL("https://commons.apache.org"), null, CSVFormat.DEFAULT));
+    public void testParserUrlNullCharsetFormat() throws IOException {
+        final URL url = ClassLoader.getSystemClassLoader().getResource("org/apache/commons/csv/CSVFileParser/test.csv");
+        try (CSVParser parser = CSVParser.parse(url, null, CSVFormat.DEFAULT)) {
+            // null maps to DEFAULT.
+            parseFully(parser);
+        }
     }
 
     @Test
@@ -1492,8 +1495,7 @@ public class CSVParserTest {
 
     @Test
     public void testParseUrlCharsetNullFormat() throws IOException {
-        final ClassLoader loader = ClassLoader.getSystemClassLoader();
-        final URL url = loader.getResource("org/apache/commons/csv/CSVFileParser/test.csv");
+        final URL url = ClassLoader.getSystemClassLoader().getResource("org/apache/commons/csv/CSVFileParser/test.csv");
         try (CSVParser parser = CSVParser.parse(url, Charset.defaultCharset(), null)) {
             // null maps to DEFAULT.
             parseFully(parser);
