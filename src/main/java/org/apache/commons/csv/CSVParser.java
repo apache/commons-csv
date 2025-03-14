@@ -602,11 +602,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws CSVException on invalid input.
      */
     private Headers createHeaders() throws IOException {
-        Map<String, Integer> hdrMap = null;
+        Map<String, Integer> headerMap = null;
         List<String> headerNames = null;
         final String[] formatHeader = format.getHeader();
         if (formatHeader != null) {
-            hdrMap = createEmptyHeaderMap();
+            headerMap = createEmptyHeaderMap();
             String[] headerRecord = null;
             if (formatHeader.length == 0) {
                 // read the header from the first line of the file
@@ -637,7 +637,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                             "A header name is missing in " + Arrays.toString(headerRecord));
                     }
 
-                    final boolean containsHeader = blankHeader ? observedMissing : hdrMap.containsKey(header);
+                    final boolean containsHeader = blankHeader ? observedMissing : headerMap.containsKey(header);
                     final DuplicateHeaderMode headerMode = format.getDuplicateHeaderMode();
                     final boolean duplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_ALL;
                     final boolean emptyDuplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_EMPTY;
@@ -650,7 +650,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     }
                     observedMissing |= blankHeader;
                     if (header != null) {
-                        hdrMap.put(header, Integer.valueOf(i)); // Explicit (un)boxing is intentional
+                        headerMap.put(header, Integer.valueOf(i)); // Explicit (un)boxing is intentional
                         if (headerNames == null) {
                             headerNames = new ArrayList<>(headerRecord.length);
                         }
@@ -660,7 +660,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             }
         }
         // Make header names Collection immutable
-        return new Headers(hdrMap, headerNames == null ? Collections.emptyList() : Collections.unmodifiableList(headerNames));
+        return new Headers(headerMap, headerNames == null ? Collections.emptyList() : Collections.unmodifiableList(headerNames));
     }
 
     /**
