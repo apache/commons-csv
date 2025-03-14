@@ -403,7 +403,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param string
      *            a CSV string. Must not be null.
      * @param format
-     *            the CSVFormat used for CSV parsing. Must not be null.
+     *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
      * @return a new parser
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either string or format are null.
@@ -413,7 +413,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     public static CSVParser parse(final String string, final CSVFormat format) throws IOException {
         Objects.requireNonNull(string, "string");
-        Objects.requireNonNull(format, "format");
         return parse(new StringReader(string), format);
     }
 

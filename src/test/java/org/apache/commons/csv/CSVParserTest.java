@@ -1454,8 +1454,17 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testParseStringNullFormat() {
-        assertThrows(NullPointerException.class, () -> CSVParser.parse("csv data", (CSVFormat) null));
+    public void testParseStringNullFormat() throws IOException {
+        try (CSVParser parser = CSVParser.parse("1,2,3", null)) {
+            // null maps to DEFAULT.
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(1, records.size());
+            final CSVRecord record = records.get(0);
+            assertEquals(3, record.size());
+            assertEquals("1", record.get(0));
+            assertEquals("2", record.get(1));
+            assertEquals("3", record.get(2));
+        }
     }
 
     @Test
