@@ -33,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PipedReader;
 import java.io.PipedWriter;
@@ -1427,6 +1428,15 @@ public class CSVParserTest {
     public void testParseFileCharsetNullFormat() throws IOException {
         final File file = new File("src/test/resources/org/apache/commons/csv/CSVFileParser/test.csv");
         try (CSVParser parser = CSVParser.parse(file, Charset.defaultCharset(), null)) {
+            // null maps to DEFAULT.
+            parseFully(parser);
+        }
+    }
+
+    @Test
+    public void testParseInputStreamCharsetNullFormat() throws IOException {
+        try (InputStream in = Files.newInputStream(Paths.get("src/test/resources/org/apache/commons/csv/CSVFileParser/test.csv"));
+                CSVParser parser = CSVParser.parse(in, Charset.defaultCharset(), null)) {
             // null maps to DEFAULT.
             parseFully(parser);
         }

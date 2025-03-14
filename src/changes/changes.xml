@@ -48,6 +48,7 @@
       <action type="fix" dev="ggregory" due-to="Gary Gregory">CSVParser.parse(String, CSVFormat) with a null CSVFormat maps to CSVFormat.DEFAULT (like CSVParser.parse(Reader, CSVFormat)).</action>
       <action type="fix" dev="ggregory" due-to="Gary Gregory">CSVParser.parse(File, Charset, CSVFormat) with a null CSVFormat maps to CSVFormat.DEFAULT (like CSVParser.parse(Reader, CSVFormat)).</action>
       <action type="fix" dev="ggregory" due-to="Gary Gregory">CSVParser.parse(Path, Charset, CSVFormat) with a null CSVFormat maps to CSVFormat.DEFAULT (like CSVParser.parse(Reader, CSVFormat)).</action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">CSVParser.parse(InputStream, Charset, CSVFormat) with a null CSVFormat maps to CSVFormat.DEFAULT (like CSVParser.parse(Reader, CSVFormat)).</action>
       <!-- ADD -->
       <action type="add" dev="ggregory" due-to="Gary Gregory">Define and use Maven property commons.jmh.version.</action> 
       <action type="add" dev="ggregory" due-to="Gary Gregory">Add CSVFormat.Builder.setMaxRows(long).</action> 
