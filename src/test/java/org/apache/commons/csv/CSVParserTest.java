@@ -1459,8 +1459,12 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testParseUrlCharsetNullFormat() {
-        assertThrows(NullPointerException.class, () -> CSVParser.parse(new URL("https://commons.apache.org"), Charset.defaultCharset(), null));
+    public void testParseUrlCharsetNullFormat() throws IOException {
+        final ClassLoader loader = ClassLoader.getSystemClassLoader();
+        final URL url = loader.getResource("org/apache/commons/csv/CSVFileParser/test.csv");
+        try (CSVParser parser = CSVParser.parse(url, Charset.defaultCharset(), null)) {
+            // null maps to DEFAULT.
+        }
     }
 
     @Test

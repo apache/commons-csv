@@ -346,7 +346,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public static CSVParser parse(final InputStream inputStream, final Charset charset, final CSVFormat format)
             throws IOException {
         Objects.requireNonNull(inputStream, "inputStream");
-        Objects.requireNonNull(format, "format");
         return parse(new InputStreamReader(inputStream, charset), format);
     }
 
@@ -385,7 +384,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param reader
      *            a Reader containing CSV-formatted input. Must not be null.
      * @param format
-     *            the CSVFormat used for CSV parsing, {@code null} uses {@link CSVFormat#DEFAULT}.
+     *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
      * @return a new CSVParser configured with the given reader and format.
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either reader or format are null.
@@ -431,7 +430,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param charset
      *            the charset for the resource. Must not be null.
      * @param format
-     *            the CSVFormat used for CSV parsing. Must not be null.
+     *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
      * @return a new parser
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either url, charset or format are null.
