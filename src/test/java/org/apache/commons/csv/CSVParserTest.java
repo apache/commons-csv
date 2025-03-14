@@ -1424,8 +1424,12 @@ public class CSVParserTest {
     }
 
     @Test
-    public void testParseFileNullFormat() {
-        assertThrows(NullPointerException.class, () -> CSVParser.parse(new File("CSVFileParser/test.csv"), Charset.defaultCharset(), null));
+    public void testParseFileCharsetNullFormat() throws IOException {
+        final File file = new File("src/test/resources/org/apache/commons/csv/CSVFileParser/test.csv");
+        try (CSVParser parser = CSVParser.parse(file, Charset.defaultCharset(), null)) {
+            // null maps to DEFAULT.
+            parseFully(parser);
+        }
     }
 
     @Test
@@ -1446,6 +1450,15 @@ public class CSVParserTest {
     @Test
     public void testParseNullUrlCharsetFormat() {
         assertThrows(NullPointerException.class, () -> CSVParser.parse((URL) null, Charset.defaultCharset(), CSVFormat.DEFAULT));
+    }
+
+    @Test
+    public void testParsePathCharsetNullFormat() throws IOException {
+        final Path path = Paths.get("src/test/resources/org/apache/commons/csv/CSVFileParser/test.csv");
+        try (CSVParser parser = CSVParser.parse(path, Charset.defaultCharset(), null)) {
+            // null maps to DEFAULT.
+            parseFully(parser);
+        }
     }
 
     @Test
@@ -1473,6 +1486,7 @@ public class CSVParserTest {
         final URL url = loader.getResource("org/apache/commons/csv/CSVFileParser/test.csv");
         try (CSVParser parser = CSVParser.parse(url, Charset.defaultCharset(), null)) {
             // null maps to DEFAULT.
+            parseFully(parser);
         }
     }
 
@@ -1567,10 +1581,8 @@ public class CSVParserTest {
     @Test
     public void testProvidedHeader() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
-
         try (CSVParser parser = CSVFormat.DEFAULT.withHeader("A", "B", "C").parse(in)) {
             final Iterator<CSVRecord> records = parser.iterator();
-
             for (int i = 0; i < 3; i++) {
                 assertTrue(records.hasNext());
                 final CSVRecord record = records.next();
@@ -1582,7 +1594,6 @@ public class CSVParserTest {
                 assertEquals(record.get(1), record.get("B"));
                 assertEquals(record.get(2), record.get("C"));
             }
-
             assertFalse(records.hasNext());
         }
     }
@@ -1590,10 +1601,8 @@ public class CSVParserTest {
     @Test
     public void testProvidedHeaderAuto() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
-
         try (CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(in)) {
             final Iterator<CSVRecord> records = parser.iterator();
-
             for (int i = 0; i < 2; i++) {
                 assertTrue(records.hasNext());
                 final CSVRecord record = records.next();
@@ -1605,7 +1614,6 @@ public class CSVParserTest {
                 assertEquals(record.get(1), record.get("b"));
                 assertEquals(record.get(2), record.get("c"));
             }
-
             assertFalse(records.hasNext());
         }
     }

@@ -307,7 +307,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param charset
      *            The Charset to decode the given file.
      * @param format
-     *            the CSVFormat used for CSV parsing. Must not be null.
+     *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
      * @return a new parser
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either file or format are null.
@@ -357,7 +357,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @param charset
      *            The Charset to decode the given file.
      * @param format
-     *            the CSVFormat used for CSV parsing. Must not be null.
+     *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
      * @return a new parser
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either file or format are null.
@@ -369,7 +369,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     @SuppressWarnings("resource")
     public static CSVParser parse(final Path path, final Charset charset, final CSVFormat format) throws IOException {
         Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(format, "format");
         return parse(Files.newInputStream(path), charset, format);
     }
 
