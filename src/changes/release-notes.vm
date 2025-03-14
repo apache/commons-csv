@@ -25,7 +25,7 @@ Commons CSV requires at least Java 8.
 $introduction.replaceAll("(?<!\015)\012", "
 ").replaceAll("(?m)^ +","")
 
-## N.B. the available variables are described here:
+## The available variables are described here:
 ## http://maven.apache.org/plugins/maven-changes-plugin/examples/using-a-custom-announcement-template.html
 ##
 ## Hack to improve layout: replace all pairs of spaces with a single new-line
