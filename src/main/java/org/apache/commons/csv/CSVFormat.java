@@ -2315,7 +2315,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /*
-     * Note: Must only be called if escaping is enabled, otherwise can throw exceptions.
+     * This method must only be called if escaping is enabled, otherwise can throw exceptions.
      */
     private void printWithEscapes(final CharSequence charSeq, final Appendable appendable) throws IOException {
         int start = 0;
@@ -2358,7 +2358,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /*
-     * Note: Must only be called if escaping is enabled, otherwise can throw exceptions.
+     * This method must only be called if escaping is enabled, otherwise can throw exceptions.
      */
     private void printWithEscapes(final Reader reader, final Appendable appendable) throws IOException {
         int start = 0;
@@ -2408,9 +2408,9 @@ public final class CSVFormat implements Serializable {
     }
 
     /*
-     * Note: must only be called if quoting is enabled, otherwise will generate NPE
+     * This method must only be called if quoting is enabled, otherwise will generate NPE.
+     * The original object is needed so can check for Number
      */
-    // the original object is needed so can check for Number
     private void printWithQuotes(final Object object, final CharSequence charSeq, final Appendable out, final boolean newRecord) throws IOException {
         boolean quote = false;
         int start = 0;

@@ -91,23 +91,19 @@ public final class CSVPrinter implements Flushable, Closeable {
     /**
      * Creates a printer that will print values to the given stream following the CSVFormat.
      * <p>
-     * Currently, only a pure encapsulation format or a pure escaping format is supported. Hybrid formats (encapsulation
-     * and escaping with a different character) are not supported.
+     * Currently, only a pure encapsulation format or a pure escaping format is supported. Hybrid formats (encapsulation and escaping with a different
+     * character) are not supported.
      * </p>
      *
-     * @param appendable
-     *            stream to which to print. Must not be null.
-     * @param format
-     *            the CSV format. Must not be null.
-     * @throws IOException
-     *             thrown if the optional header cannot be printed.
-     * @throws IllegalArgumentException
-     *             thrown if the parameters of the format are inconsistent or if either out or format are null.
+     * @param appendable stream to which to print. Must not be null.
+     * @param format     the CSV format. Must not be null.
+     * @throws IOException              thrown if the optional header cannot be printed.
+     * @throws IllegalArgumentException thrown if the parameters of the format are inconsistent.
+     * @throws NullPointerException     thrown if either parameters are null.
      */
     public CSVPrinter(final Appendable appendable, final CSVFormat format) throws IOException {
         Objects.requireNonNull(appendable, "appendable");
         Objects.requireNonNull(format, "format");
-
         this.appendable = appendable;
         this.format = format.copy();
         // TODO: Is it a good idea to do this here instead of on the first call to a print method?
@@ -130,10 +126,12 @@ public final class CSVPrinter implements Flushable, Closeable {
 
     /**
      * Closes the underlying stream with an optional flush first.
+     *
      * @param flush whether to flush before the actual close.
      * @throws IOException
      *             If an I/O error occurs
      * @since 1.6
+     * @see CSVFormat#getAutoFlush()
      */
     public void close(final boolean flush) throws IOException {
         if (flush || format.getAutoFlush()) {
@@ -145,7 +143,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Outputs the record separator and increments the record count.
+     * Prints the record separator and increments the record count.
      *
      * @throws IOException
      *             If an I/O error occurs
@@ -174,7 +172,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @return the target Appendable.
      */
     public Appendable getOut() {
-        return this.appendable;
+        return appendable;
     }
 
     /**
@@ -267,7 +265,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Outputs the record separator.
+     * Prints the record separator.
      *
      * @throws IOException
      *             If an I/O error occurs
