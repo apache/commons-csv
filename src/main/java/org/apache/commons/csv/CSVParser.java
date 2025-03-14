@@ -243,7 +243,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             if (current == null) {
                 current = getNextRecord();
             }
-
             return current != null;
         }
 
@@ -254,7 +253,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             }
             CSVRecord next = current;
             current = null;
-
             if (next == null) {
                 // hasNext() wasn't called before
                 next = getNextRecord();
@@ -262,7 +260,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     throw new NoSuchElementException("No more CSV records available");
                 }
             }
-
             return next;
         }
 
@@ -624,7 +621,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 }
                 headerRecord = formatHeader;
             }
-
             // build the name to index mappings
             if (headerRecord != null) {
                 // Track an occurrence of a null, empty or blank header.
@@ -633,18 +629,14 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     final String header = headerRecord[i];
                     final boolean blankHeader = CSVFormat.isBlank(header);
                     if (blankHeader && !format.getAllowMissingColumnNames()) {
-                        throw new IllegalArgumentException(
-                            "A header name is missing in " + Arrays.toString(headerRecord));
+                        throw new IllegalArgumentException("A header name is missing in " + Arrays.toString(headerRecord));
                     }
-
                     final boolean containsHeader = blankHeader ? observedMissing : headerMap.containsKey(header);
                     final DuplicateHeaderMode headerMode = format.getDuplicateHeaderMode();
                     final boolean duplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_ALL;
                     final boolean emptyDuplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_EMPTY;
-
                     if (containsHeader && !duplicatesAllowed && !(blankHeader && emptyDuplicatesAllowed)) {
-                        throw new IllegalArgumentException(
-                            String.format(
+                        throw new IllegalArgumentException(String.format(
                                 "The header contains a duplicate name: \"%s\" in %s. If this is valid then use CSVFormat.Builder.setDuplicateHeaderMode().",
                                 header, Arrays.toString(headerRecord)));
                     }
