@@ -23,7 +23,7 @@
     <version>81</version>
   </parent>
   <artifactId>commons-csv</artifactId>
-  <version>1.14.0-SNAPSHOT</version>
+  <version>1.14.0</version>
   <name>Apache Commons CSV</name>
   <url>https://commons.apache.org/proper/commons-csv/</url>
   <inceptionYear>2005</inceptionYear>
@@ -108,7 +108,7 @@
     <commons.encoding>UTF-8</commons.encoding>
     <japicmp.skip>false</japicmp.skip>
     <commons.release.isDistModule>true</commons.release.isDistModule>
-    <project.build.outputTimestamp>2025-01-11T14:07:50Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2025-03-15T15:39:58Z</project.build.outputTimestamp>
     <commons.codec.version>1.18.0</commons.codec.version>
     <commons.io.version>2.18.0</commons.io.version>
     <!-- Apache Felix maven-bundle-plugin -->
