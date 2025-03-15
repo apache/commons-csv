@@ -40,7 +40,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.commons.io.IOUtils;
@@ -2098,10 +2097,6 @@ public final class CSVFormat implements Serializable {
     }
 
     <T> IOStream<T> limit(final IOStream<T> stream) {
-        return useMaxRows() ? stream.limit(getMaxRows()) : stream;
-    }
-
-    <T> Stream<T> limit(final Stream<T> stream) {
         return useMaxRows() ? stream.limit(getMaxRows()) : stream;
     }
 
