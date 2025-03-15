@@ -40,7 +40,7 @@
     <title>Apache Commons CSV Release Notes</title>
   </properties>
   <body>
-    <release version="1.14.0" date="YYYY-MM-DD" description="This is a feature and maintenance release. Java 8 or later is required.">
+    <release version="1.14.0" date="2025-03-15" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- FIX -->
       <action type="fix" issue="CSV-317" dev="ggregory" due-to="Filipe Roque">Release history link changed from changes-report.html to changes.html #516.</action>
       <action type="fix" dev="ggregory" due-to="Gary Gregory">Remove -nouses directive from maven-bundle-plugin. OSGi package imports now state 'uses' definitions for package imports, this doesn't affect JPMS (from org.apache.commons:commons-parent:80).</action>
