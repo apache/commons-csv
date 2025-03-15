@@ -1,3 +1,64 @@
+Apache Commons CSV 1.14.0 Release Notes
+
+This document contains the release notes for the 1.14.0 version of Apache Commons CSV.
+Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
+
+Commons CSV requires at least Java 8.
+
+The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
+
+This is a feature and maintenance release. Java 8 or later is required.
+
+Changes in this version include:
+
+New Features
+------------
+
+*           Define and use Maven property commons.jmh.version. Thanks to Gary Gregory.
+*           Add CSVFormat.Builder.setMaxRows(long). Thanks to Gary Gregory.
+*           Add CSVFormat.getMaxRows(). Thanks to Gary Gregory.
+*           CSVPrinter.printRecords(ResultSet) knows how to use CSVFormat's maxRows. Thanks to Gary Gregory.
+*           CSVPrinter.printRecords(Iterable) knows how to use CSVFormat's maxRows. Thanks to Gary Gregory.
+*           CSVPrinter.printRecords(Stream) knows how to use CSVFormat's maxRows. Thanks to Gary Gregory.
+*           CSVParser.stream() knows how to use CSVFormat's maxRows. Thanks to Gary Gregory.
+*           CSVParser.getRecords() knows how to use CSVFormat's maxRows. Thanks to Gary Gregory.
+*           CSVParser.iterator() knows how to use CSVFormat's maxRows. Thanks to Gary Gregory.
+
+Fixed Bugs
+----------
+
+* CSV-317:  Release history link changed from changes-report.html to changes.html #516. Thanks to Filipe Roque.
+*           Remove -nouses directive from maven-bundle-plugin. OSGi package imports now state 'uses' definitions for package imports, this doesn't affect JPMS (from org.apache.commons:commons-parent:80). Thanks to Gary Gregory.
+*           CSVParser.parse(URL, Charset, CSVFormat) with a null CSVFormat maps to CSVFormat.DEFAULT (like CSVParser.parse(Reader, CSVFormat)). Thanks to Gary Gregory.
+*           CSVParser.parse(String, CSVFormat) with a null CSVFormat maps to CSVFormat.DEFAULT (like CSVParser.parse(Reader, CSVFormat)). Thanks to Gary Gregory.
+*           CSVParser.parse(File, Charset, CSVFormat) with a null CSVFormat maps to CSVFormat.DEFAULT (like CSVParser.parse(Reader, CSVFormat)). Thanks to Gary Gregory.
+*           CSVParser.parse(Path, Charset, CSVFormat) with a null CSVFormat maps to CSVFormat.DEFAULT (like CSVParser.parse(Reader, CSVFormat)). Thanks to Gary Gregory.
+*           CSVParser.parse(InputStream, Charset, CSVFormat) with a null CSVFormat maps to CSVFormat.DEFAULT (like CSVParser.parse(Reader, CSVFormat)). Thanks to Gary Gregory.
+*           CSVParser.parse(*) methods with a null Charset maps to Charset.defaultCharset(). Thanks to Gary Gregory.
+*           Fix possible NullPointerException in Token.toString(). Thanks to Gary Gregory.
+
+Changes
+-------
+
+*           Bump com.opencsv:opencsv from 5.9 to 5.10. Thanks to Gary Gregory.
+*           Bump commons-codec:commons-codec from 1.17.2 to 1.18.0 #522. Thanks to Gary Gregory.
+*           Bump org.apache.commons:commons-parent from 79 to 81. Thanks to Gary Gregory.
+
+
+Historical list of changes: https://commons.apache.org/proper/commons-csv/changes.html
+
+For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Commons CSV website:
+
+https://commons.apache.org/proper/commons-csv/
+
+Download page: https://commons.apache.org/proper/commons-csv/download_csv.cgi
+
+Have fun!
+-Apache Commons CSV team
+
+------------------------------------------------------------------------------
+
 Apache Commons CSV Version 1.13.0 Release Notes
 
 This document contains the release notes for the 1.13.0 version of Apache Commons CSV.
