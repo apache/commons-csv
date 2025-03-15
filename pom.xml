@@ -125,11 +125,11 @@
     <!-- To examine the JaCoCo report for a failure, run 'mvn clean install site -Dcommons.jacoco.haltOnFailure=false' -->
     <commons.jacoco.haltOnFailure>true</commons.jacoco.haltOnFailure>
     <commons.jacoco.classRatio>1.00</commons.jacoco.classRatio>
-    <commons.jacoco.instructionRatio>0.98</commons.jacoco.instructionRatio>
+    <commons.jacoco.instructionRatio>0.99</commons.jacoco.instructionRatio>
     <commons.jacoco.methodRatio>0.99</commons.jacoco.methodRatio>
     <commons.jacoco.branchRatio>0.97</commons.jacoco.branchRatio>
     <commons.jacoco.lineRatio>0.99</commons.jacoco.lineRatio>
-    <commons.jacoco.complexityRatio>0.96</commons.jacoco.complexityRatio>
+    <commons.jacoco.complexityRatio>0.97</commons.jacoco.complexityRatio>
     <!-- Checkstyle -->
     <checkstyle.header.file>${basedir}/src/conf/checkstyle/checkstyle-header.txt</checkstyle.header.file>
     <checkstyle.config.file>${basedir}/src/conf/checkstyle/checkstyle.xml</checkstyle.config.file>
