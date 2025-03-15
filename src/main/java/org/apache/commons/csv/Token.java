@@ -24,13 +24,13 @@ import static org.apache.commons.csv.Token.Type.INVALID;
 /**
  * Internal token representation.
  * <p>
- * It is used as a contract between the lexer and the parser.
+ * This is used as a contract between the lexer and the parser.
  * </p>
  */
 final class Token {
 
     enum Type {
-        /** Token has no valid content, i.e. is in its initialized state. */
+        /** Token has no valid content, that is, is in its initialized state. */
         INVALID,
 
         /** Token with content, at the beginning or in the middle of a line. */
@@ -47,13 +47,13 @@ final class Token {
     }
 
     /** Length of the initial token (content-)buffer */
-    private static final int INITIAL_TOKEN_LENGTH = 50;
+    private static final int DEFAULT_CAPACITY = 50;
 
     /** Token type */
     Token.Type type = INVALID;
 
-    /** The content buffer. */
-    final StringBuilder content = new StringBuilder(INITIAL_TOKEN_LENGTH);
+    /** The content buffer, never null. */
+    final StringBuilder content = new StringBuilder(DEFAULT_CAPACITY);
 
     /** Token ready flag: indicates a valid token with content (ready for the parser). */
     boolean isReady;
@@ -68,12 +68,12 @@ final class Token {
     }
 
     /**
-     * Eases IDE debugging.
+     * Converts the token state to a string to ease debugging.
      *
      * @return a string helpful for debugging.
      */
     @Override
     public String toString() {
-        return type.name() + " [" + content.toString() + "]";
+        return type + " [" + content.toString() + "]";
     }
 }
