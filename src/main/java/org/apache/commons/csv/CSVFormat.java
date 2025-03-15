@@ -1702,10 +1702,10 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Formats the specified values.
+     * Formats the specified values as a CSV record string.
      *
-     * @param values the values to format
-     * @return the formatted values
+     * @param values the values to format.
+     * @return the formatted values.
      */
     public String format(final Object... values) {
         return Uncheck.get(() -> format_(values));
