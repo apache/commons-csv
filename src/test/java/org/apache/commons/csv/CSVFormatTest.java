@@ -89,6 +89,16 @@ public class CSVFormatTest {
     }
 
     @Test
+    public void testDelimiterCharLineBreakCrThrowsException1() {
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.builder().setDelimiter(Constants.CR).get());
+    }
+
+    @Test
+    public void testDelimiterCharLineBreakLfThrowsException1() {
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.builder().setDelimiter(Constants.LF).get());
+    }
+
+    @Test
     public void testDelimiterEmptyStringThrowsException1() {
         assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.builder().setDelimiter("").get());
     }
@@ -118,6 +128,16 @@ public class CSVFormatTest {
     @Test
     public void testDelimiterSameAsRecordSeparatorThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> CSVFormat.newFormat(CR));
+    }
+
+    @Test
+    public void testDelimiterStringLineBreakCrThrowsException1() {
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.builder().setDelimiter(String.valueOf(Constants.CR)).get());
+    }
+
+    @Test
+    public void testDelimiterStringLineBreakLfThrowsException1() {
+        assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.builder().setDelimiter(String.valueOf(Constants.LF)).get());
     }
 
     @Test
