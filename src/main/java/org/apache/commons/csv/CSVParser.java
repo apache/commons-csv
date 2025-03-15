@@ -474,7 +474,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private final Token reusableToken = new Token();
 
     /**
-     * Constructs a new instance using the given {@link CSVFormat}
+     * Constructs a new instance using the given {@link CSVFormat}.
      *
      * <p>
      * If you do not read all records from the given {@code reader}, you should call {@link #close()} on the parser,
@@ -498,7 +498,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Constructs a new instance using the given {@link CSVFormat}
+     * Constructs a new instance using the given {@link CSVFormat}.
      *
      * <p>
      * If you do not read all records from the given {@code reader}, you should call {@link #close()} on the parser,
@@ -527,7 +527,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     }
 
     /**
-     * Constructs a new instance using the given {@link CSVFormat}
+     * Constructs a new instance using the given {@link CSVFormat}.
      *
      * <p>
      * If you do not read all records from the given {@code reader}, you should call {@link #close()} on the parser,
@@ -658,11 +658,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Gets the current line number in the input stream.
      *
      * <p>
-     * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
+     * <strong>Note:</strong> If your CSV input has multi-line values, the returned number does not correspond to
      * the record number.
      * </p>
      *
-     * @return current line number
+     * @return current line number.
      */
     public long getCurrentLineNumber() {
         return lexer.getCurrentLineNumber();
@@ -671,7 +671,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     /**
      * Gets the first end-of-line string encountered.
      *
-     * @return the first end-of-line string
+     * @return the first end-of-line string.
      * @since 1.5
      */
     public String getFirstEndOfLine() {
@@ -695,7 +695,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * The map keys are column names. The map values are 0-based indices.
      * </p>
      * <p>
-     * Note: The map can only provide a one-to-one mapping when the format did not
+     * <strong>Note:</strong> The map can only provide a one-to-one mapping when the format did not
      * contain null or duplicate column names.
      * </p>
      *
@@ -739,7 +739,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Gets the current record number in the input stream.
      *
      * <p>
-     * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
+     * <strong>Note:</strong> If your CSV input has multi-line values, the returned number does not correspond to
      * the line number.
      * </p>
      *
