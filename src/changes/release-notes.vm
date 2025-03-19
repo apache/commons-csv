@@ -17,8 +17,10 @@
 ##
 ${project.name} ${version} Release Notes
 
-This document contains the release notes for the ${version} version of Apache Commons CSV.
-Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
+The Apache Commons team is pleased to announce ${project.name} ${version}.
+
+This document contains the release notes for the ${version} version of ${project.name}.
+Commons CSV reads and writes files in Comma Separated Value (CSV) format variations.
 
 Commons CSV requires at least Java 8.
 
