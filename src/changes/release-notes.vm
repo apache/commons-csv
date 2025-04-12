@@ -16,8 +16,10 @@
 ## under the License.
 ##
 ${project.name} ${version} Release Notes
+------------------------------------------------
 
-The Apache Commons team is pleased to announce ${project.name} ${version}.
+The ${developmentTeam} is pleased to announce the release of ${project.name} ${version}.
+
 
 This document contains the release notes for the ${version} version of ${project.name}.
 Commons CSV reads and writes files in Comma Separated Value (CSV) format variations.
