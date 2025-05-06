@@ -88,8 +88,8 @@ public final class CSVPrinter implements Flushable, Closeable {
     private boolean newRecord = true;
 
     private long recordCount;
-    
-    private ReentrantLock lock = new ReentrantLock();
+
+    private final ReentrantLock lock = new ReentrantLock();
 
     /**
      * Creates a printer that will print values to the given stream following the CSVFormat.
