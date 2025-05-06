@@ -35,6 +35,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.function.IOStream;
@@ -87,6 +88,8 @@ public final class CSVPrinter implements Flushable, Closeable {
     private boolean newRecord = true;
 
     private long recordCount;
+    
+    private ReentrantLock lock = new ReentrantLock();
 
     /**
      * Creates a printer that will print values to the given stream following the CSVFormat.
@@ -326,9 +329,14 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @since 1.10.0
      */
     @SuppressWarnings("resource") // caller closes.
-    public synchronized void printRecord(final Stream<?> values) throws IOException {
-        IOStream.adapt(values).forEachOrdered(this::print);
-        endOfRecord();
+    public void printRecord(final Stream<?> values) throws IOException {
+        lock.lock();
+        try {
+            IOStream.adapt(values).forEachOrdered(this::print);
+            endOfRecord();
+        } finally {
+            lock.unlock();
+        }
     }
 
     private void printRecordObject(final Object value) throws IOException {

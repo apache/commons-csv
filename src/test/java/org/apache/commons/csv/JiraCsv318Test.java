@@ -31,7 +31,6 @@ import java.util.stream.Stream;
 import org.apache.commons.io.function.IOConsumer;
 import org.apache.commons.io.function.IOStream;
 import org.apache.commons.lang3.ArrayUtils;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -67,10 +66,6 @@ public class JiraCsv318Test {
         return Stream.of("col a", "col b", "col c");
     }
 
-    public synchronized void printRecord(final Stream<?> values) throws IOException {
-        // IOStream.adapt(values).forEachOrdered(this::print);
-    }
-
     @Test
     void testDefaultStream() throws IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -86,20 +81,6 @@ public class JiraCsv318Test {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (CSVPrinter printer = newPrinter(baos)) {
             IOStream.adapt(newParallelStream()).forEachOrdered(printer::print);
-        }
-        // No EOR marker in this test intentionally, so checkOutput will trim.
-        checkOutput(baos);
-    }
-
-    @SuppressWarnings("resource")
-    @Test
-    @Disabled("Deadlock because CSVPrinter.print(Object) is synchronized")
-    void testParallelIOStreamSynchronizedPrinter() throws IOException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try (CSVPrinter printer = newPrinter(baos)) {
-            synchronized (printer) {
-                IOStream.adapt(newParallelStream()).forEachOrdered(printer::print);
-            }
         }
         // No EOR marker in this test intentionally, so checkOutput will trim.
         checkOutput(baos);
@@ -125,7 +106,6 @@ public class JiraCsv318Test {
     }
 
     @Test
-    @Disabled("Deadlock because CSVPrinter.print(Object) is synchronized")
     void testParallelStream() throws IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (CSVPrinter printer = newPrinter(baos)) {

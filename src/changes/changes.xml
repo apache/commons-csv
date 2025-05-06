@@ -42,6 +42,7 @@
   <body>
     <release version="1.14.1" date="YYYY-MM-DD" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- FIX -->
+      <action type="fix" issue="CSV-318" dev="ggregory" due-to="Joseph Shraibman, Gary Gregory">CSVPrinter.printRecord(Stream) hangs if given a parallel stream.</action>
       <!-- ADD -->
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-io:commons-io from 2.18.0 to 2.19.0.</action>
