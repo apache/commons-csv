@@ -40,6 +40,8 @@ import java.util.stream.Stream;
 
 import org.apache.commons.io.function.IOStream;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Prints values in a {@link CSVFormat CSV format}.
  *
@@ -151,14 +153,10 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
+    @SuppressFBWarnings(value = "AT_NONATOMIC_OPERATIONS_ON_SHARED_VARIABLE", justification = "https://github.com/spotbugs/spotbugs/issues/3428")
     private void endOfRecord() throws IOException {
-        lock.lock();
-        try {
-            println();
-            recordCount++;
-        } finally {
-            lock.unlock();
-        }
+        println();
+        recordCount++;
     }
 
     /**
@@ -494,21 +492,26 @@ public final class CSVPrinter implements Flushable, Closeable {
     public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
         final int columnCount = resultSet.getMetaData().getColumnCount();
         while (resultSet.next() && format.useRow(resultSet.getRow())) {
-            for (int i = 1; i <= columnCount; i++) {
-                final Object object = resultSet.getObject(i);
-                if (object instanceof Clob) {
-                    try (Reader reader = ((Clob) object).getCharacterStream()) {
-                        print(reader);
+            lock.lock();
+            try {
+                for (int i = 1; i <= columnCount; i++) {
+                    final Object object = resultSet.getObject(i);
+                    if (object instanceof Clob) {
+                        try (Reader reader = ((Clob) object).getCharacterStream()) {
+                            print(reader);
+                        }
+                    } else if (object instanceof Blob) {
+                        try (InputStream inputStream = ((Blob) object).getBinaryStream()) {
+                            print(inputStream);
+                        }
+                    } else {
+                        print(object);
                     }
-                } else if (object instanceof Blob) {
-                    try (InputStream inputStream = ((Blob) object).getBinaryStream()) {
-                        print(inputStream);
-                    }
-                } else {
-                    print(object);
                 }
+                endOfRecord();
+            } finally {
+                lock.unlock();
             }
-            endOfRecord();
         }
     }
 

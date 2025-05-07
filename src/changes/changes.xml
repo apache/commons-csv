@@ -44,6 +44,7 @@
       <!-- FIX -->
       <action type="fix" issue="CSV-318" dev="ggregory" due-to="Joseph Shraibman, Gary Gregory">CSVPrinter.printRecord(Stream) hangs if given a parallel stream.</action>
       <action type="fix" issue="CSV-318" dev="ggregory" due-to="Joseph Shraibman, Gary Gregory">CSVPrinter now uses an internal lock instead of synchronized methods.</action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">org.apache.commons.csv.CSVPrinter.printRecords(ResultSet) now writes one record at a time using a lock.</action>
       <!-- ADD -->
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-io:commons-io from 2.18.0 to 2.19.0.</action>
