@@ -151,9 +151,14 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    private synchronized void endOfRecord() throws IOException {
-        println();
-        recordCount++;
+    private void endOfRecord() throws IOException {
+        lock.lock();
+        try {
+            println();
+            recordCount++;
+        } finally {
+            lock.unlock();
+        }
     }
 
     /**
@@ -196,9 +201,14 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public synchronized void print(final Object value) throws IOException {
-        format.print(value, appendable, newRecord);
-        newRecord = false;
+    public void print(final Object value) throws IOException {
+        lock.lock();
+        try {
+            format.print(value, appendable, newRecord);
+            newRecord = false;
+        } finally {
+            lock.unlock();
+        }
     }
 
     /**
@@ -222,34 +232,39 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public synchronized void printComment(final String comment) throws IOException {
-        if (comment == null || !format.isCommentMarkerSet()) {
-            return;
-        }
-        if (!newRecord) {
-            println();
-        }
-        appendable.append(format.getCommentMarker().charValue()); // Explicit (un)boxing is intentional
-        appendable.append(SP);
-        for (int i = 0; i < comment.length(); i++) {
-            final char c = comment.charAt(i);
-            switch (c) {
-            case CR:
-                if (i + 1 < comment.length() && comment.charAt(i + 1) == LF) {
-                    i++;
-                }
-                // falls-through: break intentionally excluded.
-            case LF:
-                println();
-                appendable.append(format.getCommentMarker().charValue()); // Explicit (un)boxing is intentional
-                appendable.append(SP);
-                break;
-            default:
-                appendable.append(c);
-                break;
+    public void printComment(final String comment) throws IOException {
+        lock.lock();
+        try {
+            if (comment == null || !format.isCommentMarkerSet()) {
+                return;
             }
+            if (!newRecord) {
+                println();
+            }
+            appendable.append(format.getCommentMarker().charValue()); // Explicit (un)boxing is intentional
+            appendable.append(SP);
+            for (int i = 0; i < comment.length(); i++) {
+                final char c = comment.charAt(i);
+                switch (c) {
+                case CR:
+                    if (i + 1 < comment.length() && comment.charAt(i + 1) == LF) {
+                        i++;
+                    }
+                    // falls-through: break intentionally excluded.
+                case LF:
+                    println();
+                    appendable.append(format.getCommentMarker().charValue()); // Explicit (un)boxing is intentional
+                    appendable.append(SP);
+                    break;
+                default:
+                    appendable.append(c);
+                    break;
+                }
+            }
+            println();
+        } finally {
+            lock.unlock();
         }
-        println();
     }
 
     /**
@@ -260,11 +275,16 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws SQLException If a database access error occurs or this method is called on a closed result set.
      * @since 1.9.0
      */
-    public synchronized void printHeaders(final ResultSet resultSet) throws IOException, SQLException {
-        try (IOStream<String> stream = IOStream.of(format.builder().setHeader(resultSet).get().getHeader())) {
-            stream.forEachOrdered(this::print);
+    public void printHeaders(final ResultSet resultSet) throws IOException, SQLException {
+        lock.lock();
+        try {
+            try (IOStream<String> stream = IOStream.of(format.builder().setHeader(resultSet).get().getHeader())) {
+                stream.forEachOrdered(this::print);
+            }
+            println();
+        } finally {
+            lock.unlock();
         }
-        println();
     }
 
     /**
@@ -273,9 +293,14 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    public synchronized void println() throws IOException {
-        format.println(appendable);
-        newRecord = true;
+    public void println() throws IOException {
+        lock.lock();
+        try {
+            format.println(appendable);
+            newRecord = true;
+        } finally {
+            lock.unlock();
+        }
     }
 
     /**
@@ -292,9 +317,14 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     @SuppressWarnings("resource")
-    public synchronized void printRecord(final Iterable<?> values) throws IOException {
-        IOStream.of(values).forEachOrdered(this::print);
-        endOfRecord();
+    public void printRecord(final Iterable<?> values) throws IOException {
+        lock.lock();
+        try {
+            IOStream.of(values).forEachOrdered(this::print);
+            endOfRecord();
+        } finally {
+            lock.unlock();
+        }
     }
 
     /**
