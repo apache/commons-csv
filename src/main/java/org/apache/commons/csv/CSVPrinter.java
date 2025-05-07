@@ -204,11 +204,23 @@ public final class CSVPrinter implements Flushable, Closeable {
     public void print(final Object value) throws IOException {
         lock.lock();
         try {
-            format.print(value, appendable, newRecord);
-            newRecord = false;
+            printRaw(value);
         } finally {
             lock.unlock();
         }
+    }
+
+    /**
+     * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
+     *
+     * @param value
+     *            value to be output.
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    private void printRaw(final Object value) throws IOException {
+        format.print(value, appendable, newRecord);
+        newRecord = false;
     }
 
     /**
@@ -352,17 +364,17 @@ public final class CSVPrinter implements Flushable, Closeable {
      * separator to the output after printing the record, so there is no need to call {@link #println()}.
      * </p>
      *
-     * @param values
+     * @param stream
      *            values to output.
      * @throws IOException
      *             If an I/O error occurs
      * @since 1.10.0
      */
     @SuppressWarnings("resource") // caller closes.
-    public void printRecord(final Stream<?> values) throws IOException {
+    public void printRecord(final Stream<?> stream) throws IOException {
         lock.lock();
         try {
-            IOStream.adapt(values).forEachOrdered(this::print);
+            IOStream.adapt(stream).forEachOrdered(stream.isParallel() ? this::printRaw : this::print);
             endOfRecord();
         } finally {
             lock.unlock();
