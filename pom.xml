@@ -475,7 +475,7 @@
                 <testInclude>**/*</testInclude>
               </testIncludes>
             </configuration>
-          </plugin>
+          </plugin>4\
 
           <!-- Hook the benchmarks to the test phase -->
           <plugin>
