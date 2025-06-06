@@ -209,19 +209,6 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
-     *
-     * @param value
-     *            value to be output.
-     * @throws IOException
-     *             If an I/O error occurs
-     */
-    private void printRaw(final Object value) throws IOException {
-        format.print(value, appendable, newRecord);
-        newRecord = false;
-    }
-
-    /**
      * Prints a comment on a new line among the delimiter-separated values.
      *
      * <p>
@@ -311,6 +298,19 @@ public final class CSVPrinter implements Flushable, Closeable {
         } finally {
             lock.unlock();
         }
+    }
+
+    /**
+     * Prints the string as the next value on the line. The value will be escaped or encapsulated as needed.
+     *
+     * @param value
+     *            value to be output.
+     * @throws IOException
+     *             If an I/O error occurs
+     */
+    private void printRaw(final Object value) throws IOException {
+        format.print(value, appendable, newRecord);
+        newRecord = false;
     }
 
     /**
