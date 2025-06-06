@@ -23,15 +23,19 @@ permissions:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     strategy:
+      fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-13]
         java: [ 8, 11, 17, 21, 24 ]
         experimental: [false]
+        # Keep the same parameter order as the matrix above
         include:
-            - java: 25-ea
-              experimental: true
+          - os: ubuntu-latest
+            java: 25-ea
+            experimental: true
       
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
