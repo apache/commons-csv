@@ -77,7 +77,7 @@ public class JiraCsv167Test {
         int comments = 0;
         int records = 0;
         try (Reader reader = getTestReader(); CSVParser parser = format.parse(reader)) {
-            for (CSVRecord csvRecord : parser) {
+            for (final CSVRecord csvRecord : parser) {
                 records++;
                 if (csvRecord.hasComment()) {
                     comments++;
