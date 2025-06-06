@@ -359,9 +359,9 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Gets the values for this record. This is not a copy.
+     * Gets the values for this record. This is <strong>not</strong> a copy.
      *
-     * @return the values for this record.
+     * @return the values for this record, never null.
      * @since 1.10.0
      */
     public String[] values() {
