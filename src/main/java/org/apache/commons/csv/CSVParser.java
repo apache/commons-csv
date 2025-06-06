@@ -552,9 +552,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *             If there is a problem reading the header or skipping the first record.
      * @throws CSVException Thrown on invalid CSV input data.
      */
-    private CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber,
-        final Charset charset, final boolean trackBytes)
-        throws IOException {
+    @SuppressWarnings("resource") // reader is managed by lexer.
+    private CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber, final Charset charset,
+            final boolean trackBytes) throws IOException {
         Objects.requireNonNull(reader, "reader");
         Objects.requireNonNull(format, "format");
         this.format = format.copy();
