@@ -140,11 +140,11 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         if (Character.isHighSurrogate(cChar)) {
             // Move on to the next char (low surrogate)
             return 0;
-        } else if (Character.isSurrogatePair(lChar, cChar)) {
-            return encoder.encode(CharBuffer.wrap(new char[] { lChar, cChar })).limit();
-        } else {
-            throw new CharacterCodingException();
         }
+        if (Character.isSurrogatePair(lChar, cChar)) {
+            return encoder.encode(CharBuffer.wrap(new char[] { lChar, cChar })).limit();
+        }
+        throw new CharacterCodingException();
     }
 
     /**
