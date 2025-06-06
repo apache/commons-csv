@@ -55,13 +55,13 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     private final long bytePosition;
 
-    /** The accumulated comments (if any) */
+    /** The accumulated comments (if any). */
     private final String comment;
 
     /** The record number. */
     private final long recordNumber;
 
-    /** The values of the record */
+    /** The values of the record. */
     private final String[] values;
 
     /** The parser that originates this record. This is not serialized. */
@@ -114,9 +114,9 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *            the name of the column to be retrieved.
      * @return the column value, maybe null depending on {@link CSVFormat#getNullString()}.
      * @throws IllegalStateException
-     *             if no header mapping was provided
+     *             if no header mapping was provided.
      * @throws IllegalArgumentException
-     *             if {@code name} is not mapped or if the record is inconsistent
+     *             if {@code name} is not mapped or if the record is inconsistent.
      * @see #isMapped(String)
      * @see #isConsistent()
      * @see #getParser()
@@ -214,7 +214,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * If there is no following record (that is, the comment is at EOF),
      * then the comment will be ignored.
      *
-     * @return true if this record has a comment, false otherwise
+     * @return true if this record has a comment, false otherwise.
      * @since 1.3
      */
     public boolean hasComment() {
@@ -229,7 +229,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * test but still produce parsable files.
      * </p>
      *
-     * @return true of this record is valid, false if not
+     * @return true of this record is valid, false if not.
      */
     public boolean isConsistent() {
         final Map<String, Integer> headerMap = getHeaderMapRaw();
@@ -252,8 +252,8 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * Checks whether a column with a given index has a value.
      *
      * @param index
-     *         a column index (0-based)
-     * @return whether a column with a given index has a value
+     *         a column index (0-based).
+     * @return whether a column with a given index has a value.
      */
     public boolean isSet(final int index) {
         return 0 <= index && index < values.length;
@@ -264,7 +264,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *
      * @param name
      *            the name of the column to be retrieved.
-     * @return whether a given column is mapped and has a value
+     * @return whether a given column is mapped and has a value.
      */
     public boolean isSet(final String name) {
         return isMapped(name) && getHeaderMapRaw().get(name).intValue() < values.length; // Explicit (un)boxing is intentional
@@ -283,7 +283,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Puts all values of this record into the given Map.
      *
-     * @param <M> the map type
+     * @param <M> the map type.
      * @param map The Map to populate.
      * @return the given map.
      * @since 1.9.0
