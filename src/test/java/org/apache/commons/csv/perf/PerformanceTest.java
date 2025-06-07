@@ -110,7 +110,7 @@ public class PerformanceTest {
     }
 
     @Test
-    public void testParseBigFileRepeat() throws Exception {
+    void testParseBigFileRepeat() throws Exception {
         long bestTime = Long.MAX_VALUE;
         for (int i = 0; i < this.max; i++) {
             bestTime = Math.min(testParseBigFile(false), bestTime);
@@ -119,7 +119,7 @@ public class PerformanceTest {
     }
 
     @Test
-    public void testReadBigFile() throws Exception {
+    void testReadBigFile() throws Exception {
         long bestTime = Long.MAX_VALUE;
         long count;
         for (int i = 0; i < this.max; i++) {

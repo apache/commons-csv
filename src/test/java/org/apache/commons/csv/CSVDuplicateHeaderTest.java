@@ -272,7 +272,7 @@ public class CSVDuplicateHeaderTest {
      */
     @ParameterizedTest
     @MethodSource(value = {"duplicateHeaderAllowsMissingColumnsNamesData"})
-    public void testCSVFormat(final DuplicateHeaderMode duplicateHeaderMode,
+    void testCSVFormat(final DuplicateHeaderMode duplicateHeaderMode,
                               final boolean allowMissingColumnNames,
                               final boolean ignoreHeaderCase,
                               final String[] headers,
@@ -305,7 +305,7 @@ public class CSVDuplicateHeaderTest {
      */
     @ParameterizedTest
     @MethodSource(value = {"duplicateHeaderData"})
-    public void testCSVParser(final DuplicateHeaderMode duplicateHeaderMode,
+    void testCSVParser(final DuplicateHeaderMode duplicateHeaderMode,
                               final boolean allowMissingColumnNames,
                               final boolean ignoreHeaderCase,
                               final String[] headers,

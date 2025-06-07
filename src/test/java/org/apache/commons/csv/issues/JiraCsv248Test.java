@@ -50,7 +50,7 @@ public class JiraCsv248Test {
      * @throws ClassNotFoundException If the CSVRecord cannot be deserialized
      */
     @Test
-    public void testJiraCsv248() throws IOException, ClassNotFoundException {
+    void testJiraCsv248() throws IOException, ClassNotFoundException {
         // Record was originally created using CSV version 1.6 with the following code:
         // try (CSVParser parser = CSVParser.parse("A,B\n#my comment\nOne,Two",
         // CSVFormat.DEFAULT.builder().setHeader().setCommentMarker('#'))) {

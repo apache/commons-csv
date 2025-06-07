@@ -32,7 +32,7 @@ public class TokenTest {
 
     @ParameterizedTest
     @EnumSource(Token.Type.class)
-    public void testToString(final Token.Type type) {
+    void testToString(final Token.Type type) {
         // Should never blow up
         final Token token = new Token();
         final String resetName = Token.Type.INVALID.name();

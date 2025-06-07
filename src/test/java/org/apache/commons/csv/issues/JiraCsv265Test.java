@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 public class JiraCsv265Test {
 
     @Test
-    public void testCharacterPositionWithComments() throws IOException {
+    void testCharacterPositionWithComments() throws IOException {
         // @formatter:off
         final String csv =
                 "# Comment1\n" +
@@ -62,7 +62,7 @@ public class JiraCsv265Test {
     }
 
     @Test
-    public void testCharacterPositionWithCommentsSpanningMultipleLines() throws IOException {
+    void testCharacterPositionWithCommentsSpanningMultipleLines() throws IOException {
         // @formatter:off
         final String csv =
                 "# Comment1\n" +

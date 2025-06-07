@@ -84,17 +84,17 @@ public class JiraCsv290Test {
     }
 
     @Test
-    public void testPostgresqlCsv() throws Exception {
+    void testPostgresqlCsv() throws Exception {
         testHelper("psql.csv", CSVFormat.POSTGRESQL_CSV);
     }
 
     @Test
-    public void testPostgresqlText() throws Exception {
+    void testPostgresqlText() throws Exception {
         testHelper("psql.tsv", CSVFormat.POSTGRESQL_TEXT);
     }
 
     @Test
-    public void testWriteThenRead() throws Exception {
+    void testWriteThenRead() throws Exception {
         final StringWriter sw = new StringWriter();
         final CSVFormat format = CSVFormat.POSTGRESQL_CSV.builder().setHeader().setSkipHeaderRecord(true).get();
         try (CSVPrinter printer = new CSVPrinter(sw, format)) {

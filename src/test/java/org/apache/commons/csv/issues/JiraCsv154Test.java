@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 public class JiraCsv154Test {
 
     @Test
-    public void testJiraCsv154_withCommentMarker() throws IOException {
+    void testJiraCsv154_withCommentMarker() throws IOException {
         final String comment = "This is a header comment";
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()
@@ -48,7 +48,7 @@ public class JiraCsv154Test {
     }
 
     @Test
-    public void testJiraCsv154_withHeaderComments() throws IOException {
+    void testJiraCsv154_withHeaderComments() throws IOException {
         final String comment = "This is a header comment";
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()

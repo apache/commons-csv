@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
 public class JiraCsv249Test {
 
     @Test
-    public void testJiraCsv249() throws IOException {
+    void testJiraCsv249() throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.builder().setEscape('\\').get();
         final StringWriter stringWriter = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(stringWriter, format)) {

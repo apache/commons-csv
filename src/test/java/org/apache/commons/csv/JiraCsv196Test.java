@@ -35,7 +35,7 @@ public class JiraCsv196Test {
     }
 
     @Test
-    public void testParseFourBytes() throws IOException {
+    void testParseFourBytes() throws IOException {
         final CSVFormat format = CSVFormat.Builder.create().setDelimiter(',').setQuote('\'').get();
         // @formatter:off
         try (@SuppressWarnings("resource") // parser closes the reader.
@@ -55,7 +55,7 @@ public class JiraCsv196Test {
     }
 
     @Test
-    public void testParseThreeBytes() throws IOException {
+    void testParseThreeBytes() throws IOException {
         final CSVFormat format = CSVFormat.Builder.create().setDelimiter(',').setQuote('\'').get();
         // @formatter:off
         try (@SuppressWarnings("resource") // parser closes the reader.

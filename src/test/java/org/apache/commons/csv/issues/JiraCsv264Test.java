@@ -49,7 +49,7 @@ public class JiraCsv264Test {
                                                  "\"6\",\"7\",\"\",\"\",\"10\"";
 
     @Test
-    public void testJiraCsv264() {
+    void testJiraCsv264() {
         final CSVFormat csvFormat = CSVFormat.DEFAULT
             .builder()
             .setHeader()
@@ -62,7 +62,7 @@ public class JiraCsv264Test {
     }
 
     @Test
-    public void testJiraCsv264WithGapAllowEmpty() throws IOException {
+    void testJiraCsv264WithGapAllowEmpty() throws IOException {
         final CSVFormat csvFormat = CSVFormat.DEFAULT
             .builder()
             .setHeader()
@@ -75,7 +75,7 @@ public class JiraCsv264Test {
     }
 
     @Test
-    public void testJiraCsv264WithGapDisallow() {
+    void testJiraCsv264WithGapDisallow() {
         final CSVFormat csvFormat = CSVFormat.DEFAULT
             .builder()
             .setHeader()

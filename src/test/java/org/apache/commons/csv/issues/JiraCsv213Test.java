@@ -64,7 +64,7 @@ public class JiraCsv213Test {
     }
 
     @Test
-    public void test() {
+    void test() {
         createEndChannel(new File("src/test/resources/org/apache/commons/csv/CSV-213/999751170.patch.csv"));
     }
 }

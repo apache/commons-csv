@@ -44,7 +44,7 @@ public class ExtendedBufferedReaderTest {
     }
 
     @Test
-    public void testEmptyInput() throws Exception {
+    void testEmptyInput() throws Exception {
         try (ExtendedBufferedReader br = createBufferedReader("")) {
             assertEquals(EOF, br.read());
             assertEquals(EOF, br.peek());
@@ -58,7 +58,7 @@ public class ExtendedBufferedReaderTest {
      * Test to illustrate https://issues.apache.org/jira/browse/CSV-75
      */
     @Test
-    public void testReadChar() throws Exception {
+    void testReadChar() throws Exception {
         final String test = "a" + LF + "b" + CR + "c" + LF + LF + "d" + CR + CR + "e" + LFCR + "f " + CRLF;
         // EOL eol EOL EOL eol eol EOL+CR EOL
         final int eolCount = 9;
@@ -94,7 +94,7 @@ public class ExtendedBufferedReaderTest {
     }
 
     @Test
-    public void testReadingInDifferentBuffer() throws Exception {
+    void testReadingInDifferentBuffer() throws Exception {
         final char[] tmp1 = new char[2];
         final char[] tmp2 = new char[4];
         try (ExtendedBufferedReader reader = createBufferedReader("1\r\n2\r\n")) {
@@ -105,7 +105,7 @@ public class ExtendedBufferedReaderTest {
     }
 
     @Test
-    public void testReadLine() throws Exception {
+    void testReadLine() throws Exception {
         try (ExtendedBufferedReader br = createBufferedReader("")) {
             assertNull(br.readLine());
         }
@@ -148,7 +148,7 @@ public class ExtendedBufferedReaderTest {
     }
 
     @Test
-    public void testReadLookahead1() throws Exception {
+    void testReadLookahead1() throws Exception {
         try (ExtendedBufferedReader br = createBufferedReader("1\n2\r3\n")) {
             assertEquals(0, br.getLineNumber());
             assertEquals('1', br.peek());
@@ -207,7 +207,7 @@ public class ExtendedBufferedReaderTest {
     }
 
     @Test
-    public void testReadLookahead2() throws Exception {
+    void testReadLookahead2() throws Exception {
         final char[] ref = new char[5];
         final char[] res = new char[5];
 

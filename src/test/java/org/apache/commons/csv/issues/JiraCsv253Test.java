@@ -42,7 +42,7 @@ public class JiraCsv253Test {
     }
 
     @Test
-    public void testHandleAbsentValues() throws IOException {
+    void testHandleAbsentValues() throws IOException {
         final String source = "\"John\",,\"Doe\"\n" + ",\"AA\",123\n" + "\"John\",90,\n" + "\"\",,90";
         final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setQuoteMode(QuoteMode.NON_NUMERIC).get();
         try (CSVParser parser = csvFormat.parse(new StringReader(source))) {

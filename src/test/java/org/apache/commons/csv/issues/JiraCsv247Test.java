@@ -37,7 +37,7 @@ import org.junit.jupiter.api.Test;
 public class JiraCsv247Test {
 
     @Test
-    public void testHeadersMissingOneColumnWhenAllowingMissingColumnNames() throws Exception {
+    void testHeadersMissingOneColumnWhenAllowingMissingColumnNames() throws Exception {
         final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().setAllowMissingColumnNames(true).get();
 
         assertTrue(format.getAllowMissingColumnNames(), "We should allow missing column names");
@@ -63,7 +63,7 @@ public class JiraCsv247Test {
     }
 
     @Test
-    public void testHeadersMissingThrowsWhenNotAllowingMissingColumnNames() {
+    void testHeadersMissingThrowsWhenNotAllowingMissingColumnNames() {
         final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().get();
 
         assertFalse(format.getAllowMissingColumnNames(), "By default we should not allow missing column names");

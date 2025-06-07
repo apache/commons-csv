@@ -61,7 +61,7 @@ public class JiraCsv93Test {
     }
 
     @Test
-    public void testWithNotSetNullString() throws IOException {
+    void testWithNotSetNullString() throws IOException {
         // @formatter:off
         every(CSVFormat.DEFAULT,
                 objects1,
@@ -91,7 +91,7 @@ public class JiraCsv93Test {
     }
 
     @Test
-    public void testWithSetNullStringEmptyString() throws IOException {
+    void testWithSetNullStringEmptyString() throws IOException {
         // @formatter:off
         every(CSVFormat.DEFAULT.builder().setNullString("").get(),
                 objects1,
@@ -121,7 +121,7 @@ public class JiraCsv93Test {
     }
 
     @Test
-    public void testWithSetNullStringNULL() throws IOException {
+    void testWithSetNullStringNULL() throws IOException {
         // @formatter:off
         every(CSVFormat.DEFAULT.builder().setNullString("NULL").get(),
                 objects2,

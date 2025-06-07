@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 public class JiraCsv203Test {
 
     @Test
-    public void testQuoteModeAll() throws Exception {
+    void testQuoteModeAll() throws Exception {
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()
                 .setNullString("N/A")
@@ -48,7 +48,7 @@ public class JiraCsv203Test {
     }
 
     @Test
-    public void testQuoteModeAllNonNull() throws Exception {
+    void testQuoteModeAllNonNull() throws Exception {
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()
                 .setNullString("N/A")
@@ -64,7 +64,7 @@ public class JiraCsv203Test {
     }
 
     @Test
-    public void testQuoteModeMinimal() throws Exception {
+    void testQuoteModeMinimal() throws Exception {
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()
                 .setNullString("N/A")
@@ -80,7 +80,7 @@ public class JiraCsv203Test {
     }
 
     @Test
-    public void testQuoteModeNonNumeric() throws Exception {
+    void testQuoteModeNonNumeric() throws Exception {
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()
                 .setNullString("N/A")
@@ -96,7 +96,7 @@ public class JiraCsv203Test {
     }
 
     @Test
-    public void testWithEmptyValues() throws Exception {
+    void testWithEmptyValues() throws Exception {
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()
                 .setNullString("N/A")
@@ -113,7 +113,7 @@ public class JiraCsv203Test {
     }
 
     @Test
-    public void testWithoutNullString() throws Exception {
+    void testWithoutNullString() throws Exception {
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()
                 //.setNullString("N/A")
@@ -129,7 +129,7 @@ public class JiraCsv203Test {
     }
 
     @Test
-    public void testWithoutQuoteMode() throws Exception {
+    void testWithoutQuoteMode() throws Exception {
         // @formatter:off
         final CSVFormat format = CSVFormat.EXCEL.builder()
                 .setNullString("N/A")

@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 public class JiraCsv211Test {
 
     @Test
-    public void testJiraCsv211Format() throws IOException {
+    void testJiraCsv211Format() throws IOException {
         // @formatter:off
         final CSVFormat printFormat = CSVFormat.DEFAULT.builder()
             .setDelimiter('\t')

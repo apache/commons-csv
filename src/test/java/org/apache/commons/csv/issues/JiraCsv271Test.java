@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 public class JiraCsv271Test {
 
     @Test
-    public void testJiraCsv271_withArray() throws IOException {
+    void testJiraCsv271_withArray() throws IOException {
         final CSVFormat csvFormat = CSVFormat.DEFAULT;
         final StringWriter stringWriter = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(stringWriter, csvFormat)) {
@@ -43,7 +43,7 @@ public class JiraCsv271Test {
     }
 
     @Test
-    public void testJiraCsv271_withList() throws IOException {
+    void testJiraCsv271_withList() throws IOException {
         final CSVFormat csvFormat = CSVFormat.DEFAULT;
         final StringWriter stringWriter = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(stringWriter, csvFormat)) {

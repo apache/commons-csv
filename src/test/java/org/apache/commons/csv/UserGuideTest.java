@@ -54,7 +54,7 @@ public class UserGuideTest {
     }
 
     @Test
-    public void testBomFull() throws UnsupportedEncodingException, IOException {
+    void testBomFull() throws UnsupportedEncodingException, IOException {
         final Path path = tempDir.resolve("test1.csv");
         Files.copy(Utils.createUtf8Input("ColumnA, ColumnB, ColumnC\r\nA, B, C\r\n".getBytes(StandardCharsets.UTF_8), true), path);
         // @formatter:off
@@ -74,7 +74,7 @@ public class UserGuideTest {
     }
 
     @Test
-    public void testBomUtil() throws UnsupportedEncodingException, IOException {
+    void testBomUtil() throws UnsupportedEncodingException, IOException {
         final Path path = tempDir.resolve("test2.csv");
         Files.copy(Utils.createUtf8Input("ColumnA, ColumnB, ColumnC\r\nA, B, C\r\n".getBytes(StandardCharsets.UTF_8), true), path);
         try (Reader reader = newReader(path);

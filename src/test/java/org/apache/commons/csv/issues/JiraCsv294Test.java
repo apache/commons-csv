@@ -58,24 +58,24 @@ public class JiraCsv294Test {
     }
 
     @Test
-    public void testDefaultCsvFormatWithBackslashEscapeWorks() throws IOException {
+    void testDefaultCsvFormatWithBackslashEscapeWorks() throws IOException {
         testInternal(CSVFormat.Builder.create().setEscape('\\').get(), ",\"b \\\"\\\"\",");
     }
 
     @Test
-    public void testDefaultCsvFormatWithNullEscapeWorks() throws IOException {
+    void testDefaultCsvFormatWithNullEscapeWorks() throws IOException {
         testInternal(CSVFormat.Builder.create().setEscape(null).get(), ",\"b \"\"\"\"\",");
     }
 
     @Test
-    public void testDefaultCsvFormatWithQuoteEscapeWorks() throws IOException {
+    void testDefaultCsvFormatWithQuoteEscapeWorks() throws IOException {
         // this one doesn't actually work but should behave like setEscape(null)
         // Printer is writing the expected content but Parser is unable to consume it
         testInternal(CSVFormat.Builder.create().setEscape('"').get(), ",\"b \"\"\"\"\",");
     }
 
     @Test
-    public void testDefaultCsvFormatWorks() throws IOException {
+    void testDefaultCsvFormatWorks() throws IOException {
         testInternal(CSVFormat.Builder.create().get(), ",\"b \"\"\"\"\",");
     }
 }
