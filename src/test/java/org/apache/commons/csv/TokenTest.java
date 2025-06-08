@@ -28,7 +28,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 /**
  * Tests {@link Token}.
  */
-public class TokenTest {
+class TokenTest {
 
     @ParameterizedTest
     @EnumSource(Token.Type.class)

@@ -24,7 +24,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.QuoteMode;
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv148Test {
+class JiraCsv148Test {
 
     @Test
     void testWithIgnoreSurroundingSpacesEmpty() {

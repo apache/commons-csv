@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests {@link CSVFormat.Predefined}.
  */
-public class CSVFormatPredefinedTest {
+class CSVFormatPredefinedTest {
 
     private void test(final CSVFormat format, final String enumName) {
         assertEquals(format, CSVFormat.Predefined.valueOf(enumName).getFormat());

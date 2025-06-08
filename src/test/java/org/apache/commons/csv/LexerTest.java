@@ -41,7 +41,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  */
-public class LexerTest {
+class LexerTest {
 
     private static void assertContent(final String expectedContent, final Token actualToken) {
         assertEquals(expectedContent, actualToken.content.toString());

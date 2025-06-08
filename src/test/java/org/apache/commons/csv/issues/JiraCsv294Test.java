@@ -36,7 +36,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv294Test {
+class JiraCsv294Test {
 
     private static void testInternal(final CSVFormat format, final String expectedSubstring) throws IOException {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();

@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
  *
  * To run this test, use: mvn test -Dtest=PerformanceTest
  */
-public class PerformanceTest {
+class PerformanceTest {
 
     private static final String TEST_RESRC = "org/apache/commons/csv/perf/worldcitiespop.txt.gz";
 

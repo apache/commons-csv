@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
  * Jira CSV-253 to a certain extent.
  * </p>
  */
-public class JiraCsv93Test {
+class JiraCsv93Test {
     private static Object[] objects1 = {"abc", "", null, "a,b,c", 123};
 
     private static Object[] objects2 = {"abc", "NULL", null, "a,b,c", 123};

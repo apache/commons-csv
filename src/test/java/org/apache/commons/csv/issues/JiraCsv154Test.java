@@ -26,7 +26,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv154Test {
+class JiraCsv154Test {
 
     @Test
     void testJiraCsv154_withCommentMarker() throws IOException {

@@ -32,7 +32,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv249Test {
+class JiraCsv249Test {
 
     @Test
     void testJiraCsv249() throws IOException {

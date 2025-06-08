@@ -31,7 +31,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.csv.QuoteMode;
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv167Test {
+class JiraCsv167Test {
 
     private Reader getTestReader() {
         return new InputStreamReader(

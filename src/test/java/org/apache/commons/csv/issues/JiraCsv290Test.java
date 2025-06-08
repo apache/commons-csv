@@ -58,7 +58,7 @@ import org.junit.jupiter.api.Test;
 // 2    xyz    \\b:\b \\t:\t \\n:\n \\r:\r    a          b
 // 3    a      b,c,d                         "quoted"    e
 //
-public class JiraCsv290Test {
+class JiraCsv290Test {
 
     private void testHelper(final String fileName, final CSVFormat format) throws Exception {
         List<List<String>> content = new ArrayList<>();

@@ -38,7 +38,7 @@ import org.junit.jupiter.api.Test;
  * you want, you need to open a new CSVParser.
  * </p>
  */
-public class JiraCsv213Test {
+class JiraCsv213Test {
 
     private void createEndChannel(final File csvFile) {
         // @formatter:off

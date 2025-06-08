@@ -30,7 +30,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv206Test {
+class JiraCsv206Test {
 
     @Test
     void testJiraCsv206MultipleCharacterDelimiter() throws IOException {

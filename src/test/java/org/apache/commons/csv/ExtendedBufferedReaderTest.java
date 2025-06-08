@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link ExtendedBufferedReader}.
  */
-public class ExtendedBufferedReaderTest {
+class ExtendedBufferedReaderTest {
 
     static final String LF = "\n";
     static final String CR = "\r";

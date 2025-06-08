@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
  * JIRA: <a href="https://issues.apache.org/jira/browse/CSV-203">withNullString value is printed without quotes when
  * QuoteMode.ALL is specified</a>
  */
-public class JiraCsv203Test {
+class JiraCsv203Test {
 
     @Test
     void testQuoteModeAll() throws Exception {

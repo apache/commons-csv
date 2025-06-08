@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
  *
  * @see <a href="https://issues.apache.org/jira/browse/CSV-264">Jira Ticker</a>
  */
-public class JiraCsv264Test {
+class JiraCsv264Test {
 
     private static final String CSV_STRING = "\"\",\"B\",\"\"\n" +
                                              "\"1\",\"2\",\"3\"\n" +

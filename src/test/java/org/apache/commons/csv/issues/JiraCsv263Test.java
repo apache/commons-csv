@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests [CSV-263] Print from Reader with embedded quotes generates incorrect output.
  */
-public class JiraCsv263Test {
+class JiraCsv263Test {
 
     @Test
     void testPrintFromReaderWithQuotes() throws IOException {

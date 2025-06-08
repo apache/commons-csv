@@ -34,7 +34,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv247Test {
+class JiraCsv247Test {
 
     @Test
     void testHeadersMissingOneColumnWhenAllowingMissingColumnNames() throws Exception {

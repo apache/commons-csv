@@ -75,7 +75,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 /**
  * Tests {@link CSVPrinter}.
  */
-public class CSVPrinterTest {
+class CSVPrinterTest {
 
     private static final int TABLE_RECORD_COUNT = 2;
     private static final int TABLE_AND_HEADER_RECORD_COUNT = TABLE_RECORD_COUNT + 1;

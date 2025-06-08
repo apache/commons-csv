@@ -35,7 +35,7 @@ import org.junit.jupiter.api.io.TempDir;
 /**
  * Tests for the user guide.
  */
-public class UserGuideTest {
+class UserGuideTest {
 
     @TempDir
     Path tempDir;

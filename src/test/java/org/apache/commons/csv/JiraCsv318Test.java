@@ -38,7 +38,7 @@ import org.junit.jupiter.api.Test;
  *
  * @see CSVPrinter
  */
-public class JiraCsv318Test {
+class JiraCsv318Test {
 
     private void checkOutput(final ByteArrayOutputStream baos) {
         checkOutput(baos.toString());

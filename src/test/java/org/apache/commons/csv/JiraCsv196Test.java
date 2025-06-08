@@ -28,7 +28,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv196Test {
+class JiraCsv196Test {
 
     private Reader getTestInput(final String path) {
         return new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream(path));

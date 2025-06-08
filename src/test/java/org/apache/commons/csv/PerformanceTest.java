@@ -44,7 +44,7 @@ import org.apache.commons.io.IOUtils;
  * Basic test harness.
  */
 @SuppressWarnings("boxing")
-public class PerformanceTest {
+class PerformanceTest {
 
     @FunctionalInterface
     private interface CSVParserFactory {

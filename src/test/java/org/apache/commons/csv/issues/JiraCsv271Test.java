@@ -29,7 +29,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv271Test {
+class JiraCsv271Test {
 
     @Test
     void testJiraCsv271_withArray() throws IOException {

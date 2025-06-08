@@ -54,7 +54,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests {@link CSVFormat}.
  */
-public class CSVFormatTest {
+class CSVFormatTest {
 
     public enum EmptyEnum {
         // empty enum.

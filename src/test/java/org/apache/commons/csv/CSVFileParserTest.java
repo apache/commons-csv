@@ -40,7 +40,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 /**
  * Parse tests using test files
  */
-public class CSVFileParserTest {
+class CSVFileParserTest {
 
     private static final File BASE_DIR = new File("src/test/resources/org/apache/commons/csv/CSVFileParser");
 

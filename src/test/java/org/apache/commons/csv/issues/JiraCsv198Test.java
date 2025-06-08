@@ -31,7 +31,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv198Test {
+class JiraCsv198Test {
 
     // @formatter:off
     private static final CSVFormat CSV_FORMAT = CSVFormat.EXCEL.builder()

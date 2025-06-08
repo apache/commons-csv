@@ -27,7 +27,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv150Test {
+class JiraCsv150Test {
 
     private void testDisable(final CSVFormat format, final StringReader reader) throws IOException {
         try (CSVParser csvParser = CSVParser.builder().setReader(reader).setFormat(format).get()) {

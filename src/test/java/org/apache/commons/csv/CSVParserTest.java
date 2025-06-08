@@ -71,7 +71,7 @@ import org.junit.jupiter.params.provider.ValueSource;
  * The test are organized in three different sections: The 'setter/getter' section, the lexer section and finally the parser section. In case a test fails, you
  * should follow a top-down approach for fixing a potential bug (its likely that the parser itself fails if the lexer has problems...).
  */
-public class CSVParserTest {
+class CSVParserTest {
 
     private static final CSVFormat EXCEL_WITH_HEADER = CSVFormat.EXCEL.withHeader();
 

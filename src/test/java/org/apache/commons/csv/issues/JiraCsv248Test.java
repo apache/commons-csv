@@ -33,7 +33,7 @@ import java.io.ObjectInputStream;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv248Test {
+class JiraCsv248Test {
 
     private static InputStream getTestInput() {
         return ClassLoader.getSystemClassLoader().getResourceAsStream("org/apache/commons/csv/CSV-248/csvRecord.bin");

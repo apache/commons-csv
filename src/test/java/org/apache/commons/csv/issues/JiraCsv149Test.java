@@ -29,7 +29,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv149Test {
+class JiraCsv149Test {
 
     private static final String CR_LF = "\r\n";
 

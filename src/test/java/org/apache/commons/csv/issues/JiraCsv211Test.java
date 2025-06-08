@@ -28,7 +28,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.junit.jupiter.api.Test;
 
-public class JiraCsv211Test {
+class JiraCsv211Test {
 
     @Test
     void testJiraCsv211Format() throws IOException {
