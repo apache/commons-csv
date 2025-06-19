@@ -47,8 +47,8 @@
       <action type="fix" dev="ggregory" due-to="Gary Gregory">org.apache.commons.csv.CSVPrinter.printRecords(ResultSet) now writes one record at a time using a lock.</action>
       <!-- ADD -->
       <!-- UPDATE -->
+      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 81 to 85 #542.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-io:commons-io from 2.18.0 to 2.19.0.</action>
-      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 81 to 84 #542.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump com.opencsv:opencsv from 5.10 to 5.11.1 #545, #551.</action>
     </release>
     <release version="1.14.0" date="2025-03-15" description="This is a feature and maintenance release. Java 8 or later is required.">
