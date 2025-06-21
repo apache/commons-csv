@@ -282,11 +282,29 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         /**
          * Header names in column order
          */
-        final List<String> headerNames;
+        final List<String> headerNames = new ArrayList<>();
 
-        Headers(final Map<String, Integer> headerMap, final List<String> headerNames) {
-            this.headerMap = headerMap;
-            this.headerNames = headerNames;
+        Headers(final CSVFormat format) {
+            this.headerMap = createEmptyHeaderMap(format);
+        }
+
+        private Map<String, Integer> createEmptyHeaderMap(final CSVFormat format) {
+            return format.getIgnoreHeaderCase() ?
+                    new TreeMap<>(String.CASE_INSENSITIVE_ORDER) :
+                    new LinkedHashMap<>();
+        }
+
+        private boolean contains(final String name) {
+            return this.headerMap.containsKey(name);
+        }
+
+        private void put(final String name, final Integer index) {
+            this.headerMap.put(name, index);
+            this.headerNames.add(name);
+        }
+
+        public boolean isEmpty() {
+            return this.headerMap == null || this.headerMap.isEmpty();
         }
     }
 
@@ -598,11 +616,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws CSVException on invalid input.
      */
     private Headers createHeaders() throws IOException {
-        Map<String, Integer> headerMap = null;
-        List<String> headerNames = null;
+        final Headers headers = new Headers(format);
         final String[] formatHeader = format.getHeader();
         if (formatHeader != null) {
-            headerMap = createEmptyHeaderMap();
             String[] headerRecord = null;
             if (formatHeader.length == 0) {
                 // read the header from the first line of the file
@@ -630,7 +646,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     if (blankHeader && !format.getAllowMissingColumnNames()) {
                         throw new IllegalArgumentException("A header name is missing in " + Arrays.toString(headerRecord));
                     }
-                    final boolean containsHeader = blankHeader ? observedMissing : headerMap.containsKey(header);
+                    final boolean containsHeader = blankHeader ? observedMissing : headers.contains(header);
                     final DuplicateHeaderMode headerMode = format.getDuplicateHeaderMode();
                     final boolean duplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_ALL;
                     final boolean emptyDuplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_EMPTY;
@@ -641,17 +657,12 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     }
                     observedMissing |= blankHeader;
                     if (header != null) {
-                        headerMap.put(header, Integer.valueOf(i)); // Explicit (un)boxing is intentional
-                        if (headerNames == null) {
-                            headerNames = new ArrayList<>(headerRecord.length);
-                        }
-                        headerNames.add(header);
+                        headers.put(header, Integer.valueOf(i)); // Explicit (un)boxing is intentional
                     }
                 }
             }
         }
-        // Make header names Collection immutable
-        return new Headers(headerMap, headerNames == null ? Collections.emptyList() : Collections.unmodifiableList(headerNames));
+        return headers;
     }
 
     /**
@@ -702,7 +713,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @return a copy of the header map.
      */
     public Map<String, Integer> getHeaderMap() {
-        if (headers.headerMap == null) {
+        if (headers.isEmpty()) {
             return null;
         }
         final Map<String, Integer> map = createEmptyHeaderMap();
