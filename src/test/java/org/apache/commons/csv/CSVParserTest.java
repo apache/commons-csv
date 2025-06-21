@@ -22,7 +22,7 @@ package org.apache.commons.csv;
 import static org.apache.commons.csv.Constants.CR;
 import static org.apache.commons.csv.Constants.CRLF;
 import static org.apache.commons.csv.Constants.LF;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.apache.commons.csv.CsvAssertions.assertValuesEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -217,7 +217,7 @@ class CSVParserTest {
             assertEquals(res.length, records.size());
             assertFalse(records.isEmpty());
             for (int i = 0; i < res.length; i++) {
-                assertArrayEquals(res[i], records.get(i).values());
+                assertValuesEquals(res[i], records.get(i));
             }
         }
     }
@@ -479,7 +479,7 @@ class CSVParserTest {
                 assertEquals(res.length, records.size());
                 assertFalse(records.isEmpty());
                 for (int i = 0; i < res.length; i++) {
-                    assertArrayEquals(res[i], records.get(i).values());
+                    assertValuesEquals(res[i], records.get(i));
                 }
             }
         }
@@ -496,7 +496,7 @@ class CSVParserTest {
                 assertEquals(res.length, records.size());
                 assertFalse(records.isEmpty());
                 for (int i = 0; i < res.length; i++) {
-                    assertArrayEquals(res[i], records.get(i).values());
+                    assertValuesEquals(res[i], records.get(i));
                 }
             }
         }
@@ -521,7 +521,7 @@ class CSVParserTest {
                 assertEquals(res.length, records.size());
                 assertFalse(records.isEmpty());
                 for (int i = 0; i < res.length; i++) {
-                    assertArrayEquals(res[i], records.get(i).values());
+                    assertValuesEquals(res[i], records.get(i));
                 }
             }
         }
@@ -540,7 +540,7 @@ class CSVParserTest {
                 assertEquals(res.length, records.size());
                 assertFalse(records.isEmpty());
                 for (int i = 0; i < res.length; i++) {
-                    assertArrayEquals(res[i], records.get(i).values());
+                    assertValuesEquals(res[i], records.get(i));
                 }
             }
         }
@@ -556,7 +556,7 @@ class CSVParserTest {
             assertEquals(res.length, records.size());
             assertFalse(records.isEmpty());
             for (int i = 0; i < res.length; i++) {
-                assertArrayEquals(res[i], records.get(i).values());
+                assertValuesEquals(res[i], records.get(i));
             }
         }
     }
@@ -570,7 +570,7 @@ class CSVParserTest {
             assertEquals(res.length, records.size());
             assertFalse(records.isEmpty());
             for (int i = 0; i < res.length; i++) {
-                assertArrayEquals(res[i], records.get(i).values());
+                assertValuesEquals(res[i], records.get(i));
             }
         }
     }
@@ -629,9 +629,9 @@ class CSVParserTest {
                 records.add(record);
             }
             assertEquals(3, records.size());
-            assertArrayEquals(new String[] { "a", "b", "c" }, records.get(0).values());
-            assertArrayEquals(new String[] { "1", "2", "3" }, records.get(1).values());
-            assertArrayEquals(new String[] { "x", "y", "z" }, records.get(2).values());
+            assertValuesEquals(new String[] { "a", "b", "c" }, records.get(0));
+            assertValuesEquals(new String[] { "1", "2", "3" }, records.get(1));
+            assertValuesEquals(new String[] { "x", "y", "z" }, records.get(2));
         }
     }
 
@@ -756,7 +756,7 @@ class CSVParserTest {
     void testGetLine() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT, CSVFormat.DEFAULT.withIgnoreSurroundingSpaces())) {
             for (final String[] re : RESULT) {
-                assertArrayEquals(re, parser.nextRecord().values());
+                assertValuesEquals(re, parser.nextRecord());
             }
 
             assertNull(parser.nextRecord());
@@ -782,7 +782,7 @@ class CSVParserTest {
     void testGetOneLine() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_1, CSVFormat.DEFAULT)) {
             final CSVRecord record = parser.getRecords().get(0);
-            assertArrayEquals(RESULT[0], record.values());
+            assertValuesEquals(RESULT[0], record);
         }
     }
 
@@ -803,11 +803,11 @@ class CSVParserTest {
             writer.append(CSV_INPUT_1);
             writer.append(format.getRecordSeparator());
             final CSVRecord record1 = parser.nextRecord();
-            assertArrayEquals(RESULT[0], record1.values());
+            assertValuesEquals(RESULT[0], record1);
             writer.append(CSV_INPUT_2);
             writer.append(format.getRecordSeparator());
             final CSVRecord record2 = parser.nextRecord();
-            assertArrayEquals(RESULT[1], record2.values());
+            assertValuesEquals(RESULT[1], record2);
         }
     }
 
@@ -877,7 +877,7 @@ class CSVParserTest {
             assertEquals(RESULT.length, records.size());
             assertFalse(records.isEmpty());
             for (int i = 0; i < RESULT.length; i++) {
-                assertArrayEquals(RESULT[i], records.get(i).values());
+                assertValuesEquals(RESULT[i], records.get(i));
             }
         }
     }
@@ -899,7 +899,7 @@ class CSVParserTest {
             assertEquals(expectedLength, records.size());
             assertFalse(records.isEmpty());
             for (int i = 0; i < expectedLength; i++) {
-                assertArrayEquals(RESULT[i], records.get(i).values());
+                assertValuesEquals(RESULT[i], records.get(i));
             }
         }
     }
@@ -1155,12 +1155,12 @@ class CSVParserTest {
             final Iterator<CSVRecord> iterator = parser.iterator();
             assertTrue(iterator.hasNext());
             assertThrows(UnsupportedOperationException.class, iterator::remove);
-            assertArrayEquals(new String[] { "a", "b", "c" }, iterator.next().values());
-            assertArrayEquals(new String[] { "1", "2", "3" }, iterator.next().values());
+            assertValuesEquals(new String[] { "a", "b", "c" }, iterator.next());
+            assertValuesEquals(new String[] { "1", "2", "3" }, iterator.next());
             assertTrue(iterator.hasNext());
             assertTrue(iterator.hasNext());
             assertTrue(iterator.hasNext());
-            assertArrayEquals(new String[] { "x", "y", "z" }, iterator.next().values());
+            assertValuesEquals(new String[] { "x", "y", "z" }, iterator.next());
             assertFalse(iterator.hasNext());
             assertThrows(NoSuchElementException.class, iterator::next);
         }
@@ -1174,20 +1174,20 @@ class CSVParserTest {
             final Iterator<CSVRecord> iterator = parser.iterator();
             assertTrue(iterator.hasNext());
             assertThrows(UnsupportedOperationException.class, iterator::remove);
-            assertArrayEquals(new String[] { "a", "b", "c" }, iterator.next().values());
+            assertValuesEquals(new String[] { "a", "b", "c" }, iterator.next());
             final boolean noLimit = maxRows <= 0;
             final int fixtureLen = 3;
             final long expectedLen = noLimit ? fixtureLen : Math.min(fixtureLen, maxRows);
             if (expectedLen > 1) {
                 assertTrue(iterator.hasNext());
-                assertArrayEquals(new String[] { "1", "2", "3" }, iterator.next().values());
+                assertValuesEquals(new String[] { "1", "2", "3" }, iterator.next());
             }
             assertEquals(expectedLen > 2, iterator.hasNext());
             // again
             assertEquals(expectedLen > 2, iterator.hasNext());
             if (expectedLen == fixtureLen) {
                 assertTrue(iterator.hasNext());
-                assertArrayEquals(new String[] { "x", "y", "z" }, iterator.next().values());
+                assertValuesEquals(new String[] { "x", "y", "z" }, iterator.next());
             }
             assertFalse(iterator.hasNext());
             assertThrows(NoSuchElementException.class, iterator::next);
@@ -1584,7 +1584,7 @@ class CSVParserTest {
                 .setFormat(format.getFormat())
                 .get()) {
             for (final String[] line : lines) {
-                assertArrayEquals(line, csvRecords.nextRecord().values());
+                assertValuesEquals(line, csvRecords.nextRecord());
             }
             assertNull(csvRecords.nextRecord());
         }
@@ -1715,7 +1715,7 @@ class CSVParserTest {
                 assertEquals(res.length, records.size());
                 assertFalse(records.isEmpty());
                 for (int i = 0; i < res.length; i++) {
-                    assertArrayEquals(res[i], records.get(i).values());
+                    assertValuesEquals(res[i], records.get(i));
                 }
             }
         }
@@ -1727,9 +1727,9 @@ class CSVParserTest {
         try (CSVParser parser = CSVFormat.DEFAULT.parse(in)) {
             final List<CSVRecord> list = parser.stream().collect(Collectors.toList());
             assertFalse(list.isEmpty());
-            assertArrayEquals(new String[] { "a", "b", "c" }, list.get(0).values());
-            assertArrayEquals(new String[] { "1", "2", "3" }, list.get(1).values());
-            assertArrayEquals(new String[] { "x", "y", "z" }, list.get(2).values());
+            assertValuesEquals(new String[] { "a", "b", "c" }, list.get(0));
+            assertValuesEquals(new String[] { "1", "2", "3" }, list.get(1));
+            assertValuesEquals(new String[] { "x", "y", "z" }, list.get(2));
         }
     }
 
@@ -1740,12 +1740,12 @@ class CSVParserTest {
         try (CSVParser parser = CSVFormat.DEFAULT.builder().setMaxRows(maxRows).get().parse(in)) {
             final List<CSVRecord> list = parser.stream().collect(Collectors.toList());
             assertFalse(list.isEmpty());
-            assertArrayEquals(new String[] { "a", "b", "c" }, list.get(0).values());
+            assertValuesEquals(new String[] { "a", "b", "c" }, list.get(0));
             if (maxRows <= 0 || maxRows > 1) {
-                assertArrayEquals(new String[] { "1", "2", "3" }, list.get(1).values());
+                assertValuesEquals(new String[] { "1", "2", "3" }, list.get(1));
             }
             if (maxRows <= 0 || maxRows > 2) {
-                assertArrayEquals(new String[] { "x", "y", "z" }, list.get(2).values());
+                assertValuesEquals(new String[] { "x", "y", "z" }, list.get(2));
             }
         }
     }
