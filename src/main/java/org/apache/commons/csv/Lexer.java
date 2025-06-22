@@ -340,7 +340,6 @@ final class Lexer implements Closeable {
         int c;
         while (true) {
             c = reader.read();
-
             if (isQuoteChar(c)) {
                 if (isQuoteChar(reader.peek())) {
                     // double or escaped encapsulator -> add single encapsulator to token
