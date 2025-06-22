@@ -20,6 +20,8 @@ package org.apache.commons.csv;
 
 /**
  * Defines quoting behavior.
+ *
+ * @see CSVFormat.Builder#setQuoteMode(QuoteMode)
  */
 public enum QuoteMode {
 
