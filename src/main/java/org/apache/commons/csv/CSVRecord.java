@@ -124,7 +124,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     public String get(final String name) {
         final Map<String, Integer> headerMap = getHeaderMapRaw();
-        if (headerMap == null) {
+        if (headerMap == null || headerMap.isEmpty()) {
             throw new IllegalStateException(
                 "No header mapping was specified, the record values can't be accessed by name");
         }
@@ -233,7 +233,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     public boolean isConsistent() {
         final Map<String, Integer> headerMap = getHeaderMapRaw();
-        return headerMap == null || headerMap.size() == values.length;
+        return headerMap == null || headerMap.isEmpty() || headerMap.size() == values.length;
     }
 
     /**
