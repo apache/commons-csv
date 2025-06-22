@@ -125,20 +125,20 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     public String get(final String name) {
         final Map<String, Integer> headerMap = getHeaderMapRaw();
         if (headerMap == null) {
-            throw new IllegalStateException(
-                "No header mapping was specified, the record values can't be accessed by name");
+            throw new IllegalStateException("No header mapping was specified, the record values can't be accessed by name");
         }
         final Integer index = headerMap.get(name);
         if (index == null) {
-            throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name,
-                headerMap.keySet()));
+            throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name, headerMap.keySet()));
         }
         try {
-            return values[index.intValue()];  // Explicit (un)boxing is intentional
+            return values[index.intValue()]; // Explicit (un)boxing is intentional
         } catch (final ArrayIndexOutOfBoundsException e) {
-            throw new IllegalArgumentException(String.format(
-                "Index for header '%s' is %d but CSVRecord only has %d values!", name, index,
-                Integer.valueOf(values.length)));  // Explicit (un)boxing is intentional
+            throw new IllegalArgumentException(
+                    String.format("Index for header '%s' is %d but CSVRecord only has %d values!", name, index, Integer.valueOf(values.length))); // Explicit
+                                                                                                                                                  // (un)boxing
+                                                                                                                                                  // is
+                                                                                                                                                  // intentional
         }
     }
 
@@ -354,8 +354,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     @Override
     public String toString() {
-        return "CSVRecord [comment='" + comment + "', recordNumber=" + recordNumber + ", values=" +
-            Arrays.toString(values) + "]";
+        return "CSVRecord [comment='" + comment + "', recordNumber=" + recordNumber + ", values=" + Arrays.toString(values) + "]";
     }
 
     /**
