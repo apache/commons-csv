@@ -619,23 +619,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         final Headers headers = new Headers(format);
         final String[] formatHeader = format.getHeader();
         if (formatHeader != null) {
-            String[] headerRecord = null;
-            if (formatHeader.length == 0) {
-                // read the header from the first line of the file
-                final CSVRecord nextRecord = nextRecord();
-                if (nextRecord != null) {
-                    headerRecord = nextRecord.values();
-                    headerComment = nextRecord.getComment();
-                }
-            } else {
-                if (format.getSkipHeaderRecord()) {
-                    final CSVRecord nextRecord = nextRecord();
-                    if (nextRecord != null) {
-                        headerComment = nextRecord.getComment();
-                    }
-                }
-                headerRecord = formatHeader;
-            }
+            final String[] headerRecord = getHeaderRecord();
             // build the name to index mappings
             if (headerRecord != null) {
                 // Track an occurrence of a null, empty or blank header.
@@ -663,6 +647,38 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             }
         }
         return headers;
+    }
+
+    /**
+     * Creates header record from the format. If the format does not contain header record,
+     * the header record from the first line of the file.
+     *
+     * @return the header record from the format.
+     *         If the format does not contain header record, the header record from the first line of the file
+     * @throws IOException if there is a problem reading the header or skipping the first record
+     */
+    private String[] getHeaderRecord() throws IOException {
+        String[] headerRecord = null;
+        final String[] formatHeader = format.getHeader();
+        if (formatHeader != null) {
+            if (formatHeader.length == 0) {
+                // read the header from the first line of the file
+                final CSVRecord nextRecord = nextRecord();
+                if (nextRecord != null) {
+                    headerRecord = nextRecord.values();
+                    headerComment = nextRecord.getComment();
+                }
+            } else {
+                if (format.getSkipHeaderRecord()) {
+                    final CSVRecord nextRecord = nextRecord();
+                    if (nextRecord != null) {
+                        headerComment = nextRecord.getComment();
+                    }
+                }
+                headerRecord = formatHeader;
+            }
+        }
+        return headerRecord;
     }
 
     /**
