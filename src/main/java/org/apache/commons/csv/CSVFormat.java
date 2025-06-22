@@ -216,7 +216,7 @@ public final class CSVFormat implements Serializable {
                     .setRecordSeparator(Constants.CRLF)
                     .setIgnoreEmptyLines(true)
                     .setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL);
-                    // @formatter:on
+            // @formatter:on
         }
 
         /**
