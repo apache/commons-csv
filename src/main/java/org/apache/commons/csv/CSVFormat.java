@@ -2536,27 +2536,27 @@ public final class CSVFormat implements Serializable {
         final StringBuilder sb = new StringBuilder();
         sb.append("Delimiter=<").append(delimiter).append('>');
         if (isEscapeCharacterSet()) {
-            sb.append(' ');
+            sb.append(Constants.SP);
             sb.append("Escape=<").append(escapeCharacter).append('>');
         }
         if (isQuoteCharacterSet()) {
-            sb.append(' ');
+            sb.append(Constants.SP);
             sb.append("QuoteChar=<").append(quoteCharacter).append('>');
         }
         if (quoteMode != null) {
-            sb.append(' ');
+            sb.append(Constants.SP);
             sb.append("QuoteMode=<").append(quoteMode).append('>');
         }
         if (isCommentMarkerSet()) {
-            sb.append(' ');
+            sb.append(Constants.SP);
             sb.append("CommentStart=<").append(commentMarker).append('>');
         }
         if (isNullStringSet()) {
-            sb.append(' ');
+            sb.append(Constants.SP);
             sb.append("NullString=<").append(nullString).append('>');
         }
         if (recordSeparator != null) {
-            sb.append(' ');
+            sb.append(Constants.SP);
             sb.append("RecordSeparator=<").append(recordSeparator).append('>');
         }
         if (getIgnoreEmptyLines()) {
@@ -2570,11 +2570,11 @@ public final class CSVFormat implements Serializable {
         }
         sb.append(" SkipHeaderRecord:").append(skipHeaderRecord);
         if (headerComments != null) {
-            sb.append(' ');
+            sb.append(Constants.SP);
             sb.append("HeaderComments:").append(Arrays.toString(headerComments));
         }
         if (headers != null) {
-            sb.append(' ');
+            sb.append(Constants.SP);
             sb.append("Header:").append(Arrays.toString(headers));
         }
         return sb.toString();
