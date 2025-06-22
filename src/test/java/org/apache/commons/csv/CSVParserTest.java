@@ -730,6 +730,30 @@ class CSVParserTest {
     }
 
     @Test
+    void testGetHeaderMapWithIgnoreHeaderCase() throws Exception {
+        try (CSVParser parser = CSVParser.parse("a,b,c,A,B,C\n1,2,3,1,2,3\nx,y,z,x,y,z", CSVFormat.DEFAULT.withHeader("a", "b", "c").withIgnoreHeaderCase())) {
+            final Map<String, Integer> headerMap = parser.getHeaderMap();
+            final Iterator<String> columnNames = headerMap.keySet().iterator();
+            // Headers are iterated in column order.
+            assertEquals("a", columnNames.next());
+            assertEquals("b", columnNames.next());
+            assertEquals("c", columnNames.next());
+            final Iterator<CSVRecord> records = parser.iterator();
+
+            // Parse to make sure getHeaderMap did not have a side-effect.
+            for (int i = 0; i < 3; i++) {
+                assertTrue(records.hasNext());
+                final CSVRecord record = records.next();
+                assertEquals(record.get(0), record.get("a"));
+                assertEquals(record.get(1), record.get("b"));
+                assertEquals(record.get(2), record.get("c"));
+            }
+
+            assertFalse(records.hasNext());
+        }
+    }
+
+    @Test
     void testGetHeaderNames() throws IOException {
         try (CSVParser parser = CSVParser.parse("a,b,c\n1,2,3\nx,y,z", CSVFormat.DEFAULT.withHeader("A", "B", "C"))) {
             final Map<String, Integer> nameIndexMap = parser.getHeaderMap();
