@@ -116,7 +116,7 @@
     <commons.release.isDistModule>true</commons.release.isDistModule>
     <project.build.outputTimestamp>2025-03-19T22:12:04Z</project.build.outputTimestamp>
     <commons.codec.version>1.18.0</commons.codec.version>
-    <commons.io.version>2.19.0</commons.io.version>
+    <commons.io.version>2.20.0</commons.io.version>
     <!-- Apache Felix maven-bundle-plugin -->
     <commons.osgi.import>
     org.apache.commons.codec.binary;version="${commons.codec.version}",
