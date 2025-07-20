@@ -121,8 +121,14 @@ class LexerTest {
 
     @Test
     void testComments() throws IOException {
-        final String code = "first,line,\n" + "second,line,tokenWith#no-comment\n" + "# comment line \n" +
-                "third,line,#no-comment\n" + "# penultimate comment\n" + "# Final comment\n";
+        // @formatter:off
+        final String code = "first,line,\n" +
+                "second,line,tokenWith#no-comment\n" +
+                "# comment line \n" +
+                "third,line,#no-comment\n" +
+                "# penultimate comment\n" +
+                "# Final comment\n";
+        // @formatter:on
         final CSVFormat format = CSVFormat.DEFAULT.withCommentMarker('#');
         try (Lexer lexer = createLexer(code, format)) {
             assertNextToken(TOKEN, "first", lexer);
@@ -306,8 +312,21 @@ class LexerTest {
 
     @Test
     void testIgnoreEmptyLines() throws IOException {
-        final String code = "first,line,\n" + "\n" + "\n" + "second,line\n" + "\n" + "\n" + "third line \n" + "\n" +
-                "\n" + "last, line \n" + "\n" + "\n" + "\n";
+        // @formatter:off
+        final String code = "first,line,\n" +
+                "\n" +
+                "\n" +
+                "second,line\n" +
+                "\n" +
+                "\n" +
+                "third line \n" +
+                "\n" +
+                "\n" +
+                "last, line \n" +
+                "\n" +
+                "\n" +
+                "\n";
+        // @formatter:on
         final CSVFormat format = CSVFormat.DEFAULT.withIgnoreEmptyLines();
         try (Lexer lexer = createLexer(code, format)) {
             assertNextToken(TOKEN, "first", lexer);

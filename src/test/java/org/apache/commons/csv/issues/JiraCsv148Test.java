@@ -55,7 +55,7 @@ class JiraCsv148Test {
             .get();
         // @formatter:on
         assertEquals(
-                "\"\",\"\",\"Single space on the left\",\"Single space on the right\"," + "\"Single spaces on both sides\",\"Multiple spaces on the left\"," +
+                "\"\",\"\",\"Single space on the left\",\"Single space on the right\",\"Single spaces on both sides\",\"Multiple spaces on the left\"," +
                         "\"Multiple spaces on the right\",\"Multiple spaces on both sides\"",
                 format.format("", " ", " Single space on the left", "Single space on the right ", " Single spaces on both sides ",
                         "   Multiple spaces on the left", "Multiple spaces on the right   ", "  Multiple spaces on both sides     "));

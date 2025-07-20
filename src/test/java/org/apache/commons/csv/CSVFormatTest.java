@@ -1218,7 +1218,7 @@ class CSVFormatTest {
         Assertions.assertNotEquals(csvFormat, csvFormatTwo);
 
         Assertions.assertNotEquals(csvFormatTwo, csvFormat);
-        assertEquals("Delimiter=<,> QuoteChar=<\"> CommentStart=<n> " + "RecordSeparator=<\r\n> EmptyLines:ignored SkipHeaderRecord:false",
+        assertEquals("Delimiter=<,> QuoteChar=<\"> CommentStart=<n> RecordSeparator=<\r\n> EmptyLines:ignored SkipHeaderRecord:false",
                 csvFormatTwo.toString());
 
     }

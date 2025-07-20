@@ -79,9 +79,13 @@ class CSVParserTest {
 
     private static final String UTF_8_NAME = UTF_8.name();
 
-    private static final String CSV_INPUT = "a,b,c,d\n" + " a , b , 1 2 \n" + "\"foo baar\", b,\n" +
+    // @formatter:off
+    private static final String CSV_INPUT = "a,b,c,d\n" +
+            " a , b , 1 2 \n" +
+            "\"foo baar\", b,\n" +
             // + " \"foo\n,,\n\"\",,\n\\\"\",d,e\n";
             "   \"foo\n,,\n\"\",,\n\"\"\",d,e\n"; // changed to use standard CSV escaping
+    // @formatter:on
 
     private static final String CSV_INPUT_1 = "a,b,c,d";
 
@@ -181,7 +185,7 @@ class CSVParserTest {
         // We will test with a forward slash as the escape char, and a single
         // quote as the encapsulator.
         // @formatter:off
-        final String code = "" + " , , \n" + // 1)
+        final String code = " , , \n" + // 1)
             " \t ,  , \n" + // 2)
             " // , /, , /,\n" + // 3)
             "";
@@ -201,8 +205,17 @@ class CSVParserTest {
     @Test
     @Disabled
     void testBackslashEscapingOld() throws IOException {
-        final String code = "one,two,three\n" + "on\\\"e,two\n" + "on\"e,two\n" + "one,\"tw\\\"o\"\n" + "one,\"t\\,wo\"\n" + "one,two,\"th,ree\"\n" +
-                "\"a\\\\\"\n" + "a\\,b\n" + "\"a\\\\,b\"";
+        // @formatter:off
+        final String code = "one,two,three\n" +
+                "on\\\"e,two\n" +
+                "on\"e,two\n" +
+                "one,\"tw\\\"o\"\n" +
+                "one,\"t\\,wo\"\n" +
+                "one,two,\"th,ree\"\n" +
+                "\"a\\\\\"\n" +
+                "a\\,b\n" +
+                "\"a\\\\,b\"";
+        // @formatter:on
         final String[][] res = { { "one", "two", "three" }, { "on\\\"e", "two" }, { "on\"e", "two" }, { "one", "tw\"o" }, { "one", "t\\,wo" }, // backslash in
                                                                                                                                                // quotes only
                                                                                                                                                // escapes a
@@ -417,7 +430,7 @@ class CSVParserTest {
     @Test
     void testDefaultFormat() throws IOException {
         // @formatter:off
-        final String code = "" + "a,b#\n" + // 1)
+        final String code = "a,b#\n" +      // 1)
             "\"\n\",\" \",#\n" +            // 2)
             "#,\"\"\n" +                    // 3)
             "# Final comment\n"             // 4)
@@ -548,7 +561,7 @@ class CSVParserTest {
 
     @Test
     void testExcelFormat1() throws IOException {
-        final String code = "value1,value2,value3,value4\r\na,b,c,d\r\n  x,,," + "\r\n\r\n\"\"\"hello\"\"\",\"  \"\"world\"\"\",\"abc\ndef\",\r\n";
+        final String code = "value1,value2,value3,value4\r\na,b,c,d\r\n  x,,,\r\n\r\n\"\"\"hello\"\"\",\"  \"\"world\"\"\",\"abc\ndef\",\r\n";
         final String[][] res = { { "value1", "value2", "value3", "value4" }, { "a", "b", "c", "d" }, { "  x", "", "", "" }, { "" },
                 { "\"hello\"", "  \"world\"", "abc\ndef", "" } };
         try (CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL)) {
