@@ -1,4 +1,54 @@
+Apache Commons CSV 1.14.1 Release Notes
+---------------------------------------
+
+The Apache Commons CSV team is pleased to announce the release of Apache Commons CSV 1.14.1.
+
+
+This document contains the release notes for the 1.14.1 version of Apache Commons CSV.
+Commons CSV reads and writes files in Comma Separated Value (CSV) format variations.
+
+Commons CSV requires at least Java 8.
+
+The Apache Commons CSV library provides a simple interface for reading and writing CSV files of various types.
+
+This is a feature and maintenance release. Java 8 or later is required.
+
+Changes in this version include:
+
+
+Fixed Bugs
+----------
+
+* CSV-318:  CSVPrinter.printRecord(Stream) hangs if given a parallel stream. Thanks to Joseph Shraibman, Gary Gregory.
+* CSV-318:  CSVPrinter now uses an internal lock instead of synchronized methods. Thanks to Joseph Shraibman, Gary Gregory.
+*           org.apache.commons.csv.CSVPrinter.printRecords(ResultSet) now writes one record at a time using a lock. Thanks to Gary Gregory.
+
+Changes
+-------
+
+*           Bump org.apache.commons:commons-parent from 81 to 85 #542. Thanks to Gary Gregory, Dependabot.
+*           Bump commons-io:commons-io from 2.18.0 to 2.20.0. Thanks to Gary Gregory.
+*           Bump com.opencsv:opencsv from 5.10 to 5.11.2 #545, #551, #553. Thanks to Gary Gregory, Dependabot.
+*           Bump org.apache.commons:commons-lang3 from 3.17.0 to 3.18.0 #556. Thanks to Gary Gregory, Dependabot.
+*           Bump commons-codec:commons-codec from 1.18.0 to 1.19.0. Thanks to Gary Gregory.
+
+
+Historical list of changes: https://commons.apache.org/proper/commons-csv/changes.html
+
+For complete information on Apache Commons CSV, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Commons CSV website:
+
+https://commons.apache.org/proper/commons-csv/
+
+Download page: https://commons.apache.org/proper/commons-csv/download_csv.cgi
+
+Have fun!
+-Apache Commons CSV team
+
+------------------------------------------------------------------------------
+
 Apache Commons CSV 1.14.0 Release Notes
+---------------------------------------
 
 This document contains the release notes for the 1.14.0 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -59,7 +109,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.13.0 Release Notes
+Apache Commons CSV 1.13.0 Release Notes
+---------------------------------------
 
 This document contains the release notes for the 1.13.0 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -111,7 +162,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.12.0 Release Notes
+Apache Commons CSV 1.12.0 Release Notes
+---------------------------------------
 
 This document contains the release notes for the 1.12.0 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -167,7 +219,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.11.0 Release Notes
+Apache Commons CSV 1.11.0 Release Notes
+---------------------------------------
 
 This document contains the release notes for the 1.11.0 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -227,7 +280,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.10.0 Release Notes
+Apache Commons CSV 1.10.0 Release Notes
+---------------------------------------
 
 This document contains the release notes for the 1.10.0 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -308,7 +362,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.9.0 Release Notes
+Apache Commons CSV 1.9.0 Release Notes
+--------------------------------------
 
 This document contains the release notes for the 1.9.0 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -410,7 +465,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.8 Release Notes
+Apache Commons CSV 1.8 Release Notes
+------------------------------------
 
 This document contains the release notes for the 1.8 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -465,7 +521,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.7 Release Notes
+Apache Commons CSV 1.7 Release Notes
+------------------------------------
 
 This document contains the release notes for the 1.7 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -512,7 +569,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.6 Release Notes
+Apache Commons CSV 1.6 Release Notes
+------------------------------------
 
 This document contains the release notes for the 1.6 version of
 Apache Commons CSV. Commons CSV reads and writes files in variations of the
@@ -561,7 +619,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.5 Release Notes
+Apache Commons CSV 1.5 Release Notes
+------------------------------------
 
 This document contains the release notes for the 1.5 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -613,7 +672,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.4 Release Notes
+Apache Commons CSV 1.4 Release Notes
+------------------------------------
 
 This document contains the release notes for the 1.4 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -652,7 +712,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.3 Release Notes
+Apache Commons CSV 1.3 Release Notes
+------------------------------------
 
 This document contains the release notes for the 1.3 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -696,7 +757,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.2 Release Notes
+Apache Commons CSV 1.2 Release Notes
+------------------------------------
 
 This document contains the release notes for the 1.2 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -734,7 +796,8 @@ Have fun!
 
 ------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.1 Release Notes
+Apache Commons CSV 1.1 Release Notes
+------------------------------------
 
 This document contains the release notes for the 1.1 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
@@ -775,7 +838,8 @@ Have fun!
 
 -------------------------------------------------------------------------------
 
-Apache Commons CSV Version 1.0 Release Notes
+Apache Commons CSV 1.0 Release Notes
+------------------------------------
 
 This document contains the release notes for the 1.0 version of Apache Commons CSV.
 Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.
