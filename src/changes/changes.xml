@@ -43,7 +43,8 @@
     <release version="1.14.2" date="YYYY-MM-DD" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- FIX -->
       <!-- ADD -->
-      <!-- UPDATE -->
+      <!-- UPDATE --> 
+      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">[test] Bump com.opencsv:opencsv from 5.11.2 to 5.12.0 #558.</action>
     </release>
     <release version="1.14.1" date="2025-07-27" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- FIX -->
