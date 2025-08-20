@@ -175,7 +175,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          * Sets the lexer offset when the parser does not start parsing at the beginning of the source.
          *
          * @param characterOffset the lexer offset.
-         * @return this instance.
+         * @return {@code this} instance.
          */
         public Builder setCharacterOffset(final long characterOffset) {
             this.characterOffset = characterOffset;
@@ -186,7 +186,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          * Sets the CSV format. A copy of the given format is kept.
          *
          * @param format the CSV format, {@code null} resets to {@link CSVFormat#DEFAULT}.
-         * @return this instance.
+         * @return {@code this} instance.
          */
         public Builder setFormat(final CSVFormat format) {
             this.format = CSVFormat.copy(format);
@@ -197,7 +197,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          * Sets the next record number to assign, defaults to {@code 1}.
          *
          * @param recordNumber the next record number to assign.
-         * @return this instance.
+         * @return {@code this} instance.
          */
         public Builder setRecordNumber(final long recordNumber) {
             this.recordNumber = recordNumber;
@@ -208,7 +208,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          * Sets whether to enable byte tracking for the parser.
          *
          * @param trackBytes {@code true} to enable byte tracking; {@code false} to disable it.
-         * @return this instance.
+         * @return {@code this} instance.
          * @since 1.13.0
          */
         public Builder setTrackBytes(final boolean trackBytes) {
