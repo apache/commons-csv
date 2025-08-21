@@ -68,12 +68,6 @@
       <version>${commons.jmh.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.github.spotbugs</groupId>
-      <artifactId>spotbugs-annotations</artifactId>
-      <version>${commons.spotbugs.impl.version}</version>
-      <optional>true</optional>
-    </dependency>
   </dependencies>
   <scm>
     <connection>scm:git:https://gitbox.apache.org/repos/asf/commons-csv.git</connection>

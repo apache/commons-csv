@@ -40,8 +40,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.io.function.IOStream;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 /**
  * Prints values in a {@link CSVFormat CSV format}.
  *
@@ -153,7 +151,6 @@ public final class CSVPrinter implements Flushable, Closeable {
      * @throws IOException
      *             If an I/O error occurs
      */
-    @SuppressFBWarnings(value = "AT_NONATOMIC_OPERATIONS_ON_SHARED_VARIABLE", justification = "https://github.com/spotbugs/spotbugs/issues/3428")
     private void endOfRecord() throws IOException {
         println();
         recordCount++;

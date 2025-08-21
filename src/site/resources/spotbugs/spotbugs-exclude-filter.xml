@@ -54,5 +54,12 @@
     <Method name="values" />
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
+
+  <!-- https://github.com/spotbugs/spotbugs/issues/3428 -->
+  <Match>
+    <Class name="org.apache.commons.csv.CSVPrinter" />
+    <Method name="endOfRecord" />
+    <Bug pattern="AT_NONATOMIC_OPERATIONS_ON_SHARED_VARIABLE" />
+  </Match>
   
 </FindBugsFilter>
