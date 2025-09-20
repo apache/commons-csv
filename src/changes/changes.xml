@@ -45,8 +45,8 @@
       <action type="fix" issue="CSV-320" dev="aherbert" due-to="Jan Burkhardt">Remove Spotbugs dependency and use exclude-filter instead #564.</action>
       <!-- ADD -->
       <!-- UPDATE --> 
+      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 85 to 88 #573.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">[test] Bump com.opencsv:opencsv from 5.11.2 to 5.12.0 #558.</action>
-      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 85 to 87.</action>
     </release>
     <release version="1.14.1" date="2025-07-27" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- FIX -->
