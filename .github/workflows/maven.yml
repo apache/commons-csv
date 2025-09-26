@@ -29,12 +29,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-13]
-        java: [ 8, 11, 17, 21, 24 ]
+        java: [ 8, 11, 17, 21, 25 ]
         experimental: [false]
         # Keep the same parameter order as the matrix above
         include:
           - os: ubuntu-latest
-            java: 25-ea
+            java: 26-ea
             experimental: true
       
     steps:
