@@ -105,7 +105,7 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
   <ul>
     <li><a href="http://kasparov.skife.org/csv/">Skife CSV</a></li>
     <li><a href="https://opencsv.sourceforge.net/">Open CSV</a></li>
-    <li><a href="http://www.osjava.org/genjava/multiproject/gj-csv/">Genjava CSV</a></li>
+    <li>Genjava CSV</li>
   </ul>
   <p>In addition to the code from Netcetera (org.apache.commons.csv), Martin van den Bemt has added an additional writer API. </p>
   <p>Other CSV implementations: </p>
