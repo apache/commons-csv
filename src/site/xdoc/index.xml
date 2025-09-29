@@ -20,6 +20,9 @@ limitations under the License.
   <title>Home</title>
   <author email="dev@commons.apache.org">Apache Commons Team</author>
  </properties>
+<bannerRight name="Commons Codec" href="/index.html">
+  <image src="/images/logo.png"/>
+</bannerRight>
 <body>
 <!-- ================================================== -->
 <section name="Using Apache Commons CSV">
