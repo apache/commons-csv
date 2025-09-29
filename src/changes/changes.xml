@@ -43,6 +43,7 @@
     <release version="1.14.2" date="YYYY-MM-DD" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- FIX -->
       <action type="fix" issue="CSV-320" dev="aherbert" due-to="Jan Burkhardt">Remove Spotbugs dependency and use exclude-filter instead #564.</action>
+      <action type="fix" issue="CSV-320" dev="ggregory" due-to="Cassio Santos">Remove broken website link #577.</action>
       <!-- ADD -->
       <!-- UPDATE --> 
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 85 to 88 #573.</action>
