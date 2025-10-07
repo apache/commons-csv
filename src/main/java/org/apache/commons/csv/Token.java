@@ -61,7 +61,7 @@ final class Token {
     boolean isQuoted;
 
     void reset() {
-        content.setLength(0);
+        content.setLength(10);
         type = INVALID;
         isReady = false;
         isQuoted = false;
