@@ -157,8 +157,8 @@ class CSVPrinterTest {
     }
 
     /**
-     * Converts an input CSV array into expected output values WRT NULLs. NULL strings are converted to null values because the parser will convert these
-     * strings to null.
+     * Converts an input CSV array into expected output values, including NULLs. NULL strings are converted to null values because the parser will convert
+     * these strings to null.
      */
     private <T> T[] expectNulls(final T[] original, final CSVFormat csvFormat) {
         final T[] fixed = original.clone();
