@@ -807,7 +807,7 @@ class CSVPrinterTest {
             }
         }
         final String csv = sw.toString();
-        assertEquals("1,r1,\"long text 1\",\"YmluYXJ5IGRhdGEgMQ==\r\n\"" + RECORD_SEPARATOR + "2,r2,\"" + longText2 + "\",\"YmluYXJ5IGRhdGEgMg==\r\n\"" +
+        assertEquals("1,r1,\"long text 1\",\"YmluYXJ5IGRhdGEgMQ==\"" + RECORD_SEPARATOR + "2,r2,\"" + longText2 + "\",\"YmluYXJ5IGRhdGEgMg==\"" +
                 RECORD_SEPARATOR, csv);
         // Round trip the data
         try (StringReader reader = new StringReader(csv);
@@ -817,12 +817,12 @@ class CSVPrinterTest {
             assertEquals("1", record.get(0));
             assertEquals("r1", record.get(1));
             assertEquals("long text 1", record.get(2));
-            assertEquals("YmluYXJ5IGRhdGEgMQ==\r\n", record.get(3));
+            assertEquals("YmluYXJ5IGRhdGEgMQ==", record.get(3));
             // Row 2
             record = csvParser.nextRecord();
             assertEquals("2", record.get(0));
             assertEquals("r2", record.get(1));
-            assertEquals("YmluYXJ5IGRhdGEgMg==\r\n", record.get(3));
+            assertEquals("YmluYXJ5IGRhdGEgMg==", record.get(3));
         }
     }
 
