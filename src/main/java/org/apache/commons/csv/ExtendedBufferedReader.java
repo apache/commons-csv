@@ -111,13 +111,13 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      * <p>
      * The Unicode characters are divided into two main ranges:
      * <ul>
-     *   <li><b>U+0000 to U+FFFF (Basic Multilingual Plane, BMP):</b>
+     *   <li><strong>U+0000 to U+FFFF (Basic Multilingual Plane, BMP):</strong>
      *     <ul>
      *       <li>Represented using a single 16-bit {@code char}.</li>
      *       <li>Includes UTF-8 encodings of 1-byte, 2-byte, and some 3-byte characters.</li>
      *     </ul>
      *   </li>
-     *   <li><b>U+10000 to U+10FFFF (Supplementary Characters):</b>
+     *   <li><strong>U+10000 to U+10FFFF (Supplementary Characters):</strong>
      *     <ul>
      *       <li>Represented as a pair of {@code char}s:</li>
      *       <li>The first {@code char} is from the high-surrogates range (\uD800-\uDBFF).</li>
