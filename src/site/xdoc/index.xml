@@ -106,7 +106,7 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
 <section name="About Commons CSV">
   <p>Commons CSV was started to unify a common and simple interface for reading and writing CSV files under an ASL license. It has been bootstrapped by a code donation from Netcetera in Switzerland. There are three pre-existing BSD compatible CSV parsers which this component will hopefully make redundant (authors willing): </p>
   <ul>
-    <li><Skife CSV (unsafe link as noted by browser https://kasparov.skife.org/csv/)</li>
+    <li>Skife CSV (unsafe link as noted by browser https://kasparov.skife.org/csv/)</li>
     <li><a href="https://opencsv.sourceforge.net/">Open CSV</a></li>
     <li>Genjava CSV</li>
   </ul>
