@@ -44,6 +44,7 @@
       <!-- FIX -->
       <action type="fix" issue="CSV-320" dev="aherbert" due-to="Jan Burkhardt">Remove Spotbugs dependency and use exclude-filter instead #564.</action>
       <action type="fix" dev="ggregory" due-to="Cassio Santos">Remove broken website link #577.</action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">Fix Apache RAT plugin console warnings.</action>
       <!-- ADD -->
       <!-- UPDATE --> 
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 85 to 93 #573, #595.</action>

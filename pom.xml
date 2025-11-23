@@ -167,35 +167,35 @@
           <artifactId>apache-rat-plugin</artifactId>
           <!-- Should agree with config in reporting section -->
           <configuration>
-            <excludes>
+            <inputExcludes>
               <!-- These files are used as test data and test result specifications. -->
-              <exclude>src/test/resources/org/apache/commons/csv/empty.txt</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSV-141/csv-141.csv</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/csv-167/sample1.csv</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSV-198/optd_por_public.csv</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSV-196/emoji.csv</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSV-196/japanese.csv</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSV-213/999751170.patch.csv</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSV-254/csv-254.csv</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSVFileParser/bom.csv</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSVFileParser/test.csv</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSVFileParser/test_default.txt</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSVFileParser/test_default_comment.txt</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSVFileParser/test_rfc4180.txt</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSVFileParser/test_rfc4180_trim.txt</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSVFileParser/testCSV85.csv</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSVFileParser/testCSV85_default.txt</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSVFileParser/testCSV85_ignoreEmpty.txt</exclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/empty.txt</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSV-141/csv-141.csv</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/csv-167/sample1.csv</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSV-198/optd_por_public.csv</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSV-196/emoji.csv</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSV-196/japanese.csv</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSV-213/999751170.patch.csv</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSV-254/csv-254.csv</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSVFileParser/bom.csv</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSVFileParser/test.csv</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSVFileParser/test_default.txt</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSVFileParser/test_default_comment.txt</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSVFileParser/test_rfc4180.txt</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSVFileParser/test_rfc4180_trim.txt</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSVFileParser/testCSV85.csv</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSVFileParser/testCSV85_default.txt</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSVFileParser/testCSV85_ignoreEmpty.txt</inputExclude>
               <!-- The ferc.gov files are included discussion in https://issues.apache.org/jira/browse/LEGAL-175. -->
-              <exclude>src/test/resources/org/apache/commons/csv/ferc.gov/contract.txt</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/ferc.gov/transaction.txt</exclude>
-              <exclude>src/test/resources/**/*.bin</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSV-259/sample.txt</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSVFileParser/testCSV246.csv</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSVFileParser/testCSV246_checkWithNoComment.txt</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSV-290/psql.csv</exclude>
-              <exclude>src/test/resources/org/apache/commons/csv/CSV-290/psql.tsv</exclude>
-            </excludes>
+              <inputExclude>src/test/resources/org/apache/commons/csv/ferc.gov/contract.txt</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/ferc.gov/transaction.txt</inputExclude>
+              <inputExclude>src/test/resources/**/*.bin</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSV-259/sample.txt</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSVFileParser/testCSV246.csv</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSVFileParser/testCSV246_checkWithNoComment.txt</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSV-290/psql.csv</inputExclude>
+              <inputExclude>src/test/resources/org/apache/commons/csv/CSV-290/psql.tsv</inputExclude>
+            </inputExcludes>
           </configuration>
         </plugin>
       </plugins>
