@@ -106,7 +106,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     }
 
     /**
-     * Gets the byte length of the given character based on the the original Unicode
+     * Gets the byte length of the given character based on the original Unicode
      * specification, which defined characters as fixed-width 16-bit entities.
      * <p>
      * The Unicode characters are divided into two main ranges:
