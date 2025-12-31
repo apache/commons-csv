@@ -614,6 +614,7 @@ public final class CSVFormat implements Serializable {
          * <p>
          * This method keeps a copy of the input array.
          * </p>
+         *
          * @param header the header, {@code null} if disabled, empty if parsed automatically, user-specified otherwise.
          * @return This instance.
          */
@@ -695,6 +696,7 @@ public final class CSVFormat implements Serializable {
          * <p>
          * This method keeps a copy of the input array.
          * </p>
+         *
          * @param headerComments the headerComments which will be printed by the Printer before the CSV data.
          * @return This instance.
          */
