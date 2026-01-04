@@ -269,6 +269,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             throw new UnsupportedOperationException();
         }
     }
+
     /**
      * Header information based on name and position.
      */

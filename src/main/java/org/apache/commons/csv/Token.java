@@ -30,6 +30,7 @@ import static org.apache.commons.csv.Token.Type.INVALID;
 final class Token {
 
     enum Type {
+
         /** Token has no valid content, that is, is in its initialized state. */
         INVALID,
 
