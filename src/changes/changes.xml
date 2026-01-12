@@ -47,7 +47,7 @@
       <action type="fix" dev="ggregory" due-to="Gary Gregory">Fix Apache RAT plugin console warnings.</action>
       <!-- ADD -->
       <!-- UPDATE --> 
-      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 85 to 94 #573, #595.</action>
+      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 85 to 95 #573, #595.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">[test] Bump com.opencsv:opencsv from 5.11.2 to 5.12.0 #558.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-lang3 from 3.18.0 to 3.20.0.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-codec:commons-codec from 1.19.0 to 1.20.0.</action>
