@@ -26,6 +26,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     strategy:
+      max-parallel: 20
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
