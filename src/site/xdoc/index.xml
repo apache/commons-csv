@@ -70,6 +70,22 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
 </p>
 </section>
 
+  <section name="Android Compatibility">
+    <p>
+      Apache Commons CSV requires Java 8 or above.
+    </p>
+    <p>
+      When used on Android, compatibility depends on the Android API level’s
+      support for the required Java classes. For example,
+      <code>java.io.UncheckedIOException</code> (used since 1.10.0)
+      is officially available starting from Android API level 24.
+    </p>
+    <p>
+      Users targeting lower Android API levels should verify runtime
+      compatibility with their specific environment.
+    </p>
+  </section>
+
 <section name="Building from sources">
   <p>The latest code can be checked out from our git repository at <a href="https://gitbox.apache.org/repos/asf/commons-csv.git">https://gitbox.apache.org/repos/asf/commons-csv.git</a>.
     You can build the component using Apache Maven using <code>mvn clean package</code>.
