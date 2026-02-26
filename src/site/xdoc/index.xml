@@ -24,12 +24,10 @@ limitations under the License.
   <image src="/images/logo.png"/>
 </bannerRight>
 <body>
-<!-- ================================================== -->
 <section name="Using Apache Commons CSV">
   <p>Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.</p>
   <p>Read the documentation starting with the <a href="apidocs/index.html">Javadoc Overview</a>.</p>
 </section>
-<!-- ================================================== -->
 <section name="Documentation">
 <p>
 An overview of the functionality is provided in the
@@ -48,7 +46,6 @@ The <a href="scm.html">git repository</a> can be
 <a href="https://gitbox.apache.org/repos/asf?p=commons-csv.git">browsed</a>.
 </p>
 </section>
-<!-- ================================================== -->
 <section name="Releases">
 <ul>
   <li><a href="https://commons.apache.org/csv/download_csv.cgi">Download Apache Commons CSV current (mirrors)</a>, requires Java 8 or above</li>
@@ -69,33 +66,32 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
   For dependency access methods, see <a href="dependency-info.html">Dependency Information</a>
 </p>
 </section>
-<!-- ================================================== -->
-  <section name="Android Compatibility">
-    <p>
-      Apache Commons CSV requires Java 8 or above.
-    </p>
-    <p>
-      Starting with version 1.10.0, Commons CSV uses
-      <code>java.io.UncheckedIOException</code>
-      According to the official Android API reference,
-      this class was added in Android API level 24:
-      <a href="https://developer.android.com/reference/java/io/UncheckedIOException">
-        Android API reference for UncheckedIOException
-      </a>.
-    </p>
-    <p>
-      When used on Android, compatibility depends on the Android API level’s
-      support for the required Java classes. Users targeting lower Android API levels should verify runtime
-      compatibility with their specific environment.
-    </p>
-  </section>
-
 <section name="Building from sources">
   <p>The latest code can be checked out from our git repository at <a href="https://gitbox.apache.org/repos/asf/commons-csv.git">https://gitbox.apache.org/repos/asf/commons-csv.git</a>.
     You can build the component using Apache Maven using <code>mvn clean package</code>.
   </p>
 </section>
-<!-- ================================================== -->
+<section name="Android Compatibility">
+  <p>
+    Apache Commons CSV requires Java 8 or above.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Commons CSV</th>
+        <th>Java</th>
+        <th>Android</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1.10.0+</td>
+        <td>8</td>
+        <td><a href="https://developer.android.com/tools/releases/platforms#7.0">Android 7.0 (API level 24)</a></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
 <section name="Getting Involved">
   <p>
     The <a href="mail-lists.html">commons developer mailing list</a> is the main channel of communication for contributors. Please remember that the lists are shared between all commons components, so prefix your email by [csv]. </p>
@@ -107,7 +103,6 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
   <p>Alternatively you can go through the <em>Needs Work</em> tags in the <a href="taglist.html">TagList report</a>.</p>
   <p>If you'd like to offer up pull requests via GitHub rather than applying patches to JIRA, we have a <a href="https://github.com/apache/commons-csv/">GitHub mirror</a>. </p>
 </section>
-<!-- ================================================== -->
 <section name="Support">
   <p>
     The <a href="mail-lists.html">commons mailing lists</a> act as the main support forum.
@@ -121,8 +116,6 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
     Please read the instructions carefully.
   </p>
 </section>
-<!-- ================================================== -->
-
 <section name="About Commons CSV">
   <p>Commons CSV was started to unify a common and simple interface for reading and writing CSV files under an ASL license. It has been bootstrapped by a code donation from Netcetera in Switzerland. There are three pre-existing BSD compatible CSV parsers which this component will hopefully make redundant (authors willing): </p>
   <ul>
@@ -136,7 +129,5 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
     <li><a href="https://super-csv.github.io/super-csv/index.html">Super CSV</a></li>
   </ul>
 </section>
-
-<!-- ================================================== -->
 </body>
 </document>
