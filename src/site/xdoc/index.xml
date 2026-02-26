@@ -24,12 +24,10 @@ limitations under the License.
   <image src="/images/logo.png"/>
 </bannerRight>
 <body>
-<!-- ================================================== -->
 <section name="Using Apache Commons CSV">
   <p>Commons CSV reads and writes files in variations of the Comma Separated Value (CSV) format.</p>
   <p>Read the documentation starting with the <a href="apidocs/index.html">Javadoc Overview</a>.</p>
 </section>
-<!-- ================================================== -->
 <section name="Documentation">
 <p>
 An overview of the functionality is provided in the
@@ -48,7 +46,6 @@ The <a href="scm.html">git repository</a> can be
 <a href="https://gitbox.apache.org/repos/asf?p=commons-csv.git">browsed</a>.
 </p>
 </section>
-<!-- ================================================== -->
 <section name="Releases">
 <ul>
   <li><a href="https://commons.apache.org/csv/download_csv.cgi">Download Apache Commons CSV current (mirrors)</a>, requires Java 8 or above</li>
@@ -75,7 +72,6 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
     You can build the component using Apache Maven using <code>mvn clean package</code>.
   </p>
 </section>
-<!-- ================================================== -->
 <section name="Getting Involved">
   <p>
     The <a href="mail-lists.html">commons developer mailing list</a> is the main channel of communication for contributors. Please remember that the lists are shared between all commons components, so prefix your email by [csv]. </p>
@@ -87,7 +83,6 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
   <p>Alternatively you can go through the <em>Needs Work</em> tags in the <a href="taglist.html">TagList report</a>.</p>
   <p>If you'd like to offer up pull requests via GitHub rather than applying patches to JIRA, we have a <a href="https://github.com/apache/commons-csv/">GitHub mirror</a>. </p>
 </section>
-<!-- ================================================== -->
 <section name="Support">
   <p>
     The <a href="mail-lists.html">commons mailing lists</a> act as the main support forum.
@@ -101,8 +96,6 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
     Please read the instructions carefully.
   </p>
 </section>
-<!-- ================================================== -->
-
 <section name="About Commons CSV">
   <p>Commons CSV was started to unify a common and simple interface for reading and writing CSV files under an ASL license. It has been bootstrapped by a code donation from Netcetera in Switzerland. There are three pre-existing BSD compatible CSV parsers which this component will hopefully make redundant (authors willing): </p>
   <ul>
@@ -116,7 +109,5 @@ For previous releases, see the <a href="https://archive.apache.org/dist/commons/
     <li><a href="https://super-csv.github.io/super-csv/index.html">Super CSV</a></li>
   </ul>
 </section>
-
-<!-- ================================================== -->
 </body>
 </document>
