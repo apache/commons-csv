@@ -2788,7 +2788,7 @@ public final class CSVFormat implements Serializable {
      *                           .get();
      * </pre>
      *
-     * <p><b>Note:</b> Any previously set headers are reset to empty.
+     * <p>Any previously set headers are reset to empty.
      * The resulting format will have {@code skipHeaderRecord = true}.</p>
      *
      * @return A new CSVFormat that is equal to this but using the first record as header.
