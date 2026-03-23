@@ -20,7 +20,7 @@
 package org.apache.commons.csv;
 
 /**
- * Determines how duplicate header fields should be handled
+ * Enumerates how duplicate header fields should be handled
  * if {@link CSVFormat.Builder#setHeader(Class)} is not null.
  *
  * @since 1.10.0

@@ -19,7 +19,7 @@
 package org.apache.commons.csv;
 
 /**
- * Defines quoting behavior.
+ * Enumerates quoting behavior.
  *
  * @see CSVFormat.Builder#setQuoteMode(QuoteMode)
  */

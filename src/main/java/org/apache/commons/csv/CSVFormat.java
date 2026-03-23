@@ -900,7 +900,7 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
-     * Predefines formats.
+     * Enumerates predefines formats.
      *
      * @since 1.2
      */
