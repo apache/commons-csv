@@ -26,6 +26,7 @@ import static org.apache.commons.csv.Constants.LF;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -48,7 +49,6 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import org.apache.commons.csv.CSVFormat.Builder;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -64,16 +64,16 @@ class CSVFormatTest {
         Name, Email, Phone
     }
 
-    private static void assertNotEquals(final Object right, final Object left) {
-        Assertions.assertNotEquals(right, left);
-        Assertions.assertNotEquals(left, right);
+    private static void assertNotEqualsFlip(final Object right, final Object left) {
+        assertNotEquals(right, left);
+        assertNotEquals(left, right);
     }
 
     private static CSVFormat copy(final CSVFormat format) {
         return format.builder().setDelimiter(format.getDelimiter()).get();
     }
 
-    private void assertNotEquals(final String name, final String type, final Object left, final Object right) {
+    private void assertNotEqualsHash(final String name, final String type, final Object left, final Object right) {
         if (left.equals(right) || right.equals(left)) {
             fail("Objects must not compare equal for " + name + "(" + type + ")");
         }
@@ -198,8 +198,8 @@ class CSVFormatTest {
     void testEquals() {
         final CSVFormat right = CSVFormat.DEFAULT;
         final CSVFormat left = copy(right);
-        Assertions.assertNotEquals(null, right);
-        Assertions.assertNotEquals("A String Instance", right);
+        assertNotEquals(null, right);
+        assertNotEquals("A String Instance", right);
         assertEquals(right, right);
         assertEquals(right, left);
         assertEquals(left, right);
@@ -212,7 +212,7 @@ class CSVFormatTest {
         final CSVFormat right = CSVFormat.newFormat('\'').builder().setQuote('"').setCommentMarker('#').setQuoteMode(QuoteMode.ALL).get();
         final CSVFormat left = right.builder().setCommentMarker('!').get();
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @SuppressWarnings("deprecation")
@@ -221,7 +221,7 @@ class CSVFormatTest {
         final CSVFormat right = CSVFormat.newFormat('\'').withQuote('"').withCommentMarker('#').withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right.withCommentMarker('!');
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @Test
@@ -229,7 +229,7 @@ class CSVFormatTest {
         final CSVFormat right = CSVFormat.newFormat('!');
         final CSVFormat left = CSVFormat.newFormat('?');
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @Test
@@ -237,7 +237,7 @@ class CSVFormatTest {
         final CSVFormat right = CSVFormat.newFormat('\'').builder().setQuote('"').setCommentMarker('#').setEscape('+').setQuoteMode(QuoteMode.ALL).get();
         final CSVFormat left = right.builder().setEscape('!').get();
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @SuppressWarnings("deprecation")
@@ -246,7 +246,7 @@ class CSVFormatTest {
         final CSVFormat right = CSVFormat.newFormat('\'').withQuote('"').withCommentMarker('#').withEscape('+').withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right.withEscape('!');
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @Test
@@ -262,49 +262,49 @@ class CSVFormatTest {
                         case "boolean": {
                             final Object defTrue = method.invoke(CSVFormat.DEFAULT, Boolean.TRUE);
                             final Object defFalse = method.invoke(CSVFormat.DEFAULT, Boolean.FALSE);
-                            assertNotEquals(name, type, defTrue, defFalse);
+                            assertNotEqualsHash(name, type, defTrue, defFalse);
                             break;
                         }
                         case "char": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, 'a');
                             final Object b = method.invoke(CSVFormat.DEFAULT, 'b');
-                            assertNotEquals(name, type, a, b);
+                            assertNotEqualsHash(name, type, a, b);
                             break;
                         }
                         case "java.lang.Character": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] { null });
                             final Object b = method.invoke(CSVFormat.DEFAULT, Character.valueOf('d'));
-                            assertNotEquals(name, type, a, b);
+                            assertNotEqualsHash(name, type, a, b);
                             break;
                         }
                         case "java.lang.String": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] { null });
                             final Object b = method.invoke(CSVFormat.DEFAULT, "e");
-                            assertNotEquals(name, type, a, b);
+                            assertNotEqualsHash(name, type, a, b);
                             break;
                         }
                         case "java.lang.String[]": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] { new String[] { null, null } });
                             final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] { new String[] { "f", "g" } });
-                            assertNotEquals(name, type, a, b);
+                            assertNotEqualsHash(name, type, a, b);
                             break;
                         }
                         case "org.apache.commons.csv.QuoteMode": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, QuoteMode.MINIMAL);
                             final Object b = method.invoke(CSVFormat.DEFAULT, QuoteMode.ALL);
-                            assertNotEquals(name, type, a, b);
+                            assertNotEqualsHash(name, type, a, b);
                             break;
                         }
                         case "org.apache.commons.csv.DuplicateHeaderMode": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, DuplicateHeaderMode.ALLOW_ALL);
                             final Object b = method.invoke(CSVFormat.DEFAULT, DuplicateHeaderMode.DISALLOW);
-                            assertNotEquals(name, type, a, b);
+                            assertNotEqualsHash(name, type, a, b);
                             break;
                         }
                         case "java.lang.Object[]": {
                             final Object a = method.invoke(CSVFormat.DEFAULT, new Object[] { new Object[] { null, null } });
                             final Object b = method.invoke(CSVFormat.DEFAULT, new Object[] { new Object[] { new Object(), new Object() } });
-                            assertNotEquals(name, type, a, b);
+                            assertNotEqualsHash(name, type, a, b);
                             break;
                         }
                         default:
@@ -327,7 +327,7 @@ class CSVFormatTest {
                 .setIgnoreEmptyLines(true).setIgnoreSurroundingSpaces(true).setQuote('"').setQuoteMode(QuoteMode.ALL).get();
         final CSVFormat left = right.builder().setHeader("Three", "Two", "One").get();
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @SuppressWarnings("deprecation")
@@ -337,7 +337,7 @@ class CSVFormatTest {
                 .withIgnoreEmptyLines().withIgnoreSurroundingSpaces().withQuote('"').withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right.withHeader("Three", "Two", "One");
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @Test
@@ -346,7 +346,7 @@ class CSVFormatTest {
                 .setIgnoreSurroundingSpaces(true).setQuote('"').setQuoteMode(QuoteMode.ALL).get();
         final CSVFormat left = right.builder().setIgnoreEmptyLines(false).get();
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @SuppressWarnings("deprecation")
@@ -356,7 +356,7 @@ class CSVFormatTest {
                 .withQuote('"').withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right.withIgnoreEmptyLines(false);
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @Test
@@ -365,7 +365,7 @@ class CSVFormatTest {
                 .setQuoteMode(QuoteMode.ALL).get();
         final CSVFormat left = right.builder().setIgnoreSurroundingSpaces(false).get();
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @SuppressWarnings("deprecation")
@@ -375,7 +375,7 @@ class CSVFormatTest {
                 .withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right.withIgnoreSurroundingSpaces(false);
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @Test
@@ -383,7 +383,7 @@ class CSVFormatTest {
         final CSVFormat left = CSVFormat.newFormat(',').builder().setQuote(null).get();
         final CSVFormat right = left.builder().setQuote('#').get();
 
-        assertNotEquals(left, right);
+        assertNotEqualsFlip(left, right);
     }
 
     @SuppressWarnings("deprecation")
@@ -392,7 +392,7 @@ class CSVFormatTest {
         final CSVFormat left = CSVFormat.newFormat(',').withQuote(null);
         final CSVFormat right = left.withQuote('#');
 
-        assertNotEquals(left, right);
+        assertNotEqualsFlip(left, right);
     }
 
     @Test
@@ -418,7 +418,7 @@ class CSVFormatTest {
                 .setIgnoreSurroundingSpaces(true).setQuote('"').setQuoteMode(QuoteMode.ALL).setNullString("null").get();
         final CSVFormat left = right.builder().setNullString("---").get();
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @SuppressWarnings("deprecation")
@@ -428,7 +428,7 @@ class CSVFormatTest {
                 .withIgnoreSurroundingSpaces().withQuote('"').withQuoteMode(QuoteMode.ALL).withNullString("null");
         final CSVFormat left = right.withNullString("---");
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @Test
@@ -495,7 +495,7 @@ class CSVFormatTest {
         assertFalse(csvFormatTwo.isCommentMarkerSet());
 
         assertNotSame(csvFormatTwo, csvFormatOne);
-        Assertions.assertNotEquals(csvFormatTwo, csvFormatOne);
+        assertNotEquals(csvFormatTwo, csvFormatOne);
 
         assertEquals('\\', (char) csvFormatOne.getEscapeCharacter());
         assertNull(csvFormatOne.getQuoteMode());
@@ -554,10 +554,10 @@ class CSVFormatTest {
         assertNotSame(csvFormatOne, csvFormatTwo);
         assertNotSame(csvFormatTwo, csvFormatOne);
 
-        Assertions.assertNotEquals(csvFormatOne, csvFormatTwo);
-        Assertions.assertNotEquals(csvFormatTwo, csvFormatOne);
+        assertNotEquals(csvFormatOne, csvFormatTwo);
+        assertNotEquals(csvFormatTwo, csvFormatOne);
 
-        Assertions.assertNotEquals(csvFormatTwo, csvFormatOne);
+        assertNotEquals(csvFormatTwo, csvFormatOne);
 
     }
 
@@ -566,7 +566,7 @@ class CSVFormatTest {
         final CSVFormat right = CSVFormat.newFormat('\'').builder().setQuote('"').get();
         final CSVFormat left = right.builder().setQuote('!').get();
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @SuppressWarnings("deprecation")
@@ -575,7 +575,7 @@ class CSVFormatTest {
         final CSVFormat right = CSVFormat.newFormat('\'').withQuote('"');
         final CSVFormat left = right.withQuote('!');
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @Test
@@ -583,7 +583,7 @@ class CSVFormatTest {
         final CSVFormat right = CSVFormat.newFormat('\'').builder().setQuote('"').setQuoteMode(QuoteMode.ALL).get();
         final CSVFormat left = right.builder().setQuoteMode(QuoteMode.MINIMAL).get();
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @SuppressWarnings("deprecation")
@@ -592,7 +592,7 @@ class CSVFormatTest {
         final CSVFormat right = CSVFormat.newFormat('\'').withQuote('"').withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right.withQuoteMode(QuoteMode.MINIMAL);
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @Test
@@ -601,7 +601,7 @@ class CSVFormatTest {
                 .setIgnoreSurroundingSpaces(true).setQuote('"').setQuoteMode(QuoteMode.ALL).get();
         final CSVFormat left = right.builder().setRecordSeparator(LF).get();
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @SuppressWarnings("deprecation")
@@ -611,7 +611,7 @@ class CSVFormatTest {
                 .withIgnoreSurroundingSpaces().withQuote('"').withQuoteMode(QuoteMode.ALL);
         final CSVFormat left = right.withRecordSeparator(LF);
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     void testEqualsSkipHeaderRecord() {
@@ -619,7 +619,7 @@ class CSVFormatTest {
                 .setIgnoreSurroundingSpaces(true).setQuote('"').setQuoteMode(QuoteMode.ALL).setNullString("null").setSkipHeaderRecord(true).get();
         final CSVFormat left = right.builder().setSkipHeaderRecord(false).get();
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @SuppressWarnings("deprecation")
@@ -629,7 +629,7 @@ class CSVFormatTest {
                 .withIgnoreSurroundingSpaces().withQuote('"').withQuoteMode(QuoteMode.ALL).withNullString("null").withSkipHeaderRecord();
         final CSVFormat left = right.withSkipHeaderRecord(false);
 
-        assertNotEquals(right, left);
+        assertNotEqualsFlip(right, left);
     }
 
     @Test
@@ -691,7 +691,7 @@ class CSVFormatTest {
         assertNull(csvFormat.getQuoteCharacter());
         assertTrue(csvFormat.isNullStringSet());
 
-        Assertions.assertNotEquals(null, csvFormat);
+        assertNotEquals(null, csvFormat);
 
     }
 
@@ -801,7 +801,7 @@ class CSVFormatTest {
         assertTrue(csvFormatTwo.getIgnoreHeaderCase()); // now different
         assertFalse(csvFormatTwo.getTrailingDelimiter());
 
-        Assertions.assertNotEquals(csvFormatTwo, csvFormat); // CSV-244 - should not be equal
+        assertNotEquals(csvFormatTwo, csvFormat); // CSV-244 - should not be equal
         assertFalse(csvFormatTwo.getAllowMissingColumnNames());
 
         assertFalse(csvFormatTwo.getTrim());
@@ -1156,7 +1156,7 @@ class CSVFormatTest {
         assertNotSame(csvFormat, csvFormatTwo);
         assertNotSame(csvFormatTwo, csvFormat);
 
-        Assertions.assertNotEquals(csvFormatTwo, csvFormat);
+        assertNotEquals(csvFormatTwo, csvFormat);
 
         assertNull(csvFormat.getEscapeCharacter());
         assertTrue(csvFormat.isQuoteCharacterSet());
@@ -1215,9 +1215,9 @@ class CSVFormatTest {
         assertNotSame(csvFormat, csvFormatTwo);
         assertNotSame(csvFormatTwo, csvFormat);
 
-        Assertions.assertNotEquals(csvFormat, csvFormatTwo);
+        assertNotEquals(csvFormat, csvFormatTwo);
 
-        Assertions.assertNotEquals(csvFormatTwo, csvFormat);
+        assertNotEquals(csvFormatTwo, csvFormat);
         assertEquals("Delimiter=<,> QuoteChar=<\"> CommentStart=<n> RecordSeparator=<\r\n> EmptyLines:ignored SkipHeaderRecord:false",
                 csvFormatTwo.toString());
 
@@ -1403,7 +1403,7 @@ class CSVFormatTest {
         assertNotSame(csvFormat, csvFormatTwo);
         assertNotSame(csvFormatTwo, csvFormat);
 
-        Assertions.assertNotEquals(csvFormatTwo, csvFormat); // CSV-244 - should not be equal
+        assertNotEquals(csvFormatTwo, csvFormat); // CSV-244 - should not be equal
 
         final String string = csvFormatTwo.format(objectArray);
 
@@ -1465,9 +1465,9 @@ class CSVFormatTest {
         assertNotSame(csvFormatTwo, csvFormat);
 
         assertNotNull(string);
-        Assertions.assertNotEquals(csvFormat, csvFormatTwo); // CSV-244 - should not be equal
+        assertNotEquals(csvFormat, csvFormatTwo); // CSV-244 - should not be equal
 
-        Assertions.assertNotEquals(csvFormatTwo, csvFormat); // CSV-244 - should not be equal
+        assertNotEquals(csvFormatTwo, csvFormat); // CSV-244 - should not be equal
         assertEquals(",,,,,,,", string);
 
     }

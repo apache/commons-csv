@@ -19,13 +19,16 @@
 
 package org.apache.commons.csv;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -285,11 +288,11 @@ class CSVDuplicateHeaderTest {
                              .setHeader(headers);
         if (valid) {
             final CSVFormat format = builder.get();
-            Assertions.assertEquals(duplicateHeaderMode, format.getDuplicateHeaderMode(), "DuplicateHeaderMode");
-            Assertions.assertEquals(allowMissingColumnNames, format.getAllowMissingColumnNames(), "AllowMissingColumnNames");
-            Assertions.assertArrayEquals(headers, format.getHeader(), "Header");
+            assertEquals(duplicateHeaderMode, format.getDuplicateHeaderMode(), "DuplicateHeaderMode");
+            assertEquals(allowMissingColumnNames, format.getAllowMissingColumnNames(), "AllowMissingColumnNames");
+            assertArrayEquals(headers, format.getHeader(), "Header");
         } else {
-            Assertions.assertThrows(IllegalArgumentException.class, builder::get);
+            assertThrows(IllegalArgumentException.class, builder::get);
         }
     }
 
@@ -327,10 +330,10 @@ class CSVDuplicateHeaderTest {
             try (CSVParser parser = CSVParser.parse(input, format)) {
                 // Parser ignores null headers
                 final List<String> expected = Arrays.stream(headers).filter(s -> s != null).collect(Collectors.toList());
-                Assertions.assertEquals(expected, parser.getHeaderNames(), "HeaderNames");
+                assertEquals(expected, parser.getHeaderNames(), "HeaderNames");
             }
         } else {
-            Assertions.assertThrows(IllegalArgumentException.class, () -> CSVParser.parse(input, format));
+            assertThrows(IllegalArgumentException.class, () -> CSVParser.parse(input, format));
         }
     }
 }
