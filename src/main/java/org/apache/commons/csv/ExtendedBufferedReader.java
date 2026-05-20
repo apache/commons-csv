@@ -37,26 +37,30 @@ import org.apache.commons.io.input.UnsynchronizedBufferedReader;
 /**
  * A special buffered reader which supports sophisticated read access.
  * <p>
- * In particular the reader supports a look-ahead option, which allows you to see the next char returned by
- * {@link #read()}. This reader also tracks how many characters have been read with {@link #getPosition()}.
+ * In particular the reader supports a look-ahead option, which allows you to see the next char returned by {@link #read()}. This reader also tracks how many
+ * characters have been read with {@link #getPosition()}.
  * </p>
  */
 final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
 
     /** The last char returned */
     private int lastChar = UNDEFINED;
+
     private int lastCharMark = UNDEFINED;
 
     /** The count of EOLs (CR/LF/CRLF) seen so far */
     private long lineNumber;
+
     private long lineNumberMark;
 
     /** The position, which is the number of characters read so far */
     private long position;
+
     private long positionMark;
 
     /** The number of bytes read so far. */
     private long bytesRead;
+
     private long bytesReadMark;
 
     /** Encoder for calculating the number of bytes for each character read. */
@@ -70,12 +74,11 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     }
 
     /**
-     * Constructs a new instance with the specified reader, character set,
-     * and byte tracking option. Initializes an encoder if byte tracking is enabled
-     * and a character set is provided.
+     * Constructs a new instance with the specified reader, character set, and byte tracking option. Initializes an encoder if byte tracking is enabled and a
+     * character set is provided.
      *
-     * @param reader the reader supports a look-ahead option.
-     * @param charset the character set for encoding, or {@code null} if not applicable.
+     * @param reader     the reader supports a look-ahead option.
+     * @param charset    the character set for encoding, or {@code null} if not applicable.
      * @param trackBytes {@code true} to enable byte tracking; {@code false} to disable it.
      */
     ExtendedBufferedReader(final Reader reader, final Charset charset, final boolean trackBytes) {
@@ -86,8 +89,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     /**
      * Closes the stream.
      *
-     * @throws IOException
-     *             If an I/O error occurs
+     * @throws IOException If an I/O error occurs
      */
     @Override
     public void close() throws IOException {
@@ -105,26 +107,33 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         return this.bytesRead;
     }
 
+    private long getEncodedCharLength(final char[] buf, final int offset, final int length) throws CharacterCodingException {
+        int len = 0;
+        for (int i = offset; i < length; i++) {
+            len += getEncodedCharLength(buf[i]);
+        }
+        return len;
+    }
+
     /**
-     * Gets the byte length of the given character based on the original Unicode
-     * specification, which defined characters as fixed-width 16-bit entities.
+     * Gets the byte length of the given character based on the original Unicode specification, which defined characters as fixed-width 16-bit entities.
      * <p>
      * The Unicode characters are divided into two main ranges:
      * <ul>
-     *   <li><strong>U+0000 to U+FFFF (Basic Multilingual Plane, BMP):</strong>
-     *     <ul>
-     *       <li>Represented using a single 16-bit {@code char}.</li>
-     *       <li>Includes UTF-8 encodings of 1-byte, 2-byte, and some 3-byte characters.</li>
-     *     </ul>
-     *   </li>
-     *   <li><strong>U+10000 to U+10FFFF (Supplementary Characters):</strong>
-     *     <ul>
-     *       <li>Represented as a pair of {@code char}s:</li>
-     *       <li>The first {@code char} is from the high-surrogates range (\uD800-\uDBFF).</li>
-     *       <li>The second {@code char} is from the low-surrogates range (\uDC00-\uDFFF).</li>
-     *       <li>Includes UTF-8 encodings of some 3-byte characters and all 4-byte characters.</li>
-     *     </ul>
-     *   </li>
+     * <li><strong>U+0000 to U+FFFF (Basic Multilingual Plane, BMP):</strong>
+     * <ul>
+     * <li>Represented using a single 16-bit {@code char}.</li>
+     * <li>Includes UTF-8 encodings of 1-byte, 2-byte, and some 3-byte characters.</li>
+     * </ul>
+     * </li>
+     * <li><strong>U+10000 to U+10FFFF (Supplementary Characters):</strong>
+     * <ul>
+     * <li>Represented as a pair of {@code char}s:</li>
+     * <li>The first {@code char} is from the high-surrogates range (\uD800-\uDBFF).</li>
+     * <li>The second {@code char} is from the low-surrogates range (\uDC00-\uDFFF).</li>
+     * <li>Includes UTF-8 encodings of some 3-byte characters and all 4-byte characters.</li>
+     * </ul>
+     * </li>
      * </ul>
      *
      * @param current the current character to process.
@@ -148,10 +157,9 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     }
 
     /**
-     * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by
-     * any of the read methods. This will not include a character read using the {@link #peek()} method. If no
-     * character has been read then this will return {@link Constants#UNDEFINED}. If the end of the stream was reached
-     * on the last read then this will return {@link IOUtils#EOF}.
+     * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by any of the read methods. This will not
+     * include a character read using the {@link #peek()} method. If no character has been read then this will return {@link Constants#UNDEFINED}. If the end of
+     * the stream was reached on the last read then this will return {@link IOUtils#EOF}.
      *
      * @return the last character that was read
      */
@@ -193,8 +201,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     @Override
     public int read() throws IOException {
         final int current = super.read();
-        if (current == CR || current == LF && lastChar != CR ||
-            current == EOF && lastChar != CR && lastChar != LF && lastChar != EOF) {
+        if (current == CR || current == LF && lastChar != CR || current == EOF && lastChar != CR && lastChar != LF && lastChar != EOF) {
             lineNumber++;
         }
         if (encoder != null) {
@@ -226,13 +233,15 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         } else if (len == EOF) {
             lastChar = EOF;
         }
+        if (encoder != null) {
+            this.bytesRead += getEncodedCharLength(buf, offset, len);
+        }
         position += len;
         return len;
     }
 
     /**
-     * Gets the next line, dropping the line terminator(s). This method should only be called when processing a
-     * comment, otherwise, information can be lost.
+     * Gets the next line, dropping the line terminator(s). This method should only be called when processing a comment, otherwise, information can be lost.
      * <p>
      * Increments {@link #lineNumber} and updates {@link #position}.
      * </p>
@@ -272,5 +281,4 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         bytesRead = bytesReadMark;
         super.reset();
     }
-
 }
