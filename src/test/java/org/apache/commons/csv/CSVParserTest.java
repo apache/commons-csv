@@ -649,6 +649,24 @@ class CSVParserTest {
     }
 
     @Test
+    void testGetBytePositionMultiCharacterDelimiter() throws IOException {
+        final String code = "aa[|]bb\ncc[|]dd\n";
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").get();
+        try (CSVParser parser = CSVParser.builder()
+                .setReader(new StringReader(code))
+                .setFormat(format)
+                .setCharset(StandardCharsets.UTF_8)
+                .setTrackBytes(true)
+                .get()) {
+            final Iterator<CSVRecord> it = parser.iterator();
+            final CSVRecord first = it.next();
+            final CSVRecord second = it.next();
+            assertEquals(0, first.getBytePosition());
+            assertEquals(8, second.getBytePosition());
+        }
+    }
+
+    @Test
     void testGetHeaderComment_HeaderComment1() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_HEADER_COMMENT, FORMAT_AUTO_HEADER)) {
             parser.getRecords();
