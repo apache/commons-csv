@@ -1690,11 +1690,11 @@ public final class CSVFormat implements Serializable {
                 duplicateHeaderMode == other.duplicateHeaderMode && Objects.equals(escapeCharacter, other.escapeCharacter) &&
                 Arrays.equals(headerComments, other.headerComments) && Arrays.equals(headers, other.headers) &&
                 ignoreEmptyLines == other.ignoreEmptyLines && ignoreHeaderCase == other.ignoreHeaderCase &&
-                ignoreSurroundingSpaces == other.ignoreSurroundingSpaces && lenientEof == other.lenientEof &&
-                Objects.equals(nullString, other.nullString) && Objects.equals(quoteCharacter, other.quoteCharacter) &&
-                quoteMode == other.quoteMode && Objects.equals(quotedNullString, other.quotedNullString) &&
-                Objects.equals(recordSeparator, other.recordSeparator) && skipHeaderRecord == other.skipHeaderRecord &&
-                trailingData == other.trailingData && trailingDelimiter == other.trailingDelimiter && trim == other.trim;
+                ignoreSurroundingSpaces == other.ignoreSurroundingSpaces && lenientEof == other.lenientEof && maxRows == other.maxRows &&
+                Objects.equals(nullString, other.nullString) && Objects.equals(quoteCharacter, other.quoteCharacter) && quoteMode == other.quoteMode &&
+                Objects.equals(quotedNullString, other.quotedNullString) && Objects.equals(recordSeparator, other.recordSeparator) &&
+                skipHeaderRecord == other.skipHeaderRecord && trailingData == other.trailingData && trailingDelimiter == other.trailingDelimiter &&
+                trim == other.trim;
     }
 
     private void escape(final char c, final Appendable appendable) throws IOException {
@@ -2029,9 +2029,10 @@ public final class CSVFormat implements Serializable {
         int result = 1;
         result = prime * result + Arrays.hashCode(headerComments);
         result = prime * result + Arrays.hashCode(headers);
-        return prime * result + Objects.hash(allowMissingColumnNames, autoFlush, commentMarker, delimiter, duplicateHeaderMode, escapeCharacter,
-                ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, lenientEof, nullString, quoteCharacter, quoteMode, quotedNullString,
+        result = prime * result + Objects.hash(allowMissingColumnNames, autoFlush, commentMarker, delimiter, duplicateHeaderMode, escapeCharacter,
+                ignoreEmptyLines, ignoreHeaderCase, ignoreSurroundingSpaces, lenientEof, maxRows, nullString, quoteCharacter, quoteMode, quotedNullString,
                 recordSeparator, skipHeaderRecord, trailingData, trailingDelimiter, trim);
+        return result;
     }
 
     /**
