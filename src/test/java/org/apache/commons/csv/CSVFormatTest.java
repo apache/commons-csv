@@ -1002,6 +1002,30 @@ class CSVFormatTest {
     }
 
     @Test
+    void testQuotedNullStringTracksQuoteCharacter() throws IOException {
+        final StringBuilder out = new StringBuilder();
+        // @formatter:off
+        final Builder builder = CSVFormat.DEFAULT.builder();
+        final CSVFormat format = builder
+                .setQuoteMode(QuoteMode.ALL)
+                .setNullString("NULL")
+                .get();
+        // @formatter:on
+        format.print(null, out, true);
+        assertEquals("\"NULL\"", out.toString());
+        // set
+        out.setLength(0);
+        builder.setQuote('\'');
+        builder.get().print(null, out, true);
+        assertEquals("'NULL'", out.toString());
+        // reset
+        out.setLength(0);
+        builder.setQuote((Character) null);
+        builder.get().print(null, out, true);
+        assertEquals("\"NULL\"", out.toString());
+    }
+
+    @Test
     void testQuoteModeNoneShouldReturnMeaningfulExceptionMessage() {
         final Exception exception = assertThrows(IllegalArgumentException.class, () ->
         // @formatter:off
