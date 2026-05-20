@@ -396,6 +396,14 @@ class CSVFormatTest {
     }
 
     @Test
+    void testEqualsMaxRows() {
+        final CSVFormat right = CSVFormat.DEFAULT.builder().setMaxRows(10).get();
+        final CSVFormat left = CSVFormat.DEFAULT.builder().setMaxRows(1000).get();
+        assertNotEqualsFlip(right, left);
+        assertNotEquals(right.hashCode(), left.hashCode());
+    }
+
+    @Test
     void testEqualsNoQuotes() {
         final CSVFormat left = CSVFormat.newFormat(',').builder().setQuote(null).get();
         final CSVFormat right = left.builder().setQuote(null).get();
