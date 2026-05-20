@@ -806,6 +806,8 @@ public final class CSVFormat implements Serializable {
                 throw new IllegalArgumentException("The quoteCharacter cannot be a line break");
             }
             this.quoteCharacter = quoteCharacter;
+            final Character quote = quoteCharacter != null ? quoteCharacter : Constants.DOUBLE_QUOTE_CHAR;
+            this.quotedNullString = quote + nullString + quote;
             return this;
         }
 
