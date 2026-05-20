@@ -165,10 +165,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             // empty
         }
 
-        @SuppressWarnings("resource")
         @Override
         public CSVParser get() throws IOException {
-            return new CSVParser(getReader(), format != null ? format : CSVFormat.DEFAULT, characterOffset, recordNumber, getCharset(), trackBytes);
+            return new CSVParser(this);
         }
 
         /**
@@ -524,46 +523,30 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     @Deprecated
     public CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber) throws IOException {
-        this(reader, format, characterOffset, recordNumber, null, false);
+        // @formatter:off
+        this(builder()
+                .setReader(reader)
+                .setFormat(Objects.requireNonNull(format, "format")) // requireNonNull for full compatibility
+                .setCharacterOffset(characterOffset)
+                .setRecordNumber(recordNumber)
+                .setCharset((Charset) null).setTrackBytes(false));
+        // @formatter:off
     }
 
     /**
-     * Constructs a new instance using the given {@link CSVFormat}.
+     * Constructs a new instance from a builder.
      *
-     * <p>
-     * If you do not read all records from the given {@code reader}, you should call {@link #close()} on the parser,
-     * unless you close the {@code reader}.
-     * </p>
-     *
-     * @param reader
-     *            a Reader containing CSV-formatted input. Must not be null.
-     * @param format
-     *            the CSVFormat used for CSV parsing. Must not be null.
-     * @param characterOffset
-     *            Lexer offset when the parser does not start parsing at the beginning of the source.
-     * @param recordNumber
-     *            The next record number to assign.
-     * @param charset
-     *            The character encoding to be used for the reader when enableByteTracking is true.
-     * @param trackBytes
-     *           {@code true} to enable byte tracking for the parser; {@code false} to disable it.
-     * @throws IllegalArgumentException
-     *             If the parameters of the format are inconsistent or if either the reader or format is null.
-     * @throws IOException
-     *             If there is a problem reading the header or skipping the first record.
-     * @throws CSVException Thrown on invalid CSV input data.
+     * @param builder The source builder.
+     * @throws IOException if an I/O error occurs.
      */
-    @SuppressWarnings("resource") // reader is managed by lexer.
-    private CSVParser(final Reader reader, final CSVFormat format, final long characterOffset, final long recordNumber, final Charset charset,
-            final boolean trackBytes) throws IOException {
-        Objects.requireNonNull(reader, "reader");
-        Objects.requireNonNull(format, "format");
-        this.format = format.copy();
-        this.lexer = new Lexer(format, new ExtendedBufferedReader(reader, charset, trackBytes));
+    @SuppressWarnings("resource") // Lexer manages ExtendedBufferedReader.
+    private CSVParser(final Builder builder) throws IOException {
+        this.format = (builder.format != null ? builder.format : CSVFormat.DEFAULT).copy();
+        this.lexer = new Lexer(format, new ExtendedBufferedReader(builder.getReader(), builder.getCharset(), builder.trackBytes));
         this.csvRecordIterator = new CSVRecordIterator();
         this.headers = createHeaders();
-        this.characterOffset = characterOffset;
-        this.recordNumber = recordNumber - 1;
+        this.characterOffset = builder.characterOffset;
+        this.recordNumber = builder.recordNumber - 1;
     }
 
     private void addRecordValue(final boolean lastRecord) {
