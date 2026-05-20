@@ -46,6 +46,7 @@
       <action type="fix" dev="ggregory" due-to="Cassio Santos">Remove broken website link #577.</action>
       <action type="fix" dev="ggregory" due-to="Gary Gregory">Fix Apache RAT plugin console warnings.</action>
       <action type="fix" dev="ggregory" due-to="Indy, Gary Gregory">[Javadoc] Clarify behavior of deprecated CSVFormat#withFirstRecordAsHeader() #2413.</action>
+      <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-321">CSVFormat.equals()/hashCode() ignores maxRows (#600).</action>
       <!-- ADD -->
       <action type="add" dev="ggregory" due-to="Gary Gregory, Indy, Sylvia van Os" issue="CSV-307">Add an "Android Compatibility" section to the web site.</action>
       <!-- UPDATE --> 
