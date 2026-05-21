@@ -1621,6 +1621,20 @@ class CSVParserTest {
         }
     }
 
+    /**
+     * Tests <a href="https://issues.apache.org/jira/browse/CSV-324">CSV-324</a>.
+     */
+    @Test
+    void testPartialMultiCharacterDelimiterAtEOF() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").get();
+        try (CSVParser parser = format.parse(new StringReader("a[|]b[|"))) {
+            final CSVRecord record = parser.nextRecord();
+            assertEquals("a", record.get(0));
+            assertEquals("b[|", record.get(1));
+            assertEquals(2, record.size());
+        }
+    }
+
     @Test
     void testProvidedHeader() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");

@@ -23,6 +23,7 @@ import static org.apache.commons.io.IOUtils.EOF;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
 
@@ -272,6 +273,7 @@ final class Lexer implements Closeable {
             token.type = Token.Type.COMMENT;
             return token;
         }
+        Arrays.fill(delimiterBuf, '\0');
         // Important: make sure a new char gets consumed in each iteration
         while (token.type == Token.Type.INVALID) {
             // ignore whitespaces at beginning of a token
