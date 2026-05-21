@@ -409,6 +409,18 @@ class LexerTest {
         }
     }
 
+    /**
+     * Tests <a href="https://issues.apache.org/jira/browse/CSV-324">CSV-324</a>.
+     */
+    @Test
+    void testPartialMultiCharacterDelimiterAtEOF() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").get();
+        try (Lexer lexer = createLexer("a[|]b[|", format)) {
+            assertNextToken(TOKEN, "a", lexer);
+            assertNextToken(EOF, "b[|", lexer);
+        }
+    }
+
     @Test
     void testReadEscapeBackspace() throws IOException {
         try (Lexer lexer = createLexer("b", CSVFormat.DEFAULT.withEscape('\b'))) {
