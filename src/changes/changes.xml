@@ -48,7 +48,8 @@
       <action type="fix" dev="ggregory" due-to="Indy, Gary Gregory">[Javadoc] Clarify behavior of deprecated CSVFormat#withFirstRecordAsHeader() #2413.</action>
       <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-321">CSVFormat.equals()/hashCode() ignores maxRows (#600).</action>
       <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-323">ExtendedBufferedReader byte tracking leads to an incorrect CSVRecord.getBytePosition() (#601).</action>
-      <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-322">[CSV-322] CSVFormat.Builder.setQuote() does not refresh quotedNullString (#2447).</action>
+      <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-322">CSVFormat.Builder.setQuote() does not refresh quotedNullString (#2447).</action>
+      <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-324">Lexer.isDelimiter() accepts a partial multi-character delimiter at EOF (#603).</action>
       <!-- ADD -->
       <action type="add" dev="ggregory" due-to="Gary Gregory, Indy, Sylvia van Os" issue="CSV-307">Add an "Android Compatibility" section to the web site.</action>
       <!-- UPDATE --> 
