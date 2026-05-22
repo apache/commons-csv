@@ -474,6 +474,22 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private final Token reusableToken = new Token();
 
     /**
+     * Constructs a new instance from a builder.
+     *
+     * @param builder The source builder.
+     * @throws IOException if an I/O error occurs.
+     */
+    @SuppressWarnings("resource") // Lexer manages ExtendedBufferedReader.
+    private CSVParser(final Builder builder) throws IOException {
+        this.format = (builder.format != null ? builder.format : CSVFormat.DEFAULT).copy();
+        this.lexer = new Lexer(format, new ExtendedBufferedReader(builder.getReader(), builder.getCharset(), builder.trackBytes));
+        this.csvRecordIterator = new CSVRecordIterator();
+        this.headers = createHeaders();
+        this.characterOffset = builder.characterOffset;
+        this.recordNumber = builder.recordNumber - 1;
+    }
+
+    /**
      * Constructs a new instance using the given {@link CSVFormat}.
      *
      * <p>
@@ -531,22 +547,6 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                 .setRecordNumber(recordNumber)
                 .setCharset((Charset) null).setTrackBytes(false));
         // @formatter:off
-    }
-
-    /**
-     * Constructs a new instance from a builder.
-     *
-     * @param builder The source builder.
-     * @throws IOException if an I/O error occurs.
-     */
-    @SuppressWarnings("resource") // Lexer manages ExtendedBufferedReader.
-    private CSVParser(final Builder builder) throws IOException {
-        this.format = (builder.format != null ? builder.format : CSVFormat.DEFAULT).copy();
-        this.lexer = new Lexer(format, new ExtendedBufferedReader(builder.getReader(), builder.getCharset(), builder.trackBytes));
-        this.csvRecordIterator = new CSVRecordIterator();
-        this.headers = createHeaders();
-        this.characterOffset = builder.characterOffset;
-        this.recordNumber = builder.recordNumber - 1;
     }
 
     private void addRecordValue(final boolean lastRecord) {
