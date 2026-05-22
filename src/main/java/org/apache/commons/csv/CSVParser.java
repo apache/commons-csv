@@ -154,6 +154,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     public static class Builder extends AbstractStreamBuilder<CSVParser, Builder> {
 
         private CSVFormat format;
+        private long byteOffset = -1;
         private long characterOffset;
         private long recordNumber = 1;
         private boolean trackBytes;
@@ -171,10 +172,27 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         }
 
         /**
-         * Sets the lexer offset when the parser does not start parsing at the beginning of the source.
+         * Sets the lexer byte offset when the parser does not start parsing at the beginning of the source.
+         * <p>
+         * By default, the value is {@code -1}, which reuses the character offset for the byte offset.
+         * </p>
          *
-         * @param characterOffset the lexer offset.
+         * @param byteOffset the lexer byte offset.
          * @return {@code this} instance.
+         * @see #setCharacterOffset(long)
+         * @since 1.15.0
+         */
+        public Builder setByteOffset(final long byteOffset) {
+            this.byteOffset = byteOffset;
+            return asThis();
+        }
+
+        /**
+         * Sets the lexer character offset when the parser does not start parsing at the beginning of the source.
+         *
+         * @param characterOffset the lexer character offset.
+         * @return {@code this} instance.
+         * @see #setByteOffset(long)
          */
         public Builder setCharacterOffset(final long characterOffset) {
             this.characterOffset = characterOffset;
@@ -469,6 +487,12 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Lexer offset when the parser does not start parsing at the beginning of the source. Usually used in combination
      * with {@link #recordNumber}.
      */
+    private final long byteOffset;
+
+    /**
+     * Lexer offset when the parser does not start parsing at the beginning of the source. Usually used in combination
+     * with {@link #recordNumber}.
+     */
     private final long characterOffset;
 
     private final Token reusableToken = new Token();
@@ -485,6 +509,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         this.lexer = new Lexer(format, new ExtendedBufferedReader(builder.getReader(), builder.getCharset(), builder.trackBytes));
         this.csvRecordIterator = new CSVRecordIterator();
         this.headers = createHeaders();
+        this.byteOffset = builder.byteOffset != -1 ? builder.byteOffset : builder.characterOffset;
         this.characterOffset = builder.characterOffset;
         this.recordNumber = builder.recordNumber - 1;
     }
@@ -870,7 +895,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         recordList.clear();
         StringBuilder sb = null;
         final long startCharPosition = lexer.getCharacterPosition() + characterOffset;
-        final long startBytePosition = lexer.getBytesRead() + characterOffset;
+        final long startBytePosition = lexer.getBytesRead() + byteOffset;
         do {
             reusableToken.reset();
             lexer.nextToken(reusableToken);
