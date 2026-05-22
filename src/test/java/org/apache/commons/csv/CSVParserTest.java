@@ -667,6 +667,36 @@ class CSVParserTest {
     }
 
     @Test
+    void testGetBytePositionWithCharacterOffsetAndMultiBytePrefix() throws Exception {
+        final String row0 = "é,x\n";
+        final Charset charset = UTF_8;
+        // row0 char count is 4
+        assertEquals(4, row0.length());
+        // row0 byte count is 5
+        final int record1ByteOffset = row0.getBytes(charset).length;
+        assertEquals(5, record1ByteOffset);
+        final String row1 = "b,c\n";
+        final String rows = row0 + row1;
+        final long record1CharOffset = row0.length();
+        final long expectedByteOffset = row0.getBytes(charset).length;
+        try (CSVParser parser = CSVParser.builder()
+                .setReader(new StringReader(row1))
+                .setFormat(CSVFormat.DEFAULT)
+                .setCharset(charset)
+                .setTrackBytes(true)
+                .setByteOffset(record1ByteOffset)
+                .setCharacterOffset(record1CharOffset)
+                .setRecordNumber(2) // not relevant but a better use case example.
+                .get()) {
+            final CSVRecord record = parser.nextRecord();
+            assertNotNull(record);
+            assertEquals(4, record.getCharacterPosition());
+            assertEquals(record1CharOffset, record.getCharacterPosition());
+            assertEquals(expectedByteOffset, record.getBytePosition());
+        }
+    }
+
+    @Test
     void testGetHeaderComment_HeaderComment1() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_HEADER_COMMENT, FORMAT_AUTO_HEADER)) {
             parser.getRecords();
