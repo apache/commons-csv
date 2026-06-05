@@ -667,6 +667,27 @@ class CSVParserTest {
     }
 
     @Test
+    void testGetBytePositionMultiCharacterDelimiterWithSupplementaryChar() throws IOException {
+        // Delimiter holds a 4-byte (surrogate pair) character; the delimiter tail is consumed through
+        // the char[] read path, where the surrogate halves must be paired with the correct neighbor.
+        final String code = "aa[😀]bb\ncc[😀]dd\n";
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[😀]").get();
+        try (CSVParser parser = CSVParser.builder()
+                .setReader(new StringReader(code))
+                .setFormat(format)
+                .setCharset(StandardCharsets.UTF_8)
+                .setTrackBytes(true)
+                .get()) {
+            final Iterator<CSVRecord> it = parser.iterator();
+            final CSVRecord first = it.next();
+            final CSVRecord second = it.next();
+            assertEquals(0, first.getBytePosition());
+            // "aa[😀]bb\n" -> 2 + 1 + 4 + 1 + 2 + 1 = 11 bytes in UTF-8
+            assertEquals(11, second.getBytePosition());
+        }
+    }
+
+    @Test
     void testGetBytePositionWithCharacterOffsetAndMultiBytePrefix() throws Exception {
         final String row0 = "é,x\n";
         final Charset charset = UTF_8;

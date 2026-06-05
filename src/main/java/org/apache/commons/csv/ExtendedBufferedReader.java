@@ -109,8 +109,10 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
 
     private long getEncodedCharLength(final char[] buf, final int offset, final int length) throws CharacterCodingException {
         int len = 0;
-        for (int i = offset; i < length; i++) {
-            len += getEncodedCharLength(buf[i]);
+        int previous = lastChar;
+        for (int i = offset; i < offset + length; i++) {
+            len += getEncodedCharLength(buf[i], previous);
+            previous = buf[i];
         }
         return len;
     }
@@ -140,9 +142,9 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      * @return the byte length of the character.
      * @throws CharacterCodingException if the character cannot be encoded.
      */
-    private int getEncodedCharLength(final int current) throws CharacterCodingException {
+    private int getEncodedCharLength(final int current, final int previous) throws CharacterCodingException {
         final char cChar = (char) current;
-        final char lChar = (char) lastChar;
+        final char lChar = (char) previous;
         if (!Character.isSurrogate(cChar)) {
             return encoder.encode(CharBuffer.wrap(new char[] { cChar })).limit();
         }
@@ -205,7 +207,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
             lineNumber++;
         }
         if (encoder != null) {
-            this.bytesRead += getEncodedCharLength(current);
+            this.bytesRead += getEncodedCharLength(current, lastChar);
         }
         lastChar = current;
         position++;
@@ -229,12 +231,12 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
                     lineNumber++;
                 }
             }
+            if (encoder != null) {
+                this.bytesRead += getEncodedCharLength(buf, offset, len);
+            }
             lastChar = buf[offset + len - 1];
         } else if (len == EOF) {
             lastChar = EOF;
-        }
-        if (encoder != null) {
-            this.bytesRead += getEncodedCharLength(buf, offset, len);
         }
         position += len;
         return len;
