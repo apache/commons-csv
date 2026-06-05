@@ -650,7 +650,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     }
                     observedMissing |= blankHeader;
                     if (header != null) {
-                        headerMap.put(header, Integer.valueOf(i)); // Explicit (un)boxing is intentional
+                        headerMap.put(header, Integer.valueOf(i)); // Explicit boxing is intentional
                         if (headerNames == null) {
                             headerNames = new ArrayList<>(headerRecord.length);
                         }

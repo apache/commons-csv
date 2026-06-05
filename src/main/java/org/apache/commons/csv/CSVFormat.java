@@ -1479,7 +1479,7 @@ public final class CSVFormat implements Serializable {
      * @return true if {@code c} is a line break character (and not null).
      */
     private static boolean isLineBreak(final Character c) {
-        return c != null && isLineBreak(c.charValue()); // Explicit (un)boxing is intentional
+        return c != null && isLineBreak(c.charValue()); // Explicit unboxing is intentional
     }
 
     /** Same test as in as {@link String#trim()}. */
@@ -1700,7 +1700,7 @@ public final class CSVFormat implements Serializable {
     }
 
     private void escape(final char c, final Appendable appendable) throws IOException {
-        append(escapeCharacter.charValue(), appendable); // Explicit (un)boxing is intentional
+        append(escapeCharacter.charValue(), appendable); // Explicit unboxing is intentional
         append(c, appendable);
     }
 
@@ -1838,7 +1838,7 @@ public final class CSVFormat implements Serializable {
      * @return the escape character, may be {@code 0}
      */
     char getEscapeChar() {
-        return escapeCharacter != null ? escapeCharacter.charValue() : 0; // Explicit (un)boxing is intentional
+        return escapeCharacter != null ? escapeCharacter.charValue() : 0; // Explicit unboxing is intentional
     }
 
     /**
@@ -2161,7 +2161,7 @@ public final class CSVFormat implements Serializable {
         }
         final boolean quoteCharacterSet = isQuoteCharacterSet();
         if (quoteCharacterSet) {
-            append(getQuoteCharacter().charValue(), out); // Explicit (un)boxing is intentional
+            append(getQuoteCharacter().charValue(), out); // Explicit unboxing is intentional
         }
         // Stream the input to the output without reading or holding the whole value in memory.
         // AppendableOutputStream cannot "close" an Appendable.
@@ -2169,7 +2169,7 @@ public final class CSVFormat implements Serializable {
             IOUtils.copy(inputStream, outputStream);
         }
         if (quoteCharacterSet) {
-            append(getQuoteCharacter().charValue(), out); // Explicit (un)boxing is intentional
+            append(getQuoteCharacter().charValue(), out); // Explicit unboxing is intentional
         }
     }
 
@@ -2418,7 +2418,7 @@ public final class CSVFormat implements Serializable {
         final int len = charSeq.length();
         final char[] delim = getDelimiterCharArray();
         final int delimLength = delim.length;
-        final char quoteChar = getQuoteCharacter().charValue(); // Explicit (un)boxing is intentional
+        final char quoteChar = getQuoteCharacter().charValue(); // Explicit unboxing is intentional
         // If escape char not specified, default to the quote char
         // This avoids having to keep checking whether there is an escape character
         // at the cost of checking against quote twice
@@ -2521,7 +2521,7 @@ public final class CSVFormat implements Serializable {
             printWithEscapes(reader, appendable);
             return;
         }
-        final char quote = getQuoteCharacter().charValue(); // Explicit (un)boxing is intentional
+        final char quote = getQuoteCharacter().charValue(); // Explicit unboxing is intentional
         // (1) Append opening quote
         append(quote, appendable);
         // (2) Append Reader contents, doubling quotes
@@ -2607,13 +2607,13 @@ public final class CSVFormat implements Serializable {
      * @throws IllegalArgumentException Throw when any attribute is invalid or inconsistent with other attributes.
      */
     private void validate() throws IllegalArgumentException {
-        if (quoteCharacter != null && contains(delimiter, quoteCharacter.charValue())) { // Explicit (un)boxing is intentional
+        if (quoteCharacter != null && contains(delimiter, quoteCharacter.charValue())) { // Explicit unboxing is intentional
             throw new IllegalArgumentException("The quoteChar character and the delimiter cannot be the same ('" + quoteCharacter + "')");
         }
-        if (escapeCharacter != null && contains(delimiter, escapeCharacter.charValue())) { // Explicit (un)boxing is intentional
+        if (escapeCharacter != null && contains(delimiter, escapeCharacter.charValue())) { // Explicit unboxing is intentional
             throw new IllegalArgumentException("The escape character and the delimiter cannot be the same ('" + escapeCharacter + "')");
         }
-        if (commentMarker != null && contains(delimiter, commentMarker.charValue())) { // Explicit (un)boxing is intentional
+        if (commentMarker != null && contains(delimiter, commentMarker.charValue())) { // Explicit unboxing is intentional
             throw new IllegalArgumentException("The comment start character and the delimiter cannot be the same ('" + commentMarker + "')");
         }
         if (quoteCharacter != null && quoteCharacter.equals(commentMarker)) {

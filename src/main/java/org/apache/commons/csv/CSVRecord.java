@@ -132,13 +132,11 @@ public final class CSVRecord implements Serializable, Iterable<String> {
             throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name, headerMap.keySet()));
         }
         try {
-            return values[index.intValue()]; // Explicit (un)boxing is intentional
+            return values[index.intValue()]; // Explicit unboxing is intentional
         } catch (final ArrayIndexOutOfBoundsException e) {
+            // Explicit boxing is intentional
             throw new IllegalArgumentException(
-                    String.format("Index for header '%s' is %d but CSVRecord only has %d values!", name, index, Integer.valueOf(values.length))); // Explicit
-                                                                                                                                                  // (un)boxing
-                                                                                                                                                  // is
-                                                                                                                                                  // intentional
+                    String.format("Index for header '%s' is %d but CSVRecord only has %d values!", name, index, Integer.valueOf(values.length)));
         }
     }
 
@@ -267,7 +265,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return whether a given column is mapped and has a value.
      */
     public boolean isSet(final String name) {
-        return isMapped(name) && getHeaderMapRaw().get(name).intValue() < values.length; // Explicit (un)boxing is intentional
+        return isMapped(name) && getHeaderMapRaw().get(name).intValue() < values.length; // Explicit unboxing is intentional
     }
 
     /**
