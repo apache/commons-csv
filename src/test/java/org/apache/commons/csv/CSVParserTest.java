@@ -965,6 +965,23 @@ class CSVParserTest {
         }
     }
 
+    /**
+     * Tests <a href="https://issues.apache.org/jira/browse/CSV-327">CSV-327</a>.
+     */
+    @Test
+    void testGetRecordsMaxRowsWithRecordNumberOffset() throws IOException {
+        try (CSVParser parser = CSVParser.builder()
+                .setReader(new StringReader("a,b\nc,d\n"))
+                .setFormat(CSVFormat.DEFAULT.builder().setMaxRows(1).get())
+                .setRecordNumber(2)
+                .get()) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(1, records.size());
+            assertEquals(2, records.get(0).getRecordNumber());
+            assertValuesEquals(new String[] { "a", "b" }, records.get(0));
+        }
+    }
+
     @Test
     void testGetRecordThreeBytesRead() throws Exception {
         final String code = "id,date,val5,val4\n" +
