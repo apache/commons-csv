@@ -421,6 +421,18 @@ class LexerTest {
         }
     }
 
+    /**
+     * A truncated escaped multi-character delimiter at EOF must not be accepted by reusing the previous escape delimiter
+     * look-ahead in {@link Lexer#isEscapeDelimiter()}.
+     */
+    @Test
+    void testPartialEscapedMultiCharacterDelimiterAtEOF() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setEscape('!').get();
+        try (Lexer lexer = createLexer("x![!|!]y![!|", format)) {
+            assertNextToken(EOF, "x[|]y![!|", lexer);
+        }
+    }
+
     @Test
     void testReadEscapeBackspace() throws IOException {
         try (Lexer lexer = createLexer("b", CSVFormat.DEFAULT.withEscape('\b'))) {

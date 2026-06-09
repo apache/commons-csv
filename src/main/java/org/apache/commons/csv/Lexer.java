@@ -191,6 +191,7 @@ final class Lexer implements Closeable {
      * @throws IOException If an I/O error occurs.
      */
     boolean isEscapeDelimiter() throws IOException {
+        Arrays.fill(escapeDelimiterBuf, '\0');
         reader.peek(escapeDelimiterBuf);
         if (escapeDelimiterBuf[0] != delimiter[0]) {
             return false;
