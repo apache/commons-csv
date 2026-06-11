@@ -966,6 +966,23 @@ class CSVFormatTest {
         assertEquals("\"\"\"a,b,c\r\nx,y,z\"", out.toString());
     }
 
+    /**
+     * Tests <a href="https://issues.apache.org/jira/browse/CSV-326">CSV-326</a>.
+     */
+    @Test
+    void testPrintWithQuotesEscapeBeforeQuote() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder()
+                .setEscape('\\')
+                .setQuote('"')
+                .get();
+        final String value = "\\\"";
+        final Appendable out = new StringBuilder();
+        format.print(new StringReader(value), out, true);
+        try (CSVParser parser = CSVParser.parse(out.toString(), format)) {
+            assertEquals(value, parser.getRecords().get(0).get(0));
+        }
+    }
+
     @Test
     void testQuoteCharSameAsCommentStartThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> CSVFormat.DEFAULT.builder().setQuote('!').setCommentMarker('!').get());
