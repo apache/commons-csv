@@ -52,11 +52,12 @@
       <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-324">Lexer.isDelimiter() accepts a partial multi-character delimiter at EOF (#603).</action>
       <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-325">CSVParser applies characterOffset to bytePosition (#604).</action>
       <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-326">CSVPrinter Reader printing with quote and escape can emit CSV that its parser cannot read back.</action>
+      <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-327">CSVParser applies maxRows to record numbers instead of rows produced when setRecordNumber(...) is used.</action>
       <!-- ADD -->
       <action type="add" dev="ggregory" due-to="Gary Gregory, Indy, Sylvia van Os" issue="CSV-307">Add an "Android Compatibility" section to the web site.</action>
       <action type="add" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-325">Add CSVParser.Builder.setByteOffset(long) (#604).</action>
       <!-- UPDATE --> 
-      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 85 to 101 #573, #595.</action>
+      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 85 to 102 #573, #595.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">[test] Bump com.opencsv:opencsv from 5.11.2 to 5.12.0 #558.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-lang3 from 3.18.0 to 3.20.0.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-codec:commons-codec from 1.19.0 to 1.22.0.</action>
