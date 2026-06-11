@@ -1682,6 +1682,20 @@ class CSVParserTest {
         }
     }
 
+    /**
+     * A truncated escaped multi-character delimiter at EOF must stay literal data and not be completed from a stale
+     * escape delimiter look-ahead.
+     */
+    @Test
+    void testPartialEscapedMultiCharacterDelimiterAtEOF() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setEscape('!').get();
+        try (CSVParser parser = format.parse(new StringReader("x![!|!]y![!|"))) {
+            final CSVRecord record = parser.nextRecord();
+            assertEquals("x[|]y![!|", record.get(0));
+            assertEquals(1, record.size());
+        }
+    }
+
     @Test
     void testProvidedHeader() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
