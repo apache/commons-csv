@@ -429,14 +429,17 @@ class CSVPrinterTest {
         final StringWriter sw = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(sw, format)) {
             printer.printRecord("\"abc", "x\"y");
+            printer.printRecord(new StringReader("\"abc"), new StringReader("x\"y"));
         }
-        assertEquals("?\"abc,x?\"y\r\n", sw.toString());
-        // The emitted record must read back as the original values.
+        assertEquals("?\"abc,x?\"y" + RECORD_SEPARATOR + "?\"abc,x?\"y" + RECORD_SEPARATOR, sw.toString());
+        // The emitted records must read back as the original values.
         try (CSVParser parser = CSVParser.parse(sw.toString(), format)) {
             final List<CSVRecord> records = parser.getRecords();
-            assertEquals(1, records.size());
-            assertEquals("\"abc", records.get(0).get(0));
-            assertEquals("x\"y", records.get(0).get(1));
+            assertEquals(2, records.size());
+            for (final CSVRecord record : records) {
+                assertEquals("\"abc", record.get(0));
+                assertEquals("x\"y", record.get(1));
+            }
         }
     }
 
