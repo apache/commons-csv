@@ -1802,9 +1802,11 @@ class CSVPrinterTest {
     void testQuoteCharEscapedWithQuoteModeNone() throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.builder().setQuote('"').setEscape('?').setQuoteMode(QuoteMode.NONE).get();
         final StringWriter sw = new StringWriter();
+        final String col1 = "\"abc";
+        final String col2 = "x\"y";
         try (CSVPrinter printer = new CSVPrinter(sw, format)) {
-            printer.printRecord("\"abc", "x\"y");
-            printer.printRecord(new StringReader("\"abc"), new StringReader("x\"y"));
+            printer.printRecord(col1, col2);
+            printer.printRecord(new StringReader(col1), new StringReader(col2));
         }
         assertEquals("?\"abc,x?\"y" + RECORD_SEPARATOR + "?\"abc,x?\"y" + RECORD_SEPARATOR, sw.toString());
         // The emitted records must read back as the original values.
@@ -1812,8 +1814,8 @@ class CSVPrinterTest {
             final List<CSVRecord> records = parser.getRecords();
             assertEquals(2, records.size());
             for (final CSVRecord record : records) {
-                assertEquals("\"abc", record.get(0));
-                assertEquals("x\"y", record.get(1));
+                assertEquals(col1, record.get(0));
+                assertEquals(col2, record.get(1));
             }
         }
     }
