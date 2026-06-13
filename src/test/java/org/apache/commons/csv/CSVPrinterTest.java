@@ -424,6 +424,23 @@ class CSVPrinterTest {
     }
 
     @Test
+    void testQuoteCharEscapedWithQuoteModeNone() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setQuote('"').setEscape('?').setQuoteMode(QuoteMode.NONE).get();
+        final StringWriter sw = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            printer.printRecord("\"abc", "x\"y");
+        }
+        assertEquals("?\"abc,x?\"y\r\n", sw.toString());
+        // The emitted record must read back as the original values.
+        try (CSVParser parser = CSVParser.parse(sw.toString(), format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(1, records.size());
+            assertEquals("\"abc", records.get(0).get(0));
+            assertEquals("x\"y", records.get(0).get(1));
+        }
+    }
+
+    @Test
     void testDelimiterEscaped() throws IOException {
         final StringWriter sw = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape('!').withQuote(null))) {

@@ -2324,12 +2324,14 @@ public final class CSVFormat implements Serializable {
         final char[] delimArray = getDelimiterCharArray();
         final int delimLength = delimArray.length;
         final char escape = getEscapeChar();
+        final boolean quoteSet = isQuoteCharacterSet();
+        final char quote = quoteSet ? getQuoteCharacter().charValue() : 0;
         while (pos < end) {
             char c = charSeq.charAt(pos);
             final boolean isDelimiterStart = isDelimiter(c, charSeq, pos, delimArray, delimLength);
             final boolean isCr = c == Constants.CR;
             final boolean isLf = c == Constants.LF;
-            if (isCr || isLf || c == escape || isDelimiterStart) {
+            if (isCr || isLf || c == escape || quoteSet && c == quote || isDelimiterStart) {
                 // write out segment up until this char
                 if (pos > start) {
                     appendable.append(charSeq, start, pos);
@@ -2368,6 +2370,8 @@ public final class CSVFormat implements Serializable {
         final char[] delimArray = getDelimiterCharArray();
         final int delimLength = delimArray.length;
         final char escape = getEscapeChar();
+        final boolean quoteSet = isQuoteCharacterSet();
+        final char quote = quoteSet ? getQuoteCharacter().charValue() : 0;
         final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
         int c;
         final char[] lookAheadBuffer = new char[delimLength - 1];
@@ -2379,7 +2383,7 @@ public final class CSVFormat implements Serializable {
             final boolean isDelimiterStart = isDelimiter((char) c, test, pos, delimArray, delimLength);
             final boolean isCr = c == Constants.CR;
             final boolean isLf = c == Constants.LF;
-            if (isCr || isLf || c == escape || isDelimiterStart) {
+            if (isCr || isLf || c == escape || quoteSet && c == quote || isDelimiterStart) {
                 // write out segment up until this char
                 if (pos > start) {
                     append(builder.substring(start, pos), appendable);
