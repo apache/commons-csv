@@ -1669,20 +1669,6 @@ class CSVParserTest {
     }
 
     /**
-     * Tests <a href="https://issues.apache.org/jira/browse/CSV-324">CSV-324</a>.
-     */
-    @Test
-    void testPartialMultiCharacterDelimiterAtEOF() throws IOException {
-        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").get();
-        try (CSVParser parser = format.parse(new StringReader("a[|]b[|"))) {
-            final CSVRecord record = parser.nextRecord();
-            assertEquals("a", record.get(0));
-            assertEquals("b[|", record.get(1));
-            assertEquals(2, record.size());
-        }
-    }
-
-    /**
      * A truncated escaped multi-character delimiter at EOF must stay literal data and not be completed from a stale
      * escape delimiter look-ahead.
      */
@@ -1693,6 +1679,20 @@ class CSVParserTest {
             final CSVRecord record = parser.nextRecord();
             assertEquals("x[|]y![!|", record.get(0));
             assertEquals(1, record.size());
+        }
+    }
+
+    /**
+     * Tests <a href="https://issues.apache.org/jira/browse/CSV-324">CSV-324</a>.
+     */
+    @Test
+    void testPartialMultiCharacterDelimiterAtEOF() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").get();
+        try (CSVParser parser = format.parse(new StringReader("a[|]b[|"))) {
+            final CSVRecord record = parser.nextRecord();
+            assertEquals("a", record.get(0));
+            assertEquals("b[|", record.get(1));
+            assertEquals(2, record.size());
         }
     }
 

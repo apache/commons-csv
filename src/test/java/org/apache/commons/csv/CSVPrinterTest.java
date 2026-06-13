@@ -424,26 +424,6 @@ class CSVPrinterTest {
     }
 
     @Test
-    void testQuoteCharEscapedWithQuoteModeNone() throws IOException {
-        final CSVFormat format = CSVFormat.DEFAULT.builder().setQuote('"').setEscape('?').setQuoteMode(QuoteMode.NONE).get();
-        final StringWriter sw = new StringWriter();
-        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
-            printer.printRecord("\"abc", "x\"y");
-            printer.printRecord(new StringReader("\"abc"), new StringReader("x\"y"));
-        }
-        assertEquals("?\"abc,x?\"y" + RECORD_SEPARATOR + "?\"abc,x?\"y" + RECORD_SEPARATOR, sw.toString());
-        // The emitted records must read back as the original values.
-        try (CSVParser parser = CSVParser.parse(sw.toString(), format)) {
-            final List<CSVRecord> records = parser.getRecords();
-            assertEquals(2, records.size());
-            for (final CSVRecord record : records) {
-                assertEquals("\"abc", record.get(0));
-                assertEquals("x\"y", record.get(1));
-            }
-        }
-    }
-
-    @Test
     void testDelimiterEscaped() throws IOException {
         final StringWriter sw = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape('!').withQuote(null))) {
@@ -1815,6 +1795,26 @@ class CSVPrinterTest {
         try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuoteMode(QuoteMode.ALL))) {
             printer.printRecord("a", "b\nc", "d");
             assertEquals("\"a\",\"b\nc\",\"d\"" + RECORD_SEPARATOR, sw.toString());
+        }
+    }
+
+    @Test
+    void testQuoteCharEscapedWithQuoteModeNone() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setQuote('"').setEscape('?').setQuoteMode(QuoteMode.NONE).get();
+        final StringWriter sw = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            printer.printRecord("\"abc", "x\"y");
+            printer.printRecord(new StringReader("\"abc"), new StringReader("x\"y"));
+        }
+        assertEquals("?\"abc,x?\"y" + RECORD_SEPARATOR + "?\"abc,x?\"y" + RECORD_SEPARATOR, sw.toString());
+        // The emitted records must read back as the original values.
+        try (CSVParser parser = CSVParser.parse(sw.toString(), format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(2, records.size());
+            for (final CSVRecord record : records) {
+                assertEquals("\"abc", record.get(0));
+                assertEquals("x\"y", record.get(1));
+            }
         }
     }
 

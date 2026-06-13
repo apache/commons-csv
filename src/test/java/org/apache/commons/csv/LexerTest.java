@@ -410,18 +410,6 @@ class LexerTest {
     }
 
     /**
-     * Tests <a href="https://issues.apache.org/jira/browse/CSV-324">CSV-324</a>.
-     */
-    @Test
-    void testPartialMultiCharacterDelimiterAtEOF() throws IOException {
-        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").get();
-        try (Lexer lexer = createLexer("a[|]b[|", format)) {
-            assertNextToken(TOKEN, "a", lexer);
-            assertNextToken(EOF, "b[|", lexer);
-        }
-    }
-
-    /**
      * A truncated escaped multi-character delimiter at EOF must not be accepted by reusing the previous escape delimiter
      * look-ahead in {@link Lexer#isEscapeDelimiter()}.
      */
@@ -430,6 +418,18 @@ class LexerTest {
         final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setEscape('!').get();
         try (Lexer lexer = createLexer("x![!|!]y![!|", format)) {
             assertNextToken(EOF, "x[|]y![!|", lexer);
+        }
+    }
+
+    /**
+     * Tests <a href="https://issues.apache.org/jira/browse/CSV-324">CSV-324</a>.
+     */
+    @Test
+    void testPartialMultiCharacterDelimiterAtEOF() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").get();
+        try (Lexer lexer = createLexer("a[|]b[|", format)) {
+            assertNextToken(TOKEN, "a", lexer);
+            assertNextToken(EOF, "b[|", lexer);
         }
     }
 
