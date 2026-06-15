@@ -1830,6 +1830,24 @@ class CSVPrinterTest {
     }
 
     @Test
+    void testQuoteCommentMarkerFirstChar() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setCommentMarker(';').get();
+        final StringWriter sw = new StringWriter();
+        final String col1 = ";comment-like";
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            printer.printRecord(col1, "b");
+        }
+        assertEquals("\";comment-like\",b" + RECORD_SEPARATOR, sw.toString());
+        // A value starting with the comment marker must read back as data, not a dropped comment line.
+        try (CSVParser parser = CSVParser.parse(sw.toString(), format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(1, records.size());
+            assertEquals(col1, records.get(0).get(0));
+            assertEquals("b", records.get(0).get(1));
+        }
+    }
+
+    @Test
     void testQuoteNonNumeric() throws IOException {
         final StringWriter sw = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuoteMode(QuoteMode.NON_NUMERIC))) {
