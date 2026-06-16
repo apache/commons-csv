@@ -1830,6 +1830,33 @@ class CSVPrinterTest {
     }
 
     @Test
+    void testQuoteCommentMarkerFirstChar() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setCommentMarker(';').get();
+        final StringWriter sw = new StringWriter();
+        final String col1 = ";comment-like";
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            // A real comment is written with the marker, unquoted.
+            printer.printComment("a real comment");
+            // A value starting with the marker is quoted, so it does not read back as a comment.
+            printer.printRecord(col1, "b");
+            // The marker past the first character does not start a comment, so only the leading-marker value is quoted.
+            printer.printRecord("a;b", ";c");
+        }
+        assertEquals("; a real comment" + RECORD_SEPARATOR +
+                "\";comment-like\",b" + RECORD_SEPARATOR +
+                "a;b,\";c\"" + RECORD_SEPARATOR, sw.toString());
+        // The comment is dropped on read; both data records survive intact.
+        try (CSVParser parser = CSVParser.parse(sw.toString(), format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(2, records.size());
+            assertEquals(col1, records.get(0).get(0));
+            assertEquals("b", records.get(0).get(1));
+            assertEquals("a;b", records.get(1).get(0));
+            assertEquals(";c", records.get(1).get(1));
+        }
+    }
+
+    @Test
     void testQuoteNonNumeric() throws IOException {
         final StringWriter sw = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuoteMode(QuoteMode.NON_NUMERIC))) {

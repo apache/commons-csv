@@ -2454,10 +2454,11 @@ public final class CSVFormat implements Serializable {
                 }
             } else {
                 char c = charSeq.charAt(pos);
-                if (c <= Constants.COMMENT) {
+                if (c <= Constants.COMMENT || isCommentMarkerSet() && c == commentMarker.charValue()) {
                     // Some other chars at the start of a value caused the parser to fail, so for now
                     // encapsulate if we start in anything less than '#'. We are being conservative
-                    // by including the default comment char too.
+                    // by including the default comment char and any configured comment marker too,
+                    // which the parser would otherwise read back as a comment line.
                     quote = true;
                 } else {
                     while (pos < len) {
