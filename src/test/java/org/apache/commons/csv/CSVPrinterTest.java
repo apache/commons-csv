@@ -1842,11 +1842,12 @@ class CSVPrinterTest {
             // The marker past the first character does not start a comment, so only the leading-marker value is quoted.
             printer.printRecord("a;b", ";c");
         }
+        final String string = sw.toString();
         assertEquals("; a real comment" + RECORD_SEPARATOR +
                 "\";comment-like\",b" + RECORD_SEPARATOR +
-                "a;b,\";c\"" + RECORD_SEPARATOR, sw.toString());
+                "a;b,\";c\"" + RECORD_SEPARATOR, string);
         // The comment is dropped on read; both data records survive intact.
-        try (CSVParser parser = CSVParser.parse(sw.toString(), format)) {
+        try (CSVParser parser = CSVParser.parse(string, format)) {
             final List<CSVRecord> records = parser.getRecords();
             assertEquals(2, records.size());
             assertEquals(col1, records.get(0).get(0));
