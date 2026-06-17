@@ -1696,6 +1696,21 @@ class CSVParserTest {
         }
     }
 
+    /**
+     * A truncated multi-character delimiter at EOF must not be completed from the look-ahead buffer left dirty by an
+     * earlier non-matching peek in the same token.
+     */
+    @Test
+    void testPartialMultiCharacterDelimiterAtEOFAfterMismatch() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").get();
+        // The "[a]" peek leaves ']' in the look-ahead buffer; the trailing "[|" must not match "[|]".
+        try (CSVParser parser = format.parse(new StringReader("x[a][|"))) {
+            final CSVRecord record = parser.nextRecord();
+            assertEquals("x[a][|", record.get(0));
+            assertEquals(1, record.size());
+        }
+    }
+
     @Test
     void testProvidedHeader() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
