@@ -153,6 +153,7 @@ final class Lexer implements Closeable {
             isLastTokenDelimiter = true;
             return true;
         }
+        Arrays.fill(delimiterBuf, '\0');
         reader.peek(delimiterBuf);
         for (int i = 0; i < delimiterBuf.length; i++) {
             if (delimiterBuf[i] != delimiter[i + 1]) {
@@ -274,7 +275,6 @@ final class Lexer implements Closeable {
             token.type = Token.Type.COMMENT;
             return token;
         }
-        Arrays.fill(delimiterBuf, '\0');
         // Important: make sure a new char gets consumed in each iteration
         while (token.type == Token.Type.INVALID) {
             // ignore whitespaces at beginning of a token

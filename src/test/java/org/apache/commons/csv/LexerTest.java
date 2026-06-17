@@ -433,6 +433,19 @@ class LexerTest {
         }
     }
 
+    /**
+     * A truncated multi-character delimiter at EOF must not be accepted by reusing the look-ahead buffer left dirty by an
+     * earlier non-matching peek in the same token (CSV-324 only cleared the buffer once per token).
+     */
+    @Test
+    void testPartialMultiCharacterDelimiterAtEOFAfterMismatch() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").get();
+        // The "[a]" peek leaves ']' in the look-ahead buffer; the trailing "[|" must not match "[|]".
+        try (Lexer lexer = createLexer("x[a][|", format)) {
+            assertNextToken(EOF, "x[a][|", lexer);
+        }
+    }
+
     @Test
     void testReadEscapeBackspace() throws IOException {
         try (Lexer lexer = createLexer("b", CSVFormat.DEFAULT.withEscape('\b'))) {
