@@ -1704,9 +1704,10 @@ class CSVParserTest {
     void testPartialMultiCharacterDelimiterAtEOFAfterMismatch() throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").get();
         // The "[a]" peek leaves ']' in the look-ahead buffer; the trailing "[|" must not match "[|]".
-        try (CSVParser parser = format.parse(new StringReader("x[a][|"))) {
+        final String recordString = "x[a][|";
+        try (CSVParser parser = format.parse(new StringReader(recordString))) {
             final CSVRecord record = parser.nextRecord();
-            assertEquals("x[a][|", record.get(0));
+            assertEquals(recordString, record.get(0));
             assertEquals(1, record.size());
         }
     }

@@ -441,8 +441,9 @@ class LexerTest {
     void testPartialMultiCharacterDelimiterAtEOFAfterMismatch() throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[|]").get();
         // The "[a]" peek leaves ']' in the look-ahead buffer; the trailing "[|" must not match "[|]".
-        try (Lexer lexer = createLexer("x[a][|", format)) {
-            assertNextToken(EOF, "x[a][|", lexer);
+        final String recordString = "x[a][|";
+        try (Lexer lexer = createLexer(recordString, format)) {
+            assertNextToken(EOF, recordString, lexer);
         }
     }
 
