@@ -780,8 +780,7 @@ public final class CSVFormat implements Serializable {
          */
         public Builder setNullString(final String nullString) {
             this.nullString = nullString;
-            this.quotedNullString = quoteCharacter + nullString + quoteCharacter;
-            return this;
+            return setQuotedNullString();
         }
 
         /**
@@ -806,6 +805,10 @@ public final class CSVFormat implements Serializable {
                 throw new IllegalArgumentException("The quoteCharacter cannot be a line break");
             }
             this.quoteCharacter = quoteCharacter;
+            return setQuotedNullString();
+        }
+
+        private Builder setQuotedNullString() {
             final Character quote = quoteCharacter != null ? quoteCharacter : Constants.DOUBLE_QUOTE_CHAR;
             this.quotedNullString = quote + nullString + quote;
             return this;
