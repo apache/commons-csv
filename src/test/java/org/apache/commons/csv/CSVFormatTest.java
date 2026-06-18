@@ -1040,6 +1040,11 @@ class CSVFormatTest {
         builder.setQuote((Character) null);
         builder.get().print(null, out, true);
         assertEquals("\"NULL\"", out.toString());
+        // reset, reverse setter order
+        out.setLength(0);
+        builder.setNullString(null).setQuote((Character) null).setNullString("NULL");
+        builder.get().print(null, out, true);
+        assertEquals("\"NULL\"", out.toString());
     }
 
     @Test
