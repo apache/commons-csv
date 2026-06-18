@@ -666,6 +666,31 @@ class CSVParserTest {
         }
     }
 
+    /**
+     * Tests <a href="https://issues.apache.org/jira/browse/CSV-329">CSV-329</a>.
+     */
+    @Test
+    void testGetBytePositionMultiCharacterDelimiterWithSupplementaryCharacter() throws IOException {
+        final String delimiter = "x😀";
+        final String code = "ax😀b\ncx😀d\n";
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter(delimiter).get();
+        try (CSVParser parser = CSVParser.builder()
+                .setReader(new StringReader(code))
+                .setFormat(format)
+                .setCharset(UTF_8)
+                .setTrackBytes(true)
+                .get()) {
+            final CSVRecord first = parser.nextRecord();
+            final CSVRecord second = parser.nextRecord();
+            assertNotNull(first);
+            assertNotNull(second);
+            assertValuesEquals(new String[] { "a", "b" }, first);
+            assertValuesEquals(new String[] { "c", "d" }, second);
+            assertEquals(0, first.getBytePosition());
+            assertEquals("ax😀b\n".getBytes(UTF_8).length, second.getBytePosition());
+        }
+    }
+
     @Test
     void testGetBytePositionWithCharacterOffsetAndMultiBytePrefix() throws Exception {
         final String row0 = "é,x\n";

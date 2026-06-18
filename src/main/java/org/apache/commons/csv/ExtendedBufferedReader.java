@@ -108,9 +108,11 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     }
 
     private long getEncodedCharLength(final char[] buf, final int offset, final int length) throws CharacterCodingException {
-        int len = 0;
-        for (int i = offset; i < length; i++) {
-            len += getEncodedCharLength(buf[i]);
+        long len = 0;
+        int previous = lastChar;
+        for (int i = offset; i < offset + length; i++) {
+            len += getEncodedCharLength(previous, buf[i]);
+            previous = buf[i];
         }
         return len;
     }
@@ -141,8 +143,12 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      * @throws CharacterCodingException if the character cannot be encoded.
      */
     private int getEncodedCharLength(final int current) throws CharacterCodingException {
+        return getEncodedCharLength(lastChar, current);
+    }
+
+    private int getEncodedCharLength(final int previous, final int current) throws CharacterCodingException {
         final char cChar = (char) current;
-        final char lChar = (char) lastChar;
+        final char lChar = (char) previous;
         if (!Character.isSurrogate(cChar)) {
             return encoder.encode(CharBuffer.wrap(new char[] { cChar })).limit();
         }
@@ -218,6 +224,9 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
             return 0;
         }
         final int len = super.read(buf, offset, length);
+        if (encoder != null && len > 0) {
+            this.bytesRead += getEncodedCharLength(buf, offset, len);
+        }
         if (len > 0) {
             for (int i = offset; i < offset + len; i++) {
                 final char ch = buf[i];
@@ -232,9 +241,6 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
             lastChar = buf[offset + len - 1];
         } else if (len == EOF) {
             lastChar = EOF;
-        }
-        if (encoder != null) {
-            this.bytesRead += getEncodedCharLength(buf, offset, len);
         }
         position += len;
         return len;
