@@ -672,10 +672,10 @@ class CSVParserTest {
     @Test
     void testGetBytePositionMultiCharacterDelimiterWithSupplementaryCharacter() throws IOException {
         final String delimiter = "x😀";
-        final String data = "a" + delimiter + "b\nc" + delimiter + "d\n";
+        final String code = "ax😀b\ncx😀d\n";
         final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter(delimiter).get();
         try (CSVParser parser = CSVParser.builder()
-                .setReader(new StringReader(data))
+                .setReader(new StringReader(code))
                 .setFormat(format)
                 .setCharset(UTF_8)
                 .setTrackBytes(true)
@@ -687,7 +687,7 @@ class CSVParserTest {
             assertValuesEquals(new String[] { "a", "b" }, first);
             assertValuesEquals(new String[] { "c", "d" }, second);
             assertEquals(0, first.getBytePosition());
-            assertEquals("a" + delimiter + "b\n".getBytes(UTF_8).length, second.getBytePosition());
+            assertEquals("ax😀b\n".getBytes(UTF_8).length, second.getBytePosition());
         }
     }
 
