@@ -570,6 +570,57 @@ class CSVPrinterTest {
     }
 
     @Test
+    void testEscapeCommentMarkerFirstChar() throws IOException {
+        // No quoting available in escape mode, so a leading comment marker must be escaped or the
+        // record reads back as a comment and is dropped. Mirrors the quoting fix for QuoteMode.MINIMAL.
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setQuote(null).setEscape('\\').setCommentMarker(';').get();
+        final StringWriter sw = new StringWriter();
+        final String col1 = ";comment-like";
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            printer.printRecord(col1, "b");
+            printer.printRecord(new StringReader(col1), new StringReader("b"));
+            // The marker past the first character does not start a comment and is left alone.
+            printer.printRecord("a;b", ";c");
+        }
+        final String string = sw.toString();
+        assertEquals("\\;comment-like,b" + RECORD_SEPARATOR +
+                "\\;comment-like,b" + RECORD_SEPARATOR +
+                "a;b,\\;c" + RECORD_SEPARATOR, string);
+        // The emitted records must read back as the original values, none parsed as a comment.
+        try (CSVParser parser = CSVParser.parse(string, format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(3, records.size());
+            assertEquals(col1, records.get(0).get(0));
+            assertEquals("b", records.get(0).get(1));
+            assertEquals(col1, records.get(1).get(0));
+            assertEquals("b", records.get(1).get(1));
+            assertEquals("a;b", records.get(2).get(0));
+            assertEquals(";c", records.get(2).get(1));
+        }
+    }
+
+    @Test
+    void testEscapeCommentMarkerFirstCharWithQuoteModeNone() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setEscape('\\').setQuoteMode(QuoteMode.NONE).setCommentMarker(';').get();
+        final StringWriter sw = new StringWriter();
+        final String col1 = ";bar";
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            printer.printRecord(col1, "b");
+            printer.printRecord(new StringReader(col1), new StringReader("b"));
+        }
+        final String string = sw.toString();
+        assertEquals("\\;bar,b" + RECORD_SEPARATOR + "\\;bar,b" + RECORD_SEPARATOR, string);
+        try (CSVParser parser = CSVParser.parse(string, format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(2, records.size());
+            for (final CSVRecord record : records) {
+                assertEquals(col1, record.get(0));
+                assertEquals("b", record.get(1));
+            }
+        }
+    }
+
+    @Test
     void testEscapeNull1() throws IOException {
         final StringWriter sw = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withEscape(null))) {

@@ -2329,12 +2329,16 @@ public final class CSVFormat implements Serializable {
         final char escape = getEscapeChar();
         final boolean quoteSet = isQuoteCharacterSet();
         final char quote = quoteSet ? getQuoteCharacter().charValue() : 0;
+        final boolean commentMarkerSet = isCommentMarkerSet();
+        final char commentChar = commentMarkerSet ? commentMarker.charValue() : 0; // Explicit unboxing is intentional
         while (pos < end) {
             char c = charSeq.charAt(pos);
             final boolean isDelimiterStart = isDelimiter(c, charSeq, pos, delimArray, delimLength);
             final boolean isCr = c == Constants.CR;
             final boolean isLf = c == Constants.LF;
-            if (isCr || isLf || c == escape || quoteSet && c == quote || isDelimiterStart) {
+            // A leading comment marker would be read back as a comment, so escape it.
+            final boolean isComment = commentMarkerSet && pos == 0 && c == commentChar;
+            if (isCr || isLf || c == escape || quoteSet && c == quote || isDelimiterStart || isComment) {
                 // write out segment up until this char
                 if (pos > start) {
                     appendable.append(charSeq, start, pos);
@@ -2375,8 +2379,11 @@ public final class CSVFormat implements Serializable {
         final char escape = getEscapeChar();
         final boolean quoteSet = isQuoteCharacterSet();
         final char quote = quoteSet ? getQuoteCharacter().charValue() : 0;
+        final boolean commentMarkerSet = isCommentMarkerSet();
+        final char commentChar = commentMarkerSet ? commentMarker.charValue() : 0; // Explicit unboxing is intentional
         final StringBuilder builder = new StringBuilder(IOUtils.DEFAULT_BUFFER_SIZE);
         int c;
+        boolean firstChar = true;
         final char[] lookAheadBuffer = new char[delimLength - 1];
         while (EOF != (c = bufferedReader.read())) {
             builder.append((char) c);
@@ -2386,7 +2393,10 @@ public final class CSVFormat implements Serializable {
             final boolean isDelimiterStart = isDelimiter((char) c, test, pos, delimArray, delimLength);
             final boolean isCr = c == Constants.CR;
             final boolean isLf = c == Constants.LF;
-            if (isCr || isLf || c == escape || quoteSet && c == quote || isDelimiterStart) {
+            // A leading comment marker would be read back as a comment, so escape it.
+            final boolean isComment = commentMarkerSet && firstChar && c == commentChar;
+            firstChar = false;
+            if (isCr || isLf || c == escape || quoteSet && c == quote || isDelimiterStart || isComment) {
                 // write out segment up until this char
                 if (pos > start) {
                     append(builder.substring(start, pos), appendable);
