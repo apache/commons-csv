@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
 
@@ -101,6 +102,19 @@ class ExtendedBufferedReaderTest {
             reader.read(tmp1, 0, 2);
             reader.read(tmp2, 2, 2);
             assertEquals(2, reader.getLineNumber());
+        }
+    }
+
+    @Test
+    void testReadingSupplementaryCharacterTracksBytes() throws Exception {
+        final String input = "😀";
+        final char[] buffer = new char[input.length()];
+        try (ExtendedBufferedReader reader = new ExtendedBufferedReader(new StringReader(input), StandardCharsets.UTF_8, true)) {
+            assertEquals(input.length(), reader.read(buffer, 0, buffer.length));
+            assertArrayEquals(input.toCharArray(), buffer);
+            assertEquals(input.getBytes(StandardCharsets.UTF_8).length, reader.getBytesRead());
+            assertEquals(input.length(), reader.getPosition());
+            assertEquals(input.charAt(input.length() - 1), reader.getLastChar());
         }
     }
 

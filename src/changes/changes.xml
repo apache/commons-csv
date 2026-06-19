@@ -53,6 +53,7 @@
       <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-325">CSVParser applies characterOffset to bytePosition (#604).</action>
       <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-326">CSVPrinter Reader printing with quote and escape can emit CSV that its parser cannot read back.</action>
       <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-327">CSVParser applies maxRows to record numbers instead of rows produced when setRecordNumber(...) is used.</action>
+      <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-329">CSVParser with trackBytes enabled throws on multi-character delimiters containing supplementary Unicode characters.</action>
       <action type="fix" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-328">CSVFormat.Builder.setNullString(String) can build an invalid quoted null string after setQuote(null).</action>
       <action type="fix" dev="ggregory" due-to="OldTruckDriver, Gary Gregory" issue="CSV-326">Escape Reader values with quote and escape (#606).</action>
       <action type="fix" dev="ggregory" due-to="Dexter.k, Gary Gregory">Clear escape delimiter buffer before peek in Lexer.isEscapeDelimiter() (#608, #611).</action>
