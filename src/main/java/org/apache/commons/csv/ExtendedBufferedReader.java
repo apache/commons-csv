@@ -210,7 +210,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         if (current == CR || current == LF && lastChar != CR || current == EOF && lastChar != CR && lastChar != LF && lastChar != EOF) {
             lineNumber++;
         }
-        if (encoder != null) {
+        if (encoder != null && current != EOF) {
             this.bytesRead += getEncodedCharLength(current);
         }
         lastChar = current;
