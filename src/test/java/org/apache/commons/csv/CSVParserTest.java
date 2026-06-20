@@ -692,27 +692,6 @@ class CSVParserTest {
     }
 
     @Test
-    void testGetBytePositionWithSingleByteCharset() throws IOException {
-        // A single-byte charset cannot encode U+FFFF, the char value of the EOF sentinel.
-        // Byte counting must skip the EOF read so a valid file parses without throwing.
-        final String code = "a,b\nc,d\n";
-        try (CSVParser parser = CSVParser.builder()
-                .setReader(new StringReader(code))
-                .setFormat(CSVFormat.DEFAULT)
-                .setCharset(StandardCharsets.ISO_8859_1)
-                .setTrackBytes(true)
-                .get()) {
-            final CSVRecord first = parser.nextRecord();
-            final CSVRecord second = parser.nextRecord();
-            assertNotNull(first);
-            assertNotNull(second);
-            assertNull(parser.nextRecord());
-            assertEquals(0, first.getBytePosition());
-            assertEquals(4, second.getBytePosition());
-        }
-    }
-
-    @Test
     void testGetBytePositionWithCharacterOffsetAndMultiBytePrefix() throws Exception {
         final String row0 = "é,x\n";
         final Charset charset = UTF_8;
@@ -739,6 +718,27 @@ class CSVParserTest {
             assertEquals(4, record.getCharacterPosition());
             assertEquals(record1CharOffset, record.getCharacterPosition());
             assertEquals(expectedByteOffset, record.getBytePosition());
+        }
+    }
+
+    @Test
+    void testGetBytePositionWithSingleByteCharset() throws IOException {
+        // A single-byte charset cannot encode U+FFFF, the char value of the EOF sentinel.
+        // Byte counting must skip the EOF read so a valid file parses without throwing.
+        final String code = "a,b\nc,d\n";
+        try (CSVParser parser = CSVParser.builder()
+                .setReader(new StringReader(code))
+                .setFormat(CSVFormat.DEFAULT)
+                .setCharset(StandardCharsets.ISO_8859_1)
+                .setTrackBytes(true)
+                .get()) {
+            final CSVRecord first = parser.nextRecord();
+            final CSVRecord second = parser.nextRecord();
+            assertNotNull(first);
+            assertNotNull(second);
+            assertNull(parser.nextRecord());
+            assertEquals(0, first.getBytePosition());
+            assertEquals(4, second.getBytePosition());
         }
     }
 
