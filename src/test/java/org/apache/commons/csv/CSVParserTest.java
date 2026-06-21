@@ -1950,6 +1950,23 @@ class CSVParserTest {
     }
 
     @Test
+    void testTrailingDelimiterKeepsQuotedEmptyLastField() throws Exception {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setTrailingDelimiter(true).get();
+        try (CSVParser parser = CSVParser.parse("a,b,\"\"", format)) {
+            final CSVRecord record = parser.iterator().next();
+            assertEquals(3, record.size());
+            assertEquals("a", record.get(0));
+            assertEquals("b", record.get(1));
+            assertEquals("", record.get(2));
+        }
+        // An unquoted trailing delimiter still drops the empty field.
+        try (CSVParser parser = CSVParser.parse("a,b,", format)) {
+            final CSVRecord record = parser.iterator().next();
+            assertEquals(2, record.size());
+        }
+    }
+
+    @Test
     void testTrim() throws Exception {
         final Reader in = new StringReader("a,a,a\n\" 1 \",\" 2 \",\" 3 \"\nx,y,z");
         try (CSVParser parser = CSVFormat.DEFAULT.withHeader("X", "Y", "Z").withSkipHeaderRecord().withTrim().parse(in)) {
