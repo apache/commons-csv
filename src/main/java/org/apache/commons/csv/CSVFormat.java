@@ -883,6 +883,16 @@ public final class CSVFormat implements Serializable {
         /**
          * Sets whether to add a trailing delimiter.
          *
+         * <p>
+         * When writing, a delimiter is appended after the last value of each record. When reading, the empty field
+         * that such a trailing delimiter produces is dropped so the output round-trips back to the original record;
+         * a quoted empty trailing field ({@code ""}) is a real value rather than a trailing delimiter and is kept.
+         * </p>
+         * <p>
+         * This is unrelated to {@link #setTrailingData(boolean) trailing data}, which controls whether characters
+         * after the closing quote of an encapsulated value are tolerated when reading.
+         * </p>
+         *
          * @param trailingDelimiter whether to add a trailing delimiter.
          * @return This instance.
          */
@@ -2011,6 +2021,16 @@ public final class CSVFormat implements Serializable {
 
     /**
      * Gets whether to add a trailing delimiter.
+     *
+     * <p>
+     * When writing, a delimiter is appended after the last value of each record. When reading, the empty field
+     * that such a trailing delimiter produces is dropped so the output round-trips back to the original record;
+     * a quoted empty trailing field ({@code ""}) is a real value rather than a trailing delimiter and is kept.
+     * </p>
+     * <p>
+     * This is unrelated to {@link #getTrailingData() trailing data}, which controls whether characters after the
+     * closing quote of an encapsulated value are tolerated when reading.
+     * </p>
      *
      * @return whether to add a trailing delimiter.
      * @since 1.3
