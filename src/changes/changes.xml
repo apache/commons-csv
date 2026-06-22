@@ -61,6 +61,7 @@
       <action type="fix" dev="ggregory" due-to="Dexter.k, Gary Gregory">Quote value starting with comment marker in minimal quote mode (#610).</action>
       <action type="fix" dev="ggregory" due-to="Dexter.k, Gary Gregory">Escape leading comment marker in printWithEscapes (#614).</action>
       <action type="fix" dev="ggregory" due-to="Dexter.k, Gary Gregory">Skip byte counting at EOF in ExtendedBufferedReader.read (#615).</action>
+      <action type="fix" dev="ggregory" due-to="Dexter.k, Gary Gregory">Keep quoted empty trailing field with trailingDelimiter (#616).</action>
       <!-- ADD -->
       <action type="add" dev="ggregory" due-to="Gary Gregory, Indy, Sylvia van Os" issue="CSV-307">Add an "Android Compatibility" section to the web site.</action>
       <action type="add" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-325">Add CSVParser.Builder.setByteOffset(long) (#604).</action>
