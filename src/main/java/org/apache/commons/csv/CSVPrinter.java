@@ -111,12 +111,20 @@ public final class CSVPrinter implements Flushable, Closeable {
         this.format = format.copy();
         // TODO: Is it a good idea to do this here instead of on the first call to a print method?
         // It seems a pain to have to track whether the header has already been printed or not.
+        printHeaderComments(format);
+        printHeaderRecord(format);
+    }
+
+    private void printHeaderComments(final CSVFormat format) throws IOException {
         final String[] headerComments = format.getHeaderComments();
         if (headerComments != null) {
             for (final String line : headerComments) {
                 printComment(line);
             }
         }
+    }
+
+    private void printHeaderRecord(final CSVFormat format) throws IOException {
         if (format.getHeader() != null && !format.getSkipHeaderRecord()) {
             this.printRecord((Object[]) format.getHeader());
         }
@@ -235,8 +243,7 @@ public final class CSVPrinter implements Flushable, Closeable {
             if (!newRecord) {
                 println();
             }
-            appendable.append(format.getCommentMarker().charValue()); // Explicit unboxing is intentional
-            appendable.append(SP);
+            appendCommentStart();
             for (int i = 0; i < comment.length(); i++) {
                 final char c = comment.charAt(i);
                 switch (c) {
@@ -247,8 +254,7 @@ public final class CSVPrinter implements Flushable, Closeable {
                     // falls-through: break intentionally excluded.
                 case LF:
                     println();
-                    appendable.append(format.getCommentMarker().charValue()); // Explicit unboxing is intentional
-                    appendable.append(SP);
+                    appendCommentStart();
                     break;
                 default:
                     appendable.append(c);
@@ -259,6 +265,11 @@ public final class CSVPrinter implements Flushable, Closeable {
         } finally {
             lock.unlock();
         }
+    }
+
+    private void appendCommentStart() throws IOException {
+        appendable.append(format.getCommentMarker().charValue()); // Explicit unboxing is intentional
+        appendable.append(SP);
     }
 
     /**
@@ -491,24 +502,31 @@ public final class CSVPrinter implements Flushable, Closeable {
         while (resultSet.next() && format.useRow(resultSet.getRow())) {
             lock.lock();
             try {
-                for (int i = 1; i <= columnCount; i++) {
-                    final Object object = resultSet.getObject(i);
-                    if (object instanceof Clob) {
-                        try (Reader reader = ((Clob) object).getCharacterStream()) {
-                            print(reader);
-                        }
-                    } else if (object instanceof Blob) {
-                        try (InputStream inputStream = ((Blob) object).getBinaryStream()) {
-                            print(inputStream);
-                        }
-                    } else {
-                        print(object);
-                    }
-                }
+                printResultSetRow(resultSet, columnCount);
                 endOfRecord();
             } finally {
                 lock.unlock();
             }
+        }
+    }
+
+    private void printResultSetRow(final ResultSet resultSet, final int columnCount) throws SQLException, IOException {
+        for (int i = 1; i <= columnCount; i++) {
+            printResultSetValue(resultSet.getObject(i));
+        }
+    }
+
+    private void printResultSetValue(final Object object) throws SQLException, IOException {
+        if (object instanceof Clob) {
+            try (Reader reader = ((Clob) object).getCharacterStream()) {
+                print(reader);
+            }
+        } else if (object instanceof Blob) {
+            try (InputStream inputStream = ((Blob) object).getBinaryStream()) {
+                print(inputStream);
+            }
+        } else {
+            print(object);
         }
     }
 

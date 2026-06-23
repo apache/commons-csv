@@ -123,21 +123,19 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @see CSVFormat.Builder#setNullString(String)
      */
     public String get(final String name) {
-        final Map<String, Integer> headerMap = getHeaderMapRaw();
-        if (headerMap == null) {
-            throw new IllegalStateException("No header mapping was specified, the record values can't be accessed by name");
-        }
-        final Integer index = headerMap.get(name);
-        if (index == null) {
-            throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name, headerMap.keySet()));
-        }
+        final Map<String, Integer> headerMap = requireHeaderMap();
+        final Integer index = requireMappedIndex(name, headerMap);
         try {
             return values[index.intValue()]; // Explicit unboxing is intentional
         } catch (final ArrayIndexOutOfBoundsException e) {
-            // Explicit boxing is intentional
-            throw new IllegalArgumentException(
-                    String.format("Index for header '%s' is %d but CSVRecord only has %d values!", name, index, Integer.valueOf(values.length)));
+            throw inconsistentRecordException(name, index);
         }
+    }
+
+    private IllegalArgumentException inconsistentRecordException(final String name, final Integer index) {
+        // Explicit boxing is intentional
+        return new IllegalArgumentException(
+                String.format("Index for header '%s' is %d but CSVRecord only has %d values!", name, index, Integer.valueOf(values.length)));
     }
 
     /**
@@ -174,6 +172,22 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     private Map<String, Integer> getHeaderMapRaw() {
         return parser == null ? null : parser.getHeaderMapRaw();
+    }
+
+    private Integer requireMappedIndex(final String name, final Map<String, Integer> headerMap) {
+        final Integer index = headerMap.get(name);
+        if (index == null) {
+            throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name, headerMap.keySet()));
+        }
+        return index;
+    }
+
+    private Map<String, Integer> requireHeaderMap() {
+        final Map<String, Integer> headerMap = getHeaderMapRaw();
+        if (headerMap == null) {
+            throw new IllegalStateException("No header mapping was specified, the record values can't be accessed by name");
+        }
+        return headerMap;
     }
 
     /**
@@ -265,7 +279,11 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return whether a given column is mapped and has a value.
      */
     public boolean isSet(final String name) {
-        return isMapped(name) && getHeaderMapRaw().get(name).intValue() < values.length; // Explicit unboxing is intentional
+        return isMapped(name) && isMappedIndexSet(name);
+    }
+
+    private boolean isMappedIndexSet(final String name) {
+        return getHeaderMapRaw().get(name).intValue() < values.length; // Explicit unboxing is intentional
     }
 
     /**
@@ -287,15 +305,18 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @since 1.9.0
      */
     public <M extends Map<String, String>> M putIn(final M map) {
-        if (getHeaderMapRaw() == null) {
+        final Map<String, Integer> headerMap = getHeaderMapRaw();
+        if (headerMap == null) {
             return map;
         }
-        getHeaderMapRaw().forEach((key, value) -> {
-            if (value < values.length) {
-                map.put(key, values[value]);
-            }
-        });
+        headerMap.forEach((key, value) -> putMappedValue(map, key, value.intValue()));
         return map;
+    }
+
+    private <M extends Map<String, String>> void putMappedValue(final M map, final String key, final int valueIndex) {
+        if (valueIndex < values.length) {
+            map.put(key, values[valueIndex]);
+        }
     }
 
     /**
