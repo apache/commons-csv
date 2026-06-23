@@ -349,30 +349,7 @@ final class Lexer implements Closeable {
                     c = reader.read();
                     token.content.append((char) c);
                 } else {
-                    // token finish mark (encapsulator) reached: ignore whitespace till delimiter
-                    while (true) {
-                        c = reader.read();
-                        if (isDelimiter(c)) {
-                            token.type = Token.Type.TOKEN;
-                            return token;
-                        }
-                        if (isEndOfFile(c)) {
-                            token.type = Token.Type.EOF;
-                            token.isReady = true; // There is data at EOF
-                            return token;
-                        }
-                        if (readEndOfLine(c)) {
-                            token.type = Token.Type.EORECORD;
-                            return token;
-                        }
-                        if (trailingData) {
-                            token.content.append((char) c);
-                        } else if (!Character.isWhitespace((char) c)) {
-                            // error invalid char between token and next delimiter
-                            throw new CSVException("Invalid character between encapsulated token and delimiter at line: %,d, position: %,d",
-                                    getCurrentLineNumber(), getCharacterPosition());
-                        }
-                    }
+                    return finishEncapsulatedToken(token);
                 }
             } else if (isEscape(c)) {
                 appendNextEscapedCharacterToToken(token);
@@ -388,6 +365,37 @@ final class Lexer implements Closeable {
                 // consume character
                 token.content.append((char) c);
             }
+        }
+    }
+
+    private Token finishEncapsulatedToken(final Token token) throws IOException {
+        // token finish mark (encapsulator) reached: ignore whitespace till delimiter
+        while (true) {
+            final int c = reader.read();
+            if (isDelimiter(c)) {
+                token.type = Token.Type.TOKEN;
+                return token;
+            }
+            if (isEndOfFile(c)) {
+                token.type = Token.Type.EOF;
+                token.isReady = true; // There is data at EOF
+                return token;
+            }
+            if (readEndOfLine(c)) {
+                token.type = Token.Type.EORECORD;
+                return token;
+            }
+            handleTrailingCharacter(token, c);
+        }
+    }
+
+    private void handleTrailingCharacter(final Token token, final int c) throws CSVException {
+        if (trailingData) {
+            token.content.append((char) c);
+        } else if (!Character.isWhitespace((char) c)) {
+            // error invalid char between token and next delimiter
+            throw new CSVException("Invalid character between encapsulated token and delimiter at line: %,d, position: %,d", getCurrentLineNumber(),
+                    getCharacterPosition());
         }
     }
 
@@ -482,6 +490,22 @@ final class Lexer implements Closeable {
     int readEscape() throws IOException {
         // the escape char has just been read (normally a backslash)
         final int ch = reader.read();
+        final int translated = translateEscape(ch);
+        if (translated != EOF) {
+            return translated;
+        }
+        if (ch == EOF) {
+            throw new CSVException("EOF while processing escape sequence");
+        }
+        // Now check for meta-characters
+        if (isMetaChar(ch)) {
+            return ch;
+        }
+        // indicate unexpected char - available from in.getLastChar()
+        return EOF;
+    }
+
+    private int translateEscape(final int ch) {
         switch (ch) {
         case 'r':
             return Constants.CR;
@@ -499,14 +523,7 @@ final class Lexer implements Closeable {
         case Constants.TAB: // TODO is this correct? Do tabs need to be escaped?
         case Constants.BACKSPACE: // TODO is this correct?
             return ch;
-        case EOF:
-            throw new CSVException("EOF while processing escape sequence");
         default:
-            // Now check for meta-characters
-            if (isMetaChar(ch)) {
-                return ch;
-            }
-            // indicate unexpected char - available from in.getLastChar()
             return EOF;
         }
     }

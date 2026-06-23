@@ -618,55 +618,76 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         final String[] formatHeader = format.getHeader();
         if (formatHeader != null) {
             headerMap = createEmptyHeaderMap();
-            String[] headerRecord = null;
-            if (formatHeader.length == 0) {
-                // read the header from the first line of the file
-                final CSVRecord nextRecord = nextRecord();
-                if (nextRecord != null) {
-                    headerRecord = nextRecord.values();
-                    headerComment = nextRecord.getComment();
-                }
-            } else {
-                if (format.getSkipHeaderRecord()) {
-                    final CSVRecord nextRecord = nextRecord();
-                    if (nextRecord != null) {
-                        headerComment = nextRecord.getComment();
-                    }
-                }
-                headerRecord = formatHeader;
-            }
-            // build the name to index mappings
-            if (headerRecord != null) {
-                // Track an occurrence of a null, empty or blank header.
-                boolean observedMissing = false;
-                for (int i = 0; i < headerRecord.length; i++) {
-                    final String header = headerRecord[i];
-                    final boolean blankHeader = CSVFormat.isBlank(header);
-                    if (blankHeader && !format.getAllowMissingColumnNames()) {
-                        throw new IllegalArgumentException("A header name is missing in " + Arrays.toString(headerRecord));
-                    }
-                    final boolean containsHeader = blankHeader ? observedMissing : headerMap.containsKey(header);
-                    final DuplicateHeaderMode headerMode = format.getDuplicateHeaderMode();
-                    final boolean duplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_ALL;
-                    final boolean emptyDuplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_EMPTY;
-                    if (containsHeader && !duplicatesAllowed && !(blankHeader && emptyDuplicatesAllowed)) {
-                        throw new IllegalArgumentException(String.format(
-                                "The header contains a duplicate name: \"%s\" in %s. If this is valid then use CSVFormat.Builder.setDuplicateHeaderMode().",
-                                header, Arrays.toString(headerRecord)));
-                    }
-                    observedMissing |= blankHeader;
-                    if (header != null) {
-                        headerMap.put(header, Integer.valueOf(i)); // Explicit boxing is intentional
-                        if (headerNames == null) {
-                            headerNames = new ArrayList<>(headerRecord.length);
-                        }
-                        headerNames.add(header);
-                    }
-                }
-            }
+            final String[] headerRecord = resolveHeaderRecord(formatHeader);
+            headerNames = buildHeaderNames(headerMap, headerRecord);
         }
         // Make header names Collection immutable
         return new Headers(headerMap, headerNames == null ? Collections.emptyList() : Collections.unmodifiableList(headerNames));
+    }
+
+    private String[] resolveHeaderRecord(final String[] formatHeader) throws IOException {
+        if (formatHeader.length == 0) {
+            return readHeaderRecord();
+        }
+        if (format.getSkipHeaderRecord()) {
+            skipHeaderRecord();
+        }
+        return formatHeader;
+    }
+
+    private String[] readHeaderRecord() throws IOException {
+        // read the header from the first line of the file
+        final CSVRecord nextRecord = nextRecord();
+        if (nextRecord == null) {
+            return null;
+        }
+        headerComment = nextRecord.getComment();
+        return nextRecord.values();
+    }
+
+    private void skipHeaderRecord() throws IOException {
+        final CSVRecord nextRecord = nextRecord();
+        if (nextRecord != null) {
+            headerComment = nextRecord.getComment();
+        }
+    }
+
+    private List<String> buildHeaderNames(final Map<String, Integer> headerMap, final String[] headerRecord) {
+        if (headerRecord == null) {
+            return null;
+        }
+        List<String> headerNames = null;
+        boolean observedMissing = false;
+        for (int i = 0; i < headerRecord.length; i++) {
+            final String header = headerRecord[i];
+            final boolean blankHeader = CSVFormat.isBlank(header);
+            validateHeader(headerRecord, header, blankHeader, observedMissing, headerMap);
+            observedMissing |= blankHeader;
+            if (header != null) {
+                headerMap.put(header, Integer.valueOf(i)); // Explicit boxing is intentional
+                if (headerNames == null) {
+                    headerNames = new ArrayList<>(headerRecord.length);
+                }
+                headerNames.add(header);
+            }
+        }
+        return headerNames;
+    }
+
+    private void validateHeader(final String[] headerRecord, final String header, final boolean blankHeader, final boolean observedMissing,
+            final Map<String, Integer> headerMap) {
+        if (blankHeader && !format.getAllowMissingColumnNames()) {
+            throw new IllegalArgumentException("A header name is missing in " + Arrays.toString(headerRecord));
+        }
+        final boolean containsHeader = blankHeader ? observedMissing : headerMap.containsKey(header);
+        final DuplicateHeaderMode headerMode = format.getDuplicateHeaderMode();
+        final boolean duplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_ALL;
+        final boolean emptyDuplicatesAllowed = headerMode == DuplicateHeaderMode.ALLOW_EMPTY;
+        if (containsHeader && !duplicatesAllowed && !(blankHeader && emptyDuplicatesAllowed)) {
+            throw new IllegalArgumentException(String.format(
+                    "The header contains a duplicate name: \"%s\" in %s. If this is valid then use CSVFormat.Builder.setDuplicateHeaderMode().", header,
+                    Arrays.toString(headerRecord)));
+        }
     }
 
     /**
@@ -905,41 +926,53 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         do {
             reusableToken.reset();
             lexer.nextToken(reusableToken);
-            switch (reusableToken.type) {
-            case TOKEN:
-                addRecordValue(false);
-                break;
-            case EORECORD:
-                addRecordValue(true);
-                break;
-            case EOF:
-                if (reusableToken.isReady) {
-                    addRecordValue(true);
-                } else if (sb != null) {
-                    trailerComment = sb.toString();
-                }
-                break;
-            case INVALID:
-                throw new CSVException("(line %,d) invalid parse sequence", getCurrentLineNumber());
-            case COMMENT: // Ignored currently
-                if (sb == null) { // first comment for this record
-                    sb = new StringBuilder();
-                } else {
-                    sb.append(Constants.LF);
-                }
-                sb.append(reusableToken.content);
-                reusableToken.type = TOKEN; // Read another token
-                break;
-            default:
-                throw new CSVException("Unexpected Token type: %s", reusableToken.type);
-            }
+            sb = handleToken(sb);
         } while (reusableToken.type == TOKEN);
         if (!recordList.isEmpty()) {
             recordNumber++;
-            result = new CSVRecord(this, recordList.toArray(Constants.EMPTY_STRING_ARRAY), Objects.toString(sb, null), recordNumber, startCharPosition,
-                    startBytePosition);
+            result = createRecord(sb, startCharPosition, startBytePosition);
         }
         return result;
+    }
+
+    private StringBuilder handleToken(final StringBuilder comments) throws IOException {
+        switch (reusableToken.type) {
+        case TOKEN:
+            addRecordValue(false);
+            return comments;
+        case EORECORD:
+            addRecordValue(true);
+            return comments;
+        case EOF:
+            handleEndOfFile(comments);
+            return comments;
+        case INVALID:
+            throw new CSVException("(line %,d) invalid parse sequence", getCurrentLineNumber());
+        case COMMENT:
+            return appendComment(comments);
+        default:
+            throw new CSVException("Unexpected Token type: %s", reusableToken.type);
+        }
+    }
+
+    private void handleEndOfFile(final StringBuilder comments) {
+        if (reusableToken.isReady) {
+            addRecordValue(true);
+        } else if (comments != null) {
+            trailerComment = comments.toString();
+        }
+    }
+
+    private StringBuilder appendComment(final StringBuilder comments) {
+        final StringBuilder commentBuffer = comments == null ? new StringBuilder() : comments.append(Constants.LF);
+        commentBuffer.append(reusableToken.content);
+        reusableToken.type = TOKEN; // Read another token
+        return commentBuffer;
+    }
+
+    private CSVRecord createRecord(final StringBuilder comments, final long startCharPosition, final long startBytePosition) {
+        return new CSVRecord(this, recordList.toArray(Constants.EMPTY_STRING_ARRAY), Objects.toString(comments, null), recordNumber, startCharPosition,
+                startBytePosition);
     }
 
     /**

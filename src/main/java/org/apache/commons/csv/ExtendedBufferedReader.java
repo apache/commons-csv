@@ -162,6 +162,37 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         throw new CharacterCodingException();
     }
 
+    private void incrementBytesRead(final int current) throws CharacterCodingException {
+        if (encoder != null && current != EOF) {
+            this.bytesRead += getEncodedCharLength(current);
+        }
+    }
+
+    private void incrementBytesRead(final char[] buf, final int offset, final int length) throws CharacterCodingException {
+        if (encoder != null && length > 0) {
+            this.bytesRead += getEncodedCharLength(buf, offset, length);
+        }
+    }
+
+    private void incrementLineNumber(final int current) {
+        if (current == CR || current == LF && lastChar != CR || current == EOF && lastChar != CR && lastChar != LF && lastChar != EOF) {
+            lineNumber++;
+        }
+    }
+
+    private void incrementLineNumber(final char[] buf, final int offset, final int length) {
+        for (int i = offset; i < offset + length; i++) {
+            final char ch = buf[i];
+            if (ch == LF) {
+                if (CR != (i > offset ? buf[i - 1] : lastChar)) {
+                    lineNumber++;
+                }
+            } else if (ch == CR) {
+                lineNumber++;
+            }
+        }
+    }
+
     /**
      * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by any of the read methods. This will not
      * include a character read using the {@link #peek()} method. If no character has been read then this will return {@link Constants#UNDEFINED}. If the end of
@@ -207,12 +238,8 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     @Override
     public int read() throws IOException {
         final int current = super.read();
-        if (current == CR || current == LF && lastChar != CR || current == EOF && lastChar != CR && lastChar != LF && lastChar != EOF) {
-            lineNumber++;
-        }
-        if (encoder != null && current != EOF) {
-            this.bytesRead += getEncodedCharLength(current);
-        }
+        incrementLineNumber(current);
+        incrementBytesRead(current);
         lastChar = current;
         position++;
         return lastChar;
@@ -224,20 +251,9 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
             return 0;
         }
         final int len = super.read(buf, offset, length);
-        if (encoder != null && len > 0) {
-            this.bytesRead += getEncodedCharLength(buf, offset, len);
-        }
+        incrementBytesRead(buf, offset, len);
         if (len > 0) {
-            for (int i = offset; i < offset + len; i++) {
-                final char ch = buf[i];
-                if (ch == LF) {
-                    if (CR != (i > offset ? buf[i - 1] : lastChar)) {
-                        lineNumber++;
-                    }
-                } else if (ch == CR) {
-                    lineNumber++;
-                }
-            }
+            incrementLineNumber(buf, offset, len);
             lastChar = buf[offset + len - 1];
         } else if (len == EOF) {
             lastChar = EOF;
