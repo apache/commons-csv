@@ -870,19 +870,10 @@ class CSVParserTest {
         }
     }
 
-    @Test
-    void testGetLineNumberWithCR() throws Exception {
-        validateLineNumbers(String.valueOf(CR));
-    }
-
-    @Test
-    void testGetLineNumberWithCRLF() throws Exception {
-        validateLineNumbers(CRLF);
-    }
-
-    @Test
-    void testGetLineNumberWithLF() throws Exception {
-        validateLineNumbers(String.valueOf(LF));
+    @ParameterizedTest
+    @ValueSource(strings = { "\r", "\r\n", "\n" })
+    void testGetLineNumber(final String lineSeparator) throws Exception {
+        validateLineNumbers(lineSeparator);
     }
 
     @Test
@@ -952,29 +943,16 @@ class CSVParserTest {
         }
     }
 
-    @Test
-    void testGetRecordNumberWithCR() throws Exception {
-        validateRecordNumbers(String.valueOf(CR));
+    @ParameterizedTest
+    @ValueSource(strings = { "\r", "\r\n", "\n" })
+    void testGetRecordNumber(final String lineSeparator) throws Exception {
+        validateRecordNumbers(lineSeparator);
     }
 
-    @Test
-    void testGetRecordNumberWithCRLF() throws Exception {
-        validateRecordNumbers(CRLF);
-    }
-
-    @Test
-    void testGetRecordNumberWithLF() throws Exception {
-        validateRecordNumbers(String.valueOf(LF));
-    }
-
-    @Test
-    void testGetRecordPositionWithCRLF() throws Exception {
-        validateRecordPosition(CRLF);
-    }
-
-    @Test
-    void testGetRecordPositionWithLF() throws Exception {
-        validateRecordPosition(String.valueOf(LF));
+    @ParameterizedTest
+    @ValueSource(strings = { "\r\n", "\n" })
+    void testGetRecordPosition(final String lineSeparator) throws Exception {
+        validateRecordPosition(lineSeparator);
     }
 
     @Test
