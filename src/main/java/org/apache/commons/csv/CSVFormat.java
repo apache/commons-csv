@@ -1655,19 +1655,31 @@ public final class CSVFormat implements Serializable {
     }
 
     private void append(final char c, final Appendable appendable) throws IOException {
-        // try {
         appendable.append(c);
-        // } catch (final IOException e) {
-        // throw new UncheckedIOException(e);
-        // }
     }
 
     private void append(final CharSequence csq, final Appendable appendable) throws IOException {
-        // try {
         appendable.append(csq);
-        // } catch (final IOException e) {
-        // throw new UncheckedIOException(e);
-        // }
+    }
+
+    private void appendArrayOption(final StringBuilder sb, final boolean condition, final String name, final String[] values) {
+        if (condition) {
+            sb.append(Constants.SP);
+            sb.append(name).append(':').append(Arrays.toString(values));
+        }
+    }
+
+    private void appendDelimiterIfNeeded(final Appendable out, final boolean newRecord) throws IOException {
+        if (!newRecord) {
+            append(getDelimiterString(), out);
+        }
+    }
+
+    private void appendOption(final StringBuilder sb, final boolean condition, final String name, final Object value) {
+        if (condition) {
+            sb.append(Constants.SP);
+            sb.append(name).append("=<").append(value).append('>');
+        }
     }
 
     /**
@@ -1715,6 +1727,13 @@ public final class CSVFormat implements Serializable {
     private void escape(final char c, final Appendable appendable) throws IOException {
         append(escapeCharacter.charValue(), appendable); // Explicit unboxing is intentional
         append(c, appendable);
+    }
+
+    private int escapeLineBreak(final int c) {
+        if (c == Constants.LF) {
+            return 'n';
+        }
+        return c == Constants.CR ? 'r' : c;
     }
 
     /**
@@ -2179,9 +2198,7 @@ public final class CSVFormat implements Serializable {
     private void print(final InputStream inputStream, final Appendable out, final boolean newRecord) throws IOException {
         // InputStream is never null here
         // There is nothing to escape when quoting is used which is the default.
-        if (!newRecord) {
-            append(getDelimiterString(), out);
-        }
+        appendDelimiterIfNeeded(out, newRecord);
         final boolean quoteCharacterSet = isQuoteCharacterSet();
         if (quoteCharacterSet) {
             append(getQuoteCharacter().charValue(), out); // Explicit unboxing is intentional
@@ -2207,39 +2224,22 @@ public final class CSVFormat implements Serializable {
      * @since 1.4
      */
     public synchronized void print(final Object value, final Appendable out, final boolean newRecord) throws IOException {
-        // null values are considered empty
-        // Only call CharSequence.toString() if you have to, helps GC-free use cases.
-        CharSequence charSequence;
-        if (value == null) {
-            // https://issues.apache.org/jira/browse/CSV-203
-            if (null == nullString) {
-                charSequence = Constants.EMPTY;
-            } else if (QuoteMode.ALL == quoteMode) {
-                charSequence = quotedNullString;
-            } else {
-                charSequence = nullString;
-            }
-        } else if (value instanceof CharSequence) {
-            charSequence = (CharSequence) value;
-        } else if (value instanceof Reader) {
+        if (value instanceof Reader) {
             print((Reader) value, out, newRecord);
             return;
-        } else if (value instanceof InputStream) {
+        }
+        if (value instanceof InputStream) {
             print((InputStream) value, out, newRecord);
             return;
-        } else {
-            charSequence = value.toString();
         }
-        charSequence = getTrim() ? trim(charSequence) : charSequence;
+        final CharSequence charSequence = getTrim() ? trim(toCharSequence(value)) : toCharSequence(value);
         print(value, charSequence, out, newRecord);
     }
 
     private synchronized void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord) throws IOException {
         final int offset = 0;
         final int len = value.length();
-        if (!newRecord) {
-            out.append(getDelimiterString());
-        }
+        appendDelimiterIfNeeded(out, newRecord);
         if (object == null) {
             out.append(value);
         } else if (isQuoteCharacterSet()) {
@@ -2272,9 +2272,7 @@ public final class CSVFormat implements Serializable {
 
     private void print(final Reader reader, final Appendable out, final boolean newRecord) throws IOException {
         // Reader is never null here
-        if (!newRecord) {
-            append(getDelimiterString(), out);
-        }
+        appendDelimiterIfNeeded(out, newRecord);
         if (isQuoteCharacterSet()) {
             printWithQuotes(reader, out);
         } else if (isEscapeCharacterSet()) {
@@ -2337,6 +2335,11 @@ public final class CSVFormat implements Serializable {
         println(appendable);
     }
 
+    private boolean isEscapeRequired(final int c, final char escape, final boolean quoteSet, final char quote, final boolean delimiterStart,
+            final boolean commentStart) {
+        return c == Constants.CR || c == Constants.LF || c == escape || quoteSet && c == quote || delimiterStart || commentStart;
+    }
+
     /*
      * This method must only be called if escaping is enabled, otherwise can throw exceptions.
      */
@@ -2354,21 +2357,14 @@ public final class CSVFormat implements Serializable {
         while (pos < end) {
             char c = charSeq.charAt(pos);
             final boolean isDelimiterStart = isDelimiter(c, charSeq, pos, delimArray, delimLength);
-            final boolean isCr = c == Constants.CR;
-            final boolean isLf = c == Constants.LF;
             // A leading comment marker would be read back as a comment, so escape it.
             final boolean isComment = commentMarkerSet && pos == 0 && c == commentChar;
-            if (isCr || isLf || c == escape || quoteSet && c == quote || isDelimiterStart || isComment) {
+            if (isEscapeRequired(c, escape, quoteSet, quote, isDelimiterStart, isComment)) {
                 // write out segment up until this char
                 if (pos > start) {
                     appendable.append(charSeq, start, pos);
                 }
-                if (isLf) {
-                    c = 'n';
-                } else if (isCr) {
-                    c = 'r';
-                }
-                escape(c, appendable);
+                escape((char) escapeLineBreak(c), appendable);
                 if (isDelimiterStart) {
                     for (int i = 1; i < delimLength; i++) {
                         pos++;
@@ -2411,24 +2407,17 @@ public final class CSVFormat implements Serializable {
             bufferedReader.peek(lookAheadBuffer);
             final String test = builder.toString() + new String(lookAheadBuffer);
             final boolean isDelimiterStart = isDelimiter((char) c, test, pos, delimArray, delimLength);
-            final boolean isCr = c == Constants.CR;
-            final boolean isLf = c == Constants.LF;
             // A leading comment marker would be read back as a comment, so escape it.
             final boolean isComment = commentMarkerSet && firstChar && c == commentChar;
             firstChar = false;
-            if (isCr || isLf || c == escape || quoteSet && c == quote || isDelimiterStart || isComment) {
+            if (isEscapeRequired(c, escape, quoteSet, quote, isDelimiterStart, isComment)) {
                 // write out segment up until this char
                 if (pos > start) {
                     append(builder.substring(start, pos), appendable);
                     builder.setLength(0);
                     pos = -1;
                 }
-                if (isLf) {
-                    c = 'n';
-                } else if (isCr) {
-                    c = 'r';
-                }
-                escape((char) c, appendable);
+                escape((char) escapeLineBreak(c), appendable);
                 if (isDelimiterStart) {
                     for (int i = 1; i < delimLength; i++) {
                         escape((char) bufferedReader.read(), appendable);
@@ -2449,102 +2438,76 @@ public final class CSVFormat implements Serializable {
      * The original object is needed so can check for Number
      */
     private void printWithQuotes(final Object object, final CharSequence charSeq, final Appendable out, final boolean newRecord) throws IOException {
-        boolean quote = false;
-        int start = 0;
-        int pos = 0;
-        final int len = charSeq.length();
-        final char[] delim = getDelimiterCharArray();
-        final int delimLength = delim.length;
         final char quoteChar = getQuoteCharacter().charValue(); // Explicit unboxing is intentional
         // If escape char not specified, default to the quote char
         // This avoids having to keep checking whether there is an escape character
         // at the cost of checking against quote twice
         final char escapeChar = isEscapeCharacterSet() ? getEscapeChar() : quoteChar;
-        QuoteMode quoteModePolicy = getQuoteMode();
-        if (quoteModePolicy == null) {
-            quoteModePolicy = QuoteMode.MINIMAL;
-        }
-        switch (quoteModePolicy) {
-        case ALL:
-        case ALL_NON_NULL:
-            quote = true;
-            break;
-        case NON_NUMERIC:
-            quote = !(object instanceof Number);
-            break;
-        case NONE:
-            // Use the existing escaping code
+        if (getQuoteMode() == QuoteMode.NONE) {
             printWithEscapes(charSeq, out);
             return;
-        case MINIMAL:
-            if (len <= 0) {
-                // Always quote an empty token that is the first
-                // on the line, as it may be the only thing on the
-                // line. If it were not quoted in that case,
-                // an empty line has no tokens.
-                if (newRecord) {
-                    quote = true;
-                }
-            } else {
-                char c = charSeq.charAt(pos);
-                if (c <= Constants.COMMENT || isCommentMarkerSet() && c == commentMarker.charValue()) {
-                    // Some other chars at the start of a value caused the parser to fail, so for now
-                    // encapsulate if we start in anything less than '#'. We are being conservative
-                    // by including the default comment char and any configured comment marker too,
-                    // which the parser would otherwise read back as a comment line.
-                    quote = true;
-                } else {
-                    while (pos < len) {
-                        c = charSeq.charAt(pos);
-                        if (c == Constants.LF || c == Constants.CR || c == quoteChar || c == escapeChar || isDelimiter(c, charSeq, pos, delim, delimLength)) {
-                            quote = true;
-                            break;
-                        }
-                        pos++;
-                    }
-
-                    if (!quote) {
-                        pos = len - 1;
-                        c = charSeq.charAt(pos);
-                        // Some other chars at the end caused the parser to fail, so for now
-                        // encapsulate if we end in anything less than ' '
-                        if (isTrimChar(c)) {
-                            quote = true;
-                        }
-                    }
-                }
-            }
-            if (!quote) {
-                // No encapsulation needed - write out the original value
-                out.append(charSeq, start, len);
-                return;
-            }
-            break;
-        default:
-            throw new IllegalStateException("Unexpected Quote value: " + quoteModePolicy);
         }
-        if (!quote) {
+        if (!shouldQuote(object, charSeq, newRecord, quoteChar, escapeChar)) {
             // No encapsulation needed - write out the original value
-            out.append(charSeq, start, len);
+            out.append(charSeq, 0, charSeq.length());
             return;
         }
-        // We hit something that needed encapsulation
+        printQuotedValue(charSeq, out, quoteChar, escapeChar);
+    }
+
+    private void printQuotedValue(final CharSequence charSeq, final Appendable out, final char quoteChar, final char escapeChar) throws IOException {
+        int start = 0;
+        int pos = 0;
+        final int len = charSeq.length();
         out.append(quoteChar);
-        // Pick up where we left off: pos should be positioned on the first character that caused
-        // the need for encapsulation.
         while (pos < len) {
             final char c = charSeq.charAt(pos);
             if (c == quoteChar || c == escapeChar) {
-                // write out the chunk up until this point
                 out.append(charSeq, start, pos);
-                out.append(escapeChar); // now output the escape
-                start = pos; // and restart with the matched char
+                out.append(escapeChar);
+                start = pos;
             }
             pos++;
         }
-        // Write the last segment
         out.append(charSeq, start, pos);
         out.append(quoteChar);
+    }
+
+    private boolean shouldQuote(final Object object, final CharSequence charSeq, final boolean newRecord, final char quoteChar, final char escapeChar) {
+        final QuoteMode quoteModePolicy = quoteMode != null ? quoteMode : QuoteMode.MINIMAL;
+        switch (quoteModePolicy) {
+        case ALL:
+        case ALL_NON_NULL:
+            return true;
+        case NON_NUMERIC:
+            return !(object instanceof Number);
+        case MINIMAL:
+            return shouldQuoteMinimal(charSeq, newRecord, quoteChar, escapeChar);
+        case NONE:
+            return false;
+        default:
+            throw new IllegalStateException("Unexpected Quote value: " + quoteModePolicy);
+        }
+    }
+
+    private boolean shouldQuoteMinimal(final CharSequence charSeq, final boolean newRecord, final char quoteChar, final char escapeChar) {
+        final int len = charSeq.length();
+        if (len <= 0) {
+            return newRecord;
+        }
+        final char first = charSeq.charAt(0);
+        if (first <= Constants.COMMENT || isCommentMarkerSet() && first == commentMarker.charValue()) {
+            return true;
+        }
+        final char[] delim = getDelimiterCharArray();
+        final int delimLength = delim.length;
+        for (int pos = 0; pos < len; pos++) {
+            final char c = charSeq.charAt(pos);
+            if (c == Constants.LF || c == Constants.CR || c == quoteChar || c == escapeChar || isDelimiter(c, charSeq, pos, delim, delimLength)) {
+                return true;
+            }
+        }
+        return isTrimChar(charSeq.charAt(len - 1));
     }
 
     /**
@@ -2579,30 +2542,12 @@ public final class CSVFormat implements Serializable {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Delimiter=<").append(delimiter).append('>');
-        if (isEscapeCharacterSet()) {
-            sb.append(Constants.SP);
-            sb.append("Escape=<").append(escapeCharacter).append('>');
-        }
-        if (isQuoteCharacterSet()) {
-            sb.append(Constants.SP);
-            sb.append("QuoteChar=<").append(quoteCharacter).append('>');
-        }
-        if (quoteMode != null) {
-            sb.append(Constants.SP);
-            sb.append("QuoteMode=<").append(quoteMode).append('>');
-        }
-        if (isCommentMarkerSet()) {
-            sb.append(Constants.SP);
-            sb.append("CommentStart=<").append(commentMarker).append('>');
-        }
-        if (isNullStringSet()) {
-            sb.append(Constants.SP);
-            sb.append("NullString=<").append(nullString).append('>');
-        }
-        if (recordSeparator != null) {
-            sb.append(Constants.SP);
-            sb.append("RecordSeparator=<").append(recordSeparator).append('>');
-        }
+        appendOption(sb, isEscapeCharacterSet(), "Escape", escapeCharacter);
+        appendOption(sb, isQuoteCharacterSet(), "QuoteChar", quoteCharacter);
+        appendOption(sb, quoteMode != null, "QuoteMode", quoteMode);
+        appendOption(sb, isCommentMarkerSet(), "CommentStart", commentMarker);
+        appendOption(sb, isNullStringSet(), "NullString", nullString);
+        appendOption(sb, recordSeparator != null, "RecordSeparator", recordSeparator);
         if (getIgnoreEmptyLines()) {
             sb.append(" EmptyLines:ignored");
         }
@@ -2613,19 +2558,26 @@ public final class CSVFormat implements Serializable {
             sb.append(" IgnoreHeaderCase:ignored");
         }
         sb.append(" SkipHeaderRecord:").append(skipHeaderRecord);
-        if (headerComments != null) {
-            sb.append(Constants.SP);
-            sb.append("HeaderComments:").append(Arrays.toString(headerComments));
-        }
-        if (headers != null) {
-            sb.append(Constants.SP);
-            sb.append("Header:").append(Arrays.toString(headers));
-        }
+        appendArrayOption(sb, headerComments != null, "HeaderComments", headerComments);
+        appendArrayOption(sb, headers != null, "Header", headers);
         return sb.toString();
     }
 
     String trim(final String value) {
         return getTrim() ? value.trim() : value;
+    }
+
+    private CharSequence toCharSequence(final Object value) {
+        // null values are considered empty
+        // Only call CharSequence.toString() if you have to, helps GC-free use cases.
+        if (value == null) {
+            // https://issues.apache.org/jira/browse/CSV-203
+            if (null == nullString) {
+                return Constants.EMPTY;
+            }
+            return QuoteMode.ALL == quoteMode ? quotedNullString : nullString;
+        }
+        return value instanceof CharSequence ? (CharSequence) value : value.toString();
     }
 
     boolean useMaxRows() {
@@ -2646,25 +2598,16 @@ public final class CSVFormat implements Serializable {
      * @throws IllegalArgumentException Throw when any attribute is invalid or inconsistent with other attributes.
      */
     private void validate() throws IllegalArgumentException {
-        if (quoteCharacter != null && contains(delimiter, quoteCharacter.charValue())) { // Explicit unboxing is intentional
-            throw new IllegalArgumentException("The quoteChar character and the delimiter cannot be the same ('" + quoteCharacter + "')");
-        }
-        if (escapeCharacter != null && contains(delimiter, escapeCharacter.charValue())) { // Explicit unboxing is intentional
-            throw new IllegalArgumentException("The escape character and the delimiter cannot be the same ('" + escapeCharacter + "')");
-        }
-        if (commentMarker != null && contains(delimiter, commentMarker.charValue())) { // Explicit unboxing is intentional
-            throw new IllegalArgumentException("The comment start character and the delimiter cannot be the same ('" + commentMarker + "')");
-        }
-        if (quoteCharacter != null && quoteCharacter.equals(commentMarker)) {
-            throw new IllegalArgumentException("The comment start character and the quoteChar cannot be the same ('" + commentMarker + "')");
-        }
-        if (escapeCharacter != null && escapeCharacter.equals(commentMarker)) {
-            throw new IllegalArgumentException("The comment start and the escape character cannot be the same ('" + commentMarker + "')");
-        }
-        if (escapeCharacter == null && quoteMode == QuoteMode.NONE) {
-            throw new IllegalArgumentException("Quote mode set to NONE but no escape character is set");
-        }
-        // Validate headers
+        validateDelimiterCharacter(quoteCharacter, "The quoteChar character and the delimiter cannot be the same ('%s')");
+        validateDelimiterCharacter(escapeCharacter, "The escape character and the delimiter cannot be the same ('%s')");
+        validateDelimiterCharacter(commentMarker, "The comment start character and the delimiter cannot be the same ('%s')");
+        validateCharacterPair(quoteCharacter, commentMarker, "The comment start character and the quoteChar cannot be the same ('%s')");
+        validateCharacterPair(escapeCharacter, commentMarker, "The comment start and the escape character cannot be the same ('%s')");
+        validateQuoteMode();
+        validateHeaders();
+    }
+
+    private void validateHeaders() {
         if (headers != null && duplicateHeaderMode != DuplicateHeaderMode.ALLOW_ALL) {
             final Set<String> dupCheckSet = new HashSet<>(headers.length);
             final boolean emptyDuplicatesAllowed = duplicateHeaderMode == DuplicateHeaderMode.ALLOW_EMPTY;
@@ -2678,6 +2621,24 @@ public final class CSVFormat implements Serializable {
                             Arrays.toString(headers)));
                 }
             }
+        }
+    }
+
+    private void validateCharacterPair(final Character left, final Character right, final String message) {
+        if (left != null && left.equals(right)) {
+            throw new IllegalArgumentException(String.format(message, right));
+        }
+    }
+
+    private void validateDelimiterCharacter(final Character character, final String message) {
+        if (character != null && contains(delimiter, character.charValue())) { // Explicit unboxing is intentional
+            throw new IllegalArgumentException(String.format(message, character));
+        }
+    }
+
+    private void validateQuoteMode() {
+        if (escapeCharacter == null && quoteMode == QuoteMode.NONE) {
+            throw new IllegalArgumentException("Quote mode set to NONE but no escape character is set");
         }
     }
 
