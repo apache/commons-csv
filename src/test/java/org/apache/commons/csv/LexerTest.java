@@ -216,6 +216,25 @@ class LexerTest {
         }
     }
 
+    /**
+     * With {@code ignoreSurroundingSpaces} enabled and a multi-character delimiter whose first character is whitespace,
+     * the side-effecting {@link Lexer#isDelimiter(int)} must only be evaluated once per character, otherwise the
+     * delimiter is consumed in the whitespace-skip loop and the empty field at the boundary is dropped.
+     */
+    @Test
+    void testEmptyTokenBeforeWhitespacePrefixedMultiCharacterDelimiter() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter(" |").setIgnoreSurroundingSpaces(true).get();
+        try (Lexer lexer = createLexer(" |a", format)) {
+            assertNextToken(TOKEN, "", lexer);
+            assertNextToken(EOF, "a", lexer);
+        }
+        try (Lexer lexer = createLexer("a | |b", format)) {
+            assertNextToken(TOKEN, "a", lexer);
+            assertNextToken(TOKEN, "", lexer);
+            assertNextToken(EOF, "b", lexer);
+        }
+    }
+
     @Test
     void testEOFWithoutClosingQuote() throws Exception {
         final String code = "a,\"b";
@@ -444,25 +463,6 @@ class LexerTest {
         final String recordString = "x[a][|";
         try (Lexer lexer = createLexer(recordString, format)) {
             assertNextToken(EOF, recordString, lexer);
-        }
-    }
-
-    /**
-     * With {@code ignoreSurroundingSpaces} enabled and a multi-character delimiter whose first character is whitespace,
-     * the side-effecting {@link Lexer#isDelimiter(int)} must only be evaluated once per character, otherwise the
-     * delimiter is consumed in the whitespace-skip loop and the empty field at the boundary is dropped.
-     */
-    @Test
-    void testEmptyTokenBeforeWhitespacePrefixedMultiCharacterDelimiter() throws IOException {
-        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter(" |").setIgnoreSurroundingSpaces(true).get();
-        try (Lexer lexer = createLexer(" |a", format)) {
-            assertNextToken(TOKEN, "", lexer);
-            assertNextToken(EOF, "a", lexer);
-        }
-        try (Lexer lexer = createLexer("a | |b", format)) {
-            assertNextToken(TOKEN, "a", lexer);
-            assertNextToken(TOKEN, "", lexer);
-            assertNextToken(EOF, "b", lexer);
         }
     }
 

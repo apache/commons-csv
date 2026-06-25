@@ -465,6 +465,26 @@ class CSVParserTest {
                 () -> CSVParser.parse("a,b,a\n1,2,3\nx,y,z", CSVFormat.DEFAULT.withHeader().withAllowDuplicateHeaderNames(false)));
     }
 
+    /**
+     * With {@code ignoreSurroundingSpaces} enabled and a multi-character delimiter whose first character is whitespace,
+     * the empty field at the delimiter boundary must survive. The delimiter look-ahead is consumed while skipping
+     * leading whitespace, so re-evaluating it would drop the empty field and merge the following field's value.
+     */
+    @Test
+    void testEmptyFieldBeforeWhitespacePrefixedMultiCharacterDelimiter() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter(" |").setIgnoreSurroundingSpaces(true).get();
+        try (CSVParser parser = CSVParser.parse(" |a", format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(1, records.size());
+            assertValuesEquals(new String[] { "", "a" }, records.get(0));
+        }
+        try (CSVParser parser = CSVParser.parse("a | |b", format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(1, records.size());
+            assertValuesEquals(new String[] { "a", "", "b" }, records.get(0));
+        }
+    }
+
     @Test
     void testEmptyFile() throws Exception {
         try (CSVParser parser = CSVParser.parse(Paths.get("src/test/resources/org/apache/commons/csv/empty.txt"), StandardCharsets.UTF_8,
@@ -1755,26 +1775,6 @@ class CSVParserTest {
             final CSVRecord record = parser.nextRecord();
             assertEquals(recordString, record.get(0));
             assertEquals(1, record.size());
-        }
-    }
-
-    /**
-     * With {@code ignoreSurroundingSpaces} enabled and a multi-character delimiter whose first character is whitespace,
-     * the empty field at the delimiter boundary must survive. The delimiter look-ahead is consumed while skipping
-     * leading whitespace, so re-evaluating it would drop the empty field and merge the following field's value.
-     */
-    @Test
-    void testEmptyFieldBeforeWhitespacePrefixedMultiCharacterDelimiter() throws IOException {
-        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter(" |").setIgnoreSurroundingSpaces(true).get();
-        try (CSVParser parser = CSVParser.parse(" |a", format)) {
-            final List<CSVRecord> records = parser.getRecords();
-            assertEquals(1, records.size());
-            assertValuesEquals(new String[] { "", "a" }, records.get(0));
-        }
-        try (CSVParser parser = CSVParser.parse("a | |b", format)) {
-            final List<CSVRecord> records = parser.getRecords();
-            assertEquals(1, records.size());
-            assertValuesEquals(new String[] { "a", "", "b" }, records.get(0));
         }
     }
 
