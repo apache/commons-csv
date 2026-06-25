@@ -483,6 +483,11 @@ class CSVParserTest {
             assertEquals(1, records.size());
             assertValuesEquals(new String[] { "a", "", "b" }, records.get(0));
         }
+        try (CSVParser parser = CSVParser.parse("a | |b |", format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(1, records.size());
+            assertValuesEquals(new String[] { "a", "", "b", "" }, records.get(0));
+        }
     }
 
     @Test
