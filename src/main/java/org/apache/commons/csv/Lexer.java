@@ -277,15 +277,22 @@ final class Lexer implements Closeable {
         }
         // Important: make sure a new char gets consumed in each iteration
         while (token.type == Token.Type.INVALID) {
+            // isDelimiter consumes the trailing characters of a multi-character delimiter as a side effect, so it must
+            // only be evaluated once per character. Remember a match found while skipping whitespace below.
+            boolean delimiter = false;
             // ignore whitespaces at beginning of a token
             if (ignoreSurroundingSpaces) {
-                while (Character.isWhitespace((char) c) && !isDelimiter(c) && !eol) {
+                while (Character.isWhitespace((char) c) && !eol) {
+                    if (isDelimiter(c)) {
+                        delimiter = true;
+                        break;
+                    }
                     c = reader.read();
                     eol = readEndOfLine(c);
                 }
             }
             // ok, start of token reached: encapsulated, or token
-            if (isDelimiter(c)) {
+            if (delimiter || isDelimiter(c)) {
                 // empty token return TOKEN("")
                 token.type = Token.Type.TOKEN;
             } else if (eol) {
