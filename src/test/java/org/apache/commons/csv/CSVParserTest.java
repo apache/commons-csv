@@ -1758,6 +1758,26 @@ class CSVParserTest {
         }
     }
 
+    /**
+     * With {@code ignoreSurroundingSpaces} enabled and a multi-character delimiter whose first character is whitespace,
+     * the empty field at the delimiter boundary must survive. The delimiter look-ahead is consumed while skipping
+     * leading whitespace, so re-evaluating it would drop the empty field and merge the following field's value.
+     */
+    @Test
+    void testEmptyFieldBeforeWhitespacePrefixedMultiCharacterDelimiter() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter(" |").setIgnoreSurroundingSpaces(true).get();
+        try (CSVParser parser = CSVParser.parse(" |a", format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(1, records.size());
+            assertValuesEquals(new String[] { "", "a" }, records.get(0));
+        }
+        try (CSVParser parser = CSVParser.parse("a | |b", format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(1, records.size());
+            assertValuesEquals(new String[] { "a", "", "b" }, records.get(0));
+        }
+    }
+
     @Test
     void testProvidedHeader() throws Exception {
         final Reader in = new StringReader("a,b,c\n1,2,3\nx,y,z");
