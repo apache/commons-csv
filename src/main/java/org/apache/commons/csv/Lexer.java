@@ -336,6 +336,40 @@ final class Lexer implements Closeable {
      *             delimiter or EOL.
      * @throws CSVException Thrown on invalid input.
      */
+
+    private Token processQuotedTokenEnd(final Token token) throws IOException {
+
+        while (true) {
+
+            final int c = reader.read();
+
+            if (isDelimiter(c)) {
+                token.type = Token.Type.TOKEN;
+                return token;
+            }
+
+            if (isEndOfFile(c)) {
+                token.type = Token.Type.EOF;
+                token.isReady = true;
+                return token;
+            }
+
+            if (readEndOfLine(c)) {
+                token.type = Token.Type.EORECORD;
+                return token;
+            }
+
+            if (trailingData) {
+                token.content.append((char) c);
+            } else if (!Character.isWhitespace((char) c)) {
+
+                throw new CSVException(
+                        "Invalid character between encapsulated token and delimiter at line: %,d, position: %,d",
+                        getCurrentLineNumber(),
+                        getCharacterPosition());
+            }
+        }
+    }
     private Token parseEncapsulatedToken(final Token token) throws IOException {
         token.isQuoted = true;
         // Save current line number in case needed for IOE
@@ -349,30 +383,7 @@ final class Lexer implements Closeable {
                     c = reader.read();
                     token.content.append((char) c);
                 } else {
-                    // token finish mark (encapsulator) reached: ignore whitespace till delimiter
-                    while (true) {
-                        c = reader.read();
-                        if (isDelimiter(c)) {
-                            token.type = Token.Type.TOKEN;
-                            return token;
-                        }
-                        if (isEndOfFile(c)) {
-                            token.type = Token.Type.EOF;
-                            token.isReady = true; // There is data at EOF
-                            return token;
-                        }
-                        if (readEndOfLine(c)) {
-                            token.type = Token.Type.EORECORD;
-                            return token;
-                        }
-                        if (trailingData) {
-                            token.content.append((char) c);
-                        } else if (!Character.isWhitespace((char) c)) {
-                            // error invalid char between token and next delimiter
-                            throw new CSVException("Invalid character between encapsulated token and delimiter at line: %,d, position: %,d",
-                                    getCurrentLineNumber(), getCharacterPosition());
-                        }
-                    }
+                    return processQuotedTokenEnd(token);
                 }
             } else if (isEscape(c)) {
                 appendNextEscapedCharacterToToken(token);
