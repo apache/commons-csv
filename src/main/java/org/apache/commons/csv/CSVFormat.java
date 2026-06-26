@@ -2206,7 +2206,7 @@ public final class CSVFormat implements Serializable {
      * @throws IOException If an I/O error occurs.
      * @since 1.4
      */
-    public synchronized void print(final Object value, final Appendable out, final boolean newRecord) throws IOException {
+    /*public synchronized void print(final Object value, final Appendable out, final boolean newRecord) throws IOException {
         // null values are considered empty
         // Only call CharSequence.toString() if you have to, helps GC-free use cases.
         CharSequence charSequence;
@@ -2232,9 +2232,35 @@ public final class CSVFormat implements Serializable {
         }
         charSequence = getTrim() ? trim(charSequence) : charSequence;
         print(value, charSequence, out, newRecord);
+    }*/
+
+    public void print(final Object value, final Appendable out, final boolean newRecord) throws IOException {
+        // null values are considered empty
+        CharSequence charSequence;
+        if (value == null) {
+            if (null == nullString) {
+                charSequence = Constants.EMPTY;
+            } else if (QuoteMode.ALL == quoteMode) {
+                charSequence = quotedNullString;
+            } else {
+                charSequence = nullString;
+            }
+        } else if (value instanceof CharSequence) {
+            charSequence = (CharSequence) value;
+        } else if (value instanceof Reader) {
+            print((Reader) value, out, newRecord);
+            return;
+        } else if (value instanceof InputStream) {
+            print((InputStream) value, out, newRecord);
+            return;
+        } else {
+            charSequence = value.toString();
+        }
+        charSequence = getTrim() ? trim(charSequence) : charSequence;
+        print(value, charSequence, out, newRecord);
     }
 
-    private synchronized void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord) throws IOException {
+    /*private synchronized void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord) throws IOException {
         final int offset = 0;
         final int len = value.length();
         if (!newRecord) {
@@ -2244,6 +2270,23 @@ public final class CSVFormat implements Serializable {
             out.append(value);
         } else if (isQuoteCharacterSet()) {
             // The original object is needed so can check for Number
+            printWithQuotes(object, value, out, newRecord);
+        } else if (isEscapeCharacterSet()) {
+            printWithEscapes(value, out);
+        } else {
+            out.append(value, offset, len);
+        }
+    }
+*/
+    private void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord) throws IOException {
+        final int offset = 0;
+        final int len = value.length();
+        if (!newRecord) {
+            out.append(getDelimiterString());
+        }
+        if (object == null) {
+            out.append(value);
+        } else if (isQuoteCharacterSet()) {
             printWithQuotes(object, value, out, newRecord);
         } else if (isEscapeCharacterSet()) {
             printWithEscapes(value, out);
@@ -2308,7 +2351,16 @@ public final class CSVFormat implements Serializable {
      * @throws IOException If an I/O error occurs.
      * @since 1.4
      */
-    public synchronized void println(final Appendable appendable) throws IOException {
+   /* public synchronized void println(final Appendable appendable) throws IOException {
+        if (getTrailingDelimiter()) {
+            append(getDelimiterString(), appendable);
+        }
+        if (recordSeparator != null) {
+            append(recordSeparator, appendable);
+        }
+    }*/
+
+    public void println(final Appendable appendable) throws IOException {
         if (getTrailingDelimiter()) {
             append(getDelimiterString(), appendable);
         }
@@ -2316,6 +2368,7 @@ public final class CSVFormat implements Serializable {
             append(recordSeparator, appendable);
         }
     }
+
 
     /**
      * Prints the given {@code values} to {@code out} as a single record of delimiter-separated values followed by the record separator.
@@ -2330,13 +2383,29 @@ public final class CSVFormat implements Serializable {
      * @throws IOException If an I/O error occurs.
      * @since 1.4
      */
-    public synchronized void printRecord(final Appendable appendable, final Object... values) throws IOException {
+   /* public synchronized void printRecord(final Appendable appendable, final Object... values) throws IOException {
         for (int i = 0; i < values.length; i++) {
             print(values[i], appendable, i == 0);
         }
         println(appendable);
     }
-
+*/
+    public void printNewRecordValue(final Object value, final Appendable out) throws IOException {
+        print(value, out, true);
+    }
+    public void printSameRecordValue(final Object value, final Appendable out) throws IOException {
+        print(value, out, false);
+    }
+    public void printRecord(final Appendable appendable, final Object... values) throws IOException {
+        for (int i = 0; i < values.length; i++) {
+            if (i == 0) {
+                printNewRecordValue(values[i], appendable);
+            } else {
+                printSameRecordValue(values[i], appendable);
+            }
+        }
+        println(appendable);
+    }
     /*
      * This method must only be called if escaping is enabled, otherwise can throw exceptions.
      */
