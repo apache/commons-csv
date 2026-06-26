@@ -264,8 +264,10 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *            the name of the column to be retrieved.
      * @return whether a given column is mapped and has a value.
      */
+
     public boolean isSet(final String name) {
-        return isMapped(name) && getHeaderMapRaw().get(name).intValue() < values.length; // Explicit unboxing is intentional
+        final Map<String, Integer> headerMap = getHeaderMapRaw();
+        return headerMap != null && headerMap.containsKey(name) && headerMap.get(name).intValue() < values.length;
     }
 
     /**
