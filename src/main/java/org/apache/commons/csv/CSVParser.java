@@ -896,6 +896,46 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws IOException  on parse error or input read-failure.
      * @throws CSVException on invalid CSV input data.
      */
+
+    private StringBuilder processComment(StringBuilder commentBuilder) {
+
+        if (commentBuilder == null) {
+            commentBuilder = new StringBuilder();
+        } else {
+            commentBuilder.append(Constants.LF);
+        }
+
+        commentBuilder.append(reusableToken.content);
+        reusableToken.type = TOKEN;
+
+        return commentBuilder;
+    }
+
+    private void processEOF(StringBuilder commentBuilder) {
+
+        if (reusableToken.isReady) {
+            addRecordValue(true);
+        } else if (commentBuilder != null) {
+            trailerComment = commentBuilder.toString();
+        }
+    }
+
+    private CSVRecord createRecord(StringBuilder commentBuilder, long startCharPosition, long startBytePosition) {
+
+        recordNumber++;
+
+        return new CSVRecord(this, recordList.toArray(Constants.EMPTY_STRING_ARRAY), Objects.toString(commentBuilder, null), recordNumber, startCharPosition, startBytePosition);
+    }
+    private void throwInvalidTokenException()
+            throws CSVException {
+
+        throw new CSVException(
+                "(line %,d) invalid parse sequence",
+                getCurrentLineNumber());
+    }
+
+
+
     CSVRecord nextRecord() throws IOException {
         CSVRecord result = null;
         recordList.clear();
@@ -906,37 +946,35 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             reusableToken.reset();
             lexer.nextToken(reusableToken);
             switch (reusableToken.type) {
-            case TOKEN:
-                addRecordValue(false);
-                break;
-            case EORECORD:
-                addRecordValue(true);
-                break;
-            case EOF:
-                if (reusableToken.isReady) {
+
+                case TOKEN:
+                    addRecordValue(false);
+                    break;
+
+                case EORECORD:
                     addRecordValue(true);
-                } else if (sb != null) {
-                    trailerComment = sb.toString();
-                }
-                break;
-            case INVALID:
-                throw new CSVException("(line %,d) invalid parse sequence", getCurrentLineNumber());
-            case COMMENT: // Ignored currently
-                if (sb == null) { // first comment for this record
-                    sb = new StringBuilder();
-                } else {
-                    sb.append(Constants.LF);
-                }
-                sb.append(reusableToken.content);
-                reusableToken.type = TOKEN; // Read another token
-                break;
-            default:
-                throw new CSVException("Unexpected Token type: %s", reusableToken.type);
+                    break;
+
+                case EOF:
+                    processEOF(sb);
+                    break;
+
+                case INVALID:
+                    throwInvalidTokenException();
+                    break;
+
+                case COMMENT:
+                    sb = processComment(sb);
+                    break;
+
+                default:
+                    throw new CSVException("Unexpected Token type: %s", reusableToken.type);
             }
         } while (reusableToken.type == TOKEN);
         if (!recordList.isEmpty()) {
-            recordNumber++;
-            result = new CSVRecord(this, recordList.toArray(Constants.EMPTY_STRING_ARRAY), Objects.toString(sb, null), recordNumber, startCharPosition,
+            result = createRecord(
+                    sb,
+                    startCharPosition,
                     startBytePosition);
         }
         return result;
