@@ -2206,33 +2206,6 @@ public final class CSVFormat implements Serializable {
      * @throws IOException If an I/O error occurs.
      * @since 1.4
      */
-    /*public synchronized void print(final Object value, final Appendable out, final boolean newRecord) throws IOException {
-        // null values are considered empty
-        // Only call CharSequence.toString() if you have to, helps GC-free use cases.
-        CharSequence charSequence;
-        if (value == null) {
-            // https://issues.apache.org/jira/browse/CSV-203
-            if (null == nullString) {
-                charSequence = Constants.EMPTY;
-            } else if (QuoteMode.ALL == quoteMode) {
-                charSequence = quotedNullString;
-            } else {
-                charSequence = nullString;
-            }
-        } else if (value instanceof CharSequence) {
-            charSequence = (CharSequence) value;
-        } else if (value instanceof Reader) {
-            print((Reader) value, out, newRecord);
-            return;
-        } else if (value instanceof InputStream) {
-            print((InputStream) value, out, newRecord);
-            return;
-        } else {
-            charSequence = value.toString();
-        }
-        charSequence = getTrim() ? trim(charSequence) : charSequence;
-        print(value, charSequence, out, newRecord);
-    }*/
 
     public void print(final Object value, final Appendable out, final boolean newRecord) throws IOException {
         // null values are considered empty
@@ -2260,24 +2233,7 @@ public final class CSVFormat implements Serializable {
         print(value, charSequence, out, newRecord);
     }
 
-    /*private synchronized void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord) throws IOException {
-        final int offset = 0;
-        final int len = value.length();
-        if (!newRecord) {
-            out.append(getDelimiterString());
-        }
-        if (object == null) {
-            out.append(value);
-        } else if (isQuoteCharacterSet()) {
-            // The original object is needed so can check for Number
-            printWithQuotes(object, value, out, newRecord);
-        } else if (isEscapeCharacterSet()) {
-            printWithEscapes(value, out);
-        } else {
-            out.append(value, offset, len);
-        }
-    }
-*/
+
     private void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord) throws IOException {
         final int offset = 0;
         final int len = value.length();
@@ -2513,10 +2469,7 @@ public final class CSVFormat implements Serializable {
         }
     }
 
-    /*
-     * This method must only be called if quoting is enabled, otherwise will generate NPE.
-     * The original object is needed so can check for Number
-     */
+
     private void printWithQuotes(final Object object, final CharSequence charSeq, final Appendable out, final boolean newRecord) throws IOException {
         boolean quote = false;
         int start = 0;
@@ -2524,10 +2477,7 @@ public final class CSVFormat implements Serializable {
         final int len = charSeq.length();
         final char[] delim = getDelimiterCharArray();
         final int delimLength = delim.length;
-        final char quoteChar = getQuoteCharacter().charValue(); // Explicit unboxing is intentional
-        // If escape char not specified, default to the quote char
-        // This avoids having to keep checking whether there is an escape character
-        // at the cost of checking against quote twice
+        final char quoteChar = getQuoteCharacter().charValue();
         final char escapeChar = isEscapeCharacterSet() ? getEscapeChar() : quoteChar;
         QuoteMode quoteModePolicy = getQuoteMode();
         if (quoteModePolicy == null) {
@@ -2542,25 +2492,19 @@ public final class CSVFormat implements Serializable {
             quote = !(object instanceof Number);
             break;
         case NONE:
-            // Use the existing escaping code
+
             printWithEscapes(charSeq, out);
             return;
         case MINIMAL:
             if (len <= 0) {
-                // Always quote an empty token that is the first
-                // on the line, as it may be the only thing on the
-                // line. If it were not quoted in that case,
-                // an empty line has no tokens.
+
                 if (newRecord) {
                     quote = true;
                 }
             } else {
                 char c = charSeq.charAt(pos);
                 if (c <= Constants.COMMENT || isCommentMarkerSet() && c == commentMarker.charValue()) {
-                    // Some other chars at the start of a value caused the parser to fail, so for now
-                    // encapsulate if we start in anything less than '#'. We are being conservative
-                    // by including the default comment char and any configured comment marker too,
-                    // which the parser would otherwise read back as a comment line.
+
                     quote = true;
                 } else {
                     while (pos < len) {
