@@ -1909,6 +1909,28 @@ class CSVPrinterTest {
     }
 
     @Test
+    void testQuoteValueEndingWithMultiCharacterDelimiterPrefix() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("||").get();
+        final StringWriter sw = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            // "a|" ends with the delimiter's first char; unquoted output "a|||b" would split one char early on read.
+            printer.printRecord("a|", "b");
+            // "a|b" does not end with a delimiter prefix, so it stays unquoted.
+            printer.printRecord("a|b", "c");
+        }
+        final String string = sw.toString();
+        assertEquals("\"a|\"||b" + RECORD_SEPARATOR + "a|b||c" + RECORD_SEPARATOR, string);
+        try (CSVParser parser = CSVParser.parse(string, format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(2, records.size());
+            assertEquals("a|", records.get(0).get(0));
+            assertEquals("b", records.get(0).get(1));
+            assertEquals("a|b", records.get(1).get(0));
+            assertEquals("c", records.get(1).get(1));
+        }
+    }
+
+    @Test
     void testQuoteNonNumeric() throws IOException {
         final StringWriter sw = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuoteMode(QuoteMode.NON_NUMERIC))) {
