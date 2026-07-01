@@ -2098,6 +2098,33 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Tests whether appending the delimiter after {@code charSeq} would let the parser match the delimiter starting inside the value. This happens with a
+     * multi-character delimiter when the value ends with a straddling prefix of it (for delimiter {@code ||}, a value ending in {@code |} followed by the
+     * delimiter yields {@code |||}, which the greedy lexer splits one character early). Such a value must be encapsulated so the field boundary is unambiguous.
+     */
+    private boolean endsWithDelimiterPrefix(final CharSequence charSeq, final char[] delimiter, final int delimiterLength) {
+        if (delimiterLength < 2) {
+            return false;
+        }
+        final int len = charSeq.length();
+        for (int start = Math.max(0, len - delimiterLength + 1); start < len; start++) {
+            boolean match = true;
+            for (int j = 0; j < delimiterLength; j++) {
+                final int idx = start + j;
+                final char c = idx < len ? charSeq.charAt(idx) : delimiter[idx - len];
+                if (c != delimiter[j]) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Tests whether escapes are being processed.
      *
      * @return {@code true} if escapes are processed
@@ -2509,6 +2536,9 @@ public final class CSVFormat implements Serializable {
                         // Some other chars at the end caused the parser to fail, so for now
                         // encapsulate if we end in anything less than ' '
                         if (isTrimChar(c)) {
+                            quote = true;
+                        } else if (endsWithDelimiterPrefix(charSeq, delim, delimLength)) {
+                            // A trailing partial multi-character delimiter would merge with the following delimiter on read.
                             quote = true;
                         }
                     }
