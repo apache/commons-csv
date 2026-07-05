@@ -1909,6 +1909,15 @@ class CSVPrinterTest {
     }
 
     @Test
+    void testQuoteNonNumeric() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuoteMode(QuoteMode.NON_NUMERIC))) {
+            printer.printRecord("a", "b\nc", Integer.valueOf(1));
+            assertEquals("\"a\",\"b\nc\",1" + RECORD_SEPARATOR, sw.toString());
+        }
+    }
+
+    @Test
     void testQuoteValueEndingWithMultiCharacterDelimiterPrefix() throws IOException {
         final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("||").get();
         final StringWriter sw = new StringWriter();
@@ -1951,15 +1960,6 @@ class CSVPrinterTest {
             assertEquals("b", records.get(0).get(1));
             assertEquals("ab", records.get(1).get(0));
             assertEquals("c", records.get(1).get(1));
-        }
-    }
-
-    @Test
-    void testQuoteNonNumeric() throws IOException {
-        final StringWriter sw = new StringWriter();
-        try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuoteMode(QuoteMode.NON_NUMERIC))) {
-            printer.printRecord("a", "b\nc", Integer.valueOf(1));
-            assertEquals("\"a\",\"b\nc\",1" + RECORD_SEPARATOR, sw.toString());
         }
     }
 
