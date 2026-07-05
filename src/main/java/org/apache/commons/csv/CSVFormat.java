@@ -2239,7 +2239,7 @@ public final class CSVFormat implements Serializable {
         CharSequence charSequence;
         if (value == null) {
             // https://issues.apache.org/jira/browse/CSV-203
-            if (null == nullString) {
+            if (nullString == null) {
                 charSequence = Constants.EMPTY;
             } else if (QuoteMode.ALL == quoteMode) {
                 charSequence = quotedNullString;
