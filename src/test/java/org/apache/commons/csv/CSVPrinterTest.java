@@ -1931,6 +1931,30 @@ class CSVPrinterTest {
     }
 
     @Test
+    void testQuoteValueEndingWithSupplementaryDelimiterPrefix() throws IOException {
+        // Supplementary code point (surrogate pair) used inside a multi-character delimiter.
+        final String clef = new String(Character.toChars(0x1D11E));
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter(clef + clef).get();
+        final StringWriter sw = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            // Value ending in one clef is a straddling prefix of the two-clef delimiter and must be quoted.
+            printer.printRecord("a" + clef, "b");
+            // Value not ending in a delimiter prefix stays unquoted.
+            printer.printRecord("ab", "c");
+        }
+        final String string = sw.toString();
+        assertEquals("\"a" + clef + "\"" + clef + clef + "b" + RECORD_SEPARATOR + "ab" + clef + clef + "c" + RECORD_SEPARATOR, string);
+        try (CSVParser parser = CSVParser.parse(string, format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(2, records.size());
+            assertEquals("a" + clef, records.get(0).get(0));
+            assertEquals("b", records.get(0).get(1));
+            assertEquals("ab", records.get(1).get(0));
+            assertEquals("c", records.get(1).get(1));
+        }
+    }
+
+    @Test
     void testQuoteNonNumeric() throws IOException {
         final StringWriter sw = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withQuoteMode(QuoteMode.NON_NUMERIC))) {
