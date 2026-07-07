@@ -1964,6 +1964,30 @@ class CSVPrinterTest {
     }
 
     @Test
+    void testQuoteValueWithLeadingOrTrailingUnicodeWhitespace() throws IOException {
+        // U+3000 IDEOGRAPHIC SPACE is Character.isWhitespace but greater than ' ', so ignoreSurroundingSpaces
+        // strips it on read. It must be quoted or the surrounding whitespace is lost on a round trip.
+        final String idSpace = "　";
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setIgnoreSurroundingSpaces(true).get();
+        final StringWriter sw = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            printer.printRecord(idSpace + "a" + idSpace, "b");
+            // A value without surrounding whitespace stays unquoted.
+            printer.printRecord("ab", "c");
+        }
+        final String string = sw.toString();
+        assertEquals("\"" + idSpace + "a" + idSpace + "\",b" + RECORD_SEPARATOR + "ab,c" + RECORD_SEPARATOR, string);
+        try (CSVParser parser = CSVParser.parse(string, format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(2, records.size());
+            assertEquals(idSpace + "a" + idSpace, records.get(0).get(0));
+            assertEquals("b", records.get(0).get(1));
+            assertEquals("ab", records.get(1).get(0));
+            assertEquals("c", records.get(1).get(1));
+        }
+    }
+
+    @Test
     void testRandomDefault() throws Exception {
         doRandom(CSVFormat.DEFAULT, ITERATIONS_FOR_RANDOM_TEST);
     }
