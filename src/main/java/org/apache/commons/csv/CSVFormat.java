@@ -2514,11 +2514,12 @@ public final class CSVFormat implements Serializable {
                 }
             } else {
                 char c = charSeq.charAt(pos);
-                if (c <= Constants.COMMENT || isCommentMarkerSet() && c == commentMarker.charValue()) {
+                if (c <= Constants.COMMENT || Character.isWhitespace(c) || isCommentMarkerSet() && c == commentMarker.charValue()) {
                     // Some other chars at the start of a value caused the parser to fail, so for now
                     // encapsulate if we start in anything less than '#'. We are being conservative
                     // by including the default comment char and any configured comment marker too,
-                    // which the parser would otherwise read back as a comment line.
+                    // which the parser would otherwise read back as a comment line. A leading Unicode
+                    // whitespace above ' ' is stripped by ignoreSurroundingSpaces on read, so quote it too.
                     quote = true;
                 } else {
                     while (pos < len) {
@@ -2534,8 +2535,9 @@ public final class CSVFormat implements Serializable {
                         pos = len - 1;
                         c = charSeq.charAt(pos);
                         // Some other chars at the end caused the parser to fail, so for now
-                        // encapsulate if we end in anything less than ' '
-                        if (isTrimChar(c)) {
+                        // encapsulate if we end in anything less than ' '. A trailing Unicode whitespace
+                        // above ' ' is stripped by ignoreSurroundingSpaces on read, so quote it too.
+                        if (isTrimChar(c) || Character.isWhitespace(c)) {
                             quote = true;
                         } else if (endsWithDelimiterPrefix(charSeq, delim, delimLength)) {
                             // A trailing partial multi-character delimiter would merge with the following delimiter on read.
