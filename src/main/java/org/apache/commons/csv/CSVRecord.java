@@ -82,7 +82,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *
      * @param e
      *            an enum
-     * @return the String at the given enum String
+     * @return The String at the given enum String
      */
     public String get(final Enum<?> e) {
         return get(e == null ? null : e.name());
@@ -93,7 +93,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *
      * @param i
      *            a column index (0-based)
-     * @return the String at the given index
+     * @return The String at the given index
      */
     public String get(final int i) {
         return values[i];
@@ -112,7 +112,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *
      * @param name
      *            the name of the column to be retrieved.
-     * @return the column value, maybe null depending on {@link CSVFormat#getNullString()}.
+     * @return The column value, maybe null depending on {@link CSVFormat#getNullString()}.
      * @throws IllegalStateException
      *             if no header mapping was provided.
      * @throws IllegalArgumentException
@@ -143,7 +143,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Returns the starting position of this record in the source stream, measured in bytes.
      *
-     * @return the byte position of this record in the source stream.
+     * @return The byte position of this record in the source stream.
      * @since 1.13.0
      */
     public long getBytePosition() {
@@ -154,7 +154,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * Returns the start position of this record as a character position in the source stream. This may or may not
      * correspond to the byte position depending on the character set.
      *
-     * @return the position of this record in the source stream.
+     * @return The position of this record in the source stream.
      */
     public long getCharacterPosition() {
         return characterPosition;
@@ -166,7 +166,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * If there is no following record (that is, the comment is at EOF),
      * then the comment will be ignored.
      *
-     * @return the comment for this record, or null if no comment for this record is available.
+     * @return The comment for this record, or null if no comment for this record is available.
      */
     public String getComment() {
         return comment;
@@ -184,7 +184,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * should be used when the record may have originated from a serialized form.
      * </p>
      *
-     * @return the parser.
+     * @return The parser.
      * @since 1.7
      */
     public CSVParser getParser() {
@@ -199,7 +199,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * the current line number of the parser that created this record.
      * </p>
      *
-     * @return the number of this record.
+     * @return The number of this record.
      * @see CSVParser#getCurrentLineNumber()
      */
     public long getRecordNumber() {
@@ -283,7 +283,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      *
      * @param <M> The map type.
      * @param map The Map to populate.
-     * @return the given map.
+     * @return The given map.
      * @since 1.9.0
      */
     public <M extends Map<String, String>> M putIn(final M map) {
@@ -301,7 +301,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Returns the number of values in this record.
      *
-     * @return the number of values.
+     * @return The number of values.
      */
     public int size() {
         return values.length;
@@ -310,7 +310,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Returns a sequential ordered stream whose elements are the values.
      *
-     * @return the new stream.
+     * @return The new stream.
      * @since 1.9.0
      */
     public Stream<String> stream() {
@@ -358,7 +358,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Gets the values for this record. This is <strong>not</strong> a copy.
      *
-     * @return the values for this record, never null.
+     * @return The values for this record, never null.
      * @since 1.10.0
      */
     public String[] values() {

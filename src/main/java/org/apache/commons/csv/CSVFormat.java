@@ -1019,7 +1019,7 @@ public final class CSVFormat implements Serializable {
         /**
          * Gets the format.
          *
-         * @return the format.
+         * @return The format.
          */
         public CSVFormat getFormat() {
             return format;
@@ -1434,7 +1434,7 @@ public final class CSVFormat implements Serializable {
      *
      * @param <T>    The array element type.
      * @param values the source array
-     * @return the cloned array.
+     * @return The cloned array.
      */
     @SafeVarargs
     static <T> T[] clone(final T... values) {
@@ -1748,7 +1748,7 @@ public final class CSVFormat implements Serializable {
      * Formats the specified values as a CSV record string.
      *
      * @param values the values to format.
-     * @return the formatted values.
+     * @return The formatted values.
      */
     public String format(final Object... values) {
         return Uncheck.get(() -> format_(values));
@@ -1826,7 +1826,7 @@ public final class CSVFormat implements Serializable {
      * # 1970-01-01T00:00:00Z
      * </pre>
      *
-     * @return the comment start marker, may be {@code null}
+     * @return The comment start marker, may be {@code null}
      */
     public Character getCommentMarker() {
         return commentMarker;
@@ -1835,7 +1835,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Gets the first character delimiting the values (typically ';', ',' or '\t').
      *
-     * @return the first delimiter character.
+     * @return The first delimiter character.
      * @deprecated Use {@link #getDelimiterString()}.
      */
     @Deprecated
@@ -1846,7 +1846,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Gets the character delimiting the values (typically ";", "," or "\t").
      *
-     * @return the delimiter.
+     * @return The delimiter.
      */
     char[] getDelimiterCharArray() {
         return delimiter.toCharArray();
@@ -1855,7 +1855,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Gets the character delimiting the values (typically ";", "," or "\t").
      *
-     * @return the delimiter.
+     * @return The delimiter.
      * @since 1.9.0
      */
     public String getDelimiterString() {
@@ -1875,7 +1875,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Gets the escape character.
      *
-     * @return the escape character, may be {@code 0}
+     * @return The escape character, may be {@code 0}
      */
     char getEscapeChar() {
         return escapeCharacter != null ? escapeCharacter.charValue() : 0; // Explicit unboxing is intentional
@@ -1884,7 +1884,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Gets the escape character.
      *
-     * @return the escape character, may be {@code null}
+     * @return The escape character, may be {@code null}
      */
     public Character getEscapeCharacter() {
         return escapeCharacter;
@@ -1994,7 +1994,7 @@ public final class CSVFormat implements Serializable {
      * <li><strong>Writing:</strong> Writes {@code null} as the given {@code nullString} when writing records.</li>
      * </ul>
      *
-     * @return the String to convert to and from {@code null}. No substitution occurs if {@code null}
+     * @return The String to convert to and from {@code null}. No substitution occurs if {@code null}
      */
     public String getNullString() {
         return nullString;
@@ -2003,7 +2003,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Gets the character used to encapsulate values containing special characters.
      *
-     * @return the quoteChar character, may be {@code null}
+     * @return The quoteChar character, may be {@code null}
      */
     public Character getQuoteCharacter() {
         return quoteCharacter;
@@ -2012,7 +2012,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Gets the quote policy output fields.
      *
-     * @return the quote policy
+     * @return The quote policy
      */
     public QuoteMode getQuoteMode() {
         return quoteMode;
@@ -2021,7 +2021,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Gets the record separator delimiting output records.
      *
-     * @return the record separator
+     * @return The record separator
      */
     public String getRecordSeparator() {
         return recordSeparator;

@@ -101,7 +101,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     /**
      * Gets the number of bytes read by the reader.
      *
-     * @return the number of bytes read by the read
+     * @return The number of bytes read by the read
      */
     long getBytesRead() {
         return this.bytesRead;
@@ -139,7 +139,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      * </ul>
      *
      * @param current the current character to process.
-     * @return the byte length of the character.
+     * @return The byte length of the character.
      * @throws CharacterCodingException if the character cannot be encoded.
      */
     private int getEncodedCharLength(final int current) throws CharacterCodingException {
@@ -167,7 +167,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      * include a character read using the {@link #peek()} method. If no character has been read then this will return {@link Constants#UNDEFINED}. If the end of
      * the stream was reached on the last read then this will return {@link IOUtils#EOF}.
      *
-     * @return the last character that was read
+     * @return The last character that was read
      */
     int getLastChar() {
         return lastChar;
@@ -176,7 +176,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     /**
      * Returns the current line number
      *
-     * @return the current line number
+     * @return The current line number
      */
     long getLineNumber() {
         // Check if we are at EOL or EOF or just starting
@@ -189,7 +189,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     /**
      * Gets the character position in the reader.
      *
-     * @return the current position in the reader (counting characters, not bytes since this is a Reader)
+     * @return The current position in the reader (counting characters, not bytes since this is a Reader)
      */
     long getPosition() {
         return this.position;
@@ -255,7 +255,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      * Sets {@link #lastChar} to {@code Constants.EOF} at EOF, otherwise the last EOL character.
      * </p>
      *
-     * @return the line that was read, or null if reached EOF.
+     * @return The line that was read, or null if reached EOF.
      */
     @Override
     public String readLine() throws IOException {

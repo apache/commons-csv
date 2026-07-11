@@ -100,7 +100,7 @@ final class Lexer implements Closeable {
     /**
      * Gets the number of bytes read.
      *
-     * @return the number of bytes read.
+     * @return The number of bytes read.
      */
     long getBytesRead() {
         return reader.getBytesRead();
@@ -109,7 +109,7 @@ final class Lexer implements Closeable {
     /**
      * Gets the current character position.
      *
-     * @return the current character position.
+     * @return The current character position.
      */
     long getCharacterPosition() {
         return reader.getPosition();
@@ -118,7 +118,7 @@ final class Lexer implements Closeable {
     /**
      * Gets the current line number.
      *
-     * @return the current line number.
+     * @return The current line number.
      */
     long getCurrentLineNumber() {
         return reader.getLineNumber();
@@ -231,7 +231,7 @@ final class Lexer implements Closeable {
      * </p>
      *
      * @param token an existing Token object to reuse. The caller is responsible for initializing the Token.
-     * @return the next token found.
+     * @return The next token found.
      * @throws IOException  on stream access error.
      * @throws CSVException Thrown on invalid input.
      */
@@ -412,7 +412,7 @@ final class Lexer implements Closeable {
      *
      * @param token the current token.
      * @param ch     the current character.
-     * @return the filled token.
+     * @return The filled token.
      * @throws IOException  on stream access error.
      * @throws CSVException Thrown on invalid input.
      */
@@ -482,7 +482,7 @@ final class Lexer implements Closeable {
      * Handle an escape sequence. The current character must be the escape character. On return, the next character is available by calling
      * {@link ExtendedBufferedReader#getLastChar()} on the input stream.
      *
-     * @return the unescaped character (as an int) or {@link IOUtils#EOF} if char following the escape is invalid.
+     * @return The unescaped character (as an int) or {@link IOUtils#EOF} if char following the escape is invalid.
      * @throws IOException  if there is a problem reading the stream or the end of stream is detected: the escape character is not allowed at end of stream
      * @throws CSVException Thrown on invalid input.
      */

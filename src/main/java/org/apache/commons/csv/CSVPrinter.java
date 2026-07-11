@@ -172,7 +172,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     /**
      * Gets the target Appendable.
      *
-     * @return the target Appendable.
+     * @return The target Appendable.
      */
     public Appendable getOut() {
         return appendable;
@@ -181,7 +181,7 @@ public final class CSVPrinter implements Flushable, Closeable {
     /**
      * Gets the record count printed, this does not include comments or headers.
      *
-     * @return the record count, this does not include comments or headers.
+     * @return The record count, this does not include comments or headers.
      * @since 1.13.0
      */
     public long getRecordCount() {

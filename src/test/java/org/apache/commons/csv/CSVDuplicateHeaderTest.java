@@ -51,7 +51,7 @@ class CSVDuplicateHeaderTest {
      * for each test case.
      * </p>
      *
-     * @return the stream of arguments
+     * @return The stream of arguments
      */
     static Stream<Arguments> duplicateHeaderAllowsMissingColumnsNamesData() {
         return duplicateHeaderData()
@@ -82,7 +82,7 @@ class CSVDuplicateHeaderTest {
      * boolean valid
      * </pre>
      *
-     * @return the stream of arguments
+     * @return The stream of arguments
      */
     static Stream<Arguments> duplicateHeaderData() {
         return Stream.of(

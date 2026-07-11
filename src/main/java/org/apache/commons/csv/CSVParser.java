@@ -244,7 +244,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          *
          * @throws IOException  on parse error or input read-failure
          * @throws CSVException on invalid input.
-         * @return the next record, or {@code null} if the end of the stream has been reached.
+         * @return The next record, or {@code null} if the end of the stream has been reached.
          */
         private CSVRecord getNextRecord() {
             CSVRecord record = null;
@@ -686,7 +686,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     /**
      * Gets the first end-of-line string encountered.
      *
-     * @return the first end-of-line string.
+     * @return The first end-of-line string.
      * @since 1.5
      */
     public String getFirstEndOfLine() {
@@ -697,7 +697,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Gets the header comment, if any.
      * The header comment appears before the header record.
      *
-     * @return the header comment for this stream, or null if no comment is available.
+     * @return The header comment for this stream, or null if no comment is available.
      * @since 1.10.0
      */
     public String getHeaderComment() {
@@ -728,7 +728,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     /**
      * Gets the underlying header map.
      *
-     * @return the underlying header map.
+     * @return The underlying header map.
      */
     Map<String, Integer> getHeaderMapRaw() {
         return headers.headerMap;
@@ -787,7 +787,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Gets the trailer comment, if any.
      * Trailer comments are located between the last record and EOF
      *
-     * @return the trailer comment for this stream, or null if no comment is available.
+     * @return The trailer comment for this stream, or null if no comment is available.
      * @since 1.10.0
      */
     public String getTrailerComment() {
@@ -892,7 +892,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     /**
      * Parses the next record from the current point in the stream.
      *
-     * @return the record as an array of values, or {@code null} if the end of the stream has been reached.
+     * @return The record as an array of values, or {@code null} if the end of the stream has been reached.
      * @throws IOException  on parse error or input read-failure.
      * @throws CSVException on invalid CSV input data.
      */
