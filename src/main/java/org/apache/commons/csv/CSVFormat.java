@@ -206,7 +206,7 @@ public final class CSVFormat implements Serializable {
          * @see Predefined#Default
          * @see DuplicateHeaderMode#ALLOW_ALL
          *
-         * @return a copy of the builder
+         * @return A copy of the builder
          */
         public static Builder create() {
             // @formatter:off
@@ -223,7 +223,7 @@ public final class CSVFormat implements Serializable {
          * Creates a new builder from the given format.
          *
          * @param csvFormat the source format.
-         * @return a new builder.
+         * @return A new builder.
          */
         public static Builder create(final CSVFormat csvFormat) {
             return new Builder(csvFormat);
@@ -306,7 +306,7 @@ public final class CSVFormat implements Serializable {
         /**
          * Builds a new CSVFormat instance.
          *
-         * @return a new CSVFormat instance.
+         * @return A new CSVFormat instance.
          * @deprecated Use {@link #get()}.
          */
         @Deprecated
@@ -317,7 +317,7 @@ public final class CSVFormat implements Serializable {
         /**
          * Builds a new CSVFormat instance.
          *
-         * @return a new CSVFormat instance.
+         * @return A new CSVFormat instance.
          * @since 1.13.0
          */
         @Override
@@ -1465,7 +1465,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Creates a null-safe copy of the given instance.
      *
-     * @return a copy of the given instance or null if the input is null.
+     * @return A copy of the given instance or null if the input is null.
      */
     static CSVFormat copy(final CSVFormat format) {
         return format != null ? format.copy() : null;
@@ -1513,7 +1513,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * @param delimiter the char used for value separation, must not be a line break character
-     * @return a new CSV format.
+     * @return A new CSV format.
      * @throws IllegalArgumentException if the delimiter is a line break character
      * @see #DEFAULT
      * @see #RFC4180
@@ -1673,7 +1673,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Creates a new Builder for this instance.
      *
-     * @return a new Builder.
+     * @return A new Builder.
      */
     public Builder builder() {
         return Builder.create(this);
@@ -1682,7 +1682,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Creates a copy of this instance.
      *
-     * @return a copy of this instance.
+     * @return A copy of this instance.
      */
     CSVFormat copy() {
         return builder().get();
@@ -1893,7 +1893,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Gets a copy of the header array.
      *
-     * @return a copy of the header array; {@code null} if disabled, the empty array if to be read from the file
+     * @return A copy of the header array; {@code null} if disabled, the empty array if to be read from the file
      */
     public String[] getHeader() {
         return headers != null ? headers.clone() : null;
@@ -1930,7 +1930,7 @@ public final class CSVFormat implements Serializable {
      * # 1970-01-01T00:00:00Z
      * </pre>
      *
-     * @return a copy of the header comment array; {@code null} if disabled.
+     * @return A copy of the header comment array; {@code null} if disabled.
      */
     public String[] getHeaderComments() {
         return headerComments != null ? headerComments.clone() : null;
@@ -2163,7 +2163,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * @param reader the input stream
-     * @return a parser over a stream of {@link CSVRecord}s.
+     * @return A parser over a stream of {@link CSVRecord}s.
      * @throws IOException  If an I/O error occurs
      * @throws CSVException Thrown on invalid input.
      */
@@ -2179,7 +2179,7 @@ public final class CSVFormat implements Serializable {
      * </p>
      *
      * @param out the output.
-     * @return a printer to an output.
+     * @return A printer to an output.
      * @throws IOException thrown if the optional header cannot be printed.
      */
     public CSVPrinter print(final Appendable out) throws IOException {
@@ -2195,7 +2195,7 @@ public final class CSVFormat implements Serializable {
      *
      * @param out     the output.
      * @param charset A charset.
-     * @return a printer to an output.
+     * @return A printer to an output.
      * @throws IOException thrown if the optional header cannot be printed.
      * @since 1.5
      */
@@ -2288,7 +2288,7 @@ public final class CSVFormat implements Serializable {
      *
      * @param out     the output.
      * @param charset A charset.
-     * @return a printer to an output.
+     * @return A printer to an output.
      * @throws IOException thrown if the optional header cannot be printed.
      * @since 1.5
      */
@@ -2320,7 +2320,7 @@ public final class CSVFormat implements Serializable {
      * See also {@link CSVPrinter}.
      * </p>
      *
-     * @return a printer to {@link System#out}.
+     * @return A printer to {@link System#out}.
      * @throws IOException thrown if the optional header cannot be printed.
      * @since 1.5
      */
@@ -2716,7 +2716,7 @@ public final class CSVFormat implements Serializable {
     /**
      * Builds a new {@code CSVFormat} that allows duplicate header names.
      *
-     * @return a new {@code CSVFormat} that allows duplicate header names
+     * @return A new {@code CSVFormat} that allows duplicate header names
      * @since 1.7
      * @deprecated Use {@link Builder#setAllowDuplicateHeaderNames(boolean) Builder#setAllowDuplicateHeaderNames(true)}
      */
@@ -2729,7 +2729,7 @@ public final class CSVFormat implements Serializable {
      * Builds a new {@code CSVFormat} with duplicate header names behavior set to the given value.
      *
      * @param allowDuplicateHeaderNames the duplicate header names behavior, true to allow, false to disallow.
-     * @return a new {@code CSVFormat} with duplicate header names behavior set to the given value.
+     * @return A new {@code CSVFormat} with duplicate header names behavior set to the given value.
      * @since 1.7
      * @deprecated Use {@link Builder#setAllowDuplicateHeaderNames(boolean)}
      */

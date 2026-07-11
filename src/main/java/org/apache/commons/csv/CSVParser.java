@@ -315,7 +315,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     /**
      * Creates a new builder.
      *
-     * @return a new builder.
+     * @return A new builder.
      * @since 1.13.0
      */
     public static Builder builder() {
@@ -331,7 +331,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *            The Charset to decode the given file, {@code null} maps to the {@link Charset#defaultCharset() default Charset}.
      * @param format
      *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
-     * @return a new parser
+     * @return A new parser
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent.
      * @throws IOException
@@ -358,7 +358,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *            The Charset to decode the given file, {@code null} maps to the {@link Charset#defaultCharset() default Charset}.
      * @param format
      *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
-     * @return a new CSVParser configured with the given reader and format.
+     * @return A new CSVParser configured with the given reader and format.
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either reader or format are null.
      * @throws IOException
@@ -380,7 +380,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *            The Charset to decode the given file, {@code null} maps to the {@link Charset#defaultCharset() default Charset}.
      * @param format
      *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
-     * @return a new parser
+     * @return A new parser
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent.
      * @throws IOException
@@ -407,7 +407,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *            a Reader containing CSV-formatted input. Must not be null.
      * @param format
      *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
-     * @return a new CSVParser configured with the given reader and format.
+     * @return A new CSVParser configured with the given reader and format.
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent or if either reader or format are null.
      * @throws IOException
@@ -426,7 +426,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *            a CSV string. Must not be null.
      * @param format
      *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
-     * @return a new parser
+     * @return A new parser
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent.
      * @throws IOException
@@ -453,7 +453,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      *            the charset for the resource, {@code null} maps to the {@link Charset#defaultCharset() default Charset}.
      * @param format
      *            the CSVFormat used for CSV parsing, {@code null} maps to {@link CSVFormat#DEFAULT}.
-     * @return a new parser
+     * @return A new parser
      * @throws IllegalArgumentException
      *             If the parameters of the format are inconsistent.
      * @throws IOException
@@ -714,7 +714,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * contain null or duplicate column names.
      * </p>
      *
-     * @return a copy of the header map.
+     * @return A copy of the header map.
      */
     public Map<String, Integer> getHeaderMap() {
         if (headers.headerMap == null) {
@@ -952,7 +952,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * You can use {@link CSVFormat.Builder#setMaxRows(long)} to limit how many rows a Stream produces.
      * </p>
      *
-     * @return a sequential {@code Stream} with this collection as its source.
+     * @return A sequential {@code Stream} with this collection as its source.
      * @since 1.9.0
      */
     public Stream<CSVRecord> stream() {

@@ -71,7 +71,7 @@ final class Token {
     /**
      * Converts the token state to a string to ease debugging.
      *
-     * @return a string helpful for debugging.
+     * @return A string helpful for debugging.
      */
     @Override
     public String toString() {

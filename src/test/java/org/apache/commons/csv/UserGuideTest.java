@@ -44,7 +44,7 @@ class UserGuideTest {
      * Creates a reader capable of handling BOMs.
      *
      * @param path The path to read.
-     * @return a new InputStreamReader for UTF-8 bytes.
+     * @return A new InputStreamReader for UTF-8 bytes.
      * @throws IOException if an I/O error occurs.
      */
     public InputStreamReader newReader(final Path path) throws IOException {

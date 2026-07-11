@@ -271,7 +271,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     /**
      * Returns an iterator over the values of this record.
      *
-     * @return an iterator over the values of this record.
+     * @return An iterator over the values of this record.
      */
     @Override
     public Iterator<String> iterator() {
@@ -323,7 +323,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * Editing the list does not update this instance.
      * </p>
      *
-     * @return a new List
+     * @return A new List
      * @since 1.9.0
      */
     public List<String> toList() {
@@ -348,7 +348,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * Returns a string representation of the contents of this record. The result is constructed by comment, mapping,
      * recordNumber and by passing the internal values array to {@link Arrays#toString(Object[])}.
      *
-     * @return a String representation of this record.
+     * @return A String representation of this record.
      */
     @Override
     public String toString() {

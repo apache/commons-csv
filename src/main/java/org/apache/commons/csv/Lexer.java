@@ -337,7 +337,7 @@ final class Lexer implements Closeable {
      *
      * @param token
      *            the current token
-     * @return a valid token object
+     * @return A valid token object
      * @throws IOException
      *             Thrown when in an invalid state: EOF before closing encapsulator or invalid character before
      *             delimiter or EOL.
