@@ -77,8 +77,8 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      * Constructs a new instance with the specified reader, character set, and byte tracking option. Initializes an encoder if byte tracking is enabled and a
      * character set is provided.
      *
-     * @param reader     the reader supports a look-ahead option.
-     * @param charset    the character set for encoding, or {@code null} if not applicable.
+     * @param reader     The reader supports a look-ahead option.
+     * @param charset    The character set for encoding, or {@code null} if not applicable.
      * @param trackBytes {@code true} to enable byte tracking; {@code false} to disable it.
      */
     ExtendedBufferedReader(final Reader reader, final Charset charset, final boolean trackBytes) {
@@ -138,7 +138,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      * </li>
      * </ul>
      *
-     * @param current the current character to process.
+     * @param current The current character to process.
      * @return The byte length of the character.
      * @throws CharacterCodingException if the character cannot be encoded.
      */

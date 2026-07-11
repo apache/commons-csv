@@ -267,10 +267,10 @@ class CSVDuplicateHeaderTest {
     /**
      * Tests duplicate headers with the CSVFormat.
      *
-     * @param duplicateHeaderMode the duplicate header mode
-     * @param allowMissingColumnNames the allow missing column names flag (only used for parsing)
-     * @param ignoreHeaderCase the ignore header case flag (only used for parsing)
-     * @param headers the headers
+     * @param duplicateHeaderMode The duplicate header mode
+     * @param allowMissingColumnNames The allow missing column names flag (only used for parsing)
+     * @param ignoreHeaderCase The ignore header case flag (only used for parsing)
+     * @param headers The headers
      * @param valid true if the settings are expected to be valid, otherwise expect a IllegalArgumentException
      */
     @ParameterizedTest
@@ -299,10 +299,10 @@ class CSVDuplicateHeaderTest {
     /**
      * Tests duplicate headers with the CSVParser.
      *
-     * @param duplicateHeaderMode the duplicate header mode
-     * @param allowMissingColumnNames the allow missing column names flag (only used for parsing)
-     * @param ignoreHeaderCase the ignore header case flag (only used for parsing)
-     * @param headers the headers (joined with the CSVFormat delimiter to create a string input)
+     * @param duplicateHeaderMode The duplicate header mode
+     * @param allowMissingColumnNames The allow missing column names flag (only used for parsing)
+     * @param ignoreHeaderCase The ignore header case flag (only used for parsing)
+     * @param headers The headers (joined with the CSVFormat delimiter to create a string input)
      * @param valid true if the settings are expected to be valid, otherwise expect a IllegalArgumentException
      * @throws IOException Signals that an I/O exception has occurred.
      */

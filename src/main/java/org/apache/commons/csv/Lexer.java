@@ -69,7 +69,7 @@ final class Lexer implements Closeable {
     /**
      * Appends the next escaped character to the token's content.
      *
-     * @param token the current token.
+     * @param token The current token.
      * @throws IOException  on stream access error.
      * @throws CSVException Thrown on invalid input.
      */
@@ -217,7 +217,7 @@ final class Lexer implements Closeable {
     /**
      * Tests if the current character represents the start of a line: a CR, LF, or is at the start of the file.
      *
-     * @param ch the character to check.
+     * @param ch The character to check.
      * @return true if the character is at the start of a line.
      */
     boolean isStartOfLine(final int ch) {
@@ -230,7 +230,7 @@ final class Lexer implements Closeable {
      * A token corresponds to a term, a record change or an end-of-file indicator.
      * </p>
      *
-     * @param token an existing Token object to reuse. The caller is responsible for initializing the Token.
+     * @param token An existing Token object to reuse. The caller is responsible for initializing the Token.
      * @return The next token found.
      * @throws IOException  on stream access error.
      * @throws CSVException Thrown on invalid input.
@@ -410,8 +410,8 @@ final class Lexer implements Closeable {
      * <li>An unescaped delimiter has been reached (TOKEN)</li>
      * </ul>
      *
-     * @param token the current token.
-     * @param ch     the current character.
+     * @param token The current token.
+     * @param ch     The current character.
      * @return The filled token.
      * @throws IOException  on stream access error.
      * @throws CSVException Thrown on invalid input.

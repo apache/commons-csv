@@ -99,7 +99,7 @@ public final class CSVPrinter implements Flushable, Closeable {
      * </p>
      *
      * @param appendable stream to which to print. Must not be null.
-     * @param format     the CSV format. Must not be null.
+     * @param format     The CSV format. Must not be null.
      * @throws IOException              thrown if the optional header cannot be printed.
      * @throws IllegalArgumentException thrown if the parameters of the format are inconsistent.
      * @throws NullPointerException     thrown if either parameters are null.

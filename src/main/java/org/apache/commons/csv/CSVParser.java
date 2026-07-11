@@ -177,7 +177,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          * By default, the value is {@code -1}, which reuses the character offset for the byte offset.
          * </p>
          *
-         * @param byteOffset the lexer byte offset.
+         * @param byteOffset The lexer byte offset.
          * @return {@code this} instance.
          * @see #setCharacterOffset(long)
          * @since 1.15.0
@@ -190,7 +190,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         /**
          * Sets the lexer character offset when the parser does not start parsing at the beginning of the source.
          *
-         * @param characterOffset the lexer character offset.
+         * @param characterOffset The lexer character offset.
          * @return {@code this} instance.
          * @see #setByteOffset(long)
          */
@@ -202,7 +202,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         /**
          * Sets the CSV format. A copy of the given format is kept.
          *
-         * @param format the CSV format, {@code null} resets to {@link CSVFormat#DEFAULT}.
+         * @param format The CSV format, {@code null} resets to {@link CSVFormat#DEFAULT}.
          * @return {@code this} instance.
          */
         public Builder setFormat(final CSVFormat format) {
@@ -213,7 +213,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         /**
          * Sets the next record number to assign, defaults to {@code 1}.
          *
-         * @param recordNumber the next record number to assign.
+         * @param recordNumber The next record number to assign.
          * @return {@code this} instance.
          */
         public Builder setRecordNumber(final long recordNumber) {
