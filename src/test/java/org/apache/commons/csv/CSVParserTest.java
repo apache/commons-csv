@@ -768,6 +768,29 @@ class CSVParserTest {
     }
 
     @Test
+    void testGetBytePositionWithBomEmittingCharset() throws IOException {
+        // The UTF-16 encoder writes a byte-order mark on every encode call, so the per-character
+        // byte length must exclude it. Otherwise each code unit is counted as 4 bytes (2 for the
+        // BOM, 2 for the char) and getBytePosition() grows at twice the true rate.
+        final String code = "a,b\nc,d\n";
+        try (CSVParser parser = CSVParser.builder()
+                .setReader(new StringReader(code))
+                .setFormat(CSVFormat.DEFAULT)
+                .setCharset(StandardCharsets.UTF_16)
+                .setTrackBytes(true)
+                .get()) {
+            final CSVRecord first = parser.nextRecord();
+            final CSVRecord second = parser.nextRecord();
+            assertNotNull(first);
+            assertNotNull(second);
+            assertNull(parser.nextRecord());
+            assertEquals(0, first.getBytePosition());
+            // "a,b\n" is 4 UTF-16 code units, 2 bytes each.
+            assertEquals(8, second.getBytePosition());
+        }
+    }
+
+    @Test
     void testGetHeaderComment_HeaderComment1() throws IOException {
         try (CSVParser parser = CSVParser.parse(CSV_INPUT_HEADER_COMMENT, FORMAT_AUTO_HEADER)) {
             parser.getRecords();
