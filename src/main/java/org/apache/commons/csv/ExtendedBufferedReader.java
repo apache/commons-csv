@@ -66,6 +66,9 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     /** Encoder for calculating the number of bytes for each character read. */
     private final CharsetEncoder encoder;
 
+    /** Bytes {@link #encoder} emits as a byte-order mark on every {@link CharsetEncoder#encode(CharBuffer)} call (for example {@code UTF-16}). */
+    private final int bomLength;
+
     /**
      * Constructs a new instance using the default buffer size.
      */
@@ -84,6 +87,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     ExtendedBufferedReader(final Reader reader, final Charset charset, final boolean trackBytes) {
         super(reader);
         encoder = charset != null && trackBytes ? charset.newEncoder() : null;
+        bomLength = encoder != null ? measureBomLength(encoder) : 0;
     }
 
     /**
@@ -150,16 +154,33 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         final char cChar = (char) current;
         final char lChar = (char) previous;
         if (!Character.isSurrogate(cChar)) {
-            return encoder.encode(CharBuffer.wrap(new char[] { cChar })).limit();
+            return encoder.encode(CharBuffer.wrap(new char[] { cChar })).limit() - bomLength;
         }
         if (Character.isHighSurrogate(cChar)) {
             // Move on to the next char (low surrogate)
             return 0;
         }
         if (Character.isSurrogatePair(lChar, cChar)) {
-            return encoder.encode(CharBuffer.wrap(new char[] { lChar, cChar })).limit();
+            return encoder.encode(CharBuffer.wrap(new char[] { lChar, cChar })).limit() - bomLength;
         }
         throw new CharacterCodingException();
+    }
+
+    /**
+     * Measures the byte-order mark that {@code encoder} prepends to every {@link CharsetEncoder#encode(CharBuffer)} call. Charsets such as {@code UTF-16} emit
+     * a BOM each time, which would otherwise be counted once per character. The BOM is the constant prefix shared by encoding one and two characters.
+     *
+     * @param encoder The encoder to measure.
+     * @return The byte-order mark length in bytes, or 0 when the encoder writes none.
+     */
+    private static int measureBomLength(final CharsetEncoder encoder) {
+        try {
+            final int one = encoder.encode(CharBuffer.wrap(new char[] { 'a' })).limit();
+            final int two = encoder.encode(CharBuffer.wrap(new char[] { 'a', 'a' })).limit();
+            return Math.max(0, 2 * one - two);
+        } catch (final CharacterCodingException e) {
+            return 0;
+        }
     }
 
     /**
