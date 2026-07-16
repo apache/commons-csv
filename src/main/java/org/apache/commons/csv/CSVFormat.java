@@ -24,6 +24,8 @@ import static org.apache.commons.io.IOUtils.EOF;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.NotActiveException;
+import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Serializable;
@@ -1628,6 +1630,8 @@ public final class CSVFormat implements Serializable {
     /** The maximum number of rows to process, excluding the header row. */
     private final long maxRows;
 
+    private transient Object writeLock = new Object();
+
     private CSVFormat(final Builder builder) {
         this.allowMissingColumnNames = builder.allowMissingColumnNames;
         this.autoFlush = builder.autoFlush;
@@ -1720,10 +1724,7 @@ public final class CSVFormat implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
         final CSVFormat other = (CSVFormat) obj;
@@ -2233,32 +2234,34 @@ public final class CSVFormat implements Serializable {
      * @throws IOException If an I/O error occurs.
      * @since 1.4
      */
-    public synchronized void print(final Object value, final Appendable out, final boolean newRecord) throws IOException {
-        // null values are considered empty
-        // Only call CharSequence.toString() if you have to, helps GC-free use cases.
-        CharSequence charSequence;
-        if (value == null) {
-            // https://issues.apache.org/jira/browse/CSV-203
-            if (nullString == null) {
-                charSequence = Constants.EMPTY;
-            } else if (QuoteMode.ALL == quoteMode) {
-                charSequence = quotedNullString;
+    public void print(final Object value, final Appendable out, final boolean newRecord) throws IOException {
+        synchronized (writeLock) {
+            // null values are considered empty
+            // Only call CharSequence.toString() if you have to, helps GC-free use cases.
+            CharSequence charSequence;
+            if (value == null) {
+                // https://issues.apache.org/jira/browse/CSV-203
+                if (nullString == null) {
+                    charSequence = Constants.EMPTY;
+                } else if (QuoteMode.ALL == quoteMode) {
+                    charSequence = quotedNullString;
+                } else {
+                    charSequence = nullString;
+                }
+            } else if (value instanceof CharSequence) {
+                charSequence = (CharSequence) value;
+            } else if (value instanceof Reader) {
+                print((Reader) value, out, newRecord);
+                return;
+            } else if (value instanceof InputStream) {
+                print((InputStream) value, out, newRecord);
+                return;
             } else {
-                charSequence = nullString;
+                charSequence = value.toString();
             }
-        } else if (value instanceof CharSequence) {
-            charSequence = (CharSequence) value;
-        } else if (value instanceof Reader) {
-            print((Reader) value, out, newRecord);
-            return;
-        } else if (value instanceof InputStream) {
-            print((InputStream) value, out, newRecord);
-            return;
-        } else {
-            charSequence = value.toString();
+            charSequence = getTrim() ? trim(charSequence) : charSequence;
+            print(value, charSequence, out, newRecord);
         }
-        charSequence = getTrim() ? trim(charSequence) : charSequence;
-        print(value, charSequence, out, newRecord);
     }
 
     private synchronized void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord) throws IOException {
@@ -2335,12 +2338,14 @@ public final class CSVFormat implements Serializable {
      * @throws IOException If an I/O error occurs.
      * @since 1.4
      */
-    public synchronized void println(final Appendable appendable) throws IOException {
-        if (getTrailingDelimiter()) {
-            append(getDelimiterString(), appendable);
-        }
-        if (recordSeparator != null) {
-            append(recordSeparator, appendable);
+    public void println(final Appendable appendable) throws IOException {
+        synchronized (writeLock) {
+            if (getTrailingDelimiter()) {
+                append(getDelimiterString(), appendable);
+            }
+            if (recordSeparator != null) {
+                append(recordSeparator, appendable);
+            }
         }
     }
 
@@ -2357,11 +2362,13 @@ public final class CSVFormat implements Serializable {
      * @throws IOException If an I/O error occurs.
      * @since 1.4
      */
-    public synchronized void printRecord(final Appendable appendable, final Object... values) throws IOException {
-        for (int i = 0; i < values.length; i++) {
-            print(values[i], appendable, i == 0);
+    public void printRecord(final Appendable appendable, final Object... values) throws IOException {
+        synchronized (writeLock) {
+            for (int i = 0; i < values.length; i++) {
+                print(values[i], appendable, i == 0);
+            }
+            println(appendable);
         }
-        println(appendable);
     }
 
     /*
@@ -2537,10 +2544,7 @@ public final class CSVFormat implements Serializable {
                         // Some other chars at the end caused the parser to fail, so for now
                         // encapsulate if we end in anything less than ' '. A trailing Unicode whitespace
                         // above ' ' is stripped by ignoreSurroundingSpaces on read, so quote it too.
-                        if (isTrimChar(c) || Character.isWhitespace(c)) {
-                            quote = true;
-                        } else if (endsWithDelimiterPrefix(charSeq, delim, delimLength)) {
-                            // A trailing partial multi-character delimiter would merge with the following delimiter on read.
+                        if (isTrimChar(c) || Character.isWhitespace(c) || endsWithDelimiterPrefix(charSeq, delim, delimLength)) {
                             quote = true;
                         }
                     }
@@ -2605,6 +2609,19 @@ public final class CSVFormat implements Serializable {
         }
         // (3) Append closing quote
         append(quote, appendable);
+    }
+
+    /**
+     * Reads the object from the stream and reinitializes transient fields.
+     *
+     * @param in the input stream.
+     * @throws ClassNotFoundException if the class of a serialized object could not be found.
+     * @throws IOException            if an I/O error occurs.
+     * @throws NotActiveException     if the stream is not currently reading objects.
+     */
+    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        writeLock = new Object();
     }
 
     @Override
