@@ -1108,6 +1108,38 @@ class CSVPrinterTest {
     }
 
     @Test
+    void testMultiLineCommentWithTrailingDelimiter() throws IOException {
+        // A comment is not a record, so the trailing delimiter must not follow comment lines, or it becomes
+        // part of the comment text on read back. The following data record still gets its trailing delimiter.
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setCommentMarker('#').setTrailingDelimiter(true).get();
+        final StringWriter sw = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            printer.printComment("This is a comment\non multiple lines");
+            printer.printRecord("A", "B");
+        }
+        final String string = sw.toString();
+        assertEquals("# This is a comment" + RECORD_SEPARATOR + "# on multiple lines" + RECORD_SEPARATOR + "A,B," + RECORD_SEPARATOR, string);
+        try (CSVParser parser = CSVParser.parse(string, format)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(1, records.size());
+            assertEquals("This is a comment\non multiple lines", records.get(0).getComment());
+            assertEquals("A", records.get(0).get(0));
+            assertEquals("B", records.get(0).get(1));
+        }
+    }
+
+    @Test
+    void testMultiLineCommentWithoutRecordSeparator() throws IOException {
+        // A null record separator writes nothing between comment lines, matching the record output path.
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setCommentMarker('#').setRecordSeparator(null).get();
+        final StringWriter sw = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            printer.printComment("a\nb");
+        }
+        assertEquals("# a# b", sw.toString());
+    }
+
+    @Test
     void testMySqlNullOutput() throws IOException {
         Object[] s = new String[] { "NULL", null };
         CSVFormat format = CSVFormat.MYSQL.withQuote(DQUOTE_CHAR).withNullString("NULL").withQuoteMode(QuoteMode.NON_NUMERIC);

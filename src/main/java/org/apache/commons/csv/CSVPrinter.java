@@ -246,7 +246,7 @@ public final class CSVPrinter implements Flushable, Closeable {
                     }
                     // falls-through: break intentionally excluded.
                 case LF:
-                    println();
+                    printCommentSeparator();
                     appendable.append(format.getCommentMarker().charValue()); // Explicit unboxing is intentional
                     appendable.append(SP);
                     break;
@@ -255,10 +255,24 @@ public final class CSVPrinter implements Flushable, Closeable {
                     break;
                 }
             }
-            println();
+            printCommentSeparator();
         } finally {
             lock.unlock();
         }
+    }
+
+    /**
+     * Ends a comment line with the record separator only. A comment is not a record, so the trailing delimiter that
+     * {@link #println()} writes must not follow it.
+     *
+     * @throws IOException If an I/O error occurs.
+     */
+    private void printCommentSeparator() throws IOException {
+        final String recordSeparator = format.getRecordSeparator();
+        if (recordSeparator != null) {
+            appendable.append(recordSeparator);
+        }
+        newRecord = true;
     }
 
     /**
