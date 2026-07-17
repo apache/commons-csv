@@ -691,6 +691,27 @@ class CSVParserTest {
         }
     }
 
+    @Test
+    void testGetBytePositionMultiCharacterDelimiterWithSupplementaryChar() throws IOException {
+        // Delimiter holds a 4-byte (surrogate pair) character; the delimiter tail is consumed through
+        // the char[] read path, where the surrogate halves must be paired with the correct neighbor.
+        final String code = "aa[😀]bb\ncc[😀]dd\n";
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter("[😀]").get();
+        try (CSVParser parser = CSVParser.builder()
+                .setReader(new StringReader(code))
+                .setFormat(format)
+                .setCharset(StandardCharsets.UTF_8)
+                .setTrackBytes(true)
+                .get()) {
+            final Iterator<CSVRecord> it = parser.iterator();
+            final CSVRecord first = it.next();
+            final CSVRecord second = it.next();
+            assertEquals(0, first.getBytePosition());
+            // "aa[😀]bb\n" -> 2 + 1 + 4 + 1 + 2 + 1 = 11 bytes in UTF-8
+            assertEquals(11, second.getBytePosition());
+        }
+    }
+
     /**
      * Tests <a href="https://issues.apache.org/jira/browse/CSV-329">CSV-329</a>.
      */
@@ -713,6 +734,29 @@ class CSVParserTest {
             assertValuesEquals(new String[] { "c", "d" }, second);
             assertEquals(0, first.getBytePosition());
             assertEquals("ax😀b\n".getBytes(UTF_8).length, second.getBytePosition());
+        }
+    }
+
+    @Test
+    void testGetBytePositionWithBomEmittingCharset() throws IOException {
+        // The UTF-16 encoder writes a byte-order mark on every encode call, so the per-character
+        // byte length must exclude it. Otherwise each code unit is counted as 4 bytes (2 for the
+        // BOM, 2 for the char) and getBytePosition() grows at twice the true rate.
+        final String code = "a,b\nc,d\n";
+        try (CSVParser parser = CSVParser.builder()
+                .setReader(new StringReader(code))
+                .setFormat(CSVFormat.DEFAULT)
+                .setCharset(StandardCharsets.UTF_16)
+                .setTrackBytes(true)
+                .get()) {
+            final CSVRecord first = parser.nextRecord();
+            final CSVRecord second = parser.nextRecord();
+            assertNotNull(first);
+            assertNotNull(second);
+            assertNull(parser.nextRecord());
+            assertEquals(0, first.getBytePosition());
+            // "a,b\n" is 4 UTF-16 code units, 2 bytes each.
+            assertEquals(8, second.getBytePosition());
         }
     }
 
@@ -764,29 +808,6 @@ class CSVParserTest {
             assertNull(parser.nextRecord());
             assertEquals(0, first.getBytePosition());
             assertEquals(4, second.getBytePosition());
-        }
-    }
-
-    @Test
-    void testGetBytePositionWithBomEmittingCharset() throws IOException {
-        // The UTF-16 encoder writes a byte-order mark on every encode call, so the per-character
-        // byte length must exclude it. Otherwise each code unit is counted as 4 bytes (2 for the
-        // BOM, 2 for the char) and getBytePosition() grows at twice the true rate.
-        final String code = "a,b\nc,d\n";
-        try (CSVParser parser = CSVParser.builder()
-                .setReader(new StringReader(code))
-                .setFormat(CSVFormat.DEFAULT)
-                .setCharset(StandardCharsets.UTF_16)
-                .setTrackBytes(true)
-                .get()) {
-            final CSVRecord first = parser.nextRecord();
-            final CSVRecord second = parser.nextRecord();
-            assertNotNull(first);
-            assertNotNull(second);
-            assertNull(parser.nextRecord());
-            assertEquals(0, first.getBytePosition());
-            // "a,b\n" is 4 UTF-16 code units, 2 bytes each.
-            assertEquals(8, second.getBytePosition());
         }
     }
 
