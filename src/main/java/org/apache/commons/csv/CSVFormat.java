@@ -2264,21 +2264,23 @@ public final class CSVFormat implements Serializable {
         }
     }
 
-    private synchronized void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord) throws IOException {
-        final int offset = 0;
-        final int len = value.length();
-        if (!newRecord) {
-            out.append(getDelimiterString());
-        }
-        if (object == null) {
-            out.append(value);
-        } else if (isQuoteCharacterSet()) {
-            // The original object is needed so can check for Number
-            printWithQuotes(object, value, out, newRecord);
-        } else if (isEscapeCharacterSet()) {
-            printWithEscapes(value, out);
-        } else {
-            out.append(value, offset, len);
+    private void print(final Object object, final CharSequence value, final Appendable out, final boolean newRecord) throws IOException {
+        synchronized (writeLock) {
+            final int offset = 0;
+            final int len = value.length();
+            if (!newRecord) {
+                out.append(getDelimiterString());
+            }
+            if (object == null) {
+                out.append(value);
+            } else if (isQuoteCharacterSet()) {
+                // The original object is needed so can check for Number
+                printWithQuotes(object, value, out, newRecord);
+            } else if (isEscapeCharacterSet()) {
+                printWithEscapes(value, out);
+            } else {
+                out.append(value, offset, len);
+            }
         }
     }
 
