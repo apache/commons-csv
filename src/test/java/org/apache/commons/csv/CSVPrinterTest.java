@@ -1108,6 +1108,17 @@ class CSVPrinterTest {
     }
 
     @Test
+    void testMultiLineCommentWithoutRecordSeparator() throws IOException {
+        // A null record separator writes nothing between comment lines, matching the record output path.
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setCommentMarker('#').setRecordSeparator(null).get();
+        final StringWriter sw = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            printer.printComment("a\nb");
+        }
+        assertEquals("# a# b", sw.toString());
+    }
+
+    @Test
     void testMultiLineCommentWithTrailingDelimiter() throws IOException {
         // A comment is not a record, so the trailing delimiter must not follow comment lines, or it becomes
         // part of the comment text on read back. The following data record still gets its trailing delimiter.
@@ -1126,17 +1137,6 @@ class CSVPrinterTest {
             assertEquals("A", records.get(0).get(0));
             assertEquals("B", records.get(0).get(1));
         }
-    }
-
-    @Test
-    void testMultiLineCommentWithoutRecordSeparator() throws IOException {
-        // A null record separator writes nothing between comment lines, matching the record output path.
-        final CSVFormat format = CSVFormat.DEFAULT.builder().setCommentMarker('#').setRecordSeparator(null).get();
-        final StringWriter sw = new StringWriter();
-        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
-            printer.printComment("a\nb");
-        }
-        assertEquals("# a# b", sw.toString());
     }
 
     @Test

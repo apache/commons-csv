@@ -43,6 +43,23 @@ import org.apache.commons.io.input.UnsynchronizedBufferedReader;
  */
 final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
 
+    /**
+     * Measures the byte-order mark that {@code encoder} prepends to every {@link CharsetEncoder#encode(CharBuffer)} call. Charsets such as {@code UTF-16} emit
+     * a BOM each time, which would otherwise be counted once per character. The BOM is the constant prefix shared by encoding one and two characters.
+     *
+     * @param encoder The encoder to measure.
+     * @return The byte-order mark length in bytes, or 0 when the encoder writes none.
+     */
+    private static int measureBomLength(final CharsetEncoder encoder) {
+        try {
+            final int one = encoder.encode(CharBuffer.wrap(new char[] { 'a' })).limit();
+            final int two = encoder.encode(CharBuffer.wrap(new char[] { 'a', 'a' })).limit();
+            return Math.max(0, 2 * one - two);
+        } catch (final CharacterCodingException e) {
+            return 0;
+        }
+    }
+
     /** The last char returned */
     private int lastChar = UNDEFINED;
 
@@ -164,23 +181,6 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
             return encoder.encode(CharBuffer.wrap(new char[] { lChar, cChar })).limit() - bomLength;
         }
         throw new CharacterCodingException();
-    }
-
-    /**
-     * Measures the byte-order mark that {@code encoder} prepends to every {@link CharsetEncoder#encode(CharBuffer)} call. Charsets such as {@code UTF-16} emit
-     * a BOM each time, which would otherwise be counted once per character. The BOM is the constant prefix shared by encoding one and two characters.
-     *
-     * @param encoder The encoder to measure.
-     * @return The byte-order mark length in bytes, or 0 when the encoder writes none.
-     */
-    private static int measureBomLength(final CharsetEncoder encoder) {
-        try {
-            final int one = encoder.encode(CharBuffer.wrap(new char[] { 'a' })).limit();
-            final int two = encoder.encode(CharBuffer.wrap(new char[] { 'a', 'a' })).limit();
-            return Math.max(0, 2 * one - two);
-        } catch (final CharacterCodingException e) {
-            return 0;
-        }
     }
 
     /**
