@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -45,8 +46,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.csv.CSVFormat.Builder;
 import org.junit.jupiter.api.Test;
@@ -919,6 +923,37 @@ class CSVFormatTest {
         final CSVFormat format = CSVFormat.RFC4180;
         format.printRecord(out);
         assertEquals(format.getRecordSeparator(), out.toString());
+    }
+
+    @Test
+    void testPrintRecordNotBlockedByInstanceMonitor() throws Exception {
+        // A CSVFormat is documented as thread-safe. Internal write locking uses a private lock, so external code
+        // holding the format instance monitor must not be able to block a print call.
+        final CSVFormat format = CSVFormat.RFC4180;
+        final CountDownLatch holdingMonitor = new CountDownLatch(1);
+        final CountDownLatch releaseMonitor = new CountDownLatch(1);
+        final Thread holder = new Thread(() -> {
+            synchronized (format) {
+                holdingMonitor.countDown();
+                try {
+                    releaseMonitor.await();
+                } catch (final InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+        holder.start();
+        try {
+            assertTrue(holdingMonitor.await(5, TimeUnit.SECONDS));
+            assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
+                final Appendable out = new StringBuilder();
+                format.printRecord(out, "a", "b", "c");
+                assertEquals("a,b,c" + format.getRecordSeparator(), out.toString());
+            });
+        } finally {
+            releaseMonitor.countDown();
+            holder.join();
+        }
     }
 
     @Test
