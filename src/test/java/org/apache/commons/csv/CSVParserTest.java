@@ -1710,6 +1710,47 @@ class CSVParserTest {
     }
 
     @Test
+    void testParseWithDelimiterStringFromChunkedReader() throws IOException {
+        // A reader that hands out one character at a time and never reports itself ready, like a socket or pipe.
+        final Reader chunked = new Reader() {
+
+            private final String content = "a[|]b\r\nc![!|!]d[|]e";
+            private int index;
+
+            @Override
+            public void close() {
+                // nothing to close
+            }
+
+            @Override
+            public boolean ready() {
+                return false;
+            }
+
+            @Override
+            public int read(final char[] buf, final int offset, final int length) {
+                if (index >= content.length()) {
+                    return -1;
+                }
+                if (length <= 0) {
+                    return 0;
+                }
+                buf[offset] = content.charAt(index++);
+                return 1;
+            }
+        };
+        final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setEscape('!').get();
+        try (CSVParser csvParser = csvFormat.parse(chunked)) {
+            CSVRecord csvRecord = csvParser.nextRecord();
+            assertEquals("a", csvRecord.get(0));
+            assertEquals("b", csvRecord.get(1));
+            csvRecord = csvParser.nextRecord();
+            assertEquals("c[|]d", csvRecord.get(0));
+            assertEquals("e", csvRecord.get(1));
+        }
+    }
+
+    @Test
     void testParseWithDelimiterStringWithQuote() throws IOException {
         final String source = "'a[|]b[|]c'[|]xyz\r\nabc[abc][|]xyz";
         final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setQuote('\'').get();
