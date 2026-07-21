@@ -51,6 +51,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -962,6 +963,30 @@ class CSVPrinterTest {
             }
             assertRowCount(format, sw.toString(), TABLE_AND_HEADER_RECORD_COUNT);
         }
+    }
+
+    @Test
+    void testJdbcPrinterWithResultSetWithoutRowNumber() throws IOException, SQLException {
+        // JDBC makes ResultSet.getRow() optional for TYPE_FORWARD_ONLY result sets, where a driver may return 0.
+        // maxRows must still cap the output by rows produced rather than by getRow().
+        final StringWriter sw = new StringWriter();
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setMaxRows(2).get();
+        try (SimpleResultSet resultSet = new SimpleResultSet() {
+            @Override
+            public int getRow() {
+                return 0;
+            }
+        }) {
+            resultSet.addColumn("ID", Types.INTEGER, 10, 0);
+            for (int i = 1; i <= 4; i++) {
+                resultSet.addRow(i);
+            }
+            try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+                printer.printRecords(resultSet);
+                assertEquals(2, printer.getRecordCount());
+            }
+        }
+        assertEquals("1" + RECORD_SEPARATOR + "2" + RECORD_SEPARATOR, sw.toString());
     }
 
     @Test
