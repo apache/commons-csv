@@ -273,39 +273,4 @@ class ExtendedBufferedReaderTest {
             assertEquals('b', peeked[1]);
         }
     }
-
-    /**
-     * A reader that returns one character per call and never reports itself ready, like a socket or pipe that delivers data in chunks.
-     */
-    private static final class ChunkedReader extends java.io.Reader {
-
-        private final String content;
-        private int index;
-
-        ChunkedReader(final String content) {
-            this.content = content;
-        }
-
-        @Override
-        public void close() {
-            // nothing to close
-        }
-
-        @Override
-        public boolean ready() {
-            return false;
-        }
-
-        @Override
-        public int read(final char[] buf, final int offset, final int length) {
-            if (index >= content.length()) {
-                return EOF;
-            }
-            if (length <= 0) {
-                return 0;
-            }
-            buf[offset] = content.charAt(index++);
-            return 1;
-        }
-    }
 }
