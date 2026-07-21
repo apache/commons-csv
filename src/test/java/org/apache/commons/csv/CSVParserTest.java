@@ -585,6 +585,22 @@ class CSVParserTest {
     }
 
     @Test
+    void testEscapedNullStringIsAValue() throws Exception {
+        // "\N" is the MySQL and PostgreSQL null marker, "\\N" is the value "\N", which is what the printer writes for it.
+        for (final CSVFormat format : new CSVFormat[] { CSVFormat.MYSQL, CSVFormat.POSTGRESQL_TEXT, CSVFormat.ORACLE }) {
+            final StringWriter writer = new StringWriter();
+            try (CSVPrinter printer = new CSVPrinter(writer, format)) {
+                printer.printRecord("\\N", null);
+            }
+            try (CSVParser parser = CSVParser.parse(writer.toString(), format)) {
+                final CSVRecord record = parser.nextRecord();
+                assertEquals("\\N", record.get(0), format.toString());
+                assertNull(record.get(1), format.toString());
+            }
+        }
+    }
+
+    @Test
     void testExcelFormat1() throws IOException {
         final String code = "value1,value2,value3,value4\r\na,b,c,d\r\n  x,,,\r\n\r\n\"\"\"hello\"\"\",\"  \"\"world\"\"\",\"abc\ndef\",\r\n";
         final String[][] res = { { "value1", "value2", "value3", "value4" }, { "a", "b", "c", "d" }, { "  x", "", "", "" }, { "" },
