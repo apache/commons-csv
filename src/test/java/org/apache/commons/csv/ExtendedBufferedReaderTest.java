@@ -240,4 +240,37 @@ class ExtendedBufferedReaderTest {
             assertEquals('d', br.getLastChar());
         }
     }
+
+    @Test
+    void testReadAndPeekArrayFromChunkedReader() throws Exception {
+        try (ExtendedBufferedReader br = new ExtendedBufferedReader(new ChunkedReader("abcdef"))) {
+            final char[] peeked = new char[3];
+            assertEquals(3, br.peek(peeked));
+            assertArrayEquals(new char[] { 'a', 'b', 'c' }, peeked);
+            final char[] read = new char[3];
+            assertEquals(3, br.read(read, 0, 3));
+            assertArrayEquals(new char[] { 'a', 'b', 'c' }, read);
+        }
+    }
+
+    @Test
+    void testReadArrayPastEndOfChunkedReader() throws Exception {
+        try (ExtendedBufferedReader br = new ExtendedBufferedReader(new ChunkedReader("ab"))) {
+            final char[] read = new char[4];
+            assertEquals(2, br.read(read, 0, 4));
+            assertEquals('a', read[0]);
+            assertEquals('b', read[1]);
+            assertEquals(EOF, br.read(read, 0, 4));
+        }
+    }
+
+    @Test
+    void testPeekArrayPastEndOfChunkedReader() throws Exception {
+        try (ExtendedBufferedReader br = new ExtendedBufferedReader(new ChunkedReader("ab"))) {
+            final char[] peeked = new char[4];
+            assertEquals(2, br.peek(peeked));
+            assertEquals('a', peeked[0]);
+            assertEquals('b', peeked[1]);
+        }
+    }
 }

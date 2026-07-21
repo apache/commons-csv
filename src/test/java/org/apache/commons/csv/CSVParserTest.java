@@ -1710,6 +1710,19 @@ class CSVParserTest {
     }
 
     @Test
+    void testParseWithDelimiterStringFromChunkedReader() throws IOException {
+        final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setEscape('!').get();
+        try (CSVParser csvParser = csvFormat.parse(new ChunkedReader("a[|]b\r\nc![!|!]d[|]e"))) {
+            CSVRecord csvRecord = csvParser.nextRecord();
+            assertEquals("a", csvRecord.get(0));
+            assertEquals("b", csvRecord.get(1));
+            csvRecord = csvParser.nextRecord();
+            assertEquals("c[|]d", csvRecord.get(0));
+            assertEquals("e", csvRecord.get(1));
+        }
+    }
+
+    @Test
     void testParseWithDelimiterStringWithQuote() throws IOException {
         final String source = "'a[|]b[|]c'[|]xyz\r\nabc[abc][|]xyz";
         final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setQuote('\'').get();

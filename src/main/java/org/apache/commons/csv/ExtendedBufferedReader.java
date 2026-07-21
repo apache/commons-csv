@@ -225,6 +225,37 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         super.mark(readAheadLimit);
     }
 
+    /**
+     * Fills {@code array} with the characters that follow the current position without consuming them.
+     * <p>
+     * Overridden because the inherited implementation stops at the first short read, which leaves the tail of the array holding stale content when the source
+     * delivers data in chunks. Callers compare the whole array against a multi-character delimiter, so a partial fill makes them miss a delimiter that is
+     * really there.
+     * </p>
+     *
+     * @param array the buffer to fill.
+     * @return the number of characters peeked, or {@link IOUtils#EOF} at the end of the stream.
+     * @throws IOException If an I/O error occurs.
+     */
+    @Override
+    public int peek(final char[] array) throws IOException {
+        final int length = array.length;
+        if (length == 0) {
+            return 0;
+        }
+        super.mark(length);
+        int len = 0;
+        while (len < length) {
+            final int more = super.read(array, len, length - len);
+            if (more == EOF) {
+                break;
+            }
+            len += more;
+        }
+        super.reset();
+        return len == 0 ? EOF : len;
+    }
+
     @Override
     public int read() throws IOException {
         final int current = super.read();
@@ -244,7 +275,16 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
         if (length == 0) {
             return 0;
         }
-        final int len = super.read(buf, offset, length);
+        int len = super.read(buf, offset, length);
+        // The underlying buffered reader stops early once the source reports it is not ready, so a stream that delivers data in chunks (a socket or a pipe)
+        // yields a short read. Callers match multi-character sequences against this buffer, so keep reading until it is full or the source is exhausted.
+        while (len > 0 && len < length) {
+            final int more = super.read(buf, offset + len, length - len);
+            if (more == EOF) {
+                break;
+            }
+            len += more;
+        }
         if (encoder != null && len > 0) {
             this.bytesRead += getEncodedCharLength(buf, offset, len);
         }
