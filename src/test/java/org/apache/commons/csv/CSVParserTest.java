@@ -1696,6 +1696,19 @@ class CSVParserTest {
     }
 
     @Test
+    void testParseWithDelimiterStringFromChunkedReader() throws IOException {
+        final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setEscape('!').get();
+        try (CSVParser csvParser = csvFormat.parse(new ChunkedReader("a[|]b\r\nc![!|!]d[|]e"))) {
+            CSVRecord csvRecord = csvParser.nextRecord();
+            assertEquals("a", csvRecord.get(0));
+            assertEquals("b", csvRecord.get(1));
+            csvRecord = csvParser.nextRecord();
+            assertEquals("c[|]d", csvRecord.get(0));
+            assertEquals("e", csvRecord.get(1));
+        }
+    }
+
+    @Test
     void testParseWithDelimiterStringWithEscape() throws IOException {
         final String source = "a![!|!]b![|]c[|]xyz\r\nabc[abc][|]xyz";
         final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setEscape('!').get();
@@ -1706,19 +1719,6 @@ class CSVParserTest {
             csvRecord = csvParser.nextRecord();
             assertEquals("abc[abc]", csvRecord.get(0));
             assertEquals("xyz", csvRecord.get(1));
-        }
-    }
-
-    @Test
-    void testParseWithDelimiterStringFromChunkedReader() throws IOException {
-        final CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setDelimiter("[|]").setEscape('!').get();
-        try (CSVParser csvParser = csvFormat.parse(new ChunkedReader("a[|]b\r\nc![!|!]d[|]e"))) {
-            CSVRecord csvRecord = csvParser.nextRecord();
-            assertEquals("a", csvRecord.get(0));
-            assertEquals("b", csvRecord.get(1));
-            csvRecord = csvParser.nextRecord();
-            assertEquals("c[|]d", csvRecord.get(0));
-            assertEquals("e", csvRecord.get(1));
         }
     }
 
