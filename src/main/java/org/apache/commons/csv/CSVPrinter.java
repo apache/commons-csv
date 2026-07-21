@@ -502,7 +502,11 @@ public final class CSVPrinter implements Flushable, Closeable {
      */
     public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
         final int columnCount = resultSet.getMetaData().getColumnCount();
-        while (resultSet.next() && format.useRow(resultSet.getRow())) {
+        // Count the rows produced here instead of ResultSet.getRow(): getRow() is the absolute cursor
+        // position, which is optional for TYPE_FORWARD_ONLY result sets and returns 0 there, silently
+        // disabling maxRows. Mirrors the row-produced counter the parser uses (CSV-327).
+        long rowCount = 0;
+        while (format.useRow(rowCount + 1) && resultSet.next()) {
             lock.lock();
             try {
                 for (int i = 1; i <= columnCount; i++) {
@@ -523,6 +527,7 @@ public final class CSVPrinter implements Flushable, Closeable {
             } finally {
                 lock.unlock();
             }
+            rowCount++;
         }
     }
 
