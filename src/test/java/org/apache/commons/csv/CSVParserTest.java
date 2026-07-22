@@ -584,19 +584,19 @@ class CSVParserTest {
         }
     }
 
-    @Test
-    void testEscapedNullStringIsAValue() throws Exception {
+    @ParameterizedTest
+    @EnumSource(value = CSVFormat.Predefined.class, names = { "MySQL", "PostgreSQLCsv", "PostgreSQLText", "Oracle" })
+    void testEscapedNullStringIsAValue(final CSVFormat.Predefined predefined) throws Exception {
         // "\N" is the MySQL and PostgreSQL null marker, "\\N" is the value "\N", which is what the printer writes for it.
-        for (final CSVFormat format : new CSVFormat[] { CSVFormat.MYSQL, CSVFormat.POSTGRESQL_TEXT, CSVFormat.ORACLE }) {
-            final StringWriter writer = new StringWriter();
-            try (CSVPrinter printer = new CSVPrinter(writer, format)) {
-                printer.printRecord("\\N", null);
-            }
-            try (CSVParser parser = CSVParser.parse(writer.toString(), format)) {
-                final CSVRecord record = parser.nextRecord();
-                assertEquals("\\N", record.get(0), format.toString());
-                assertNull(record.get(1), format.toString());
-            }
+        final CSVFormat format = predefined.getFormat();
+        final StringWriter writer = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(writer, format)) {
+            printer.printRecord("\\N", null);
+        }
+        try (CSVParser parser = CSVParser.parse(writer.toString(), format)) {
+            final CSVRecord record = parser.nextRecord();
+            assertEquals("\\N", record.get(0));
+            assertNull(record.get(1));
         }
     }
 
