@@ -207,7 +207,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Checks whether this record has a comment, false otherwise.
+     * Tests whether this record has a comment, false otherwise.
      * Note that comments are attached to the following record.
      * If there is no following record (that is, the comment is at EOF),
      * then the comment will be ignored.
@@ -220,7 +220,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Tells whether the record size matches the header size.
+     * Tests whether the record size matches the header size.
      *
      * <p>
      * Returns true if the sizes for this record match and false if not. Some programs can export files that fail this
@@ -235,7 +235,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Checks whether a given column is mapped, that is, its name has been defined to the parser.
+     * Tests whether a given column is mapped, that is, its name has been defined to the parser.
      *
      * @param name
      *            the name of the column to be retrieved.
@@ -247,7 +247,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Checks whether a column with a given index has a value.
+     * Tests whether a column with a given index has a value.
      *
      * @param index
      *         a column index (0-based).
@@ -258,7 +258,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Checks whether a given column is mapped and has a value.
+     * Tests whether a given column is mapped and has a value.
      *
      * @param name
      *            the name of the column to be retrieved.
