@@ -158,13 +158,17 @@ class CSVPrinterTest {
     }
 
     /**
-     * Converts an input CSV array into expected output values, including NULLs. NULL strings are converted to null values because the parser will convert
-     * these strings to null.
+     * Converts an input CSV array into expected output values, including NULLs. A value equal to the null string is converted to null only when the printer
+     * writes that value unchanged; when the printer escapes or quotes it, the parser reads it back as the value it is.
      */
-    private <T> T[] expectNulls(final T[] original, final CSVFormat csvFormat) {
+    private <T> T[] expectNulls(final T[] original, final CSVFormat csvFormat) throws IOException {
         final T[] fixed = original.clone();
+        final String nullString = csvFormat.getNullString();
+        if (nullString == null || !printsVerbatim(csvFormat, nullString)) {
+            return fixed;
+        }
         for (int i = 0; i < fixed.length; i++) {
-            if (Objects.equals(csvFormat.getNullString(), fixed[i])) {
+            if (Objects.equals(nullString, fixed[i])) {
                 fixed[i] = null;
             }
         }
@@ -186,6 +190,13 @@ class CSVPrinterTest {
     private Connection getH2Connection() throws SQLException, ClassNotFoundException {
         Class.forName("org.h2.Driver");
         return DriverManager.getConnection("jdbc:h2:mem:my_test;", "sa", "");
+    }
+
+    /** Tests whether the format prints the given value unchanged, in which case the parser cannot tell it from the null string. */
+    private boolean printsVerbatim(final CSVFormat csvFormat, final String value) throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        csvFormat.print(value, sb, true);
+        return value.contentEquals(sb);
     }
 
     private CSVPrinter printWithHeaderComments(final StringWriter sw, final Date now, final CSVFormat baseFormat) throws IOException {
