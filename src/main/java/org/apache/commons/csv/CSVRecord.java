@@ -78,7 +78,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a value by {@link Enum}.
+     * Gets a value by {@link Enum}.
      *
      * @param e
      *            an enum
@@ -89,7 +89,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a value by index.
+     * Gets a value by index.
      *
      * @param i
      *            a column index (0-based)
@@ -100,7 +100,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a value by name. If multiple instances of the header name exists, only the last occurrence is returned.
+     * Gets a value by name. If multiple instances of the header name exists, only the last occurrence is returned.
      *
      * <p>
      * Note: This requires a field mapping obtained from the original parser.
@@ -141,7 +141,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns the starting position of this record in the source stream, measured in bytes.
+     * Gets the starting position of this record in the source stream, measured in bytes.
      *
      * @return The byte position of this record in the source stream.
      * @since 1.13.0
@@ -151,7 +151,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns the start position of this record as a character position in the source stream. This may or may not
+     * Gets the start position of this record as a character position in the source stream. This may or may not
      * correspond to the byte position depending on the character set.
      *
      * @return The position of this record in the source stream.
@@ -161,7 +161,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns the comment for this record, if any.
+     * Gets the comment for this record, if any.
      * Note that comments are attached to the following record.
      * If there is no following record (that is, the comment is at EOF),
      * then the comment will be ignored.
@@ -177,7 +177,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns the parser.
+     * Gets the parser.
      *
      * <p>
      * Note: The parser is not part of the serialized state of the record. A null check
@@ -192,7 +192,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns the number of this record in the parsed CSV file.
+     * Gets the number of this record in the parsed CSV file.
      *
      * <p>
      * <strong>NOTE:</strong>If your CSV input has multi-line values, the returned number does not correspond to
