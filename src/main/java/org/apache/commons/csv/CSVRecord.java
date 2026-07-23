@@ -284,6 +284,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @param <M> The map type.
      * @param map The Map to populate.
      * @return The given map.
+     * @throws NullPointerException if the map is null.
      * @since 1.9.0
      */
     public <M extends Map<String, String>> M putIn(final M map) {
