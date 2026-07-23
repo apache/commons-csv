@@ -230,6 +230,15 @@ class CSVRecordTest {
         assertFalse(recordWithHeader.isSet("DOES NOT EXIST"));
     }
 
+    @Test
+    void testIterator() {
+        int i = 0;
+        for (final String value : record) {
+            assertEquals(values[i], value);
+            i++;
+        }
+    }
+
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
     void testNullNameAccessorsMatchAcrossIgnoreHeaderCase(final boolean ignoreHeaderCase) throws IOException {
@@ -243,15 +252,6 @@ class CSVRecordTest {
             // A null name (also reached from get((Enum) null)) reports a missing mapping, not an NPE.
             assertThrows(IllegalArgumentException.class, () -> rec.get((String) null));
             assertThrows(IllegalArgumentException.class, () -> rec.get((Enum<?>) null));
-        }
-    }
-
-    @Test
-    void testIterator() {
-        int i = 0;
-        for (final String value : record) {
-            assertEquals(values[i], value);
-            i++;
         }
     }
 
