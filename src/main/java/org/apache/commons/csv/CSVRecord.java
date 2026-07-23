@@ -127,7 +127,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
         if (headerMap == null) {
             throw new IllegalStateException("No header mapping was specified, the record values can't be accessed by name");
         }
-        final Integer index = headerMap.get(name);
+        final Integer index = name == null ? null : headerMap.get(name);
         if (index == null) {
             throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name, headerMap.keySet()));
         }
@@ -243,7 +243,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     public boolean isMapped(final String name) {
         final Map<String, Integer> headerMap = getHeaderMapRaw();
-        return headerMap != null && headerMap.containsKey(name);
+        return name != null && headerMap != null && headerMap.containsKey(name);
     }
 
     /**

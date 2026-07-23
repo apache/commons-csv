@@ -44,6 +44,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class CSVRecordTest {
 
@@ -226,6 +228,22 @@ class CSVRecordTest {
         assertFalse(record.isSet("first"));
         assertTrue(recordWithHeader.isSet(EnumHeader.FIRST.name()));
         assertFalse(recordWithHeader.isSet("DOES NOT EXIST"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void testNullNameAccessorsMatchAcrossIgnoreHeaderCase(final boolean ignoreHeaderCase) throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().setSkipHeaderRecord(true).setIgnoreHeaderCase(ignoreHeaderCase).get();
+        try (CSVParser parser = CSVParser.parse("A,B\n1,2", format)) {
+            final CSVRecord rec = parser.iterator().next();
+            // A null name is never a mapped header, so the boolean guards return false rather than throwing,
+            // regardless of ignoreHeaderCase (the case-insensitive header map rejects null keys).
+            assertFalse(rec.isMapped(null));
+            assertFalse(rec.isSet((String) null));
+            // A null name (also reached from get((Enum) null)) reports a missing mapping, not an NPE.
+            assertThrows(IllegalArgumentException.class, () -> rec.get((String) null));
+            assertThrows(IllegalArgumentException.class, () -> rec.get((Enum<?>) null));
+        }
     }
 
     @Test
