@@ -287,10 +287,11 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @since 1.9.0
      */
     public <M extends Map<String, String>> M putIn(final M map) {
-        if (getHeaderMapRaw() == null) {
+        final Map<String, Integer> headerMap = getHeaderMapRaw();
+        if (headerMap == null) {
             return map;
         }
-        getHeaderMapRaw().forEach((key, value) -> {
+        headerMap.forEach((key, value) -> {
             if (value < values.length) {
                 map.put(key, values[value]);
             }
