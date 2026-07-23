@@ -70,6 +70,7 @@
       <action type="fix" dev="ggregory" due-to="Gary Gregory, Naveed Khan">Fix SpotBugs 4.10.3 USO_UNSAFE_METHOD_SYNCHRONIZATION in CSVFormat print methods (#624).</action>
       <action type="fix" dev="ggregory" due-to="Gary Gregory, Naveed Khan">Count rows produced instead of getRow() in printRecords(ResultSet) (#627).</action>
       <action type="fix" dev="ggregory" due-to="Gary Gregory, saleem malik">Fill the lookahead buffer on short reads from a chunked source (#625).</action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory, Naveed Khan">Handle null name in CSVRecord accessors under ignoreHeaderCase (#628).</action>
       <!-- ADD -->
       <action type="add" dev="ggregory" due-to="Gary Gregory, Indy, Sylvia van Os" issue="CSV-307">Add an "Android Compatibility" section to the web site.</action>
       <action type="add" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-325">Add CSVParser.Builder.setByteOffset(long) (#604).</action>
