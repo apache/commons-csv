@@ -188,6 +188,14 @@ class CSVPrinterTest {
         return DriverManager.getConnection("jdbc:h2:mem:my_test;", "sa", "");
     }
 
+    private String printNullRecord(final CSVFormat format) throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            printer.printRecord((Object) null);
+        }
+        return sw.toString();
+    }
+
     private CSVPrinter printWithHeaderComments(final StringWriter sw, final Date now, final CSVFormat baseFormat) throws IOException {
         // Use withHeaderComments first to test CSV-145
         // @formatter:off
@@ -1722,6 +1730,29 @@ class CSVPrinterTest {
     }
 
     @Test
+    void testPrintNullValueStartingRecord() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT)) {
+            printer.printRecord("a");
+            printer.printRecord((Object) null);
+            printer.printRecord("b");
+        }
+        final String csv = sw.toString();
+        assertEquals("a" + RECORD_SEPARATOR + "\"\"" + RECORD_SEPARATOR + "b" + RECORD_SEPARATOR, csv);
+        try (CSVParser parser = CSVParser.parse(csv, CSVFormat.DEFAULT)) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(3, records.size());
+            assertArrayEquals(new String[] { "" }, records.get(1).values());
+        }
+        // An explicit MINIMAL quote mode encapsulates it too.
+        assertEquals("\"\"" + RECORD_SEPARATOR, printNullRecord(CSVFormat.DEFAULT.builder().setQuoteMode(QuoteMode.MINIMAL).get()));
+        // ALL_NON_NULL encodes null as the bare empty field, so it must stay unquoted.
+        assertEquals(RECORD_SEPARATOR, printNullRecord(CSVFormat.DEFAULT.builder().setQuoteMode(QuoteMode.ALL_NON_NULL).get()));
+        // Without a quote character there is nothing to encapsulate with.
+        assertEquals(RECORD_SEPARATOR, printNullRecord(CSVFormat.DEFAULT.builder().setQuote(null).get()));
+    }
+
+    @Test
     void testPrintNullValues() throws IOException {
         final StringWriter sw = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT)) {
@@ -1854,8 +1885,8 @@ class CSVPrinterTest {
             printer.printRecords(objectArray);
             assertEquals(objectArray.length, printer.getRecordCount());
         }
-        assertEquals(6, charArrayWriter.size());
-        assertEquals("\n\n\n\n\n\n", charArrayWriter.toString());
+        assertEquals(16, charArrayWriter.size());
+        assertEquals("\"\"\n\"\"\n\"\"\n\n\"\"\n\"\"\n", charArrayWriter.toString());
     }
 
     @Test

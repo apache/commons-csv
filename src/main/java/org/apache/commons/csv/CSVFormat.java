@@ -2135,6 +2135,15 @@ public final class CSVFormat implements Serializable {
     }
 
     /**
+     * Tests whether the quote policy encapsulates values only when needed, which is also the policy when none is set.
+     *
+     * @return {@code true} if the {@link QuoteMode} is {@link QuoteMode#MINIMAL} or unset.
+     */
+    private boolean isMinimalQuoteMode() {
+        return quoteMode == null || quoteMode == QuoteMode.MINIMAL;
+    }
+
+    /**
      * Tests whether a null string has been defined.
      *
      * @return {@code true} if a nullString is defined
@@ -2272,7 +2281,17 @@ public final class CSVFormat implements Serializable {
                 out.append(getDelimiterString());
             }
             if (object == null) {
-                out.append(value);
+                if (len == 0 && newRecord && isQuoteCharacterSet() && isMinimalQuoteMode()) {
+                    // Encapsulate like printWithQuotes does for an empty value that starts a record: an
+                    // unquoted one makes the whole line empty, and a parser with ignoreEmptyLines enabled
+                    // then drops the record. ALL_NON_NULL and NON_NUMERIC are excluded because they encode
+                    // null as the bare empty field.
+                    final char quoteChar = quoteCharacter.charValue(); // Explicit unboxing is intentional
+                    out.append(quoteChar);
+                    out.append(quoteChar);
+                } else {
+                    out.append(value);
+                }
             } else if (isQuoteCharacterSet()) {
                 // The original object is needed so can check for Number
                 printWithQuotes(object, value, out, newRecord);
