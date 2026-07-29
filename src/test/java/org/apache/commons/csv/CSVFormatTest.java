@@ -1557,7 +1557,7 @@ class CSVFormatTest {
         assertNotEquals(csvFormat, csvFormatTwo); // CSV-244 - should not be equal
 
         assertNotEquals(csvFormatTwo, csvFormat); // CSV-244 - should not be equal
-        assertEquals(",,,,,,,", string);
+        assertEquals("\"\",,,,,,,", string);
 
     }
 
