@@ -1730,6 +1730,16 @@ class CSVPrinterTest {
     }
 
     @Test
+    void testPrintNullValues() throws IOException {
+        final StringWriter sw = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT)) {
+            assertInitialState(printer);
+            printer.printRecord("a", null, "b");
+            assertEquals("a,,b" + RECORD_SEPARATOR, sw.toString());
+        }
+    }
+
+    @Test
     void testPrintNullValueStartingRecord() throws IOException {
         final StringWriter sw = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT)) {
@@ -1752,16 +1762,6 @@ class CSVPrinterTest {
         assertEquals(RECORD_SEPARATOR, printNullRecord(CSVFormat.DEFAULT.builder().setQuoteMode(QuoteMode.ALL_NON_NULL).get()));
         // Without a quote character there is nothing to encapsulate with.
         assertEquals(RECORD_SEPARATOR, printNullRecord(CSVFormat.DEFAULT.builder().setQuote(null).get()));
-    }
-
-    @Test
-    void testPrintNullValues() throws IOException {
-        final StringWriter sw = new StringWriter();
-        try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT)) {
-            assertInitialState(printer);
-            printer.printRecord("a", null, "b");
-            assertEquals("a,,b" + RECORD_SEPARATOR, sw.toString());
-        }
     }
 
     @Test
