@@ -665,16 +665,17 @@ class CSVParserTest {
     @ParameterizedTest
     @EnumSource(value = CSVFormat.Predefined.class, names = { "MySQL", "PostgreSQLCsv", "PostgreSQLText", "Oracle" })
     void testEscapedNullStringIsAValue(final CSVFormat.Predefined predefined) throws Exception {
-        // For formats whose null string is "\\N" (e.g., MySQL, PostgreSQL Text, Oracle),
-        // a literal value "\\N" must be written as "\\\\N" so it is not read back as null.
+        // "\N" is the null string for MySQL, PostgreSQL Text and Oracle; PostgreSQL CSV uses an empty null
+        // string. In every case a field whose value equals "\N" must round trip as that value, not as null.
+        final String valueEqualToNullString = "\\N";
         final CSVFormat format = predefined.getFormat();
         final StringWriter writer = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(writer, format)) {
-            printer.printRecord("\\N", null);
+            printer.printRecord(valueEqualToNullString, null);
         }
         try (CSVParser parser = CSVParser.parse(writer.toString(), format)) {
             final CSVRecord record = parser.nextRecord();
-            assertEquals("\\N", record.get(0));
+            assertEquals(valueEqualToNullString, record.get(0));
             assertNull(record.get(1));
         }
     }
