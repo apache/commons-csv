@@ -157,8 +157,9 @@ class CSVPrinterTest {
     }
 
     /**
-     * Converts an input CSV array into expected output values, including NULLs. A value equal to the null string is converted to null only when the printer
-     * writes that value unchanged; when the printer escapes or quotes it, the parser reads it back as the value it is.
+     * Converts an input CSV array into expected output values, including NULLs. A value equal to the null string is expected back as null only when the
+     * printer writes it verbatim (neither escaped nor quoted); once it is escaped or quoted the parser can tell it apart from a real null and reads it back
+     * as the value it is.
      */
     private <T> T[] expectNulls(final T[] original, final CSVFormat csvFormat) throws IOException {
         final T[] fixed = original.clone();
