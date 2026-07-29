@@ -76,12 +76,15 @@ final class Lexer implements Closeable {
     private void appendNextEscapedCharacterToToken(final Token token) throws IOException {
         if (isEscapeDelimiter()) {
             token.content.append(delimiter);
+            token.isEscaped = true;
         } else {
             final int unescaped = readEscape();
             if (unescaped == EOF) { // unexpected char after escape
+                // The escape character is kept verbatim, so nothing was translated.
                 token.content.append((char) escape).append((char) reader.getLastChar());
             } else {
                 token.content.append((char) unescaped);
+                token.isEscaped = true;
             }
         }
     }

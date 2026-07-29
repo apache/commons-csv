@@ -806,8 +806,11 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         final String nullString = format.getNullString();
         final boolean strictQuoteMode = isStrictQuoteMode();
         if (input.equals(nullString)) {
+            // A token that needed an escape translation cannot be the null marker: printing null emits the null
+            // string without escaping it (it may be quoted, but never escaped), so an escaped "\N" for nullString
+            // "\N" can only have come from a field whose value really is "\N".
             // nullString = NULL(String), distinguish between "NULL" and NULL in ALL_NON_NULL or NON_NUMERIC quote mode
-            return strictQuoteMode && isQuoted ? input : null;
+            return reusableToken.isEscaped || (strictQuoteMode && isQuoted) ? input : null;
         }
         // don't set nullString, distinguish between "" and ,, (absent values) in All_NON_NULL or NON_NUMERIC quote mode
         return strictQuoteMode && nullString == null && input.isEmpty() && !isQuoted ? null : input;
