@@ -1746,6 +1746,8 @@ class CSVPrinterTest {
         }
         // An explicit MINIMAL quote mode encapsulates it too.
         assertEquals("\"\"" + RECORD_SEPARATOR, printNullRecord(CSVFormat.DEFAULT.builder().setQuoteMode(QuoteMode.MINIMAL).get()));
+        // ALL encodes null as the bare empty field, distinct from a quoted empty string (CSV-203).
+        assertEquals(RECORD_SEPARATOR, printNullRecord(CSVFormat.DEFAULT.builder().setQuoteMode(QuoteMode.ALL).get()));
         // ALL_NON_NULL encodes null as the bare empty field, so it must stay unquoted.
         assertEquals(RECORD_SEPARATOR, printNullRecord(CSVFormat.DEFAULT.builder().setQuoteMode(QuoteMode.ALL_NON_NULL).get()));
         // Without a quote character there is nothing to encapsulate with.
@@ -1885,8 +1887,9 @@ class CSVPrinterTest {
             printer.printRecords(objectArray);
             assertEquals(objectArray.length, printer.getRecordCount());
         }
-        assertEquals(16, charArrayWriter.size());
-        assertEquals("\"\"\n\"\"\n\"\"\n\n\"\"\n\"\"\n", charArrayWriter.toString());
+        final String expected = "\"\"\n\"\"\n\"\"\n\n\"\"\n\"\"\n";
+        assertEquals(expected.length(), charArrayWriter.size());
+        assertEquals(expected, charArrayWriter.toString());
     }
 
     @Test

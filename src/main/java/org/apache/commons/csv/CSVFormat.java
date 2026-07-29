@@ -2284,8 +2284,8 @@ public final class CSVFormat implements Serializable {
                 if (len == 0 && newRecord && isQuoteCharacterSet() && isMinimalQuoteMode()) {
                     // Encapsulate like printWithQuotes does for an empty value that starts a record: an
                     // unquoted one makes the whole line empty, and a parser with ignoreEmptyLines enabled
-                    // then drops the record. ALL_NON_NULL and NON_NUMERIC are excluded because they encode
-                    // null as the bare empty field.
+                    // then drops the record. ALL, ALL_NON_NULL, and NON_NUMERIC are excluded because they
+                    // encode null as the bare empty field, distinct from a quoted empty string (CSV-203).
                     final char quoteChar = quoteCharacter.charValue(); // Explicit unboxing is intentional
                     out.append(quoteChar);
                     out.append(quoteChar);
