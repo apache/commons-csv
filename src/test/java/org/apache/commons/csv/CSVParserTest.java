@@ -31,7 +31,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FilterInputStream;
+import java.io.FilterReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -53,6 +56,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -2059,6 +2063,43 @@ class CSVParserTest {
             assertEquals("3", record.get("Z"));
             assertEquals(3, record.size());
         }
+    }
+
+    @Test
+    void testTryWithResourcesParseInputStreamWhenHeaderIsInvalid() throws IOException {
+        final AtomicBoolean closed = new AtomicBoolean();
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().get();
+        try (InputStream inputStream = new FilterInputStream(new ByteArrayInputStream("A,,C\n1,2,3\n".getBytes(UTF_8))) {
+
+            @Override
+            public void close() throws IOException {
+                closed.set(true);
+                super.close();
+            }
+        }) {
+            assertThrows(IllegalArgumentException.class, () -> CSVParser.parse(inputStream, UTF_8, format));
+            // parse(Path), parse(File) and parse(URL) open the stream themselves and reach this same code path.
+            assertFalse(closed.get(), "The input stream must be closed when the parser cannot be constructed");
+        }
+        assertTrue(closed.get(), "The input stream must be closed when the parser cannot be constructed");
+    }
+
+    @Test
+    void testTryWithResourcesParseReaderWhenHeaderIsInvalid() throws IOException {
+        final AtomicBoolean closed = new AtomicBoolean();
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().get();
+        try (Reader reader = new FilterReader(new StringReader("A,,C\n1,2,3\n")) {
+
+            @Override
+            public void close() throws IOException {
+                closed.set(true);
+                super.close();
+            }
+        }) {
+            assertThrows(IllegalArgumentException.class, () -> CSVParser.builder().setReader(reader).setFormat(format).get());
+            assertFalse(closed.get(), "The input stream must be closed when the parser cannot be constructed");
+        }
+        assertTrue(closed.get(), "The reader must be closed when the parser cannot be constructed");
     }
 
     private void validateLineNumbers(final String lineSeparator) throws IOException {
