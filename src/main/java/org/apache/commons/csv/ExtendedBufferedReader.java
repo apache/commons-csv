@@ -110,7 +110,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     /**
      * Closes the stream.
      *
-     * @throws IOException If an I/O error occurs
+     * @throws IOException If an I/O error occurs.
      */
     @Override
     public void close() throws IOException {
@@ -122,7 +122,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     /**
      * Gets the number of bytes read by the reader.
      *
-     * @return The number of bytes read by the read
+     * @return The number of bytes read by the read.
      */
     long getBytesRead() {
         return this.bytesRead;
@@ -188,16 +188,16 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
      * include a character read using the {@link #peek()} method. If no character has been read then this will return {@link Constants#UNDEFINED}. If the end of
      * the stream was reached on the last read then this will return {@link IOUtils#EOF}.
      *
-     * @return The last character that was read
+     * @return The last character that was read.
      */
     int getLastChar() {
         return lastChar;
     }
 
     /**
-     * Returns the current line number
+     * Gets the current line number.
      *
-     * @return The current line number
+     * @return The current line number.
      */
     long getLineNumber() {
         // Check if we are at EOL or EOF or just starting
@@ -210,7 +210,7 @@ final class ExtendedBufferedReader extends UnsynchronizedBufferedReader {
     /**
      * Gets the character position in the reader.
      *
-     * @return The current position in the reader (counting characters, not bytes since this is a Reader)
+     * @return The current position in the reader (counting characters, not bytes since this is a Reader).
      */
     long getPosition() {
         return this.position;
