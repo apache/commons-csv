@@ -505,7 +505,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Constructs a new instance from a builder.
      *
      * @param builder The source builder.
-     * @throws IOException if an I/O error occurs.
+     * @throws IOException Thrown if an I/O error occurs.
      */
     @SuppressWarnings("resource") // Lexer manages ExtendedBufferedReader.
     private CSVParser(final Builder builder) throws IOException {
@@ -609,7 +609,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * Creates the name to index mapping if the format defines a header.
      *
      * @return null if the format has no header.
-     * @throws IOException if there is a problem reading the header or skipping the first record
+     * @throws IOException Thrown if there is a problem reading the header or skipping the first record
      * @throws CSVException on invalid input.
      */
     private Headers createHeaders() throws IOException {

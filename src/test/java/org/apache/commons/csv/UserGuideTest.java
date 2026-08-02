@@ -45,7 +45,7 @@ class UserGuideTest {
      *
      * @param path The path to read.
      * @return A new InputStreamReader for UTF-8 bytes.
-     * @throws IOException if an I/O error occurs.
+     * @throws IOException Thrown if an I/O error occurs.
      */
     public InputStreamReader newReader(final Path path) throws IOException {
         return new InputStreamReader(BOMInputStream.builder()
