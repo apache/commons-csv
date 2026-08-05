@@ -50,6 +50,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.build.AbstractStreamBuilder;
 import org.apache.commons.io.function.Uncheck;
 
@@ -389,10 +390,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws NullPointerException if {@code path} is {@code null}.
      * @since 1.5
      */
-    @SuppressWarnings("resource")
     public static CSVParser parse(final Path path, final Charset charset, final CSVFormat format) throws IOException {
         Objects.requireNonNull(path, "path");
-        return parse(Files.newInputStream(path), charset, format);
+        final InputStream inputStream = Files.newInputStream(path);
+        try {
+            return parse(inputStream, charset, format);
+        } catch (final IOException | RuntimeException e) {
+            // This method allocated the stream and the caller never gets a parser to close, so close it here.
+            IOUtils.closeQuietlySuppress(inputStream, e);
+            throw e;
+        }
     }
 
     /**
@@ -461,10 +468,16 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws CSVException Thrown on invalid CSV input data.
      * @throws NullPointerException if {@code url} is {@code null}.
      */
-    @SuppressWarnings("resource")
     public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException {
         Objects.requireNonNull(url, "url");
-        return parse(url.openStream(), charset, format);
+        final InputStream inputStream = url.openStream();
+        try {
+            return parse(inputStream, charset, format);
+        } catch (final IOException | RuntimeException e) {
+            // This method allocated the stream and the caller never gets a parser to close, so close it here.
+            IOUtils.closeQuietlySuppress(inputStream, e);
+            throw e;
+        }
     }
 
     private String headerComment;
