@@ -50,7 +50,9 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.build.AbstractStreamBuilder;
+import org.apache.commons.io.function.IOSupplier;
 import org.apache.commons.io.function.Uncheck;
 
 /**
@@ -371,6 +373,18 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         return parse(new InputStreamReader(inputStream, Charsets.toCharset(charset)), format);
     }
 
+    private static CSVParser parse(final IOSupplier<InputStream> supplier, final Charset charset, final CSVFormat format) throws IOException {
+        Objects.requireNonNull(supplier, "supplier");
+        final InputStream inputStream = supplier.get();
+        try {
+            return parse(inputStream, charset, format);
+        } catch (final IOException | RuntimeException e) {
+            // This method allocated the stream and the caller never gets a parser to close, so close it here.
+            IOUtils.closeQuietlySuppress(inputStream, e);
+            throw e;
+        }
+    }
+
     /**
      * Creates and returns a parser for the given {@link Path}, which the caller MUST close.
      *
@@ -392,7 +406,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     @SuppressWarnings("resource")
     public static CSVParser parse(final Path path, final Charset charset, final CSVFormat format) throws IOException {
         Objects.requireNonNull(path, "path");
-        return parse(Files.newInputStream(path), charset, format);
+        return parse(() -> Files.newInputStream(path), charset, format);
     }
 
     /**
@@ -461,10 +475,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      * @throws CSVException Thrown on invalid CSV input data.
      * @throws NullPointerException if {@code url} is {@code null}.
      */
-    @SuppressWarnings("resource")
     public static CSVParser parse(final URL url, final Charset charset, final CSVFormat format) throws IOException {
         Objects.requireNonNull(url, "url");
-        return parse(url.openStream(), charset, format);
+        return parse(url::openStream, charset, format);
     }
 
     private String headerComment;

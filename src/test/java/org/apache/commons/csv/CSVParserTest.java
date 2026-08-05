@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -45,6 +46,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -306,6 +309,57 @@ class CSVParserTest {
         }
         assertFalse(records.hasNext());
         assertThrows(NoSuchElementException.class, records::next);
+    }
+
+    @Test
+    void testClosesInputStreamOnParsePathException() throws IOException {
+        final Path path = Files.createTempFile(getClass().getName(), ".csv");
+        try {
+            Files.write(path, "A,,C\n1,2,3\n".getBytes(UTF_8));
+            final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().get();
+            assertThrows(IllegalArgumentException.class, () -> CSVParser.parse(path, UTF_8, format));
+        } finally {
+            Files.delete(path);
+        }
+    }
+
+    @Test
+    void testClosesInputStreamOnParseUrlException() throws IOException {
+        final AtomicBoolean closed = new AtomicBoolean();
+        final URLStreamHandler handler = new URLStreamHandler() {
+
+            @Override
+            protected URLConnection openConnection(final URL u) {
+                return new URLConnection(u) {
+
+                    @Override
+                    public void connect() {
+                        // noop
+                    }
+
+                    @Override
+                    public InputStream getInputStream() {
+                        return new FilterInputStream(new ByteArrayInputStream("A,,C\n1,2,3\n".getBytes(UTF_8))) {
+
+                            @Override
+                            public void close() throws IOException {
+                                closed.set(true);
+                                super.close();
+                            }
+                        };
+                    }
+                };
+            }
+        };
+        final URL url = new URL("csv", null, -1, "test.csv", handler);
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().get();
+        assertThrows(IllegalArgumentException.class, () -> {
+            try (CSVParser parser = CSVParser.parse(url, UTF_8, format)) {
+                // we never get here
+                fail("The parser should not be constructed when the header is invalid");
+            }
+        });
+        assertTrue(closed.get(), "The stream opened from the URL must be closed when the parser cannot be constructed");
     }
 
     @Test
@@ -2064,6 +2118,7 @@ class CSVParserTest {
             assertEquals(3, record.size());
         }
     }
+
 
     @Test
     void testTryWithResourcesParseInputStreamWhenHeaderIsInvalid() throws IOException {
