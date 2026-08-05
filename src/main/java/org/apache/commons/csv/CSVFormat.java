@@ -450,6 +450,7 @@ public final class CSVFormat implements Serializable {
          *
          * @param delimiter The delimiter character.
          * @return This instance.
+         * @throws IllegalArgumentException if the delimiter is a line break.
          */
         public Builder setDelimiter(final char delimiter) {
             return setDelimiter(String.valueOf(delimiter));
@@ -460,6 +461,7 @@ public final class CSVFormat implements Serializable {
          *
          * @param delimiter The delimiter character.
          * @return This instance.
+         * @throws IllegalArgumentException if the delimiter is a line break or is empty.
          */
         public Builder setDelimiter(final String delimiter) {
             if (containsLineBreak(delimiter)) {
@@ -477,6 +479,7 @@ public final class CSVFormat implements Serializable {
          *
          * @param duplicateHeaderMode The duplicate header names behavior
          * @return This instance.
+         * @throws NullPointerException if duplicateHeaderMode is null.
          * @since 1.10.0
          */
         public Builder setDuplicateHeaderMode(final DuplicateHeaderMode duplicateHeaderMode) {

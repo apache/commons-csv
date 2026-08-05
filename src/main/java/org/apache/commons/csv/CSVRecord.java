@@ -83,6 +83,10 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @param e
      *            an enum
      * @return The String at the given enum String
+     * @throws IllegalStateException
+     *             if no header mapping was provided.
+     * @throws IllegalArgumentException
+     *             if the enum name is not mapped or if the record is inconsistent.
      */
     public String get(final Enum<?> e) {
         return get(e == null ? null : e.name());
@@ -94,6 +98,7 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @param i
      *            a column index (0-based)
      * @return The String at the given index
+     * @throws ArrayIndexOutOfBoundsException if the index is out of bounds.
      */
     public String get(final int i) {
         return values[i];
