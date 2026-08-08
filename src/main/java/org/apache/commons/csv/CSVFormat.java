@@ -2467,8 +2467,10 @@ public final class CSVFormat implements Serializable {
             builder.append((char) c);
             Arrays.fill(lookAheadBuffer, (char) 0);
             bufferedReader.peek(lookAheadBuffer);
-            final String test = builder.toString() + new String(lookAheadBuffer);
-            final boolean isDelimiterStart = isDelimiter((char) c, test, pos, delimArray, delimLength);
+            // Match the delimiter against the current character plus the look-ahead buffer only. Rebuilding the test
+            // string from the whole accumulated builder made this loop O(n^2) for values without escapable characters.
+            final String test = String.valueOf((char) c) + new String(lookAheadBuffer);
+            final boolean isDelimiterStart = isDelimiter((char) c, test, 0, delimArray, delimLength);
             final boolean isCr = c == Constants.CR;
             final boolean isLf = c == Constants.LF;
             // A leading comment marker would be read back as a comment, so escape it.

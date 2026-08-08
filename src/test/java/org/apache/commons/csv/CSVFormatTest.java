@@ -975,6 +975,22 @@ class CSVFormatTest {
     }
 
     @Test
+    void testPrintWithEscapesReaderLargeValueIsLinear() {
+        // A Reader value with no escapable characters used to run in O(n^2): the delimiter look-ahead rebuilt a
+        // String from the whole accumulated output on every character. A large value must stay linear and correct.
+        final int size = 1_000_000;
+        final char[] data = new char[size];
+        Arrays.fill(data, 'a');
+        final CSVFormat format = CSVFormat.RFC4180.withEscape('?').withDelimiter(',').withQuote(null).withRecordSeparator(CRLF);
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
+            final StringBuilder out = new StringBuilder(size);
+            format.print(new StringReader(new String(data)), out, true);
+            // No character in the value is special, so the output is the value unchanged.
+            assertEquals(size, out.length());
+        });
+    }
+
+    @Test
     void testPrintWithoutQuotes() throws IOException {
         final Reader in = new StringReader("");
         final Appendable out = new StringBuilder();
