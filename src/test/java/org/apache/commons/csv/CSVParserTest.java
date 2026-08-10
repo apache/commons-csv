@@ -31,6 +31,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -50,9 +52,11 @@ import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.spi.FileSystemProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -313,14 +317,30 @@ class CSVParserTest {
 
     @Test
     void testClosesInputStreamOnParsePathException() throws IOException {
-        final Path path = Files.createTempFile(getClass().getName(), ".csv");
-        try {
-            Files.write(path, "A,,C\n1,2,3\n".getBytes(UTF_8));
-            final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().get();
-            assertThrows(IllegalArgumentException.class, () -> CSVParser.parse(path, UTF_8, format));
-        } finally {
-            Files.delete(path);
-        }
+        final AtomicBoolean closed = new AtomicBoolean();
+        final InputStream inputStream = new FilterInputStream(new ByteArrayInputStream("A,,C\n1,2,3\n".getBytes(UTF_8))) {
+
+            @Override
+            public void close() throws IOException {
+                closed.set(true);
+                super.close();
+            }
+        };
+        // Files.newInputStream(path) delegates to the path's FileSystemProvider, so a mocked provider observes the stream parse(Path) opens.
+        final FileSystemProvider provider = mock(FileSystemProvider.class);
+        final FileSystem fileSystem = mock(FileSystem.class);
+        final Path path = mock(Path.class);
+        when(path.getFileSystem()).thenReturn(fileSystem);
+        when(fileSystem.provider()).thenReturn(provider);
+        when(provider.newInputStream(path)).thenReturn(inputStream);
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().get();
+        assertThrows(IllegalArgumentException.class, () -> {
+            try (CSVParser parser = CSVParser.parse(path, UTF_8, format)) {
+                // we never get here
+                fail("The parser should not be constructed when the header is invalid");
+            }
+        });
+        assertTrue(closed.get(), "The stream opened from the path must be closed when the parser cannot be constructed");
     }
 
     @Test
