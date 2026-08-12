@@ -24,6 +24,7 @@ import static org.apache.commons.io.IOUtils.EOF;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InvalidObjectException;
 import java.io.NotActiveException;
 import java.io.ObjectInputStream;
 import java.io.OutputStream;
@@ -2648,6 +2649,14 @@ public final class CSVFormat implements Serializable {
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         writeLock = new Object();
+        // The constructor validates these invariants, but deserialization bypasses it, so a crafted stream
+        // could yield a format the Builder rejects (for example the quote char equal to the delimiter, or
+        // QuoteMode.NONE with no escape char) that then misparses or throws in a print/parse callee.
+        try {
+            validate();
+        } catch (final IllegalArgumentException e) {
+            throw (InvalidObjectException) new InvalidObjectException(e.getMessage()).initCause(e);
+        }
     }
 
     @Override
