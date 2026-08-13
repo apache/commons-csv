@@ -75,6 +75,7 @@
       <action type="fix" dev="ggregory" due-to="Gary Gregory, Naveed Khan">Close the stream parse(Path) and parse(URL) open on construction failure (#630).</action>
       <action type="fix" dev="ggregory" due-to="Gary Gregory, Naveed Khan">Fix quadratic CSVFormat.printWithEscapes(Reader) delimiter look-ahead (#631).</action>
       <action type="fix" dev="ggregory" due-to="Gary Gregory">General Javadoc improvements.</action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory, Naveed Khan">Validate CSVFormat invariants when deserializing (#632).</action>
       <!-- ADD -->
       <action type="add" dev="ggregory" due-to="Gary Gregory, Indy, Sylvia van Os" issue="CSV-307">Add an "Android Compatibility" section to the web site.</action>
       <action type="add" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-325">Add CSVParser.Builder.setByteOffset(long) (#604).</action>
