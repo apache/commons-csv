@@ -38,10 +38,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.sql.ResultSet;
@@ -1156,6 +1158,23 @@ class CSVFormatTest {
         assertEquals(CSVFormat.DEFAULT.getEscapeCharacter(), format.getEscapeCharacter(), "escape");
         assertEquals(CSVFormat.DEFAULT.getIgnoreSurroundingSpaces(), format.getIgnoreSurroundingSpaces(), "trim");
         assertEquals(CSVFormat.DEFAULT.getIgnoreEmptyLines(), format.getIgnoreEmptyLines(), "empty lines");
+    }
+
+    @Test
+    void testSerializationRejectsInvalidInvariant() throws Exception {
+        // A format the Builder rejects: QuoteMode.NONE with no escape character. Reflection corrupts a fresh
+        // instance to build a serialized stream a hostile source could send.
+        final CSVFormat format = CSVFormat.DEFAULT.builder().get();
+        final Field quoteModeField = CSVFormat.class.getDeclaredField("quoteMode");
+        quoteModeField.setAccessible(true);
+        quoteModeField.set(format, QuoteMode.NONE);
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (ObjectOutputStream oos = new ObjectOutputStream(out)) {
+            oos.writeObject(format);
+        }
+        try (ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(out.toByteArray()))) {
+            assertThrows(InvalidObjectException.class, in::readObject);
+        }
     }
 
     @Test
