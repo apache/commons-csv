@@ -179,9 +179,10 @@ public final class CSVPrinter implements Flushable, Closeable {
     }
 
     /**
-     * Gets the record count printed, this does not include comments or headers.
+     * Gets the record count printed. This includes the header record written by the constructor when the format has a header and
+     * {@link CSVFormat#getSkipHeaderRecord()} is false; it does not include comments or headers written by {@link #printHeaders(ResultSet)}.
      *
-     * @return The record count, this does not include comments or headers.
+     * @return The record count, including the header record written by the constructor.
      * @since 1.13.0
      */
     public long getRecordCount() {
