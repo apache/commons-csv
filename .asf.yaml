@@ -16,6 +16,8 @@
 github:
   description: "Apache Commons CSV"
   homepage: https://commons.apache.org/csv/
+  autolink_jira:
+    - CSV
   
   pull_requests:
     # allow auto-merge
