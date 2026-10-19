@@ -18,7 +18,6 @@
  */
 package org.apache.commons.csv;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -104,10 +103,8 @@ class CSVRecordTest {
         try (CSVParser parser = CSVParser.parse(csv, format)) {
             final CSVRecord record = parser.nextRecord();
 
-            assertAll("Test that it gets the last instance of a column when there are duplicate headings",
-                () -> assertEquals("2", record.get("A")),
-                () -> assertEquals("6", record.get("B"))
-            );
+            assertEquals("2", record.get("A"));
+            assertEquals("6", record.get("B"));
         }
     }
 
@@ -120,10 +117,8 @@ class CSVRecordTest {
             final CSVRecord record = parser.nextRecord();
             final Map<String, String> map = record.toMap();
 
-            assertAll("Test that it gets the last instance of a column when there are duplicate headings",
-                () -> assertEquals("2", map.get("A")),
-                () -> assertEquals("6", map.get("B"))
-            );
+            assertEquals("2", map.get("A"));
+            assertEquals("6", map.get("B"));
         }
     }
 
