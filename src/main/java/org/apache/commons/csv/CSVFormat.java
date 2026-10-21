@@ -39,12 +39,12 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.function.IOStream;
 import org.apache.commons.io.function.Uncheck;
@@ -2252,7 +2252,7 @@ public final class CSVFormat implements Serializable {
         }
         // Stream the input to the output without reading or holding the whole value in memory.
         // AppendableOutputStream cannot "close" an Appendable.
-        try (OutputStream outputStream = new Base64OutputStream(new AppendableOutputStream<>(out))) {
+        try (OutputStream outputStream = Base64.getEncoder().wrap(new AppendableOutputStream<>(out))) {
             IOUtils.copy(inputStream, outputStream);
         }
         if (quoteCharacterSet) {

@@ -45,11 +45,6 @@
       <version>${commons.io.version}</version>
     </dependency>
     <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>${commons.codec.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.21.0</version>
@@ -108,11 +103,9 @@
     <japicmp.skip>false</japicmp.skip>
     <commons.release.isDistModule>true</commons.release.isDistModule>
     <project.build.outputTimestamp>2025-07-30T14:51:35Z</project.build.outputTimestamp>
-    <commons.codec.version>1.23.0</commons.codec.version>
     <commons.io.version>2.22.0</commons.io.version>
     <!-- Apache Felix maven-bundle-plugin -->
     <commons.osgi.import>
-    org.apache.commons.codec.binary;version="${commons.codec.version}",
     org.apache.commons.io;version="${commons.io.version}",
     org.apache.commons.io.build;version="${commons.io.version}",
     org.apache.commons.io.function;version="${commons.io.version}",
