@@ -1409,6 +1409,22 @@ class CSVParserTest {
         }
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = { "\r", "\n", "\r\n" })
+    void testHeaderWithLineBreaks(final String lineBreak) throws IOException {
+        final String firstHeader = "a" + lineBreak;
+        final String secondHeader = "b" + lineBreak;
+        final String csv = "\"" + firstHeader + "\",\"" + secondHeader + "\"\r\n1,2\r\n";
+        final CSVFormat format = CSVFormat.RFC4180.builder().setHeader().get();
+        try (CSVParser parser = CSVParser.parse(csv, format)) {
+            assertEquals(Arrays.asList(firstHeader, secondHeader), parser.getHeaderNames());
+            final List<CSVRecord> records = parser.getRecords();
+            assertEquals(1, records.size());
+            assertEquals("1", records.get(0).get(firstHeader));
+            assertEquals("2", records.get(0).get(secondHeader));
+        }
+    }
+
     @Test
     void testIgnoreCaseHeaderMapping() throws Exception {
         final Reader reader = new StringReader("1,2,3");
