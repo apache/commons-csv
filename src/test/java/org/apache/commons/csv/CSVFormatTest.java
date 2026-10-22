@@ -628,6 +628,7 @@ class CSVFormatTest {
         assertNotEqualsFlip(right, left);
     }
 
+    @Test
     void testEqualsSkipHeaderRecord() {
         final CSVFormat right = CSVFormat.newFormat('\'').builder().setRecordSeparator(CR).setCommentMarker('#').setEscape('+').setIgnoreEmptyLines(true)
                 .setIgnoreSurroundingSpaces(true).setQuote('"').setQuoteMode(QuoteMode.ALL).setNullString("null").setSkipHeaderRecord(true).get();
