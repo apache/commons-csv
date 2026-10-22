@@ -80,6 +80,7 @@
       <action type="fix" dev="ggregory" due-to="Gary Gregory">Escape-mode printer and parser mishandles value ending in multi-char delimiter prefix (f001).</action>
       <action type="fix" dev="ggregory" due-to="Jeff Lenamon, Gary Gregory">Fix Javadoc for CSVPrinter.getRecordCount(): the header record written by the constructor is counted (#633).</action>
       <action type="fix" dev="ggregory" due-to="agamal026, Gary Gregory">Add tests for line breaks in automatic CSV headers (#640).</action>
+      <action type="fix" dev="ggregory" due-to="Sharang Gupta, Gary Gregory">Add missing @Test to CSVFormatTest.testEqualsSkipHeaderRecord#testEqualsSkipHeaderRecord() (#639).</action>
       <!-- ADD -->
       <action type="add" dev="ggregory" due-to="Gary Gregory, Indy, Sylvia van Os" issue="CSV-307">Add an "Android Compatibility" section to the web site.</action>
       <action type="add" dev="ggregory" due-to="Ruiqi Dong, Gary Gregory" issue="CSV-325">Add CSVParser.Builder.setByteOffset(long) (#604).</action>
