@@ -334,12 +334,7 @@ class CSVParserTest {
         when(fileSystem.provider()).thenReturn(provider);
         when(provider.newInputStream(path)).thenReturn(inputStream);
         final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().get();
-        assertThrows(IllegalArgumentException.class, () -> {
-            try (CSVParser parser = CSVParser.parse(path, UTF_8, format)) {
-                // we never get here
-                fail("The parser should not be constructed when the header is invalid");
-            }
-        });
+        assertThrows(IllegalArgumentException.class, () -> CSVParser.parse(path, UTF_8, format));
         assertTrue(closed.get(), "The stream opened from the path must be closed when the parser cannot be constructed");
     }
 
@@ -373,12 +368,7 @@ class CSVParserTest {
         };
         final URL url = new URL("csv", null, -1, "test.csv", handler);
         final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().get();
-        assertThrows(IllegalArgumentException.class, () -> {
-            try (CSVParser parser = CSVParser.parse(url, UTF_8, format)) {
-                // we never get here
-                fail("The parser should not be constructed when the header is invalid");
-            }
-        });
+        assertThrows(IllegalArgumentException.class, () -> CSVParser.parse(url, UTF_8, format));
         assertTrue(closed.get(), "The stream opened from the URL must be closed when the parser cannot be constructed");
     }
 
