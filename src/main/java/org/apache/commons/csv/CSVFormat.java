@@ -1115,7 +1115,7 @@ public final class CSVFormat implements Serializable {
      * <li>{@link Builder#setRecordSeparator(char) setRecordSeparator}{@code ('\n')}</li>
      * </ul>
      *
-     * @see Predefined#MySQL
+     * @see Predefined#InformixUnload
      * @see <a href="https://www.ibm.com/docs/en/informix-servers/14.10?topic=statements-unload-statement">Informix CSV UNLOAD</a>
      * @since 1.3
      */
@@ -1146,7 +1146,7 @@ public final class CSVFormat implements Serializable {
      * <li>{@link Builder#setRecordSeparator(char) setRecordSeparator}{@code ('\n')}</li>
      * </ul>
      *
-     * @see Predefined#MySQL
+     * @see Predefined#InformixUnloadCsv
      * @see <a href= "http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm">
      *      http://www.ibm.com/support/knowledgecenter/SSBJG3_2.5.0/com.ibm.gen_busug.doc/c_fgl_InOutSql_UNLOAD.htm</a>
      * @since 1.3
@@ -1185,7 +1185,7 @@ public final class CSVFormat implements Serializable {
      * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.MINIMAL)}</li>
      * </ul>
      *
-     * @see Predefined#MongoDBCsv
+     * @see Predefined#MongoDBTsv
      * @see QuoteMode#ALL_NON_NULL
      * @see <a href="https://docs.mongodb.com/manual/reference/program/mongoexport/">MongoDB mongoexport command documentation</a>
      * @since 1.7
@@ -1339,7 +1339,7 @@ public final class CSVFormat implements Serializable {
      * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.ALL_NON_NULL)}</li>
      * </ul>
      *
-     * @see Predefined#MySQL
+     * @see Predefined#PostgreSQLCsv
      * @see QuoteMode#ALL_NON_NULL
      * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL CSV</a>
      * @since 1.5
@@ -1377,7 +1377,7 @@ public final class CSVFormat implements Serializable {
      * <li>{@link Builder#setQuoteMode(QuoteMode) setQuoteMode}{@code (QuoteMode.ALL_NON_NULL)}</li>
      * </ul>
      *
-     * @see Predefined#MySQL
+     * @see Predefined#PostgreSQLText
      * @see QuoteMode#ALL_NON_NULL
      * @see <a href="https://www.postgresql.org/docs/current/static/sql-copy.html">PostgreSQL Text</a>
      * @since 1.5
