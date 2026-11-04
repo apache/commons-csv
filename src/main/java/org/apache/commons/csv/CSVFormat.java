@@ -2264,6 +2264,11 @@ public final class CSVFormat implements Serializable {
      * Prints the {@code value} as the next value on the line to {@code out}. The value will be escaped or encapsulated as needed. Useful when one wants to
      * avoid creating CSVPrinters. Trims the value if {@link #getTrim()} is true.
      *
+     * <p>
+     * If {@code value} is a {@link Reader} and {@link #getTrim()} is true, the reader is fully read into memory so the value can be trimmed before printing;
+     * otherwise the value is streamed without holding it in memory. The reader is never closed by this method.
+     * </p>
+     *
      * @param value     value to output.
      * @param out       where to print the value.
      * @param newRecord if this a new record.
@@ -2287,8 +2292,15 @@ public final class CSVFormat implements Serializable {
             } else if (value instanceof CharSequence) {
                 charSequence = (CharSequence) value;
             } else if (value instanceof Reader) {
-                print((Reader) value, out, newRecord);
-                return;
+                // CSV-331: the streaming path cannot apply trim(), so when trimming is enabled the reader
+                // is fully read into memory first; trim() is applied below on the regular path.
+                // The reader is not closed here: closing it remains the caller's responsibility.
+                if (getTrim()) {
+                    charSequence = IOUtils.toString((Reader) value);
+                } else {
+                    print((Reader) value, out, newRecord);
+                    return;
+                }
             } else if (value instanceof InputStream) {
                 print((InputStream) value, out, newRecord);
                 return;
@@ -2348,6 +2360,13 @@ public final class CSVFormat implements Serializable {
         return print(Files.newBufferedWriter(out, charset));
     }
 
+    /**
+     * Prints a Reader value by streaming it without holding the whole value in memory.
+     * <p>
+     * Trimming is NOT applied here: when {@link #getTrim()} is true, {@link #print(Object, Appendable, boolean)}
+     * buffers the reader in memory and takes the regular CharSequence path instead (CSV-331).
+     * </p>
+     */
     private void print(final Reader reader, final Appendable out, final boolean newRecord) throws IOException {
         // Reader is never null here
         if (!newRecord) {
