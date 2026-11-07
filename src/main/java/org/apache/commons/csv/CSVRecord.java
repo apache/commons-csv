@@ -235,8 +235,9 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      * @return true of this record is valid, false if not.
      */
     public boolean isConsistent() {
-        final Map<String, Integer> headerMap = getHeaderMapRaw();
-        return headerMap == null || headerMap.size() == values.length;
+        // Compare with the header column count, not the header map size: duplicate or null header names allowed by
+        // DuplicateHeaderMode or allowMissingColumnNames share or lack a map entry.
+        return getHeaderMapRaw() == null || parser.getHeaderCount() == values.length;
     }
 
     /**
