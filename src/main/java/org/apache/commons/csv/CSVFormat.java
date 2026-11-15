@@ -815,8 +815,11 @@ public final class CSVFormat implements Serializable {
         }
 
         private Builder setQuotedNullString() {
-            final Character quote = quoteCharacter != null ? quoteCharacter : Constants.DOUBLE_QUOTE_CHAR;
-            this.quotedNullString = quote + nullString + quote;
+            final char quote = quoteCharacter != null ? quoteCharacter.charValue() : Constants.DOUBLE_QUOTE_CHAR.charValue();
+            // Double the quote character inside the null marker, otherwise the quoted marker closes its own
+            // encapsulation and the emitted token is invalid or spans several fields.
+            final String marker = nullString != null ? nullString : "null";
+            this.quotedNullString = quote + marker.replace(String.valueOf(quote), String.valueOf(quote) + quote) + quote;
             return this;
         }
 
