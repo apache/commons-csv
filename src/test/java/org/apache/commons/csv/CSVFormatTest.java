@@ -1373,6 +1373,66 @@ class CSVFormatTest {
         assertEquals("header", out.toString());
     }
 
+    /**
+     * Tests <a href="https://issues.apache.org/jira/browse/CSV-331">CSV-331</a>: trim must also be applied when
+     * printing a Reader value.
+     */
+    @Test
+    void testTrimReaderValue() throws IOException {
+        final CSVFormat formatWithTrim = CSVFormat.DEFAULT.withDelimiter(',').withTrim().withQuote(null).withRecordSeparator(CRLF);
+
+        Reader in = new StringReader("a,b,c");
+        final StringBuilder out = new StringBuilder();
+        formatWithTrim.print(in, out, true);
+        assertEquals("a,b,c", out.toString());
+
+        in = new StringReader("  x,y,z  ");
+        out.setLength(0);
+        formatWithTrim.print(in, out, true);
+        assertEquals("x,y,z", out.toString());
+
+        in = new StringReader("");
+        out.setLength(0);
+        formatWithTrim.print(in, out, true);
+        assertEquals("", out.toString());
+
+        in = new StringReader("header\r\n");
+        out.setLength(0);
+        formatWithTrim.print(in, out, true);
+        assertEquals("header", out.toString());
+
+        // CSV-331 reproduction: ORACLE enables trim.
+        final StringBuilder oracleOut = new StringBuilder();
+        CSVFormat.ORACLE.print(new StringReader("  Alice  "), oracleOut, true);
+        assertEquals("Alice", oracleOut.toString());
+    }
+
+    /**
+     * Tests <a href="https://issues.apache.org/jira/browse/CSV-331">CSV-331</a>: a Reader value must still be
+     * encapsulated when needed after trimming.
+     */
+    @Test
+    void testTrimReaderValueWithQuotes() throws IOException {
+        final CSVFormat formatWithTrim = CSVFormat.DEFAULT.withDelimiter(',').withTrim().withRecordSeparator(CRLF);
+        final Reader in = new StringReader("  \"a,b\"  ");
+        final StringBuilder out = new StringBuilder();
+        formatWithTrim.print(in, out, true);
+        assertEquals("\"\"\"a,b\"\"\"", out.toString());
+    }
+
+    /**
+     * Tests <a href="https://issues.apache.org/jira/browse/CSV-331">CSV-331</a>: without trim a Reader value must
+     * keep streaming as-is.
+     */
+    @Test
+    void testNoTrimReaderValue() throws IOException {
+        final CSVFormat formatWithoutTrim = CSVFormat.DEFAULT.withDelimiter(',').withQuote(null).withRecordSeparator(CRLF);
+        final Reader in = new StringReader("  Alice  ");
+        final StringBuilder out = new StringBuilder();
+        formatWithoutTrim.print(in, out, true);
+        assertEquals("  Alice  ", out.toString());
+    }
+
     @Test
     void testWithCommentStart() {
         final CSVFormat formatWithCommentStart = CSVFormat.DEFAULT.withCommentMarker('#');
