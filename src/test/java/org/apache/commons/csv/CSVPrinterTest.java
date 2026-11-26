@@ -2291,6 +2291,23 @@ class CSVPrinterTest {
             assertEquals("A,B", sw.toString());
         }
     }
+    @Test
+    void testQuotedNullStringEscapesEmbeddedQuoteCharacter() throws IOException {
+        // QuoteMode.ALL writes null as the quoted null marker. The marker must escape its own quote characters,
+        // otherwise it closes its encapsulation early and the printer emits CSV the parser rejects.
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setNullString("N\"A").setQuoteMode(QuoteMode.ALL).get();
+        final StringWriter sw = new StringWriter();
+        try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+            printer.printRecord("x", null);
+        }
+        assertEquals("\"x\",\"N\"\"A\"" + RECORD_SEPARATOR, sw.toString());
+        try (CSVParser parser = CSVParser.parse(sw.toString(), format)) {
+            final CSVRecord record = parser.getRecords().get(0);
+            assertEquals(2, record.size());
+            assertEquals("x", record.get(0));
+            assertNull(record.get(1));
+        }
+    }
 
     private String[] toFirstRecordValues(final String expected, final CSVFormat format) throws IOException {
         try (CSVParser parser = CSVParser.parse(expected, format)) {
