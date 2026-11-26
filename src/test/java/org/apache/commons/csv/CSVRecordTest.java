@@ -189,14 +189,39 @@ class CSVRecordTest {
         assertTrue(recordWithHeader.isConsistent());
     }
 
+    /**
+     * A record whose size matches the header column count is consistent even when duplicate header names share a
+     * single header map entry.
+     */
+    @Test
+    void testIsConsistentWithDuplicateHeaderNames() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_ALL).get();
+        try (CSVParser parser = format.parse(new StringReader("a,b,a\n1,2,3\n1,2\n"))) {
+            final List<CSVRecord> records = parser.getRecords();
+            assertTrue(records.get(0).isConsistent());
+            assertFalse(records.get(1).isConsistent());
+        }
+    }
+
+    /**
+     * A record whose size matches the header column count is consistent even when empty header names share a single
+     * header map entry.
+     */
+    @Test
+    void testIsConsistentWithDuplicateEmptyHeaderNames() throws IOException {
+        final CSVFormat format = CSVFormat.DEFAULT.builder().setHeader().setAllowMissingColumnNames(true)
+                .setDuplicateHeaderMode(DuplicateHeaderMode.ALLOW_EMPTY).get();
+        try (CSVParser parser = format.parse(new StringReader("a,,b,\n1,2,3,4\n"))) {
+            assertTrue(parser.nextRecord().isConsistent());
+        }
+    }
+
     @Test
     void testIsInconsistent() throws IOException {
-        final String[] headers = { "first", "second", "third" };
+        final String[] headers = { "first", "second", "third", "fourth" };
         final String rowData = StringUtils.join(values, ',');
         try (CSVParser parser = CSVFormat.DEFAULT.withHeader(headers).parse(new StringReader(rowData))) {
-            final Map<String, Integer> map = parser.getHeaderMapRaw();
             final CSVRecord record1 = parser.iterator().next();
-            map.put("fourth", Integer.valueOf(4));
             assertFalse(record1.isConsistent());
         }
     }

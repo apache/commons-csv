@@ -308,9 +308,15 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
          */
         final List<String> headerNames;
 
-        Headers(final Map<String, Integer> headerMap, final List<String> headerNames) {
+        /**
+         * Number of header columns, including duplicate and null names that do not add a distinct entry to {@link #headerMap}.
+         */
+        final int headerCount;
+
+        Headers(final Map<String, Integer> headerMap, final List<String> headerNames, final int headerCount) {
             this.headerMap = headerMap;
             this.headerNames = headerNames;
+            this.headerCount = headerCount;
         }
     }
 
@@ -628,6 +634,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
     private Headers createHeaders() throws IOException {
         Map<String, Integer> headerMap = null;
         List<String> headerNames = null;
+        int headerCount = 0;
         final String[] formatHeader = format.getHeader();
         if (formatHeader != null) {
             headerMap = createEmptyHeaderMap();
@@ -650,6 +657,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             }
             // build the name to index mappings
             if (headerRecord != null) {
+                headerCount = headerRecord.length;
                 // Track an occurrence of a null, empty or blank header.
                 boolean observedMissing = false;
                 for (int i = 0; i < headerRecord.length; i++) {
@@ -679,7 +687,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             }
         }
         // Make header names Collection immutable
-        return new Headers(headerMap, headerNames == null ? Collections.emptyList() : Collections.unmodifiableList(headerNames));
+        return new Headers(headerMap, headerNames == null ? Collections.emptyList() : Collections.unmodifiableList(headerNames), headerCount);
     }
 
     /**
@@ -745,6 +753,15 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
      */
     Map<String, Integer> getHeaderMapRaw() {
         return headers.headerMap;
+    }
+
+    /**
+     * Gets the number of header columns, which can exceed the header map size when duplicate or null names are allowed.
+     *
+     * @return The number of header columns.
+     */
+    int getHeaderCount() {
+        return headers.headerCount;
     }
 
     /**
